@@ -35,16 +35,36 @@ class EasyRDF_Graph
         $this->_resources = array();
         
         if ($data) {
-            $this->parse($data);
+            $this->load_data($data);
+        } else if ($uri) {
+            $this->load();
         }
     }
-    
 
-    public function parse($data)
+    public function load()
+    {
+        $args = array();
+        $http_proxy = getenv('http_proxy');
+        if ($http_proxy) {
+            $proxy = parse_url($http_proxy);
+            $args = array('proxy_host' => $proxy['host'], 'proxy_port' => $proxy['port']);
+        }
+        $parser = ARC2::getRDFXMLParser($args);
+        $parser->parse($this->_uri);
+
+        $this->_construct_resources($parser);
+    }
+
+    public function load_data($data)
     {
         $parser = ARC2::getRDFXMLParser();
         $parser->parse($this->_uri, $data);
-        
+
+        $this->_construct_resources($parser);
+    }
+
+    private function _construct_resources($parser)
+    {        
         $index = $parser->getSimpleIndex(false);
         foreach ($index as $subj => $touple) {
           $res = $this->get_resource($subj);
