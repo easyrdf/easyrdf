@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<project name="EasyRDF" basedir="." default="test">
+	<property name="app.dir" value="." />
+  <property name="tests.dir" value="./test" />
+  <includepath classpath="${app.dir}/lib" />
+
+  <target name="test">
+    <phpunit haltonfailure="true" printsummary="true">
+      <batchtest>
+        <fileset dir="test">
+          <include name="EasyRDF/*Test.php"/>
+        </fileset>
+      </batchtest>
+    </phpunit>
+  </target>
+
+</project>
