@@ -15,4 +15,20 @@
     </phpunit>
   </target>
 
+  <target name="docs">
+    <phpdoc title="API Documentation"
+      destdir="docs"
+      sourcecode="no"
+      output="HTML:Smarty:PHP">
+      <fileset dir="./lib">
+        <include name="EasyRDF/*.php" />
+      </fileset>
+      <projdocfileset dir=".">
+        <include name="README" />
+        <include name="INSTALL" />
+        <include name="CHANGELOG" />
+      </projdocfileset>
+    </phpdoc>
+  </target>
+
 </project>
