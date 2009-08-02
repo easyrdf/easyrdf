@@ -1,0 +1,12 @@
+* Pluggable Parsers / Generators
+ - Redland PHP plugin
+ - rapper command line support
+ - Pure PHP - ARC?
+ 
+* HTTP Client support
+ - Zend_Http_Client
+ - BBC_Http_Client
+
+
+ 
+ 
