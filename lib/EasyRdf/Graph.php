@@ -2,7 +2,7 @@
 
 require_once("arc/ARC2.php");
 
-class EasyRDF_Graph
+class EasyRdf_Graph
 {
     protected $_uri;
     protected $_resources;
@@ -12,7 +12,7 @@ class EasyRDF_Graph
     {
         # Create resource object if it doesn't already exist
         if (!array_key_exists($uri, $this->_resources)) {
-            $this->_resources[$uri] = new EasyRDF_Resource($uri);
+            $this->_resources[$uri] = new EasyRdf_Resource($uri);
         }
         return $this->_resources[$uri];
     }

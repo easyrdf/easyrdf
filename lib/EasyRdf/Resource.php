@@ -1,7 +1,7 @@
 <?php
 
 
-class EasyRDF_Resource
+class EasyRdf_Resource
 {
     protected $_uri;
     protected $_data;
@@ -9,7 +9,7 @@ class EasyRDF_Resource
     # Return the primary topic of a document
     public static function get_primary_topic($uri)
     {
-        $doc = EasyRDF_Resource::get($uri);
+        $doc = EasyRdf_Resource::get($uri);
         return $doc->foaf_primaryTopic;
     }
     
@@ -60,7 +60,7 @@ class EasyRDF_Resource
             throw new Exception('Invalid predicate.'); 
         }
 
-        $key = EasyRDF_Namespace::get($matches[2]) . $matches[3];
+        $key = EasyRdf_Namespace::get($matches[2]) . $matches[3];
         if (array_key_exists($key, $this->_data)) {
             if ($matches[1] == '_') {
                 return $this->_data[$key];

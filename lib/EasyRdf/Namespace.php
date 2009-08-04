@@ -1,6 +1,6 @@
 <?php
 
-class EasyRDF_Namespace
+class EasyRdf_Namespace
 {
     protected static $_namespaces = array(
       'dc' => 'http://purl.org/dc/elements/1.1/',
