@@ -6,14 +6,6 @@ class EasyRdf_Resource
     protected $_uri;
     protected $_data;
     
-    # Return the primary topic of a document
-    public static function get_primary_topic($uri)
-    {
-        $doc = EasyRdf_Resource::get($uri);
-        return $doc->foaf_primaryTopic;
-    }
-    
-    
     # This shouldn't be called directly
     public function __construct($uri, $data='')
     {
@@ -28,48 +20,45 @@ class EasyRdf_Resource
     #    }
     #}
 
-    public function get($predicate)
-    {
-        return $this->_data[$predicate];
-    }
-
     public function set($predicate, $object)
     {
+        if (isset($this->$predicate)) {
+            $objects = $this->$predicate;
+        } else {
+            $objects = array();
+        }
         # Add to array of objects, if it isn't already there
-        if (!array_key_exists($predicate, $this->_data)) {
-            $this->_data[$predicate] = array();
+        if (!in_array($object, $objects)) {
+            array_push($objects, $object);
         }
-        if (!in_array($object, $this->_data[$predicate])) {
-            array_push($this->_data[$predicate], $object);
-        }
-    }
-
-    # eg. $artist->foaf_name = "Foo Fighters"
-    #     $artist->_foaf_name = "Foo Bar"
-    public function __set($predicate, $object)
-    {
-        # TODO: Implement this
+        $this->$predicate = $objects;
     }
     
-    # Example: $artist->foaf_name = "Foo Fighters"
-    #          $artist->_foaf_name = array('Foo Fighters', 'foo foo')
-    #
-    public function __get($predicate)
+    public function first($predicate)
     {
-        if (!preg_match('/^(_?)(\w+)_(.+)$/', $predicate, $matches)) {
-            throw new Exception('Invalid predicate.'); 
-        }
+        $objects = $this->$predicate;
+        return $objects[0];
+    }
 
-        $key = EasyRdf_Namespace::get($matches[2]) . $matches[3];
-        if (array_key_exists($key, $this->_data)) {
-            if ($matches[1] == '_') {
-                return $this->_data[$key];
-            } else {
-                return $this->_data[$key][0];
-            }
-        } else {
-            return NULL;
-        }
+    public function __set($key, $value)
+    {
+        $this->_data[$key] = $value;
+    }
+    
+    public function __get($key)
+    {
+        // FIXME: how to return single item?
+        return $this->_data[$key];
+    }
+    
+    public function __isset($key)
+    {
+        return array_key_exists($key, $this->_data);
+    }
+    
+    public function __unset($key)
+    {
+        unset($this->_data[$key]);
     }
     
     public function uri() {
@@ -79,12 +68,7 @@ class EasyRdf_Resource
     # Return the resource type as a single word (rather than a URI)
     public function type()
     {
-        return $this->rdfs_type;
-    }
-
-    public function add_triples($dict)
-    {
-  
+        return $this->first('rdfs_type');
     }
     
     public function __toString()

@@ -1,13 +1,20 @@
 <?php
 
-require_once("arc/ARC2.php");
+require_once "EasyRDF/Resource.php";
+require_once "EasyRDF/Namespace.php";
+require_once "EasyRDF/RapperParser.php";
 
 class EasyRdf_Graph
 {
-    protected $_uri;
-    protected $_resources;
-    
-    
+    private $_uri = NULL;
+    private $_resources = NULL;
+    private static $_http_client = NULL;
+    private static $_parser = NULL;
+
+    /**
+	   * Get a Resource object for a specific URI
+	   * @return EasyRdf_Resource returns a Resource (or NULL if it does not exist)
+	   */
     public function get_resource($uri)
     {
         # Create resource object if it doesn't already exist
@@ -17,30 +24,57 @@ class EasyRdf_Graph
         return $this->_resources[$uri];
     }
     
-    # Return all known resources
+	  /**
+     * Return all known resources
+     */
     public function resources()
     {
         return array_values($this->_resources);
     }
 
+    /**
+     * Delete the contents of a graph (all the resources)
+     */
+    public function delete_all()
+    {
+        // FIXME: implement this
+    }
     
     # TODO: Return all resources of a specific type
     #public static function all_by_type($type)
     #{
     #}
 
-    public function __construct($uri, $data='')
+
+    public static function set_http_client($http_client)
+    {
+    }
+    
+    public static function get_http_client()
+    {
+    }
+
+    public static function get_rdf_parser()
+    {
+        if (!self::$_parser) {
+            self::$_parser = new EasyRDF_RapperParser();
+        }
+        return self::$_parser;
+    }
+
+    public static function set_rdf_parser($parser)
+    {
+        $this->_parser = $parser;
+    }
+    
+    public function __construct($uri, $data='', $doc_type='guess')
     {
         $this->_uri = $uri;
         $this->_resources = array();
-        
-        if ($data) {
-            $this->load_data($data);
-        } else if ($uri) {
-            $this->load();
-        }
+        $this->load($uri, $data, $doc_type);
     }
 
+/*
     public function load()
     {
         $args = array();
@@ -54,30 +88,52 @@ class EasyRdf_Graph
 
         $this->_construct_resources($parser);
     }
+*/
 
-    public function load_data($data)
+	/**
+	 * Convert RDF/PHP into a graph of objects
+	 */
+    public function load($uri, $data='', $doc_type='guess')
     {
-        $parser = ARC2::getRDFXMLParser();
-        $parser->parse($this->_uri, $data);
 
-        $this->_construct_resources($parser);
-    }
+        // FIXME: validate the URI
 
-    private function _construct_resources($parser)
-    {        
-        $index = $parser->getSimpleIndex(false);
-        foreach ($index as $subj => $touple) {
+        if (!$data) {
+        
+          # FIXME: fetch data from the URI
+          
+        }
+        
+        # Guess the document type if not given
+        if ($doc_type == 'guess') {
+          $doc_type = self::get_rdf_parser()->guess_doc_type( $data );
+        }
+        
+        if ($doc_type != 'php') {
+          
+          # Parse the RDF data if it isn't PHP
+          $data = self::get_rdf_parser()->parse( $uri, $data, $doc_type );
+          if (!$data) {
+              # FIXME: parse error
+              return NULL;
+          }
+        }
+
+        # Convert into an object graph
+        foreach ($data as $subj => $touple) {
           $res = $this->get_resource($subj);
           foreach ($touple as $pred => $objs) {
-            foreach ($objs as $obj) {
-              if ($obj['type'] == 'literal') {
-                $res->set($pred, $obj['value']);
-              } else if ($obj['type'] == 'uri' or $obj['type'] == 'bnode') {
-                $objres = $this->get_resource($obj['value']);
-                $res->set($pred, $objres);
-              } else {
-                print "Unknown object type: ";
-                var_dump($obj);
+            $pred = EasyRdf_Namespace::shorten($pred);
+            if (isset($pred)) {
+              foreach ($objs as $obj) {
+                if ($obj['type'] == 'literal') {
+                  $res->set($pred, $obj['value']);
+                } else if ($obj['type'] == 'uri' or $obj['type'] == 'bnode') {
+                  $objres = $this->get_resource($obj['value']);
+                  $res->set($pred, $objres);
+                } else {
+                  # FIXME: thow exception?
+                }
               }
             }
           }
@@ -85,6 +141,11 @@ class EasyRdf_Graph
         }
     }
     
+    public function primaryTopic()
+    {
+        $res = $this->get_resource($this->_uri);
+        return $res->first('foaf_primaryTopic');
+    }
     
     public function add_triples($resource, $dict)
     {
