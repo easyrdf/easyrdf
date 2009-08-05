@@ -1,8 +1,8 @@
 <?php
 require_once 'PHPUnit/Framework.php';
-require_once 'EasyRDF/Graph.php';
+require_once 'EasyRdf/Graph.php';
 
-class EasyRDF_GraphTest extends PHPUnit_Framework_TestCase
+class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 {
     public function testNewArrayIsEmpty()
     {
