@@ -20,10 +20,10 @@ class EasyRdf_Resource
     #    }
     #}
 
-    public function set($predicate, $object)
+    public function set($property, $object)
     {
-        if (isset($this->$predicate)) {
-            $objects = $this->$predicate;
+        if (isset($this->$property)) {
+            $objects = $this->$property;
         } else {
             $objects = array();
         }
@@ -31,12 +31,12 @@ class EasyRdf_Resource
         if (!in_array($object, $objects)) {
             array_push($objects, $object);
         }
-        $this->$predicate = $objects;
+        $this->$property = $objects;
     }
     
-    public function first($predicate)
+    public function first($property)
     {
-        $objects = $this->$predicate;
+        $objects = $this->$property;
         return $objects[0];
     }
 
@@ -68,7 +68,22 @@ class EasyRdf_Resource
     # Return the resource type as a single word (rather than a URI)
     public function type()
     {
-        return $this->first('rdfs_type');
+        return $this->first('rdf_type');
+    }
+    
+    public function dump($html=true, $depth=0)
+    {
+        # FIXME: finish implementing this
+        # FIXME: implement reflection for class properties
+        echo "<pre>";
+        echo "<b>".$this->uri()."</b>\n";
+        foreach ($this->_data as $property => $objects) {
+          echo "  $property => \n";
+          foreach ($objects as $object) {
+            echo "    $object\n";
+          }
+        }
+        echo "</pre>";
     }
     
     public function __toString()

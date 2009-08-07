@@ -1,8 +1,8 @@
 <?php
 
-require_once "EasyRDF/Resource.php";
-require_once "EasyRDF/Namespace.php";
-require_once "EasyRDF/RapperParser.php";
+require_once "EasyRdf/Resource.php";
+require_once "EasyRdf/Namespace.php";
+require_once "EasyRdf/RapperParser.php";
 
 class EasyRdf_Graph
 {
@@ -57,7 +57,7 @@ class EasyRdf_Graph
     public static function get_rdf_parser()
     {
         if (!self::$_parser) {
-            self::$_parser = new EasyRDF_RapperParser();
+            self::$_parser = new EasyRdf_RapperParser();
         }
         return self::$_parser;
     }
@@ -122,15 +122,15 @@ class EasyRdf_Graph
         # Convert into an object graph
         foreach ($data as $subj => $touple) {
           $res = $this->get_resource($subj);
-          foreach ($touple as $pred => $objs) {
-            $pred = EasyRdf_Namespace::shorten($pred);
-            if (isset($pred)) {
+          foreach ($touple as $property => $objs) {
+            $property = EasyRdf_Namespace::shorten($property);
+            if (isset($property)) {
               foreach ($objs as $obj) {
                 if ($obj['type'] == 'literal') {
-                  $res->set($pred, $obj['value']);
+                  $res->set($property, $obj['value']);
                 } else if ($obj['type'] == 'uri' or $obj['type'] == 'bnode') {
                   $objres = $this->get_resource($obj['value']);
-                  $res->set($pred, $objres);
+                  $res->set($property, $objres);
                 } else {
                   # FIXME: thow exception?
                 }
@@ -152,5 +152,13 @@ class EasyRdf_Graph
 
     }
 	
+    
+    public function dump($html=true)
+    {
+        # FIXME: display some information about the graph
+        foreach ($this->_resources as $resource) {
+            $resource->dump($html,1);
+        }
+    }
 	
 }
