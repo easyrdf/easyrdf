@@ -7,7 +7,8 @@ require_once "EasyRdf/RapperParser.php";
 class EasyRdf_Graph
 {
     private $_uri = NULL;
-    private $_resources = NULL;
+    private $_resources = array();
+    private $_type_index = array();
     private static $_http_client = NULL;
     private static $_parser = NULL;
 
@@ -70,7 +71,6 @@ class EasyRdf_Graph
     public function __construct($uri, $data='', $doc_type='guess')
     {
         $this->_uri = $uri;
-        $this->_resources = array();
         $this->load($uri, $data, $doc_type);
     }
 
@@ -131,6 +131,9 @@ class EasyRdf_Graph
                 } else if ($obj['type'] == 'uri' or $obj['type'] == 'bnode') {
                   $objres = $this->get_resource($obj['value']);
                   $res->set($property, $objres);
+                  if ($property == 'rdf_type') {
+                      $this->addToTypeIndex( $res, $obj['value'] );
+                  }
                 } else {
                   # FIXME: thow exception?
                 }
@@ -139,6 +142,30 @@ class EasyRdf_Graph
           }
         
         }
+    }
+    
+    private function addToTypeIndex($resource, $type)
+    {
+        $type = EasyRdf_Namespace::shorten($type);
+        if ($type) {
+            if (!isset($this->_type_index[$type])) {
+                $this->_type_index[$type] = array();
+            }
+            if (!in_array($resource, $this->_type_index[$type])) {
+                array_push($this->_type_index[$type], $resource);
+            }
+        }
+    }
+    
+    public function all_by_type($type)
+    {
+        # FIXME: shorten if $type is a URL
+        return $this->_type_index[$type];
+    }
+    
+    public function all_types()
+    {
+        return array_keys( $this->_type_index );
     }
     
     public function primaryTopic()
