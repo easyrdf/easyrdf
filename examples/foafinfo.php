@@ -1,6 +1,6 @@
 <?php
   set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-  require_once "EasyRDF/Graph.php";
+  require_once "EasyRdf/Graph.php";
   $url = $_GET['url'];
 ?>
 <html>
