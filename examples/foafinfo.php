@@ -41,6 +41,11 @@
         }
         echo "</ul>\n";
     }
+    
+    if ($graph) {
+        echo "<hr />";
+        echo $graph->dump();
+    }
 ?>
 </body>
 </html>
