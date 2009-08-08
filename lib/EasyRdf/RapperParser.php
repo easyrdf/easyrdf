@@ -12,7 +12,7 @@ class EasyRdf_RapperParser
      * @param string $data the document data to guess the type of
      * @return string the document type (e.g. rdfxml, json ...)
      */
-    public function guess_doc_type($data)
+    public function guessDocType($data)
     {
       if (is_array($data)) {
         return 'php';

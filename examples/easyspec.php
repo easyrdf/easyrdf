@@ -22,13 +22,13 @@
     if ($graph) {
         #$graph->dump();
         echo "<p>Classes: ";
-        foreach ($graph->all_by_type('owl_Class') as $class) {
+        foreach ($graph->allByType('owl_Class') as $class) {
             echo $class->first('rdfs_label');
             echo " | ";
         }
         echo "</p>";
         echo "<p>Properties: ";
-        foreach ($graph->all_by_type('owl_ObjectProperty') as $class) {
+        foreach ($graph->allByType('owl_ObjectProperty') as $class) {
             echo $class->first('rdfs_label');
             echo " | ";
         }

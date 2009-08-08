@@ -2,6 +2,8 @@
 
 require_once "EasyRdf/Resource.php";
 require_once "EasyRdf/Namespace.php";
+
+# FIXME: only require these if/when they are used?
 require_once "EasyRdf/RapperParser.php";
 
 class EasyRdf_Graph
@@ -16,7 +18,7 @@ class EasyRdf_Graph
 	   * Get a Resource object for a specific URI
 	   * @return EasyRdf_Resource returns a Resource (or NULL if it does not exist)
 	   */
-    public function get_resource($uri)
+    public function getResource($uri)
     {
         # Create resource object if it doesn't already exist
         if (!array_key_exists($uri, $this->_resources)) {
@@ -36,26 +38,22 @@ class EasyRdf_Graph
     /**
      * Delete the contents of a graph (all the resources)
      */
-    public function delete_all()
+    public function deleteAll()
     {
         // FIXME: implement this
     }
-    
-    # TODO: Return all resources of a specific type
-    #public static function all_by_type($type)
-    #{
-    #}
 
 
-    public static function set_http_client($http_client)
+    public static function setHttpClient($http_client)
     {
-    }
+         $this->_http_client = $http_client;
+   }
     
-    public static function get_http_client()
+    public static function getHttpClient()
     {
     }
 
-    public static function get_rdf_parser()
+    public static function getRdfParser()
     {
         if (!self::$_parser) {
             self::$_parser = new EasyRdf_RapperParser();
@@ -63,7 +61,7 @@ class EasyRdf_Graph
         return self::$_parser;
     }
 
-    public static function set_rdf_parser($parser)
+    public static function setRdfParser($parser)
     {
         $this->_parser = $parser;
     }
@@ -106,13 +104,13 @@ class EasyRdf_Graph
         
         # Guess the document type if not given
         if ($doc_type == 'guess') {
-          $doc_type = self::get_rdf_parser()->guess_doc_type( $data );
+          $doc_type = self::getRdfParser()->guessDocType( $data );
         }
         
         if ($doc_type != 'php') {
           
           # Parse the RDF data if it isn't PHP
-          $data = self::get_rdf_parser()->parse( $uri, $data, $doc_type );
+          $data = self::getRdfParser()->parse( $uri, $data, $doc_type );
           if (!$data) {
               # FIXME: parse error
               return NULL;
@@ -121,7 +119,7 @@ class EasyRdf_Graph
 
         # Convert into an object graph
         foreach ($data as $subj => $touple) {
-          $res = $this->get_resource($subj);
+          $res = $this->getResource($subj);
           foreach ($touple as $property => $objs) {
             $property = EasyRdf_Namespace::shorten($property);
             if (isset($property)) {
@@ -129,7 +127,7 @@ class EasyRdf_Graph
                 if ($obj['type'] == 'literal') {
                   $res->set($property, $obj['value']);
                 } else if ($obj['type'] == 'uri' or $obj['type'] == 'bnode') {
-                  $objres = $this->get_resource($obj['value']);
+                  $objres = $this->getResource($obj['value']);
                   $res->set($property, $objres);
                   if ($property == 'rdf_type') {
                       $this->addToTypeIndex( $res, $obj['value'] );
@@ -157,26 +155,26 @@ class EasyRdf_Graph
         }
     }
     
-    public function all_by_type($type)
+    public function allByType($type)
     {
         # FIXME: shorten if $type is a URL
         return $this->_type_index[$type];
     }
     
-    public function all_types()
+    public function allTypes()
     {
         return array_keys( $this->_type_index );
     }
     
     public function primaryTopic()
     {
-        $res = $this->get_resource($this->_uri);
+        $res = $this->getResource($this->_uri);
         return $res->first('foaf_primaryTopic');
     }
     
-    public function add_triples($resource, $dict)
+    public function addTriples($resource, $dict)
     {
-
+        # FIXME: implement this
     }
 	
     
