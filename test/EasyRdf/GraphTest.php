@@ -1,5 +1,6 @@
 <?php
-require_once 'PHPUnit/Framework.php';
+
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'TestHelper.php';
 require_once 'EasyRdf/Graph.php';
 
 class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase

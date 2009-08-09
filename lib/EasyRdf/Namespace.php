@@ -22,7 +22,11 @@ class EasyRdf_Namespace
       */
     public static function get($short)
     {
-        return self::$namespaces[$short];
+        if (array_key_exists( $short, self::$namespaces )) {
+            return self::$namespaces[$short];
+        } else {
+            return NULL;
+        }
     }
 
     /**
