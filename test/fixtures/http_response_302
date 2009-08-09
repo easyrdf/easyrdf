@@ -1,0 +1,9 @@
+HTTP/1.1 302 Found
+Date: Sun, 09 Aug 2009 19:55:07 GMT
+Server: Apache/2.2.3 (Red Hat)
+Location: http://localhost/new/location
+Content-Type: text/plain; charset=UTF-8
+Vary: Accept
+Content-Length: 1
+
+ 

@@ -7,7 +7,8 @@
     <phpunit haltonfailure="true" printsummary="true">
       <batchtest>
         <fileset dir="test">
-          <include name="EasyRdf/*Test.php"/>
+          <include name="EasyRdf/*Test.php" />
+          <include name="EasyRdf/Http/*Test.php" />
         </fileset>
       </batchtest>
     </phpunit>
@@ -21,6 +22,7 @@
       output="HTML:Smarty:PHP">
       <fileset dir="./lib">
         <include name="EasyRdf/*.php" />
+        <include name="EasyRdf/Http/*.php" />
       </fileset>
       <projdocfileset dir=".">
         <include name="README" />

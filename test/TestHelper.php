@@ -37,3 +37,15 @@ set_include_path(implode(PATH_SEPARATOR, $path));
  * Unset global variables that are no longer needed.
  */
 unset($easyrdfRoot, $easyrdfLibDir, $easyrdfTestDir, $path);
+
+
+/**
+ * Helper function: read fixture data from file
+ *
+ * @param string $name fixture file name
+ * @return string Fixture data
+ */
+function readFixture($name)
+{
+    return file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $name);
+}
