@@ -15,8 +15,7 @@
 </form>
 <?php
     if ($url) {
-        $data = file_get_contents( $url );
-        $graph = new EasyRdf_Graph( $url, $data );
+        $graph = new EasyRdf_Graph( $url );
         if ($graph) $artist = $graph->primaryTopic();
     }
   

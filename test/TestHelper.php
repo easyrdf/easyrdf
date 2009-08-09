@@ -19,7 +19,7 @@ error_reporting( E_ALL | E_STRICT );
 /*
  * Determine the root, lib, and test directories
  */
-$easyrdfRoot      = dirname(__FILE__) . DIRECTORY_SEPARATOR . '..';
+$easyrdfRoot      = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
 $easyrdfLibDir    = $easyrdfRoot . DIRECTORY_SEPARATOR . 'lib';
 $easyrdfTestDir   = $easyrdfRoot . DIRECTORY_SEPARATOR . 'test';
 

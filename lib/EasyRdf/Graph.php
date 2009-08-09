@@ -3,10 +3,6 @@
 require_once "EasyRdf/Resource.php";
 require_once "EasyRdf/Namespace.php";
 
-# FIXME: only require these if/when they are used?
-require_once "EasyRdf/RapperParser.php";
-require_once "EasyRdf/Http/Client.php";
-
 class EasyRdf_Graph
 {
     private $uri = NULL;
@@ -53,6 +49,7 @@ class EasyRdf_Graph
     public static function getHttpClient()
     {
         if (!self::$http_client) {
+            require_once "EasyRdf/Http/Client.php";
             self::$http_client = new EasyRdf_Http_Client();
         }
         return self::$http_client;
@@ -61,6 +58,7 @@ class EasyRdf_Graph
     public static function getRdfParser()
     {
         if (!self::$parser) {
+            require_once "EasyRdf/RapperParser.php";
             self::$parser = new EasyRdf_RapperParser();
         }
         return self::$parser;
@@ -102,9 +100,11 @@ class EasyRdf_Graph
         // FIXME: validate the URI
 
         if (!$data) {
-        
-          # FIXME: fetch data from the URI
-          
+            $client = self::getHttpClient();
+            $client->setUri($uri);
+            $response = $client->request();
+            # FIXME: make use of the 'content type' header
+            $data = $response->getBody();
         }
         
         # Guess the document type if not given
