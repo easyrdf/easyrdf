@@ -5,7 +5,7 @@
   */
 class EasyRdf_Namespace
 {
-    private static $_namespaces = array(
+    private static $namespaces = array(
       'dc' => 'http://purl.org/dc/elements/1.1/',
       'foaf' => 'http://xmlns.com/foaf/0.1/',
       'owl' => 'http://www.w3.org/2002/07/owl#',
@@ -22,7 +22,7 @@ class EasyRdf_Namespace
       */
     public static function get($short)
     {
-        return self::$_namespaces[$short];
+        return self::$namespaces[$short];
     }
 
     /**
@@ -33,7 +33,7 @@ class EasyRdf_Namespace
       */
     public static function add($short, $long)
     {
-        self::$_namespaces[$short] = $long;
+        self::$namespaces[$short] = $long;
     }
 
     /**
@@ -44,7 +44,7 @@ class EasyRdf_Namespace
       */
     public static function shorten($uri)
     {
-        foreach (self::$_namespaces as $short => $long) {
+        foreach (self::$namespaces as $short => $long) {
             if (strpos($uri, $long) === 0) {
                 return $short . '_' . substr($uri, strlen($long));
             }

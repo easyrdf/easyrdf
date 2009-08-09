@@ -5,14 +5,15 @@ require_once "EasyRdf/Namespace.php";
 
 # FIXME: only require these if/when they are used?
 require_once "EasyRdf/RapperParser.php";
+require_once "EasyRdf/Http/Client.php";
 
 class EasyRdf_Graph
 {
-    private $_uri = NULL;
-    private $_resources = array();
-    private $_type_index = array();
-    private static $_http_client = NULL;
-    private static $_parser = NULL;
+    private $uri = NULL;
+    private $resources = array();
+    private $type_index = array();
+    private static $http_client = NULL;
+    private static $parser = NULL;
 
     /**
 	   * Get a Resource object for a specific URI
@@ -21,10 +22,10 @@ class EasyRdf_Graph
     public function getResource($uri)
     {
         # Create resource object if it doesn't already exist
-        if (!array_key_exists($uri, $this->_resources)) {
-            $this->_resources[$uri] = new EasyRdf_Resource($uri);
+        if (!array_key_exists($uri, $this->resources)) {
+            $this->resources[$uri] = new EasyRdf_Resource($uri);
         }
-        return $this->_resources[$uri];
+        return $this->resources[$uri];
     }
     
 	  /**
@@ -32,7 +33,7 @@ class EasyRdf_Graph
      */
     public function resources()
     {
-        return array_values($this->_resources);
+        return array_values($this->resources);
     }
 
     /**
@@ -46,29 +47,33 @@ class EasyRdf_Graph
 
     public static function setHttpClient($http_client)
     {
-         $this->_http_client = $http_client;
+         $this->http_client = $http_client;
    }
     
     public static function getHttpClient()
     {
+        if (!self::$http_client) {
+            self::$http_client = new EasyRdf_Http_Client();
+        }
+        return self::$http_client;
     }
 
     public static function getRdfParser()
     {
-        if (!self::$_parser) {
-            self::$_parser = new EasyRdf_RapperParser();
+        if (!self::$parser) {
+            self::$parser = new EasyRdf_RapperParser();
         }
-        return self::$_parser;
+        return self::$parser;
     }
 
     public static function setRdfParser($parser)
     {
-        $this->_parser = $parser;
+        $this->parser = $parser;
     }
     
     public function __construct($uri, $data='', $doc_type='guess')
     {
-        $this->_uri = $uri;
+        $this->uri = $uri;
         $this->load($uri, $data, $doc_type);
     }
 
@@ -82,9 +87,9 @@ class EasyRdf_Graph
             $args = array('proxy_host' => $proxy['host'], 'proxy_port' => $proxy['port']);
         }
         $parser = ARC2::getRDFXMLParser($args);
-        $parser->parse($this->_uri);
+        $parser->parse($this->uri);
 
-        $this->_construct_resources($parser);
+        $this->construct_resources($parser);
     }
 */
 
@@ -146,11 +151,11 @@ class EasyRdf_Graph
     {
         $type = EasyRdf_Namespace::shorten($type);
         if ($type) {
-            if (!isset($this->_type_index[$type])) {
-                $this->_type_index[$type] = array();
+            if (!isset($this->type_index[$type])) {
+                $this->type_index[$type] = array();
             }
-            if (!in_array($resource, $this->_type_index[$type])) {
-                array_push($this->_type_index[$type], $resource);
+            if (!in_array($resource, $this->type_index[$type])) {
+                array_push($this->type_index[$type], $resource);
             }
         }
     }
@@ -158,17 +163,17 @@ class EasyRdf_Graph
     public function allByType($type)
     {
         # FIXME: shorten if $type is a URL
-        return $this->_type_index[$type];
+        return $this->type_index[$type];
     }
     
     public function allTypes()
     {
-        return array_keys( $this->_type_index );
+        return array_keys( $this->type_index );
     }
     
     public function primaryTopic()
     {
-        $res = $this->getResource($this->_uri);
+        $res = $this->getResource($this->uri);
         return $res->first('foaf_primaryTopic');
     }
     
@@ -181,7 +186,7 @@ class EasyRdf_Graph
     public function dump($html=true)
     {
         # FIXME: display some information about the graph
-        foreach ($this->_resources as $resource) {
+        foreach ($this->resources as $resource) {
             $resource->dump($html,1);
         }
     }

@@ -3,20 +3,20 @@
 
 class EasyRdf_Resource
 {
-    protected $_uri;
-    protected $_data;
+    protected $uri;
+    protected $data;
     
     # This shouldn't be called directly
     public function __construct($uri, $data='')
     {
-        $this->_uri = $uri;
-        $this->_data = array();
+        $this->uri = $uri;
+        $this->data = array();
     }
     
     # TODO: Load data for a resource by de-referencing its URI
     #public function load()
     #{
-    #    if (!$this->_loaded) {
+    #    if (!$this->loaded) {
     #    }
     #}
 
@@ -42,27 +42,27 @@ class EasyRdf_Resource
 
     public function __set($key, $value)
     {
-        $this->_data[$key] = $value;
+        $this->data[$key] = $value;
     }
     
     public function __get($key)
     {
         // FIXME: how to return single item?
-        return $this->_data[$key];
+        return $this->data[$key];
     }
     
     public function __isset($key)
     {
-        return array_key_exists($key, $this->_data);
+        return array_key_exists($key, $this->data);
     }
     
     public function __unset($key)
     {
-        unset($this->_data[$key]);
+        unset($this->data[$key]);
     }
     
     public function uri() {
-        return $this->_uri;
+        return $this->uri;
     }
     
     # Return the resource type as a single word (rather than a URI)
@@ -77,7 +77,7 @@ class EasyRdf_Resource
         # FIXME: implement reflection for class properties
         echo "<pre>";
         echo "<b>".$this->uri()."</b>\n";
-        foreach ($this->_data as $property => $objects) {
+        foreach ($this->data as $property => $objects) {
           echo "  $property => \n";
           foreach ($objects as $object) {
             echo "    $object\n";
@@ -88,6 +88,6 @@ class EasyRdf_Resource
     
     public function __toString()
     {
-        return $this->_uri;
+        return $this->uri;
     }
 }
