@@ -5,15 +5,15 @@ require_once "EasyRdf/Namespace.php";
 
 class EasyRdf_Graph
 {
-    private $uri = NULL;
+    private $uri = null;
     private $resources = array();
     private $type_index = array();
-    private static $http_client = NULL;
-    private static $parser = NULL;
+    private static $http_client = null;
+    private static $parser = null;
 
     /**
 	   * Get a Resource object for a specific URI
-	   * @return EasyRdf_Resource returns a Resource (or NULL if it does not exist)
+	   * @return EasyRdf_Resource returns a Resource (or null if it does not exist)
 	   */
     public function getResource($uri)
     {
@@ -118,7 +118,7 @@ class EasyRdf_Graph
           $data = self::getRdfParser()->parse( $uri, $data, $doc_type );
           if (!$data) {
               # FIXME: parse error
-              return NULL;
+              return null;
           }
         }
 

@@ -34,7 +34,7 @@ class EasyRdf_RapperParser
      * Parse an RDF document
      * @paramÊstringÊ$dataÊthe document data.
      * @param string $input_type the format of the input document.
-     * @return string the converted document, or NULL if the convertion failed.
+     * @return string the converted document, or null if the convertion failed.
      */
     public function parse($uri, $data, $doc_type='guess')
     {
@@ -48,7 +48,7 @@ class EasyRdf_RapperParser
             1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
             2 => array("file", "php://stderr", "w")
           );
-          $process = proc_open("rapper -i $doc_type -o json -e - $uri", $descriptorspec, $pipes, '/tmp', NULL);
+          $process = proc_open("rapper -i $doc_type -o json -e - $uri", $descriptorspec, $pipes, '/tmp', null);
           
           if (is_resource($process)) {
             // $pipes now looks like this:
@@ -67,7 +67,7 @@ class EasyRdf_RapperParser
             if ($return_value) {
                 # FIXME: throw exception or log error?
                 echo "rapper returned $return_value\n";
-                return NULL;
+                return null;
             }
           }
       }

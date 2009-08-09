@@ -93,7 +93,7 @@ class EasyRdf_Http_Client
     {
         if (!$this->uri) {
             // FIXME: throw exception
-            return NULL;
+            return null;
         }
 
         $this->redirectCounter = 0;

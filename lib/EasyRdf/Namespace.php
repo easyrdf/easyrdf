@@ -25,7 +25,7 @@ class EasyRdf_Namespace
         if (array_key_exists( $short, self::$namespaces )) {
             return self::$namespaces[$short];
         } else {
-            return NULL;
+            return null;
         }
     }
 
@@ -53,7 +53,7 @@ class EasyRdf_Namespace
                 return $short . '_' . substr($uri, strlen($long));
             }
         }
-        return NULL;
+        return null;
     }
 
     /**
@@ -69,10 +69,10 @@ class EasyRdf_Namespace
             if ($long) {
                 return $long . $matches[2];
             } else {
-                return NULL;
+                return null;
             }
         } else {
-            return NULL;
+            return null;
         }
     }
 }

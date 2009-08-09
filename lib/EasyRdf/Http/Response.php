@@ -84,7 +84,7 @@ class EasyRdf_Http_Response
             $message = $m[3];
         } else {
             # FIXME: throw exception
-            return NULL;
+            return null;
         }
         
         // Process the rest of the header lines

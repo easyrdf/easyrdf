@@ -4,10 +4,20 @@
  - Pure PHP - ARC?
  
 * HTTP Client support
+ - EasyRdf_Http_Client
  - Zend_Http_Client
  - BBC_Http_Client
 
 * Follow Zend Coding Standards
 
- 
- 
+* Added licencing information to the top of every file
+
+* Add phpdoc comments for every class and file
+
+* Document the limitations of EasyRdf_Http_Client
+
+
+* Open Questions
+   - how should you opt to get the first value, rather than an array of objects?
+   - should new EasyRdf_Graph( $url ) really do an HTTP get?
+     (what if you want a new empty graph?)

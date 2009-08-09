@@ -38,7 +38,7 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 
     public function testShortenUnknownUrl()
     {
-        $this->assertEquals(NULL, EasyRdf_Namespace::shorten('http://www.aelius.com/njh/'));
+        $this->assertEquals(null, EasyRdf_Namespace::shorten('http://www.aelius.com/njh/'));
     }
 
     public function testExpandFoafName()
@@ -48,11 +48,11 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 
     public function testExpandMissingUnderscore()
     {
-        $this->assertEquals(NULL, EasyRdf_Namespace::expand('unknown'));
+        $this->assertEquals(null, EasyRdf_Namespace::expand('unknown'));
     }
 
     public function testExpandUnknown()
     {
-        $this->assertEquals(NULL, EasyRdf_Namespace::expand('unknown_unknown'));
+        $this->assertEquals(null, EasyRdf_Namespace::expand('unknown_unknown'));
     }
 }
