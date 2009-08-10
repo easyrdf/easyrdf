@@ -4,13 +4,13 @@
 class EasyRdf_Resource
 {
     protected $uri;
-    protected $data;
+    protected $properties;
     
     # This shouldn't be called directly
-    public function __construct($uri, $data='')
+    public function __construct($uri, $properties='')
     {
         $this->uri = $uri;
-        $this->data = array();
+        $this->properties = array();
     }
     
     # TODO: Load data for a resource by de-referencing its URI
@@ -42,26 +42,26 @@ class EasyRdf_Resource
 
     public function __set($key, $value)
     {
-        $this->data[$key] = $value;
+        $this->properties[$key] = $value;
     }
     
     public function __get($key)
     {
         // FIXME: how to return single item?
-        return $this->data[$key];
+        return $this->properties[$key];
     }
     
     public function __isset($key)
     {
-        return array_key_exists($key, $this->data);
+        return array_key_exists($key, $this->properties);
     }
     
     public function __unset($key)
     {
-        unset($this->data[$key]);
+        unset($this->properties[$key]);
     }
     
-    public function uri() {
+    public function getUri() {
         return $this->uri;
     }
     
@@ -77,7 +77,7 @@ class EasyRdf_Resource
         # FIXME: implement reflection for class properties
         echo "<pre>";
         echo "<b>".$this->uri()."</b>\n";
-        foreach ($this->data as $property => $objects) {
+        foreach ($this->properties as $property => $objects) {
           echo "  $property => \n";
           foreach ($objects as $object) {
             echo "    $object\n";
