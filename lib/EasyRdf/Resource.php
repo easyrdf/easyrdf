@@ -76,7 +76,7 @@ class EasyRdf_Resource
         # FIXME: finish implementing this
         # FIXME: implement reflection for class properties
         echo "<pre>";
-        echo "<b>".$this->uri()."</b>\n";
+        echo "<b>".$this->getUri()."</b>\n";
         foreach ($this->properties as $property => $objects) {
           echo "  $property => \n";
           foreach ($objects as $object) {
