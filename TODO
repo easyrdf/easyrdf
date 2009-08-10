@@ -21,3 +21,4 @@
    - how should you opt to get the first value, rather than an array of objects?
    - should new EasyRdf_Graph( $url ) really do an HTTP get?
      (what if you want a new empty graph?)
+   - do we need a reverse index?
