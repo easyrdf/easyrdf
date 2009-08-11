@@ -48,7 +48,7 @@ class EasyRdf_RapperParser
             1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
             2 => array("file", "php://stderr", "w")
           );
-          $process = proc_open("rapper -i $doc_type -o json -e - $uri", $descriptorspec, $pipes, '/tmp', null);
+          $process = proc_open("rapper --quiet -i $doc_type -o json -e - $uri", $descriptorspec, $pipes, '/tmp', null);
           
           if (is_resource($process)) {
             // $pipes now looks like this:
