@@ -2,6 +2,7 @@
 
 require_once "EasyRdf/Resource.php";
 require_once "EasyRdf/Namespace.php";
+require_once "EasyRdf/TypeMapper.php";
 
 class EasyRdf_Graph
 {
@@ -10,16 +11,32 @@ class EasyRdf_Graph
     private $type_index = array();
     private static $http_client = null;
     private static $parser = null;
+    
+    const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
     /**
 	   * Get a Resource object for a specific URI
 	   * @return EasyRdf_Resource returns a Resource (or null if it does not exist)
 	   */
-    public function getResource($uri)
+    public function getResource($uri, $types = array())
     {
+        # Convert types to an array if it isn't one
+        if (!is_array($types)) {
+            $types = array($types);
+        }
+    
         # Create resource object if it doesn't already exist
         if (!array_key_exists($uri, $this->resources)) {
-            $this->resources[$uri] = new EasyRdf_Resource($uri);
+            $res_class = EasyRdf_Resource;
+            foreach ($types as $type) {
+                $class = EasyRDF_TypeMapper::get($type);
+                if ($class != null) {
+                    $res_class = $class;
+                    break;
+                }
+            }
+            echo "Creating resource (".$res_class."): $uri<br />";
+            $this->resources[$uri] = new $res_class($uri);
         }
         return $this->resources[$uri];
     }
@@ -124,7 +141,8 @@ class EasyRdf_Graph
 
         # Convert into an object graph
         foreach ($data as $subj => $touple) {
-          $res = $this->getResource($subj);
+          $type = $this->getResouceType($data, $subj);
+          $res = $this->getResource($subj, $type);
           foreach ($touple as $property => $objs) {
             $property = EasyRdf_Namespace::shorten($property);
             if (isset($property)) {
@@ -132,19 +150,42 @@ class EasyRdf_Graph
                 if ($obj['type'] == 'literal') {
                   $res->set($property, $obj['value']);
                 } else if ($obj['type'] == 'uri' or $obj['type'] == 'bnode') {
-                  $objres = $this->getResource($obj['value']);
+                  $type = $this->getResouceType($data, $obj['value']);
+                  $objres = $this->getResource($obj['value'], $type);
                   $res->set($property, $objres);
                   if ($property == 'rdf_type') {
                       $this->addToTypeIndex( $res, $obj['value'] );
                   }
                 } else {
-                  # FIXME: thow exception?
+                  # FIXME: thow exception or silently ignore?
                 }
               }
             }
           }
         
         }
+    }
+    
+    private function getResouceType( $data, $uri )
+    {
+       if (array_key_exists($uri, $data)) {
+            $subj = $data[$uri];
+            if (array_key_exists(self::RDF_TYPE_URI, $subj)) {
+                $types = array();
+                foreach ($subj[self::RDF_TYPE_URI] as $type) {
+                    if ($type['type'] == 'uri') {
+                        $type = EasyRdf_Namespace::shorten($type['value']);
+                        if ($type) {
+                            array_push($types, $type);
+                        }
+                    }
+                }
+                if (count($types) > 0) {
+                    return $types;
+                }
+            }
+        }
+        return null;
     }
     
     private function addToTypeIndex($resource, $type)

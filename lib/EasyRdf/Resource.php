@@ -3,14 +3,14 @@
 
 class EasyRdf_Resource
 {
-    protected $uri;
-    protected $properties;
+    protected $uri = null;
+    protected $properties = array();
+    protected $rdf_type = array();
     
     # This shouldn't be called directly
     public function __construct($uri, $properties='')
     {
         $this->uri = $uri;
-        $this->properties = array();
     }
     
     # TODO: Load data for a resource by de-referencing its URI
@@ -66,6 +66,12 @@ class EasyRdf_Resource
     }
     
     # Return the resource type as a single word (rather than a URI)
+    public function types()
+    {
+        return $this->rdf_type;
+    }
+    
+    # Return the resource type as a single word (rather than a URI)
     public function type()
     {
         return $this->first('rdf_type');
@@ -75,8 +81,11 @@ class EasyRdf_Resource
     {
         # FIXME: finish implementing this
         # FIXME: implement reflection for class properties
-        echo "<pre>";
-        echo "<b>".$this->getUri()."</b>\n";
+        echo '<pre>';
+        echo '<b>'.$this->getUri()."</b>\n";
+        echo 'Class: '.get_class($this)."\n";
+        echo 'Types: '.implode(', ',$this->types())."\n";
+        echo "Properties:</i>\n";
         foreach ($this->properties as $property => $objects) {
           echo "  $property => \n";
           foreach ($objects as $object) {
@@ -91,3 +100,4 @@ class EasyRdf_Resource
         return $this->uri;
     }
 }
+
