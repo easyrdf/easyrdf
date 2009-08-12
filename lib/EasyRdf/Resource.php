@@ -22,7 +22,9 @@ class EasyRdf_Resource
 
     public function set($property, $object)
     {
-        if (isset($this->$property)) {
+        if ($property == null or $object == null) {
+          return null;
+        } else if (isset($this->$property)) {
             $objects = $this->$property;
         } else {
             $objects = array();

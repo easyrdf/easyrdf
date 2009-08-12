@@ -147,15 +147,16 @@ class EasyRdf_Graph
             $property = EasyRdf_Namespace::shorten($property);
             if (isset($property)) {
               foreach ($objs as $obj) {
-                if ($obj['type'] == 'literal') {
+                if ($property == 'rdf_type') {
+                  $type = EasyRdf_Namespace::shorten($obj['value']);
+                  $this->addToTypeIndex( $res, $type );
+                  $res->set($property, $type);
+                } else if ($obj['type'] == 'literal') {
                   $res->set($property, $obj['value']);
                 } else if ($obj['type'] == 'uri' or $obj['type'] == 'bnode') {
                   $type = $this->getResouceType($data, $obj['value']);
                   $objres = $this->getResource($obj['value'], $type);
                   $res->set($property, $objres);
-                  if ($property == 'rdf_type') {
-                      $this->addToTypeIndex( $res, $obj['value'] );
-                  }
                 } else {
                   # FIXME: thow exception or silently ignore?
                 }
@@ -190,7 +191,7 @@ class EasyRdf_Graph
     
     private function addToTypeIndex($resource, $type)
     {
-        $type = EasyRdf_Namespace::shorten($type);
+        # FIXME: shorten type if it isn't already short
         if ($type) {
             if (!isset($this->type_index[$type])) {
                 $this->type_index[$type] = array();
