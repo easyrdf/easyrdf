@@ -11,6 +11,7 @@
   }
   
   EasyRdf_Namespace::add('mo', 'http://purl.org/ontology/mo/');
+  EasyRdf_Namespace::add('bio', 'http://purl.org/vocab/bio/0.1/');
   EasyRdf_TypeMapper::add('mo_MusicArtist', Model_MusicArtist);
   
   $url = $_GET['url'];
