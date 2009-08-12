@@ -6,7 +6,9 @@ class EasyRdf_TypeMapper
 
     public static function get($type)
     {
-        if (array_key_exists( $type, self::$map )) {
+        if ($type == null) {
+            return null;
+        } else if (array_key_exists( $type, self::$map )) {
             return self::$map[$type];
         } else {
             return null;
