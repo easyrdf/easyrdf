@@ -20,6 +20,11 @@ class EasyRdf_Graph
 	   */
     public function getResource($uri, $types = array())
     {
+        # FIXME: throw exception if parameters are bad?
+        if (!$uri) {
+            return null;
+        }
+    
         # Convert types to an array if it isn't one
         if (!is_array($types)) {
             $types = array($types);
@@ -35,7 +40,6 @@ class EasyRdf_Graph
                     break;
                 }
             }
-            echo "Creating resource (".$res_class."): $uri<br />";
             $this->resources[$uri] = new $res_class($uri);
         }
         return $this->resources[$uri];
