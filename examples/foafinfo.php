@@ -1,7 +1,18 @@
 <?php
-  set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-  require_once "EasyRdf/Graph.php";
-  $url = $_GET['url'];
+    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
+    require_once "EasyRdf/Graph.php";
+    $url = $_GET['url'];
+    
+    function link_to_self($text, $url)
+    {
+        $url = preg_replace("|#(.+)$|", '', $url);
+        return link_to($text, $_SERVER['PHP_SELF'] . '?url=' . urlencode($url));
+    }
+    
+    function link_to($text,$url=null) {
+        if ($url==null) $url = $text;
+        return "<a href='$url'>$text</a>";
+    }
 ?>
 <html>
 <head><title>FOAF Info</title></head>
@@ -22,7 +33,7 @@
 
 <dl>
   <dt>Name:</dt><dd><?= $person->first('foaf_name') ?></dd>
-  <dt>Homepage:</dt><dd><?= $person->first('foaf_homepage') ?></dd>
+  <dt>Homepage:</dt><dd><?= link_to( $person->first('foaf_homepage') ) ?></dd>
   <dt>Description:</dt><dd><?= $person->first('dc_description') ?></dd>
 </dl>
 
@@ -30,13 +41,14 @@
         echo "<h2>Known Persons</h2>\n";
         echo "<ul>\n";
         foreach ($person->foaf_knows as $friend) {
-          echo "<li>";
           if ($friend->foaf_name) {
-              echo $friend->first('foaf_name');
+              $friend_name = $friend->first('foaf_name');
           } else if ($friend->rdfs_label) {
-              echo $friend->first('rdfs_label');
+              $friend_name = $friend->first('rdfs_label');
           }
-          echo "</li>\n";
+          if ($friend_name) {
+              echo "<li>".link_to_self( $friend_name, $friend )."</li>";
+          }
         }
         echo "</ul>\n";
     }
