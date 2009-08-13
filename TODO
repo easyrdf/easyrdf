@@ -16,6 +16,7 @@
 
 * Document the limitations of EasyRdf_Http_Client
 
+* Add a 'turn off magic' static class method to EasyRdf_Resource
 
 * Open Questions
    - how should you opt to get the first value, rather than an array of objects?
