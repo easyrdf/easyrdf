@@ -177,8 +177,12 @@ class EasyRdf_Http_Client
             if ($port != 80) {
                 $host .= ':' . $port;
             }
-
             $headers[] = "Host: {$host}";
+        }
+
+        // Set the accept header
+        if (! isset($this->headers['accept'])) {
+            $headers[] = "Accept: application/rdf+xml";
         }
 
         // Set the connection header
@@ -187,7 +191,7 @@ class EasyRdf_Http_Client
         }
 
         // Set the user agent header
-        if (! isset($this->headers['user-agent']) && isset($this->config['useragent'])) {
+        if (! isset($this->headers['user-agent'])) {
             $headers[] = "User-Agent: {$this->config['useragent']}";
         }
 
