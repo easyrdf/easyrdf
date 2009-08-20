@@ -4,33 +4,27 @@ require_once 'arc/ARC2.php';
 
 class EasyRdf_ArcParser
 {
+    private static $supported_types = array(
+        'application/json' => 'JSON',
+        'application/rdf+xml' => 'RDFXML',
+        'text/turtle' => 'Turtle',
+    );
 
-    public function parse($uri, $data, $doc_type='guess')
+    public function parse($uri, $data, $doc_type='')
     {
-        switch($doc_type) {
-            case 'application/json':
-                $parser = ARC2::getJSONParser();
-            break;
-
-            case 'application/rdf+xml':
-               $parser = ARC2::getRDFXMLParser();
-            break;
-            
-            case 'text/turtle':
-            case 'text/n3':
-                $parser = ARC2::getTurtleParser();
-            break;
-        
-            default:
-                echo "<pre>EasyRdf_ArcParser: unsupported type $doc_type\n</pre>";
-                # FIXME: throw exception?
-            break;
+        if (array_key_exists( $doc_type, self::$supported_types )) {
+            $class_name = self::$supported_types[$doc_type];
+        } else {
+            # FIXME: throw exception?
+            return null;
         }
         
+        $parser = ARC2::getParser( $class_name );
         if ($parser) {
             $parser->parse($uri, $data);
             return $parser->getSimpleIndex(false);
         } else {
+            # FIXME: throw exception?
             return null;
         }
     }
