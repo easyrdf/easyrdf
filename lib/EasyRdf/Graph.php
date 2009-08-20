@@ -64,7 +64,7 @@ class EasyRdf_Graph
 
     public static function setHttpClient($http_client)
     {
-         $this->http_client = $http_client;
+        self::$http_client = $http_client;
    }
     
     public static function getHttpClient()
@@ -87,7 +87,7 @@ class EasyRdf_Graph
 
     public static function setRdfParser($parser)
     {
-        $this->parser = $parser;
+        self::$parser = $parser;
     }
     
     public function __construct($uri, $data='', $doc_type='guess')
@@ -123,9 +123,11 @@ class EasyRdf_Graph
         if (!$data) {
             $client = self::getHttpClient();
             $client->setUri($uri);
+            # FIXME: set the accept header to a list of formats we are able to parse
             $response = $client->request();
             # FIXME: make use of the 'content type' header
             $data = $response->getBody();
+            $doc_type = $response->getHeader('Content-Type');
         }
         
         # Guess the document type if not given
@@ -217,10 +219,25 @@ class EasyRdf_Graph
         return array_keys( $this->type_index );
     }
     
+    public function type()
+    {
+        $res = $this->getResource($this->uri);
+        if ($res) {
+            return $res->type();
+        } else {
+            return null;
+        }
+    }
+    
     public function primaryTopic()
     {
         $res = $this->getResource($this->uri);
         return $res->first('foaf_primaryTopic');
+    }
+    
+    public function getUri()
+    {
+        return $this->uri;
     }
     
     public function addTriples($resource, $dict)
