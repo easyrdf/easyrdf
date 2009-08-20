@@ -1,20 +1,30 @@
 <?php
-  set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-  require_once "EasyRdf/Graph.php";
-  require_once "EasyRdf/Namespace.php";
-  require_once "EasyRdf/TypeMapper.php";
-  
-  class Model_MusicArtist extends EasyRdf_Resource
-  {
-      protected $foaf_name;
+    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
+    require_once "EasyRdf/Graph.php";
+    require_once "EasyRdf/Namespace.php";
+    require_once "EasyRdf/TypeMapper.php";
 
-  }
+    ## Configure the RDF parser to use
+    require_once "EasyRdf/ArcParser.php";
+    EasyRdf_Graph::setRdfParser( new EasyRdf_ArcParser() );
+    
+    # Configure the HTTP client to use
+    require_once "EasyRdf/Http/Client.php";
+    EasyRdf_Graph::setHttpClient( new EasyRdf_Http_Client() );
+    
   
-  EasyRdf_Namespace::add('mo', 'http://purl.org/ontology/mo/');
-  EasyRdf_Namespace::add('bio', 'http://purl.org/vocab/bio/0.1/');
-  EasyRdf_TypeMapper::add('mo_MusicArtist', Model_MusicArtist);
-  
-  $url = $_GET['url'];
+    class Model_MusicArtist extends EasyRdf_Resource
+    {
+        protected $foaf_name;
+    
+    }
+
+    ## Add namespaces
+    EasyRdf_Namespace::add('mo', 'http://purl.org/ontology/mo/');
+    EasyRdf_Namespace::add('bio', 'http://purl.org/vocab/bio/0.1/');
+    EasyRdf_TypeMapper::add('mo_MusicArtist', Model_MusicArtist);
+    
+    $url = $_GET['url'];
 ?>
 <html>
 <head><title>Artist Info</title></head>
