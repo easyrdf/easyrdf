@@ -2,7 +2,7 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf/Graph.php";
     $url = $_GET['url'];
-    
+
     function link_to_self($text, $url)
     {
         $url = preg_replace("|#(.+)$|", '', $url);
@@ -25,7 +25,13 @@
 <?php
     if ($url) {
         $graph = new EasyRdf_Graph( $url );
-        if ($graph) $person = $graph->primaryTopic();
+        if ($graph) {
+            if ($graph->type() == 'foaf_PersonalProfileDocument') {
+                $person = $graph->primaryTopic();
+            } else if ($graph->type() == 'foaf_Person') {
+                $person = $graph->getResource( $graph->getUri() );
+            }
+        }
     }
   
     if ($person) {
