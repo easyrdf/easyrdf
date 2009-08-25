@@ -5,24 +5,31 @@ require_once 'EasyRdf/Graph.php';
 
 class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 {
-    public function testNewArrayIsEmpty()
+    public function testSimplifyMimeTypeJson()
     {
-        // Create the Array fixture.
-        $fixture = array();
- 
-        // Assert that the size of the Array fixture is 0.
-        $this->assertEquals(0, sizeof($fixture));
+        $this->assertEquals('json', EasyRdf_Graph::simplifyMimeType('application/json'));
+        $this->assertEquals('json', EasyRdf_Graph::simplifyMimeType('text/json'));
     }
- 
-    public function testArrayContainsAnElement()
+
+    public function testSimplifyMimeTypeRdfXml()
     {
-        // Create the Array fixture.
-        $fixture = array();
- 
-        // Add an element to the Array fixture.
-        $fixture[] = 'Element';
- 
-        // Assert that the size of the Array fixture is 1.
-        $this->assertEquals(1, sizeof($fixture));
+        $this->assertEquals('rdfxml', EasyRdf_Graph::simplifyMimeType('application/rdf+xml'));
+    }
+
+    public function testSimplifyMimeTypeTurtle()
+    {
+        $this->assertEquals('turtle', EasyRdf_Graph::simplifyMimeType('text/turtle'));
+    }
+    
+    public function testGuessTypeRdfXml()
+    {
+        $data = readFixture('foaf.rdf');
+        $this->assertEquals('rdfxml', EasyRdf_Graph::guessDocType($data));
+    }
+    
+    public function testGuessTypeJson()
+    {
+        $data = readFixture('foaf.json');
+        $this->assertEquals('json', EasyRdf_Graph::guessDocType($data));
     }
 }

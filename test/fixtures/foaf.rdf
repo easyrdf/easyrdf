@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <foaf:PersonalProfileDocument rdf:about="http://www.example.com/joe/foaf.rdf">
+    <rdfs:label>Joe Bloggs' FOAF File</rdfs:label>
+    <foaf:maker rdf:resource="http://www.example.com/joe#me" />
+    <foaf:primaryTopic rdf:resource="http://www.example.com/joe#me" />
+  </foaf:PersonalProfileDocument>
+  
+  <foaf:Person rdf:about="http://www.example.com/joe#me">
+    <foaf:title>Mr</foaf:title>
+    <foaf:name>Joe Bloggs</foaf:name>
+    <foaf:firstName>Joe</foaf:firstName>
+    <foaf:family_name>Bloggs</foaf:family_name>
+    <foaf:homepage>http://www.example.com/joe/</foaf:homepage>
+  </foaf:Person>
+</rdf:RDF>
