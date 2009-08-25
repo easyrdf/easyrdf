@@ -96,25 +96,9 @@ class EasyRdf_Graph
         $this->load($uri, $data, $doc_type);
     }
 
-/*
-    public function load()
-    {
-        $args = array();
-        $http_proxy = getenv('http_proxy');
-        if ($http_proxy) {
-            $proxy = parse_url($http_proxy);
-            $args = array('proxy_host' => $proxy['host'], 'proxy_port' => $proxy['port']);
-        }
-        $parser = ARC2::getRDFXMLParser($args);
-        $parser->parse($this->uri);
-
-        $this->construct_resources($parser);
-    }
-*/
-
-	/**
-	 * Convert RDF/PHP into a graph of objects
-	 */
+    /**
+     * Convert RDF/PHP into a graph of objects
+     */
     public function load($uri, $data='', $doc_type='guess')
     {
 
