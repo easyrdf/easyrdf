@@ -6,51 +6,23 @@
  */
 class EasyRdf_RapperParser
 {
-
-    /**
-     * Guess the type of an RDF document
-     * @param string $data the document data to guess the type of
-     * @return string the document type (e.g. rdfxml, json ...)
-     */
-    public function guessDocType($data)
-    {
-      if (is_array($data)) {
-        return 'php';
-      } else if (ereg("^[ \n\r\t]*\{", $data)) {
-        return 'json';
-      } else if (ereg("^[ \n\r\t]*---", $data)) {
-        return 'yaml';
-      } else if (ereg("^[ \n\r\t]*<\?xml", $data) or ereg("^[ \n\r\t]*<rdf:RDF", $data)) {
-        return 'rdfxml';
-      } else if (ereg("^[ \n\r\t]*@prefix ", $data)) {
-        # FIXME: this could be improved
-        return 'turtle';
-      } else {
-        # FIXME: Raise an exception here?
-      }
-    }
-    
     /**
      * Parse an RDF document
      * @param string $data the document data.
      * @param string $input_type the format of the input document.
      * @return string the converted document, or null if the convertion failed.
      */
-    public function parse($uri, $data, $doc_type='guess')
+    public function parse($uri, $data, $doc_type)
     {
+        // Open a pipe to the rapper command
+        $descriptorspec = array(
+          0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+          1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+          2 => array("file", "php://stderr", "w")
+        );
 
-      # Use rapper to convert other formats to JSON
-      if ($doc_type != 'json') {
-
-          // Open a pipe to the rapper command
-          $descriptorspec = array(
-            0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-            1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-            2 => array("file", "php://stderr", "w")
-          );
-          $process = proc_open("rapper --quiet -i $doc_type -o json -e - $uri", $descriptorspec, $pipes, '/tmp', null);
-          
-          if (is_resource($process)) {
+        $process = proc_open("rapper --quiet -i $doc_type -o json -e - $uri", $descriptorspec, $pipes, '/tmp', null);
+        if (is_resource($process)) {
             // $pipes now looks like this:
             // 0 => writeable handle connected to child stdin
             // 1 => readable handle connected to child stdout
@@ -69,10 +41,11 @@ class EasyRdf_RapperParser
                 echo "rapper returned $return_value\n";
                 return null;
             }
-          }
-      }
+        } else {
+            // FIXME: throw error?
+        }
 
-      // Parse in the JSON
-      return json_decode( $data, true );
+        // Parse in the JSON
+        return json_decode( $data, true );
     }
 }

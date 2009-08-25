@@ -85,12 +85,54 @@ class EasyRdf_Graph
         return self::$parser;
     }
 
+    public static function simplifyMimeType($mime_type)
+    {
+        switch($mime_type) {
+            case 'application/json':
+            case 'text/json':
+                return 'json';
+            case 'application/x-yaml':
+            case 'application/yaml':
+            case 'text/x-yaml':
+            case 'text/yaml':
+                return 'yaml';
+            case 'application/rdf+xml':
+                return 'rdfxml';
+            case 'text/turtle':
+                return 'turtle';
+            default:
+                # FIXME: throw exception?
+                return '';
+        }
+    }
+    
+    public static function guessDocType($data)
+    {
+        # FIXME: could /etc/magic help here?
+        if (is_array($data)) {
+            # Data has already been parsed into RDF/PHP
+            return 'php';
+        } else if (ereg("^[ \n\r\t]*\{", $data)) {
+            return 'json';
+        } else if (ereg("^[ \n\r\t]*---", $data)) {
+            return 'yaml';
+        } else if (ereg("^[ \n\r\t]*<\?xml", $data) or ereg("^[ \n\r\t]*<rdf:RDF", $data)) {
+            return 'rdfxml';
+        } else if (ereg("^[ \n\r\t]*@prefix ", $data)) {
+            # FIXME: this could be improved
+            return 'turtle';
+        } else {
+            # FIXME: throw exception?
+            return '';
+        }
+    }
+
     public static function setRdfParser($parser)
     {
         self::$parser = $parser;
     }
     
-    public function __construct($uri, $data='', $doc_type='guess')
+    public function __construct($uri, $data='', $doc_type='')
     {
         $this->uri = $uri;
         $this->load($uri, $data, $doc_type);
@@ -99,39 +141,48 @@ class EasyRdf_Graph
     /**
      * Convert RDF/PHP into a graph of objects
      */
-    public function load($uri, $data='', $doc_type='guess')
+    public function load($uri, $data='', $doc_type='')
     {
-
-        // FIXME: validate the URI
+        // FIXME: validate the URI?
 
         if (!$data) {
+            # No data was given - try and fetch data from URI
             $client = self::getHttpClient();
             $client->setUri($uri);
             # FIXME: set the accept header to a list of formats we are able to parse
+            $client->setHeaders('Accept', 'application/rdf+xml');
             $response = $client->request();
-            # FIXME: make use of the 'content type' header
             $data = $response->getBody();
-            $doc_type = $response->getHeader('Content-Type');
+            if ($doc_type == '') {
+                $doc_type = self::simplifyMimeType(
+                    $response->getHeader('Content-Type')
+                );
+            }
         }
         
         # Guess the document type if not given
-        if ($doc_type == 'guess') {
-          $doc_type = self::getRdfParser()->guessDocType( $data );
+        if ($doc_type == '') {
+            $doc_type = self::guessDocType( $data );
         }
         
-        if ($doc_type != 'php') {
-          
-          # Parse the RDF data if it isn't PHP
-          $data = self::getRdfParser()->parse( $uri, $data, $doc_type );
-          if (!$data) {
-              # FIXME: parse error
-              return null;
-          }
+        # Parse the document
+        if ($doc_type == 'php') {
+            # FIXME: validate the data?
+        } else if ($doc_type == 'json') {
+            # Parse the RDF/JSON into RDF/PHP
+            $data = json_decode( $data, true );
+        } else {
+            # Parse the RDF data
+            $data = self::getRdfParser()->parse( $uri, $data, $doc_type );
+            if (!$data) {
+                # FIXME: parse error - throw exception?
+                return null;
+            }
         }
 
         # Convert into an object graph
         foreach ($data as $subj => $touple) {
-          $type = $this->getResouceType($data, $subj);
+          $type = $this->getResourceType($data, $subj);
           $res = $this->getResource($subj, $type);
           foreach ($touple as $property => $objs) {
             $property = EasyRdf_Namespace::shorten($property);
@@ -144,7 +195,7 @@ class EasyRdf_Graph
                 } else if ($obj['type'] == 'literal') {
                   $res->set($property, $obj['value']);
                 } else if ($obj['type'] == 'uri' or $obj['type'] == 'bnode') {
-                  $type = $this->getResouceType($data, $obj['value']);
+                  $type = $this->getResourceType($data, $obj['value']);
                   $objres = $this->getResource($obj['value'], $type);
                   $res->set($property, $objres);
                 } else {
@@ -157,7 +208,7 @@ class EasyRdf_Graph
         }
     }
     
-    private function getResouceType( $data, $uri )
+    private function getResourceType( $data, $uri )
     {
        if (array_key_exists($uri, $data)) {
             $subj = $data[$uri];

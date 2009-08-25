@@ -180,11 +180,6 @@ class EasyRdf_Http_Client
             $headers[] = "Host: {$host}";
         }
 
-        // Set the accept header
-        if (! isset($this->headers['accept'])) {
-            $headers[] = "Accept: application/rdf+xml";
-        }
-
         // Set the connection header
         if (! isset($this->headers['connection'])) {
             $headers[] = "Connection: close";
