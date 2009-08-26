@@ -100,6 +100,10 @@ class EasyRdf_Graph
                 return 'rdfxml';
             case 'text/turtle':
                 return 'turtle';
+            case 'text/html':
+            case 'application/xhtml+xml':
+                # FIXME: might be erdf or something instead...
+                return 'rdfa';
             default:
                 # FIXME: throw exception?
                 return '';
@@ -108,17 +112,23 @@ class EasyRdf_Graph
     
     public static function guessDocType($data)
     {
-        # FIXME: could /etc/magic help here?
         if (is_array($data)) {
             # Data has already been parsed into RDF/PHP
             return 'php';
-        } else if (ereg("^[ \n\r\t]*\{", $data)) {
+        }
+        
+        # FIXME: could /etc/magic help here?
+        $short = substr( trim($data), 0, 255 );
+        if (ereg("^\{", $short)) {
             return 'json';
-        } else if (ereg("^[ \n\r\t]*---", $data)) {
+        } else if (ereg("^---", $short)) {
             return 'yaml';
-        } else if (ereg("^[ \n\r\t]*<\?xml", $data) or ereg("^[ \n\r\t]*<rdf:RDF", $data)) {
+        } else if (ereg("<!DOCTYPE html", $short) or ereg("^<html", $short)) {
+            # FIXME: might be erdf or something instead...
+            return 'rdfa';
+        } else if (ereg("<rdf", $short)) {
             return 'rdfxml';
-        } else if (ereg("^[ \n\r\t]*@prefix ", $data)) {
+        } else if (ereg("^@prefix ", $short)) {
             # FIXME: this could be improved
             return 'turtle';
         } else {
@@ -243,10 +253,18 @@ class EasyRdf_Graph
         }
     }
     
-    public function allByType($type)
+    public function allOfType($type)
     {
         # FIXME: shorten if $type is a URL
         return $this->type_index[$type];
+    }
+    
+    public function firstOfType($type)
+    {
+        $objs = $this->allOfType($type);
+        if ($objs and is_array($objs)) {
+            return $objs[0];
+        }
     }
     
     public function allTypes()

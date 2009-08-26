@@ -8,6 +8,7 @@ class EasyRdf_ArcParser
         'json' => 'JSON',
         'rdfxml' => 'RDFXML',
         'turtle' => 'Turtle',
+        'rdfa' => 'SemHTML',
     );
 
     public function parse($uri, $data, $doc_type)
