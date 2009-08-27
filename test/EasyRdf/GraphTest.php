@@ -32,4 +32,15 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $data = readFixture('foaf.json');
         $this->assertEquals('json', EasyRdf_Graph::guessDocType($data));
     }
+    
+    public function testGuessTypeRdfa()
+    {
+        $data = readFixture('foaf.html');
+        $this->assertEquals('rdfa', EasyRdf_Graph::guessDocType($data));
+    }
+    
+    public function testGuessTypeUnknown()
+    {
+         $this->assertEquals('', EasyRdf_Graph::guessDocType('blah blah blah'));
+    }
 }
