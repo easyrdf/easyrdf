@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
+    "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	    version="XHTML+RDFa 1.0" xml:lang="en"
+>
+<head>
+	<title>Profile for Joe Bloggs</title>
+</head>
+<body>
+
+<div about="http://www.example.com/joe#me">
+  <h1>Profile for <span property="foaf:name">Joe Bloggs</span></h1>
+  
+  <h2>Interests</h2>
+  <ul rel="foaf:interest">
+    <li class="interest" about="http://dbpedia.org/resource/Cat">
+      <a href="http://en.wikipedia.org/wiki/Cat" property="rdfs:label">Cats</a>
+    </li>
+    <li class="interest" about="http://dbpedia.org/resource/Dog">
+      <a href="http://en.wikipedia.org/wiki/Dog" property="rdfs:label">Dogs</a>
+    </li>
+  </ul>
+</div>
+
+</body>
+</html>
