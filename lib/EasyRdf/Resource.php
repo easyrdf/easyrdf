@@ -72,8 +72,10 @@ class EasyRdf_Resource
     {
         if (is_array($this->$property)) {
             return $this->$property;
-        } else {
+        } else if ($this->$property) {
             return array($this->$property);
+        } else {
+            return array();
         }
     }
     
