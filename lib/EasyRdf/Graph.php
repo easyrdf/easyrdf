@@ -16,16 +16,17 @@ class EasyRdf_Graph
 
     /**
 	   * Get a Resource object for a specific URI
-	   * @return EasyRdf_Resource returns a Resource (or null if it does not exist)
 	   */
     public function getResource($uri, $types = array())
     {
+        # FIXME: allow URI to be shortened?
         # FIXME: throw exception if parameters are bad?
         if (!$uri) {
             return null;
         }
     
         # Convert types to an array if it isn't one
+        # FIXME: shorten types if not already short
         if (!is_array($types)) {
             $types = array($types);
         }
@@ -42,7 +43,19 @@ class EasyRdf_Graph
             }
             $this->resources[$uri] = new $res_class($uri);
         }
-        return $this->resources[$uri];
+
+        # Add resource to the type index
+        $resource = $this->resources[$uri];
+        foreach ($types as $type) {
+            if (!isset($this->type_index[$type])) {
+                $this->type_index[$type] = array();
+            }
+            if (!in_array($resource, $this->type_index[$type])) {
+                array_push($this->type_index[$type], $resource);
+            }
+        }
+
+        return $resource;
     }
     
 	  /**
@@ -200,7 +213,6 @@ class EasyRdf_Graph
               foreach ($objs as $obj) {
                 if ($property == 'rdf_type') {
                   $type = EasyRdf_Namespace::shorten($obj['value']);
-                  $this->addToTypeIndex( $res, $type );
                   $res->set($property, $type);
                 } else if ($obj['type'] == 'literal') {
                   $res->set($property, $obj['value']);
@@ -238,19 +250,6 @@ class EasyRdf_Graph
             }
         }
         return null;
-    }
-    
-    private function addToTypeIndex($resource, $type)
-    {
-        # FIXME: shorten type if it isn't already short
-        if ($type) {
-            if (!isset($this->type_index[$type])) {
-                $this->type_index[$type] = array();
-            }
-            if (!in_array($resource, $this->type_index[$type])) {
-                array_push($this->type_index[$type], $resource);
-            }
-        }
     }
     
     public function allOfType($type)
