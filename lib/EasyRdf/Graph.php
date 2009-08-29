@@ -255,7 +255,11 @@ class EasyRdf_Graph
     public function allOfType($type)
     {
         # FIXME: shorten if $type is a URL
-        return $this->type_index[$type];
+        if ($this->type_index[$type]) {
+            return $this->type_index[$type];
+        } else {
+            return array();
+        }
     }
     
     public function firstOfType($type)
