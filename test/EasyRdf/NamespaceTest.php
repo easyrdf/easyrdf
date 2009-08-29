@@ -41,6 +41,11 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(null, EasyRdf_Namespace::shorten('http://www.aelius.com/njh/'));
     }
 
+    public function testNamespaceOfUriFoafName()
+    {
+        $this->assertEquals('foaf', EasyRdf_Namespace::namespaceOfUri('http://xmlns.com/foaf/0.1/name'));
+    }
+
     public function testExpandFoafName()
     {
         $this->assertEquals('http://xmlns.com/foaf/0.1/name', EasyRdf_Namespace::expand('foaf_name'));

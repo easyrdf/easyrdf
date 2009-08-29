@@ -42,6 +42,22 @@ class EasyRdf_Namespace
     }
 
     /**
+      * Return the short namespace that a URI belongs to.
+      *
+      * @param string $uri A full URI (eg 'http://xmlns.com/foaf/0.1/name')
+      * @return string The short namespace that it is a part of(eg 'foaf')
+      */
+    public static function namespaceOfUri($uri)
+    {
+        foreach (self::$namespaces as $short => $long) {
+            if (strpos($uri, $long) === 0) {
+                return $short;
+            }
+        }
+        return null;
+    }
+
+    /**
       * Shorten a URI by substituting in the namespace prefix.
       *
       * @param string $uri The full URI (eg 'http://xmlns.com/foaf/0.1/name')
@@ -58,7 +74,7 @@ class EasyRdf_Namespace
     }
 
     /**
-      * Expand a shorterned URI back into a full URI.
+      * Expand a shortened URI back into a full URI.
       *
       * @param string $short_uri The short URI (eg 'foaf_name')
       * @return string The full URI (eg 'http://xmlns.com/foaf/0.1/name')
