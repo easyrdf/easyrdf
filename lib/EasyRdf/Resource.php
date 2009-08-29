@@ -1,5 +1,6 @@
 <?php
 
+require_once "EasyRdf/Namespace.php";
 
 class EasyRdf_Resource
 {
@@ -35,12 +36,6 @@ class EasyRdf_Resource
         }
         $this->$property = $objects;
     }
-    
-    public function first($property)
-    {
-        $objects = $this->$property;
-        return $objects[0];
-    }
 
     public function __set($key, $value)
     {
@@ -63,6 +58,30 @@ class EasyRdf_Resource
         unset($this->properties[$key]);
     }
     
+    public function first($property)
+    {
+        if (is_array($this->$property)) {
+            $objects = $this->$property;
+            return $objects[0];
+        } else {
+            return $this->$property;
+        }
+    }
+    
+    public function all($property)
+    {
+        if (is_array($this->$property)) {
+            return $this->$property;
+        } else {
+            return array($this->$property);
+        }
+    }
+    
+    public function join($property, $glue=' ')
+    {
+        return join( $glue, $this->all($property) );
+    }
+    
     public function getUri() {
         return $this->uri;
     }
@@ -73,10 +92,29 @@ class EasyRdf_Resource
         return $this->rdf_type;
     }
     
+    # Return the namepace that this resource is part of
+    public function ns()
+    {
+        return EasyRdf_Namespace::ns($this->uri);
+    }
+    
     # Return the resource type as a single word (rather than a URI)
     public function type()
     {
         return $this->first('rdf_type');
+    }
+    
+    public function label()
+    {
+        if ($this->rdfs_label) {
+            return $this->first('rdfs_label');
+        } else if ($this->foaf_name) {
+            return $this->first('foaf_name');
+        } else if ($this->dc_title) {
+            return $this->first('dc_title');
+        } else {
+            return EasyRdf_Namespace::shorten($this->uri); 
+        }
     }
     
     public function dump($html=true, $depth=0)
