@@ -49,53 +49,55 @@
 ?>
 
 <? 
-    echo "<h2>".$ontology->label()."</h2>\n";
-    
-    echo "<dl>\n";
-    echo "<dt>Namespace:</dt><dd>".link_to($ontology->getUri())."</dd>\n";
-    if ($ontology->dc_date) echo "<dt>Date:</dt><dd>".$ontology->first('dc_date')."</dd>\n";
-    #if ($ontology->dc_creator)  # FIXME: implement this
-    #if ($ontology->dc_contributor)  # FIXME: implement this
-    echo "</dl>\n";
-    foreach ($ontology->all('rdfs_comment') as $comment) { echo "<p>$comment</p>\n"; }
-    
-    echo "<h2>Classes</h2>\n";
-    foreach ($graph->allOfType('owl_Class') as $class) {
-        $class_name = shorten($ontology,$class);
-        if ($class_name == null) continue;
-        echo "<div class='class' id='$class_name'>";
-        echo "<h3>$class_name</h3>\n";
-        foreach ($class->all('rdfs_comment') as $comment) { echo "<p>$comment</p>\n"; }
+    if ($ontology) {
+        echo "<h2>".$ontology->label()."</h2>\n";
+        
         echo "<dl>\n";
-        if ($class->rdfs_subClassOf) {
-            echo "<dt>SubClass of:</dt>\n";
-            foreach ($class->all('rdfs_subClassOf') as $subClass) {
-                $short = shorten($ontology,$subClass);
-                if ($short) {
-                    echo "<dd>".link_to($short,"#$short")."</dd>\n";
-                } else {
-                    echo "<dd>".link_to($subClass)."</dd>\n";
-                }
-            }
-        }
-        if ($class->owl_disjointWith) {
-            echo "<dt>Disjoint with:</dt>\n";
-            foreach ($class->all('owl_disjointWith') as $disjointWith) {
-                $short = shorten($ontology,$disjointWith);
-                if ($short) {
-                    echo "<dd>".link_to($short,"#$short")."</dd>\n";
-                } else {
-                    echo "<dd>".link_to($disjointWith)."</dd>\n";
-                }
-            }
-        }
-        $properties = getClassProperties( $graph, $ontology, $class );
-        if ($properties) {
-          echo "<dt>Properties:</dt>\n";
-          foreach ($properties as $property) { echo "<dd>$property</d>\n"; }
-        }
+        echo "<dt>Namespace:</dt><dd>".link_to($ontology->getUri())."</dd>\n";
+        if ($ontology->dc_date) echo "<dt>Date:</dt><dd>".$ontology->first('dc_date')."</dd>\n";
+        #if ($ontology->dc_creator)  # FIXME: implement this
+        #if ($ontology->dc_contributor)  # FIXME: implement this
         echo "</dl>\n";
-        echo "</div>";
+        foreach ($ontology->all('rdfs_comment') as $comment) { echo "<p>$comment</p>\n"; }
+        
+        echo "<h2>Classes</h2>\n";
+        foreach ($graph->allOfType('owl_Class') as $class) {
+            $class_name = shorten($ontology,$class);
+            if ($class_name == null) continue;
+            echo "<div class='class' id='$class_name'>";
+            echo "<h3>$class_name</h3>\n";
+            foreach ($class->all('rdfs_comment') as $comment) { echo "<p>$comment</p>\n"; }
+            echo "<dl>\n";
+            if ($class->rdfs_subClassOf) {
+                echo "<dt>SubClass of:</dt>\n";
+                foreach ($class->all('rdfs_subClassOf') as $subClass) {
+                    $short = shorten($ontology,$subClass);
+                    if ($short) {
+                        echo "<dd>".link_to($short,"#$short")."</dd>\n";
+                    } else {
+                        echo "<dd>".link_to($subClass)."</dd>\n";
+                    }
+                }
+            }
+            if ($class->owl_disjointWith) {
+                echo "<dt>Disjoint with:</dt>\n";
+                foreach ($class->all('owl_disjointWith') as $disjointWith) {
+                    $short = shorten($ontology,$disjointWith);
+                    if ($short) {
+                        echo "<dd>".link_to($short,"#$short")."</dd>\n";
+                    } else {
+                        echo "<dd>".link_to($disjointWith)."</dd>\n";
+                    }
+                }
+            }
+            $properties = getClassProperties( $graph, $ontology, $class );
+            if ($properties) {
+              echo "<dt>Properties:</dt>\n";
+              foreach ($properties as $property) { echo "<dd>$property</d>\n"; }
+            }
+            echo "</dl>\n";
+            echo "</div>";
+        }
     }
 ?>
 
