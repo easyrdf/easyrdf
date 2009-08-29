@@ -24,7 +24,7 @@ class EasyRdf_Resource
     public function set($property, $object)
     {
         if ($property == null or $object == null) {
-          return null;
+            return null;
         } else if (isset($this->$property)) {
             $objects = $this->$property;
         } else {
@@ -60,20 +60,26 @@ class EasyRdf_Resource
     
     public function first($property)
     {
-        if (is_array($this->$property)) {
-            $objects = $this->$property;
-            return $objects[0];
+        if (isset($this->$property)) {
+            if (is_array($this->$property)) {
+                $objects = $this->$property;
+                return $objects[0];
+            } else {
+                return $this->$property;
+            }
         } else {
-            return $this->$property;
+            return null;
         }
     }
     
     public function all($property)
     {
-        if (is_array($this->$property)) {
-            return $this->$property;
-        } else if ($this->$property) {
-            return array($this->$property);
+        if (isset($this->$property)) {
+            if (is_array($this->$property)) {
+                return $this->$property;
+            } else {
+                return array($this->$property);
+            }
         } else {
             return array();
         }
@@ -88,16 +94,10 @@ class EasyRdf_Resource
         return $this->uri;
     }
     
-    # Return the resource type as a single word (rather than a URI)
+    # Return an array of this resource's types
     public function types()
     {
-        return $this->rdf_type;
-    }
-    
-    # Return the namepace that this resource is part of
-    public function ns()
-    {
-        return EasyRdf_Namespace::ns($this->uri);
+        return $this->all('rdf_type');
     }
     
     # Return the resource type as a single word (rather than a URI)
@@ -106,13 +106,19 @@ class EasyRdf_Resource
         return $this->first('rdf_type');
     }
     
+    # Return the namepace that this resource is part of
+    public function ns()
+    {
+        return EasyRdf_Namespace::ns($this->uri);
+    }
+    
     public function label()
     {
-        if ($this->rdfs_label) {
+        if (isset($this->rdfs_label)) {
             return $this->first('rdfs_label');
-        } else if ($this->foaf_name) {
+        } else if (isset($this->foaf_name)) {
             return $this->first('foaf_name');
-        } else if ($this->dc_title) {
+        } else if (isset($this->dc_title)) {
             return $this->first('dc_title');
         } else {
             return EasyRdf_Namespace::shorten($this->uri); 
@@ -128,11 +134,13 @@ class EasyRdf_Resource
         echo 'Class: '.get_class($this)."\n";
         echo 'Types: '.implode(', ',$this->types())."\n";
         echo "Properties:</i>\n";
-        foreach ($this->properties as $property => $objects) {
-          echo "  $property => \n";
-          foreach ($objects as $object) {
-            echo "    $object\n";
-          }
+        foreach ($this->properties as $property => $objects)
+        {
+            echo "  $property => \n";
+            foreach ($objects as $object)
+            {
+                echo "    $object\n";
+            }
         }
         echo "</pre>";
     }
