@@ -14,6 +14,9 @@ class EasyRdf_RapperParser
      */
     public function parse($uri, $data, $doc_type)
     {
+        # Don't even attempt to parse it if it is empty
+        if (trim($data) == '') return array();
+
         // Open a pipe to the rapper command
         $descriptorspec = array(
           0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
