@@ -9,7 +9,9 @@ class EasyRdf_Http_Client
     protected $config = array(
         'maxredirects'    => 5,
         'useragent'       => 'EasyRdf_Http_Client',
-        'timeout'         => 10
+        'timeout'         => 10,
+        'cache_dir'       => null,
+        'cache_expire'    => 3600
     );
     protected $headers = array();
     protected $redirectCounter = 0;
@@ -95,6 +97,18 @@ class EasyRdf_Http_Client
             // FIXME: throw exception
             return null;
         }
+        
+        // Do we already have it cached?
+        if ($this->config['cache_dir'] and $this->config['cache_expire']) {
+            $cache_file = $this->config['cache_dir'] . '/easy_rdf_' . md5($this->uri);
+            if (file_exists($cache_file)) {
+                $mtime = filemtime($cache_file);
+                if ($mtime + $this->config['cache_expire'] > time()) {
+                    $content = file_get_contents( $cache_file );
+                    return EasyRdf_Http_Response::fromString($content);
+                }
+            }
+        }
 
         $this->redirectCounter = 0;
         $response = null;
@@ -125,16 +139,16 @@ class EasyRdf_Http_Client
 
 
             // Read in the response
-            $response = '';
+            $content = '';
             while (!feof($socket)) {
-                $response .= fgets($socket);
+                $content .= fgets($socket);
             }
             
             // Close the socket
             fclose($socket);
 
             // Parse the response string
-            $response = EasyRdf_Http_Response::fromString($response);
+            $response = EasyRdf_Http_Response::fromString($content);
  
             // If we got redirected, look for the Location header
             if ($response->isRedirect() && ($location = $response->getHeader('location'))) {
@@ -156,6 +170,11 @@ class EasyRdf_Http_Client
 
 
         } while ($this->redirectCounter < $this->config['maxredirects']);
+        
+        # Write the response to the cache
+        if ($cache_file) {
+            file_put_contents( $cache_file, $content );
+        }
 
         return $response;
     }
