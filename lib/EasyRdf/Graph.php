@@ -309,5 +309,10 @@ class EasyRdf_Graph
             $resource->dump($html,1);
         }
     }
+    
+    public function __toString()
+    {
+        return $this->uri;
+    }
 	
 }
