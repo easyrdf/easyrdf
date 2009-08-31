@@ -112,6 +112,11 @@ class EasyRdf_Resource
         return EasyRdf_Namespace::namespaceOfUri($this->uri);
     }
     
+    public function shorten()
+    {
+        return EasyRdf_Namespace::shorten($this->uri);
+    }
+    
     public function label()
     {
         if (isset($this->rdfs_label)) {
