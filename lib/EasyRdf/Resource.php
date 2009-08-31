@@ -4,22 +4,34 @@ require_once "EasyRdf/Namespace.php";
 
 class EasyRdf_Resource
 {
+    /** The URI for this resource */
     protected $uri = null;
-    protected $properties = array();
+    
+    /** The Graph that this resource is part of */
+    protected $graph = null;
+    
+    /** The type(s) of this resource */
     protected $rdf_type = array();
     
+    /** Associative array of properties - uses by magic methods */
+    protected $properties = array();
+    
     # This shouldn't be called directly
-    public function __construct($uri, $properties='')
+    public function __construct($uri, $graph = null)
     {
         $this->uri = $uri;
+        $this->graph = $graph;
     }
     
-    # TODO: Load data for a resource by de-referencing its URI
-    #public function load()
-    #{
-    #    if (!$this->loaded) {
-    #    }
-    #}
+    # Load data for a resource into graph by de-referencing its URI
+    public function load()
+    {
+        if ($this->graph) {
+            $this->graph->load( $this->uri );
+        } else {
+            # FIXME: throw exception?
+        }
+    }
 
     public function set($property, $object)
     {

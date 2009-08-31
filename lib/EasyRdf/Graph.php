@@ -41,7 +41,7 @@ class EasyRdf_Graph
                     break;
                 }
             }
-            $this->resources[$uri] = new $res_class($uri);
+            $this->resources[$uri] = new $res_class($uri,$this);
         }
 
         # Add resource to the type index
@@ -170,6 +170,7 @@ class EasyRdf_Graph
 
         if (!$data) {
             # No data was given - try and fetch data from URI
+            # FIXME: prevent loading the same URI multiple times
             $client = self::getHttpClient();
             $client->setUri($uri);
             # FIXME: set the accept header to a list of formats we are able to parse
