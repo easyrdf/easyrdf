@@ -109,7 +109,7 @@ class EasyRdf_Resource
     # Return the namepace that this resource is part of
     public function ns()
     {
-        return EasyRdf_Namespace::ns($this->uri);
+        return EasyRdf_Namespace::namespaceOfUri($this->uri);
     }
     
     public function label()
