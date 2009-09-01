@@ -127,6 +127,6 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $this->assertEquals('http://www.example.com/#me', strval($this->resource));
+        $this->assertEquals('http://www.example.com/#me', sprintf("%s",$this->resource));
     }
 }
