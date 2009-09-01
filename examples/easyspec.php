@@ -1,6 +1,8 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf/Graph.php";
+    require_once "EasyRdf/Owl/Class.php";
+    require_once "EasyRdf/Owl/Property.php";
     $url = $_GET['url'];
     
     # TODO LIST:
@@ -38,30 +40,6 @@
             return null;
         }
     }
-
-    function getAllProperties($graph, $ontology)
-    {
-        $property_types = array('rdf_Property','owl_Property','owl_ObjectProperty','owl_DatatypeProperty');
-        $properties = array();
-        foreach ($property_types as $property_type) {
-            foreach ($graph->allOfType($property_type) as $property) {
-                $name = shorten($ontology, $property);
-                $properties[$name] = $property;
-            }
-        }
-        return $properties;
-    }
-    
-    function getClassProperties($class, $all_properties) {
-        $properties = array();
-        foreach ($all_properties as $name => $property) {
-            if (in_array($class, $property->all('rdfs_domain')))
-            {
-                array_push($properties, "$name - <i>".$property->join('rdfs_comment')."</i>");
-            }
-        }
-        return $properties;
-    }
 ?>
 
 <? 
@@ -78,7 +56,7 @@
         foreach ($ontology->all('dc_description') as $description) { echo "<p>$description</p>\n"; }
         
         echo "<h2>Classes</h2>\n";
-        $all_properties = getAllProperties($graph, $ontology);
+        $all_properties = EasyRdf_Owl_Property::findAll($graph);
         foreach ($graph->allOfType('owl_Class') as $class) {
             $class_name = shorten($ontology,$class);
             if ($class_name == null) continue;
@@ -113,10 +91,10 @@
                     }
                 }
             }
-            $properties = getClassProperties( $class, $all_properties );
+            $properties = $class->properties();
             if ($properties) {
                 echo "<dt>Properties:</dt>\n";
-                foreach ($properties as $property) { echo "<dd>$property</d>\n"; }
+                foreach ($properties as $property) { echo "<dd>".$property->shorten()." - <i>".$property->join('rdfs_comment')."</i></dd>\n"; }
             }
             echo "</dl>\n";
             echo "</div>";

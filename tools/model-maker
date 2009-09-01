@@ -4,8 +4,10 @@
 set_include_path(get_include_path() . PATH_SEPARATOR . './lib/');
 require_once "EasyRdf/Namespace.php";
 require_once "EasyRdf/Owl/Class.php";
+require_once "EasyRdf/Owl/Property.php";
 require_once "EasyRdf/Graph.php";
 
+## FIXME: these should be passed from the command line options
 $SHORT = "foaf";
 $URI = "http://xmlns.com/foaf/0.1/";
 $BASE_CLASS = "EasyRdf_Resource";
@@ -19,7 +21,7 @@ function createModel($class)
     $class_name = $class->className();
     foreach($class->all('rdfs_subClassOf') as $subClassOf) {
         // FIXME: allow subClassOf to be any in any of the vocabs that we are processing
-        if ($subClassOf and $subClassOf->ns() == $class->ns()) {
+        if ($subClassOf->ns() == $class->ns()) {
             $super_class = $subClassOf->className();
             break;
         }
@@ -34,7 +36,11 @@ function createModel($class)
     $data .= " */\n";
     $data .= "class $class_name extends $super_class\n";
     $data .= "{\n";
-    # FIXME: insert properties here
+    foreach ($class->properties() as $property) {
+        $data .= "    /** ".$property->join('rdfs_comment')." */\n";
+        $data .= "    public $".$property->shorten().";\n\n";
+    }
+    # FIXME: add properties for owl#Thing if this isn't a subclass.
     $data .= "}\n\n";
     $data .= "EasyRdf_TypeMapper::add('".$class->shorten()."', $class_name);\n";
     
@@ -63,7 +69,7 @@ function write_file($path, $data)
     echo "Writing to: $path\n";
     mkpath(dirname($path));
     if (file_exists($path) and !$CLOBBER) {
-        echo "Warning: not overwriting file.\n";
+        echo "* Warning: not overwriting file.\n";
     } else {
         file_put_contents( $path, $data );
     }
@@ -74,6 +80,7 @@ function write_file($path, $data)
 
 EasyRdf_Namespace::add($SHORT, $URI);
 $graph = new EasyRdf_Graph($URI);
+$allProperties = EasyRdf_Owl_Property::findAll($graph);
 
 $classes = array();
 foreach ($graph->allOfType('owl_Class') as $class) {
