@@ -21,7 +21,15 @@ class EasyRdf_Owl_Property extends EasyRdf_Resource
         }
         return $properties;
     }
+    
+    public function cardinality()
+    {
+        return 'N';
+    }
 
 }
 
+EasyRdf_TypeMapper::add('rdf_Property', EasyRdf_Owl_Property);
 EasyRdf_TypeMapper::add('owl_Property', EasyRdf_Owl_Property);
+EasyRdf_TypeMapper::add('owl_ObjectProperty', EasyRdf_Owl_Property);
+EasyRdf_TypeMapper::add('owl_DatatypeProperty', EasyRdf_Owl_Property);

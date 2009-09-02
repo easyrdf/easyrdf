@@ -3,7 +3,9 @@
     require_once "EasyRdf/Graph.php";
     require_once "EasyRdf/Owl/Class.php";
     require_once "EasyRdf/Owl/Property.php";
+    
     $url = $_GET['url'];
+    $short = $_GET['short'];
     
     # TODO LIST:
     # - display rdfs_range
@@ -15,30 +17,33 @@
 <body>
 <h1>EasyRdf Spec Maker</h1>
 <form method="get">
+<input name="short" type="text" size="8" value="<?= empty($short) ? 'foaf' : $short ?>" />
 <input name="url" type="text" size="48" value="<?= empty($url) ? 'http://xmlns.com/foaf/0.1/' : $url ?>" />
 <input type="submit" />
 </form>
+
+
 <?php
     if ($url) {
+        EasyRdf_Namespace::add( $short, $url );
+    
         $graph = new EasyRdf_Graph( $url );
-        $owl_thing = $graph->getResource('http://www.w3.org/2002/07/owl#Thing', 'owl_Class');
-        $ontology = $graph->firstOfType('owl_Ontology');
+        $ontology = $graph->getResource( $url );
+        
+    } else {
+        
+        echo "<h2>Some examples:</h2>\n";
+        echo "<ul>\n";
+        echo "<li><a href='easyspec.php?short=foaf&url=http%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F'>Friend of a Friend</a></li>\n";
+        echo "<li><a href='easyspec.php?short=mo&url=http%3A%2F%2Fpurl.org%2Fontology%2Fmo%2F'>Music Ontology</a></li>\n";
+        echo "<li><a href='easyspec.php?short=po&url=http%3A%2F%2Fpurl.org%2Fontology%2Fpo%2F'>Programmes Ontology</a></li>\n";
+        echo "<li><a href='easyspec.php?short=rev&url=http%3A%2F%2Fpurl.org%2Fstuff%2Frev%23'>Review Vocabulary</a></li>\n";
+        echo "</ul>\n";
     }
     
     function link_to($text,$url=null) {
         if ($url==null) $url = $text;
         return "<a href='$url'>$text</a>";
-    }
-
-    function shorten($ns,$uri) {
-        if (is_object($ns)) $ns = $ns->getUri();
-        if (is_object($uri)) $uri = $uri->getUri();
-        if ($uri == 'http://www.w3.org/2002/07/owl#Thing') return 'Owl_Thing';
-        if (strpos($uri, $ns) === 0) {
-            return substr($uri, strlen($ns));
-        } else {
-            return null;
-        }
     }
 ?>
 
@@ -56,45 +61,44 @@
         foreach ($ontology->all('dc_description') as $description) { echo "<p>$description</p>\n"; }
         
         echo "<h2>Classes</h2>\n";
-        $all_properties = EasyRdf_Owl_Property::findAll($graph);
         foreach ($graph->allOfType('owl_Class') as $class) {
-            $class_name = shorten($ontology,$class);
-            if ($class_name == null) continue;
-            echo "<div class='class' id='$class_name'>";
-            echo "<h3>$class_name</h3>\n";
+            if ($class->ns() != $short) continue;
+            echo "<div class='class' id='".$class->shorten()."'>";
+            echo "<h3>".$class->shorten()."</h3>\n";
             foreach ($class->all('rdfs_comment') as $comment) { echo "<p>$comment</p>\n"; }
             echo "<dl>\n";
-            
-            if ($class != $owl_thing) {
-                # Make class a subclass of owl_Thing if it isn't a subclass of anything else
-                if (count($class->all('rdfs_subClassOf')) == 0) {
-                    $class->set('rdfs_subClassOf', $owl_thing);
-                }
+
+            if ($class->rdfs_subClassOf) {
                 echo "<dt>SubClass of:</dt>\n";
                 foreach ($class->all('rdfs_subClassOf') as $subClass) {
-                    $short = shorten($ontology,$subClass);
-                    if ($short) {
-                        echo "<dd>".link_to($short,"#$short")."</dd>\n";
+                    if ($subClass->ns() == $short) {
+                        echo "<dd>".link_to($subClass->shorten(),'#'.$subClass->shorten())."</dd>\n";
                     } else {
                         echo "<dd>".link_to($subClass)."</dd>\n";
                     }
                 }
             }
+            
             if ($class->owl_disjointWith) {
                 echo "<dt>Disjoint with:</dt>\n";
                 foreach ($class->all('owl_disjointWith') as $disjointWith) {
-                    $short = shorten($ontology,$disjointWith);
-                    if ($short) {
-                        echo "<dd>".link_to($short,"#$short")."</dd>\n";
+                    if ($disjointWith->ns() == $short) {
+                        echo "<dd>".link_to($disjointWith->shorten(),'#'.$disjointWith->shorten())."</dd>\n";
                     } else {
                         echo "<dd>".link_to($disjointWith)."</dd>\n";
                     }
                 }
             }
-            $properties = $class->properties();
+
+            $properties = $class->properties( $graph );
             if ($properties) {
                 echo "<dt>Properties:</dt>\n";
-                foreach ($properties as $property) { echo "<dd>".$property->shorten()." - <i>".$property->join('rdfs_comment')."</i></dd>\n"; }
+                foreach ($properties as $property) {
+                    echo "<dd>\n";
+                    echo $property->shorten()." - <i>".$property->join('rdfs_comment')."</i>";
+                    echo " [".$property->cardinality()."]\n";
+                    echo "</dd>\n";
+                }
             }
             echo "</dl>\n";
             echo "</div>";

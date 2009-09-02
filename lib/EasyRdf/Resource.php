@@ -7,30 +7,27 @@ class EasyRdf_Resource
     /** The URI for this resource */
     protected $uri = null;
     
-    /** The Graph that this resource is part of */
-    protected $graph = null;
-    
     /** The type(s) of this resource */
     protected $rdf_type = array();
     
     /** Associative array of properties - uses by magic methods */
     protected $properties = array();
     
-    # This shouldn't be called directly
-    public function __construct($uri, $graph = null)
+    
+    public static function disableMagic()
     {
-        $this->uri = $uri;
-        $this->graph = $graph;
+    
     }
     
-    # Load data for a resource into graph by de-referencing its URI
-    public function load()
+    public static function enableMagic()
     {
-        if ($this->graph) {
-            $this->graph->load( $this->uri );
-        } else {
-            # FIXME: throw exception?
-        }
+    
+    }
+    
+    # This shouldn't be called directly
+    public function __construct($uri)
+    {
+        $this->uri = $uri;
     }
 
     public function set($property, $object)

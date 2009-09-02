@@ -41,7 +41,7 @@ class EasyRdf_Graph
                     break;
                 }
             }
-            $this->resources[$uri] = new $res_class($uri,$this);
+            $this->resources[$uri] = new $res_class($uri);
         }
 
         # Add resource to the type index

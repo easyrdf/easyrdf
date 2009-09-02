@@ -15,7 +15,7 @@ $OUTPUT_DIR = "./models";
 $CLOBBER = true;
 
 
-function createModel($class)
+function createModel($class,$graph)
 {
     global $BASE_CLASS;
     $class_name = $class->className();
@@ -36,7 +36,7 @@ function createModel($class)
     $data .= " */\n";
     $data .= "class $class_name extends $super_class\n";
     $data .= "{\n";
-    foreach ($class->properties() as $property) {
+    foreach ($class->properties($graph) as $property) {
         $data .= "    /** ".$property->join('rdfs_comment')." */\n";
         $data .= "    public $".$property->shorten().";\n\n";
     }
@@ -51,7 +51,7 @@ function createVocab($classes)
 {
     $data = "<?php\n\n";
     foreach ($classes as $class_filename) {
-        $data .= "require \"$class_filename\";\n";
+        $data .= "require_once \"$class_filename\";\n";
     }  
 
     return $data;
@@ -80,12 +80,11 @@ function write_file($path, $data)
 
 EasyRdf_Namespace::add($SHORT, $URI);
 $graph = new EasyRdf_Graph($URI);
-$allProperties = EasyRdf_Owl_Property::findAll($graph);
 
 $classes = array();
 foreach ($graph->allOfType('owl_Class') as $class) {
     if ($class->ns() != $SHORT) continue;
-    list($class_name, $class_data) = createModel($class);
+    list($class_name, $class_data) = createModel($class, $graph);
     $class_path = $OUTPUT_DIR . '/' . $class->fileName();
     write_file( $class_path, $class_data );
     array_push( $classes, $class->filename() );
