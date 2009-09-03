@@ -21,9 +21,15 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
     {
         $properties = array();
         # FIXME: cache this somehow?
+        $owl_thing = $graph->getResource('http://www.w3.org/2002/07/owl#Thing');
+        $superClass = $this->first('rdfs_subClassOf');
+        if ($superClass == $owl_thing) $superClass = '';
         $all_properties = EasyRdf_Owl_Property::findAll($graph);
         foreach ($all_properties as $name => $property) {
-            if (in_array($this, $property->all('rdfs_domain')))
+            if (($superClass == '' and
+                (count($property->all('rdfs_domain')) == 0 or 
+                in_array($owl_thing, $property->all('rdfs_domain')))) or 
+                in_array($this, $property->all('rdfs_domain')))
             {
                 array_push($properties, $property);
             }
