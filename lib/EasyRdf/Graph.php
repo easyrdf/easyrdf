@@ -33,7 +33,7 @@ class EasyRdf_Graph
     
         # Create resource object if it doesn't already exist
         if (!array_key_exists($uri, $this->resources)) {
-            $res_class = EasyRdf_Resource;
+            $res_class = 'EasyRdf_Resource';
             foreach ($types as $type) {
                 $class = EasyRDF_TypeMapper::get($type);
                 if ($class != null) {
