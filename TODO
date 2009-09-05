@@ -1,22 +1,20 @@
 * Pluggable Parsers / Generators
- - Redland PHP plugin
- - rapper command line support
- - Pure PHP - ARC?
- 
-* HTTP Client support
- - EasyRdf_Http_Client
- - Zend_Http_Client
- - BBC_Http_Client
+ - Redland PHP extension
+ - Support for RAP?
 
-* Follow Zend Coding Standards
+* Add support for Transfer-encoding: chunked to EasyRdf_Http_Client
 
-* Added licencing information to the top of every file
+* Check code against Zend Coding Standards.
 
-* Add phpdoc comments for every class and file
+* Added licencing information to the top of every file.
 
-* Document the limitations of EasyRdf_Http_Client
+* Add phpdoc comments for every class and file.
 
-* Add a 'turn off magic' static class method to EasyRdf_Resource
+* Writing PHP Unit tests for every class.
+
+* Document the limitations of EasyRdf_Http_Client.
+
+* Add a 'turn off magic' static class method to EasyRdf_Resource.
 
 * Open Questions
    - how should you opt to get the first value, rather than an array of objects?
@@ -29,4 +27,9 @@
      Should we be using accessor methods instead?
        $me->getFoafName()
 
+   - Should it be:
+        $resource->uri;
+        $resource->uri();
+        $resource->getUri();
+   
    - do we need a reverse index?
