@@ -2,8 +2,6 @@
  - Redland PHP extension
  - Support for RAP?
 
-* Add support for Transfer-encoding: chunked to EasyRdf_Http_Client
-
 * Check code against Zend Coding Standards.
 
 * Added licencing information to the top of every file.

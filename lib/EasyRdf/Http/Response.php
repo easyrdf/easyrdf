@@ -44,7 +44,17 @@ class EasyRdf_Http_Response
     
     public function getBody()
     {
-        return $this->body;
+        // Decode the body if it was transfer-encoded
+        switch (strtolower($this->getHeader('transfer-encoding'))) {
+            // Handle chunked body
+            case 'chunked':
+                return self::decodeChunkedBody($this->body);
+
+            // No transfer encoding, or unknown encoding extension:
+            // return body as is
+            default:
+                return $this->body;
+        }
     }
     
     public function getVersion()
@@ -106,5 +116,30 @@ class EasyRdf_Http_Response
         }
 
         return new EasyRdf_Http_Response($status, $headers, $body, $version, $message);
+    }
+
+
+    /**
+     * Decode a "chunked" transfer-encoded body and return the decoded text
+     *
+     * @param string $body
+     * @return string
+     */
+    public static function decodeChunkedBody($body)
+    {
+        $decBody = '';
+
+        while (trim($body)) {
+            if (preg_match("/^([\da-fA-F]+)[^\r\n]*\r\n/sm", $body, $m)) {
+                $length = hexdec(trim($m[1]));
+                $cut = strlen($m[0]);
+                $decBody .= substr($body, $cut, $length);
+                $body = substr($body, $cut + $length + 2);
+            } else {
+                # FIXME: throw exception            
+            }
+        }
+
+        return $decBody;
     }
 }

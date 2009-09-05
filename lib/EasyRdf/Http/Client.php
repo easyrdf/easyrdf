@@ -144,6 +144,8 @@ class EasyRdf_Http_Client
                 $content .= fgets($socket);
             }
             
+            // FIXME: support HTTP/1.1 100 Continue
+            
             // Close the socket
             fclose($socket);
 
