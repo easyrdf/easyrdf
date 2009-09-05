@@ -276,22 +276,6 @@ class EasyRdf_Graph
         return array_keys( $this->type_index );
     }
     
-    public function type()
-    {
-        $res = $this->getResource($this->uri);
-        if ($res) {
-            return $res->type();
-        } else {
-            return null;
-        }
-    }
-    
-    public function primaryTopic()
-    {
-        $res = $this->getResource($this->uri);
-        return $res->first('foaf_primaryTopic');
-    }
-    
     public function getUri()
     {
         return $this->uri;
@@ -301,8 +285,7 @@ class EasyRdf_Graph
     {
         # FIXME: implement this
     }
-	
-    
+
     public function dump($html=true)
     {
         # FIXME: display some information about the graph
@@ -311,9 +294,40 @@ class EasyRdf_Graph
         }
     }
     
+    public function type()
+    {
+        $res = $this->getResource($this->uri);
+        // FIXME: check $res isn't null
+        return $res->type();
+    }
+    
+    public function primaryTopic()
+    {
+        $res = $this->getResource($this->uri);
+        // FIXME: check $res isn't null
+        return $res->first('foaf_primaryTopic');
+    }
+
+    
+    // BEWARE! Magic below
+    
     public function __toString()
     {
         return $this->uri;
+    }
+
+    public function __call($name, $arguments)
+    {
+        $res = $this->getResource($this->uri);
+        // FIXME: check $res isn't null
+        return call_user_func_array( array($res, $name), $arguments );
+    }
+
+    public function __get($name)
+    {
+        $res = $this->getResource($this->uri);
+        // FIXME: check $res isn't null
+        return $res->$name;
     }
 	
 }
