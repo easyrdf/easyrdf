@@ -103,6 +103,14 @@ class EasyRdf_Resource
         return $this->uri;
     }
     
+    public function isBnode() {
+        if (substr($this->uri, 0, 2) == '_:') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     # Return an array of this resource's types
     public function types()
     {
