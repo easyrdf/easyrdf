@@ -24,7 +24,16 @@ class EasyRdf_Owl_Property extends EasyRdf_Resource
     
     public function cardinality()
     {
-        return 'N';
+        $types = $this->types();
+        # Apart from owl_FunctionalProperty, these rules really correct,
+        # but they provide a good set of defaults
+        if (in_array( 'owl_FunctionalProperty', $types ) or
+            in_array( 'owl_DatatypeProperty', $types ) or 
+            in_array( 'owl_InverseFunctionalProperty', $types)) {
+            return '1';
+        } else {
+            return 'N';
+        }
     }
 
 }

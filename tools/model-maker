@@ -38,7 +38,13 @@ function createModel($class,$graph)
     $data .= "{\n";
     foreach ($class->properties($graph) as $property) {
         $data .= "    /** ".$property->join('rdfs_comment')." */\n";
-        $data .= "    public $".$property->shorten().";\n\n";
+        $data .= "    public $".$property->shorten();
+        if ($property->cardinality() == '1') {
+            $data .= " = null;\n";
+        } else {
+            $data .= " = array();\n";
+        }
+        $data .= "\n";
     }
     # FIXME: add properties for owl#Thing if this isn't a subclass.
     $data .= "}\n\n";

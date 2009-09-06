@@ -24,7 +24,7 @@ class EasyRdf_Resource
     
     }
     
-    # This shouldn't be called directly
+    // This shouldn't be called directly
     public function __construct($uri)
     {
         $this->uri = $uri;
