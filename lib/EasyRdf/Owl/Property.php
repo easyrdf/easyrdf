@@ -29,7 +29,7 @@ class EasyRdf_Owl_Property extends EasyRdf_Resource
 
 }
 
-EasyRdf_TypeMapper::add('rdf_Property', EasyRdf_Owl_Property);
-EasyRdf_TypeMapper::add('owl_Property', EasyRdf_Owl_Property);
-EasyRdf_TypeMapper::add('owl_ObjectProperty', EasyRdf_Owl_Property);
-EasyRdf_TypeMapper::add('owl_DatatypeProperty', EasyRdf_Owl_Property);
+EasyRdf_TypeMapper::add('rdf_Property', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::add('owl_Property', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::add('owl_ObjectProperty', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::add('owl_DatatypeProperty', 'EasyRdf_Owl_Property');

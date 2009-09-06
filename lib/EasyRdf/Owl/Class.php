@@ -38,4 +38,4 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
     }
 }
 
-EasyRdf_TypeMapper::add('owl_Class', EasyRdf_Owl_Class);
+EasyRdf_TypeMapper::add('owl_Class', 'EasyRdf_Owl_Class');

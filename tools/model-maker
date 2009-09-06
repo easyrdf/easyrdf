@@ -42,7 +42,7 @@ function createModel($class,$graph)
     }
     # FIXME: add properties for owl#Thing if this isn't a subclass.
     $data .= "}\n\n";
-    $data .= "EasyRdf_TypeMapper::add('".$class->shorten()."', $class_name);\n";
+    $data .= "EasyRdf_TypeMapper::add('".$class->shorten()."', '$class_name');\n";
     
     return array($class_name, $data);
 }
