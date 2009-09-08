@@ -4,23 +4,23 @@ require_once 'arc/ARC2.php';
 
 class EasyRdf_ArcParser
 {
-    private static $supported_types = array(
+    private static $_supportedTypes = array(
         'json' => 'JSON',
         'rdfxml' => 'RDFXML',
         'turtle' => 'Turtle',
         'rdfa' => 'SemHTML',
     );
 
-    public function parse($uri, $data, $doc_type)
+    public function parse($uri, $data, $docType)
     {
-        if (array_key_exists( $doc_type, self::$supported_types )) {
-            $class_name = self::$supported_types[$doc_type];
+        if (array_key_exists($docType, self::$_supportedTypes)) {
+            $className = self::$_supportedTypes[$docType];
         } else {
             # FIXME: throw exception?
             return null;
         }
         
-        $parser = ARC2::getParser( $class_name );
+        $parser = ARC2::getParser($className);
         if ($parser) {
             $parser->parse($uri, $data);
             return $parser->getSimpleIndex(false);
