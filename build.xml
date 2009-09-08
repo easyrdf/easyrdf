@@ -31,4 +31,14 @@
       </projdocfileset>
     </phpdoc>
   </target>
+
+  <target name="cs">
+    <phpcodesniffer
+      standard="ZEND"
+      format="report"
+      file="./lib/EasyRdf"
+      allowedFileExtensions="php">
+    </phpcodesniffer>
+  </target>
+
 </project>
