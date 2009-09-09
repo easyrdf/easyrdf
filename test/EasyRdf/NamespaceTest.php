@@ -25,9 +25,20 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://www.w3.org/2001/XMLSchema#', EasyRdf_Namespace::get('xsd'));
     }
 
+    public function testGetUpperCaseFoafNamespace()
+    {
+        $this->assertEquals('http://xmlns.com/foaf/0.1/', EasyRdf_Namespace::get('FOAF'));
+    }
+
     public function testAddNamespace()
     {
         EasyRdf_Namespace::add('po', 'http://purl.org/ontology/po/');
+        $this->assertEquals('http://purl.org/ontology/po/', EasyRdf_Namespace::get('po'));
+    }
+
+    public function testAddUppercaseNamespace()
+    {
+        EasyRdf_Namespace::add('PO', 'http://purl.org/ontology/po/');
         $this->assertEquals('http://purl.org/ontology/po/', EasyRdf_Namespace::get('po'));
     }
 

@@ -23,6 +23,7 @@ class EasyRdf_Namespace
       */
     public static function get($short)
     {
+        $short = strtolower( $short );
         if (array_key_exists( $short, self::$namespaces )) {
             return self::$namespaces[$short];
         } else {
@@ -38,6 +39,7 @@ class EasyRdf_Namespace
       */
     public static function add($short, $long)
     {
+        $short = strtolower( $short );
         self::$namespaces[$short] = $long;
     }
 
