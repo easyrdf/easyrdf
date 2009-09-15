@@ -53,7 +53,7 @@
         
         echo "<dl>\n";
         echo "<dt>Namespace:</dt><dd>".link_to($ontology->getUri())."</dd>\n";
-        if ($ontology->dc_date) echo "<dt>Date:</dt><dd>".$ontology->first('dc_date')."</dd>\n";
+        if ($ontology->dc_date) echo "<dt>Date:</dt><dd>".$ontology->get('dc_date')."</dd>\n";
         #if ($ontology->dc_creator)  # FIXME: implement this
         #if ($ontology->dc_contributor)  # FIXME: implement this
         echo "</dl>\n";

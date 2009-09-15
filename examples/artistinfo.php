@@ -44,10 +44,10 @@
 ?>
 
 <dl>
-  <dt>Artist Name:</dt><dd><?= $artist->first('foaf_name') ?></dd>
+  <dt>Artist Name:</dt><dd><?= $artist->get('foaf_name') ?></dd>
   <dt>Type:</dt><dd><?= $artist->type() ?></dd>
-  <dt>Homepage:</dt><dd><?= $artist->first('foaf_homepage') ?></dd>
-  <dt>Wikipedia page:</dt><dd><?= $artist->first('mo_wikipedia') ?></dd>
+  <dt>Homepage:</dt><dd><?= $artist->get('foaf_homepage') ?></dd>
+  <dt>Wikipedia page:</dt><dd><?= $artist->get('mo_wikipedia') ?></dd>
 </dl>
 
 <?php

@@ -29,16 +29,16 @@
     if ($review) {
         echo "<dl>\n";
         # FIXME: support gv_itemreviewed->gv_name ??
-        if ($review->first('gv_itemreviewed')) echo "<dt>Item Reviewed:</dt><dd>".$review->first('gv_itemreviewed')."</dd>\n";
-        if ($review->first('gv_rating')) echo "<dt>Rating:</dt><dd>".$review->first('gv_rating')."</dd>\n";
+        if ($review->get('gv_itemreviewed')) echo "<dt>Item Reviewed:</dt><dd>".$review->get('gv_itemreviewed')."</dd>\n";
+        if ($review->get('gv_rating')) echo "<dt>Rating:</dt><dd>".$review->get('gv_rating')."</dd>\n";
         # FIXME: support gv_reviewer->gv_name ??
-        if ($review->first('gv_reviewer')) echo "<dt>Reviewer:</dt><dd>".$review->first('gv_reviewer')."</dd>\n";
-        if ($review->first('gv_dtreviewed')) echo "<dt>Date Reviewed:</dt><dd>".$review->first('gv_dtreviewed')."</dd>\n";
-        if ($review->first('gv_summary')) echo "<dt>Review Summary:</dt><dd>".$review->first('gv_summary')."</dd>\n";
+        if ($review->get('gv_reviewer')) echo "<dt>Reviewer:</dt><dd>".$review->get('gv_reviewer')."</dd>\n";
+        if ($review->get('gv_dtreviewed')) echo "<dt>Date Reviewed:</dt><dd>".$review->get('gv_dtreviewed')."</dd>\n";
+        if ($review->get('gv_summary')) echo "<dt>Review Summary:</dt><dd>".$review->get('gv_summary')."</dd>\n";
         echo "</dl>\n";
 
-        if ($review->first('gv_description'))
-          echo "<div>".$review->first('gv_description')."</div>\n";
+        if ($review->get('gv_description'))
+          echo "<div>".$review->get('gv_description')."</div>\n";
     }
 ?>
 </body>
