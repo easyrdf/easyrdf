@@ -38,23 +38,27 @@
 ?>
 
 <dl>
-  <dt>Name:</dt><dd><?= $person->first('foaf_name') ?></dd>
-  <dt>Homepage:</dt><dd><?= link_to( $person->first('foaf_homepage') ) ?></dd>
-  <dt>Description:</dt><dd><?= $person->first('dc_description') ?></dd>
+  <dt>Name:</dt><dd><?= $person->get('foaf_name') ?></dd>
+  <dt>Homepage:</dt><dd><?= link_to( $person->get('foaf_homepage') ) ?></dd>
+  <dt>Description:</dt><dd><?= $person->get('dc_description') ?></dd>
 </dl>
 
 <?php
         echo "<h2>Known Persons</h2>\n";
         echo "<ul>\n";
-        foreach ($person->foaf_knows as $friend) {
-          if ($friend->foaf_name) {
-              $friend_name = $friend->first('foaf_name');
-          } else if ($friend->rdfs_label) {
-              $friend_name = $friend->first('rdfs_label');
-          }
-          if ($friend_name) {
-              echo "<li>".link_to_self( $friend_name, $friend )."</li>";
-          }
+        foreach ($person->all('foaf_knows') as $friend) {
+            if ($friend->get('foaf_name')) {
+                $friend_name = $friend->get('foaf_name');
+            } else if ($friend->get('rdfs_label')) {
+                $friend_name = $friend->get('rdfs_label');
+            }
+            if ($friend_name) {
+                if ($friend->isBnode()) {
+                    echo "<li>$friend_name</li>";
+                } else {
+                    echo "<li>".link_to_self( $friend_name, $friend )."</li>";
+                }
+            }
         }
         echo "</ul>\n";
     }

@@ -9,11 +9,12 @@
 <body>
 
 <?php
-  $me = new EasyRdf_Graph("http://www.aelius.com/njh#me");
+  $foaf = new EasyRdf_Graph("http://www.aelius.com/njh/foaf.rdf");
+  $me = $foaf->primaryTopic();
 ?>
 
 <p>
-  My name is: <?= $me->join('foaf_name') ?>
+  My name is: <?= $me->getFoaf_name() ?>
 </p>
 
 </body>

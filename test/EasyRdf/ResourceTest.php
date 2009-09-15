@@ -23,35 +23,14 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://www.example.com/#me', $this->resource->getUri());
     }
 
-    public function testMagicGet()
+    public function testGet()
     {
-        $this->resource->foobar = 'teststr';
-        $this->assertEquals('teststr', $this->resource->foobar);
+        $this->assertEquals('Test A', $this->resource->get('test_prop'));
     }
 
-    public function testMagicIsset()
+    public function testGetNonExistantProperty()
     {
-        $this->resource->foobar = 'teststr';
-        $this->assertEquals(true, isset($this->resource->foobar));
-        $this->assertEquals(false, isset($this->resource->ratrat));
-    }
-
-    public function testMagicUnset()
-    {
-        $this->resource->foobar = 'teststr';
-        $this->assertEquals(true, isset($this->resource->foobar));
-        unset($this->resource->foobar);
-        $this->assertEquals(false, isset($this->resource->foobar));
-    }
-
-    public function testFirst()
-    {
-        $this->assertEquals('Test A', $this->resource->first('test_prop'));
-    }
-
-    public function testFirstNonExistantProperty()
-    {
-        $this->assertEquals(null, $this->resource->first('foo_bar'));
+        $this->assertEquals(null, $this->resource->get('foo_bar'));
     }
 
     public function testAll()
@@ -74,9 +53,20 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('', $this->resource->join('foo_bar'));
     }
 
-    public function testJoinCustonGlue()
+    public function testJoinCustomGlue()
     {
         $this->assertEquals('Test A:Test B', $this->resource->join('test_prop', ':'));
+    }
+
+    public function testIsBnode()
+    {
+        $bnode = new EasyRdf_Resource('_:foobar');
+        $this->assertEquals(true, $bnode->isBnode());
+    }
+
+    public function testIsNotBnode()
+    {
+        $this->assertEquals(false, $this->resource->isBnode());
     }
 
     public function testTypes()
@@ -91,7 +81,14 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testNs()
     {
-        $this->markTestIncomplete();
+        $foaf_name = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $this->assertEquals('foaf', $foaf_name->ns());
+    }
+
+    public function testShorten()
+    {
+        $foaf_name = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $this->assertEquals('foaf_name', $foaf_name->shorten());
     }
 
     public function testLabelNoRdfsLabel()
@@ -123,6 +120,26 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     public function testDump()
     {
         $this->markTestIncomplete();
+    }
+
+    public function testMagicGet()
+    {
+        $this->assertEquals('Test A', $this->resource->getTest_prop());
+    }
+
+    public function testMagicGetNonExistantProperty()
+    {
+        $this->assertEquals('', $this->resource->getFoo_bar());
+    }
+
+    public function testMagicAll()
+    {
+        $this->assertEquals(array('Test A','Test B'), $this->resource->allTest_prop());
+    }
+
+    public function testMagicAllNonExistantProperty()
+    {
+        $this->assertEquals(array(), $this->resource->allFoo_bar());
     }
 
     public function testToString()
