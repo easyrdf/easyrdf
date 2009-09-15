@@ -305,7 +305,7 @@ class EasyRdf_Graph
     {
         $res = $this->getResource($this->uri);
         // FIXME: check $res isn't null
-        return $res->first('foaf_primaryTopic');
+        return $res->get('foaf_primaryTopic');
     }
 
     
@@ -321,13 +321,6 @@ class EasyRdf_Graph
         $res = $this->getResource($this->uri);
         // FIXME: check $res isn't null
         return call_user_func_array( array($res, $name), $arguments );
-    }
-
-    public function __get($name)
-    {
-        $res = $this->getResource($this->uri);
-        // FIXME: check $res isn't null
-        return $res->$name;
     }
 	
 }
