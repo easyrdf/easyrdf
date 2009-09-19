@@ -1,79 +1,121 @@
 <?php
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'TestHelper.php';
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 require_once 'EasyRdf/Namespace.php';
 
 class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 {
     public function testGetDcNamespace()
     {
-        $this->assertEquals('http://purl.org/dc/elements/1.1/', EasyRdf_Namespace::get('dc'));
+        $this->assertEquals(
+            'http://purl.org/dc/elements/1.1/',
+            EasyRdf_Namespace::get('dc')
+        );
     }
 
     public function testGetFoafNamespace()
     {
-        $this->assertEquals('http://xmlns.com/foaf/0.1/', EasyRdf_Namespace::get('foaf'));
+        $this->assertEquals(
+            'http://xmlns.com/foaf/0.1/',
+            EasyRdf_Namespace::get('foaf')
+        );
     }
 
     public function testGetRdfsNamespace()
     {
-        $this->assertEquals('http://www.w3.org/2000/01/rdf-schema#', EasyRdf_Namespace::get('rdfs'));
+        $this->assertEquals(
+            'http://www.w3.org/2000/01/rdf-schema#',
+            EasyRdf_Namespace::get('rdfs')
+        );
     }
 
     public function testGetXsdNamespace()
     {
-        $this->assertEquals('http://www.w3.org/2001/XMLSchema#', EasyRdf_Namespace::get('xsd'));
+        $this->assertEquals(
+            'http://www.w3.org/2001/XMLSchema#',
+            EasyRdf_Namespace::get('xsd')
+        );
     }
 
     public function testGetUpperCaseFoafNamespace()
     {
-        $this->assertEquals('http://xmlns.com/foaf/0.1/', EasyRdf_Namespace::get('FOAF'));
+        $this->assertEquals(
+            'http://xmlns.com/foaf/0.1/',
+            EasyRdf_Namespace::get('FOAF')
+        );
     }
 
     public function testAddNamespace()
     {
         EasyRdf_Namespace::add('po', 'http://purl.org/ontology/po/');
-        $this->assertEquals('http://purl.org/ontology/po/', EasyRdf_Namespace::get('po'));
+        $this->assertEquals(
+            'http://purl.org/ontology/po/',
+            EasyRdf_Namespace::get('po')
+        );
     }
 
     public function testAddUppercaseNamespace()
     {
         EasyRdf_Namespace::add('PO', 'http://purl.org/ontology/po/');
-        $this->assertEquals('http://purl.org/ontology/po/', EasyRdf_Namespace::get('po'));
+        $this->assertEquals(
+            'http://purl.org/ontology/po/',
+            EasyRdf_Namespace::get('po')
+        );
     }
 
     public function testShortenFoafName()
     {
-        $this->assertEquals('foaf_name', EasyRdf_Namespace::shorten('http://xmlns.com/foaf/0.1/name'));
+        $this->assertEquals(
+            'foaf_name',
+            EasyRdf_Namespace::shorten('http://xmlns.com/foaf/0.1/name')
+        );
     }
 
     public function testShortenUnknownUrl()
     {
-        $this->assertEquals(null, EasyRdf_Namespace::shorten('http://www.aelius.com/njh/'));
+        $this->assertEquals(
+            null,
+            EasyRdf_Namespace::shorten('http://www.aelius.com/njh/')
+        );
     }
 
     public function testNamespaceOfUriFoafName()
     {
-        $this->assertEquals('foaf', EasyRdf_Namespace::namespaceOfUri('http://xmlns.com/foaf/0.1/name'));
+        $this->assertEquals(
+            'foaf',
+            EasyRdf_Namespace::namespaceOfUri('http://xmlns.com/foaf/0.1/name')
+        );
     }
 
     public function testNamespaceOfUnknownUrl()
     {
-        $this->assertEquals(null, EasyRdf_Namespace::namespaceOfUri('http://www.aelius.com/njh/'));
+        $this->assertEquals(
+            null,
+            EasyRdf_Namespace::namespaceOfUri('http://www.aelius.com/njh/')
+        );
     }
 
     public function testExpandFoafName()
     {
-        $this->assertEquals('http://xmlns.com/foaf/0.1/name', EasyRdf_Namespace::expand('foaf_name'));
+        $this->assertEquals(
+            'http://xmlns.com/foaf/0.1/name',
+            EasyRdf_Namespace::expand('foaf_name')
+        );
     }
 
     public function testExpandMissingUnderscore()
     {
-        $this->assertEquals(null, EasyRdf_Namespace::expand('unknown'));
+        $this->assertEquals(
+            null,
+            EasyRdf_Namespace::expand('unknown')
+        );
     }
 
     public function testExpandUnknown()
     {
-        $this->assertEquals(null, EasyRdf_Namespace::expand('unknown_unknown'));
+        $this->assertEquals(
+            null,
+            EasyRdf_Namespace::expand('unknown_unknown')
+        );
     }
 }

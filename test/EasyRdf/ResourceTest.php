@@ -1,85 +1,118 @@
 <?php
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'TestHelper.php';
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 require_once 'EasyRdf/Resource.php';
 
 class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 {
-    protected $resource = null;
+    protected $_resource = null;
     
     /**
      * Set up the test suite before each test
      */
     public function setUp()
     {
-        $this->resource = new EasyRdf_Resource('http://www.example.com/#me');
-        $this->resource->set( 'rdf_type', 'foaf_Person' );
-        $this->resource->add( 'test_prop', 'Test A' );
-        $this->resource->add( 'test_prop', 'Test B' );
+        $this->_resource = new EasyRdf_Resource('http://www.example.com/#me');
+        $this->_resource->set('rdf_type', 'foaf_Person');
+        $this->_resource->add('test_prop', 'Test A');
+        $this->_resource->add('test_prop', 'Test B');
     }
 
     public function testGetUri()
     {
-        $this->assertEquals('http://www.example.com/#me', $this->resource->getUri());
+        $this->assertEquals(
+            'http://www.example.com/#me',
+            $this->_resource->getUri()
+        );
     }
 
     public function testGet()
     {
-        $this->assertEquals('Test A', $this->resource->get('test_prop'));
+        $this->assertEquals(
+            'Test A',
+            $this->_resource->get('test_prop')
+        );
     }
 
     public function testGetNonExistantProperty()
     {
-        $this->assertEquals(null, $this->resource->get('foo_bar'));
+        $this->assertEquals(
+            null,
+            $this->_resource->get('foo_bar')
+        );
     }
 
     public function testAll()
     {
-        $this->assertEquals(array('Test A','Test B'), $this->resource->all('test_prop'));
+        $this->assertEquals(
+            array('Test A','Test B'),
+            $this->_resource->all('test_prop')
+        );
     }
 
     public function testAllNonExistantProperty()
     {
-        $this->assertEquals(array(), $this->resource->all('foo_bar'));
+        $this->assertEquals(
+            array(),
+            $this->_resource->all('foo_bar')
+        );
     }
 
     public function testSet()
     {
-        $this->resource->set('test_prop', 'Test C');
-        $this->assertEquals(array('Test C'), $this->resource->all('test_prop'));
+        $this->_resource->set('test_prop', 'Test C');
+        $this->assertEquals(
+            array('Test C'),
+            $this->_resource->all('test_prop')
+        );
     }
     
     public function testSetNull()
     {
-        $this->resource->set('test_prop', null);
-        $this->assertEquals(array(), $this->resource->all('test_prop'));
+        $this->_resource->set('test_prop', null);
+        $this->assertEquals(
+            array(),
+            $this->_resource->all('test_prop')
+        );
     }
 
     public function testAdd()
     {
-        $this->resource->add('test_prop', 'Test C');
-        $this->assertEquals(array('Test A', 'Test B', 'Test C'), $this->resource->all('test_prop'));
+        $this->_resource->add('test_prop', 'Test C');
+        $this->assertEquals(
+            array('Test A', 'Test B', 'Test C'),
+            $this->_resource->all('test_prop')
+        );
     }
     
     public function testAddNull()
     {
-        $this->resource->add('test_prop', null);
-        $this->assertEquals(array('Test A', 'Test B'), $this->resource->all('test_prop'));
+        $this->_resource->add('test_prop', null);
+        $this->assertEquals(
+            array('Test A', 'Test B'),
+            $this->_resource->all('test_prop')
+        );
     }
 
     public function testJoinDefaultGlue()
     {
-        $this->assertEquals('Test A Test B', $this->resource->join('test_prop'));
+        $this->assertEquals(
+            'Test A Test B',
+            $this->_resource->join('test_prop')
+        );
     }
 
     public function testJoinNonExistantProperty()
     {
-        $this->assertEquals('', $this->resource->join('foo_bar'));
+        $this->assertEquals('', $this->_resource->join('foo_bar'));
     }
 
     public function testJoinCustomGlue()
     {
-        $this->assertEquals('Test A:Test B', $this->resource->join('test_prop', ':'));
+        $this->assertEquals(
+            'Test A:Test B',
+            $this->_resource->join('test_prop', ':')
+        );
     }
 
     public function testIsBnode()
@@ -90,60 +123,66 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testIsNotBnode()
     {
-        $this->assertEquals(false, $this->resource->isBnode());
+        $this->assertEquals(false, $this->_resource->isBnode());
     }
 
     public function testProperties()
     {
-        $this->assertEquals(array('rdf_type', 'test_prop'), $this->resource->properties());
+        $this->assertEquals(
+            array('rdf_type', 'test_prop'),
+            $this->_resource->properties()
+        );
     }
 
     public function testTypes()
     {
-        $this->assertEquals(array('foaf_Person'), $this->resource->types());
+        $this->assertEquals(
+            array('foaf_Person'),
+            $this->_resource->types()
+        );
     }
 
     public function testType()
     {
-        $this->assertEquals('foaf_Person', $this->resource->type());
+        $this->assertEquals('foaf_Person', $this->_resource->type());
     }
 
     public function testNs()
     {
-        $foaf_name = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
-        $this->assertEquals('foaf', $foaf_name->ns());
+        $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $this->assertEquals('foaf', $foafName->ns());
     }
 
     public function testShorten()
     {
-        $foaf_name = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
-        $this->assertEquals('foaf_name', $foaf_name->shorten());
+        $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $this->assertEquals('foaf_name', $foafName->shorten());
     }
 
     public function testLabelNoRdfsLabel()
     {
-        $this->assertEquals(null, $this->resource->label());
+        $this->assertEquals(null, $this->_resource->label());
     }
 
     public function testLabelWithRdfsLabel()
     {
-        $this->resource->set( 'rdfs_label', 'Label Text' );
-        $this->resource->set( 'foaf_name', 'Foaf Name' );
-        $this->resource->set( 'dc_title', 'Dc Title' );
-        $this->assertEquals('Label Text', $this->resource->label());
+        $this->_resource->set('rdfs_label', 'Label Text');
+        $this->_resource->set('foaf_name', 'Foaf Name');
+        $this->_resource->set('dc_title', 'Dc Title');
+        $this->assertEquals('Label Text', $this->_resource->label());
     }
 
     public function testLabelWithFoafName()
     {
-        $this->resource->set( 'foaf_name', 'Foaf Name' );
-        $this->resource->set( 'dc_title', 'Dc Title' );
-        $this->assertEquals('Foaf Name', $this->resource->label());
+        $this->_resource->set('foaf_name', 'Foaf Name');
+        $this->_resource->set('dc_title', 'Dc Title');
+        $this->assertEquals('Foaf Name', $this->_resource->label());
     }
 
     public function testLabelWithDcTitle()
     {
-        $this->resource->set( 'dc_title', 'Dc Title' );
-        $this->assertEquals('Dc Title', $this->resource->label());
+        $this->_resource->set('dc_title', 'Dc Title');
+        $this->assertEquals('Dc Title', $this->_resource->label());
     }
 
     public function testDump()
@@ -153,26 +192,32 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testMagicGet()
     {
-        $this->assertEquals('Test A', $this->resource->getTest_prop());
+        $this->assertEquals('Test A', $this->_resource->getTest_prop());
     }
 
     public function testMagicGetNonExistantProperty()
     {
-        $this->assertEquals('', $this->resource->getFoo_bar());
+        $this->assertEquals('', $this->_resource->getFoo_bar());
     }
 
     public function testMagicAll()
     {
-        $this->assertEquals(array('Test A','Test B'), $this->resource->allTest_prop());
+        $this->assertEquals(
+            array('Test A','Test B'),
+            $this->_resource->allTest_prop()
+        );
     }
 
     public function testMagicAllNonExistantProperty()
     {
-        $this->assertEquals(array(), $this->resource->allFoo_bar());
+        $this->assertEquals(array(), $this->_resource->allFoo_bar());
     }
 
     public function testToString()
     {
-        $this->assertEquals('http://www.example.com/#me', $this->resource->__toString());
+        $this->assertEquals(
+            'http://www.example.com/#me',
+            $this->_resource->__toString()
+        );
     }
 }

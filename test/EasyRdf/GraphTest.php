@@ -1,24 +1,36 @@
 <?php
 
-require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'TestHelper.php';
+require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 require_once 'EasyRdf/Graph.php';
 
 class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 {
     public function testSimplifyMimeTypeJson()
     {
-        $this->assertEquals('json', EasyRdf_Graph::simplifyMimeType('application/json'));
-        $this->assertEquals('json', EasyRdf_Graph::simplifyMimeType('text/json'));
+        $this->assertEquals(
+            'json',
+            EasyRdf_Graph::simplifyMimeType('application/json')
+        );
+        $this->assertEquals(
+            'json',
+            EasyRdf_Graph::simplifyMimeType('text/json')
+        );
     }
 
     public function testSimplifyMimeTypeRdfXml()
     {
-        $this->assertEquals('rdfxml', EasyRdf_Graph::simplifyMimeType('application/rdf+xml'));
+        $this->assertEquals(
+            'rdfxml',
+            EasyRdf_Graph::simplifyMimeType('application/rdf+xml')
+        );
     }
 
     public function testSimplifyMimeTypeTurtle()
     {
-        $this->assertEquals('turtle', EasyRdf_Graph::simplifyMimeType('text/turtle'));
+        $this->assertEquals(
+            'turtle',
+            EasyRdf_Graph::simplifyMimeType('text/turtle')
+        );
     }
     
     public function testGuessTypeRdfXml()
@@ -41,6 +53,9 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     
     public function testGuessTypeUnknown()
     {
-         $this->assertEquals('', EasyRdf_Graph::guessDocType('blah blah blah'));
+        $this->assertEquals(
+            '',
+            EasyRdf_Graph::guessDocType('blah blah blah')
+        );
     }
 }
