@@ -12,19 +12,22 @@ class EasyRdf_RapperParser
      * @param string $input_type the format of the input document.
      * @return string the converted document, or null if the convertion failed.
      */
-    public function parse($uri, $data, $doc_type)
+    public function parse($uri, $data, $docType)
     {
         # Don't even attempt to parse it if it is empty
         if (trim($data) == '') return array();
 
         // Open a pipe to the rapper command
         $descriptorspec = array(
-          0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
-          1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
-          2 => array("file", "php://stderr", "w")
+            0 => array("pipe", "r"),
+            1 => array("pipe", "w"),
+            2 => array("file", "php://stderr", "w")
         );
 
-        $process = proc_open("rapper --quiet -i $doc_type -o json -e - $uri", $descriptorspec, $pipes, '/tmp', null);
+        $process = proc_open(
+            "rapper --quiet -i $docType -o json -e - $uri",
+            $descriptorspec, $pipes, '/tmp', null
+        );
         if (is_resource($process)) {
             // $pipes now looks like this:
             // 0 => writeable handle connected to child stdin
@@ -38,10 +41,10 @@ class EasyRdf_RapperParser
       
             // It is important that you close any pipes before calling
             // proc_close in order to avoid a deadlock
-            $return_value = proc_close($process);
-            if ($return_value) {
+            $returnValue = proc_close($process);
+            if ($returnValue) {
                 # FIXME: throw exception or log error?
-                echo "rapper returned $return_value\n";
+                echo "rapper returned $returnValue\n";
                 return null;
             }
         } else {
@@ -49,6 +52,6 @@ class EasyRdf_RapperParser
         }
 
         // Parse in the JSON
-        return json_decode( $data, true );
+        return json_decode($data, true);
     }
 }

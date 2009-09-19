@@ -5,7 +5,7 @@
   */
 class EasyRdf_Namespace
 {
-    private static $namespaces = array(
+    private static $_namespaces = array(
       'dc' => 'http://purl.org/dc/elements/1.1/',
       'foaf' => 'http://xmlns.com/foaf/0.1/',
       'owl' => 'http://www.w3.org/2002/07/owl#',
@@ -23,9 +23,9 @@ class EasyRdf_Namespace
       */
     public static function get($short)
     {
-        $short = strtolower( $short );
-        if (array_key_exists( $short, self::$namespaces )) {
-            return self::$namespaces[$short];
+        $short = strtolower($short);
+        if (array_key_exists($short, self::$_namespaces)) {
+            return self::$_namespaces[$short];
         } else {
             return null;
         }
@@ -39,8 +39,8 @@ class EasyRdf_Namespace
       */
     public static function add($short, $long)
     {
-        $short = strtolower( $short );
-        self::$namespaces[$short] = $long;
+        $short = strtolower($short);
+        self::$_namespaces[$short] = $long;
     }
 
     /**
@@ -51,7 +51,7 @@ class EasyRdf_Namespace
       */
     public static function namespaceOfUri($uri)
     {
-        foreach (self::$namespaces as $short => $long) {
+        foreach (self::$_namespaces as $short => $long) {
             if (strpos($uri, $long) === 0) {
                 return $short;
             }
@@ -67,7 +67,7 @@ class EasyRdf_Namespace
       */
     public static function shorten($uri)
     {
-        foreach (self::$namespaces as $short => $long) {
+        foreach (self::$_namespaces as $short => $long) {
             if (strpos($uri, $long) === 0) {
                 return $short . '_' . substr($uri, strlen($long));
             }
@@ -78,12 +78,12 @@ class EasyRdf_Namespace
     /**
       * Expand a shortened URI back into a full URI.
       *
-      * @param string $short_uri The short URI (eg 'foaf_name')
+      * @param string $shortUri The short URI (eg 'foaf_name')
       * @return string The full URI (eg 'http://xmlns.com/foaf/0.1/name')
       */
-    public static function expand($short_uri)
+    public static function expand($shortUri)
     {
-        if (preg_match("/^(\w+?)_(.+)$/", $short_uri, $matches)) {
+        if (preg_match("/^(\w+?)_(.+)$/", $shortUri, $matches)) {
             $long = self::get($matches[1]);
             if ($long) {
                 return $long . $matches[2];

@@ -40,7 +40,9 @@ class EasyRdf_Resource
     {
         if ($property == null or $property == '') {
             # FIXME: standardise exceptions?
-            throw new Exception('Invalid property name in '.get_class($this).'::set()');
+            throw new Exception(
+                'Invalid property name in '.get_class($this).'::set()'
+            );
         }
         
         if ($values == null or (is_array($values) and count($values)==0)) {
@@ -57,7 +59,9 @@ class EasyRdf_Resource
     {
         if ($property == null or $property == '') {
             # FIXME: standardise exceptions?
-            throw new Exception('Invalid property name in '.get_class($this).'::set()');
+            throw new Exception(
+                'Invalid property name in '.get_class($this).'::set()'
+            );
         }
 
         if ($value == null) {
@@ -187,7 +191,9 @@ class EasyRdf_Resource
         
           default:
               # FIXME: standardise exceptions?
-              throw new Exception('Tried to call unknown method '.get_class($this).'::'.$name);
+              throw new Exception(
+                  'Tried to call unknown method '.get_class($this).'::'.$name
+              );
               break;
         }
     }

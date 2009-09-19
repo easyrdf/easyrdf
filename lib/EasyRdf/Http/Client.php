@@ -5,16 +5,14 @@ require_once "EasyRdf/Http/Response.php";
 
 class EasyRdf_Http_Client
 {
-    protected $uri = null;
-    protected $config = array(
+    protected $_uri = null;
+    protected $_config = array(
         'maxredirects'    => 5,
         'useragent'       => 'EasyRdf_Http_Client',
-        'timeout'         => 10,
-        'cache_dir'       => null,
-        'cache_expire'    => 3600
+        'timeout'         => 10
     );
-    protected $headers = array();
-    protected $redirectCounter = 0;
+    protected $_headers = array();
+    protected $_redirectCounter = 0;
 
     public function __construct($uri = null, $config = null)
     {
@@ -32,14 +30,14 @@ class EasyRdf_Http_Client
             $uri = strval($uri);
         }
 
-        $this->uri = $uri;
+        $this->_uri = $uri;
 
         return $this;
     }
 
-    public function getUri($as_string = true)
+    public function getUri($asString = true)
     {
-        return $this->uri;
+        return $this->_uri;
     }
 
     public function setConfig($config = array())
@@ -50,22 +48,22 @@ class EasyRdf_Http_Client
         }
 
         foreach ($config as $k => $v)
-            $this->config[strtolower($k)] = $v;
+            $this->_config[strtolower($k)] = $v;
 
         return $this;
     }
     
     public function setHeaders($name, $value = null)
     {
-        $normalized_name = strtolower($name);
+        $normalizedName = strtolower($name);
 
         // If $value is null or false, unset the header
         if ($value === null || $value === false) {
-            unset($this->headers[$normalized_name]);
+            unset($this->_headers[$normalizedName]);
 
         // Else, set the header
         } else {
-            $this->headers[$normalized_name] = array($name, $value);
+            $this->_headers[$normalizedName] = array($name, $value);
         }
 
         return $this;
@@ -74,8 +72,8 @@ class EasyRdf_Http_Client
     public function getHeader($key)
     {
         $key = strtolower($key);
-        if (isset($this->headers[$key])) {
-            return $this->headers[$key][1];
+        if (isset($this->_headers[$key])) {
+            return $this->_headers[$key][1];
         } else {
             return null;
         }
@@ -88,42 +86,32 @@ class EasyRdf_Http_Client
      */
     public function getRedirectionsCount()
     {
-        return $this->redirectCounter;
+        return $this->_redirectCounter;
     }
 
     public function request($method = 'GET')
     {
-        if (!$this->uri) {
+        if (!$this->_uri) {
             // FIXME: throw exception
             return null;
         }
-        
-        // Do we already have it cached?
-        if ($this->config['cache_dir'] and $this->config['cache_expire']) {
-            $cache_file = $this->config['cache_dir'] . '/easy_rdf_' . md5($this->uri);
-            if (file_exists($cache_file)) {
-                $mtime = filemtime($cache_file);
-                if ($mtime + $this->config['cache_expire'] > time()) {
-                    $content = file_get_contents( $cache_file );
-                    return EasyRdf_Http_Response::fromString($content);
-                }
-            }
-        }
 
-        $this->redirectCounter = 0;
+        $this->_redirectCounter = 0;
         $response = null;
 
         // Send the first request. If redirected, continue.
         do {
             // Clone the URI and add the additional GET parameters to it
-            $uri = parse_url($this->uri);
+            $uri = parse_url($this->_uri);
             $host = $uri['host'];
             $port = $uri['port'];
             if (!$port) $port = 80;
             $headers = $this->_prepareHeaders($host, $port);
 
             // Open socket to remote server
-            $socket = fsockopen( $host, $port, $errno, $errstr, $this->config['timeout'] );
+            $socket = fsockopen(
+                $host, $port, $errno, $errstr, $this->_config['timeout']
+            );
             if (!$socket) {
                 // FIXME: throw exception            
                 return null;
@@ -153,7 +141,9 @@ class EasyRdf_Http_Client
             $response = EasyRdf_Http_Response::fromString($content);
  
             // If we got redirected, look for the Location header
-            if ($response->isRedirect() && ($location = $response->getHeader('location'))) {
+            if ($response->isRedirect() && 
+                   ($location = $response->getHeader('location'))
+               ) {
 
                 // If we got a well formed absolute URI
                 if (parse_url($location)) {
@@ -163,7 +153,7 @@ class EasyRdf_Http_Client
                     // FIXME: throw exception?
                     break;
                 }
-                ++$this->redirectCounter;
+                ++$this->_redirectCounter;
 
             } else {
                 // If we didn't get any location, stop redirecting
@@ -171,13 +161,8 @@ class EasyRdf_Http_Client
             }
 
 
-        } while ($this->redirectCounter < $this->config['maxredirects']);
+        } while ($this->_redirectCounter < $this->_config['maxredirects']);
         
-        # Write the response to the cache
-        if ($cache_file) {
-            file_put_contents( $cache_file, $content );
-        }
-
         return $response;
     }
 
@@ -193,7 +178,7 @@ class EasyRdf_Http_Client
         $headers = array();
 
         // Set the host header
-        if (! isset($this->headers['host'])) {
+        if (! isset($this->_headers['host'])) {
             // If the port is not default, add it
             if ($port != 80) {
                 $host .= ':' . $port;
@@ -202,17 +187,17 @@ class EasyRdf_Http_Client
         }
 
         // Set the connection header
-        if (! isset($this->headers['connection'])) {
+        if (! isset($this->_headers['connection'])) {
             $headers[] = "Connection: close";
         }
 
         // Set the user agent header
-        if (! isset($this->headers['user-agent'])) {
-            $headers[] = "User-Agent: {$this->config['useragent']}";
+        if (! isset($this->_headers['user-agent'])) {
+            $headers[] = "User-Agent: {$this->_config['useragent']}";
         }
 
         // Add all other user defined headers
-        foreach ($this->headers as $header) {
+        foreach ($this->_headers as $header) {
             list($name, $value) = $header;
             if (is_array($value)) {
                 $value = implode(', ', $value);

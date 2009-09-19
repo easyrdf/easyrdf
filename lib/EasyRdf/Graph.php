@@ -6,17 +6,17 @@ require_once "EasyRdf/TypeMapper.php";
 
 class EasyRdf_Graph
 {
-    private $uri = null;
-    private $resources = array();
-    private $type_index = array();
-    private static $http_client = null;
-    private static $parser = null;
+    private $_uri = null;
+    private $_resources = array();
+    private $_typeIndex = array();
+    private static $_httpClient = null;
+    private static $_parser = null;
     
     const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
     /**
-	   * Get a Resource object for a specific URI
-	   */
+       * Get a Resource object for a specific URI
+       */
     public function get($uri, $types = array())
     {
         # FIXME: allow URI to be shortened?
@@ -32,39 +32,39 @@ class EasyRdf_Graph
         }
     
         # Create resource object if it doesn't already exist
-        if (!array_key_exists($uri, $this->resources)) {
-            $res_class = 'EasyRdf_Resource';
+        if (!array_key_exists($uri, $this->_resources)) {
+            $resClass = 'EasyRdf_Resource';
             foreach ($types as $type) {
                 $class = EasyRDF_TypeMapper::get($type);
                 if ($class != null) {
-                    $res_class = $class;
+                    $resClass = $class;
                     break;
                 }
             }
-            $this->resources[$uri] = new $res_class($uri);
+            $this->_resources[$uri] = new $resClass($uri);
 
             # Add resource to the type index
-            $resource = $this->resources[$uri];
+            $resource = $this->_resources[$uri];
             foreach ($types as $type) {
-                $resource->add( 'rdf_type', $type );
-                if (!isset($this->type_index[$type])) {
-                    $this->type_index[$type] = array();
+                $resource->add('rdf_type', $type);
+                if (!isset($this->_typeIndex[$type])) {
+                    $this->_typeIndex[$type] = array();
                 }
-                if (!in_array($resource, $this->type_index[$type])) {
-                    array_push($this->type_index[$type], $resource);
+                if (!in_array($resource, $this->_typeIndex[$type])) {
+                    array_push($this->_typeIndex[$type], $resource);
                 }
             }
         }
 
-        return $this->resources[$uri];
+        return $this->_resources[$uri];
     }
 
-	  /**
+      /**
      * Return all known resources
      */
     public function resources()
     {
-        return array_values($this->resources);
+        return array_values($this->_resources);
     }
 
     /**
@@ -76,32 +76,32 @@ class EasyRdf_Graph
     }
 
 
-    public static function setHttpClient($http_client)
+    public static function setHttpClient($httpClient)
     {
-        self::$http_client = $http_client;
-   }
+        self::$_httpClient = $httpClient;
+    }
     
     public static function getHttpClient()
     {
-        if (!self::$http_client) {
+        if (!self::$_httpClient) {
             require_once "EasyRdf/Http/Client.php";
-            self::$http_client = new EasyRdf_Http_Client();
+            self::$_httpClient = new EasyRdf_Http_Client();
         }
-        return self::$http_client;
+        return self::$_httpClient;
     }
 
     public static function getRdfParser()
     {
-        if (!self::$parser) {
+        if (!self::$_parser) {
             require_once "EasyRdf/RapperParser.php";
-            self::$parser = new EasyRdf_RapperParser();
+            self::$_parser = new EasyRdf_RapperParser();
         }
-        return self::$parser;
+        return self::$_parser;
     }
 
-    public static function simplifyMimeType($mime_type)
+    public static function simplifyMimeType($mimeType)
     {
-        switch($mime_type) {
+        switch($mimeType) {
             case 'application/json':
             case 'text/json':
                 return 'json';
@@ -121,6 +121,7 @@ class EasyRdf_Graph
             default:
                 # FIXME: throw exception?
                 return '';
+                break;
         }
     }
     
@@ -132,7 +133,7 @@ class EasyRdf_Graph
         }
         
         # FIXME: could /etc/magic help here?
-        $short = substr( trim($data), 0, 255 );
+        $short = substr(trim($data), 0, 255);
         if (ereg("^\{", $short)) {
             return 'json';
         } else if (ereg("^---", $short)) {
@@ -153,21 +154,21 @@ class EasyRdf_Graph
 
     public static function setRdfParser($parser)
     {
-        self::$parser = $parser;
+        self::$_parser = $parser;
     }
     
-    public function __construct($uri='', $data='', $doc_type='')
+    public function __construct($uri='', $data='', $docType='')
     {
         if ($uri) {
-            $this->uri = $uri;
-            $this->load($uri, $data, $doc_type);
+            $this->_uri = $uri;
+            $this->load($uri, $data, $docType);
         }
     }
 
     /**
      * Convert RDF/PHP into a graph of objects
      */
-    public function load($uri, $data='', $doc_type='')
+    public function load($uri, $data='', $docType='')
     {
         // FIXME: validate the URI?
 
@@ -176,31 +177,31 @@ class EasyRdf_Graph
             # FIXME: prevent loading the same URI multiple times
             $client = self::getHttpClient();
             $client->setUri($uri);
-            # FIXME: set the accept header to a list of formats we are able to parse
+            # FIXME: set the accept header to formats we are able to parse
             $client->setHeaders('Accept', 'application/rdf+xml');
             $response = $client->request();
             $data = $response->getBody();
-            if ($doc_type == '') {
-                $doc_type = self::simplifyMimeType(
+            if ($docType == '') {
+                $docType = self::simplifyMimeType(
                     $response->getHeader('Content-Type')
                 );
             }
         }
         
         # Guess the document type if not given
-        if ($doc_type == '') {
-            $doc_type = self::guessDocType( $data );
+        if ($docType == '') {
+            $docType = self::guessDocType($data);
         }
         
         # Parse the document
-        if ($doc_type == 'php') {
+        if ($docType == 'php') {
             # FIXME: validate the data?
-        } else if ($doc_type == 'json') {
+        } else if ($docType == 'json') {
             # Parse the RDF/JSON into RDF/PHP
-            $data = json_decode( $data, true );
+            $data = json_decode($data, true);
         } else {
             # Parse the RDF data
-            $data = self::getRdfParser()->parse( $uri, $data, $doc_type );
+            $data = self::getRdfParser()->parse($uri, $data, $docType);
             if (!$data) {
                 # FIXME: parse error - throw exception?
                 return null;
@@ -233,9 +234,9 @@ class EasyRdf_Graph
         }
     }
     
-    private function getResourceType( $data, $uri )
+    private function getResourceType($data, $uri)
     {
-       if (array_key_exists($uri, $data)) {
+        if (array_key_exists($uri, $data)) {
             $subj = $data[$uri];
             if (array_key_exists(self::RDF_TYPE_URI, $subj)) {
                 $types = array();
@@ -258,8 +259,8 @@ class EasyRdf_Graph
     public function allOfType($type)
     {
         # FIXME: shorten if $type is a URL
-        if ($this->type_index[$type]) {
-            return $this->type_index[$type];
+        if ($this->_typeIndex[$type]) {
+            return $this->_typeIndex[$type];
         } else {
             return array();
         }
@@ -275,12 +276,12 @@ class EasyRdf_Graph
     
     public function allTypes()
     {
-        return array_keys( $this->type_index );
+        return array_keys($this->_typeIndex);
     }
     
     public function getUri()
     {
-        return $this->uri;
+        return $this->_uri;
     }
     
     public function add($resource, $properties, $value=null)
@@ -288,37 +289,37 @@ class EasyRdf_Graph
         if (!is_object($resource)) {
             # FIXME: check object type
             # FIXME: allow shortened URIs?
-            $resource = $this->get( $resource );
+            $resource = $this->get($resource);
         }
         
         if (is_array($properties)) {
-            foreach( $properties as $property => $value ) {
+            foreach ($properties as $property => $value) {
                 # FIXME: check if value is a URI?
-                $resource->add( $property, $value );
+                $resource->add($property, $value);
             }
         } else {
-            $resource->add( $properties, $value );
+            $resource->add($properties, $value);
         }
     }
 
     public function dump($html=true)
     {
         # FIXME: display some information about the graph
-        foreach ($this->resources as $resource) {
-            $resource->dump($html,1);
+        foreach ($this->_resources as $resource) {
+            $resource->dump($html, 1);
         }
     }
     
     public function type()
     {
-        $res = $this->get($this->uri);
+        $res = $this->get($this->_uri);
         // FIXME: check $res isn't null
         return $res->type();
     }
     
     public function primaryTopic()
     {
-        $res = $this->get($this->uri);
+        $res = $this->get($this->_uri);
         // FIXME: check $res isn't null
         return $res->get('foaf_primaryTopic');
     }
@@ -328,14 +329,14 @@ class EasyRdf_Graph
     
     public function __toString()
     {
-        return $this->uri;
+        return $this->_uri;
     }
 
     public function __call($name, $arguments)
     {
-        $res = $this->get($this->uri);
+        $res = $this->get($this->_uri);
         // FIXME: check $res isn't null
-        return call_user_func_array( array($res, $name), $arguments );
+        return call_user_func_array(array($res, $name), $arguments);
     }
-	
+    
 }

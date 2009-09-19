@@ -13,7 +13,7 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
     
     function fileName()
     {
-        return str_replace('_','/',$this->className()) . '.php';
+        return str_replace('_', '/', $this->className()) . '.php';
     }
 
     # FIXME: not ideal having to pass graph in here
@@ -21,16 +21,16 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
     {
         $properties = array();
         # FIXME: cache this somehow?
-        $owl_thing = $graph->getResource('http://www.w3.org/2002/07/owl#Thing');
+        $owlThing = $graph->getResource('http://www.w3.org/2002/07/owl#Thing');
         $superClass = $this->get('rdfs_subClassOf');
-        if ($superClass == $owl_thing) $superClass = '';
-        $all_properties = EasyRdf_Owl_Property::findAll($graph);
-        foreach ($all_properties as $name => $property) {
+        if ($superClass == $owlThing) $superClass = '';
+        $allProperties = EasyRdf_Owl_Property::findAll($graph);
+        foreach ($allProperties as $name => $property) {
             if (($superClass == '' and
                 (count($property->all('rdfs_domain')) == 0 or 
-                in_array($owl_thing, $property->all('rdfs_domain')))) or 
-                in_array($this, $property->all('rdfs_domain')))
-            {
+                in_array($owlThing, $property->all('rdfs_domain')))) or 
+                in_array($this, $property->all('rdfs_domain'))
+            ) {
                 array_push($properties, $property);
             }
         }
