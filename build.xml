@@ -1,15 +1,24 @@
 <?xml version="1.0"?>
 
-<project name="EasyRdf" basedir="." default="test">
+<project name="EasyRdf" default="test">
   <includepath classpath="./lib" />
+
+  <fileset id="source" dir="${project.basedir}/lib">
+    <include name="EasyRdf/*.php" />
+    <include name="EasyRdf/Http/*.php" />
+    <include name="EasyRdf/Owl/*.php" />
+  </fileset>
+
+  <fileset id="tests" dir="${project.basedir}/test">
+    <include name="EasyRdf/*Test.php" />
+    <include name="EasyRdf/Http/*Test.php" />
+  </fileset>
+
 
   <target name="test">
     <phpunit haltonfailure="true" printsummary="true">
       <batchtest>
-        <fileset dir="test">
-          <include name="EasyRdf/*Test.php" />
-          <include name="EasyRdf/Http/*Test.php" />
-        </fileset>
+        <fileset refid="tests" />
       </batchtest>
     </phpunit>
   </target>
@@ -20,11 +29,8 @@
       sourcecode="no"
       undocumentedelements="yes"
       output="HTML:Smarty:PHP">
-      <fileset dir="./lib">
-        <include name="EasyRdf/*.php" />
-        <include name="EasyRdf/Http/*.php" />
-      </fileset>
-      <projdocfileset dir=".">
+      <fileset refid="source" />
+      <projdocfileset dir="${project.basedir}">
         <include name="README" />
         <include name="INSTALL" />
         <include name="CHANGELOG" />
@@ -35,10 +41,18 @@
   <target name="cs">
     <phpcodesniffer
       standard="ZEND"
-      format="report"
-      file="./lib/EasyRdf"
-      allowedFileExtensions="php">
+      format="report">
+      <fileset refid="source" />
+      <fileset refid="tests" />
     </phpcodesniffer>
+  </target>
+
+  <target name="dist">
+    <echo msg="Creating archive..." />
+    <tar destfile="easyrdf.tar.gz" compression="gzip">
+      <fileset refid="source" />
+      <fileset refid="test" />
+    </tar>
   </target>
 
 </project>
