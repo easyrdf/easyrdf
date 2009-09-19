@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 
 <project name="EasyRdf" default="test">
-  <includepath classpath="./lib" />
+  <property name="coverdir" value="${project.basedir}/coverage" override="true" />
+  <property name="docsdir" value="${project.basedir}/docs" override="true" />
+  <property name="logger" value="phing.listener.DefaultLogger" override="true" />
+
+  <includepath classpath="${project.basedir}/lib" />
 
   <fileset id="source" dir="${project.basedir}/lib">
     <include name="EasyRdf/*.php" />
@@ -23,9 +27,26 @@
     </phpunit>
   </target>
 
+<!--  
+  <target name="coverage">
+    <mkdir dir="${coverdir}" />
+    <coverage-setup database="${coverdir}/coverage.db">
+      <fileset refid="source" />
+    </coverage-setup>
+    <phpunit codecoverage="true">
+      <batchtest>
+        <fileset refid="tests" />
+      </batchtest>
+    </phpunit>
+    <coverage-report outfile="${coverdir}/coverage.xml">
+      <report todir="${coverdir}" />
+    </coverage-report>
+  </target>
+-->
+
   <target name="docs">
     <phpdoc title="EasyRdf API Documentation"
-      destdir="docs"
+      destdir="${docsdir}"
       sourcecode="no"
       undocumentedelements="yes"
       output="HTML:Smarty:PHP">
@@ -53,6 +74,11 @@
       <fileset refid="source" />
       <fileset refid="test" />
     </tar>
+  </target>
+  
+  <target name="clean">
+    <delete dir="${coverdir}" includeemptydirs="true" verbose="true" />
+    <delete dir="${docsdir}" includeemptydirs="true" verbose="true" />
   </target>
 
 </project>
