@@ -14,8 +14,8 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     {
         $this->resource = new EasyRdf_Resource('http://www.example.com/#me');
         $this->resource->set( 'rdf_type', 'foaf_Person' );
-        $this->resource->set( 'test_prop', 'Test A' );
-        $this->resource->set( 'test_prop', 'Test B' );
+        $this->resource->add( 'test_prop', 'Test A' );
+        $this->resource->add( 'test_prop', 'Test B' );
     }
 
     public function testGetUri()
@@ -43,6 +43,30 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->resource->all('foo_bar'));
     }
 
+    public function testSet()
+    {
+        $this->resource->set('test_prop', 'Test C');
+        $this->assertEquals(array('Test C'), $this->resource->all('test_prop'));
+    }
+    
+    public function testSetNull()
+    {
+        $this->resource->set('test_prop', null);
+        $this->assertEquals(array(), $this->resource->all('test_prop'));
+    }
+
+    public function testAdd()
+    {
+        $this->resource->add('test_prop', 'Test C');
+        $this->assertEquals(array('Test A', 'Test B', 'Test C'), $this->resource->all('test_prop'));
+    }
+    
+    public function testAddNull()
+    {
+        $this->resource->add('test_prop', null);
+        $this->assertEquals(array('Test A', 'Test B'), $this->resource->all('test_prop'));
+    }
+
     public function testJoinDefaultGlue()
     {
         $this->assertEquals('Test A Test B', $this->resource->join('test_prop'));
@@ -67,6 +91,11 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     public function testIsNotBnode()
     {
         $this->assertEquals(false, $this->resource->isBnode());
+    }
+
+    public function testProperties()
+    {
+        $this->assertEquals(array('rdf_type', 'test_prop'), $this->resource->properties());
     }
 
     public function testTypes()

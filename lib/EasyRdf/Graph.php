@@ -17,7 +17,7 @@ class EasyRdf_Graph
     /**
 	   * Get a Resource object for a specific URI
 	   */
-    public function getResource($uri, $types = array())
+    public function get($uri, $types = array())
     {
         # FIXME: allow URI to be shortened?
         # FIXME: throw exception if parameters are bad?
@@ -42,22 +42,23 @@ class EasyRdf_Graph
                 }
             }
             $this->resources[$uri] = new $res_class($uri);
+
+            # Add resource to the type index
+            $resource = $this->resources[$uri];
+            foreach ($types as $type) {
+                $resource->add( 'rdf_type', $type );
+                if (!isset($this->type_index[$type])) {
+                    $this->type_index[$type] = array();
+                }
+                if (!in_array($resource, $this->type_index[$type])) {
+                    array_push($this->type_index[$type], $resource);
+                }
+            }
         }
 
-        # Add resource to the type index
-        $resource = $this->resources[$uri];
-        foreach ($types as $type) {
-            if (!isset($this->type_index[$type])) {
-                $this->type_index[$type] = array();
-            }
-            if (!in_array($resource, $this->type_index[$type])) {
-                array_push($this->type_index[$type], $resource);
-            }
-        }
-
-        return $resource;
+        return $this->resources[$uri];
     }
-    
+
 	  /**
      * Return all known resources
      */
@@ -155,10 +156,12 @@ class EasyRdf_Graph
         self::$parser = $parser;
     }
     
-    public function __construct($uri, $data='', $doc_type='')
+    public function __construct($uri='', $data='', $doc_type='')
     {
-        $this->uri = $uri;
-        $this->load($uri, $data, $doc_type);
+        if ($uri) {
+            $this->uri = $uri;
+            $this->load($uri, $data, $doc_type);
+        }
     }
 
     /**
@@ -207,20 +210,19 @@ class EasyRdf_Graph
         # Convert into an object graph
         foreach ($data as $subj => $touple) {
           $type = $this->getResourceType($data, $subj);
-          $res = $this->getResource($subj, $type);
+          $res = $this->get($subj, $type);
           foreach ($touple as $property => $objs) {
             $property = EasyRdf_Namespace::shorten($property);
             if (isset($property)) {
               foreach ($objs as $obj) {
                 if ($property == 'rdf_type') {
-                  $type = EasyRdf_Namespace::shorten($obj['value']);
-                  $res->set($property, $type);
+                  # Type has already been set
                 } else if ($obj['type'] == 'literal') {
-                  $res->set($property, $obj['value']);
+                  $res->add($property, $obj['value']);
                 } else if ($obj['type'] == 'uri' or $obj['type'] == 'bnode') {
                   $type = $this->getResourceType($data, $obj['value']);
-                  $objres = $this->getResource($obj['value'], $type);
-                  $res->set($property, $objres);
+                  $objres = $this->get($obj['value'], $type);
+                  $res->add($property, $objres);
                 } else {
                   # FIXME: thow exception or silently ignore?
                 }
@@ -281,9 +283,22 @@ class EasyRdf_Graph
         return $this->uri;
     }
     
-    public function addTriples($resource, $dict)
+    public function add($resource, $properties, $value=null)
     {
-        # FIXME: implement this
+        if (!is_object($resource)) {
+            # FIXME: check object type
+            # FIXME: allow shortened URIs?
+            $resource = $this->get( $resource );
+        }
+        
+        if (is_array($properties)) {
+            foreach( $properties as $property => $value ) {
+                # FIXME: check if value is a URI?
+                $resource->add( $property, $value );
+            }
+        } else {
+            $resource->add( $properties, $value );
+        }
     }
 
     public function dump($html=true)
@@ -296,14 +311,14 @@ class EasyRdf_Graph
     
     public function type()
     {
-        $res = $this->getResource($this->uri);
+        $res = $this->get($this->uri);
         // FIXME: check $res isn't null
         return $res->type();
     }
     
     public function primaryTopic()
     {
-        $res = $this->getResource($this->uri);
+        $res = $this->get($this->uri);
         // FIXME: check $res isn't null
         return $res->get('foaf_primaryTopic');
     }
@@ -318,7 +333,7 @@ class EasyRdf_Graph
 
     public function __call($name, $arguments)
     {
-        $res = $this->getResource($this->uri);
+        $res = $this->get($this->uri);
         // FIXME: check $res isn't null
         return call_user_func_array( array($res, $name), $arguments );
     }

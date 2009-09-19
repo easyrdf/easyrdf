@@ -36,31 +36,54 @@ class EasyRdf_Resource
         return $this->_uri;
     }
     
-    public function set($property, $value)
+    public function set($property, $values)
     {
-        if ($property == null or $value == null) {
-            return null;
-        } else if (array_key_exists($property, $this->_properties)) {
+        if ($property == null or $property == '') {
+            # FIXME: standardise exceptions?
+            throw new Exception('Invalid property name in '.get_class($this).'::set()');
+        }
+        
+        if ($values == null or (is_array($values) and count($values)==0)) {
+            unset( $this->_properties[$property] );
+        } else {
+            if (!is_array($values)) {
+                $values = array($values);
+            }
+            $this->_properties[$property] = $values;
+        }
+    }
+
+    public function add($property, $value)
+    {
+        if ($property == null or $property == '') {
+            # FIXME: standardise exceptions?
+            throw new Exception('Invalid property name in '.get_class($this).'::set()');
+        }
+
+        if ($value == null) {
+             return null;
+        }
+        
+        # Get the existing values for a property
+        if (array_key_exists($property, $this->_properties)) {
             $values = $this->_properties[$property];
         } else {
             $values = array();
         }
+
         // Add to array of values, if it isn't already there
         if (!in_array($value, $values)) {
             array_push($values, $value);
         }
-        return $this->_properties[$property] = $values;
-    }
 
+        return $this->set($property, $values);
+    }
+    
     public function get($property)
     {
         if (isset($this->_properties[$property])) {
-            if (is_array($this->_properties[$property])) {
-                $values = $this->_properties[$property];
-                return $values[0];
-            } else {
-                return $this->_properties[$property];
-            }
+            # FIXME: sort values so that we are likely to return the same one?
+            return $this->_properties[$property][0];
         } else {
             return null;
         }
@@ -69,14 +92,15 @@ class EasyRdf_Resource
     public function all($property)
     {
         if (isset($this->_properties[$property])) {
-            if (is_array($this->_properties[$property])) {
-                return $this->_properties[$property];
-            } else {
-                return array($this->_properties[$property]);
-            }
+            return $this->_properties[$property];
         } else {
             return array();
         }
+    }
+    
+    public function properties()
+    {
+        return array_keys($this->_properties);
     }
     
     public function join($property, $glue=' ')
@@ -162,8 +186,8 @@ class EasyRdf_Resource
               break;
         
           default:
-              # FIXME: throw exception
-              return null;
+              # FIXME: standardise exceptions?
+              throw new Exception('Tried to call unknown method '.get_class($this).'::'.$name);
               break;
         }
     }
