@@ -31,7 +31,7 @@
     </phpunit>
   </target>
 
-<!--  
+<!-- Can't get this to work on my laptop
   <target name="coverage" description="Run unit tests and create code coverage report">
     <mkdir dir="${coverdir}" />
     <coverage-setup database="${coverdir}/coverage.db">
@@ -46,8 +46,12 @@
       <report todir="${coverdir}" />
     </coverage-report>
   </target>
--->
-
+ -->
+ 
+  <target name="coverage">
+    <exec command="phpunit --coverage-html ./coverage test" dir="${project.basedir}" passthru="true" />
+  </target>
+  
   <target name="docs" description="Create API documentation">
     <phpdoc title="EasyRdf API Documentation"
       destdir="${docsdir}"
@@ -73,7 +77,7 @@
   </target>
 
   <target name="lint">
-    <phplint>
+    <phplint haltonfailure="true">
       <fileset refid="source" />
       <fileset refid="tests" />
       <fileset refid="examples" />
