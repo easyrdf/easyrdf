@@ -36,7 +36,7 @@ function createModel($class,$graph)
     $data .= " */\n";
     $data .= "class $class_name extends $super_class\n";
     $data .= "{\n";
-    foreach ($class->properties($graph) as $property) {
+    foreach ($class->classProperties($graph) as $property) {
         $data .= "    /** ".$property->join('rdfs_comment')." */\n";
         $data .= "    public $".$property->shorten();
         if ($property->cardinality() == '1') {

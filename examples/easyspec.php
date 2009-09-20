@@ -90,7 +90,7 @@
                 }
             }
 
-            $properties = $class->properties( $graph );
+            $properties = $class->classProperties( $graph );
             if ($properties) {
                 echo "<dt>Properties:</dt>\n";
                 foreach ($properties as $property) {

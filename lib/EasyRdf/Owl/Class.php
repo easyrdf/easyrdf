@@ -17,7 +17,7 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
     }
 
     # FIXME: not ideal having to pass graph in here
-    function properties($graph)
+    function classProperties($graph)
     {
         $properties = array();
         # FIXME: cache this somehow?
