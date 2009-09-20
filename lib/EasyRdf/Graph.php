@@ -67,15 +67,6 @@ class EasyRdf_Graph
         return array_values($this->_resources);
     }
 
-    /**
-     * Delete the contents of a graph (all the resources)
-     */
-    public function deleteAll()
-    {
-        // FIXME: implement this
-    }
-
-
     public static function setHttpClient($httpClient)
     {
         self::$_httpClient = $httpClient;
