@@ -1,7 +1,5 @@
 <?php
 
-require_once 'arc/ARC2.php';
-
 class EasyRdf_ArcParser
 {
     private static $_supportedTypes = array(
@@ -20,6 +18,7 @@ class EasyRdf_ArcParser
             return null;
         }
         
+        require_once 'arc/ARC2.php';
         $parser = ARC2::getParser($className);
         if ($parser) {
             $parser->parse($uri, $data);
