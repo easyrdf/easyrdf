@@ -77,7 +77,7 @@ class EasyRdf_Resource
 
         // Add to array of values, if it isn't already there
         if (is_array($value)) {
-            foreach($value as $v) {
+            foreach ($value as $v) {
                 if (!in_array($v, $values)) {
                     array_push($values, $v);
                 }

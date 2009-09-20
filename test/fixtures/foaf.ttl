@@ -1,0 +1,18 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://www.example.com/joe/foaf.rdf>
+    a foaf:PersonalProfileDocument ;
+    rdfs:label "Joe Bloggs' FOAF File" ;
+    foaf:maker <http://www.example.com/joe#me> ;
+    foaf:primaryTopic <http://www.example.com/joe#me> .
+
+<http://www.example.com/joe#me>
+    a foaf:Person ;
+    foaf:family_name "Bloggs" ;
+    foaf:firstName "Joe" ;
+    foaf:homepage "http://www.example.com/joe/" ;
+    foaf:name "Joe Bloggs" ;
+    foaf:title "Mr" .
+

@@ -253,18 +253,21 @@ class EasyRdf_Graph
     public function allOfType($type)
     {
         # FIXME: shorten if $type is a URL
-        if ($this->_typeIndex[$type]) {
+        if (isset($this->_typeIndex[$type])) {
             return $this->_typeIndex[$type];
         } else {
             return array();
         }
     }
     
+    ## FIXME: what to call this? - shouldn't use word first
     public function firstOfType($type)
     {
         $objs = $this->allOfType($type);
-        if ($objs and is_array($objs)) {
+        if ($objs and is_array($objs) and count($objs)>0) {
             return $objs[0];
+        } else {
+            return null;
         }
     }
     
@@ -292,6 +295,7 @@ class EasyRdf_Graph
                 $resource->add($property, $value);
             }
         } else {
+            # FIXME: check if value is a URI?
             $resource->add($properties, $value);
         }
     }
