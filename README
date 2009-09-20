@@ -1,0 +1,18 @@
+EasyRdf
+-------
+
+
+Most basic example:
+
+  $foaf = new EasyRdf_Graph("http://www.aelius.com/njh/foaf.rdf");
+  $me = $foaf->primaryTopic();
+  echo "My name is: ".$me->get('foaf_name')."\n";
+
+EasyRdf supports multiple RDF parsers:
+  - Built-in support for RDF/JSON
+  - ARC
+  - Command line tool 'rapper'
+  - librdf PHP extension
+  
+EasyRdf has a built in HTTP Client....
+
