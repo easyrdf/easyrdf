@@ -15,8 +15,7 @@
   
     class Model_MusicArtist extends EasyRdf_Resource
     {
-        protected $foaf_name;
-    
+
     }
 
     ## Add namespaces
