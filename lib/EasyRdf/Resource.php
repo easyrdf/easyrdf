@@ -76,10 +76,18 @@ class EasyRdf_Resource
         }
 
         // Add to array of values, if it isn't already there
-        if (!in_array($value, $values)) {
-            array_push($values, $value);
+        if (is_array($value)) {
+            foreach($value as $v) {
+                if (!in_array($v, $values)) {
+                    array_push($values, $v);
+                }
+            }
+        } else {
+            if (!in_array($value, $values)) {
+                array_push($values, $value);
+            }
         }
-
+        
         return $this->set($property, $values);
     }
     

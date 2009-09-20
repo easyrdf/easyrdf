@@ -84,6 +84,15 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
             $this->_resource->all('test_prop')
         );
     }
+
+    public function testAddMultiple()
+    {
+        $this->_resource->add('test_prop', array('Test C', 'Test D'));
+        $this->assertEquals(
+            array('Test A', 'Test B', 'Test C', 'Test D'),
+            $this->_resource->all('test_prop')
+        );
+    }
     
     public function testAddNull()
     {
