@@ -7,7 +7,8 @@ class EasyRdf_ArcParserTest extends PHPUnit_Framework_TestCase
 {
     // FIXME: skip tests if ARC isn't available
     
-    function testDummy() {
+    function testDummy()
+    {
         $this->markTestIncomplete();
     }
 }

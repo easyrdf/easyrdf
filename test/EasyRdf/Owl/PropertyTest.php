@@ -6,7 +6,8 @@ require_once 'EasyRdf/Owl/Property.php';
 class EasyRdf_Owl_PropertyTest extends PHPUnit_Framework_TestCase
 {
     
-    function testDummy() {
+    function testDummy()
+    {
         $this->markTestIncomplete();
     }
 

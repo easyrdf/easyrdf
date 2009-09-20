@@ -7,7 +7,8 @@ class EasyRdf_RapperParserTest extends PHPUnit_Framework_TestCase
 {
     // FIXME: skip tests if rapper isn't available
 
-    function testDummy() {
+    function testDummy()
+    {
         $this->markTestIncomplete();
     }
 }
