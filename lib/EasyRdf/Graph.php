@@ -134,16 +134,19 @@ class EasyRdf_Graph
         
         # FIXME: could /etc/magic help here?
         $short = substr(trim($data), 0, 255);
-        if (ereg("^\{", $short)) {
+        if (preg_match("/^\{/", $short)) {
             return 'json';
-        } else if (ereg("^---", $short)) {
+        } else if (preg_match("/^---/", $short)) {
             return 'yaml';
-        } else if (ereg("<!DOCTYPE html", $short) or ereg("^<html", $short)) {
+        } else if (
+            preg_match("/<!DOCTYPE html/", $short) or
+            preg_match("/^<html/", $short)
+        ) {
             # FIXME: might be erdf or something instead...
             return 'rdfa';
-        } else if (ereg("<rdf", $short)) {
+        } else if (preg_match("/<rdf/", $short)) {
             return 'rdfxml';
-        } else if (ereg("^@prefix ", $short)) {
+        } else if (preg_match("/^@prefix /", $short)) {
             # FIXME: this could be improved
             return 'turtle';
         } else {

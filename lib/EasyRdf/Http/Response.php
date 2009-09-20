@@ -75,7 +75,11 @@ class EasyRdf_Http_Response
     public function getHeader($header)
     {
         $header = ucwords(strtolower($header));
-        return $this->_headers[$header];
+        if (array_key_exists($header, $this->_headers)) {
+            return $this->_headers[$header];
+        } else {
+            return null;
+        }
     }
 
     /**

@@ -70,7 +70,9 @@ Accept header:
       <?= nl2br(htmlentities($response->getBody())) ?>
     </p>
 
-<? } ?>
+<?php
+    } 
+?>
 
 </body>
 </html>
