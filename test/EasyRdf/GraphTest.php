@@ -32,6 +32,21 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             EasyRdf_Graph::simplifyMimeType('text/turtle')
         );
     }
+
+    public function testSimplifyMimeTypeYaml()
+    {
+        $this->assertEquals(
+            'yaml',
+            EasyRdf_Graph::simplifyMimeType('text/yaml')
+        );
+    }
+
+    public function testSimplifyMimeTypeUnknown()
+    {
+        $this->assertNull(
+            EasyRdf_Graph::simplifyMimeType('foo/bar')
+        );
+    }
     
     public function testGuessTypeRdfXml()
     {
@@ -53,8 +68,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     
     public function testGuessTypeUnknown()
     {
-        $this->assertEquals(
-            '',
+        $this->assertNull(
             EasyRdf_Graph::guessDocType('blah blah blah')
         );
     }

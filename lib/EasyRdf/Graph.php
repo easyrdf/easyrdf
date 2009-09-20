@@ -120,7 +120,7 @@ class EasyRdf_Graph
                 return 'rdfa';
             default:
                 # FIXME: throw exception?
-                return '';
+                return null;
                 break;
         }
     }
@@ -151,7 +151,7 @@ class EasyRdf_Graph
             return 'turtle';
         } else {
             # FIXME: throw exception?
-            return '';
+            return null;
         }
     }
 
@@ -160,7 +160,7 @@ class EasyRdf_Graph
         self::$_parser = $parser;
     }
     
-    public function __construct($uri='', $data='', $docType='')
+    public function __construct($uri='', $data='', $docType=null)
     {
         if ($uri) {
             $this->_uri = $uri;
@@ -171,7 +171,7 @@ class EasyRdf_Graph
     /**
      * Convert RDF/PHP into a graph of objects
      */
-    public function load($uri, $data='', $docType='')
+    public function load($uri, $data='', $docType=null)
     {
         // FIXME: validate the URI?
 
@@ -184,7 +184,7 @@ class EasyRdf_Graph
             $client->setHeaders('Accept', 'application/rdf+xml');
             $response = $client->request();
             $data = $response->getBody();
-            if ($docType == '') {
+            if ($docType == null) {
                 $docType = self::simplifyMimeType(
                     $response->getHeader('Content-Type')
                 );
@@ -192,7 +192,7 @@ class EasyRdf_Graph
         }
         
         # Guess the document type if not given
-        if ($docType == '') {
+        if ($docType == null) {
             $docType = self::guessDocType($data);
         }
         
