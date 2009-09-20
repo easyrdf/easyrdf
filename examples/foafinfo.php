@@ -47,17 +47,16 @@
         echo "<h2>Known Persons</h2>\n";
         echo "<ul>\n";
         foreach ($person->all('foaf_knows') as $friend) {
-            if ($friend->get('foaf_name')) {
-                $friend_name = $friend->get('foaf_name');
-            } else if ($friend->get('rdfs_label')) {
-                $friend_name = $friend->get('rdfs_label');
+            if ($friend->label()) {
+                $label = $friend->label();
+            } else {
+                $label = $friend->getUri();
             }
-            if ($friend_name) {
-                if ($friend->isBnode()) {
-                    echo "<li>$friend_name</li>";
-                } else {
-                    echo "<li>".link_to_self( $friend_name, $friend )."</li>";
-                }
+
+            if ($friend->isBnode()) {
+                echo "<li>$label</li>";
+            } else {
+                echo "<li>".link_to_self( $label, $friend )."</li>";
             }
         }
         echo "</ul>\n";
