@@ -16,6 +16,7 @@
   <fileset id="tests" dir="${project.basedir}/test">
     <include name="EasyRdf/*Test.php" />
     <include name="EasyRdf/Http/*Test.php" />
+    <include name="EasyRdf/Owl/*Test.php" />
   </fileset>
 
   <fileset id="examples" dir="${project.basedir}/examples">
@@ -49,7 +50,8 @@
  -->
  
   <target name="coverage">
-    <exec command="phpunit --coverage-html ./coverage test" dir="${project.basedir}" passthru="true" />
+    <mkdir dir="${coverdir}" />
+    <exec command="phpunit --coverage-html ${coverdir} test" dir="${project.basedir}" passthru="true" />
   </target>
   
   <target name="docs" description="Create API documentation">
