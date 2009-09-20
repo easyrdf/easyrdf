@@ -4,6 +4,8 @@ Server: Apache/2.2.9 (Unix) PHP/5.2.6
 Last-Modified: Sun, 09 Aug 2009 19:28:16 GMT
 ETag: "96b26d-c-470ba78937400"
 Accept-Ranges: bytes
+X-Multiple: foo
+X-Multiple: bar
 Content-Length: 12
 Content-Type: text/plain
 

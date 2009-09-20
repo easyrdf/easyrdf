@@ -150,7 +150,8 @@ class EasyRdf_Http_Response
                 $decBody .= substr($body, $cut, $length);
                 $body = substr($body, $cut + $length + 2);
             } else {
-                # FIXME: throw exception            
+                # FIXME: throw exception
+                break;
             }
         }
 

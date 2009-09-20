@@ -52,6 +52,17 @@ class EasyRdf_Http_ResponseTest extends PHPUnit_Framework_TestCase
         );
     }
     
+    public function testGetBodyChunked()
+    {
+        $response = EasyRdf_Http_Response::fromString(
+            readFixture('http_response_200_chunked')
+        );
+        $this->assertEquals(
+            "Hello World",
+            $response->getBody()
+        );
+    }
+    
     public function test200Ok()
     {
         $response = EasyRdf_Http_Response::fromString(
@@ -164,7 +175,7 @@ class EasyRdf_Http_ResponseTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(
-            7,
+            8,
             count($response->getHeaders()),
             'Header count is not as expected'
         );
@@ -176,6 +187,11 @@ class EasyRdf_Http_ResponseTest extends PHPUnit_Framework_TestCase
             'text/plain',
             $response->getHeader('Content-Type'),
             'Content-type header is not as expected'
+        );
+        $this->assertEquals(
+            array('foo','bar'),
+            $response->getHeader('X-Multiple'),
+            'Header with multiple values is not as expected'
         );
     }
 
