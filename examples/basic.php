@@ -14,7 +14,7 @@
 ?>
 
 <p>
-  My name is: <?= $me->getFoaf_name() ?>
+  My name is: <?= $me->get('foaf_name') ?>
 </p>
 
 </body>
