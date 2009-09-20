@@ -2,32 +2,14 @@
  - Redland PHP extension
  - Support for RAP?
 
-* Check code against Zend Coding Standards.
-
-* Added licencing information to the top of every file.
-
 * Add phpdoc comments for every class and file.
 
-* Writing PHP Unit tests for every class.
+* Write PHP Unit tests for every class.
 
 * Document the limitations of EasyRdf_Http_Client.
 
-* Add a 'turn off magic' static class method to EasyRdf_Resource.
+* Implement 'turn off magic' static class method to EasyRdf_Resource.
 
 * Open Questions
-   - how should you opt to get the first value, rather than an array of objects?
 
-   - should new EasyRdf_Graph( $url ) really do an HTTP get?
-     (what if you want a new empty graph?)
-
-   - I am currently using public instance variables
-       $me->foaf_name
-     Should we be using accessor methods instead?
-       $me->getFoafName()
-
-   - Should it be:
-        $resource->uri;
-        $resource->uri();
-        $resource->getUri();
-   
    - do we need a reverse index?
