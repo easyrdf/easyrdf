@@ -3,6 +3,14 @@
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 require_once 'EasyRdf/Graph.php';
 
+class Mock_Http_Client
+{
+}
+
+class Mock_Rdf_Parser
+{
+}
+
 class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 {
     protected $_graph = null;
@@ -32,6 +40,22 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
             'turtle',
             EasyRdf_Graph::simplifyMimeType('text/turtle')
+        );
+    }
+
+    public function testSimplifyMimeTypeHtml()
+    {
+        $this->assertEquals(
+            'rdfa',
+            EasyRdf_Graph::simplifyMimeType('text/html')
+        );
+    }
+
+    public function testSimplifyMimeTypeXHtml()
+    {
+        $this->assertEquals(
+            'rdfa',
+            EasyRdf_Graph::simplifyMimeType('application/xhtml+xml')
         );
     }
 
@@ -105,14 +129,20 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     
     public function testSetHttpClient()
     {
-        EasyRdf_Graph::setHttpClient('my_client');
-        $this->assertEquals('my_client', EasyRdf_Graph::getHttpClient());
+        EasyRdf_Graph::setHttpClient(new Mock_Http_Client());
+        $this->assertEquals(
+            'Mock_Http_Client',
+            get_class(EasyRdf_Graph::getHttpClient())
+        );
     }
     
     public function testSetRdfParser()
     {
-        EasyRdf_Graph::setRdfParser('my_parser');
-        $this->assertEquals('my_parser', EasyRdf_Graph::getRdfParser());
+        EasyRdf_Graph::setRdfParser(new Mock_Rdf_Parser());
+        $this->assertEquals(
+            'Mock_Rdf_Parser',
+            get_class(EasyRdf_Graph::getRdfParser())
+        );
     }
 
     public function testGetUri()
@@ -125,7 +155,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testLoad()
+    public function testLoadData()
     {
         $graph = new EasyRdf_Graph();
         $graph->load(
