@@ -40,10 +40,6 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 require_once 'EasyRdf/Resource.php';
 require_once 'EasyRdf/TypeMapper.php';
 
-class MyType extends EasyRdf_Resource
-{
-}
-
 class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -72,5 +68,41 @@ class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
     public function testGetUnknown()
     {
         $this->assertEquals(null, EasyRdf_TypeMapper::get('unknown_type'));
+    }
+
+    public function testAddTypeNull()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_TypeMapper::add(null, 'MyType_Class');
+    }
+
+    public function testAddTypeEmpty()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_TypeMapper::add('', 'MyType_Class');
+    }
+
+    public function testAddTypeNonString()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_TypeMapper::add(array(), 'MyType_Class');
+    }
+
+    public function testAddClassNull()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_TypeMapper::add('mytype', null);
+    }
+
+    public function testAddClassEmpty()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_TypeMapper::add('mytype', '');
+    }
+
+    public function testAddClassNonString()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_TypeMapper::add('mytype', array());
     }
 }

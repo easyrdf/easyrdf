@@ -37,6 +37,11 @@
  */
 
 /**
+ * @see EasyRdf_Exception
+ */
+require_once "EasyRdf/Exception.php";
+
+/**
  * Class to map between RDF Types and PHP Classes
  *
  * @package    EasyRdf
@@ -60,12 +65,16 @@ class EasyRdf_TypeMapper
 
     public static function add($type, $class)
     {
-        if ($type == null or $type == '') {
-            # FIXME: throw exception
+        if (!is_string($type) or $type == null or $type == '') {
+            throw new EasyRdf_Exception(
+                "\$type should be a string and cannot be null or empty"
+            );
         }
 
-        if ($class == null or $class == '') {
-            # FIXME: throw exception
+        if (!is_string($class) or $class == null or $class == '') {
+            throw new EasyRdf_Exception(
+                "\$class should be a string and cannot be null or empty"
+            );
         }
         
         self::$_map[$type] = $class;
