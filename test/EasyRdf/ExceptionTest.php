@@ -41,9 +41,9 @@ require_once 'EasyRdf/Exception.php';
 
 class EasyRdf_ExceptionTest extends PHPUnit_Framework_TestCase
 {
-		public function testException()
-		{
-				$this->setExpectedException('EasyRdf_Exception');
-				throw new EasyRdf_Exception('Test');
-		}
+    public function testException()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        throw new EasyRdf_Exception('Test');
+    }
 }
