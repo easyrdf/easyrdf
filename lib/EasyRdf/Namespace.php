@@ -64,6 +64,12 @@ class EasyRdf_Namespace
       */
     public static function get($short)
     {
+        if (!is_string($short) or $short == null or $short == '') {
+            throw new EasyRdf_Exception(
+                "\$short should be a string and cannot be null or empty"
+            );
+        }
+
         $short = strtolower($short);
         if (array_key_exists($short, self::$_namespaces)) {
             return self::$_namespaces[$short];
@@ -80,6 +86,18 @@ class EasyRdf_Namespace
       */
     public static function add($short, $long)
     {
+        if (!is_string($short) or $short == null or $short == '') {
+            throw new EasyRdf_Exception(
+                "\$short should be a string and cannot be null or empty"
+            );
+        }
+
+        if (!is_string($long) or $long == null or $long == '') {
+            throw new EasyRdf_Exception(
+                "\$long should be a string and cannot be null or empty"
+            );
+        }
+
         $short = strtolower($short);
         self::$_namespaces[$short] = $long;
     }
@@ -92,6 +110,12 @@ class EasyRdf_Namespace
       */
     public static function namespaceOfUri($uri)
     {
+        if (!is_string($uri) or $uri == null or $uri == '') {
+            throw new EasyRdf_Exception(
+                "\$uri should be a string and cannot be null or empty"
+            );
+        }
+
         foreach (self::$_namespaces as $short => $long) {
             if (strpos($uri, $long) === 0) {
                 return $short;
@@ -108,6 +132,12 @@ class EasyRdf_Namespace
       */
     public static function shorten($uri)
     {
+        if (!is_string($uri) or $uri == null or $uri == '') {
+            throw new EasyRdf_Exception(
+                "\$uri should be a string and cannot be null or empty"
+            );
+        }
+
         foreach (self::$_namespaces as $short => $long) {
             if (strpos($uri, $long) === 0) {
                 return $short . '_' . substr($uri, strlen($long));
@@ -132,7 +162,9 @@ class EasyRdf_Namespace
                 return null;
             }
         } else {
-            return null;
+            throw new EasyRdf_Exception(
+                "\$shortUri should be in the form ns_name"
+            );
         }
     }
 }

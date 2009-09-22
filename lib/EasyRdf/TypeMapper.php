@@ -54,8 +54,10 @@ class EasyRdf_TypeMapper
 
     public static function get($type)
     {
-        if ($type == null or $type == '') {
-            return null;
+        if (!is_string($type) or $type == null or $type == '') {
+            throw new EasyRdf_Exception(
+                "\$type should be a string and cannot be null or empty"
+            );
         } else if (array_key_exists($type, self::$_map)) {
             return self::$_map[$type];
         } else {

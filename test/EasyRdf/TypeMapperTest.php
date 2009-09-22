@@ -57,12 +57,20 @@ class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
 
     public function testGetNull()
     {
-        $this->assertEquals(null, EasyRdf_TypeMapper::get(null));
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_TypeMapper::get(null);
     }
 
     public function testGetEmpty()
     {
-        $this->assertEquals(null, EasyRdf_TypeMapper::get(''));
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_TypeMapper::get('');
+    }
+
+    public function testGetNonString()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_TypeMapper::get(array());
     }
 
     public function testGetUnknown()
