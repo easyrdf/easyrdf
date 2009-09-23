@@ -171,6 +171,18 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             get_class(EasyRdf_Graph::getHttpClient())
         );
     }
+
+    public function testSetHttpClientNull()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_Graph::setHttpClient(null);
+    }
+    
+    public function testSetHttpClientString()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_Graph::setHttpClient('foobar');
+    }
     
     public function testSetRdfParser()
     {
@@ -179,6 +191,18 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             'Mock_Rdf_Parser',
             get_class(EasyRdf_Graph::getRdfParser())
         );
+    }
+
+    public function testSetRdfParserNull()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_Graph::setRdfParser(null);
+    }
+    
+    public function testSetRdfParserString()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_Graph::setRdfParser('foobar');
     }
 
     public function testGetUri()
@@ -195,7 +219,8 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $graph = new EasyRdf_Graph();
         $graph->load(
-            null, array(
+            'http://www.example.com/foaf.php',
+            array(
                 'http://example.com/joe' => array(
                     'http://xmlns.com/foaf/0.1/name' => array(
                         array(
@@ -224,6 +249,27 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testLoadNullUri()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $graph = new EasyRdf_Graph();
+        $graph->load(null);
+    }
+    
+    public function testLoadEmptyUri()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $graph = new EasyRdf_Graph();
+        $graph->load('');
+    }
+    
+    public function testLoadNonStringUri()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $graph = new EasyRdf_Graph();
+        $graph->load(array());
+    }
+
     public function testGet()
     {
         $data = readFixture('foaf.json');
@@ -234,12 +280,6 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetInvalid()
-    {
-        $graph = new EasyRdf_Graph();
-        $this->assertNull($graph->get(null));
-    }
-
     public function testGetUnknown()
     {
         $graph = new EasyRdf_Graph();
@@ -247,6 +287,27 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             'http://www.foo.com/bar',
             $graph->get('http://www.foo.com/bar')->getUri()
         );
+    }
+
+    public function testGetNullUri()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $graph = new EasyRdf_Graph();
+        $graph->get(null);
+    }
+    
+    public function testGetEmptyUri()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $graph = new EasyRdf_Graph();
+        $graph->get('');
+    }
+    
+    public function testGetNonStringUri()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $graph = new EasyRdf_Graph();
+        $graph->get(array());
     }
 
     public function testSetType()

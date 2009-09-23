@@ -65,7 +65,7 @@ class EasyRdf_Graph
     private $_resources = array();
     private $_typeIndex = array();
     private static $_httpClient = null;
-    private static $_parser = null;
+    private static $_rdfParser = null;
     
     const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
@@ -75,9 +75,10 @@ class EasyRdf_Graph
     public function get($uri, $types = array())
     {
         # FIXME: allow URI to be shortened?
-        # FIXME: throw exception if parameters are bad?
-        if (!$uri) {
-            return null;
+        if (!is_string($uri) or $uri == null or $uri == '') {
+            throw new EasyRdf_Exception(
+                "\$uri should be a string and cannot be null or empty"
+            );
         }
     
         # Convert types to an array if it isn't one
@@ -125,6 +126,11 @@ class EasyRdf_Graph
 
     public static function setHttpClient($httpClient)
     {
+        if (!is_object($httpClient) or $httpClient == null) {
+            throw new EasyRdf_Exception(
+                "\$httpClient should be an object and cannot be null"
+            );
+        }
         self::$_httpClient = $httpClient;
     }
     
@@ -139,11 +145,21 @@ class EasyRdf_Graph
 
     public static function getRdfParser()
     {
-        if (!self::$_parser) {
+        if (!self::$_rdfParser) {
             require_once "EasyRdf/RapperParser.php";
-            self::$_parser = new EasyRdf_RapperParser();
+            self::$_rdfParser = new EasyRdf_RapperParser();
         }
-        return self::$_parser;
+        return self::$_rdfParser;
+    }
+
+    public static function setRdfParser($rdfParser)
+    {
+        if (!is_object($rdfParser) or $rdfParser == null) {
+            throw new EasyRdf_Exception(
+                "\$rdfParser should be an object and cannot be null"
+            );
+        }
+        self::$_rdfParser = $rdfParser;
     }
 
     public static function simplifyMimeType($mimeType)
@@ -166,7 +182,6 @@ class EasyRdf_Graph
                 # FIXME: might be erdf or something instead...
                 return 'rdfa';
             default:
-                # FIXME: throw exception?
                 return null;
                 break;
         }
@@ -197,14 +212,8 @@ class EasyRdf_Graph
             # FIXME: this could be improved
             return 'turtle';
         } else {
-            # FIXME: throw exception?
             return null;
         }
-    }
-
-    public static function setRdfParser($parser)
-    {
-        self::$_parser = $parser;
     }
     
     public function __construct($uri='', $data='', $docType=null)
@@ -220,7 +229,11 @@ class EasyRdf_Graph
      */
     public function load($uri, $data='', $docType=null)
     {
-        // FIXME: validate the URI?
+        if (!is_string($uri) or $uri == null or $uri == '') {
+            throw new EasyRdf_Exception(
+                "\$uri should be a string and cannot be null or empty"
+            );
+        }
 
         if (!$data) {
             # No data was given - try and fetch data from URI
@@ -253,8 +266,9 @@ class EasyRdf_Graph
             # Parse the RDF data
             $data = self::getRdfParser()->parse($uri, $data, $docType);
             if (!$data) {
-                # FIXME: parse error - throw exception?
-                return null;
+                throw new EasyRdf_Exception(
+                    "Failed to parse data for URI: $uri (\$docType = $docType)"
+                );
             }
         }
 
@@ -367,15 +381,21 @@ class EasyRdf_Graph
     public function type()
     {
         $res = $this->get($this->_uri);
-        // FIXME: check $res isn't null
-        return $res->type();
+        if ($res) {
+            return $res->type();
+        } else {
+            return null;
+        }
     }
     
     public function primaryTopic()
     {
         $res = $this->get($this->_uri);
-        // FIXME: check $res isn't null
-        return $res->get('foaf_primaryTopic');
+        if ($res) {
+            return $res->get('foaf_primaryTopic');
+        } else {
+            return null;
+        }
     }
 
     
@@ -389,8 +409,11 @@ class EasyRdf_Graph
     public function __call($name, $arguments)
     {
         $res = $this->get($this->_uri);
-        // FIXME: check $res isn't null
-        return call_user_func_array(array($res, $name), $arguments);
+        if ($res) {
+            return call_user_func_array(array($res, $name), $arguments);
+        } else {
+            return null;
+        }
     }
-    
+
 }
