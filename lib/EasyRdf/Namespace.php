@@ -36,6 +36,10 @@
  * @version    $Id$
  */
 
+/**
+ * @see EasyRdf_Exception
+ */
+require_once "EasyRdf/Exception.php";
 
 /**
  * A namespace registry and manipulation class.
