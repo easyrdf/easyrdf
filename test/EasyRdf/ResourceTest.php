@@ -54,6 +54,24 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         $this->_resource->add('test_prop', 'Test B');
     }
 
+    public function testConstructNull()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $res = new EasyRdf_Resource(null);
+    }
+
+    public function testConstructEmpty()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $res = new EasyRdf_Resource('');
+    }
+
+    public function testConstructNonString()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $res = new EasyRdf_Resource(array());
+    }
+
     public function testGetUri()
     {
         $this->assertEquals(
@@ -78,6 +96,24 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetNullKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->get(null);
+    }
+    
+    public function testGetEmptyKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->get('');
+    }
+    
+    public function testGetNonStringKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->get(array());
+    }
+
     public function testAll()
     {
         $this->assertEquals(
@@ -94,6 +130,24 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testAllNullKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->all(null);
+    }
+    
+    public function testAllEmptyKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->all('');
+    }
+    
+    public function testAllNonStringKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->all(array());
+    }
+
     public function testSet()
     {
         $this->_resource->set('test_prop', 'Test C');
@@ -101,6 +155,24 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
             array('Test C'),
             $this->_resource->all('test_prop')
         );
+    }
+
+    public function testSetNullKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->set(null, 'Test C');
+    }
+    
+    public function testSetEmptyKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->set('', 'Test C');
+    }
+    
+    public function testSetNonStringKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->set(array(), 'Test C');
     }
     
     public function testSetNull()
@@ -139,6 +211,24 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testAddNullKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->add(null, 'Test C');
+    }
+    
+    public function testAddEmptyKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->add('', 'Test C');
+    }
+    
+    public function testAddNonStringKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->add(array(), 'Test C');
+    }
+
     public function testJoinDefaultGlue()
     {
         $this->assertEquals(
@@ -158,6 +248,24 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
             'Test A:Test B',
             $this->_resource->join('test_prop', ':')
         );
+    }
+
+    public function testJoinNullKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->join(null, 'Test C');
+    }
+    
+    public function testJoinEmptyKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->join('', 'Test C');
+    }
+    
+    public function testJoinNonStringKey()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->join(array(), 'Test C');
     }
 
     public function testIsBnode()
@@ -256,6 +364,12 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     public function testMagicAllNonExistantProperty()
     {
         $this->assertEquals(array(), $this->_resource->allFoo_bar());
+    }
+
+    public function testMagicInvalidCall()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_resource->fooBar();
     }
 
     public function testToString()
