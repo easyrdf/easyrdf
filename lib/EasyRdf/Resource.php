@@ -37,6 +37,11 @@
  */
 
 /**
+ * @see EasyRdf_Exception
+ */
+require_once "EasyRdf/Exception.php";
+
+/**
  * @see EasyRdf_Namespace
  */
 require_once "EasyRdf/Namespace.php";
@@ -73,6 +78,12 @@ class EasyRdf_Resource
     // This shouldn't be called directly
     public function __construct($uri)
     {
+        if (!is_string($uri) or $uri == null or $uri == '') {
+            throw new EasyRdf_Exception(
+                "\$uri should be a string and cannot be null or empty"
+            );
+        }
+        
         $this->_uri = $uri;
     }
     
@@ -84,10 +95,9 @@ class EasyRdf_Resource
     
     public function set($property, $values)
     {
-        if ($property == null or $property == '') {
-            # FIXME: standardise exceptions?
-            throw new Exception(
-                'Invalid property name in '.get_class($this).'::set()'
+        if (!is_string($property) or $property == null or $property == '') {
+            throw new EasyRdf_Exception(
+                "\$property should be a string and cannot be null or empty"
             );
         }
         
@@ -103,10 +113,9 @@ class EasyRdf_Resource
 
     public function add($property, $value)
     {
-        if ($property == null or $property == '') {
-            # FIXME: standardise exceptions?
-            throw new Exception(
-                'Invalid property name in '.get_class($this).'::set()'
+        if (!is_string($property) or $property == null or $property == '') {
+            throw new EasyRdf_Exception(
+                "\$property should be a string and cannot be null or empty"
             );
         }
 
@@ -139,6 +148,12 @@ class EasyRdf_Resource
     
     public function get($property)
     {
+        if (!is_string($property) or $property == null or $property == '') {
+            throw new EasyRdf_Exception(
+                "\$property should be a string and cannot be null or empty"
+            );
+        }
+
         if (isset($this->_properties[$property])) {
             # FIXME: sort values so that we are likely to return the same one?
             return $this->_properties[$property][0];
@@ -149,6 +164,12 @@ class EasyRdf_Resource
     
     public function all($property)
     {
+        if (!is_string($property) or $property == null or $property == '') {
+            throw new EasyRdf_Exception(
+                "\$property should be a string and cannot be null or empty"
+            );
+        }
+
         if (isset($this->_properties[$property])) {
             return $this->_properties[$property];
         } else {
@@ -156,14 +177,20 @@ class EasyRdf_Resource
         }
     }
     
+    public function join($property, $glue=' ')
+    {
+        if (!is_string($property) or $property == null or $property == '') {
+            throw new EasyRdf_Exception(
+                "\$property should be a string and cannot be null or empty"
+            );
+        }
+
+        return join($glue, $this->all($property));
+    }
+    
     public function properties()
     {
         return array_keys($this->_properties);
-    }
-    
-    public function join($property, $glue=' ')
-    {
-        return join($glue, $this->all($property));
     }
     
     public function isBnode()
@@ -244,8 +271,7 @@ class EasyRdf_Resource
               break;
         
           default:
-              # FIXME: standardise exceptions?
-              throw new Exception(
+              throw new EasyRdf_Exception(
                   'Tried to call unknown method '.get_class($this).'::'.$name
               );
               break;
