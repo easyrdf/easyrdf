@@ -61,20 +61,6 @@ class EasyRdf_Resource
     /** Associative array of properties */
     private $_properties = array();
     
-    /** Enable / disable PHP's magic __call() method */
-    private static $_magicEnabled = true;
-
-
-    public static function disableMagic()
-    {
-        self::$magicEnabled = false;
-    }
-    
-    public static function enableMagic()
-    {
-        self::$magicEnabled = true;
-    }
-    
     // This shouldn't be called directly
     public function __construct($uri)
     {
