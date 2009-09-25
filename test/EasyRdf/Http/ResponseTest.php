@@ -52,6 +52,12 @@ class EasyRdf_Http_ResponseTest extends PHPUnit_Framework_TestCase
         );
     }
     
+    public function testInvalidResponse()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $response = EasyRdf_Http_Response::fromString('foobar');
+    }
+    
     public function testGetBodyChunked()
     {
         $response = EasyRdf_Http_Response::fromString(
