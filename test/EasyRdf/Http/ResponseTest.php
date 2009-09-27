@@ -58,6 +58,12 @@ class EasyRdf_Http_ResponseTest extends PHPUnit_Framework_TestCase
         $response = EasyRdf_Http_Response::fromString('foobar');
     }
     
+    public function testInvalidStatusLine()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $response = EasyRdf_Http_Response::fromString("HTTP1.0 200 OK\r\nConnection: close\r\n\r\nBody");
+    }
+    
     public function testGetBodyChunked()
     {
         $response = EasyRdf_Http_Response::fromString(
@@ -67,6 +73,13 @@ class EasyRdf_Http_ResponseTest extends PHPUnit_Framework_TestCase
             "Hello World",
             $response->getBody()
         );
+    }
+    
+    public function testInvalidChunkedBody()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $response = EasyRdf_Http_Response::fromString("HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\nINVALID");
+        $response->getBody();
     }
     
     public function test200Ok()

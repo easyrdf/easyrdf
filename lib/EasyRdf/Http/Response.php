@@ -158,8 +158,9 @@ class EasyRdf_Http_Response
             $status = $m[2];
             $message = $m[3];
         } else {
-            # FIXME: throw exception
-            return null;
+            throw new EasyRdf_Exception(
+                "Failed to parse HTTP response status line."
+            );
         }
         
         // Process the rest of the header lines
@@ -195,7 +196,7 @@ class EasyRdf_Http_Response
     public static function decodeChunkedBody($body)
     {
         $decBody = '';
-
+        
         while (trim($body)) {
             if (preg_match("/^([\da-fA-F]+)[^\r\n]*\r\n/sm", $body, $m)) {
                 $length = hexdec(trim($m[1]));
@@ -203,8 +204,9 @@ class EasyRdf_Http_Response
                 $decBody .= substr($body, $cut, $length);
                 $body = substr($body, $cut + $length + 2);
             } else {
-                # FIXME: throw exception
-                break;
+                throw new EasyRdf_Exception(
+                    "Failed to decode chunked body in HTTP response."
+                );
             }
         }
 
