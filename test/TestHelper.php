@@ -85,3 +85,26 @@ function readFixture($name)
 {
     return file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $name);
 }
+
+/**
+ * Helper function: check to see if a required file exists
+ *
+ * @param string $filename the filename to check
+ * @return boolean Returns true if the file exists
+ */
+function requireExists($filename)
+{
+    $paths = explode(PATH_SEPARATOR, get_include_path());
+    foreach ($paths as $path) {
+        if (substr($path, -1) == DIRECTORY_SEPARATOR) {
+            $fullpath = $path.$filename;
+        } else {
+            $fullpath = $path.DIRECTORY_SEPARATOR.$filename;
+        }
+        if (file_exists($fullpath)) {
+            return true;
+        }
+    }
+
+    return false;
+}

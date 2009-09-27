@@ -53,6 +53,11 @@ class EasyRdf_ArcParser
         'rdfa' => 'SemHTML',
     );
 
+    public function __construct()
+    {
+        require_once 'arc/ARC2.php';
+    }
+
     public function parse($uri, $data, $docType)
     {
         if (array_key_exists($docType, self::$_supportedTypes)) {
@@ -62,7 +67,6 @@ class EasyRdf_ArcParser
             return null;
         }
         
-        require_once 'arc/ARC2.php';
         $parser = ARC2::getParser($className);
         if ($parser) {
             $parser->parse($uri, $data);

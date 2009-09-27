@@ -41,10 +41,26 @@ require_once 'EasyRdf/ArcParser.php';
 
 class EasyRdf_ArcParserTest extends PHPUnit_Framework_TestCase
 {
-    // FIXME: skip tests if ARC isn't available
-    
-    function testDummy()
+    protected $_parser = null;
+
+    public function setUp()
     {
-        $this->markTestIncomplete();
+        if (!requireExists('arc/ARC2.php')) {
+            $this->markTestSkipped("ARC2 library is not available.");
+        } else {
+            $this->_parser = new EasyRdf_ArcParser();
+        }
+    }
+    
+    function testParseRdfXml()
+    {
+        $this->markTestSkipped(
+            "Not testing ARC2 parser because it does not work in strict mode."
+        );
+        #$data = readFixture('foaf.rdf');
+        #$rdf = $this->_parser->parse(
+        #    'http://www.example.com/joe/foaf.rdf',
+        #    $data, 'turtle'
+        #);
     }
 }
