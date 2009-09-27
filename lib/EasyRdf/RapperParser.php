@@ -36,6 +36,10 @@
  * @version    $Id$
  */
 
+/**
+ * @see EasyRdf_Exception
+ */
+require_once "EasyRdf/Exception.php";
 
 /**
  * Class to allow parsing of RDF using the 'rapper' command line tool.
@@ -61,7 +65,7 @@ class EasyRdf_RapperParser
         $descriptorspec = array(
             0 => array("pipe", "r"),
             1 => array("pipe", "w"),
-            2 => array("file", "php://stderr", "w")
+            2 => array("pipe", "w")
         );
 
         $process = proc_open(
@@ -72,23 +76,28 @@ class EasyRdf_RapperParser
             // $pipes now looks like this:
             // 0 => writeable handle connected to child stdin
             // 1 => readable handle connected to child stdout
+            // 2 => readable handle connected to child stderr
       
             fwrite($pipes[0], $data);
             fclose($pipes[0]);
       
             $data = stream_get_contents($pipes[1]);
             fclose($pipes[1]);
+            $error = stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
       
             // It is important that you close any pipes before calling
             // proc_close in order to avoid a deadlock
             $returnValue = proc_close($process);
             if ($returnValue) {
-                # FIXME: throw exception or log error?
-                echo "rapper returned $returnValue\n";
-                return null;
+                throw new EasyRdf_Exception(
+                    "Failed to parse RDF: ".$error
+                );
             }
         } else {
-            // FIXME: throw error?
+            throw new EasyRdf_Exception(
+                "Failed to execute rapper command."
+            );
         }
 
         // Parse in the JSON

@@ -41,10 +41,60 @@ require_once 'EasyRdf/RapperParser.php';
 
 class EasyRdf_RapperParserTest extends PHPUnit_Framework_TestCase
 {
-    // FIXME: skip tests if rapper isn't available
+    protected $_parser = null;
 
-    function testDummy()
+    public function setUp()
     {
+        exec('which rapper', $output, $retval);
+        if ($retval == 0) {
+            $this->_parser = new EasyRdf_RapperParser();
+        } else {
+            $this->markTestSkipped(
+                "The rapper command is not available on this system."
+            );
+        }
+    }
+    
+    function testParseRdfXml()
+    {
+        $data = readFixture('foaf.rdf');
+        $rdf = $this->_parser->parse(
+            'http://www.example.com/joe/foaf.rdf',
+            $data, 'rdfxml'
+        );
+
+        $joe = $rdf['http://www.example.com/joe#me'];
+        $name = $joe['http://xmlns.com/foaf/0.1/name'][0];
+        $this->assertEquals('literal', $name['type']);
+        $this->assertEquals('Joe Bloggs', 'Joe Bloggs');
+    }
+    
+    function testParseInvalidRdfXml()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $rdf = $this->_parser->parse(
+            'http://www.example.com/joe/foaf.rdf',
+            "<rdf></xml>", 'rdfxml'
+        );
+    }
+    
+    function testParseTurtle()
+    {
+        $data = readFixture('foaf.ttl');
+        $rdf = $this->_parser->parse(
+            'http://www.example.com/joe/foaf.rdf',
+            $data, 'turtle'
+        );
+
+        $joe = $rdf['http://www.example.com/joe#me'];
+        $name = $joe['http://xmlns.com/foaf/0.1/name'][0];
+        $this->assertEquals('literal', $name['type']);
+        $this->assertEquals('Joe Bloggs', 'Joe Bloggs');
+    }
+    
+    function testRapperExecError()
+    {
+        # FIXME: how can we cause proc_open() to fail?
         $this->markTestIncomplete();
     }
 }
