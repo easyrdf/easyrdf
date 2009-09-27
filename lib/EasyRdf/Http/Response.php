@@ -141,7 +141,7 @@ class EasyRdf_Http_Response
     public static function fromString($responseStr)
     {
         // First, split body and headers
-        $matches = preg_split(  '|(?:\r?\n){2}|m', $responseStr, 2);
+        $matches = preg_split('|(?:\r?\n){2}|m', $responseStr, 2);
         if ($matches and sizeof($matches) == 2) {
             list ($headerLines, $body) = $matches;
         } else {
