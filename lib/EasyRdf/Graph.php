@@ -37,6 +37,11 @@
  */
 
 /**
+ * @see EasyRdf_Exception
+ */
+require_once "EasyRdf/Exception.php";
+
+/**
  * @see EasyRdf_Resource
  */
 require_once "EasyRdf/Resource.php";
