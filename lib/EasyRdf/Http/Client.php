@@ -154,8 +154,11 @@ class EasyRdf_Http_Client
             // Clone the URI and add the additional GET parameters to it
             $uri = parse_url($this->_uri);
             $host = $uri['host'];
-            $port = $uri['port'];
-            if (!$port) $port = 80;
+            if (isset($uri['port'])) {
+                $port = $uri['port'];
+            } else {
+                $port = 80;
+            }
             $headers = $this->_prepareHeaders($host, $port);
 
             // Open socket to remote server
