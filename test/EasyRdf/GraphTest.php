@@ -459,6 +459,12 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foaf_PersonalProfileDocument', $graph->type());
     }
 
+    public function testTypeUnknown()
+    {
+        $graph = new EasyRdf_Graph();
+        $this->assertNull($graph->type());
+    }
+
     public function testPrimaryTopic()
     {
         $data = readFixture('foaf.json');
@@ -469,6 +475,12 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             'http://www.example.com/joe#me',
             $graph->primaryTopic()->getUri()
         );
+    }
+
+    public function testPrimaryTopicUnknown()
+    {
+        $graph = new EasyRdf_Graph();
+        $this->assertNull($graph->primaryTopic());
     }
 
     public function testDump()
@@ -490,6 +502,12 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             "Joe Bloggs' FOAF File",
             $graph->getRdfs_label()
         );
+    }
+
+    public function testMagicGetUnknown()
+    {
+        $graph = new EasyRdf_Graph();
+        $this->assertNull( $graph->getRdfs_label() );
     }
 
     public function testToString()

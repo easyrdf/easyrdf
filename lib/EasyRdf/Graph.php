@@ -385,8 +385,8 @@ class EasyRdf_Graph
     
     public function type()
     {
-        $res = $this->get($this->_uri);
-        if ($res) {
+        if ($this->_uri) {
+            $res = $this->get($this->_uri);
             return $res->type();
         } else {
             return null;
@@ -395,8 +395,8 @@ class EasyRdf_Graph
     
     public function primaryTopic()
     {
-        $res = $this->get($this->_uri);
-        if ($res) {
+        if ($this->_uri) {
+            $res = $this->get($this->_uri);
             return $res->get('foaf_primaryTopic');
         } else {
             return null;
@@ -413,8 +413,8 @@ class EasyRdf_Graph
 
     public function __call($name, $arguments)
     {
-        $res = $this->get($this->_uri);
-        if ($res) {
+        if ($this->_uri) {
+            $res = $this->get($this->_uri);
             return call_user_func_array(array($res, $name), $arguments);
         } else {
             return null;
