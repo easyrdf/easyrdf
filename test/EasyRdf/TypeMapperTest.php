@@ -38,7 +38,17 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 require_once 'EasyRdf/Resource.php';
+require_once 'EasyRdf/Graph.php';
 require_once 'EasyRdf/TypeMapper.php';
+
+class MyType_Class extends EasyRdf_Resource
+{
+    public function myMethod()
+    {
+        return true;
+    }
+}
+
 
 class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
 {
@@ -112,5 +122,17 @@ class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('EasyRdf_Exception');
         EasyRdf_TypeMapper::add('mytype', array());
+    }
+
+    public function testInstantiate()
+    {
+        EasyRdf_TypeMapper::add('foaf_Person', 'MyType_Class');
+        $data = readFixture('foaf.json');
+        $graph = new EasyRdf_Graph(
+            'http://www.example.com/joe/foaf.rdf', $data
+        );
+        $joe = $graph->get('http://www.example.com/joe#me');
+        $this->assertEquals('MyType_Class', get_class($joe));
+        $this->assertTrue($joe->myMethod());
     }
 }
