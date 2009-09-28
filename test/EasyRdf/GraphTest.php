@@ -39,12 +39,57 @@
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 require_once 'EasyRdf/Graph.php';
 
-class Mock_Http_Client
+$VALID_RDF = array(
+                'http://example.com/joe' => array(
+                    'http://xmlns.com/foaf/0.1/name' => array(
+                        array(
+                            'value' => 'Joseph Bloggs',
+                            'type' => 'literal'
+                        )
+                    )
+                )
+            );
+
+class Mock_Http_Response
 {
+    public function getBody()
+    {
+        return readFixture('foaf.json');
+    }
+    
+    public function getHeader($header)
+    {
+        return 'application/json';
+    }
 }
 
-class Mock_Rdf_Parser
+class Mock_Http_Client
 {
+    public function setUri($uri)
+    {
+    }
+    
+    public function setHeaders($headers)
+    {
+    }
+    
+    public function request()
+    {
+        return new Mock_Http_Response();
+    }
+}
+
+class Mock_RdfParser
+{
+    public function parse($uri, $data, $docType)
+    {
+        global $VALID_RDF;
+        if ($uri == 'valid_rdf' and $data == 'valid_rdf') {
+            return $VALID_RDF;
+        } else {
+            return null;
+        }
+    }    
 }
 
 class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
@@ -186,9 +231,9 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     
     public function testSetRdfParser()
     {
-        EasyRdf_Graph::setRdfParser(new Mock_Rdf_Parser());
+        EasyRdf_Graph::setRdfParser(new Mock_RdfParser());
         $this->assertEquals(
-            'Mock_Rdf_Parser',
+            'Mock_RdfParser',
             get_class(EasyRdf_Graph::getRdfParser())
         );
     }
@@ -217,20 +262,9 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 
     public function testLoadData()
     {
+        global $VALID_RDF;
         $graph = new EasyRdf_Graph();
-        $graph->load(
-            'http://www.example.com/foaf.php',
-            array(
-                'http://example.com/joe' => array(
-                    'http://xmlns.com/foaf/0.1/name' => array(
-                        array(
-                            'value' => 'Joseph Bloggs',
-                            'type' => 'literal'
-                        )
-                    )
-                )
-            )
-        );
+        $graph->load( 'http://www.example.com/foaf.php', $VALID_RDF );
         
         $this->assertEquals(
             'EasyRdf_Resource',
@@ -268,6 +302,36 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('EasyRdf_Exception');
         $graph = new EasyRdf_Graph();
         $graph->load(array());
+    }
+    
+    public function testLoadMockParser()
+    {
+        EasyRdf_Graph::setRdfParser(new Mock_RdfParser());
+        $graph = new EasyRdf_Graph();
+        # Use magic URI to trigger Mock parser to return valid RDF
+        $graph->load( 'valid_rdf', 'valid_rdf' );
+        $this->assertEquals(
+            'Joseph Bloggs',
+            $graph->get('http://example.com/joe')->get('foaf_name')
+        );
+    }
+    
+    public function testLoadMockParserInvalid()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        EasyRdf_Graph::setRdfParser(new Mock_RdfParser());
+        $graph = new EasyRdf_Graph();
+        $graph->load( 'invalid_rdf', 'invalid_rdf' );
+    }
+    
+    public function testLoadMockHttpClient()
+    {
+        EasyRdf_Graph::setHttpClient(new Mock_Http_Client());
+        $graph = new EasyRdf_Graph('http://www.example.com/');
+        $this->assertEquals(
+            'Joe Bloggs',
+            $graph->get('http://www.example.com/joe#me')->get('foaf_name')
+        );
     }
 
     public function testGet()
