@@ -39,7 +39,7 @@
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 require_once 'EasyRdf/Graph.php';
 
-$VALID_RDF = array(
+$validRdf = array(
                 'http://example.com/joe' => array(
                     'http://xmlns.com/foaf/0.1/name' => array(
                         array(
@@ -83,9 +83,9 @@ class Mock_RdfParser
 {
     public function parse($uri, $data, $docType)
     {
-        global $VALID_RDF;
+        global $validRdf;
         if ($uri == 'valid_rdf' and $data == 'valid_rdf') {
-            return $VALID_RDF;
+            return $validRdf;
         } else {
             return null;
         }
@@ -262,9 +262,9 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 
     public function testLoadData()
     {
-        global $VALID_RDF;
+        global $validRdf;
         $graph = new EasyRdf_Graph();
-        $graph->load( 'http://www.example.com/foaf.php', $VALID_RDF );
+        $graph->load('http://www.example.com/foaf.php', $validRdf);
         
         $this->assertEquals(
             'EasyRdf_Resource',
@@ -309,7 +309,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         EasyRdf_Graph::setRdfParser(new Mock_RdfParser());
         $graph = new EasyRdf_Graph();
         # Use magic URI to trigger Mock parser to return valid RDF
-        $graph->load( 'valid_rdf', 'valid_rdf' );
+        $graph->load('valid_rdf', 'valid_rdf');
         $this->assertEquals(
             'Joseph Bloggs',
             $graph->get('http://example.com/joe')->get('foaf_name')
@@ -321,7 +321,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('EasyRdf_Exception');
         EasyRdf_Graph::setRdfParser(new Mock_RdfParser());
         $graph = new EasyRdf_Graph();
-        $graph->load( 'invalid_rdf', 'invalid_rdf' );
+        $graph->load('invalid_rdf', 'invalid_rdf');
     }
     
     public function testLoadMockHttpClient()
@@ -571,7 +571,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     public function testMagicGetUnknown()
     {
         $graph = new EasyRdf_Graph();
-        $this->assertNull( $graph->getRdfs_label() );
+        $this->assertNull($graph->getRdfs_label());
     }
 
     public function testToString()
