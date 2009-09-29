@@ -15,49 +15,67 @@
   
     class Model_MusicArtist extends EasyRdf_Resource
     {
+        function age()
+        {
+            foreach($this->all('bio_event') as $event) {
+                if (in_array('bio_Birth', $event->types())) {
+                    $year = substr($event->get('bio_date'), 0, 4);
+                    if ($year) {
+                        return date('Y') - $year;
+                    } else {
+                        return 'unknown';
+                    }
+                }
+            }
+            return 'unknown';
+        }
+    }
 
+    function link_to($text,$uri=null) {
+        if ($uri==null) $uri = $text;
+        return "<a href='$uri'>$text</a>";
     }
 
     ## Add namespaces
     EasyRdf_Namespace::add('mo', 'http://purl.org/ontology/mo/');
     EasyRdf_Namespace::add('bio', 'http://purl.org/vocab/bio/0.1/');
-    EasyRdf_TypeMapper::add('mo_MusicArtist', Model_MusicArtist);
+    EasyRdf_TypeMapper::add('mo_MusicArtist', 'Model_MusicArtist');
     
-    $uri = $_GET['uri'];
+    if (isset($_GET['uri'])) $uri = $_GET['uri'];
 ?>
 <html>
 <head><title>Artist Info</title></head>
 <body>
 <h1>Artist Info</h1>
 <form method="get">
-<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.bbc.co.uk/music/artists/beff21d3-88c7-4ee0-8b7a-40b6db22c6d7.rdf' : htmlspecialchars($uri) ?>" />
+<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.bbc.co.uk/music/artists/70248960-cb53-4ea4-943a-edb18f7d336f.rdf' : htmlspecialchars($uri) ?>" />
 <input type="submit" />
 </form>
 <?php
-    if ($uri) {
+    if (isset($uri)) {
         $graph = new EasyRdf_Graph( $uri );
         if ($graph) $artist = $graph->primaryTopic();
     }
   
-    if ($artist) {
+    if (isset($artist)) {
 ?>
 
 <dl>
-  <dt>Artist Name:</dt><dd><?= $artist->get('foaf_name') ?></dd>
-  <dt>Type:</dt><dd><?= $artist->type() ?></dd>
-  <dt>Homepage:</dt><dd><?= $artist->get('foaf_homepage') ?></dd>
-  <dt>Wikipedia page:</dt><dd><?= $artist->get('mo_wikipedia') ?></dd>
+    <dt>Artist Name:</dt><dd><?= $artist->get('foaf_name') ?></dd>
+    <dt>Type:</dt><dd><?= $artist->join('rdf_type',', ') ?></dd>
+    <dt>Homepage:</dt><dd><?= link_to($artist->get('foaf_homepage')) ?></dd>
+    <dt>Wikipedia page:</dt><dd><?= link_to($artist->get('mo_wikipedia')) ?></dd>
+    <?php
+        if (in_array('mo_SoloMusicArtist', $artist->types())) {
+            echo "  <dt>Age:</dt>";
+            echo "  <dd>".$artist->age()."</dd>\n";
+        }
+    ?>
 </dl>
-
 <?php
-      if ($artist->type() == 'mo_MusicGroup') {
-      
-      
-      }
-
     }
-    
-    if ($graph) {
+
+    if (isset($graph)) {
         echo "<hr />";
         echo $graph->dump();
     }
