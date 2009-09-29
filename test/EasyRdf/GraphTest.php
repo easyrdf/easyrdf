@@ -61,6 +61,11 @@ class Mock_Http_Response
     {
         return 'application/json';
     }
+    
+    public function isSuccessful()
+    {
+        return true;
+    }
 }
 
 class Mock_Http_Client
