@@ -23,19 +23,19 @@
     EasyRdf_Namespace::add('bio', 'http://purl.org/vocab/bio/0.1/');
     EasyRdf_TypeMapper::add('mo_MusicArtist', Model_MusicArtist);
     
-    $url = $_GET['url'];
+    $uri = $_GET['uri'];
 ?>
 <html>
 <head><title>Artist Info</title></head>
 <body>
 <h1>Artist Info</h1>
 <form method="get">
-<input name="url" type="text" size="48" value="<?= empty($url) ? 'http://www.bbc.co.uk/music/artists/beff21d3-88c7-4ee0-8b7a-40b6db22c6d7.rdf' : $url ?>" />
+<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.bbc.co.uk/music/artists/beff21d3-88c7-4ee0-8b7a-40b6db22c6d7.rdf' : htmlspecialchars($uri) ?>" />
 <input type="submit" />
 </form>
 <?php
-    if ($url) {
-        $graph = new EasyRdf_Graph( $url );
+    if ($uri) {
+        $graph = new EasyRdf_Graph( $uri );
         if ($graph) $artist = $graph->primaryTopic();
     }
   

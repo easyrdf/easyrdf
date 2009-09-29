@@ -8,12 +8,12 @@
 <body>
 <h1>EasyRdf Graph Dumper</h1>
 <form method="get">
-<input name="url" type="text" size="48" value="<?= empty($url) ? 'http://www.aelius.com/njh/foaf.rdf' : htmlspecialchars($url) ?>" />
+<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.aelius.com/njh/foaf.rdf' : htmlspecialchars($uri) ?>" />
 <input type="submit" />
 </form>
 <?php
-    if ($url) {
-        $graph = new EasyRdf_Graph( $url );
+    if ($uri) {
+        $graph = new EasyRdf_Graph( $uri );
         if ($graph) {
             $graph->dump();
         } else {

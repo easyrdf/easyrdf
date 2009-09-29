@@ -4,7 +4,7 @@
     require_once "EasyRdf/Owl/Class.php";
     require_once "EasyRdf/Owl/Property.php";
     
-    $url = $_GET['url'];
+    $uri = $_GET['uri'];
     $short = $_GET['short'];
     
     # TODO LIST:
@@ -18,32 +18,32 @@
 <h1>EasyRdf Spec Maker</h1>
 <form method="get">
 <input name="short" type="text" size="8" value="<?= empty($short) ? 'foaf' : $short ?>" />
-<input name="url" type="text" size="48" value="<?= empty($url) ? 'http://xmlns.com/foaf/0.1/' : $url ?>" />
+<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://xmlns.com/foaf/0.1/' : htmlspecialchars($uri) ?>" />
 <input type="submit" />
 </form>
 
 
 <?php
-    if ($url) {
-        EasyRdf_Namespace::add( $short, $url );
+    if ($uri) {
+        EasyRdf_Namespace::add( $short, $uri );
     
-        $graph = new EasyRdf_Graph( $url );
-        $ontology = $graph->getResource( $url );
+        $graph = new EasyRdf_Graph( $uri );
+        $ontology = $graph->getResource( $uri );
         
     } else {
         
         echo "<h2>Some examples:</h2>\n";
         echo "<ul>\n";
-        echo "<li><a href='easyspec.php?short=foaf&url=http%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F'>Friend of a Friend</a></li>\n";
-        echo "<li><a href='easyspec.php?short=mo&url=http%3A%2F%2Fpurl.org%2Fontology%2Fmo%2F'>Music Ontology</a></li>\n";
-        echo "<li><a href='easyspec.php?short=po&url=http%3A%2F%2Fpurl.org%2Fontology%2Fpo%2F'>Programmes Ontology</a></li>\n";
-        echo "<li><a href='easyspec.php?short=rev&url=http%3A%2F%2Fpurl.org%2Fstuff%2Frev%23'>Review Vocabulary</a></li>\n";
+        echo "<li><a href='easyspec.php?short=foaf&uri=http%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F'>Friend of a Friend</a></li>\n";
+        echo "<li><a href='easyspec.php?short=mo&uri=http%3A%2F%2Fpurl.org%2Fontology%2Fmo%2F'>Music Ontology</a></li>\n";
+        echo "<li><a href='easyspec.php?short=po&uri=http%3A%2F%2Fpurl.org%2Fontology%2Fpo%2F'>Programmes Ontology</a></li>\n";
+        echo "<li><a href='easyspec.php?short=rev&uri=http%3A%2F%2Fpurl.org%2Fstuff%2Frev%23'>Review Vocabulary</a></li>\n";
         echo "</ul>\n";
     }
     
-    function link_to($text,$url=null) {
-        if ($url==null) $url = $text;
-        return "<a href='$url'>$text</a>";
+    function link_to($text,$uri=null) {
+        if ($uri==null) $uri = $text;
+        return "<a href='$uri'>$text</a>";
     }
 ?>
 

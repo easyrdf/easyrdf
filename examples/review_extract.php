@@ -9,20 +9,20 @@
     ## Add the Google Vocab namespace
     EasyRdf_Namespace::add('gv', 'http://rdf.data-vocabulary.org/#');
     
-    $url = $_GET['url'];
+    $uri = $_GET['uri'];
 ?>
 <html>
 <head><title>Review Extract</title></head>
 <body>
 <h1>Review Extract</h1>
 <form method="get">
-<p>Please enter the URL of a page with a review on it (marked up with Google Review RDFa):</p>
-<input name="url" type="text" size="48" value="<?= empty($url) ? 'http://www.bbc.co.uk/music/reviews/2n8c.html' : $url ?>" />
+<p>Please enter the URI of a page with a review on it (marked up with Google Review RDFa):</p>
+<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.bbc.co.uk/music/reviews/2n8c.html' : htmlspecialchars($uri) ?>" />
 <input type="submit" />
 </form>
 <?php
-    if ($url) {
-        $graph = new EasyRdf_Graph( $url );
+    if ($uri) {
+        $graph = new EasyRdf_Graph( $uri );
         if ($graph) $review = $graph->firstOfType('gv_Review');
     }
       

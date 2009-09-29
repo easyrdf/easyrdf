@@ -1,17 +1,17 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf/Graph.php";
-    $url = $_GET['url'];
+    $uri = $_GET['uri'];
 
-    function link_to_self($text, $url)
+    function link_to_self($text, $uri)
     {
-        $url = preg_replace("|#(.+)$|", '', $url);
-        return link_to($text, $_SERVER['PHP_SELF'] . '?url=' . urlencode($url));
+        $uri = preg_replace("|#(.+)$|", '', $uri);
+        return link_to($text, $_SERVER['PHP_SELF'] . '?uri=' . urlencode($uri));
     }
     
-    function link_to($text,$url=null) {
-        if ($url==null) $url = $text;
-        return "<a href='$url'>$text</a>";
+    function link_to($text,$uri=null) {
+        if ($uri==null) $uri = $text;
+        return "<a href='$uri'>$text</a>";
     }
 ?>
 <html>
@@ -19,12 +19,12 @@
 <body>
 <h1>FOAF Info</h1>
 <form method="get">
-<input name="url" type="text" size="48" value="<?= empty($url) ? 'http://www.aelius.com/njh/foaf.rdf' : $url ?>" />
+<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.aelius.com/njh/foaf.rdf' : htmlspecialchars($uri) ?>" />
 <input type="submit" />
 </form>
 <?php
-    if ($url) {
-        $graph = new EasyRdf_Graph( $url );
+    if ($uri) {
+        $graph = new EasyRdf_Graph( $uri );
         if ($graph) {
             if ($graph->type() == 'foaf_PersonalProfileDocument') {
                 $person = $graph->primaryTopic();

@@ -8,7 +8,7 @@
 <body>
 <h1>FOAF Maker</h1>
 <form method="get">
-<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.aelius.com/njh#me' : $uri ?>" />
+<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.aelius.com/njh#me' : htmlspecialchars($uri) ?>" />
 <input type="submit" />
 </form>
 <?php

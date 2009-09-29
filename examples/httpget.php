@@ -1,7 +1,7 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf/Http/Client.php";
-    $url = $_GET['url'];
+    $uri = $_GET['uri'];
     $accept = $_GET['accept'];
     $accept_options = array(
       'text/html',
@@ -27,7 +27,7 @@
 <h1>Test EasyRdf_HTTP_Client Get</h1>
 
 <form method="get">
-<input name="url" type="text" size="48" value="<?= empty($url) ? 'http://tomheath.com/id/me' : htmlspecialchars($url) ?>" /><br />
+<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://tomheath.com/id/me' : htmlspecialchars($uri) ?>" /><br />
 Accept header:
 <select name="accept">
 <?
@@ -45,8 +45,8 @@ Accept header:
 </form>
 
 <?php
-    if ($url) {
-        $client = new EasyRdf_Http_Client($url);
+    if ($uri) {
+        $client = new EasyRdf_Http_Client($uri);
         $client->setHeaders('Accept',$accept);
         $response = $client->request();
 
