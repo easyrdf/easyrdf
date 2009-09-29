@@ -39,10 +39,14 @@
  */
 
 /**
+ * @see EasyRdf_Exception
+ */
+require_once "EasyRdf/Exception.php";
+
+/**
  * @see EasyRdf_Http_Response
  */
 require_once "EasyRdf/Http/Response.php";
-
 
 /**
  * This class is an implemetation of an HTTP client in PHP.
@@ -92,9 +96,10 @@ class EasyRdf_Http_Client
 
     public function setConfig($config = array())
     {
-        if (! is_array($config)) {
-            // FIXME: throw exception
-            return null;
+        if ($config == null or !is_array($config)) {
+            throw new EasyRdf_Exception(
+                "\$config should be an array and cannot be null"
+            );
         }
 
         foreach ($config as $k => $v)
@@ -142,8 +147,9 @@ class EasyRdf_Http_Client
     public function request($method = 'GET')
     {
         if (!$this->_uri) {
-            // FIXME: throw exception
-            return null;
+            throw new EasyRdf_Exception(
+                "Set URI before calling EasyRdf_Http_Client->request()"
+            );
         }
 
         $this->_redirectCounter = 0;
@@ -166,8 +172,7 @@ class EasyRdf_Http_Client
                 $host, $port, $errno, $errstr, $this->_config['timeout']
             );
             if (!$socket) {
-                // FIXME: throw exception            
-                return null;
+                throw new EasyRdf_Exception($errstr);
             }
 
             // Write the request
@@ -203,8 +208,10 @@ class EasyRdf_Http_Client
                     $this->setHeaders('host', null);
                     $this->setUri($location);
                 } else {
-                    // FIXME: throw exception?
-                    break;
+                    throw new EasyRdf_Exception(
+                        "Failed to parse Location header returned by ".
+                        $this->_uri
+                    );
                 }
                 ++$this->_redirectCounter;
 

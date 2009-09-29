@@ -20,12 +20,17 @@ class EasyRdf_Http_ClientTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->_client = new EasyRdf_Http_Client('http://www.example.com');
+        $this->_client = new EasyRdf_Http_Client('http://www.example.com/');
     }
 
-    /**
-     * URI Tests
-     */
+    public function testConstructWithConfig()
+    {
+        $client = new EasyRdf_Http_Client(
+            'http://www.example.com/',
+            array('foo' => 'bar')
+        );
+        $this->assertEquals('EasyRdf_Http_Client',get_class($client));
+    }
 
     /**
      * Test we can SET and GET a URI as string
@@ -67,6 +72,24 @@ class EasyRdf_Http_ClientTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($uristr, $uri);
     }
 
+    public function testSetConfig()
+    {
+        $result = $this->_client->setConfig(array('foo' => 'bar'));
+        $this->assertEquals('EasyRdf_Http_Client',get_class($result));
+    }
+
+    public function testSetConfigNull()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $result = $this->_client->setConfig(null);
+    }
+
+    public function testSetConfigNonArray()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $result = $this->_client->setConfig('foo');
+    }
+
     /**
      * Test we can get already set headers
      *
@@ -94,6 +117,19 @@ class EasyRdf_Http_ClientTest extends PHPUnit_Framework_TestCase
             $this->_client->getHeader('Accept-encoding'),
             'Returned value of header is expected to be null'
         );
+    }
+
+    public function testRedirectionCounterShouldStartAtZero()
+    {
+        $this->_client->setHeaders('Accept-Encoding', null);
+        $this->assertEquals( $this->_client->getRedirectionsCount(), 0 );
+    }
+
+    public function testRequestNoUri()
+    {
+        $client = new EasyRdf_Http_Client();
+        $this->setExpectedException('EasyRdf_Exception');
+        $client->request();
     }
 
 }
