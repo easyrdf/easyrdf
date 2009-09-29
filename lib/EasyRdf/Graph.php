@@ -248,6 +248,11 @@ class EasyRdf_Graph
             # FIXME: set the accept header to formats we are able to parse
             $client->setHeaders('Accept', 'application/rdf+xml');
             $response = $client->request();
+            if (!$response->isSuccessful()) {
+                throw new EasyRdf_Exception(
+                    "HTTP request for $uri failed: ".$response->getMessage()
+                );
+            }
             $data = $response->getBody();
             if ($docType == null) {
                 $docType = self::simplifyMimeType(
