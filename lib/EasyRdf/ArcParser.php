@@ -36,9 +36,13 @@
  * @version    $Id$
  */
 
+/**
+ * @see EasyRdf_Exception
+ */
+require_once "EasyRdf/Exception.php";
 
 /**
- * Class to allow parsing of RDF using the ARC library.
+ * Class to allow parsing of RDF using the ARC2 library.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
@@ -63,8 +67,10 @@ class EasyRdf_ArcParser
         if (array_key_exists($docType, self::$_supportedTypes)) {
             $className = self::$_supportedTypes[$docType];
         } else {
-            # FIXME: throw exception?
-            return null;
+            throw new EasyRdf_Exception(
+                "Parsing documents of type $docType ".
+                "is not supported by EasyRdf_ArcParser."
+            );
         }
         
         $parser = ARC2::getParser($className);
@@ -72,8 +78,9 @@ class EasyRdf_ArcParser
             $parser->parse($uri, $data);
             return $parser->getSimpleIndex(false);
         } else {
-            # FIXME: throw exception?
-            return null;
+            throw new EasyRdf_Exception(
+                "ARC2 failed to get a $className parser."
+            );
         }
     }
 }
