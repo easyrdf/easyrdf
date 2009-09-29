@@ -70,7 +70,7 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
     {
         $properties = array();
         # FIXME: cache this somehow?
-        $owlThing = $graph->getResource('http://www.w3.org/2002/07/owl#Thing');
+        $owlThing = $graph->get('http://www.w3.org/2002/07/owl#Thing');
         $superClass = $this->get('rdfs_subClassOf');
         if ($superClass == $owlThing) $superClass = '';
         $allProperties = EasyRdf_Owl_Property::findAll($graph);

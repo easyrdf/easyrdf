@@ -1,7 +1,7 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf/Graph.php";
-    $url = $_GET['url'];
+    if (isset($_GET['uri'])) $uri = $_GET['uri'];
 ?>
 <html>
 <head><title>EasyRdf Graph Dumper</title></head>
@@ -12,7 +12,7 @@
 <input type="submit" />
 </form>
 <?php
-    if ($uri) {
+    if (isset($uri)) {
         $graph = new EasyRdf_Graph( $uri );
         if ($graph) {
             $graph->dump();

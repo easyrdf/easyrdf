@@ -4,8 +4,8 @@
     require_once "EasyRdf/Owl/Class.php";
     require_once "EasyRdf/Owl/Property.php";
     
-    $uri = $_GET['uri'];
-    $short = $_GET['short'];
+    if (isset($_GET['uri'])) $uri = $_GET['uri'];
+    if (isset($_GET['short'])) $short = $_GET['short'];
     
     # TODO LIST:
     # - display rdfs_range
@@ -24,11 +24,11 @@
 
 
 <?php
-    if ($uri) {
+    if (isset($uri)) {
         EasyRdf_Namespace::add( $short, $uri );
     
         $graph = new EasyRdf_Graph( $uri );
-        $ontology = $graph->getResource( $uri );
+        $ontology = $graph->get( $uri );
         
     } else {
         
@@ -48,12 +48,12 @@
 ?>
 
 <? 
-    if ($ontology) {
+    if (isset($ontology)) {
         echo "<h2>".$ontology->label()."</h2>\n";
         
         echo "<dl>\n";
         echo "<dt>Namespace:</dt><dd>".link_to($ontology->getUri())."</dd>\n";
-        if ($ontology->dc_date) echo "<dt>Date:</dt><dd>".$ontology->get('dc_date')."</dd>\n";
+        if ($ontology->get('dc_date')) echo "<dt>Date:</dt><dd>".$ontology->get('dc_date')."</dd>\n";
         #if ($ontology->dc_creator)  # FIXME: implement this
         #if ($ontology->dc_contributor)  # FIXME: implement this
         echo "</dl>\n";
@@ -68,7 +68,7 @@
             foreach ($class->all('rdfs_comment') as $comment) { echo "<p>$comment</p>\n"; }
             echo "<dl>\n";
 
-            if ($class->rdfs_subClassOf) {
+            if ($class->get('rdfs_subClassOf')) {
                 echo "<dt>SubClass of:</dt>\n";
                 foreach ($class->all('rdfs_subClassOf') as $subClass) {
                     if ($subClass->ns() == $short) {
@@ -79,7 +79,7 @@
                 }
             }
             
-            if ($class->owl_disjointWith) {
+            if ($class->get('owl_disjointWith')) {
                 echo "<dt>Disjoint with:</dt>\n";
                 foreach ($class->all('owl_disjointWith') as $disjointWith) {
                     if ($disjointWith->ns() == $short) {

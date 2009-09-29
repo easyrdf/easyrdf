@@ -1,7 +1,7 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf/Graph.php";
-    $uri = $_GET['uri'];
+    if (isset($_GET['uri'])) $uri = $_GET['uri'];
 
     function link_to_self($text, $uri)
     {
@@ -23,18 +23,18 @@
 <input type="submit" />
 </form>
 <?php
-    if ($uri) {
+    if (isset($uri)) {
         $graph = new EasyRdf_Graph( $uri );
         if ($graph) {
             if ($graph->type() == 'foaf_PersonalProfileDocument') {
                 $person = $graph->primaryTopic();
             } else if ($graph->type() == 'foaf_Person') {
-                $person = $graph->getResource( $graph->getUri() );
+                $person = $graph->get( $graph->getUri() );
             }
         }
     }
   
-    if ($person) {
+    if (isset($person)) {
 ?>
 
 <dl>
@@ -62,7 +62,7 @@
         echo "</ul>\n";
     }
     
-    if ($graph) {
+    if (isset($graph)) {
         echo "<hr />";
         echo $graph->dump();
     }

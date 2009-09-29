@@ -1,6 +1,13 @@
 #!/usr/bin/env php
 <?php
 
+/**
+
+    NOTE: THIS TOOL IS INCOMPLETE
+    
+**/
+
+
 set_include_path(get_include_path() . PATH_SEPARATOR . './lib/');
 require_once "EasyRdf/Namespace.php";
 require_once "EasyRdf/Owl/Class.php";

@@ -9,7 +9,7 @@
     ## Add the Google Vocab namespace
     EasyRdf_Namespace::add('gv', 'http://rdf.data-vocabulary.org/#');
     
-    $uri = $_GET['uri'];
+    if (isset($_GET['uri'])) $uri = $_GET['uri'];
 ?>
 <html>
 <head><title>Review Extract</title></head>
@@ -21,12 +21,12 @@
 <input type="submit" />
 </form>
 <?php
-    if ($uri) {
+    if (isset($uri)) {
         $graph = new EasyRdf_Graph( $uri );
         if ($graph) $review = $graph->firstOfType('gv_Review');
     }
       
-    if ($review) {
+    if (isset($review)) {
         echo "<dl>\n";
         # FIXME: support gv_itemreviewed->gv_name ??
         if ($review->get('gv_itemreviewed')) echo "<dt>Item Reviewed:</dt><dd>".$review->get('gv_itemreviewed')."</dd>\n";
