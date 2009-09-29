@@ -29,7 +29,7 @@ class EasyRdf_Http_ClientTest extends PHPUnit_Framework_TestCase
             'http://www.example.com/',
             array('foo' => 'bar')
         );
-        $this->assertEquals('EasyRdf_Http_Client',get_class($client));
+        $this->assertEquals('EasyRdf_Http_Client', get_class($client));
     }
 
     /**
@@ -75,7 +75,7 @@ class EasyRdf_Http_ClientTest extends PHPUnit_Framework_TestCase
     public function testSetConfig()
     {
         $result = $this->_client->setConfig(array('foo' => 'bar'));
-        $this->assertEquals('EasyRdf_Http_Client',get_class($result));
+        $this->assertEquals('EasyRdf_Http_Client', get_class($result));
     }
 
     public function testSetConfigNull()
@@ -122,7 +122,7 @@ class EasyRdf_Http_ClientTest extends PHPUnit_Framework_TestCase
     public function testRedirectionCounterShouldStartAtZero()
     {
         $this->_client->setHeaders('Accept-Encoding', null);
-        $this->assertEquals( $this->_client->getRedirectionsCount(), 0 );
+        $this->assertEquals($this->_client->getRedirectionsCount(), 0);
     }
 
     public function testRequestNoUri()
