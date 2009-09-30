@@ -57,12 +57,12 @@ class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        EasyRdf_TypeMapper::add('mytype', 'MyType_Class');
+        EasyRdf_TypeMapper::add('my:type', 'MyType_Class');
     }
 
     public function testGet()
     {
-        $this->assertEquals('MyType_Class', EasyRdf_TypeMapper::get('mytype'));
+        $this->assertEquals('MyType_Class', EasyRdf_TypeMapper::get('my:type'));
     }
 
     public function testGetNull()
@@ -85,7 +85,7 @@ class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
 
     public function testGetUnknown()
     {
-        $this->assertEquals(null, EasyRdf_TypeMapper::get('unknown_type'));
+        $this->assertEquals(null, EasyRdf_TypeMapper::get('unknown:type'));
     }
 
     public function testAddTypeNull()
@@ -109,24 +109,24 @@ class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
     public function testAddClassNull()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::add('mytype', null);
+        EasyRdf_TypeMapper::add('my:type', null);
     }
 
     public function testAddClassEmpty()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::add('mytype', '');
+        EasyRdf_TypeMapper::add('my:type', '');
     }
 
     public function testAddClassNonString()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::add('mytype', array());
+        EasyRdf_TypeMapper::add('my:type', array());
     }
 
     public function testInstantiate()
     {
-        EasyRdf_TypeMapper::add('foaf_Person', 'MyType_Class');
+        EasyRdf_TypeMapper::add('foaf:Person', 'MyType_Class');
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph(
             'http://www.example.com/joe/foaf.rdf', $data

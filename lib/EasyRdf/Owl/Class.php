@@ -62,7 +62,7 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
     
     function fileName()
     {
-        return str_replace('_', '/', $this->className()) . '.php';
+        return str_replace(':', '/', $this->className()) . '.php';
     }
 
     # FIXME: not ideal having to pass graph in here
@@ -76,9 +76,9 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
         $allProperties = EasyRdf_Owl_Property::findAll($graph);
         foreach ($allProperties as $name => $property) {
             if (($superClass == '' and
-                (count($property->all('rdfs_domain')) == 0 or 
-                in_array($owlThing, $property->all('rdfs_domain')))) or 
-                in_array($this, $property->all('rdfs_domain'))
+                (count($property->all('rdfs:domain')) == 0 or 
+                in_array($owlThing, $property->all('rdfs:domain')))) or 
+                in_array($this, $property->all('rdfs:domain'))
             ) {
                 array_push($properties, $property);
             }
@@ -87,4 +87,4 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
     }
 }
 
-EasyRdf_TypeMapper::add('owl_Class', 'EasyRdf_Owl_Class');
+EasyRdf_TypeMapper::add('owl:Class', 'EasyRdf_Owl_Class');

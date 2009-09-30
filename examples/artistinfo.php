@@ -15,16 +15,23 @@
   
     class Model_MusicArtist extends EasyRdf_Resource
     {
+        function birthEvent()
+        {
+            foreach($this->all('bio:event') as $event) {
+                if (in_array('bio:Birth', $event->types())) {
+                    return $event;
+                }
+            }
+            return null;
+        }
+        
         function age()
         {
-            foreach($this->all('bio_event') as $event) {
-                if (in_array('bio_Birth', $event->types())) {
-                    $year = substr($event->get('bio_date'), 0, 4);
-                    if ($year) {
-                        return date('Y') - $year;
-                    } else {
-                        return 'unknown';
-                    }
+            $birth = $this->birthEvent();
+            if ($birth) {
+                $year = substr($birth->get('bio:date'), 0, 4);
+                if ($year) {
+                    return date('Y') - $year;
                 }
             }
             return 'unknown';
@@ -39,7 +46,7 @@
     ## Add namespaces
     EasyRdf_Namespace::add('mo', 'http://purl.org/ontology/mo/');
     EasyRdf_Namespace::add('bio', 'http://purl.org/vocab/bio/0.1/');
-    EasyRdf_TypeMapper::add('mo_MusicArtist', 'Model_MusicArtist');
+    EasyRdf_TypeMapper::add('mo:MusicArtist', 'Model_MusicArtist');
     
     if (isset($_GET['uri'])) $uri = $_GET['uri'];
 ?>
@@ -61,12 +68,12 @@
 ?>
 
 <dl>
-    <dt>Artist Name:</dt><dd><?= $artist->get('foaf_name') ?></dd>
-    <dt>Type:</dt><dd><?= $artist->join('rdf_type',', ') ?></dd>
-    <dt>Homepage:</dt><dd><?= link_to($artist->get('foaf_homepage')) ?></dd>
-    <dt>Wikipedia page:</dt><dd><?= link_to($artist->get('mo_wikipedia')) ?></dd>
+    <dt>Artist Name:</dt><dd><?= $artist->get('foaf:name') ?></dd>
+    <dt>Type:</dt><dd><?= $artist->join('rdf:type',', ') ?></dd>
+    <dt>Homepage:</dt><dd><?= link_to($artist->get('foaf:homepage')) ?></dd>
+    <dt>Wikipedia page:</dt><dd><?= link_to($artist->get('mo:wikipedia')) ?></dd>
     <?php
-        if (in_array('mo_SoloMusicArtist', $artist->types())) {
+        if (in_array('mo:SoloMusicArtist', $artist->types())) {
             echo "  <dt>Age:</dt>";
             echo "  <dd>".$artist->age()."</dd>\n";
         }

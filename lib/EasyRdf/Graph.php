@@ -108,7 +108,7 @@ class EasyRdf_Graph
             # Add resource to the type index
             $resource = $this->_resources[$uri];
             foreach ($types as $type) {
-                $resource->add('rdf_type', $type);
+                $resource->add('rdf:type', $type);
                 if (!isset($this->_typeIndex[$type])) {
                     $this->_typeIndex[$type] = array();
                 }
@@ -290,7 +290,7 @@ class EasyRdf_Graph
             $property = EasyRdf_Namespace::shorten($property);
             if (isset($property)) {
               foreach ($objs as $obj) {
-                if ($property == 'rdf_type') {
+                if ($property == 'rdf:type') {
                   # Type has already been set
                 } else if ($obj['type'] == 'literal') {
                   $res->add($property, $obj['value']);
@@ -402,7 +402,7 @@ class EasyRdf_Graph
     {
         if ($this->_uri) {
             $res = $this->get($this->_uri);
-            return $res->get('foaf_primaryTopic');
+            return $res->get('foaf:primaryTopic');
         } else {
             return null;
         }

@@ -60,10 +60,10 @@ class EasyRdf_Owl_Property extends EasyRdf_Resource
     public static function findAll($graph)
     {
         $propertyTypes = array(
-            'rdf_Property',
-            'owl_Property',
-            'owl_ObjectProperty',
-            'owl_DatatypeProperty'
+            'rdf:Property',
+            'owl:Property',
+            'owl:ObjectProperty',
+            'owl:DatatypeProperty'
         );
         $properties = array();
         foreach ($propertyTypes as $propertyType) {
@@ -82,9 +82,9 @@ class EasyRdf_Owl_Property extends EasyRdf_Resource
         $types = $this->types();
         # Apart from owl_FunctionalProperty, these rules really correct,
         # but they provide a good set of defaults
-        if (in_array('owl_FunctionalProperty', $types) or
-            in_array('owl_DatatypeProperty', $types) or 
-            in_array('owl_InverseFunctionalProperty', $types)) {
+        if (in_array('owl:FunctionalProperty', $types) or
+            in_array('owl:DatatypeProperty', $types) or 
+            in_array('owl:InverseFunctionalProperty', $types)) {
             return '1';
         } else {
             return 'N';
@@ -95,7 +95,7 @@ class EasyRdf_Owl_Property extends EasyRdf_Resource
 
 
 ## FIXME: Don't Repeat Yourself
-EasyRdf_TypeMapper::add('rdf_Property', 'EasyRdf_Owl_Property');
-EasyRdf_TypeMapper::add('owl_Property', 'EasyRdf_Owl_Property');
-EasyRdf_TypeMapper::add('owl_ObjectProperty', 'EasyRdf_Owl_Property');
-EasyRdf_TypeMapper::add('owl_DatatypeProperty', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::add('rdf:Property', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::add('owl:Property', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::add('owl:ObjectProperty', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::add('owl:DatatypeProperty', 'EasyRdf_Owl_Property');

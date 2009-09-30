@@ -63,20 +63,20 @@ class EasyRdf_Namespace
     /**
       * Return a namespace given its prefix.
       *
-      * @param string $short The namespace prefix (eg 'foaf')
+      * @param string $prefix The namespace prefix (eg 'foaf')
       * @return string The namespace URI (eg 'http://xmlns.com/foaf/0.1/')
       */
-    public static function get($short)
+    public static function get($prefix)
     {
-        if (!is_string($short) or $short == null or $short == '') {
+        if (!is_string($prefix) or $prefix == null or $prefix == '') {
             throw new InvalidArgumentException(
-                "\$short should be a string and cannot be null or empty"
+                "\$prefix should be a string and cannot be null or empty"
             );
         }
 
-        $short = strtolower($short);
-        if (array_key_exists($short, self::$_namespaces)) {
-            return self::$_namespaces[$short];
+        $prefix = strtolower($prefix);
+        if (array_key_exists($prefix, self::$_namespaces)) {
+            return self::$_namespaces[$prefix];
         } else {
             return null;
         }
@@ -85,14 +85,14 @@ class EasyRdf_Namespace
     /**
       * Register a new namespace.
       *
-      * @param string $short The namespace prefix (eg 'foaf')
+      * @param string $prefix The namespace prefix (eg 'foaf')
       * @param string $long The namespace URI (eg 'http://xmlns.com/foaf/0.1/')
       */
-    public static function add($short, $long)
+    public static function add($prefix, $long)
     {
-        if (!is_string($short) or $short == null or $short == '') {
+        if (!is_string($prefix) or $prefix == null or $prefix == '') {
             throw new InvalidArgumentException(
-                "\$short should be a string and cannot be null or empty"
+                "\$prefix should be a string and cannot be null or empty"
             );
         }
 
@@ -102,15 +102,15 @@ class EasyRdf_Namespace
             );
         }
 
-        $short = strtolower($short);
-        self::$_namespaces[$short] = $long;
+        $prefix = strtolower($prefix);
+        self::$_namespaces[$prefix] = $long;
     }
 
     /**
-      * Return the short namespace that a URI belongs to.
+      * Return the prefix namespace that a URI belongs to.
       *
       * @param string $uri A full URI (eg 'http://xmlns.com/foaf/0.1/name')
-      * @return string The short namespace that it is a part of(eg 'foaf')
+      * @return string The prefix namespace that it is a part of(eg 'foaf')
       */
     public static function namespaceOfUri($uri)
     {
@@ -120,9 +120,9 @@ class EasyRdf_Namespace
             );
         }
 
-        foreach (self::$_namespaces as $short => $long) {
+        foreach (self::$_namespaces as $prefix => $long) {
             if (strpos($uri, $long) === 0) {
-                return $short;
+                return $prefix;
             }
         }
         return null;
@@ -132,7 +132,7 @@ class EasyRdf_Namespace
       * Shorten a URI by substituting in the namespace prefix.
       *
       * @param string $uri The full URI (eg 'http://xmlns.com/foaf/0.1/name')
-      * @return string The shortened URI (eg 'foaf_name')
+      * @return string The shortened URI (eg 'foaf:name')
       */
     public static function shorten($uri)
     {
@@ -142,9 +142,9 @@ class EasyRdf_Namespace
             );
         }
 
-        foreach (self::$_namespaces as $short => $long) {
+        foreach (self::$_namespaces as $prefix => $long) {
             if (strpos($uri, $long) === 0) {
-                return $short . '_' . substr($uri, strlen($long));
+                return $prefix . ':' . substr($uri, strlen($long));
             }
         }
         return null;
@@ -153,12 +153,12 @@ class EasyRdf_Namespace
     /**
       * Expand a shortened URI back into a full URI.
       *
-      * @param string $shortUri The short URI (eg 'foaf_name')
+      * @param string $shortUri The short URI (eg 'foaf:name')
       * @return string The full URI (eg 'http://xmlns.com/foaf/0.1/name')
       */
     public static function expand($shortUri)
     {
-        if (preg_match("/^(\w+?)_(.+)$/", $shortUri, $matches)) {
+        if (preg_match("/^(\w+?):(.+)$/", $shortUri, $matches)) {
             $long = self::get($matches[1]);
             if ($long) {
                 return $long . $matches[2];
@@ -167,7 +167,7 @@ class EasyRdf_Namespace
             }
         } else {
             throw new InvalidArgumentException(
-                "\$shortUri should be in the form ns_name"
+                "\$shortUri should be in the form prefix:suffix"
             );
         }
     }

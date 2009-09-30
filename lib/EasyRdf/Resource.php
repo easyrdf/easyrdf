@@ -191,13 +191,13 @@ class EasyRdf_Resource
     # Return an array of this resource's types
     public function types()
     {
-        return $this->all('rdf_type');
+        return $this->all('rdf:type');
     }
     
     # Return the resource type as a single word (rather than a URI)
     public function type()
     {
-        return $this->get('rdf_type');
+        return $this->get('rdf:type');
     }
     
     # Return the namepace that this resource is part of
@@ -213,12 +213,12 @@ class EasyRdf_Resource
     
     public function label()
     {
-        if ($this->get('rdfs_label')) {
-            return $this->get('rdfs_label');
-        } else if ($this->get('foaf_name')) {
-            return $this->get('foaf_name');
-        } else if ($this->get('dc_title')) {
-            return $this->get('dc_title');
+        if ($this->get('rdfs:label')) {
+            return $this->get('rdfs:label');
+        } else if ($this->get('foaf:name')) {
+            return $this->get('foaf:name');
+        } else if ($this->get('dc:title')) {
+            return $this->get('dc:title');
         } else {
             return EasyRdf_Namespace::shorten($this->_uri); 
         }
@@ -245,7 +245,9 @@ class EasyRdf_Resource
     public function __call($name, $arguments)
     {
         $method = substr($name, 0, 3);
-        $property = strtolower(substr($name, 3, 1)) . substr($name, 4);
+        $property = preg_replace(
+            '/_/',':', strtolower(substr($name, 3, 1)) . substr($name, 4), 1
+        );
         
         switch ($method) {
           case 'get':

@@ -8,9 +8,9 @@
     if (isset($_GET['short'])) $short = $_GET['short'];
     
     # TODO LIST:
-    # - display rdfs_range
-    # - make use of rdfs_isDefinedBy?
-    # - do clever things witgh rdfs_subPropertyOf?
+    # - display rdfs:range
+    # - make use of rdfs:isDefinedBy?
+    # - do clever things witgh rdfs:subPropertyOf?
 ?>
 <html>
 <head><title>EasyRdf Spec Maker</title></head>
@@ -53,24 +53,24 @@
         
         echo "<dl>\n";
         echo "<dt>Namespace:</dt><dd>".link_to($ontology->getUri())."</dd>\n";
-        if ($ontology->get('dc_date')) echo "<dt>Date:</dt><dd>".$ontology->get('dc_date')."</dd>\n";
-        #if ($ontology->dc_creator)  # FIXME: implement this
-        #if ($ontology->dc_contributor)  # FIXME: implement this
+        if ($ontology->get('dc:date')) echo "<dt>Date:</dt><dd>".$ontology->get('dc:date')."</dd>\n";
+        #if ($ontology->dc:creator)  # FIXME: implement this
+        #if ($ontology->dc:contributor)  # FIXME: implement this
         echo "</dl>\n";
-        foreach ($ontology->all('rdfs_comment') as $comment) { echo "<p>$comment</p>\n"; }
-        foreach ($ontology->all('dc_description') as $description) { echo "<p>$description</p>\n"; }
+        foreach ($ontology->all('rdfs:comment') as $comment) { echo "<p>$comment</p>\n"; }
+        foreach ($ontology->all('dc:description') as $description) { echo "<p>$description</p>\n"; }
         
         echo "<h2>Classes</h2>\n";
-        foreach ($graph->allOfType('owl_Class') as $class) {
+        foreach ($graph->allOfType('owl:Class') as $class) {
             if ($class->ns() != $short) continue;
             echo "<div class='class' id='".$class->shorten()."'>";
             echo "<h3>".$class->shorten()."</h3>\n";
-            foreach ($class->all('rdfs_comment') as $comment) { echo "<p>$comment</p>\n"; }
+            foreach ($class->all('rdfs:comment') as $comment) { echo "<p>$comment</p>\n"; }
             echo "<dl>\n";
 
-            if ($class->get('rdfs_subClassOf')) {
+            if ($class->get('rdfs:subClassOf')) {
                 echo "<dt>SubClass of:</dt>\n";
-                foreach ($class->all('rdfs_subClassOf') as $subClass) {
+                foreach ($class->all('rdfs:subClassOf') as $subClass) {
                     if ($subClass->ns() == $short) {
                         echo "<dd>".link_to($subClass->shorten(),'#'.$subClass->shorten())."</dd>\n";
                     } else {
@@ -79,9 +79,9 @@
                 }
             }
             
-            if ($class->get('owl_disjointWith')) {
+            if ($class->get('owl:disjointWith')) {
                 echo "<dt>Disjoint with:</dt>\n";
-                foreach ($class->all('owl_disjointWith') as $disjointWith) {
+                foreach ($class->all('owl:disjointWith') as $disjointWith) {
                     if ($disjointWith->ns() == $short) {
                         echo "<dd>".link_to($disjointWith->shorten(),'#'.$disjointWith->shorten())."</dd>\n";
                     } else {
@@ -95,7 +95,7 @@
                 echo "<dt>Properties:</dt>\n";
                 foreach ($properties as $property) {
                     echo "<dd>\n";
-                    echo $property->shorten()." - <i>".$property->join('rdfs_comment')."</i>";
+                    echo $property->shorten()." - <i>".$property->join('rdfs:comment')."</i>";
                     echo " [".$property->cardinality()."]\n";
                     echo "</dd>\n";
                 }

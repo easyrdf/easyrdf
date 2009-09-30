@@ -23,15 +23,15 @@
         $graph = new EasyRdf_Graph();
         
         # 1st Technique
-        $me = $graph->get( $uri, 'foaf_Person' );
-        $me->set('foaf_age', '26');
+        $me = $graph->get( $uri, 'foaf:Person' );
+        $me->set('foaf:age', '26');
         
         # 2nd Technique
-        $graph->add( $me, 'foaf_name', 'Joseph Bloggs' );
+        $graph->add( $me, 'foaf:name', 'Joseph Bloggs' );
         $graph->add( $uri, array(
-            'foaf_firstName' => 'Joseph',
-            'foaf_lastName' => 'Bloggs',
-            'foaf_nick' => 'Joe'
+            'foaf:firstName' => 'Joseph',
+            'foaf:lastName' => 'Bloggs',
+            'foaf:nick' => 'Joe'
         ));
 
         # Finally output the graph

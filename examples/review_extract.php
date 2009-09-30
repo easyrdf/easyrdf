@@ -23,22 +23,22 @@
 <?php
     if (isset($uri)) {
         $graph = new EasyRdf_Graph( $uri );
-        if ($graph) $review = $graph->firstOfType('gv_Review');
+        if ($graph) $review = $graph->firstOfType('gv:Review');
     }
       
     if (isset($review)) {
         echo "<dl>\n";
-        # FIXME: support gv_itemreviewed->gv_name ??
-        if ($review->get('gv_itemreviewed')) echo "<dt>Item Reviewed:</dt><dd>".$review->get('gv_itemreviewed')."</dd>\n";
-        if ($review->get('gv_rating')) echo "<dt>Rating:</dt><dd>".$review->get('gv_rating')."</dd>\n";
-        # FIXME: support gv_reviewer->gv_name ??
-        if ($review->get('gv_reviewer')) echo "<dt>Reviewer:</dt><dd>".$review->get('gv_reviewer')."</dd>\n";
-        if ($review->get('gv_dtreviewed')) echo "<dt>Date Reviewed:</dt><dd>".$review->get('gv_dtreviewed')."</dd>\n";
-        if ($review->get('gv_summary')) echo "<dt>Review Summary:</dt><dd>".$review->get('gv_summary')."</dd>\n";
+        # FIXME: support gv:itemreviewed->gv:name ??
+        if ($review->get('gv:itemreviewed')) echo "<dt>Item Reviewed:</dt><dd>".$review->get('gv:itemreviewed')."</dd>\n";
+        if ($review->get('gv:rating')) echo "<dt>Rating:</dt><dd>".$review->get('gv:rating')."</dd>\n";
+        # FIXME: support gv:reviewer->gv:name ??
+        if ($review->get('gv:reviewer')) echo "<dt>Reviewer:</dt><dd>".$review->get('gv:reviewer')."</dd>\n";
+        if ($review->get('gv:dtreviewed')) echo "<dt>Date Reviewed:</dt><dd>".$review->get('gv:dtreviewed')."</dd>\n";
+        if ($review->get('gv:summary')) echo "<dt>Review Summary:</dt><dd>".$review->get('gv:summary')."</dd>\n";
         echo "</dl>\n";
 
-        if ($review->get('gv_description'))
-          echo "<div>".$review->get('gv_description')."</div>\n";
+        if ($review->get('gv:description'))
+          echo "<div>".$review->get('gv:description')."</div>\n";
     }
 ?>
 </body>

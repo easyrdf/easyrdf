@@ -89,7 +89,7 @@ class Mock_RdfParser
     public function parse($uri, $data, $docType)
     {
         global $validRdf;
-        if ($uri == 'valid_rdf' and $data == 'valid_rdf') {
+        if ($uri == 'valid:rdf' and $data == 'valid:rdf') {
             return $validRdf;
         } else {
             return null;
@@ -281,7 +281,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         );
         $this->assertEquals(
             'Joseph Bloggs',
-            $graph->get('http://example.com/joe')->get('foaf_name')
+            $graph->get('http://example.com/joe')->get('foaf:name')
         );
         $this->assertNull(
             $graph->get('http://example.com/joe')->type()
@@ -314,10 +314,10 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         EasyRdf_Graph::setRdfParser(new Mock_RdfParser());
         $graph = new EasyRdf_Graph();
         # Use magic URI to trigger Mock parser to return valid RDF
-        $graph->load('valid_rdf', 'valid_rdf');
+        $graph->load('valid:rdf', 'valid:rdf');
         $this->assertEquals(
             'Joseph Bloggs',
-            $graph->get('http://example.com/joe')->get('foaf_name')
+            $graph->get('http://example.com/joe')->get('foaf:name')
         );
     }
     
@@ -326,7 +326,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('EasyRdf_Exception');
         EasyRdf_Graph::setRdfParser(new Mock_RdfParser());
         $graph = new EasyRdf_Graph();
-        $graph->load('invalid_rdf', 'invalid_rdf');
+        $graph->load('invalid:rdf', 'invalid:rdf');
     }
     
     public function testLoadMockHttpClient()
@@ -335,7 +335,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph = new EasyRdf_Graph('http://www.example.com/');
         $this->assertEquals(
             'Joe Bloggs',
-            $graph->get('http://www.example.com/joe#me')->get('foaf_name')
+            $graph->get('http://www.example.com/joe#me')->get('foaf:name')
         );
     }
 
@@ -345,7 +345,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
         $this->assertEquals(
             'Joe Bloggs',
-            $graph->get('http://www.example.com/joe#me')->get('foaf_name')
+            $graph->get('http://www.example.com/joe#me')->get('foaf:name')
         );
     }
 
@@ -382,8 +382,8 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     public function testSetType()
     {
         $graph = new EasyRdf_Graph();
-        $resource = $graph->get('http://www.foo.com/bar', 'foo_Bar');
-        $this->assertEquals('foo_Bar', $resource->type());
+        $resource = $graph->get('http://www.foo.com/bar', 'foo:Bar');
+        $this->assertEquals('foo:Bar', $resource->type());
     }
 
     public function testSetMultipleTypes()
@@ -391,9 +391,9 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph = new EasyRdf_Graph();
         $resource = $graph->get(
             'http://www.foo.com/bar',
-            array('foo_Bar', 'bar_Foo')
+            array('foo:Bar', 'bar:Foo')
         );
-        $this->assertEquals(array('foo_Bar', 'bar_Foo'), $resource->types());
+        $this->assertEquals(array('foo:Bar', 'bar:Foo'), $resource->types());
     }
 
     public function testResources()
@@ -416,7 +416,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
-        $resources = $graph->allOfType('foaf_Person');
+        $resources = $graph->allOfType('foaf:Person');
         $this->assertTrue(is_array($resources));
         $this->assertEquals(1, count($resources));
         $this->assertEquals(
@@ -428,7 +428,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     public function testAllOfTypeUnknown()
     {
         $graph = new EasyRdf_Graph();
-        $resources = $graph->allOfType('unknown_type');
+        $resources = $graph->allOfType('unknown:type');
         $this->assertTrue(is_array($resources));
         $this->assertEquals(0, count($resources));
     }
@@ -437,7 +437,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
-        $resource = $graph->firstOfType('foaf_Person');
+        $resource = $graph->firstOfType('foaf:Person');
         $this->assertEquals(
             'http://www.example.com/joe#me', 
             $resource->getUri()
@@ -447,7 +447,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     public function testFirstOfTypeUnknown()
     {
         $graph = new EasyRdf_Graph();
-        $resource = $graph->firstOfType('unknown_type');
+        $resource = $graph->firstOfType('unknown:type');
         $this->assertNull($resource);
     }
     
@@ -458,24 +458,24 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $types = $graph->allTypes();
         $this->assertTrue(is_array($types));
         $this->assertEquals(2, count($types));
-        $this->assertEquals('foaf_Person', $types[0]);
-        $this->assertEquals('foaf_PersonalProfileDocument', $types[1]);
+        $this->assertEquals('foaf:Person', $types[0]);
+        $this->assertEquals('foaf:PersonalProfileDocument', $types[1]);
     }
     
     public function testAddSingleValueToString()
     {
         $graph = new EasyRdf_Graph();
-        $graph->add('http://www.example.com/joe#me', 'foaf_name', 'Joe');
+        $graph->add('http://www.example.com/joe#me', 'foaf:name', 'Joe');
         $resource = $graph->get('http://www.example.com/joe#me');
-        $this->assertEquals('Joe', $resource->get('foaf_name'));
+        $this->assertEquals('Joe', $resource->get('foaf:name'));
     }
     
     public function testAddSingleValueToResource()
     {
         $graph = new EasyRdf_Graph();
         $resource = $graph->get('http://www.example.com/joe#me');
-        $graph->add($resource, 'foaf_name', 'Joe');
-        $this->assertEquals('Joe', $resource->get('foaf_name'));
+        $graph->add($resource, 'foaf:name', 'Joe');
+        $this->assertEquals('Joe', $resource->get('foaf:name'));
     }
     
     public function testAddMultipleValuesToString()
@@ -484,12 +484,12 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $resource = $graph->get('http://www.example.com/joe#me');
         $graph->add(
             'http://www.example.com/joe#me',
-            'foaf_name',
+            'foaf:name',
             array('Joe','Joseph')
         );
         $this->assertEquals(
             array('Joe', 'Joseph'),
-            $resource->all('foaf_name')
+            $resource->all('foaf:name')
         );
     }
     
@@ -497,10 +497,10 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $graph = new EasyRdf_Graph();
         $resource = $graph->get('http://www.example.com/joe#me');
-        $graph->add($resource, 'foaf_name', array('Joe','Joseph'));
+        $graph->add($resource, 'foaf:name', array('Joe','Joseph'));
         $this->assertEquals(
             array('Joe', 'Joseph'),
-            $resource->all('foaf_name')
+            $resource->all('foaf:name')
         );
     }
     
@@ -511,12 +511,12 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph->add(
             $resource,
             array(
-                'foaf_givenname' => 'Joe',
-                'foaf_surname' => 'Bloggs'
+                'foaf:givenname' => 'Joe',
+                'foaf:surname' => 'Bloggs'
             )
         );
-        $this->assertEquals('Joe', $resource->get('foaf_givenname'));
-        $this->assertEquals('Bloggs', $resource->get('foaf_surname'));
+        $this->assertEquals('Joe', $resource->get('foaf:givenname'));
+        $this->assertEquals('Bloggs', $resource->get('foaf:surname'));
     }
 
     public function testType()
@@ -525,7 +525,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph = new EasyRdf_Graph(
             'http://www.example.com/joe/foaf.rdf', $data
         );
-        $this->assertEquals('foaf_PersonalProfileDocument', $graph->type());
+        $this->assertEquals('foaf:PersonalProfileDocument', $graph->type());
     }
 
     public function testTypeUnknown()

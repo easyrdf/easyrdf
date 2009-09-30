@@ -49,9 +49,9 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->_resource = new EasyRdf_Resource('http://www.example.com/#me');
-        $this->_resource->set('rdf_type', 'foaf_Person');
-        $this->_resource->add('test_prop', 'Test A');
-        $this->_resource->add('test_prop', 'Test B');
+        $this->_resource->set('rdf:type', 'foaf:Person');
+        $this->_resource->add('test:prop', 'Test A');
+        $this->_resource->add('test:prop', 'Test B');
     }
 
     public function testConstructNull()
@@ -84,7 +84,7 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             'Test A',
-            $this->_resource->get('test_prop')
+            $this->_resource->get('test:prop')
         );
     }
 
@@ -92,7 +92,7 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             null,
-            $this->_resource->get('foo_bar')
+            $this->_resource->get('foo:bar')
         );
     }
 
@@ -118,7 +118,7 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             array('Test A','Test B'),
-            $this->_resource->all('test_prop')
+            $this->_resource->all('test:prop')
         );
     }
 
@@ -126,7 +126,7 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             array(),
-            $this->_resource->all('foo_bar')
+            $this->_resource->all('foo:bar')
         );
     }
 
@@ -150,10 +150,10 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testSet()
     {
-        $this->_resource->set('test_prop', 'Test C');
+        $this->_resource->set('test:prop', 'Test C');
         $this->assertEquals(
             array('Test C'),
-            $this->_resource->all('test_prop')
+            $this->_resource->all('test:prop')
         );
     }
 
@@ -177,37 +177,37 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     
     public function testSetNull()
     {
-        $this->_resource->set('test_prop', null);
+        $this->_resource->set('test:prop', null);
         $this->assertEquals(
             array(),
-            $this->_resource->all('test_prop')
+            $this->_resource->all('test:prop')
         );
     }
 
     public function testAdd()
     {
-        $this->_resource->add('test_prop', 'Test C');
+        $this->_resource->add('test:prop', 'Test C');
         $this->assertEquals(
             array('Test A', 'Test B', 'Test C'),
-            $this->_resource->all('test_prop')
+            $this->_resource->all('test:prop')
         );
     }
 
     public function testAddMultiple()
     {
-        $this->_resource->add('test_prop', array('Test C', 'Test D'));
+        $this->_resource->add('test:prop', array('Test C', 'Test D'));
         $this->assertEquals(
             array('Test A', 'Test B', 'Test C', 'Test D'),
-            $this->_resource->all('test_prop')
+            $this->_resource->all('test:prop')
         );
     }
     
     public function testAddNull()
     {
-        $this->_resource->add('test_prop', null);
+        $this->_resource->add('test:prop', null);
         $this->assertEquals(
             array('Test A', 'Test B'),
-            $this->_resource->all('test_prop')
+            $this->_resource->all('test:prop')
         );
     }
 
@@ -233,20 +233,20 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             'Test A Test B',
-            $this->_resource->join('test_prop')
+            $this->_resource->join('test:prop')
         );
     }
 
     public function testJoinNonExistantProperty()
     {
-        $this->assertEquals('', $this->_resource->join('foo_bar'));
+        $this->assertEquals('', $this->_resource->join('foo:bar'));
     }
 
     public function testJoinCustomGlue()
     {
         $this->assertEquals(
             'Test A:Test B',
-            $this->_resource->join('test_prop', ':')
+            $this->_resource->join('test:prop', ':')
         );
     }
 
@@ -282,7 +282,7 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     public function testProperties()
     {
         $this->assertEquals(
-            array('rdf_type', 'test_prop'),
+            array('rdf:type', 'test:prop'),
             $this->_resource->properties()
         );
     }
@@ -290,14 +290,14 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     public function testTypes()
     {
         $this->assertEquals(
-            array('foaf_Person'),
+            array('foaf:Person'),
             $this->_resource->types()
         );
     }
 
     public function testType()
     {
-        $this->assertEquals('foaf_Person', $this->_resource->type());
+        $this->assertEquals('foaf:Person', $this->_resource->type());
     }
 
     public function testNs()
@@ -309,7 +309,7 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     public function testShorten()
     {
         $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
-        $this->assertEquals('foaf_name', $foafName->shorten());
+        $this->assertEquals('foaf:name', $foafName->shorten());
     }
 
     public function testLabelNoRdfsLabel()
@@ -319,22 +319,22 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testLabelWithRdfsLabel()
     {
-        $this->_resource->set('rdfs_label', 'Label Text');
-        $this->_resource->set('foaf_name', 'Foaf Name');
-        $this->_resource->set('dc_title', 'Dc Title');
+        $this->_resource->set('rdfs:label', 'Label Text');
+        $this->_resource->set('foaf:name', 'Foaf Name');
+        $this->_resource->set('dc:title', 'Dc Title');
         $this->assertEquals('Label Text', $this->_resource->label());
     }
 
     public function testLabelWithFoafName()
     {
-        $this->_resource->set('foaf_name', 'Foaf Name');
-        $this->_resource->set('dc_title', 'Dc Title');
+        $this->_resource->set('foaf:name', 'Foaf Name');
+        $this->_resource->set('dc:title', 'Dc Title');
         $this->assertEquals('Foaf Name', $this->_resource->label());
     }
 
     public function testLabelWithDcTitle()
     {
-        $this->_resource->set('dc_title', 'Dc Title');
+        $this->_resource->set('dc:title', 'Dc Title');
         $this->assertEquals('Dc Title', $this->_resource->label());
     }
 

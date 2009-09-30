@@ -156,7 +156,7 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
     public function testShortenFoafName()
     {
         $this->assertEquals(
-            'foaf_name',
+            'foaf:name',
             EasyRdf_Namespace::shorten('http://xmlns.com/foaf/0.1/name')
         );
     }
@@ -225,7 +225,7 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             'http://xmlns.com/foaf/0.1/name',
-            EasyRdf_Namespace::expand('foaf_name')
+            EasyRdf_Namespace::expand('foaf:name')
         );
     }
 
@@ -239,7 +239,7 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             null,
-            EasyRdf_Namespace::expand('unknown_unknown')
+            EasyRdf_Namespace::expand('unknown:unknown')
         );
     }
 }

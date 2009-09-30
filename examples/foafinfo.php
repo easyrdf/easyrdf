@@ -26,9 +26,9 @@
     if (isset($uri)) {
         $graph = new EasyRdf_Graph( $uri );
         if ($graph) {
-            if ($graph->type() == 'foaf_PersonalProfileDocument') {
+            if ($graph->type() == 'foaf:PersonalProfileDocument') {
                 $person = $graph->primaryTopic();
-            } else if ($graph->type() == 'foaf_Person') {
+            } else if ($graph->type() == 'foaf:Person') {
                 $person = $graph->get( $graph->getUri() );
             }
         }
@@ -38,15 +38,15 @@
 ?>
 
 <dl>
-  <dt>Name:</dt><dd><?= $person->get('foaf_name') ?></dd>
-  <dt>Homepage:</dt><dd><?= link_to( $person->get('foaf_homepage') ) ?></dd>
-  <dt>Description:</dt><dd><?= $person->get('dc_description') ?></dd>
+  <dt>Name:</dt><dd><?= $person->get('foaf:name') ?></dd>
+  <dt>Homepage:</dt><dd><?= link_to( $person->get('foaf:homepage') ) ?></dd>
+  <dt>Description:</dt><dd><?= $person->get('dc:description') ?></dd>
 </dl>
 
 <?php
         echo "<h2>Known Persons</h2>\n";
         echo "<ul>\n";
-        foreach ($person->all('foaf_knows') as $friend) {
+        foreach ($person->all('foaf:knows') as $friend) {
             if ($friend->label()) {
                 $label = $friend->label();
             } else {
