@@ -231,7 +231,7 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 
     public function testExpandMissingUnderscore()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::expand('unknown');
     }
 

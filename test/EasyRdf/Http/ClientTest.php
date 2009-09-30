@@ -80,13 +80,13 @@ class EasyRdf_Http_ClientTest extends PHPUnit_Framework_TestCase
 
     public function testSetConfigNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $result = $this->_client->setConfig(null);
     }
 
     public function testSetConfigNonArray()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $result = $this->_client->setConfig('foo');
     }
 
