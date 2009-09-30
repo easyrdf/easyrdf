@@ -83,19 +83,19 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 
     public function testGetNullNamespace()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::get(null);
     }
 
     public function testGetEmptyNamespace()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::get('');
     }
 
     public function testGetNonStringNamespace()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::get(array());
     }
 
@@ -119,37 +119,37 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 
     public function testAddNamespaceShortNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::add(null, 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceShortEmpty()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::add('', 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceShortNonString()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::add(array(), 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceLongNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::add('ko', null);
     }
 
     public function testAddNamespaceLongEmpty()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::add('ko', '');
     }
 
     public function testAddNamespaceLongNonString()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::add('ko', array());
     }
 
@@ -171,19 +171,19 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 
     public function testShortenNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::shorten(null);
     }
 
     public function testShortenEmpty()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::shorten('');
     }
 
     public function testShortenNonString()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::shorten(array());
     }
 
@@ -205,19 +205,19 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 
     public function testNamespaceOfUriNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::namespaceOfUri(null);
     }
 
     public function testNamespaceOfUriEmpty()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::namespaceOfUri('');
     }
 
     public function testNamespaceOfUriNonString()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::namespaceOfUri(array());
     }
 

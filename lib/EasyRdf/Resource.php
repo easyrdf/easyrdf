@@ -65,7 +65,7 @@ class EasyRdf_Resource
     public function __construct($uri)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$uri should be a string and cannot be null or empty"
             );
         }
@@ -82,7 +82,7 @@ class EasyRdf_Resource
     public function set($property, $values)
     {
         if (!is_string($property) or $property == null or $property == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$property should be a string and cannot be null or empty"
             );
         }
@@ -100,7 +100,7 @@ class EasyRdf_Resource
     public function add($property, $value)
     {
         if (!is_string($property) or $property == null or $property == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$property should be a string and cannot be null or empty"
             );
         }
@@ -135,7 +135,7 @@ class EasyRdf_Resource
     public function get($property)
     {
         if (!is_string($property) or $property == null or $property == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$property should be a string and cannot be null or empty"
             );
         }
@@ -151,7 +151,7 @@ class EasyRdf_Resource
     public function all($property)
     {
         if (!is_string($property) or $property == null or $property == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$property should be a string and cannot be null or empty"
             );
         }
@@ -166,7 +166,7 @@ class EasyRdf_Resource
     public function join($property, $glue=' ')
     {
         if (!is_string($property) or $property == null or $property == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$property should be a string and cannot be null or empty"
             );
         }

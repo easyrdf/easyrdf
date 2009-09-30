@@ -81,7 +81,7 @@ class EasyRdf_Graph
     {
         # FIXME: allow URI to be shortened?
         if (!is_string($uri) or $uri == null or $uri == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$uri should be a string and cannot be null or empty"
             );
         }
@@ -132,7 +132,7 @@ class EasyRdf_Graph
     public static function setHttpClient($httpClient)
     {
         if (!is_object($httpClient) or $httpClient == null) {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$httpClient should be an object and cannot be null"
             );
         }
@@ -160,7 +160,7 @@ class EasyRdf_Graph
     public static function setRdfParser($rdfParser)
     {
         if (!is_object($rdfParser) or $rdfParser == null) {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$rdfParser should be an object and cannot be null"
             );
         }
@@ -235,7 +235,7 @@ class EasyRdf_Graph
     public function load($uri, $data='', $docType=null)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$uri should be a string and cannot be null or empty"
             );
         }

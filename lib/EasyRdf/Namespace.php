@@ -69,7 +69,7 @@ class EasyRdf_Namespace
     public static function get($short)
     {
         if (!is_string($short) or $short == null or $short == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$short should be a string and cannot be null or empty"
             );
         }
@@ -91,13 +91,13 @@ class EasyRdf_Namespace
     public static function add($short, $long)
     {
         if (!is_string($short) or $short == null or $short == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$short should be a string and cannot be null or empty"
             );
         }
 
         if (!is_string($long) or $long == null or $long == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$long should be a string and cannot be null or empty"
             );
         }
@@ -115,7 +115,7 @@ class EasyRdf_Namespace
     public static function namespaceOfUri($uri)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$uri should be a string and cannot be null or empty"
             );
         }
@@ -137,7 +137,7 @@ class EasyRdf_Namespace
     public static function shorten($uri)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$uri should be a string and cannot be null or empty"
             );
         }
@@ -166,7 +166,7 @@ class EasyRdf_Namespace
                 return null;
             }
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$shortUri should be in the form ns_name"
             );
         }

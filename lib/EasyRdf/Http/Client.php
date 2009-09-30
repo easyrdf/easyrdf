@@ -97,7 +97,7 @@ class EasyRdf_Http_Client
     public function setConfig($config = array())
     {
         if ($config == null or !is_array($config)) {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$config should be an array and cannot be null"
             );
         }

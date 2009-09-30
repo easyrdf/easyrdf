@@ -56,19 +56,19 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testConstructNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $res = new EasyRdf_Resource(null);
     }
 
     public function testConstructEmpty()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $res = new EasyRdf_Resource('');
     }
 
     public function testConstructNonString()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $res = new EasyRdf_Resource(array());
     }
 
@@ -98,19 +98,19 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testGetNullKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->get(null);
     }
     
     public function testGetEmptyKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->get('');
     }
     
     public function testGetNonStringKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->get(array());
     }
 
@@ -132,19 +132,19 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testAllNullKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->all(null);
     }
     
     public function testAllEmptyKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->all('');
     }
     
     public function testAllNonStringKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->all(array());
     }
 
@@ -159,19 +159,19 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testSetNullKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->set(null, 'Test C');
     }
     
     public function testSetEmptyKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->set('', 'Test C');
     }
     
     public function testSetNonStringKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->set(array(), 'Test C');
     }
     
@@ -213,19 +213,19 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testAddNullKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->add(null, 'Test C');
     }
     
     public function testAddEmptyKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->add('', 'Test C');
     }
     
     public function testAddNonStringKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->add(array(), 'Test C');
     }
 
@@ -252,19 +252,19 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testJoinNullKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->join(null, 'Test C');
     }
     
     public function testJoinEmptyKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->join('', 'Test C');
     }
     
     public function testJoinNonStringKey()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $this->_resource->join(array(), 'Test C');
     }
 

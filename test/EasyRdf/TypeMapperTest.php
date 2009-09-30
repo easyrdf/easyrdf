@@ -67,19 +67,19 @@ class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
 
     public function testGetNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_TypeMapper::get(null);
     }
 
     public function testGetEmpty()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_TypeMapper::get('');
     }
 
     public function testGetNonString()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_TypeMapper::get(array());
     }
 
@@ -90,37 +90,37 @@ class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
 
     public function testAddTypeNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_TypeMapper::add(null, 'MyType_Class');
     }
 
     public function testAddTypeEmpty()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_TypeMapper::add('', 'MyType_Class');
     }
 
     public function testAddTypeNonString()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_TypeMapper::add(array(), 'MyType_Class');
     }
 
     public function testAddClassNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_TypeMapper::add('mytype', null);
     }
 
     public function testAddClassEmpty()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_TypeMapper::add('mytype', '');
     }
 
     public function testAddClassNonString()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_TypeMapper::add('mytype', array());
     }
 

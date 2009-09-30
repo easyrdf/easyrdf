@@ -224,13 +224,13 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 
     public function testSetHttpClientNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Graph::setHttpClient(null);
     }
     
     public function testSetHttpClientString()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Graph::setHttpClient('foobar');
     }
     
@@ -245,13 +245,13 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 
     public function testSetRdfParserNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Graph::setRdfParser(null);
     }
     
     public function testSetRdfParserString()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Graph::setRdfParser('foobar');
     }
 
@@ -290,21 +290,21 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 
     public function testLoadNullUri()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $graph = new EasyRdf_Graph();
         $graph->load(null);
     }
     
     public function testLoadEmptyUri()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $graph = new EasyRdf_Graph();
         $graph->load('');
     }
     
     public function testLoadNonStringUri()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $graph = new EasyRdf_Graph();
         $graph->load(array());
     }
@@ -360,21 +360,21 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 
     public function testGetNullUri()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $graph = new EasyRdf_Graph();
         $graph->get(null);
     }
     
     public function testGetEmptyUri()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $graph = new EasyRdf_Graph();
         $graph->get('');
     }
     
     public function testGetNonStringUri()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('InvalidArgumentException');
         $graph = new EasyRdf_Graph();
         $graph->get(array());
     }

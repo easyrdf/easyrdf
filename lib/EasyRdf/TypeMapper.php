@@ -55,7 +55,7 @@ class EasyRdf_TypeMapper
     public static function get($type)
     {
         if (!is_string($type) or $type == null or $type == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$type should be a string and cannot be null or empty"
             );
         } else if (array_key_exists($type, self::$_map)) {
@@ -68,13 +68,13 @@ class EasyRdf_TypeMapper
     public static function add($type, $class)
     {
         if (!is_string($type) or $type == null or $type == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$type should be a string and cannot be null or empty"
             );
         }
 
         if (!is_string($class) or $class == null or $class == '') {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "\$class should be a string and cannot be null or empty"
             );
         }
