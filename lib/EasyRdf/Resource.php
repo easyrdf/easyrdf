@@ -257,7 +257,7 @@ class EasyRdf_Resource
               break;
         
           default:
-              throw new EasyRdf_Exception(
+              throw new BadMethodCallException(
                   'Tried to call unknown method '.get_class($this).'::'.$name
               );
               break;

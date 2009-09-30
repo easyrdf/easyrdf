@@ -366,9 +366,9 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->_resource->allFoo_bar());
     }
 
-    public function testMagicInvalidCall()
+    public function testMagicBadMethodCall()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException('BadMethodCallException');
         $this->_resource->fooBar();
     }
 
