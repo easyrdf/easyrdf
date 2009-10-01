@@ -52,7 +52,7 @@ class EasyRdf_RapperParser
 {
     /**
      * Parse an RDF document
-     * @param string $data the document data.
+     * @param string $data the document data.
      * @param string $input_type the format of the input document.
      * @return string the converted document, or null if the convertion failed.
      */
