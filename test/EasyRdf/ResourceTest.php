@@ -90,10 +90,7 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testGetNonExistantProperty()
     {
-        $this->assertEquals(
-            null,
-            $this->_resource->get('foo:bar')
-        );
+        $this->assertNull( $this->_resource->get('foo:bar') );
     }
 
     public function testGetNullKey()
@@ -306,15 +303,26 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foaf', $foafName->ns());
     }
 
+    public function testUnknownNs()
+    {
+        $unknown = new EasyRdf_Resource('http://www.example.com/foo');
+        $this->assertNull($unknown->ns());
+    }
+
     public function testShorten()
     {
         $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
         $this->assertEquals('foaf:name', $foafName->shorten());
     }
+    public function testShortenUnknown()
+    {
+        $unknown = new EasyRdf_Resource('http://www.example.com/foo');
+        $this->assertNull($unknown->shorten());
+    }
 
     public function testLabelNoRdfsLabel()
     {
-        $this->assertEquals(null, $this->_resource->label());
+        $this->assertNull($this->_resource->label());
     }
 
     public function testLabelWithRdfsLabel()
