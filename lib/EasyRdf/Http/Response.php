@@ -54,9 +54,34 @@ require_once "EasyRdf/Exception.php";
  */
 class EasyRdf_Http_Response
 {
+
+    /**
+     * The HTTP response status code
+     *
+     * @var int
+     */
     private $_status;
+
+    /**
+     * The HTTP response code as string
+     * (e.g. 'Not Found' for 404 or 'Internal Server Error' for 500)
+     *
+     * @var string
+     */
     private $_message;
+
+    /**
+     * The HTTP response headers array
+     *
+     * @var array
+     */
     private $_headers = array();
+
+    /**
+     * The HTTP response body
+     *
+     * @var string
+     */
     private $_body;
  
     /**
@@ -81,31 +106,62 @@ class EasyRdf_Http_Response
         $this->_message = $message;
     }
 
+    /**
+     * Check whether the response in successful
+     *
+     * @return boolean
+     */
     public function isSuccessful()
     {
         return ($this->_status >= 200 && $this->_status < 300);
     }
-    
+
+    /**
+     * Check whether the response is an error
+     *
+     * @return boolean
+     */
     public function isError()
     {
         return ($this->_status >= 400 && $this->_status < 600);
     }
-    
+
+    /**
+     * Check whether the response is a redirection
+     *
+     * @return boolean
+     */
     public function isRedirect()
     {
         return ($this->_status >= 300 && $this->_status < 400);
     }
-    
+
+    /**
+     * Get the HTTP response status code
+     *
+     * @return int
+     */
     public function getStatus()
     {
         return $this->_status;
     }
-    
+
+    /**
+     * Return a message describing the HTTP response code
+     * (Eg. "OK", "Not Found", "Moved Permanently")
+     *
+     * @return string
+     */
     public function getMessage()
     {
         return $this->_message;
     }
-    
+
+    /**
+     * Get the response body as string
+     *
+     * @return string
+     */
     public function getBody()
     {
         // Decode the body if it was transfer-encoded
@@ -123,16 +179,32 @@ class EasyRdf_Http_Response
         }
     }
     
+    /**
+     * Get the HTTP version of the response
+     *
+     * @return string
+     */
     public function getVersion()
     {
         return $this->_version;
     }
-    
+ 
+    /**
+     * Get the response headers
+     *
+     * @return array
+     */
     public function getHeaders()
     {
         return $this->_headers;
     }
-    
+
+    /**
+     * Get a specific header as string, or null if it is not set
+     *
+     * @param string$header
+     * @return string|array|null
+     */
     public function getHeader($header)
     {
         $header = ucwords(strtolower($header));

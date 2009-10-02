@@ -59,14 +59,45 @@ require_once "EasyRdf/Http/Response.php";
  */
 class EasyRdf_Http_Client
 {
+    /**
+     * Request URI
+     *
+     * @var string
+     */
     private $_uri = null;
+
+    /**
+     * Configuration array, set using the constructor or using ::setConfig()
+     *
+     * @var array
+     */
     private $_config = array(
         'maxredirects'    => 5,
         'useragent'       => 'EasyRdf_Http_Client',
         'timeout'         => 10
     );
+
+    /**
+     * Associative array of request headers
+     *
+     * @var array
+     */
     private $_headers = array();
+
+    /**
+     * Redirection counter
+     *
+     * @var int
+     */
     private $_redirectCounter = 0;
+
+    /**
+     * Contructor method. Will create a new HTTP client. Accepts the target
+     * URL and optionally configuration array.
+     *
+     * @param string $uri
+     * @param array $config Configuration key-value pairs.
+     */
 
     public function __construct($uri = null, $config = null)
     {
@@ -78,6 +109,12 @@ class EasyRdf_Http_Client
         }
     }
 
+    /**
+     * Set the URI for the next request
+     *
+     * @param  string $uri
+     * @return EasyRdf_Http_Client
+     */
     public function setUri($uri)
     {
         if (!is_string($uri)) {
@@ -89,11 +126,23 @@ class EasyRdf_Http_Client
         return $this;
     }
 
+    /**
+     * Get the URI for the next request
+     *
+     * @return string
+     */
     public function getUri($asString = true)
     {
         return $this->_uri;
     }
 
+    /**
+     * Set configuration parameters for this HTTP client
+     *
+     * @param  array $config
+     * @return EasyRdf_Http_Client
+     * @throws InvalidArgumentException
+     */
     public function setConfig($config = array())
     {
         if ($config == null or !is_array($config)) {
@@ -107,7 +156,14 @@ class EasyRdf_Http_Client
 
         return $this;
     }
-    
+
+    /**
+     * Set a request headers
+     *
+     * @param string $name Header name (e.g. 'Accept')
+     * @param string $value Header value or null
+     * @return EasyRdf_Http_Client
+     */
     public function setHeaders($name, $value = null)
     {
         $normalizedName = strtolower($name);
@@ -124,6 +180,15 @@ class EasyRdf_Http_Client
         return $this;
     }
 
+    /**
+     * Get the value of a specific header
+     *
+     * Note that if the header has more than one value, an array
+     * will be returned.
+     *
+     * @param string $key
+     * @return string|array|null The header value or null if it is not set
+     */
     public function getHeader($key)
     {
         $key = strtolower($key);
@@ -144,6 +209,12 @@ class EasyRdf_Http_Client
         return $this->_redirectCounter;
     }
 
+    /**
+     * Send the HTTP request and return an HTTP response object
+     *
+     * @return EasyRdf_Http_Response
+     * @throws EasyRdf_Exception
+     */
     public function request($method = 'GET')
     {
         if (!$this->_uri) {
@@ -225,8 +296,6 @@ class EasyRdf_Http_Client
         
         return $response;
     }
-
-
 
     /**
      * Prepare the request headers
