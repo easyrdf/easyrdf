@@ -55,19 +55,36 @@ require_once "EasyRdf/TypeMapper.php";
  */
 class EasyRdf_Owl_Class extends EasyRdf_Resource
 {
+    /**
+      * Convert the RDF Class into a suitable PHP class name
+      *
+      * @return string The class name (e.g. Foaf_Person)
+      */
     function className()
     {
-        return ucfirst($this->shorten());
+        return ucfirst(str_replace(':','_',$this->shorten()));
     }
     
+    /**
+      * Convert the RDF Class into a suitable PHP filename
+      *
+      * @return string The file name (e.g. Foaf/Person.php)
+      */
     function fileName()
     {
-        return str_replace(':', '/', $this->className()) . '.php';
+        return str_replace('_', '/', $this->className()) . '.php';
     }
-
-    # FIXME: not ideal having to pass graph in here
+    
+    /**
+      * Get an array of properties for a class
+      *
+      * If no properties are found for the class, an empty array is returned.
+      *
+      * @return array An array of EasyRdf_Property associated with the class
+      */
     function classProperties($graph)
     {
+        // FIXME: not ideal having to pass graph in here
         $properties = array();
         # FIXME: cache this somehow?
         $owlThing = $graph->get('http://www.w3.org/2002/07/owl#Thing');
@@ -87,4 +104,4 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
     }
 }
 
-EasyRdf_TypeMapper::add('owl:Class', 'EasyRdf_Owl_Class');
+EasyRdf_TypeMapper::set('owl:Class', 'EasyRdf_Owl_Class');

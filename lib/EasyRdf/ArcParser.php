@@ -57,11 +57,24 @@ class EasyRdf_ArcParser
         'rdfa' => 'SemHTML',
     );
 
+    /**
+     * Constructor
+     *
+     * @return object EasyRdf_ArcParser
+     */
     public function __construct()
     {
         require_once 'arc/ARC2.php';
     }
 
+    /**
+      * Parse an RDF document
+      *
+      * @param string $uri      the base URI of the data
+      * @param string $data     the document data
+      * @param string $docType  the format of the input data
+      * @return array           the parsed data
+      */
     public function parse($uri, $data, $docType)
     {
         if (array_key_exists($docType, self::$_supportedTypes)) {

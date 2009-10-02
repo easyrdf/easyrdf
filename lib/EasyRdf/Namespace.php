@@ -50,6 +50,7 @@ require_once "EasyRdf/Exception.php";
  */
 class EasyRdf_Namespace
 {
+    /** Namespace registery */
     private static $_namespaces = array(
       'dc' => 'http://purl.org/dc/elements/1.1/',
       'foaf' => 'http://xmlns.com/foaf/0.1/',
@@ -88,7 +89,7 @@ class EasyRdf_Namespace
       * @param string $prefix The namespace prefix (eg 'foaf')
       * @param string $long The namespace URI (eg 'http://xmlns.com/foaf/0.1/')
       */
-    public static function add($prefix, $long)
+    public static function set($prefix, $long)
     {
         if (!is_string($prefix) or $prefix == null or $prefix == '') {
             throw new InvalidArgumentException(
@@ -112,7 +113,7 @@ class EasyRdf_Namespace
       * @param string $uri A full URI (eg 'http://xmlns.com/foaf/0.1/name')
       * @return string The prefix namespace that it is a part of(eg 'foaf')
       */
-    public static function namespaceOfUri($uri)
+    public static function prefixOfUri($uri)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
             throw new InvalidArgumentException(

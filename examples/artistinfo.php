@@ -44,9 +44,9 @@
     }
 
     ## Add namespaces
-    EasyRdf_Namespace::add('mo', 'http://purl.org/ontology/mo/');
-    EasyRdf_Namespace::add('bio', 'http://purl.org/vocab/bio/0.1/');
-    EasyRdf_TypeMapper::add('mo:MusicArtist', 'Model_MusicArtist');
+    EasyRdf_Namespace::set('mo', 'http://purl.org/ontology/mo/');
+    EasyRdf_Namespace::set('bio', 'http://purl.org/vocab/bio/0.1/');
+    EasyRdf_TypeMapper::set('mo:MusicArtist', 'Model_MusicArtist');
     
     if (isset($_GET['uri'])) $uri = $_GET['uri'];
 ?>

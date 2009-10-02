@@ -57,7 +57,7 @@ class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        EasyRdf_TypeMapper::add('my:type', 'MyType_Class');
+        EasyRdf_TypeMapper::set('my:type', 'MyType_Class');
     }
 
     public function testGet()
@@ -88,45 +88,45 @@ class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(null, EasyRdf_TypeMapper::get('unknown:type'));
     }
 
-    public function testAddTypeNull()
+    public function testSetTypeNull()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::add(null, 'MyType_Class');
+        EasyRdf_TypeMapper::set(null, 'MyType_Class');
     }
 
-    public function testAddTypeEmpty()
+    public function testSetTypeEmpty()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::add('', 'MyType_Class');
+        EasyRdf_TypeMapper::set('', 'MyType_Class');
     }
 
-    public function testAddTypeNonString()
+    public function testSetTypeNonString()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::add(array(), 'MyType_Class');
+        EasyRdf_TypeMapper::set(array(), 'MyType_Class');
     }
 
-    public function testAddClassNull()
+    public function testSetClassNull()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::add('my:type', null);
+        EasyRdf_TypeMapper::set('my:type', null);
     }
 
-    public function testAddClassEmpty()
+    public function testSetClassEmpty()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::add('my:type', '');
+        EasyRdf_TypeMapper::set('my:type', '');
     }
 
-    public function testAddClassNonString()
+    public function testSetClassNonString()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::add('my:type', array());
+        EasyRdf_TypeMapper::set('my:type', array());
     }
 
     public function testInstantiate()
     {
-        EasyRdf_TypeMapper::add('foaf:Person', 'MyType_Class');
+        EasyRdf_TypeMapper::set('foaf:Person', 'MyType_Class');
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph(
             'http://www.example.com/joe/foaf.rdf', $data

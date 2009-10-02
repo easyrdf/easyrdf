@@ -51,11 +51,13 @@ require_once "EasyRdf/Exception.php";
 class EasyRdf_RapperParser
 {
     /**
-     * Parse an RDF document
-     * @param string $data the document data.
-     * @param string $input_type the format of the input document.
-     * @return string the converted document, or null if the convertion failed.
-     */
+      * Parse an RDF document
+      *
+      * @param string $uri      the base URI of the data
+      * @param string $data     the document data
+      * @param string $docType  the format of the input data
+      * @return array           the parsed data
+      */
     public function parse($uri, $data, $docType)
     {
         # Don't even attempt to parse it if it is empty

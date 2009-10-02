@@ -101,7 +101,7 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 
     public function testAddNamespace()
     {
-        EasyRdf_Namespace::add('po', 'http://purl.org/ontology/po/');
+        EasyRdf_Namespace::set('po', 'http://purl.org/ontology/po/');
         $this->assertEquals(
             'http://purl.org/ontology/po/',
             EasyRdf_Namespace::get('po')
@@ -110,7 +110,7 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 
     public function testAddUppercaseNamespace()
     {
-        EasyRdf_Namespace::add('PO', 'http://purl.org/ontology/po/');
+        EasyRdf_Namespace::set('PO', 'http://purl.org/ontology/po/');
         $this->assertEquals(
             'http://purl.org/ontology/po/',
             EasyRdf_Namespace::get('po')
@@ -120,37 +120,37 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
     public function testAddNamespaceShortNull()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::add(null, 'http://purl.org/ontology/ko/');
+        EasyRdf_Namespace::set(null, 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceShortEmpty()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::add('', 'http://purl.org/ontology/ko/');
+        EasyRdf_Namespace::set('', 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceShortNonString()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::add(array(), 'http://purl.org/ontology/ko/');
+        EasyRdf_Namespace::set(array(), 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceLongNull()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::add('ko', null);
+        EasyRdf_Namespace::set('ko', null);
     }
 
     public function testAddNamespaceLongEmpty()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::add('ko', '');
+        EasyRdf_Namespace::set('ko', '');
     }
 
     public function testAddNamespaceLongNonString()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::add('ko', array());
+        EasyRdf_Namespace::set('ko', array());
     }
 
     public function testShortenFoafName()
@@ -187,38 +187,38 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
         EasyRdf_Namespace::shorten(array());
     }
 
-    public function testNamespaceOfUriFoafName()
+    public function testPrefixOfUriFoafName()
     {
         $this->assertEquals(
             'foaf',
-            EasyRdf_Namespace::namespaceOfUri('http://xmlns.com/foaf/0.1/name')
+            EasyRdf_Namespace::prefixOfUri('http://xmlns.com/foaf/0.1/name')
         );
     }
 
-    public function testNamespaceOfUnknownUrl()
+    public function testPrefixOfUnknownUrl()
     {
         $this->assertEquals(
             null,
-            EasyRdf_Namespace::namespaceOfUri('http://www.aelius.com/njh/')
+            EasyRdf_Namespace::prefixOfUri('http://www.aelius.com/njh/')
         );
     }
 
-    public function testNamespaceOfUriNull()
+    public function testPrefixOfUriNull()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::namespaceOfUri(null);
+        EasyRdf_Namespace::prefixOfUri(null);
     }
 
-    public function testNamespaceOfUriEmpty()
+    public function testPrefixOfUriEmpty()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::namespaceOfUri('');
+        EasyRdf_Namespace::prefixOfUri('');
     }
 
-    public function testNamespaceOfUriNonString()
+    public function testPrefixOfUriNonString()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::namespaceOfUri(array());
+        EasyRdf_Namespace::prefixOfUri(array());
     }
 
     public function testExpandFoafName()

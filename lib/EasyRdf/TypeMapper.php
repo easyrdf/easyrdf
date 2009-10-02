@@ -50,8 +50,16 @@ require_once "EasyRdf/Exception.php";
  */
 class EasyRdf_TypeMapper
 {
+    /** The type map registery */
     private static $_map = array();
 
+    /** Get the registered class for an RDF type
+     *
+     * If a type is not registered, then this method will return null.
+     *
+     * @param  string  $type   The RDF type (e.g. foaf:name)
+     * @return string          The class name (e.g. Model_Foaf_Name)
+     */
     public static function get($type)
     {
         if (!is_string($type) or $type == null or $type == '') {
@@ -65,7 +73,13 @@ class EasyRdf_TypeMapper
         }
     }
 
-    public static function add($type, $class)
+    /** Register an RDF type with a PHP Class name
+     *
+     * @param  string  $type   The RDF type (e.g. foaf:name)
+     * @param  string  $class  The PHP class name (e.g. Model_Foaf_Name)
+     * @return string          The PHP class name
+     */
+    public static function set($type, $class)
     {
         if (!is_string($type) or $type == null or $type == '') {
             throw new InvalidArgumentException(
@@ -79,7 +93,7 @@ class EasyRdf_TypeMapper
             );
         }
         
-        self::$_map[$type] = $class;
+        return self::$_map[$type] = $class;
     }
 
 }

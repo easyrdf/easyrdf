@@ -49,6 +49,7 @@ require_once "EasyRdf/Exception.php";
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ *             Copyright (c) 2005-2009 Zend Technologies USA Inc.
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Http_Response
@@ -58,6 +59,16 @@ class EasyRdf_Http_Response
     private $_headers = array();
     private $_body;
  
+    /**
+     * Constructor.
+     *
+     * @param  int     $status HTTP Status code
+     * @param  array   $headers The HTTP response headers
+     * @param  string  $body The content of the response
+     * @param  string  $version The HTTP Version (1.0 or 1.1)
+     * @param  string  $message The HTTP response Message
+     * @return object  EasyRdf_Http_Response
+     */
     public function __construct(
         $status, $headers, $body = null,
         $version = '1.1', $message = null

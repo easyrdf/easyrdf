@@ -7,7 +7,7 @@
     EasyRdf_Graph::setRdfParser( new EasyRdf_ArcParser() );
 
     ## Add the Google Vocab namespace
-    EasyRdf_Namespace::add('gv', 'http://rdf.data-vocabulary.org/#');
+    EasyRdf_Namespace::set('gv', 'http://rdf.data-vocabulary.org/#');
     
     if (isset($_GET['uri'])) $uri = $_GET['uri'];
 ?>

@@ -57,6 +57,14 @@ require_once "EasyRdf/TypeMapper.php";
 class EasyRdf_Owl_Property extends EasyRdf_Resource
 {
 
+    /**
+      * Return an associative array of all the properties in a graph
+      *
+      * If no properties are found in the graph, an empty array is returned.
+      *
+      * @param object EasyRdf_Graph $graph The Graph to inspect
+      * @return array An array of properties keyed by shortened URI
+      */
     public static function findAll($graph)
     {
         $propertyTypes = array(
@@ -77,6 +85,11 @@ class EasyRdf_Owl_Property extends EasyRdf_Resource
         return $properties;
     }
     
+    /**
+      * Get the cardinality of a property.
+      *
+      * @return string '1' if the property takes a single value, otherwise 'N'.
+      */
     public function cardinality()
     {
         $types = $this->types();
@@ -95,7 +108,7 @@ class EasyRdf_Owl_Property extends EasyRdf_Resource
 
 
 ## FIXME: Don't Repeat Yourself
-EasyRdf_TypeMapper::add('rdf:Property', 'EasyRdf_Owl_Property');
-EasyRdf_TypeMapper::add('owl:Property', 'EasyRdf_Owl_Property');
-EasyRdf_TypeMapper::add('owl:ObjectProperty', 'EasyRdf_Owl_Property');
-EasyRdf_TypeMapper::add('owl:DatatypeProperty', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::set('rdf:Property', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::set('owl:Property', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::set('owl:ObjectProperty', 'EasyRdf_Owl_Property');
+EasyRdf_TypeMapper::set('owl:DatatypeProperty', 'EasyRdf_Owl_Property');

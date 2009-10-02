@@ -66,17 +66,25 @@ require_once "EasyRdf/TypeMapper.php";
  */
 class EasyRdf_Graph
 {
+    /** The URI of the graph */
     private $_uri = null;
+    
+    /** Array of resources contained in the graph */
     private $_resources = array();
+    
+    /** Index of resources organised by type */
     private $_typeIndex = array();
+    
+    /** An HTTP Client object used by graph to fetch data */
     private static $_httpClient = null;
+    
+    /** An RDF Parser object used by graph to parse RDF */
     private static $_rdfParser = null;
     
+    /** A constant for the RDF Type property URI */
     const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
-    /**
-       * Get a Resource object for a specific URI
-       */
+
     public function get($uri, $types = array())
     {
         # FIXME: allow URI to be shortened?
@@ -221,6 +229,11 @@ class EasyRdf_Graph
         }
     }
     
+    /**
+     * Constructor
+     *
+     * @return object EasyRdf_Graph
+     */
     public function __construct($uri='', $data='', $docType=null)
     {
         if ($uri) {

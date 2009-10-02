@@ -25,7 +25,7 @@
 
 <?php
     if (isset($uri)) {
-        EasyRdf_Namespace::add( $short, $uri );
+        EasyRdf_Namespace::set( $short, $uri );
     
         $graph = new EasyRdf_Graph( $uri );
         $ontology = $graph->get( $uri );

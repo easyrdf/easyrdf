@@ -275,7 +275,7 @@ class EasyRdf_Resource
      * The types will each be a shortened URI as a string.
      * This method will return an empty array if the resouce has no types.
      *
-     * @return array All the types assocated with the resource (e.g. foaf:Person)
+     * @return array All types assocated with the resource (e.g. foaf:Person)
      */
     public function types()
     {
@@ -303,9 +303,9 @@ class EasyRdf_Resource
      *
      * @return string The namespace prefix of the resource (e.g. foaf)
      */
-    public function ns()
+    public function prefix()
     {
-        return EasyRdf_Namespace::namespaceOfUri($this->_uri);
+        return EasyRdf_Namespace::prefixOfUri($this->_uri);
     }
     
     /** Get a shortened version of the resources URI.
@@ -387,7 +387,7 @@ class EasyRdf_Resource
     {
         $method = substr($name, 0, 3);
         $property = preg_replace(
-            '/_/',':', strtolower(substr($name, 3, 1)) . substr($name, 4), 1
+            '/_/', ':', strtolower(substr($name, 3, 1)) . substr($name, 4), 1
         );
         
         switch ($method) {
