@@ -104,6 +104,9 @@
       <fileset refid="tests" />
       <fileset refid="examples" />
       <fileset refid="docs" />
+      <fileset dir="${project.basedir}">
+        <include name="build.xml" />
+      </fileset>
     </copy>
     <delete file="easyrdf.tar.gz" />
     <tar destfile="easyrdf.tar.gz"
