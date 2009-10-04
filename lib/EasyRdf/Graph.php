@@ -42,14 +42,14 @@
 require_once "EasyRdf/Exception.php";
 
 /**
- * @see EasyRdf_Resource
- */
-require_once "EasyRdf/Resource.php";
-
-/**
  * @see EasyRdf_Namespace
  */
 require_once "EasyRdf/Namespace.php";
+
+/**
+ * @see EasyRdf_Resource
+ */
+require_once "EasyRdf/Resource.php";
 
 /**
  * @see EasyRdf_TypeMapper
@@ -58,7 +58,7 @@ require_once "EasyRdf/TypeMapper.php";
 
 
 /**
- * Class to allow parsing of RDF using the ARC library
+ * Class to 
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
@@ -85,6 +85,171 @@ class EasyRdf_Graph
     const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
 
+    /** Set the HTTP Client object used to fetch RDF data
+     *
+     * @param  object mixed $httpClient The new HTTP client object
+     * @return object mixed The new HTTP client object
+     */
+    public static function setHttpClient($httpClient)
+    {
+        if (!is_object($httpClient) or $httpClient == null) {
+            throw new InvalidArgumentException(
+                "\$httpClient should be an object and cannot be null"
+            );
+        }
+        return self::$_httpClient = $httpClient;
+    }
+    
+    /** Get the HTTP Client object used to fetch RDF data
+     *
+     * If no HTTP Client has previously been set, then a new
+     * default (EasyRdf_Http_Client) client will be created.
+     *
+     * @return object mixed The HTTP client object
+     */
+    public static function getHttpClient()
+    {
+        if (!self::$_httpClient) {
+            require_once "EasyRdf/Http/Client.php";
+            self::$_httpClient = new EasyRdf_Http_Client();
+        }
+        return self::$_httpClient;
+    }
+
+    /** Set the RDF parser object used to parse RDF data
+     *
+     * @param  object mixed $httpClient The new RDF parser object
+     * @return object mixed The new RDF parser object
+     */
+    public static function setRdfParser($rdfParser)
+    {
+        if (!is_object($rdfParser) or $rdfParser == null) {
+            throw new InvalidArgumentException(
+                "\$rdfParser should be an object and cannot be null"
+            );
+        }
+        self::$_rdfParser = $rdfParser;
+    }
+    
+    /** Get the RDF parser object used to parse RDF data
+     *
+     * If no RDF Parser has previously been set, then a new
+     * default (EasyRdf_RapperParser) parser will be created.
+     *
+     * @return object mixed The RDF parser object
+     */
+    public static function getRdfParser()
+    {
+        if (!self::$_rdfParser) {
+            require_once "EasyRdf/RapperParser.php";
+            self::$_rdfParser = new EasyRdf_RapperParser();
+        }
+        return self::$_rdfParser;
+    }
+
+    /** Convert a mime type into a simplier document type name
+     *
+     * If the mime type is not recognised, null is returned.
+     *
+     * @param  string $mimeType The mime type (e.g. application/rdf+xml)
+     * @return string The document type name (e.g. rdfxml)
+     */
+    public static function simplifyMimeType($mimeType)
+    {
+        switch($mimeType) {
+            case 'application/json':
+            case 'text/json':
+                return 'json';
+            case 'application/x-yaml':
+            case 'application/yaml':
+            case 'text/x-yaml':
+            case 'text/yaml':
+                return 'yaml';
+            case 'application/rdf+xml':
+                return 'rdfxml';
+            case 'text/turtle':
+                return 'turtle';
+            case 'text/html':
+            case 'application/xhtml+xml':
+                # FIXME: might be erdf or something instead...
+                return 'rdfa';
+            default:
+                return null;
+                break;
+        }
+    }
+    
+    /** Attempt to guess the document type from some content.
+     *
+     * If the document type is not recognised, null is returned.
+     *
+     * @param  string $data The document data
+     * @return string The document type (e.g. rdfxml)
+     */
+    public static function guessDocType($data)
+    {
+        if (is_array($data)) {
+            # Data has already been parsed into RDF/PHP
+            return 'php';
+        }
+        
+        # FIXME: could /etc/magic help here?
+        $short = substr(trim($data), 0, 255);
+        if (preg_match("/^\{/", $short)) {
+            return 'json';
+        } else if (preg_match("/^---/", $short)) {
+            return 'yaml';
+        } else if (
+            preg_match("/<!DOCTYPE html/", $short) or
+            preg_match("/^<html/", $short)
+        ) {
+            # FIXME: might be erdf or something instead...
+            return 'rdfa';
+        } else if (preg_match("/<rdf/", $short)) {
+            return 'rdfxml';
+        } else if (preg_match("/^@prefix /", $short)) {
+            # FIXME: this could be improved
+            return 'turtle';
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Constructor
+     *
+     * If no URI is given then an empty graph is created.
+     *
+     * If a URI is supplied, but no data then the data will
+     * be fetched from the URI.
+     *
+     * The document type is optional and can be specified if it
+     * can't be guessed or got from the HTTP headers.
+     *
+     * @param  string  $uri     The URI of the graph
+     * @param  string  $data    Data for the graph
+     * @param  string  $docType The document type of the data
+     * @return object EasyRdf_Graph
+     */
+    public function __construct($uri='', $data='', $docType=null)
+    {
+        if ($uri) {
+            $this->_uri = $uri;
+            $this->load($uri, $data, $docType);
+        }
+    }
+
+    /** Get or create a resource stored in a graph
+     *
+     * If the resource did not previously exist, then a new resource will 
+     * be created. If you provide an RDF type and that type is registered
+     * with the EasyRDF_TypeMapper, then the resource will be an instance
+     * of the class registered.
+     *
+     * @param  string  $uri    The URI of the resource
+     * @param  mixed   $types  RDF type of a new resouce (e.g. foaf:Person)
+     * @return object EasyRdf_Resouce
+     */
     public function get($uri, $types = array())
     {
         # FIXME: allow URI to be shortened?
@@ -129,121 +294,18 @@ class EasyRdf_Graph
         return $this->_resources[$uri];
     }
 
-      /**
-     * Return all known resources
-     */
-    public function resources()
-    {
-        return array_values($this->_resources);
-    }
-
-    public static function setHttpClient($httpClient)
-    {
-        if (!is_object($httpClient) or $httpClient == null) {
-            throw new InvalidArgumentException(
-                "\$httpClient should be an object and cannot be null"
-            );
-        }
-        self::$_httpClient = $httpClient;
-    }
-    
-    public static function getHttpClient()
-    {
-        if (!self::$_httpClient) {
-            require_once "EasyRdf/Http/Client.php";
-            self::$_httpClient = new EasyRdf_Http_Client();
-        }
-        return self::$_httpClient;
-    }
-
-    public static function getRdfParser()
-    {
-        if (!self::$_rdfParser) {
-            require_once "EasyRdf/RapperParser.php";
-            self::$_rdfParser = new EasyRdf_RapperParser();
-        }
-        return self::$_rdfParser;
-    }
-
-    public static function setRdfParser($rdfParser)
-    {
-        if (!is_object($rdfParser) or $rdfParser == null) {
-            throw new InvalidArgumentException(
-                "\$rdfParser should be an object and cannot be null"
-            );
-        }
-        self::$_rdfParser = $rdfParser;
-    }
-
-    public static function simplifyMimeType($mimeType)
-    {
-        switch($mimeType) {
-            case 'application/json':
-            case 'text/json':
-                return 'json';
-            case 'application/x-yaml':
-            case 'application/yaml':
-            case 'text/x-yaml':
-            case 'text/yaml':
-                return 'yaml';
-            case 'application/rdf+xml':
-                return 'rdfxml';
-            case 'text/turtle':
-                return 'turtle';
-            case 'text/html':
-            case 'application/xhtml+xml':
-                # FIXME: might be erdf or something instead...
-                return 'rdfa';
-            default:
-                return null;
-                break;
-        }
-    }
-    
-    public static function guessDocType($data)
-    {
-        if (is_array($data)) {
-            # Data has already been parsed into RDF/PHP
-            return 'php';
-        }
-        
-        # FIXME: could /etc/magic help here?
-        $short = substr(trim($data), 0, 255);
-        if (preg_match("/^\{/", $short)) {
-            return 'json';
-        } else if (preg_match("/^---/", $short)) {
-            return 'yaml';
-        } else if (
-            preg_match("/<!DOCTYPE html/", $short) or
-            preg_match("/^<html/", $short)
-        ) {
-            # FIXME: might be erdf or something instead...
-            return 'rdfa';
-        } else if (preg_match("/<rdf/", $short)) {
-            return 'rdfxml';
-        } else if (preg_match("/^@prefix /", $short)) {
-            # FIXME: this could be improved
-            return 'turtle';
-        } else {
-            return null;
-        }
-    }
-    
     /**
-     * Constructor
+     * Load RDF data into the graph.
      *
-     * @return object EasyRdf_Graph
-     */
-    public function __construct($uri='', $data='', $docType=null)
-    {
-        if ($uri) {
-            $this->_uri = $uri;
-            $this->load($uri, $data, $docType);
-        }
-    }
-
-    /**
-     * Convert RDF/PHP into a graph of objects
+     * If a URI is supplied, but no data then the data will
+     * be fetched from the URI.
+     *
+     * The document type is optional and can be specified if it
+     * can't be guessed or got from the HTTP headers.
+     *
+     * @param  string  $uri     The URI of the graph
+     * @param  string  $data    Data for the graph
+     * @param  string  $docType The document type of the data
      */
     public function load($uri, $data='', $docType=null)
     {
@@ -321,6 +383,10 @@ class EasyRdf_Graph
         }
     }
     
+    /**
+     * Get the type of a resource from some RDF/PHP
+     * (http://n2.talis.com/wiki/RDF_PHP_Specification)
+     */
     private function getResourceType($data, $uri)
     {
         if (array_key_exists($uri, $data)) {
@@ -342,7 +408,24 @@ class EasyRdf_Graph
         }
         return null;
     }
+
+    /** Get an associative arry of all the resouces stored in the graph
+     *
+     * @return array Array of EasyRdf_Resouces
+     */
+    public function resources()
+    {
+        return $this->_resources;
+    }
     
+    /** Get all the resources in the graph of a certain type
+     *
+     * If no resources of the type are available and empty
+     * array is returned.
+     *
+     * @param  string  $type   The type of the resource (e.g. foaf:Person)
+     * @return array The array of resources
+     */
     public function allOfType($type)
     {
         # FIXME: shorten if $type is a URL
@@ -353,27 +436,37 @@ class EasyRdf_Graph
         }
     }
     
-    ## FIXME: what to call this? - shouldn't use word first
-    public function firstOfType($type)
-    {
-        $objs = $this->allOfType($type);
-        if ($objs and is_array($objs) and count($objs)>0) {
-            return $objs[0];
-        } else {
-            return null;
-        }
-    }
-    
+    /** Get a list of the types of resources in the graph
+     *
+     * @return array Array of types
+     */
     public function allTypes()
     {
         return array_keys($this->_typeIndex);
     }
     
+    /** Get the URI of the graph
+     *
+     * @return string The URI of the graph
+     */
     public function getUri()
     {
         return $this->_uri;
     }
     
+    /** Add data to the graph
+     *
+     * The resource can either be a resource or the URI of a resource.
+     *
+     * The properties can either a single property name or an
+     * associate array of property names and values.
+     *
+     * The value can either be a single value or an array of values.
+     *
+     * @param  mixed $resource   The resource to add data to
+     * @param  mixed $properties The properties or property names
+     * @param  mixed $value      The new value for the property
+     */
     public function add($resource, $properties, $value=null)
     {
         if (!is_object($resource)) {
@@ -393,6 +486,13 @@ class EasyRdf_Graph
         }
     }
 
+    /** Display all the resources in the graph
+     *
+     * This method is intended to be a debugging aid and will
+     * print all the resources and their properties to the screen.
+     *
+     * @param  bool  $html  Set to true to format the dump using HTML
+     */
     public function dump($html=true)
     {
         # FIXME: display some information about the graph
@@ -401,6 +501,15 @@ class EasyRdf_Graph
         }
     }
     
+    /** Get the resource type of the graph
+     *
+     * The type will be a shortened URI as a string.
+     * If the graph has multiple types then the type returned 
+     * may be arbitrary.
+     * This method will return null if the resource has no type.
+     *
+     * @return string A type assocated with the resource (e.g. foaf:Document)
+     */
     public function type()
     {
         if ($this->_uri) {
@@ -411,6 +520,10 @@ class EasyRdf_Graph
         }
     }
     
+    /** Get the primary topic of the graph
+     *
+     * @return EasyRdf_Resource The primary topic of the document.
+     */
     public function primaryTopic()
     {
         if ($this->_uri) {
@@ -423,12 +536,14 @@ class EasyRdf_Graph
 
     
     // BEWARE! Magic below
-    
-    public function __toString()
-    {
-        return $this->_uri;
-    }
 
+    /** Magic method to give access to properties using method calls
+     *
+     * Calls are passed on to the correspoding resource for the graph.
+     *
+     * @see EasyRdf_Resource::__call()
+     * @return mixed The value(s) of the properties requested.
+     */
     public function __call($name, $arguments)
     {
         if ($this->_uri) {
@@ -438,5 +553,13 @@ class EasyRdf_Graph
             return null;
         }
     }
-
+    
+    /** Magic method to return URI of resource when casted to string
+     *
+     * @return string The URI of the resource
+     */
+    public function __toString()
+    {
+        return $this->_uri;
+    }
 }

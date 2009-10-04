@@ -400,7 +400,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
-        $resources = $graph->resources();
+        $resources = array_values($graph->resources());
         $this->assertEquals(2, count($resources));
         $this->assertEquals(
             'http://www.example.com/joe#me', 
@@ -410,6 +410,10 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             'http://www.example.com/joe/foaf.rdf', 
             $resources[1]->getUri()
         );
+
+        $keys = array_keys($graph->resources());
+        $this->assertEquals('http://www.example.com/joe#me', $keys[0]);
+        $this->assertEquals('http://www.example.com/joe/foaf.rdf', $keys[1]);
     }
     
     public function testAllOfType()
@@ -431,24 +435,6 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $resources = $graph->allOfType('unknown:type');
         $this->assertTrue(is_array($resources));
         $this->assertEquals(0, count($resources));
-    }
-    
-    public function testFirstOfType()
-    {
-        $data = readFixture('foaf.json');
-        $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
-        $resource = $graph->firstOfType('foaf:Person');
-        $this->assertEquals(
-            'http://www.example.com/joe#me', 
-            $resource->getUri()
-        );
-    }
-    
-    public function testFirstOfTypeUnknown()
-    {
-        $graph = new EasyRdf_Graph();
-        $resource = $graph->firstOfType('unknown:type');
-        $this->assertNull($resource);
     }
     
     public function testAllTypes()

@@ -23,7 +23,10 @@
 <?php
     if (isset($uri)) {
         $graph = new EasyRdf_Graph( $uri );
-        if ($graph) $review = $graph->firstOfType('gv:Review');
+        if ($graph) {
+            $reviews = $graph->allOfType('gv:Review');
+            $review = $reviews[0];
+        }
     }
       
     if (isset($review)) {

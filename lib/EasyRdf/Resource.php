@@ -248,7 +248,7 @@ class EasyRdf_Resource
     
     /** Get a list of all the property names for a resource.
      *
-     * This method will return an empty array if the resouce has not properties.
+     * This method will return an empty array if the resource has no properties.
      *
      * @return array            Concatenation of all the values.
      */
@@ -273,7 +273,7 @@ class EasyRdf_Resource
     /** Get a list of types for a resource.
      *
      * The types will each be a shortened URI as a string.
-     * This method will return an empty array if the resouce has no types.
+     * This method will return an empty array if the resource has no types.
      *
      * @return array All types assocated with the resource (e.g. foaf:Person)
      */
@@ -285,7 +285,7 @@ class EasyRdf_Resource
     /** Get a single type for a resource.
      *
      * The type will be a shortened URI as a string.
-     * If the resources has multiple types then the type returned 
+     * If the resource has multiple types then the type returned 
      * may be arbitrary.
      * This method will return null if the resource has no type.
      *
@@ -409,7 +409,7 @@ class EasyRdf_Resource
     
     /** Magic method to return URI of resource when casted to string
      *
-     * @return string The URI of the resouce
+     * @return string The URI of the resource
      */
     public function __toString()
     {
