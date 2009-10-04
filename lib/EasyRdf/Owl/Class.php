@@ -62,7 +62,7 @@ class EasyRdf_Owl_Class extends EasyRdf_Resource
       */
     function className()
     {
-        return ucfirst(str_replace(':','_',$this->shorten()));
+        return ucfirst(str_replace(':', '_', $this->shorten()));
     }
     
     /**
