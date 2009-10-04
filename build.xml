@@ -3,24 +3,33 @@
 <project name="EasyRdf" default="default">
   <property name="coverdir" value="${project.basedir}/coverage" override="true" />
   <property name="docsdir" value="${project.basedir}/docs" override="true" />
+  <property name="distdir" value="${project.basedir}/dist" override="true" />
   <property name="logger" value="phing.listener.DefaultLogger" override="true" />
 
   <includepath classpath="${project.basedir}/lib" />
 
-  <fileset id="source" dir="${project.basedir}/lib">
-    <include name="EasyRdf/*.php" />
-    <include name="EasyRdf/Http/*.php" />
-    <include name="EasyRdf/Owl/*.php" />
+  <fileset id="source" dir="${project.basedir}">
+    <include name="lib/EasyRdf/*.php" />
+    <include name="lib/EasyRdf/Http/*.php" />
+    <include name="lib/EasyRdf/Owl/*.php" />
   </fileset>
 
-  <fileset id="tests" dir="${project.basedir}/test">
-    <include name="EasyRdf/*Test.php" />
-    <include name="EasyRdf/Http/*Test.php" />
-    <include name="EasyRdf/Owl/*Test.php" />
+  <fileset id="tests" dir="${project.basedir}">
+    <include name="test/EasyRdf/*Test.php" />
+    <include name="test/EasyRdf/Http/*Test.php" />
+    <include name="test/EasyRdf/Owl/*Test.php" />
   </fileset>
 
-  <fileset id="examples" dir="${project.basedir}/examples">
-    <include name="*.php" />
+  <fileset id="examples" dir="${project.basedir}">
+    <include name="examples/*.php" />
+  </fileset>
+
+  <fileset id="docs" dir="${project.basedir}">
+    <include name="docs/*" />
+    <include name="docs/*/*" />
+    <include name="README" />
+    <include name="LICENSE" />
+    <include name="ROADMAP" />
   </fileset>
 
 
@@ -55,6 +64,7 @@
   </target>
   
   <target name="docs" description="Create API documentation">
+    <exec command="php ./build/makeReadme.php" dir="${project.basedir}" />
     <phpdoc title="EasyRdf API Documentation"
       destdir="${docsdir}"
       sourcecode="no"
@@ -86,17 +96,25 @@
     </phplint>
   </target>
   
-  <target name="dist">
+  <target name="dist" depends="docs">
     <echo msg="Creating archive..." />
-    <tar destfile="easyrdf.tar.gz" compression="gzip">
+    <mkdir dir="${distdir}/easyrdf" />
+    <copy todir="${distdir}/easyrdf" >
       <fileset refid="source" />
-      <fileset refid="test" />
-    </tar>
+      <fileset refid="tests" />
+      <fileset refid="examples" />
+      <fileset refid="docs" />
+    </copy>
+    <delete file="easyrdf.tar.gz" />
+    <tar destfile="easyrdf.tar.gz"
+         basedir="${distdir}"
+         compression="gzip" />
   </target>
   
   <target name="clean">
     <delete dir="${coverdir}" includeemptydirs="true" verbose="true" />
     <delete dir="${docsdir}" includeemptydirs="true" verbose="true" />
+    <delete dir="${distdir}" includeemptydirs="true" verbose="true" />
   </target>
   
   <target name="default" description="Default target" depends="lint,test,cs" />
