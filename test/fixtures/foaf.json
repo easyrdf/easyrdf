@@ -7,6 +7,12 @@
         }
       
       ],
+    "http://xmlns.com/foaf/0.1/currentProject" : [ {
+        "value" : "_:genid1",
+        "type" : "bnode"
+        }
+      
+      ],
     "http://xmlns.com/foaf/0.1/family_name" : [ {
         "value" : "Bloggs",
         "type" : "literal"
@@ -61,6 +67,27 @@
     "http://xmlns.com/foaf/0.1/primaryTopic" : [ {
         "value" : "http://www.example.com/joe#me",
         "type" : "uri"
+        }
+      
+      ]
+    }
+  ,
+  "_:genid1" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+        "value" : "http://xmlns.com/foaf/0.1/Project",
+        "type" : "uri"
+        }
+      
+      ],
+    "http://xmlns.com/foaf/0.1/homepage" : [ {
+        "value" : "http://www.example.com/project",
+        "type" : "uri"
+        }
+      
+      ],
+    "http://xmlns.com/foaf/0.1/name" : [ {
+        "value" : "Joe's Current Project",
+        "type" : "literal"
         }
       
       ]

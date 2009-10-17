@@ -10,6 +10,11 @@
 
 <http://www.example.com/joe#me>
     a foaf:Person ;
+    foaf:currentProject [
+        a foaf:Project ;
+        foaf:homepage <http://www.example.com/project> ;
+        foaf:name "Joe's Current Project"
+    ] ;
     foaf:family_name "Bloggs" ;
     foaf:firstName "Joe" ;
     foaf:homepage "http://www.example.com/joe/" ;

@@ -16,5 +16,11 @@
     <foaf:firstName>Joe</foaf:firstName>
     <foaf:family_name>Bloggs</foaf:family_name>
     <foaf:homepage>http://www.example.com/joe/</foaf:homepage>
+    <foaf:currentProject>
+      <foaf:Project>
+        <foaf:name>Joe's Current Project</foaf:name>
+        <foaf:homepage rdf:resource="http://www.example.com/project" />
+      </foaf:Project>
+    </foaf:currentProject>
   </foaf:Person>
 </rdf:RDF>
