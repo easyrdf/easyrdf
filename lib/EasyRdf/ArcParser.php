@@ -77,6 +77,24 @@ class EasyRdf_ArcParser
       */
     public function parse($uri, $data, $docType)
     {
+        if (!is_string($uri) or $uri == null or $uri == '') {
+            throw new InvalidArgumentException(
+                "\$uri should be a string and cannot be null or empty"
+            );
+        }
+
+        if (!is_string($data) or $data == null or $data == '') {
+            throw new InvalidArgumentException(
+                "\$data should be a string and cannot be null or empty"
+            );
+        }
+
+        if (!is_string($docType) or $docType == null or $docType == '') {
+            throw new InvalidArgumentException(
+                "\$docType should be a string and cannot be null or empty"
+            );
+        }
+
         if (array_key_exists($docType, self::$_supportedTypes)) {
             $className = self::$_supportedTypes[$docType];
         } else {

@@ -60,8 +60,23 @@ class EasyRdf_RapperParser
       */
     public function parse($uri, $data, $docType)
     {
-        # Don't even attempt to parse it if it is empty
-        if (trim($data) == '') return array();
+        if (!is_string($uri) or $uri == null or $uri == '') {
+            throw new InvalidArgumentException(
+                "\$uri should be a string and cannot be null or empty"
+            );
+        }
+
+        if (!is_string($data) or $data == null or $data == '') {
+            throw new InvalidArgumentException(
+                "\$data should be a string and cannot be null or empty"
+            );
+        }
+
+        if (!is_string($docType) or $docType == null or $docType == '') {
+            throw new InvalidArgumentException(
+                "\$docType should be a string and cannot be null or empty"
+            );
+        }
 
         // Open a pipe to the rapper command
         $descriptorspec = array(
