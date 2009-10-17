@@ -281,12 +281,14 @@ class EasyRdf_Graph
             # Add resource to the type index
             $resource = $this->_resources[$uri];
             foreach ($types as $type) {
-                $resource->add('rdf:type', $type);
-                if (!isset($this->_typeIndex[$type])) {
-                    $this->_typeIndex[$type] = array();
-                }
-                if (!in_array($resource, $this->_typeIndex[$type])) {
-                    array_push($this->_typeIndex[$type], $resource);
+                if ($type != null and $type != '') {
+                    $resource->add('rdf:type', $type);
+                    if (!isset($this->_typeIndex[$type])) {
+                        $this->_typeIndex[$type] = array();
+                    }
+                    if (!in_array($resource, $this->_typeIndex[$type])) {
+                        array_push($this->_typeIndex[$type], $resource);
+                    }
                 }
             }
         }
