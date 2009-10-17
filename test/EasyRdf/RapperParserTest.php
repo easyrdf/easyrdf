@@ -66,7 +66,15 @@ class EasyRdf_RapperParserTest extends PHPUnit_Framework_TestCase
         $joe = $rdf['http://www.example.com/joe#me'];
         $name = $joe['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertEquals('literal', $name['type']);
-        $this->assertEquals('Joe Bloggs', 'Joe Bloggs');
+        $this->assertEquals('Joe Bloggs', $name['value']);
+
+        $project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
+        $this->assertEquals('bnode', $project['type']);
+        $this->assertEquals('_:genid1', $project['value']);
+
+        $homepage = $joe['http://xmlns.com/foaf/0.1/homepage'][0];
+        $this->assertEquals('uri', $homepage['type']);
+        $this->assertEquals('http://www.example.com/joe/', $homepage['value']);
     }
     
     function testParseInvalidRdfXml()
@@ -89,7 +97,15 @@ class EasyRdf_RapperParserTest extends PHPUnit_Framework_TestCase
         $joe = $rdf['http://www.example.com/joe#me'];
         $name = $joe['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertEquals('literal', $name['type']);
-        $this->assertEquals('Joe Bloggs', 'Joe Bloggs');
+        $this->assertEquals('Joe Bloggs', $name['value']);
+
+        $project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
+        $this->assertEquals('bnode', $project['type']);
+        $this->assertEquals('_:genid1', $project['value']);
+
+        $homepage = $joe['http://xmlns.com/foaf/0.1/homepage'][0];
+        $this->assertEquals('uri', $homepage['type']);
+        $this->assertEquals('http://www.example.com/joe/', $homepage['value']);
     }
     
     function testRapperExecError()
