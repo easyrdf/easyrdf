@@ -401,7 +401,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
         $resources = array_values($graph->resources());
-        $this->assertEquals(4, count($resources));
+        $this->assertEquals(5, count($resources));
         $this->assertEquals(
             'http://www.example.com/joe#me', 
             $resources[0]->getUri()
@@ -411,19 +411,24 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             $resources[1]->getUri()
         );
         $this->assertEquals(
-            'http://www.example.com/joe/foaf.rdf', 
+            'http://www.example.com/joe/', 
             $resources[2]->getUri()
         );
         $this->assertEquals(
-            'http://www.example.com/project', 
+            'http://www.example.com/joe/foaf.rdf', 
             $resources[3]->getUri()
+        );
+        $this->assertEquals(
+            'http://www.example.com/project', 
+            $resources[4]->getUri()
         );
 
         $keys = array_keys($graph->resources());
         $this->assertEquals('http://www.example.com/joe#me', $keys[0]);
         $this->assertEquals('_:genid1', $keys[1]);
-        $this->assertEquals('http://www.example.com/joe/foaf.rdf', $keys[2]);
-        $this->assertEquals('http://www.example.com/project', $keys[3]);
+        $this->assertEquals('http://www.example.com/joe/', $keys[2]);
+        $this->assertEquals('http://www.example.com/joe/foaf.rdf', $keys[3]);
+        $this->assertEquals('http://www.example.com/project', $keys[4]);
     }
     
     public function testAllOfType()
