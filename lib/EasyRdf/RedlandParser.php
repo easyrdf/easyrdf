@@ -33,7 +33,7 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id: RedlandParser.php 178 2009-10-02 07:41:01Z njh@aelius.com $
+ * @version    $Id$
  */
 
 /**

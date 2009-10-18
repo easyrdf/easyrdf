@@ -33,7 +33,7 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id: Graph.php 119 2009-09-20 21:07:14Z njh@aelius.com $
+ * @version    $Id$
  */
 
 /**
