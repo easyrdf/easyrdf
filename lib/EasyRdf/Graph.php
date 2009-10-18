@@ -535,6 +535,14 @@ class EasyRdf_Graph
             return null;
         }
     }
+    
+    public function toTurtle()
+    {
+        // FIXME: should this be here?
+        // Reduces overhead if fearure not used?
+        require_once "EasyRdf/Serialiser/Turtle.php";
+        return EasyRdf_Serialiser_Turtle::serialise($this);
+    }
 
     
     // BEWARE! Magic below

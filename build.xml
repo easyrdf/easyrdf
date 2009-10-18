@@ -12,12 +12,14 @@
     <include name="lib/EasyRdf/*.php" />
     <include name="lib/EasyRdf/Http/*.php" />
     <include name="lib/EasyRdf/Owl/*.php" />
+    <include name="lib/EasyRdf/Serialiser/*.php" />
   </fileset>
 
   <fileset id="tests" dir="${project.basedir}">
     <include name="test/EasyRdf/*Test.php" />
     <include name="test/EasyRdf/Http/*Test.php" />
     <include name="test/EasyRdf/Owl/*Test.php" />
+    <include name="test/EasyRdf/Serialiser/*Test.php" />
   </fileset>
 
   <fileset id="examples" dir="${project.basedir}">
