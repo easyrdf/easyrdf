@@ -62,6 +62,16 @@ class EasyRdf_Namespace
     );
 
     /**
+      * Return all the namespaces registered
+      *
+      * @return array Associative array of all the namespaces.
+      */
+    public static function namespaces()
+    {
+        return self::$_namespaces;
+    }
+
+    /**
       * Return a namespace given its prefix.
       *
       * @param string $prefix The namespace prefix (eg 'foaf')
