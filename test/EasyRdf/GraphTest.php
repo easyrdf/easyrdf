@@ -129,6 +129,14 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testSimplifyMimeTypeNTriples()
+    {
+        $this->assertEquals(
+            'ntriples',
+            EasyRdf_Graph::simplifyMimeType('application/n-triples')
+        );
+    }
+
     public function testSimplifyMimeTypeHtml()
     {
         $this->assertEquals(
@@ -182,6 +190,12 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $data = readFixture('foaf.ttl');
         $this->assertEquals('turtle', EasyRdf_Graph::guessDocType($data));
+    }
+    
+    public function testGuessTypeNtriples()
+    {
+        $data = readFixture('foaf.nt');
+        $this->assertEquals('ntriples', EasyRdf_Graph::guessDocType($data));
     }
     
     public function testGuessTypeRdfa()

@@ -167,8 +167,11 @@ class EasyRdf_Graph
                 return 'yaml';
             case 'application/rdf+xml':
                 return 'rdfxml';
+            case 'application/turtle':
             case 'text/turtle':
                 return 'turtle';
+            case 'application/n-triples':
+                return 'ntriples';
             case 'text/html':
             case 'application/xhtml+xml':
                 # FIXME: might be erdf or something instead...
@@ -210,6 +213,8 @@ class EasyRdf_Graph
         } else if (preg_match("/^@prefix /", $short)) {
             # FIXME: this could be improved
             return 'turtle';
+        } else if (preg_match("/^<.+> <.+>/", $short)) {
+            return 'ntriples';
         } else {
             return null;
         }
