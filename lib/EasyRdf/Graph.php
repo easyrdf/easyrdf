@@ -160,11 +160,6 @@ class EasyRdf_Graph
             case 'application/json':
             case 'text/json':
                 return 'json';
-            case 'application/x-yaml':
-            case 'application/yaml':
-            case 'text/x-yaml':
-            case 'text/yaml':
-                return 'yaml';
             case 'application/rdf+xml':
                 return 'rdfxml';
             case 'application/turtle':
@@ -200,8 +195,6 @@ class EasyRdf_Graph
         $short = substr(trim($data), 0, 255);
         if (preg_match("/^\{/", $short)) {
             return 'json';
-        } else if (preg_match("/^---/", $short)) {
-            return 'yaml';
         } else if (
             preg_match("/<!DOCTYPE html/", $short) or
             preg_match("/^<html/", $short)
