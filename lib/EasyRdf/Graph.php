@@ -56,6 +56,11 @@ require_once "EasyRdf/Resource.php";
  */
 require_once "EasyRdf/TypeMapper.php";
 
+/**
+ * @see EasyRdf_Utils
+ */
+require_once "EasyRdf/Utils.php";
+
 
 /**
  * Class to 
@@ -71,6 +76,9 @@ class EasyRdf_Graph
     
     /** Array of resources contained in the graph */
     private $_resources = array();
+    
+    /** Counter for the number of bnodes */
+    private $_bNodeCount = 0;
     
     /** Index of resources organised by type */
     private $_typeIndex = array();
@@ -229,7 +237,7 @@ class EasyRdf_Graph
      * @param  string  $docType The document type of the data
      * @return object EasyRdf_Graph
      */
-    public function __construct($uri='', $data='', $docType=null)
+    public function __construct($uri=null, $data=null, $docType=null)
     {
         if ($uri) {
             $this->_uri = $uri;
@@ -293,6 +301,21 @@ class EasyRdf_Graph
 
         return $this->_resources[$uri];
     }
+    
+    /**
+     * Create a new blank node in the graph and return it.
+     *
+     * If you provide an RDF type and that type is registered
+     * with the EasyRDF_TypeMapper, then the resource will be an instance
+     * of the class registered.
+     *
+     * @param  mixed   $types  RDF type of a new blank node (e.g. foaf:Person)
+     * @return object EasyRdf_Resouce The new blank node
+     */
+    public function newBNode($types=array())
+    {
+        return $this->get("_:eid".(++$this->_bNodeCount),$types);
+    }
 
     /**
      * Load RDF data into the graph.
@@ -307,7 +330,7 @@ class EasyRdf_Graph
      * @param  string  $data    Data for the graph
      * @param  string  $docType The document type of the data
      */
-    public function load($uri, $data='', $docType=null)
+    public function load($uri, $data=null, $docType=null)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
             throw new InvalidArgumentException(
@@ -358,26 +381,48 @@ class EasyRdf_Graph
         }
 
         # Convert into an object graph
+        $bnodeMap = array();
         foreach ($data as $subj => $touple) {
-          $type = $this->getResourceType($data, $subj);
-          $res = $this->get($subj, $type);
-          foreach ($touple as $property => $objs) {
-            $property = EasyRdf_Namespace::shorten($property);
-            if (isset($property)) {
-              foreach ($objs as $obj) {
-                if ($property == 'rdf:type') {
-                  # Type has already been set
-                } else if ($obj['type'] == 'literal') {
-                  $res->add($property, $obj['value']);
-                } else if ($obj['type'] == 'uri' or $obj['type'] == 'bnode') {
-                  $type = $this->getResourceType($data, $obj['value']);
-                  $objres = $this->get($obj['value'], $type);
-                  $res->add($property, $objres);
-                } else {
-                  # FIXME: thow exception or silently ignore?
+            $type = $this->getResourceType($data, $subj);
+            
+            # Is this a bnode?
+            if (substr($subj, 0, 2) == '_:') {
+                if (!isset($bnodeMap[$subj])) {
+                    $bnodeMap[$subj] = $this->newBNode($type);
                 }
-              }
+                $res = $bnodeMap[$subj];
+            } else {
+                $res = $this->get($subj, $type);
             }
+              
+            foreach ($touple as $property => $objs) {
+                $property = EasyRdf_Namespace::shorten($property);
+                if (isset($property)) {
+                    foreach ($objs as $obj) {
+                        if ($property == 'rdf:type') {
+                            # Type has already been set
+                        } else if ($obj['type'] == 'literal') {
+                            $res->add($property, $obj['value']);
+                        } else if ($obj['type'] == 'uri') {
+                            $type = $this->getResourceType(
+                                $data, $obj['value']
+                            );
+                            $objres = $this->get($obj['value'], $type);
+                            $res->add($property, $objres);
+                        } else if ($obj['type'] == 'bnode') {
+                            $objuri = $obj['value'];
+                            if (!isset($bnodeMap[$objuri])) {
+                                $type = $this->getResourceType(
+                                    $data, $obj['value']
+                                );
+                                $bnodeMap[$objuri] = $this->newBNode($type);
+                            }
+                            $res->add($property, $bnodeMap[$objuri]);
+                        } else {
+                            # FIXME: thow exception or silently ignore?
+                        }
+                    }
+              }
           }
         
         }

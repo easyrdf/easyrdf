@@ -153,14 +153,6 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSimplifyMimeTypeYaml()
-    {
-        $this->assertEquals(
-            'yaml',
-            EasyRdf_Graph::simplifyMimeType('text/yaml')
-        );
-    }
-
     public function testSimplifyMimeTypeUnknown()
     {
         $this->assertNull(
@@ -278,6 +270,23 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             $graph->getUri()
         );
     }
+    
+    public function testNewBNode()
+    {
+        $graph = new EasyRdf_Graph();
+        
+        $bnode = $graph->newBNode();
+        $this->assertEquals(
+            '_:eid1',
+            $bnode->getUri()
+        );
+        
+        $bnode2 = $graph->newBNode();
+        $this->assertEquals(
+            '_:eid2',
+            $bnode2->getUri()
+        );
+    }
 
     public function testLoadData()
     {
@@ -352,6 +361,23 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             $graph->get('http://www.example.com/joe#me')->get('foaf:name')
         );
     }
+    
+    public function testLoadDuplicateBNodes()
+    {
+        $foaf_name = 'http://xmlns.com/foaf/0.1/name';
+        $bnode1 = array( '_:genid1' => array( 
+            $foaf_name => array(array( 'type' => 'literal', 'value' => 'A' ))
+        ));
+        $bnode2 = array( '_:genid1' => array( 
+            $foaf_name => array(array( 'type' => 'literal', 'value' => 'B' ))
+        ));
+        
+        $graph = new EasyRdf_Graph();
+        $graph->load('file://doc1', $bnode1);
+        $graph->load('file://doc2', $bnode2);
+        $this->assertEquals('A', $graph->get('_:eid1')->get('foaf:name'));
+        $this->assertEquals('B', $graph->get('_:eid2')->get('foaf:name'));
+    }
 
     public function testGet()
     {
@@ -421,7 +447,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
             $resources[0]->getUri()
         );
         $this->assertEquals(
-            '_:genid1', 
+            '_:eid1', 
             $resources[1]->getUri()
         );
         $this->assertEquals(
@@ -439,7 +465,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
 
         $keys = array_keys($graph->resources());
         $this->assertEquals('http://www.example.com/joe#me', $keys[0]);
-        $this->assertEquals('_:genid1', $keys[1]);
+        $this->assertEquals('_:eid1', $keys[1]);
         $this->assertEquals('http://www.example.com/joe/', $keys[2]);
         $this->assertEquals('http://www.example.com/joe/foaf.rdf', $keys[3]);
         $this->assertEquals('http://www.example.com/project', $keys[4]);
