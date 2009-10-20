@@ -226,6 +226,31 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         $this->_resource->add(array(), 'Test C');
     }
 
+    public function testDelete()
+    {
+        $this->assertEquals('Test A',$this->_resource->get('test:prop'));
+        $this->_resource->delete('test:prop');
+        $this->assertEquals(array(), $this->_resource->all('test:prop'));
+    }
+
+    public function testDeleteNullKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_resource->delete(null);
+    }
+    
+    public function testDeleteEmptyKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_resource->delete('');
+    }
+    
+    public function testDeleteNonStringKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_resource->delete(array());
+    }
+
     public function testJoinDefaultGlue()
     {
         $this->assertEquals(
