@@ -50,6 +50,26 @@ require_once "EasyRdf/Exception.php";
  */
 class EasyRdf_RapperParser
 {
+    private $_rapperCmd = null;
+    
+    /**
+     * Constructor
+     *
+     * @param string $rapperCmd Optional path to the rapper command to use.
+     * @return object EasyRdf_RapperParser
+     */
+    public function __construct($rapperCmd='rapper')
+    {
+        exec("which ".escapeshellarg($rapperCmd), $output, $retval);
+        if ($retval == 0) {
+            $this->_rapperCmd = $rapperCmd;
+        } else {
+            throw new EasyRdf_Exception(
+                "The command '$rapperCmd' is not available on this system."
+            );
+        }
+    }
+
     /**
       * Parse an RDF document
       *
@@ -86,7 +106,12 @@ class EasyRdf_RapperParser
         );
 
         $process = proc_open(
-            "rapper --quiet -i $docType -o json -e - $uri",
+            escapeshellcmd($this->_rapperCmd).
+            " --quiet ".
+            " --input " . escapeshellarg($docType).
+            " --output json ".
+            " --ignore-errors ".
+            " - " . escapeshellarg($uri),
             $descriptorspec, $pipes, '/tmp', null
         );
         if (is_resource($process)) {
