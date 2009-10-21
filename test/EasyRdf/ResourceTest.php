@@ -190,11 +190,31 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testAddMultiple()
+    public function testAddMultipleValues()
     {
         $this->_resource->add('test:prop', array('Test C', 'Test D'));
         $this->assertEquals(
             array('Test A', 'Test B', 'Test C', 'Test D'),
+            $this->_resource->all('test:prop')
+        );
+    }
+
+    public function testAddMultipleProperties()
+    {
+        $this->_resource->add(array('test:prop1','test:prop2'), 'Test');
+        $this->assertEquals(
+            array('Test'), $this->_resource->all('test:prop1')
+        );
+        $this->assertEquals(
+            array('Test'), $this->_resource->all('test:prop2')
+        );
+    }
+    
+    public function testAddAssociateProperties()
+    {
+        $this->_resource->add(array('test:prop' => 'Test C'));
+        $this->assertEquals(
+            array('Test A', 'Test B', 'Test C'),
             $this->_resource->all('test:prop')
         );
     }

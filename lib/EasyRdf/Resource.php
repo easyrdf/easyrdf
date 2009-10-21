@@ -47,6 +47,11 @@ require_once "EasyRdf/Exception.php";
 require_once "EasyRdf/Namespace.php";
 
 /**
+ * @see EasyRdf_Utils
+ */
+require_once "EasyRdf/Utils.php";
+
+/**
  * Class that represents an RDF resource
  *
  * @package    EasyRdf
@@ -139,24 +144,53 @@ class EasyRdf_Resource
     }
     
     /** Add values to an existing property
+     * 
+     * The properties can either be a single property name or an
+     * associate array of property names and values.
      *
-     * @param  string  $property The name of the property (e.g. foaf:name)
-     * @param  mixed   $value    The value or values to be added.
+     * The value can either be a single value or an array of values.
+     *
+     * Examples:
+     *   $resource->add('prefix:property', 'value');
+     *   $resource->add('prefix:property', array('value1',value2');
+     *   $resource->add(array('prefix:property' => 'value1'));
+     *
+     * @param  mixed $resource   The resource to add data to
+     * @param  mixed $properties The properties or property names
+     * @param  mixed $value      The new value for the property
      * @return array             Array of all values associated with property.
      */
-    public function add($property, $value)
+    public function add($properties, $value=null)
     {
-        if (!is_string($property) or $property == null or $property == '') {
+        if ($properties == null or $properties == '') {
             throw new InvalidArgumentException(
-                "\$property should be a string and cannot be null or empty"
+                "\$properties cannot be null or empty"
             );
         }
 
+        // Have multiple properties been given?
+        if (is_array($properties)) {
+            if (EasyRdf_Utils::is_associative_array($properties)) {
+                foreach ($properties as $property => $value) {
+                    $this->add($property, $value);
+                }
+                return;
+            } else {
+                foreach ($properties as $property) {
+                    $this->add($property, $value);
+                }
+                return;
+            }
+        } else {
+            $property = $properties;
+        }
+
+        // No value given?
         if ($value == null) {
              return null;
         }
         
-        # Get the existing values for a property
+        // Get the existing values for the property
         if (array_key_exists($property, $this->_properties)) {
             $values = $this->_properties[$property];
         } else {
