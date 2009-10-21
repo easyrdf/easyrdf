@@ -68,5 +68,27 @@ class EasyRdf_Utils
         return $cc;
     }
     
+    /**
+     * Check if something is an associative array
+     *
+     * Note: this method only checks the key of the first value in the array.
+     * 
+     * @param mixed $param The variable to check
+     * @return bool true if the variable is an associative array
+     */
+    public static function is_associative_array($param)
+    {
+        if (is_array($param)) {
+            $keys = array_keys($param);
+            if ($keys[0] === 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    
+    }
 
 }

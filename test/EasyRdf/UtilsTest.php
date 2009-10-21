@@ -97,4 +97,37 @@ class EasyRdf_UtilsTest extends PHPUnit_Framework_TestCase
             EasyRdf_Utils::camelise('')
         );
     }
+    
+    public function testIsAssoc()
+    {
+        $arr = array('foo' => 'bar');
+        $this->assertTrue(EasyRdf_Utils::is_associative_array($arr));
+    
+    }
+    
+    public function testIsAssocNonArray()
+    {
+         $this->assertFalse(EasyRdf_Utils::is_associative_array('foo'));
+    }
+    
+    public function testIsAssocArray()
+    {
+        $arr = array('foo', 'bar');
+        $this->assertFalse(EasyRdf_Utils::is_associative_array($arr));
+    }
+    
+    public function testIsAssocIntAppend()
+    {
+        $arr = array('foo' => 'bar');
+        array_push($arr, 'rat');
+        $this->assertTrue(EasyRdf_Utils::is_associative_array($arr));
+    }
+    
+    public function testIsAssocIntPreppend()
+    {
+        $arr = array('foo' => 'bar');
+        array_unshift($arr, 'rat');
+        $this->assertFalse(EasyRdf_Utils::is_associative_array($arr));
+    }
+    
 }
