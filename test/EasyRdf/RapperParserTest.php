@@ -55,6 +55,69 @@ class EasyRdf_RapperParserTest extends PHPUnit_Framework_TestCase
         }
     }
     
+    function testRapperNotFound()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        new EasyRdf_RapperParser('random_command_that_doesnt_exist');
+    }
+
+    public function testParseNullUri()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse(null, '<rdf:RDF></rdf:RDF>', 'rdfxml');
+    }
+    
+    public function testParseEmptyUri()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse('', '<rdf:RDF></rdf:RDF>', 'rdfxml');
+    }
+    
+    public function testParseNonStringUri()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse(array(), '<rdf:RDF></rdf:RDF>', 'rdfxml');
+    }
+
+    public function testParseNullData()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse('file://valid.rdf', null, 'rdfxml');
+    }
+    
+    public function testParseEmptyData()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse('file://valid.rdf', '', 'rdfxml');
+    }
+    
+    public function testParseNonStringData()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse('file://valid.rdf', array(), 'rdfxml');
+    }
+
+    public function testParseNullDocType()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse('file://valid.rdf', '<rdf:RDF></rdf:RDF>', null);
+    }
+    
+    public function testParseEmptyDocType()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse('file://valid.rdf', '<rdf:RDF></rdf:RDF>', '');
+    }
+    
+    public function testParseNonStringDocType()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse(
+            'file://valid.rdf', '<rdf:RDF></rdf:RDF>',
+            array()
+        );
+    }
+    
     function testParseRdfXml()
     {
         $data = readFixture('foaf.rdf');
