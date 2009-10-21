@@ -50,9 +50,10 @@ require_once "EasyRdf/Exception.php";
  */
 class EasyRdf_RedlandParser
 {
+    /** Variable set to the librdf world */
     private $_world = null;
 
-    /**
+    /*
      *  Types supported by Redland:
      *
      *  ntriples: N-Triples
@@ -66,7 +67,9 @@ class EasyRdf_RedlandParser
      *  rdfxml: RDF/XML
      */
 
-    private static function node_type_string($node)
+
+    /** Convert a librdf node type into a string */
+    private static function nodeTypeString($node)
     {
         switch(librdf_node_get_type($node))
         {
@@ -85,7 +88,8 @@ class EasyRdf_RedlandParser
         }
     }
     
-    private static function node_uri_string($node)
+    /** Convert the URI for a node into a string */
+    private static function nodeUriString($node)
     {
         $uri = librdf_node_get_uri($node);
         if (!$uri) {
@@ -100,13 +104,13 @@ class EasyRdf_RedlandParser
         return $str;
     }
     
-    
-    private static function rdf_php_object($node)
+    /** Convert a node into an RDF/PHP object */
+    private static function rdfPhpObject($node)
     {
         $object = array();
-        $object['type'] = EasyRdf_RedlandParser::node_type_string($node);
+        $object['type'] = EasyRdf_RedlandParser::nodeTypeString($node);
         if ($object['type'] == 'uri') {
-            $object['value'] = EasyRdf_RedlandParser::node_uri_string($node);
+            $object['value'] = EasyRdf_RedlandParser::nodeUriString($node);
         } else if ($object['type'] == 'bnode') {
             $object['value'] = librdf_node_get_blank_identifier($node);
         } else if ($object['type'] == 'literal') {
@@ -198,10 +202,10 @@ class EasyRdf_RedlandParser
             # FIXME: do some checks
             $statement = librdf_stream_get_object($stream);
             if ($statement) {
-                $subject = EasyRdf_RedlandParser::node_uri_string(
+                $subject = EasyRdf_RedlandParser::nodeUriString(
                     librdf_statement_get_subject($statement)
                 );
-                $predicate = EasyRdf_RedlandParser::node_uri_string(
+                $predicate = EasyRdf_RedlandParser::nodeUriString(
                     librdf_statement_get_predicate($statement)
                 );
                 $object = librdf_statement_get_object($statement);
@@ -216,7 +220,7 @@ class EasyRdf_RedlandParser
                 
                 array_push(
                     $rdfphp[$subject][$predicate],
-                    EasyRdf_RedlandParser::rdf_php_object($object)
+                    EasyRdf_RedlandParser::rdfPhpObject($object)
                 );
             }
         }

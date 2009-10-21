@@ -314,7 +314,7 @@ class EasyRdf_Graph
      */
     public function newBNode($types=array())
     {
-        return $this->get("_:eid".(++$this->_bNodeCount),$types);
+        return $this->get("_:eid".(++$this->_bNodeCount), $types);
     }
 
     /**
@@ -422,8 +422,8 @@ class EasyRdf_Graph
                             # FIXME: thow exception or silently ignore?
                         }
                     }
-              }
-          }
+                }
+            }
         
         }
     }

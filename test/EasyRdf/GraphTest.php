@@ -275,16 +275,16 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $graph = new EasyRdf_Graph();
         
-        $bnode = $graph->newBNode();
+        $bnodeOne = $graph->newBNode();
         $this->assertEquals(
             '_:eid1',
-            $bnode->getUri()
+            $bnodeOne->getUri()
         );
         
-        $bnode2 = $graph->newBNode();
+        $bnodeTwo = $graph->newBNode();
         $this->assertEquals(
             '_:eid2',
-            $bnode2->getUri()
+            $bnodeTwo->getUri()
         );
     }
 
@@ -364,17 +364,17 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     
     public function testLoadDuplicateBNodes()
     {
-        $foaf_name = 'http://xmlns.com/foaf/0.1/name';
-        $bnode1 = array( '_:genid1' => array( 
-            $foaf_name => array(array( 'type' => 'literal', 'value' => 'A' ))
+        $foafName = 'http://xmlns.com/foaf/0.1/name';
+        $bnodeA = array( '_:genid1' => array( 
+            $foafName => array(array( 'type' => 'literal', 'value' => 'A' ))
         ));
-        $bnode2 = array( '_:genid1' => array( 
-            $foaf_name => array(array( 'type' => 'literal', 'value' => 'B' ))
+        $bnodeB = array( '_:genid1' => array( 
+            $foafName => array(array( 'type' => 'literal', 'value' => 'B' ))
         ));
         
         $graph = new EasyRdf_Graph();
-        $graph->load('file://doc1', $bnode1);
-        $graph->load('file://doc2', $bnode2);
+        $graph->load('file://bnodeA', $bnodeA);
+        $graph->load('file://bnodeB', $bnodeB);
         $this->assertEquals('A', $graph->get('_:eid1')->get('foaf:name'));
         $this->assertEquals('B', $graph->get('_:eid2')->get('foaf:name'));
     }

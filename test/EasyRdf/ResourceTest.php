@@ -228,7 +228,7 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testDelete()
     {
-        $this->assertEquals('Test A',$this->_resource->get('test:prop'));
+        $this->assertEquals('Test A', $this->_resource->get('test:prop'));
         $this->_resource->delete('test:prop');
         $this->assertEquals(array(), $this->_resource->all('test:prop'));
     }
