@@ -560,6 +560,42 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Joe', $resource->get('foaf:givenname'));
         $this->assertEquals('Bloggs', $resource->get('foaf:surname'));
     }
+    
+    public function testAddAnonymousBNodeToResource()
+    {
+        $graph = new EasyRdf_Graph();
+        $resource = $graph->get('http://www.example.com/joe#me');
+        $graph->add(
+            $resource, 'foaf:knows', array('foaf:name' => 'Yves')
+        );
+        $yves = $resource->get('foaf:knows');
+        $this->assertTrue($yves->isBNode());
+        $this->assertEquals('Yves', $yves->get('foaf:name'));
+    }
+    
+    public function testAddTypedBNodeToResource()
+    {
+        $graph = new EasyRdf_Graph();
+        $resource = $graph->get('http://www.example.com/joe#me');
+        $graph->add(
+            $resource, 'foaf:knows', array('rdf:type' => 'foaf:Person')
+        );
+        $person = $resource->get('foaf:knows');
+        $this->assertTrue($person->isBNode());
+        $this->assertEquals('foaf:Person', $person->type());
+    }
+    
+    public function testAddBNodeViaPropertiesToResource()
+    {
+        $graph = new EasyRdf_Graph();
+        $resource = $graph->get('http://www.example.com/joe#me');
+        $graph->add(
+            $resource, array('foaf:knows' => array('foaf:name' => 'Yves'))
+        );
+        $yves = $resource->get('foaf:knows');
+        $this->assertTrue($yves->isBNode());
+        $this->assertEquals('Yves', $yves->get('foaf:name'));
+    }
 
     public function testType()
     {

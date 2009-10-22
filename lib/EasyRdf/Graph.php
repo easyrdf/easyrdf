@@ -503,10 +503,18 @@ class EasyRdf_Graph
      *
      * The resource can either be a resource or the URI of a resource.
      *
-     * The properties can either a single property name or an
+     * The properties can either be a single property name or an
      * associate array of property names and values.
      *
      * The value can either be a single value or an array of values.
+     *
+     * Examples:
+     *   $res = $graph->get("http://www.example.com");
+     *   $graph->add($res, 'prefix:property', 'value');
+     *   $graph->add($res, 'prefix:property', array('value1',value2'));
+     *   $graph->add($res, array('prefix:property' => 'value1'));
+     *   $graph->add($res, 'foaf:knows', array( 'foaf:name' => 'Name'));
+     *   $graph->add($res, array('foaf:knows' => array( 'foaf:name' => 'Name'));
      *
      * @param  mixed $resource   The resource to add data to
      * @param  mixed $properties The properties or property names
@@ -516,17 +524,24 @@ class EasyRdf_Graph
     {
         if (!is_object($resource)) {
             # FIXME: check object type
-            # FIXME: allow shortened URIs?
             $resource = $this->get($resource);
         }
         
-        if (is_array($properties)) {
+        if (EasyRdf_Utils::is_associative_array($properties)) {
             foreach ($properties as $property => $value) {
-                # FIXME: check if value is a URI?
-                $resource->add($property, $value);
+                $this->add($resource, $property, $value);
             }
+            return;
         } else {
-            # FIXME: check if value is a URI?
+            if (EasyRdf_Utils::is_associative_array($value)) {
+                if (isset($value['rdf:type'])) {
+                    $bnode = $this->newBNode($value['rdf:type']);
+                } else {
+                    $bnode = $this->newBNode();
+                }
+                $bnode->add($value);
+                $value = $bnode;
+            }
             $resource->add($properties, $value);
         }
     }
