@@ -152,7 +152,7 @@ class EasyRdf_Resource
      *
      * Examples:
      *   $resource->add('prefix:property', 'value');
-     *   $resource->add('prefix:property', array('value1',value2');
+     *   $resource->add('prefix:property', array('value1',value2'));
      *   $resource->add(array('prefix:property' => 'value1'));
      *
      * @param  mixed $resource   The resource to add data to
