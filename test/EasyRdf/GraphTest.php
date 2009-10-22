@@ -596,6 +596,14 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($yves->isBNode());
         $this->assertEquals('Yves', $yves->get('foaf:name'));
     }
+    
+    public function testAddPropertriesInvalidResourceClass()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $graph = new EasyRdf_Graph();
+        $invalid_resource = new EasyRdf_Utils();
+        $graph->add( $invalid_resource, 'foo:bar', 'value');
+    }
 
     public function testType()
     {

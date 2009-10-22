@@ -523,8 +523,11 @@ class EasyRdf_Graph
     public function add($resource, $properties, $value=null)
     {
         if (!is_object($resource)) {
-            # FIXME: check object type
             $resource = $this->get($resource);
+        } else if (!$resource instanceof EasyRdf_Resource) {
+            throw new InvalidArgumentException(
+                "\$resource should be an instance of the EasyRdf_Resource class"
+            );
         }
         
         if (EasyRdf_Utils::is_associative_array($properties)) {
