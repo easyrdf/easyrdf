@@ -35,6 +35,43 @@
  * @version    $Id: helpers.php 211 2009-10-22 08:08:44Z njh@aelius.com $
  */
 
+
+
+/* Examples:
+
+echo content_tag('p','Paragraph Tag', array('class'=>'foo'));
+
+echo tag('br');
+echo link_to('Hyperlink', 'http://www.example.com/?a=1&b=2');
+echo tag('br');
+
+echo form_tag();
+
+  echo label_tag('first_name').text_field_tag('first_name', 'Joe').tag('br');
+  echo label_tag('password').password_field_tag().tag('br');
+  
+  echo label_tag('radio1_value1', 'Radio 1').radio_button_tag('radio1', 'value1').tag('br');
+  echo label_tag('radio1_value2', 'Radio 2').radio_button_tag('radio1', 'value2', true).tag('br');
+  echo label_tag('radio1_value3', 'Radio 3').radio_button_tag('radio1', 'value3').tag('br');
+  
+  echo label_tag('check1', 'Check 1').check_box_tag('check1', 'value1').tag('br');
+  echo label_tag('check2', 'Check 2').check_box_tag('check2', 'value2', true).tag('br');
+  echo label_tag('check3', 'Check 3').check_box_tag('check3', 'value3').tag('br');
+
+  $options = array('Label 1' => 'value1', 'Label 2' => 'value2', 'Label 3' => 'value3');
+  echo label_tag('select1', 'Select Something:');
+  echo select_tag('select1', $options, 'value2').tag('br');
+
+  echo label_tag('textarea1', 'Type Something:');
+  echo text_area_tag('textarea1', "Hello World!").tag('br');
+  
+  echo submit_tag();
+
+echo form_end_tag();
+
+*/
+
+
 function tag_options($options)
 {
     $html = "";
@@ -184,39 +221,3 @@ function form_end_tag()
 {
     return "</form>";
 }
-
-
-
-/* Examples:
-
-echo content_tag('p','Paragraph Tag', array('class'=>'foo'));
-
-echo tag('br');
-echo link_to('Hyperlink', 'http://www.example.com/?a=1&b=2');
-echo tag('br');
-
-echo form_tag();
-
-  echo label_tag('first_name').text_field_tag('first_name', 'Joe').tag('br');
-  echo label_tag('password').password_field_tag().tag('br');
-  
-  echo label_tag('radio1_value1', 'Radio 1').radio_button_tag('radio1', 'value1').tag('br');
-  echo label_tag('radio1_value2', 'Radio 2').radio_button_tag('radio1', 'value2', true).tag('br');
-  echo label_tag('radio1_value3', 'Radio 3').radio_button_tag('radio1', 'value3').tag('br');
-  
-  echo label_tag('check1', 'Check 1').check_box_tag('check1', 'value1').tag('br');
-  echo label_tag('check2', 'Check 2').check_box_tag('check2', 'value2', true).tag('br');
-  echo label_tag('check3', 'Check 3').check_box_tag('check3', 'value3').tag('br');
-
-  $options = array('Label 1' => 'value1', 'Label 2' => 'value2', 'Label 3' => 'value3');
-  echo label_tag('select1', 'Select Something:');
-  echo select_tag('select1', $options, 'value2').tag('br');
-
-  echo label_tag('textarea1', 'Type Something:');
-  echo text_area_tag('textarea1', "Hello World!").tag('br');
-  
-  echo submit_tag();
-
-echo form_end_tag();
-
-*/
