@@ -32,7 +32,7 @@
  *
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id: helpers.php 211 2009-10-22 08:08:44Z njh@aelius.com $
+ * @version    $Id$
  */
 
 
