@@ -1,14 +1,14 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf/Http/Client.php";
-    if (isset($_GET['uri'])) $uri = $_GET['uri'];
-    if (isset($_GET['accept'])) $accept = $_GET['accept'];
+    require_once "html_tag_helpers.php";
+
     $accept_options = array(
-      'text/html',
-      'application/rdf+xml',
-      'application/xhtml+xml',
-      'application/json',
-      'text/turtle',
+      'text/html' => 'text/html',
+      'application/rdf+xml' => 'application/rdf+xml',
+      'application/xhtml+xml' => 'application/xhtml+xml',
+      'application/json' => 'application/json',
+      'text/turtle' => 'text/turtle',
     );
 ?>
 <html>
@@ -25,29 +25,16 @@
 </head>
 <body>
 <h1>Test EasyRdf_HTTP_Client Get</h1>
-
-<form method="get">
-<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://tomheath.com/id/me' : htmlspecialchars($uri) ?>" /><br />
-Accept header:
-<select name="accept">
-<?
-    foreach ($accept_options as $accept_option) {
-        if ($accept_option == $accept) {
-            echo "<option selected='selected'>";
-        } else {
-            echo "<option>";
-        }
-        echo "$accept_option</option>\n";
-    }
-?>
-</select>
-<input type="submit" />
-</form>
+<?= form_tag() ?>
+<?= text_field_tag('uri', 'http://tomheath.com/id/me', array('size'=>50)) ?><br />
+<?= label_tag('accept', 'Accept Header:').select_tag('accept',$accept_options) ?>
+<?= submit_tag() ?>
+<?= form_end_tag() ?>
 
 <?php
-    if (isset($uri)) {
-        $client = new EasyRdf_Http_Client($uri);
-        $client->setHeaders('Accept',$accept);
+    if (isset($_REQUEST['uri'])) {
+        $client = new EasyRdf_Http_Client($_REQUEST['uri']);
+        $client->setHeaders('Accept',$_REQUEST['accept']);
         $response = $client->request();
 
 ?>

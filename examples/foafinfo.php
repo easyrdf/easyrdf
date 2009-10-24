@@ -1,30 +1,21 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf/Graph.php";
-    if (isset($_GET['uri'])) $uri = $_GET['uri'];
-
-    function link_to_self($text, $uri)
-    {
-        $uri = preg_replace("|#(.+)$|", '', $uri);
-        return link_to($text, $_SERVER['PHP_SELF'] . '?uri=' . urlencode($uri));
-    }
-    
-    function link_to($text,$uri=null) {
-        if ($uri==null) $uri = $text;
-        return "<a href='$uri'>$text</a>";
-    }
+    require_once "html_tag_helpers.php";
 ?>
 <html>
 <head><title>FOAF Info</title></head>
 <body>
 <h1>FOAF Info</h1>
-<form method="get">
-<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.aelius.com/njh/foaf.rdf' : htmlspecialchars($uri) ?>" />
-<input type="submit" />
-</form>
+
+<?= form_tag() ?>
+<?= text_field_tag('uri', 'http://www.aelius.com/njh/foaf.rdf', array('size'=>50)) ?>
+<?= submit_tag() ?>
+<?= form_end_tag() ?>
+
 <?php
-    if (isset($uri)) {
-        $graph = new EasyRdf_Graph( $uri );
+    if (isset($_REQUEST['uri'])) {
+        $graph = new EasyRdf_Graph($_REQUEST['uri']);
         if ($graph) {
             if ($graph->type() == 'foaf:PersonalProfileDocument') {
                 $person = $graph->primaryTopic();
@@ -56,7 +47,7 @@
             if ($friend->isBnode()) {
                 echo "<li>$label</li>";
             } else {
-                echo "<li>".link_to_self( $label, $friend )."</li>";
+                echo "<li>".link_to_self( $label, 'uri='.urlencode($friend) )."</li>";
             }
         }
         echo "</ul>\n";

@@ -1,6 +1,7 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf/Graph.php";
+    require_once "html_tag_helpers.php";
 
     ## Configure the RDF parser to use
     require_once "EasyRdf/ArcParser.php";
@@ -8,21 +9,20 @@
 
     ## Add the Google Vocab namespace
     EasyRdf_Namespace::set('gv', 'http://rdf.data-vocabulary.org/#');
-    
-    if (isset($_GET['uri'])) $uri = $_GET['uri'];
 ?>
 <html>
 <head><title>Review Extract</title></head>
 <body>
 <h1>Review Extract</h1>
-<form method="get">
+<?= form_tag() ?>
 <p>Please enter the URI of a page with a review on it (marked up with Google Review RDFa):</p>
-<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.bbc.co.uk/music/reviews/2n8c.html' : htmlspecialchars($uri) ?>" />
-<input type="submit" />
-</form>
+<?= text_field_tag('uri', 'http://www.bbc.co.uk/music/reviews/2n8c.html', array('size'=>50)) ?><br />
+<?= submit_tag() ?>
+<?= form_end_tag() ?>
+
 <?php
-    if (isset($uri)) {
-        $graph = new EasyRdf_Graph( $uri );
+    if (isset($_REQUEST['uri'])) {
+        $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
         if ($graph) {
             $reviews = $graph->allOfType('gv:Review');
             $review = $reviews[0];

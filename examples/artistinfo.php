@@ -3,6 +3,7 @@
     require_once "EasyRdf/Graph.php";
     require_once "EasyRdf/Namespace.php";
     require_once "EasyRdf/TypeMapper.php";
+    require_once "html_tag_helpers.php";
 
     ## Configure the RDF parser to use
     require_once "EasyRdf/ArcParser.php";
@@ -38,29 +39,24 @@
         }
     }
 
-    function link_to($text,$uri=null) {
-        if ($uri==null) $uri = $text;
-        return "<a href='$uri'>$text</a>";
-    }
-
     ## Add namespaces
     EasyRdf_Namespace::set('mo', 'http://purl.org/ontology/mo/');
     EasyRdf_Namespace::set('bio', 'http://purl.org/vocab/bio/0.1/');
     EasyRdf_TypeMapper::set('mo:MusicArtist', 'Model_MusicArtist');
-    
-    if (isset($_GET['uri'])) $uri = $_GET['uri'];
 ?>
 <html>
 <head><title>Artist Info</title></head>
 <body>
 <h1>Artist Info</h1>
-<form method="get">
-<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://www.bbc.co.uk/music/artists/70248960-cb53-4ea4-943a-edb18f7d336f.rdf' : htmlspecialchars($uri) ?>" />
-<input type="submit" />
-</form>
+
+<?= form_tag() ?>
+<?= text_field_tag('uri', 'http://www.bbc.co.uk/music/artists/70248960-cb53-4ea4-943a-edb18f7d336f.rdf', array('size'=>50)) ?>
+<?= submit_tag() ?>
+<?= form_end_tag() ?>
+
 <?php
-    if (isset($uri)) {
-        $graph = new EasyRdf_Graph( $uri );
+    if (isset($_REQUEST['uri'])) {
+        $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
         if ($graph) $artist = $graph->primaryTopic();
     }
   

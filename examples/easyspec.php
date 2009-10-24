@@ -3,10 +3,8 @@
     require_once "EasyRdf/Graph.php";
     require_once "EasyRdf/Owl/Class.php";
     require_once "EasyRdf/Owl/Property.php";
-    
-    if (isset($_GET['uri'])) $uri = $_GET['uri'];
-    if (isset($_GET['short'])) $short = $_GET['short'];
-    
+    require_once "html_tag_helpers.php";
+
     # TODO LIST:
     # - display rdfs:range
     # - make use of rdfs:isDefinedBy?
@@ -16,19 +14,19 @@
 <head><title>EasyRdf Spec Maker</title></head>
 <body>
 <h1>EasyRdf Spec Maker</h1>
-<form method="get">
-<input name="short" type="text" size="8" value="<?= empty($short) ? 'foaf' : $short ?>" />
-<input name="uri" type="text" size="48" value="<?= empty($uri) ? 'http://xmlns.com/foaf/0.1/' : htmlspecialchars($uri) ?>" />
-<input type="submit" />
-</form>
 
+<?= form_tag() ?>
+<?= text_field_tag('short', 'foaf', array('size'=>8)) ?>
+<?= text_field_tag('uri', 'http://xmlns.com/foaf/0.1/', array('size'=>50)) ?>
+<?= submit_tag() ?>
+<?= form_end_tag() ?>
 
 <?php
-    if (isset($uri)) {
-        EasyRdf_Namespace::set( $short, $uri );
+    if (isset($_REQUEST['uri'])) {
+        EasyRdf_Namespace::set( $_REQUEST['short'], $_REQUEST['uri'] );
     
-        $graph = new EasyRdf_Graph( $uri );
-        $ontology = $graph->get( $uri );
+        $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
+        $ontology = $graph->get( $_REQUEST['uri'] );
         
     } else {
         
@@ -39,11 +37,6 @@
         echo "<li><a href='easyspec.php?short=po&uri=http%3A%2F%2Fpurl.org%2Fontology%2Fpo%2F'>Programmes Ontology</a></li>\n";
         echo "<li><a href='easyspec.php?short=rev&uri=http%3A%2F%2Fpurl.org%2Fstuff%2Frev%23'>Review Vocabulary</a></li>\n";
         echo "</ul>\n";
-    }
-    
-    function link_to($text,$uri=null) {
-        if ($uri==null) $uri = $text;
-        return "<a href='$uri'>$text</a>";
     }
 ?>
 
@@ -62,7 +55,7 @@
         
         echo "<h2>Classes</h2>\n";
         foreach ($graph->allOfType('owl:Class') as $class) {
-            if ($class->ns() != $short) continue;
+            if ($class->prefix() != $_REQUEST['short']) continue;
             echo "<div class='class' id='".$class->shorten()."'>";
             echo "<h3>".$class->shorten()."</h3>\n";
             foreach ($class->all('rdfs:comment') as $comment) { echo "<p>$comment</p>\n"; }
@@ -71,7 +64,7 @@
             if ($class->get('rdfs:subClassOf')) {
                 echo "<dt>SubClass of:</dt>\n";
                 foreach ($class->all('rdfs:subClassOf') as $subClass) {
-                    if ($subClass->ns() == $short) {
+                    if ($subClass->prefix() == $_REQUEST['short']) {
                         echo "<dd>".link_to($subClass->shorten(),'#'.$subClass->shorten())."</dd>\n";
                     } else {
                         echo "<dd>".link_to($subClass)."</dd>\n";
@@ -82,7 +75,7 @@
             if ($class->get('owl:disjointWith')) {
                 echo "<dt>Disjoint with:</dt>\n";
                 foreach ($class->all('owl:disjointWith') as $disjointWith) {
-                    if ($disjointWith->ns() == $short) {
+                    if ($disjointWith->prefix() == $_REQUEST['short']) {
                         echo "<dd>".link_to($disjointWith->shorten(),'#'.$disjointWith->shorten())."</dd>\n";
                     } else {
                         echo "<dd>".link_to($disjointWith)."</dd>\n";
