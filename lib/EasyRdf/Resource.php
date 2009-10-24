@@ -393,6 +393,7 @@ class EasyRdf_Resource
         echo 'Types: '.implode(', ', $this->types())."\n";
         echo "Properties:</i>\n";
         foreach ($this->_properties as $property => $values) {
+            if ($property == 'rdf:type') continue;
             echo "  $property => \n";
             foreach ($values as $value) {
                 echo "    $value\n";
