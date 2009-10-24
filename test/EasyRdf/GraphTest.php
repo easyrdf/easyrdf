@@ -601,8 +601,8 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException');
         $graph = new EasyRdf_Graph();
-        $invalid_resource = new EasyRdf_Utils();
-        $graph->add( $invalid_resource, 'foo:bar', 'value');
+        $invalidResource = new EasyRdf_Utils();
+        $graph->add($invalidResource, 'foo:bar', 'value');
     }
 
     public function testType()
