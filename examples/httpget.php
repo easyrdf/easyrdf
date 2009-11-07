@@ -27,7 +27,7 @@
 <h1>Test EasyRdf_HTTP_Client Get</h1>
 <?= form_tag() ?>
 <?= text_field_tag('uri', 'http://tomheath.com/id/me', array('size'=>50)) ?><br />
-<?= label_tag('accept', 'Accept Header:').select_tag('accept',$accept_options) ?>
+<?= label_tag('accept', 'Accept Header: ').select_tag('accept',$accept_options) ?>
 <?= submit_tag() ?>
 <?= form_end_tag() ?>
 
