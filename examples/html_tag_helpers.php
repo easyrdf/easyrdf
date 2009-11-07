@@ -181,10 +181,18 @@ function submit_tag($name='submit', $value='Submit', $options=array())
 function label_tag($name, $text=null, $options=array())
 {
     if ($text == null) {
-        $text = ucwords(str_replace('_', ' ', $name));
+        $text = ucwords(str_replace('_', ' ', $name)).': ';
     }
-    $options = array_merge(array('for' => $name), $options);
+    $options = array_merge(
+        array('for' => $name, 'id' => "label_for_$name"), $options
+    );
     return content_tag('label', $text, $options);
+}
+
+function labeled_text_field_tag($name, $default=null, $options=array())
+{
+    return label_tag($name).
+           text_field_tag($name, $default, $options);
 }
 
 function select_tag($name, $options, $default=null, $html_options=array())
