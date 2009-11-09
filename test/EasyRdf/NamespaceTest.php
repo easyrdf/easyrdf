@@ -41,6 +41,13 @@ require_once 'EasyRdf/Namespace.php';
 
 class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
 {
+    public function testNamespaces()
+    {
+        $ns = EasyRdf_Namespace::namespaces();
+        $this->assertEquals('http://purl.org/dc/elements/1.1/', $ns['dc']);
+        $this->assertEquals('http://xmlns.com/foaf/0.1/', $ns['foaf']);
+    }
+
     public function testGetDcNamespace()
     {
         $this->assertEquals(
@@ -54,6 +61,14 @@ class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
             'http://xmlns.com/foaf/0.1/',
             EasyRdf_Namespace::get('foaf')
+        );
+    }
+
+    public function testGetRdfNamespace()
+    {
+        $this->assertEquals(
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+            EasyRdf_Namespace::get('rdf')
         );
     }
 
