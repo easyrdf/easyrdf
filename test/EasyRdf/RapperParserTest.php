@@ -131,9 +131,14 @@ class EasyRdf_RapperParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('literal', $name['type']);
         $this->assertEquals('Joe Bloggs', $name['value']);
 
-        $project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
-        $this->assertEquals('bnode', $project['type']);
-        $this->assertEquals('_:genid1', $project['value']);
+        $current_project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
+        $this->assertEquals('bnode', $current_project['type']);
+        $this->assertEquals('_:genid1', $current_project['value']);
+        
+        $project = $rdf['_:genid1'];
+        $project_name = $project['http://xmlns.com/foaf/0.1/name'][0];
+        $this->assertEquals('literal', $project_name['type']);
+        $this->assertEquals("Joe's Current Project", $project_name['value']);
 
         $homepage = $joe['http://xmlns.com/foaf/0.1/homepage'][0];
         $this->assertEquals('uri', $homepage['type']);
@@ -162,9 +167,14 @@ class EasyRdf_RapperParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('literal', $name['type']);
         $this->assertEquals('Joe Bloggs', $name['value']);
 
-        $project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
-        $this->assertEquals('bnode', $project['type']);
-        $this->assertEquals('_:genid1', $project['value']);
+        $current_project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
+        $this->assertEquals('bnode', $current_project['type']);
+        $this->assertEquals('_:genid1', $current_project['value']);
+        
+        $project = $rdf['_:genid1'];
+        $project_name = $project['http://xmlns.com/foaf/0.1/name'][0];
+        $this->assertEquals('literal', $project_name['type']);
+        $this->assertEquals("Joe's Current Project", $project_name['value']);
 
         $homepage = $joe['http://xmlns.com/foaf/0.1/homepage'][0];
         $this->assertEquals('uri', $homepage['type']);
