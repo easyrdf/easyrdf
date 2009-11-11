@@ -133,9 +133,8 @@ class EasyRdf_RapperParserTest extends PHPUnit_Framework_TestCase
 
         $current_project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
         $this->assertEquals('bnode', $current_project['type']);
-        $this->assertEquals('_:genid1', $current_project['value']);
-        
-        $project = $rdf['_:genid1'];
+
+        $project = $rdf[$current_project['value']];
         $project_name = $project['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertEquals('literal', $project_name['type']);
         $this->assertEquals("Joe's Current Project", $project_name['value']);
@@ -169,9 +168,8 @@ class EasyRdf_RapperParserTest extends PHPUnit_Framework_TestCase
 
         $current_project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
         $this->assertEquals('bnode', $current_project['type']);
-        $this->assertEquals('_:genid1', $current_project['value']);
-        
-        $project = $rdf['_:genid1'];
+
+        $project = $rdf[$current_project['value']];
         $project_name = $project['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertEquals('literal', $project_name['type']);
         $this->assertEquals("Joe's Current Project", $project_name['value']);

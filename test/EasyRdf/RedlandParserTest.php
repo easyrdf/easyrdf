@@ -120,7 +120,19 @@ class EasyRdf_RedlandParserTest extends PHPUnit_Framework_TestCase
         $joe = $rdf['http://www.example.com/joe#me'];
         $name = $joe['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertEquals('literal', $name['type']);
-        $this->assertEquals('Joe Bloggs', 'Joe Bloggs');
+        $this->assertEquals('Joe Bloggs', $name['value']);
+
+        $current_project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
+        $this->assertEquals('bnode', $current_project['type']);
+
+        $project = $rdf[$current_project['value']];
+        $project_name = $project['http://xmlns.com/foaf/0.1/name'][0];
+        $this->assertEquals('literal', $project_name['type']);
+        $this->assertEquals("Joe's Current Project", $project_name['value']);
+
+        $homepage = $joe['http://xmlns.com/foaf/0.1/homepage'][0];
+        $this->assertEquals('uri', $homepage['type']);
+        $this->assertEquals('http://www.example.com/joe/', $homepage['value']);
     }
     
     function testParseInvalidRdfXml()
@@ -143,7 +155,19 @@ class EasyRdf_RedlandParserTest extends PHPUnit_Framework_TestCase
         $joe = $rdf['http://www.example.com/joe#me'];
         $name = $joe['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertEquals('literal', $name['type']);
-        $this->assertEquals('Joe Bloggs', 'Joe Bloggs');
+        $this->assertEquals('Joe Bloggs', $name['value']);
+
+        $current_project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
+        $this->assertEquals('bnode', $current_project['type']);
+
+        $project = $rdf[$current_project['value']];
+        $project_name = $project['http://xmlns.com/foaf/0.1/name'][0];
+        $this->assertEquals('literal', $project_name['type']);
+        $this->assertEquals("Joe's Current Project", $project_name['value']);
+
+        $homepage = $joe['http://xmlns.com/foaf/0.1/homepage'][0];
+        $this->assertEquals('uri', $homepage['type']);
+        $this->assertEquals('http://www.example.com/joe/', $homepage['value']);
     }
     
 }
