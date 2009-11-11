@@ -91,17 +91,24 @@ class EasyRdf_RedlandParser
     /** Convert the URI for a node into a string */
     private static function nodeUriString($node)
     {
-        $uri = librdf_node_get_uri($node);
-        if (!$uri) {
-            throw new EasyRdf_Exception("Failed to get URI of node");
+        $type = EasyRdf_RedlandParser::nodeTypeString($node);
+        if ($type == 'uri') { 
+            $uri = librdf_node_get_uri($node);
+            if (!$uri) {
+                throw new EasyRdf_Exception("Failed to get URI of node");
+            }
+            $str = librdf_uri_to_string($uri);
+            if (!$str) {
+                throw new EasyRdf_Exception(
+                    "Failed to convert librdf_uri to string"
+                );
+            }
+            return $str;
+        } else if ($type == 'bnode') {
+            return '_:'.librdf_node_get_blank_identifier($node);
+        } else {
+            throw new EasyRdf_Exception("Unsupported type: ".$object['type']);
         }
-        $str = librdf_uri_to_string($uri);
-        if (!$str) {
-            throw new EasyRdf_Exception(
-                "Failed to convert librdf_uri to string"
-            );
-        }
-        return $str;
     }
     
     /** Convert a node into an RDF/PHP object */
@@ -112,7 +119,7 @@ class EasyRdf_RedlandParser
         if ($object['type'] == 'uri') {
             $object['value'] = EasyRdf_RedlandParser::nodeUriString($node);
         } else if ($object['type'] == 'bnode') {
-            $object['value'] = librdf_node_get_blank_identifier($node);
+            $object['value'] = '_:'.librdf_node_get_blank_identifier($node);
         } else if ($object['type'] == 'literal') {
             $object['value'] = librdf_node_get_literal_value($node);
             $lang = librdf_node_get_literal_value_language($node);
@@ -198,8 +205,7 @@ class EasyRdf_RedlandParser
         }
 
         $rdfphp = array();
-        while (!librdf_stream_next($stream)) {
-            # FIXME: do some checks
+        do {
             $statement = librdf_stream_get_object($stream);
             if ($statement) {
                 $subject = EasyRdf_RedlandParser::nodeUriString(
@@ -208,7 +214,9 @@ class EasyRdf_RedlandParser
                 $predicate = EasyRdf_RedlandParser::nodeUriString(
                     librdf_statement_get_predicate($statement)
                 );
-                $object = librdf_statement_get_object($statement);
+                $object = EasyRdf_RedlandParser::rdfPhpObject(
+                    librdf_statement_get_object($statement)
+                );
                 
                 if (!isset($rdfphp[$subject])) {
                     $rdfphp[$subject] = array();
@@ -217,14 +225,11 @@ class EasyRdf_RedlandParser
                 if (!isset($rdfphp[$subject][$predicate])) {
                     $rdfphp[$subject][$predicate] = array();
                 }
-                
-                array_push(
-                    $rdfphp[$subject][$predicate],
-                    EasyRdf_RedlandParser::rdfPhpObject($object)
-                );
+
+                array_push($rdfphp[$subject][$predicate], $object);
             }
-        }
-        
+        } while (!librdf_stream_next($stream));
+
         librdf_free_uri($rdfUri);
         librdf_free_stream($stream);
         librdf_free_parser($parser);
