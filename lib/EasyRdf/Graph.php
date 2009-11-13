@@ -597,15 +597,6 @@ class EasyRdf_Graph
         }
     }
     
-    public function toTurtle()
-    {
-        // FIXME: should this be here?
-        // Reduces overhead if fearure not used?
-        require_once "EasyRdf/Serialiser/Turtle.php";
-        return EasyRdf_Serialiser_Turtle::serialise($this);
-    }
-
-    
     // BEWARE! Magic below
 
     /** Magic method to give access to properties using method calls
