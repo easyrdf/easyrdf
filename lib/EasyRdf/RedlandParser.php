@@ -52,6 +52,10 @@ class EasyRdf_RedlandParser
 {
     /** Variable set to the librdf world */
     private $_world = null;
+    
+    /** Parser feature URI string for getting the error count of last parse. */
+    const LIBRDF_PARSER_FEATURE_ERROR_COUNT = 
+        'http://feature.librdf.org/parser-error-count';
 
     /*
      *  Types supported by Redland:
@@ -136,6 +140,17 @@ class EasyRdf_RedlandParser
         return $object;
     }
 
+    /** Return the number of errors during parsing */
+    private function parserErrorCount($parser)
+    {
+        $error_uri = librdf_new_uri(
+            $this->_world, self::LIBRDF_PARSER_FEATURE_ERROR_COUNT
+        );
+        $error_node = librdf_parser_get_feature($parser, $error_uri);
+        $error_count = librdf_node_get_literal_value($error_node);
+        librdf_free_uri($error_uri);
+        return $error_count;
+    }
 
     /**
      * Constructor
@@ -151,7 +166,6 @@ class EasyRdf_RedlandParser
             );
         }
     }
-
 
     /**
       * Parse an RDF document
@@ -229,6 +243,11 @@ class EasyRdf_RedlandParser
                 array_push($rdfphp[$subject][$predicate], $object);
             }
         } while (!librdf_stream_next($stream));
+        
+        $error_count = $this->parserErrorCount($parser);
+        if ($error_count) {
+            throw new EasyRdf_Exception("$error_count errors while parsing.");
+        }
 
         librdf_free_uri($rdfUri);
         librdf_free_stream($stream);
