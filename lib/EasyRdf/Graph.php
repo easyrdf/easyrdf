@@ -63,7 +63,7 @@ require_once "EasyRdf/Utils.php";
 
 
 /**
- * Class to 
+ * Container for collection of EasyRdf_Resources.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
