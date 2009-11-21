@@ -126,7 +126,7 @@ class EasyRdf_Graph
 
     /** Set the RDF parser object used to parse RDF data
      *
-     * @param  object mixed $httpClient The new RDF parser object
+     * @param  object mixed $rdfParser The new RDF parser object
      * @return object mixed The new RDF parser object
      */
     public static function setRdfParser($rdfParser)
