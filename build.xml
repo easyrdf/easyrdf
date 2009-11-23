@@ -80,6 +80,10 @@
       </projdocfileset>
     </phpdoc>
   </target>
+ 
+  <target name="wikidocs">
+    <exec command="php build/phpDocWiki.php" dir="${project.basedir}" passthru="true" />
+  </target>
 
   <target name="cs">
     <phpcodesniffer
