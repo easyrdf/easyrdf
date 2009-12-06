@@ -159,10 +159,16 @@ class EasyRdf_RedlandParser
      */
     public function __construct()
     {
-        $this->_world = librdf_php_get_world();
-        if (!$this->_world) {
+        if (extension_loaded('redland')) {
+            $this->_world = librdf_php_get_world();
+            if (!$this->_world) {
+                throw new EasyRdf_Exception(
+                    "Failed to initialise librdf world."
+                );
+            }
+        } else {
             throw new EasyRdf_Exception(
-                "Failed to initialise librdf world."
+                "Redland PHP extension is not available."
             );
         }
     }
