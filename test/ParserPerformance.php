@@ -26,16 +26,21 @@ foreach($documents as $url => $filename) {
     print "File size: ".filesize($filepath)." bytes\n";
     
     foreach($parsers as $parser) {
-        require_once "EasyRdf/$parser.php";
         $class = "EasyRdf_$parser";
-        EasyRdf_Graph::setRdfParser(new $class());
-    
         print "  Parsing using: $class\n";
-        $start = microtime(true);
-        $graph = new EasyRdf_Graph($url, $rdf, 'rdfxml');
-        $duration = microtime(true) - $start;
-        print "  Parse time: $duration seconds\n";
-        print "  Resource count: ".count($graph->resources())."\n";
+    
+        try {
+            require_once "EasyRdf/$parser.php";
+            EasyRdf_Graph::setRdfParser(new $class());
+    
+            $start = microtime(true);
+            $graph = new EasyRdf_Graph($url, $rdf, 'rdfxml');
+            $duration = microtime(true) - $start;
+            print "  Parse time: $duration seconds\n";
+            print "  Resource count: ".count($graph->resources())."\n";
+        } catch (Exception $e) {
+            print 'Parsing failed: '.$e->getMessage()."\n";
+        }
         print "\n";
         
         unset($graph);
