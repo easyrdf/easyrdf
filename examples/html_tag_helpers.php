@@ -105,6 +105,12 @@ function link_to_self($text, $query_string, $options=array())
     return link_to($text, $_SERVER['PHP_SELF'].'?'.$query_string, $options);
 }
 
+function image_tag($src, $options=array())
+{
+    $options = array_merge(array('src' => $src), $options);
+    return tag('img', $options);
+}
+
 function input_tag($type, $name, $value=null, $options=array())
 {
     $options = array_merge(
