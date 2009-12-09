@@ -77,6 +77,9 @@ class EasyRdf_Graph
     /** Array of resources contained in the graph */
     private $_resources = array();
     
+    /** If defined, only store literals of this language */
+    private static $_filter_lang = 'en';
+    
     /** Counter for the number of bnodes */
     private $_bNodeCount = 0;
     
@@ -153,6 +156,16 @@ class EasyRdf_Graph
             self::$_rdfParser = new EasyRdf_RapperParser();
         }
         return self::$_rdfParser;
+    }
+
+    public static function setFilterLang($lang)
+    {
+        if (!is_string($lang) and $lang != null) {
+            throw new InvalidArgumentException(
+                "\$lang should be a string or null"
+            );
+        }
+        self::$_filter_lang = $lang;
     }
 
     /** Convert a mime type into a simplier document type name
@@ -402,7 +415,10 @@ class EasyRdf_Graph
                         if ($property == 'rdf:type') {
                             # Type has already been set
                         } else if ($obj['type'] == 'literal') {
-                            $res->add($property, $obj['value']);
+                            if (!isset($obj['lang']) or 
+                                (isset(self::$_filter_lang) and $obj['lang'] == self::$_filter_lang)) {
+                                $res->add($property, $obj['value']);
+                            }
                         } else if ($obj['type'] == 'uri') {
                             $type = $this->getResourceType(
                                 $data, $obj['value']
