@@ -33,7 +33,7 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
+ * @version    $Id: Rdfphp.php 197 2009-10-18 11:55:04Z njh@aelius.com $
  */
 
 /**
@@ -52,43 +52,55 @@ require_once "EasyRdf/Graph.php";
 require_once "EasyRdf/Namespace.php";
 
 /**
- * @see EasyRdf_Serialiser_Ntriples
- */
-require_once "EasyRdf/Serialiser/Ntriples.php";
-
-/**
- * Class to serialise an EasyRdf_Graph into Turtle
+ * Class to serialise an EasyRdf_Graph into RDF/PHP
+ *
+ * http://n2.talis.com/wiki/RDF_PHP_Specification
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
+class EasyRdf_Serialiser_Rdfphp
 {
+    protected static function serialiseObject($obj)
+    {
+        if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
+            if ($obj->isBNode()) {
+                return array('type' => 'bnode', 'value' => $obj->getUri());
+            } else {
+                return array('type' => 'uri', 'value' => $obj->getUri());
+            }
+        } else {
+            return array('type' => 'literal', 'value' => $obj);
+        }
+    }
+
     public static function serialise($graph)
     {
-        $ttl = '';
-        
-        // FIXME: only output prefixes used by Graph
-        foreach (EasyRdf_Namespace::namespaces() as $prefix => $ns) {
-            $ttl .= "@prefix $prefix: <$ns> .\n";
-        }
-        $ttl .= "\n";
-        
+        $rdfphp = array();
         foreach ($graph->resources() as $resource) {
-            $ttl .= "<".$resource->getUri().">\n";
-            foreach ($resource->properties() as $property) {
-                $ttl .= "    $property";
-                $values = $resource->all($property);
-                foreach ($values as $value) {
-                    $ttl .= " \"$value\"";
-                }
-                $ttl .= " ;\n";
+            $subj = $resource->getUri();
+            if (!isset($rdfphp[$subj])) {
+                $rdfphp[$subj] = array();
             }
-            $ttl .= ".\n\n";
+        
+            foreach ($resource->properties() as $property) {
+                $prop = EasyRdf_Namespace::expand($property);
+                if ($prop) {
+                    if (!isset($rdfphp[$subj][$prop])) {
+                        $rdfphp[$subj][$prop] = array();
+                    }
+                    $objects = $resource->all($property);
+                    foreach ($objects as $object) {
+                        array_push(
+                            $rdfphp[$subj][$prop],
+                            self::serialiseObject($object)
+                        );
+                    }
+                }
+            }
         }
-
-        return $ttl;
+        return $rdfphp;
     }
 }
 

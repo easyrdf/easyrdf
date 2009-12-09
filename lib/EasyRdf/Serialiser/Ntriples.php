@@ -52,43 +52,57 @@ require_once "EasyRdf/Graph.php";
 require_once "EasyRdf/Namespace.php";
 
 /**
- * @see EasyRdf_Serialiser_Ntriples
- */
-require_once "EasyRdf/Serialiser/Ntriples.php";
-
-/**
- * Class to serialise an EasyRdf_Graph into Turtle
+ * Class to serialise an EasyRdf_Graph into N-Triples
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
+class EasyRdf_Serialiser_Ntriples
 {
+    protected static function serialiseResource($res)
+    {
+        if (is_object($res)) {
+            if ($res->isBNode()) {
+                return $res->getURI();
+            } else {
+                return "<".$res->getURI().">";
+            }
+        } else {
+            $uri = EasyRdf_Namespace::expand($res);
+            if ($uri) {
+                return "<$uri>";
+            } else {
+                return "<$res>";
+            }
+        }
+    }
+
+    protected static function serialiseObject($obj)
+    {
+        if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
+            return self::serialiseResource($obj);
+        } else if (is_scalar($obj)) {
+            return "\"$obj\"";
+        } else {
+            echo "Unknown!";
+        }
+    }
+
     public static function serialise($graph)
     {
-        $ttl = '';
-        
-        // FIXME: only output prefixes used by Graph
-        foreach (EasyRdf_Namespace::namespaces() as $prefix => $ns) {
-            $ttl .= "@prefix $prefix: <$ns> .\n";
-        }
-        $ttl .= "\n";
-        
+        $nt = '';
         foreach ($graph->resources() as $resource) {
-            $ttl .= "<".$resource->getUri().">\n";
             foreach ($resource->properties() as $property) {
-                $ttl .= "    $property";
-                $values = $resource->all($property);
-                foreach ($values as $value) {
-                    $ttl .= " \"$value\"";
+                $objects = $resource->all($property);
+                foreach ($objects as $object) {
+                    $nt .= self::serialiseResource($resource)." ";
+                    $nt .= self::serialiseResource($property)." ";
+                    $nt .= self::serialiseObject($object)." .\n";
                 }
-                $ttl .= " ;\n";
             }
-            $ttl .= ".\n\n";
         }
-
-        return $ttl;
+        return $nt;
     }
 }
 
