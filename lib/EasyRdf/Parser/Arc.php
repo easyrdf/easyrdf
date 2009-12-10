@@ -48,7 +48,7 @@ require_once "EasyRdf/Exception.php";
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_ArcParser
+class EasyRdf_Parser_Arc
 {
     private static $_supportedTypes = array(
         'json' => 'JSON',
@@ -60,7 +60,7 @@ class EasyRdf_ArcParser
     /**
      * Constructor
      *
-     * @return object EasyRdf_ArcParser
+     * @return object EasyRdf_Parser_Arc
      */
     public function __construct()
     {
@@ -100,7 +100,7 @@ class EasyRdf_ArcParser
         } else {
             throw new EasyRdf_Exception(
                 "Parsing documents of type $docType ".
-                "is not supported by EasyRdf_ArcParser."
+                "is not supported by EasyRdf_Parser_Arc."
             );
         }
         

@@ -214,7 +214,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     public function testGetDefaultRdfParser()
     {
         $this->assertEquals(
-            'EasyRdf_RapperParser',
+            'EasyRdf_Parser_Rapper',
             get_class(EasyRdf_Graph::getRdfParser())
         );
     }

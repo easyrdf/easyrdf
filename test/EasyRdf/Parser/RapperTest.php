@@ -36,20 +36,30 @@
  * @version    $Id$
  */
 
-require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
-require_once 'EasyRdf/RedlandParser.php';
+require_once dirname(dirname(dirname(__FILE__))).
+             DIRECTORY_SEPARATOR.'TestHelper.php';
+require_once 'EasyRdf/Parser/Rapper.php';
 
-class EasyRdf_RedlandParserTest extends PHPUnit_Framework_TestCase
+class EasyRdf_Parser_RapperTest extends PHPUnit_Framework_TestCase
 {
     protected $_parser = null;
 
     public function setUp()
     {
-        if (extension_loaded('redland')) {
-            $this->_parser = new EasyRdf_RedlandParser();
+        exec('which rapper', $output, $retval);
+        if ($retval == 0) {
+            $this->_parser = new EasyRdf_Parser_Rapper();
         } else {
-            $this->markTestSkipped("Redland PHP extension is not available.");
+            $this->markTestSkipped(
+                "The rapper command is not available on this system."
+            );
         }
+    }
+    
+    function testRapperNotFound()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        new EasyRdf_Parser_Rapper('random_command_that_doesnt_exist');
     }
 
     public function testParseNullUri()
@@ -170,4 +180,9 @@ class EasyRdf_RedlandParserTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://www.example.com/joe/', $homepage['value']);
     }
     
+    function testRapperExecError()
+    {
+        # FIXME: how can we cause proc_open() to fail?
+        $this->markTestIncomplete();
+    }
 }

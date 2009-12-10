@@ -48,7 +48,7 @@ require_once "EasyRdf/Exception.php";
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_RapperParser
+class EasyRdf_Parser_Rapper
 {
     private $_rapperCmd = null;
     
@@ -56,7 +56,7 @@ class EasyRdf_RapperParser
      * Constructor
      *
      * @param string $rapperCmd Optional path to the rapper command to use.
-     * @return object EasyRdf_RapperParser
+     * @return object EasyRdf_Parser_Rapper
      */
     public function __construct($rapperCmd='rapper')
     {

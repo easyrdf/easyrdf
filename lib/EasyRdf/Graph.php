@@ -145,15 +145,15 @@ class EasyRdf_Graph
     /** Get the RDF parser object used to parse RDF data
      *
      * If no RDF Parser has previously been set, then a new
-     * default (EasyRdf_RapperParser) parser will be created.
+     * default (EasyRdf_Parser_Rapper) parser will be created.
      *
      * @return object mixed The RDF parser object
      */
     public static function getRdfParser()
     {
         if (!self::$_rdfParser) {
-            require_once "EasyRdf/RapperParser.php";
-            self::$_rdfParser = new EasyRdf_RapperParser();
+            require_once "EasyRdf/Parser/Rapper.php";
+            self::$_rdfParser = new EasyRdf_Parser_Rapper();
         }
         return self::$_rdfParser;
     }

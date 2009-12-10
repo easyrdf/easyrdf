@@ -4,8 +4,8 @@
     require_once "html_tag_helpers.php";
 
     ## Configure the RDF parser to use
-    require_once "EasyRdf/RapperParser.php";
-    EasyRdf_Graph::setRdfParser( new EasyRdf_RapperParser('/usr/local/bin/rapper') );
+    require_once "EasyRdf/Parser/Rapper.php";
+    EasyRdf_Graph::setRdfParser( new EasyRdf_Parser_Rapper('/usr/local/bin/rapper') );
 ?>
 <html>
 <head><title>EasyRdf Graph Dumper</title></head>

@@ -4,8 +4,8 @@
     require_once "html_tag_helpers.php";
 
     ## Configure the RDF parser to use
-    require_once "EasyRdf/ArcParser.php";
-    EasyRdf_Graph::setRdfParser( new EasyRdf_ArcParser() );
+    require_once "EasyRdf/Parser/Arc.php";
+    EasyRdf_Graph::setRdfParser( new EasyRdf_Parser_Arc() );
 
     ## Add the Google Vocab namespace
     EasyRdf_Namespace::set('gv', 'http://rdf.data-vocabulary.org/#');

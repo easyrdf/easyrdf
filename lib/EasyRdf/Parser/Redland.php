@@ -48,7 +48,7 @@ require_once "EasyRdf/Exception.php";
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_RedlandParser
+class EasyRdf_Parser_Redland
 {
     /** Variable set to the librdf world */
     private $_world = null;
@@ -95,7 +95,7 @@ class EasyRdf_RedlandParser
     /** Convert the URI for a node into a string */
     private static function nodeUriString($node)
     {
-        $type = EasyRdf_RedlandParser::nodeTypeString($node);
+        $type = EasyRdf_Parser_Redland::nodeTypeString($node);
         if ($type == 'uri') { 
             $uri = librdf_node_get_uri($node);
             if (!$uri) {
@@ -119,9 +119,9 @@ class EasyRdf_RedlandParser
     private static function rdfPhpObject($node)
     {
         $object = array();
-        $object['type'] = EasyRdf_RedlandParser::nodeTypeString($node);
+        $object['type'] = EasyRdf_Parser_Redland::nodeTypeString($node);
         if ($object['type'] == 'uri') {
-            $object['value'] = EasyRdf_RedlandParser::nodeUriString($node);
+            $object['value'] = EasyRdf_Parser_Redland::nodeUriString($node);
         } else if ($object['type'] == 'bnode') {
             $object['value'] = '_:'.librdf_node_get_blank_identifier($node);
         } else if ($object['type'] == 'literal') {
@@ -155,7 +155,7 @@ class EasyRdf_RedlandParser
     /**
      * Constructor
      *
-     * @return object EasyRdf_ArcParser
+     * @return object EasyRdf_Parser_Redland
      */
     public function __construct()
     {
@@ -228,13 +228,13 @@ class EasyRdf_RedlandParser
         do {
             $statement = librdf_stream_get_object($stream);
             if ($statement) {
-                $subject = EasyRdf_RedlandParser::nodeUriString(
+                $subject = EasyRdf_Parser_Redland::nodeUriString(
                     librdf_statement_get_subject($statement)
                 );
-                $predicate = EasyRdf_RedlandParser::nodeUriString(
+                $predicate = EasyRdf_Parser_Redland::nodeUriString(
                     librdf_statement_get_predicate($statement)
                 );
-                $object = EasyRdf_RedlandParser::rdfPhpObject(
+                $object = EasyRdf_Parser_Redland::rdfPhpObject(
                     librdf_statement_get_object($statement)
                 );
                 

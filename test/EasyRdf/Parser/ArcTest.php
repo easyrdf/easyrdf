@@ -36,10 +36,11 @@
  * @version    $Id$
  */
 
-require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
-require_once 'EasyRdf/ArcParser.php';
+require_once dirname(dirname(dirname(__FILE__))).
+             DIRECTORY_SEPARATOR.'TestHelper.php';
+require_once 'EasyRdf/Parser/Arc.php';
 
-class EasyRdf_ArcParserTest extends PHPUnit_Framework_TestCase
+class EasyRdf_Parser_ArcTest extends PHPUnit_Framework_TestCase
 {
     protected $_parser = null;
 
@@ -48,7 +49,7 @@ class EasyRdf_ArcParserTest extends PHPUnit_Framework_TestCase
         if (!requireExists('arc/ARC2.php')) {
             $this->markTestSkipped("ARC2 library is not available.");
         } else {
-            $this->_parser = new EasyRdf_ArcParser();
+            $this->_parser = new EasyRdf_Parser_Arc();
         }
     }
     
