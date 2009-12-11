@@ -158,6 +158,37 @@ class EasyRdf_Graph
         return self::$_rdfParser;
     }
 
+    /** Set the RDF serialiser object used to generate RDF data
+     *
+     * @param  object mixed $rdfSerialiser The new RDF serialiser object
+     * @return object mixed The new RDF serialiser object
+     */
+    public static function setRdfSerialiser($rdfSerialiser)
+    {
+        if (!is_object($rdfSerialiser) or $rdfSerialiser == null) {
+            throw new InvalidArgumentException(
+                "\$rdfSerialiser should be an object and cannot be null"
+            );
+        }
+        self::$_rdfSerialiser = $rdfSerialiser;
+    }
+    
+    /** Get the RDF serialiser object used to generate RDF data
+     *
+     * If no RDF Serialiser has previously been set, then a new
+     * default (EasyRdf_Serialiser_Builtin) serialiser will be created.
+     *
+     * @return object mixed The RDF serialiser object
+     */
+    public static function getRdfSerialiser()
+    {
+        if (!self::$_rdfSerialiser) {
+            require_once "EasyRdf/Serialiser/Builtin.php";
+            self::$_rdfSerialiser = new EasyRdf_Serialiser_Builtin();
+        }
+        return self::$_rdfSerialiser;
+    }
+
     public static function setFilterLang($lang)
     {
         if (!is_string($lang) and $lang != null) {
@@ -563,6 +594,15 @@ class EasyRdf_Graph
             }
             $resource->add($properties, $value);
         }
+    }
+    
+    /** Serialise the graph into RDF
+     *
+     * @param  string  $format  The format to serialise into
+     */
+    public function serialise($format)
+    {
+        return self::getRdfSerialiser()->serialise($this, $format);
     }
 
     /** Display all the resources in the graph

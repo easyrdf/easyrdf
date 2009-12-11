@@ -52,17 +52,15 @@ require_once "EasyRdf/Graph.php";
 require_once "EasyRdf/Namespace.php";
 
 /**
- * Class to serialise an EasyRdf_Graph into RDF/PHP
- *
- * http://n2.talis.com/wiki/RDF_PHP_Specification
+ * Class to serialise an EasyRdf_Graph into RDF
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Rdfphp
+class EasyRdf_Serialiser_Builtin
 {
-    protected static function serialiseObject($obj)
+    protected function rdfphp_object($obj)
     {
         if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
             if ($obj->isBNode()) {
@@ -75,7 +73,12 @@ class EasyRdf_Serialiser_Rdfphp
         }
     }
 
-    public static function serialise($graph)
+    /**
+     * Method to serialise an EasyRdf_Graph into RDF/PHP
+     *
+     * http://n2.talis.com/wiki/RDF_PHP_Specification
+     */
+    public function to_rdfphp($graph)
     {
         $rdfphp = array();
         foreach ($graph->resources() as $resource) {
@@ -94,13 +97,37 @@ class EasyRdf_Serialiser_Rdfphp
                     foreach ($objects as $object) {
                         array_push(
                             $rdfphp[$subj][$prop],
-                            self::serialiseObject($object)
+                            $this->rdfphp_object($object)
                         );
                     }
                 }
             }
         }
         return $rdfphp;
+    }
+    
+    /**
+     * Method to serialise an EasyRdf_Graph into RDF/JSON
+     *
+     * http://n2.talis.com/wiki/RDF_JSON_Specification
+     */
+    public function to_json($graph)
+    {
+        return json_encode($this->to_rdfphp($graph));
+    }
+    
+    /**
+     * Method to serialise an EasyRdf_Graph into format of choice
+     */
+    function serialise($graph, $format)
+    {
+        if ($format == 'php') {
+            return $this->to_rdfphp($graph);
+        } else if ($format == 'php') {
+            return $this->to_json($graph);
+        } else {
+        
+        }
     }
 }
 
