@@ -5,7 +5,7 @@
     require_once "EasyRdf/TypeMapper.php";
     require_once "html_tag_helpers.php";
     
-    EasyRdf_Graph::setFilterLang('en');
+    EasyRdf_Graph::setLangFilter('en');
     EasyRdf_Namespace::set('dbpprop', "http://dbpedia.org/property/");
     EasyRdf_Namespace::set('georss', "http://www.georss.org/georss/");
 ?>
