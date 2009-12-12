@@ -60,19 +60,6 @@ require_once "EasyRdf/Namespace.php";
  */
 class EasyRdf_Serialiser_Builtin
 {
-    protected function rdfphp_object($obj)
-    {
-        if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
-            if ($obj->isBNode()) {
-                return array('type' => 'bnode', 'value' => $obj->getUri());
-            } else {
-                return array('type' => 'uri', 'value' => $obj->getUri());
-            }
-        } else {
-            return array('type' => 'literal', 'value' => $obj);
-        }
-    }
-
     /**
      * Method to serialise an EasyRdf_Graph into RDF/PHP
      *
@@ -94,11 +81,22 @@ class EasyRdf_Serialiser_Builtin
                         $rdfphp[$subj][$prop] = array();
                     }
                     $objects = $resource->all($property);
-                    foreach ($objects as $object) {
-                        array_push(
-                            $rdfphp[$subj][$prop],
-                            $this->rdfphp_object($object)
-                        );
+                    foreach ($objects as $obj) {
+                        if (is_object($obj) and 
+                           ($obj instanceof EasyRdf_Resource)) {
+                            if ($obj->isBNode()) {
+                                $object = array('type' => 'bnode',
+                                                'value' => $obj->getUri());
+                            } else {
+                                $object = array('type' => 'uri',
+                                                'value' => $obj->getUri());
+                            }
+                        } else {
+                            $object = array('type' => 'literal',
+                                            'value' => $obj);
+                        }
+
+                        array_push($rdfphp[$subj][$prop], $object);
                     }
                 }
             }
@@ -121,12 +119,16 @@ class EasyRdf_Serialiser_Builtin
      */
     function serialise($graph, $format)
     {
+        // FIXME: validate
+    
         if ($format == 'php') {
             return $this->to_rdfphp($graph);
-        } else if ($format == 'php') {
+        } else if ($format == 'json') {
             return $this->to_json($graph);
         } else {
-        
+            throw new EasyRdf_Exception(
+                "Unsupported serialisation format: $format"
+            );
         }
     }
 }
