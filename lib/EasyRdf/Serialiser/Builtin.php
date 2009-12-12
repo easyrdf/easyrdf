@@ -53,6 +53,7 @@ require_once "EasyRdf/Namespace.php";
 
 /**
  * Class to serialise an EasyRdf_Graph into RDF
+ * with no external dependancies.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
@@ -60,6 +61,58 @@ require_once "EasyRdf/Namespace.php";
  */
 class EasyRdf_Serialiser_Builtin
 {
+
+    protected function ntriplesResource($res)
+    {
+        if (is_object($res)) {
+            if ($res->isBNode()) {
+                return $res->getURI();
+            } else {
+                return "<".$res->getURI().">";
+            }
+        } else {
+            $uri = EasyRdf_Namespace::expand($res);
+            if ($uri) {
+                return "<$uri>";
+            } else {
+                return "<$res>";
+            }
+        }
+    }
+
+    protected function ntriplesObject($obj)
+    {
+        if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
+            return $this->ntriplesResource($obj);
+        } else if (is_scalar($obj)) {
+            return "\"$obj\"";
+        } else {
+            throw new EasyRdf_Exception(
+                "Unable to serialise object to ntriples: $obj"
+            );
+        }
+    }
+
+    /**
+     * Method to serialise an EasyRdf_Graph into N-Triples
+     *
+     */
+    public function to_ntriples($graph)
+    {
+        $nt = '';
+        foreach ($graph->resources() as $resource) {
+            foreach ($resource->properties() as $property) {
+                $objects = $resource->all($property);
+                foreach ($objects as $object) {
+                    $nt .= $this->ntriplesResource($resource)." ";
+                    $nt .= $this->ntriplesResource($property)." ";
+                    $nt .= $this->ntriplesObject($object)." .\n";
+                }
+            }
+        }
+        return $nt;
+    }
+
     /**
      * Method to serialise an EasyRdf_Graph into RDF/PHP
      *
@@ -69,12 +122,15 @@ class EasyRdf_Serialiser_Builtin
     {
         $rdfphp = array();
         foreach ($graph->resources() as $resource) {
+            $properties = $resource->properties();
+            if (count($properties) == 0) continue;
+            
             $subj = $resource->getUri();
             if (!isset($rdfphp[$subj])) {
                 $rdfphp[$subj] = array();
             }
         
-            foreach ($resource->properties() as $property) {
+            foreach ($properties as $property) {
                 $prop = EasyRdf_Namespace::expand($property);
                 if ($prop) {
                     if (!isset($rdfphp[$subj][$prop])) {
@@ -125,6 +181,8 @@ class EasyRdf_Serialiser_Builtin
             return $this->to_rdfphp($graph);
         } else if ($format == 'json') {
             return $this->to_json($graph);
+        } else if ($format == 'ntriples') {
+            return $this->to_ntriples($graph);
         } else {
             throw new EasyRdf_Exception(
                 "Unsupported serialisation format: $format"
