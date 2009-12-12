@@ -78,7 +78,7 @@ class EasyRdf_Graph
     private $_resources = array();
     
     /** If defined, only store literals of this language */
-    private static $_lang_filter = null;
+    private static $_langFilter = null;
     
     /** Counter for the number of bnodes */
     private $_bNodeCount = 0;
@@ -208,7 +208,7 @@ class EasyRdf_Graph
                 "\$lang should be a string or null"
             );
         }
-        self::$_lang_filter = $lang;
+        self::$_langFilter = $lang;
     }
 
     /** Get the literal language filter
@@ -217,7 +217,7 @@ class EasyRdf_Graph
      */
     public static function getLangFilter()
     {
-        return self::$_lang_filter;
+        return self::$_langFilter;
     }
 
     /** Convert a mime type into a simplier document type name
@@ -468,8 +468,8 @@ class EasyRdf_Graph
                             # Type has already been set
                         } else if ($obj['type'] == 'literal') {
                             if (!isset($obj['lang']) or 
-                                !isset(self::$_lang_filter) or 
-                                $obj['lang'] == self::$_lang_filter) {
+                                !isset(self::$_langFilter) or 
+                                $obj['lang'] == self::$_langFilter) {
                                 $res->add($property, $obj['value']);
                             }
                         } else if ($obj['type'] == 'uri') {
@@ -545,7 +545,7 @@ class EasyRdf_Graph
     public function resourcesMatching($property, $value)
     {
         $matched = array();
-        foreach($this->_resources as $resource) {
+        foreach ($this->_resources as $resource) {
             if ($resource->matches($property, $value)) {
                 array_push($matched, $resource);
             }

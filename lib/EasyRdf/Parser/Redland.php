@@ -143,13 +143,13 @@ class EasyRdf_Parser_Redland
     /** Return the number of errors during parsing */
     private function parserErrorCount($parser)
     {
-        $error_uri = librdf_new_uri(
+        $errorUri = librdf_new_uri(
             $this->_world, self::LIBRDF_PARSER_FEATURE_ERROR_COUNT
         );
-        $error_node = librdf_parser_get_feature($parser, $error_uri);
-        $error_count = librdf_node_get_literal_value($error_node);
-        librdf_free_uri($error_uri);
-        return $error_count;
+        $errorNode = librdf_parser_get_feature($parser, $errorUri);
+        $errorCount = librdf_node_get_literal_value($errorNode);
+        librdf_free_uri($errorUri);
+        return $errorCount;
     }
 
     /**
@@ -250,9 +250,9 @@ class EasyRdf_Parser_Redland
             }
         } while (!librdf_stream_next($stream));
         
-        $error_count = $this->parserErrorCount($parser);
-        if ($error_count) {
-            throw new EasyRdf_Exception("$error_count errors while parsing.");
+        $errorCount = $this->parserErrorCount($parser);
+        if ($errorCount) {
+            throw new EasyRdf_Exception("$errorCount errors while parsing.");
         }
 
         librdf_free_uri($rdfUri);
