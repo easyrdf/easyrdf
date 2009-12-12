@@ -41,6 +41,9 @@
  */
 require_once "EasyRdf/Exception.php";
 
+/**
+ * @see EasyRdf_Serialiser_Builtin
+ */
 require_once "EasyRdf/Serialiser/Builtin.php";
 
 
