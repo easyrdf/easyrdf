@@ -78,7 +78,7 @@ class EasyRdf_Graph
     private $_resources = array();
     
     /** If defined, only store literals of this language */
-    private static $_filter_lang = 'en';
+    private static $_lang_filter = 'en';
     
     /** Counter for the number of bnodes */
     private $_bNodeCount = 0;
@@ -91,6 +91,9 @@ class EasyRdf_Graph
     
     /** An RDF Parser object used by graph to parse RDF */
     private static $_rdfParser = null;
+    
+    /** An RDF Serialiser object used by graph to generate RDF */
+    private static $_rdfSerialiser = null;
     
     /** A constant for the RDF Type property URI */
     const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
@@ -189,14 +192,19 @@ class EasyRdf_Graph
         return self::$_rdfSerialiser;
     }
 
-    public static function setFilterLang($lang)
+    public static function setLangFilter($lang)
     {
         if (!is_string($lang) and $lang != null) {
             throw new InvalidArgumentException(
                 "\$lang should be a string or null"
             );
         }
-        self::$_filter_lang = $lang;
+        self::$_lang_filter = $lang;
+    }
+
+    public static function getLangFilter()
+    {
+        return self::$_lang_filter;
     }
 
     /** Convert a mime type into a simplier document type name
@@ -447,7 +455,8 @@ class EasyRdf_Graph
                             # Type has already been set
                         } else if ($obj['type'] == 'literal') {
                             if (!isset($obj['lang']) or 
-                                (isset(self::$_filter_lang) and $obj['lang'] == self::$_filter_lang)) {
+                                (isset(self::$_lang_filter) and 
+                                $obj['lang'] == self::$_lang_filter)) {
                                 $res->add($property, $obj['value']);
                             }
                         } else if ($obj['type'] == 'uri') {
