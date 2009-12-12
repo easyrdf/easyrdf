@@ -78,7 +78,7 @@ class EasyRdf_Graph
     private $_resources = array();
     
     /** If defined, only store literals of this language */
-    private static $_lang_filter = 'en';
+    private static $_lang_filter = null;
     
     /** Counter for the number of bnodes */
     private $_bNodeCount = 0;
@@ -192,6 +192,15 @@ class EasyRdf_Graph
         return self::$_rdfSerialiser;
     }
 
+    /** Set a language filter for literals.
+     *
+     * For example setting setLangFilter('en') will ignore all
+     * non-english literals.
+     * Set to null to disable language filtering of literals.
+     * By default there is no language filter for literals.
+     *
+     * @param  string $lang The language to accept (for example 'en')
+     */
     public static function setLangFilter($lang)
     {
         if (!is_string($lang) and $lang != null) {
@@ -202,6 +211,10 @@ class EasyRdf_Graph
         self::$_lang_filter = $lang;
     }
 
+    /** Get the literal language filter
+     *
+     * @return string The language being accepted by the filter.
+     */
     public static function getLangFilter()
     {
         return self::$_lang_filter;
@@ -455,8 +468,8 @@ class EasyRdf_Graph
                             # Type has already been set
                         } else if ($obj['type'] == 'literal') {
                             if (!isset($obj['lang']) or 
-                                (isset(self::$_lang_filter) and 
-                                $obj['lang'] == self::$_lang_filter)) {
+                                !isset(self::$_lang_filter) or 
+                                $obj['lang'] == self::$_lang_filter) {
                                 $res->add($property, $obj['value']);
                             }
                         } else if ($obj['type'] == 'uri') {
@@ -510,13 +523,34 @@ class EasyRdf_Graph
         return null;
     }
 
-    /** Get an associative arry of all the resouces stored in the graph
+    /** Get an associative array of all the resources stored in the graph
      *
      * @return array Array of EasyRdf_Resouces
      */
     public function resources()
     {
         return $this->_resources;
+    }
+    
+    /** Get an arry of resources matching a certain property and value.
+     *
+     * For example this routine could be used as a way of getting 
+     * everyone who is male:
+     * $people = $graph->resourcesMatching('foaf:gender', 'male');
+     *
+     * @param  string  $property   The property to check.
+     * @param  mixed   $value      The value of the propery to check for.
+     * @return array Array of EasyRdf_Resouces
+     */
+    public function resourcesMatching($property, $value)
+    {
+        $matched = array();
+        foreach($this->_resources as $resource) {
+            if ($resource->matches($property, $value)) {
+                array_push($matched, $resource);
+            }
+        }
+        return $matched;
     }
     
     /** Get all the resources in the graph of a certain type

@@ -291,6 +291,19 @@ class EasyRdf_Resource
         return array_keys($this->_properties);
     }
     
+    /** Check to see if a value exists for a specified property
+     *
+     * This method will return true if value exists for a property. 
+     *
+     * @param  string  $property The name of the property (e.g. foaf:gender)
+     * @param  string  $value    The value to check for (e.g. male)
+     * @return bool              True if value exists for property.
+     */
+    public function matches($property, $value)
+    {
+        return in_array($value, $this->all($property));
+    }
+    
     /** Check to see if a resource is a blank node.
      *
      * @return bool True if this resource is a blank node.

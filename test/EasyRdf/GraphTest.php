@@ -44,7 +44,8 @@ $validRdf = array(
                     'http://xmlns.com/foaf/0.1/name' => array(
                         array(
                             'value' => 'Joseph Bloggs',
-                            'type' => 'literal'
+                            'type' => 'literal',
+                            'lang' => 'en'
                         )
                     )
                 )
@@ -94,6 +95,14 @@ class Mock_RdfParser
         } else {
             return null;
         }
+    }    
+}
+
+class Mock_RdfSerialiser
+{
+    public function serialise($graph, $format)
+    {
+        return "<rdf></rdf>";
     }    
 }
 
@@ -219,6 +228,14 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         );
     }
     
+    public function testGetDefaultRdfSerialiser()
+    {
+        $this->assertEquals(
+            'EasyRdf_Serialiser_Builtin',
+            get_class(EasyRdf_Graph::getRdfSerialiser())
+        );
+    }
+    
     public function testSetHttpClient()
     {
         EasyRdf_Graph::setHttpClient(new Mock_Http_Client());
@@ -259,6 +276,27 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Graph::setRdfParser('foobar');
+    }
+    
+    public function testSetRdfSerialiser()
+    {
+        EasyRdf_Graph::setRdfSerialiser(new Mock_RdfSerialiser());
+        $this->assertEquals(
+            'Mock_RdfSerialiser',
+            get_class(EasyRdf_Graph::getRdfSerialiser())
+        );
+    }
+
+    public function testSetRdfSerialiserNull()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Graph::setRdfSerialiser(null);
+    }
+    
+    public function testSetRdfSerialiserString()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Graph::setRdfSerialiser('foobar');
     }
 
     public function testGetUri()
@@ -419,6 +457,37 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph->get(array());
     }
 
+    public function testGetDefaultLangFilter()
+    {
+        $this->assertEquals(null, EasyRdf_Graph::getLangFilter());
+    }
+
+    public function testSetLangFilterEnglish()
+    {
+        global $validRdf;
+        EasyRdf_Graph::setLangFilter('en');
+        $graph = new EasyRdf_Graph();
+        $graph->load('http://www.example.com/foaf.php', $validRdf);
+        $joe = $graph->get('http://example.com/joe');
+        $this->assertEquals('Joseph Bloggs', $joe->get('foaf:name'));
+    }
+
+    public function testSetLangFilterFrench()
+    {
+        global $validRdf;
+        EasyRdf_Graph::setLangFilter('fr');
+        $graph = new EasyRdf_Graph();
+        $graph->load('http://www.example.com/foaf.php', $validRdf);
+        $joe = $graph->get('http://example.com/joe');
+        $this->assertEquals(null, $joe->get('foaf:name'));
+    }
+
+    public function testSetLangFilterNonString()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Graph::setLangFilter(10);
+    }
+
     public function testSetType()
     {
         $graph = new EasyRdf_Graph();
@@ -470,7 +539,19 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://www.example.com/joe/foaf.rdf', $keys[3]);
         $this->assertEquals('http://www.example.com/project', $keys[4]);
     }
-    
+
+    public function testResourcesMatching()
+    {
+        $data = readFixture('foaf.json');
+        $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
+        $matched = $graph->resourcesMatching('foaf:name', 'Joe Bloggs');
+        $this->assertEquals(1, count($matched));
+        $this->assertEquals(
+            'http://www.example.com/joe#me', 
+            $matched[0]->getUri()
+        );
+    }
+
     public function testAllOfType()
     {
         $data = readFixture('foaf.json');
@@ -636,6 +717,13 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $graph = new EasyRdf_Graph();
         $this->assertNull($graph->primaryTopic());
+    }
+
+    public function testSerialise()
+    {
+        EasyRdf_Graph::setRdfSerialiser(new Mock_RdfSerialiser());
+        $graph = new EasyRdf_Graph();
+        $this->assertEquals("<rdf></rdf>", $graph->serialise('rdfxml'));
     }
 
     public function testDump()

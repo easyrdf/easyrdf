@@ -329,6 +329,20 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testMatches()
+    {
+        $this->assertTrue(
+            $this->_resource->matches('test:prop', 'Test A')
+        );
+    }
+
+    public function testNotMatches()
+    {
+        $this->assertFalse(
+            $this->_resource->matches('test:prop', 'Test C')
+        );
+    }
+
     public function testTypes()
     {
         $this->assertEquals(
