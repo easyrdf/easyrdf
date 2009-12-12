@@ -3,9 +3,16 @@
     require_once "EasyRdf/Graph.php";
     require_once "html_tag_helpers.php";
 
+    $serialiser_options = array(
+      'Builtin' => 'Builtin',
+      'ARC 2' => 'Arc',
+      'Rapper' => 'Rapper',
+    );
+
     $output_options = array(
       'N-Triples' => 'ntriples',
-      'RDF/PHP' => 'rdfphp',
+      'RDF/PHP' => 'php',
+      'RDF/JSON' => 'json',
       'RDF/XML' => 'rdfxml',
       'Turtle' => 'turtle',
     );
@@ -35,6 +42,7 @@
 <?= labeled_text_field_tag('person_4', '', array('size'=>40)) ?><br />
 
 <h2>Output</h2>
+<?= label_tag('serialiser').select_tag('serialiser', $serialiser_options, 'builtin') ?><br />
 <?= label_tag('format').select_tag('format', $output_options, 'rdfxml') ?><br />
 
 <?= submit_tag() ?>
@@ -43,6 +51,10 @@
 
 <?php
     if (isset($_REQUEST['uri'])) {
+    
+        require_once "EasyRdf/Serialiser/".$_REQUEST['serialiser'].'.php';
+        $serialiser = "EasyRdf_Serialiser_".$_REQUEST['serialiser'];
+        EasyRdf_Graph::setRdfSerialiser(new $serialiser());
         $graph = new EasyRdf_Graph();
         
         # 1st Technique
