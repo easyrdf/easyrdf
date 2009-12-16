@@ -7,34 +7,42 @@ set_include_path(
 require_once "EasyRdf/Graph.php";
 
 $parsers = array(
-    'ArcParser',
-    'RapperParser',
-    'RedlandParser',
+    'Arc',
+    'Builtin',
+    'Rapper',
+    'Redland',
 );
 
 $documents = array(
-    'http://www.example.com/joe/foaf.rdf' => 'foaf.rdf',
-    'http://dbpedia.org/data/Dundee.rdf' => 'dundee.rdf',
-    'http://dbpedia.org/data/London.rdf' => 'london.rdf',
+    'foaf.rdf' => 'rdfxml',
+    'foaf.json' => 'json',
+    'foaf.nt' => 'ntriples',
+    'dundee.rdf' => 'rdfxml',
+    'dundee.json' => 'json',
+    'dundee.nt' => 'ntriples',
+    'london.rdf' => 'rdfxml',
+    'london.json' => 'json',
+    'london.nt' => 'ntriples',
 );
 
-foreach($documents as $url => $filename) {
+foreach($documents as $filename => $type) {
 
     $filepath = dirname(__FILE__) . "/fixtures/$filename";
+    $url = "http://www.example.com/$filename";
     $rdf = file_get_contents($filepath);
     print "Input file: $filename\n";
     print "File size: ".filesize($filepath)." bytes\n";
     
     foreach($parsers as $parser) {
-        $class = "EasyRdf_$parser";
+        $class = "EasyRdf_Parser_$parser";
         print "  Parsing using: $class\n";
     
         try {
-            require_once "EasyRdf/$parser.php";
+            require_once "EasyRdf/Parser/$parser.php";
             EasyRdf_Graph::setRdfParser(new $class());
     
             $start = microtime(true);
-            $graph = new EasyRdf_Graph($url, $rdf, 'rdfxml');
+            $graph = new EasyRdf_Graph($url, $rdf, $type);
             $duration = microtime(true) - $start;
             print "  Parse time: $duration seconds\n";
             print "  Resource count: ".count($graph->resources())."\n";
