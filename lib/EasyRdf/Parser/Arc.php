@@ -54,6 +54,7 @@ class EasyRdf_Parser_Arc
         'json' => 'JSON',
         'rdfxml' => 'RDFXML',
         'turtle' => 'Turtle',
+        'ntriples' => 'Turtle',
         'rdfa' => 'SemHTML',
     );
 
