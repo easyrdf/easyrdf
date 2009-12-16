@@ -85,7 +85,14 @@ class EasyRdf_Serialiser_Builtin
         if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
             return $this->ntriplesResource($obj);
         } else if (is_scalar($obj)) {
-            return "\"$obj\"";
+            // FIXME: peform encoding of Unicode characters as described here:
+            // http://www.w3.org/TR/rdf-testcases/#ntrip_strings
+            $literal = str_replace('\\', '\\\\', $obj);
+            $literal = str_replace('"', '\\"', $literal);
+            $literal = str_replace('\n', '\\n', $literal);
+            $literal = str_replace('\r', '\\r', $literal);
+            $literal = str_replace('\t', '\\t', $literal);
+            return "\"$literal\"";
         } else {
             throw new EasyRdf_Exception(
                 "Unable to serialise object to ntriples: $obj"
