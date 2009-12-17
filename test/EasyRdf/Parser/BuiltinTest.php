@@ -33,28 +33,37 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
+ * @version    $Id: ArcTest.php 249 2009-12-10 22:55:19Z njh@aelius.com $
  */
 
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Base.php';
-require_once 'EasyRdf/Parser/Arc.php';
+require_once 'EasyRdf/Parser/Builtin.php';
 
-class EasyRdf_Parser_ArcTest extends EasyRdf_Parser_Base
+class EasyRdf_Parser_BuiltinTest extends EasyRdf_Parser_Base
 {
-    protected $_parser = null;
-
     public function setUp()
     {
-        if (!requireExists('arc/ARC2.php')) {
-            $this->markTestSkipped("ARC2 library is not available.");
-        } else {
-            $this->_parser = new EasyRdf_Parser_Arc();
-        }
-
-
-        $this->markTestSkipped(
-            "Not testing ARC2 parser because it does not work in strict mode."
-        );
+        $this->_parser = new EasyRdf_Parser_Builtin();
     }
     
+    function testParseTurtle()
+    {
+        $this->markTestSkipped(
+            "EasyRdf_Parser_Builtin() does not support Turtle."
+        );
+    }
+
+    function testParseRdfXml()
+    {
+        $this->markTestSkipped(
+            "EasyRdf_Parser_Builtin() does not support RDF/XML."
+        );
+    }
+
+    function testParseInvalidRdfXml()
+    {
+        $this->markTestSkipped(
+            "EasyRdf_Parser_Builtin() does not support RDF/XML."
+        );
+    }
 }

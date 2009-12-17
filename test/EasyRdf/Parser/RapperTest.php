@@ -36,11 +36,10 @@
  * @version    $Id$
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
-             DIRECTORY_SEPARATOR.'TestHelper.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Base.php';
 require_once 'EasyRdf/Parser/Rapper.php';
 
-class EasyRdf_Parser_RapperTest extends PHPUnit_Framework_TestCase
+class EasyRdf_Parser_RapperTest extends EasyRdf_Parser_Base
 {
     protected $_parser = null;
 
@@ -61,128 +60,18 @@ class EasyRdf_Parser_RapperTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('EasyRdf_Exception');
         new EasyRdf_Parser_Rapper('random_command_that_doesnt_exist');
     }
-
-    public function testParseNullUri()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse(null, '<rdf:RDF></rdf:RDF>', 'rdfxml');
-    }
-    
-    public function testParseEmptyUri()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse('', '<rdf:RDF></rdf:RDF>', 'rdfxml');
-    }
-    
-    public function testParseNonStringUri()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse(array(), '<rdf:RDF></rdf:RDF>', 'rdfxml');
-    }
-
-    public function testParseNullData()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse('file://valid.rdf', null, 'rdfxml');
-    }
-    
-    public function testParseEmptyData()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse('file://valid.rdf', '', 'rdfxml');
-    }
-    
-    public function testParseNonStringData()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse('file://valid.rdf', array(), 'rdfxml');
-    }
-
-    public function testParseNullDocType()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse('file://valid.rdf', '<rdf:RDF></rdf:RDF>', null);
-    }
-    
-    public function testParseEmptyDocType()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse('file://valid.rdf', '<rdf:RDF></rdf:RDF>', '');
-    }
-    
-    public function testParseNonStringDocType()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse(
-            'file://valid.rdf', '<rdf:RDF></rdf:RDF>',
-            array()
-        );
-    }
-    
-    function testParseRdfXml()
-    {
-        $data = readFixture('foaf.rdf');
-        $rdf = $this->_parser->parse(
-            'http://www.example.com/joe/foaf.rdf',
-            $data, 'rdfxml'
-        );
-
-        $joe = $rdf['http://www.example.com/joe#me'];
-        $name = $joe['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertEquals('literal', $name['type']);
-        $this->assertEquals('Joe Bloggs', $name['value']);
-
-        $current_project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
-        $this->assertEquals('bnode', $current_project['type']);
-
-        $project = $rdf[$current_project['value']];
-        $project_name = $project['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertEquals('literal', $project_name['type']);
-        $this->assertEquals("Joe's Current Project", $project_name['value']);
-
-        $homepage = $joe['http://xmlns.com/foaf/0.1/homepage'][0];
-        $this->assertEquals('uri', $homepage['type']);
-        $this->assertEquals('http://www.example.com/joe/', $homepage['value']);
-    }
-    
-    function testParseInvalidRdfXml()
-    {
-        $this->setExpectedException('EasyRdf_Exception');
-        $rdf = $this->_parser->parse(
-            'http://www.example.com/joe/foaf.rdf',
-            "<rdf></xml>", 'rdfxml'
-        );
-    }
-    
-    function testParseTurtle()
-    {
-        $data = readFixture('foaf.ttl');
-        $rdf = $this->_parser->parse(
-            'http://www.example.com/joe/foaf.rdf',
-            $data, 'turtle'
-        );
-
-        $joe = $rdf['http://www.example.com/joe#me'];
-        $name = $joe['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertEquals('literal', $name['type']);
-        $this->assertEquals('Joe Bloggs', $name['value']);
-
-        $current_project = $joe['http://xmlns.com/foaf/0.1/currentProject'][0];
-        $this->assertEquals('bnode', $current_project['type']);
-
-        $project = $rdf[$current_project['value']];
-        $project_name = $project['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertEquals('literal', $project_name['type']);
-        $this->assertEquals("Joe's Current Project", $project_name['value']);
-
-        $homepage = $joe['http://xmlns.com/foaf/0.1/homepage'][0];
-        $this->assertEquals('uri', $homepage['type']);
-        $this->assertEquals('http://www.example.com/joe/', $homepage['value']);
-    }
     
     function testRapperExecError()
     {
         # FIXME: how can we cause proc_open() to fail?
         $this->markTestIncomplete();
+    }
+
+
+    function testParseJson()
+    {
+        $this->markTestSkipped(
+            "EasyRdf_Parser_Rapper() does not support JSON."
+        );
     }
 }
