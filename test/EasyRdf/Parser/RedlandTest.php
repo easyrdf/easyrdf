@@ -41,8 +41,6 @@ require_once 'EasyRdf/Parser/Redland.php';
 
 class EasyRdf_Parser_RedlandTest extends EasyRdf_Parser_Base
 {
-    protected $_parser = null;
-
     public function setUp()
     {
         if (extension_loaded('redland')) {

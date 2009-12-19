@@ -41,8 +41,6 @@ require_once 'EasyRdf/Parser/Rapper.php';
 
 class EasyRdf_Parser_RapperTest extends EasyRdf_Parser_Base
 {
-    protected $_parser = null;
-
     public function setUp()
     {
         exec('which rapper', $output, $retval);

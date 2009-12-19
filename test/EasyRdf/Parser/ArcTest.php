@@ -41,8 +41,6 @@ require_once 'EasyRdf/Parser/Arc.php';
 
 class EasyRdf_Parser_ArcTest extends EasyRdf_Parser_Base
 {
-    protected $_parser = null;
-
     public function setUp()
     {
         if (!requireExists('arc/ARC2.php')) {
