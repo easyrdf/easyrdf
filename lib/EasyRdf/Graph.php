@@ -299,14 +299,14 @@ class EasyRdf_Graph
      *
      * @param  string  $uri     The URI of the graph
      * @param  string  $data    Data for the graph
-     * @param  string  $docType The document type of the data
+     * @param  string  $format  The document type of the data
      * @return object EasyRdf_Graph
      */
-    public function __construct($uri=null, $data=null, $docType=null)
+    public function __construct($uri=null, $data=null, $format=null)
     {
         if ($uri) {
             $this->_uri = $uri;
-            $this->load($uri, $data, $docType);
+            $this->load($uri, $data, $format);
         }
     }
 
@@ -393,9 +393,9 @@ class EasyRdf_Graph
      *
      * @param  string  $uri     The URI of the graph
      * @param  string  $data    Data for the graph
-     * @param  string  $docType The document type of the data
+     * @param  string  $format  The document type of the data
      */
-    public function load($uri, $data=null, $docType=null)
+    public function load($uri, $data=null, $format=null)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
             throw new InvalidArgumentException(
@@ -417,30 +417,30 @@ class EasyRdf_Graph
                 );
             }
             $data = $response->getBody();
-            if ($docType == null) {
-                $docType = self::simplifyMimeType(
+            if ($format == null) {
+                $format = self::simplifyMimeType(
                     $response->getHeader('Content-Type')
                 );
             }
         }
         
         # Guess the document type if not given
-        if ($docType == null) {
-            $docType = self::guessDocType($data);
+        if ($format == null) {
+            $format = self::guessDocType($data);
         }
         
         # Parse the document
-        if ($docType == 'php') {
+        if ($format == 'php') {
             # FIXME: validate the data?
-        } else if ($docType == 'json') {
+        } else if ($format == 'json') {
             # Parse the RDF/JSON into RDF/PHP
             $data = json_decode($data, true);
         } else {
             # Parse the RDF data
-            $data = self::getRdfParser()->parse($uri, $data, $docType);
+            $data = self::getRdfParser()->parse($uri, $data, $format);
             if (!$data) {
                 throw new EasyRdf_Exception(
-                    "Failed to parse data for URI: $uri (\$docType = $docType)"
+                    "Failed to parse data for URI: $uri (\$format = $format)"
                 );
             }
         }

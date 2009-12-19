@@ -75,10 +75,10 @@ class EasyRdf_Parser_Rapper
       *
       * @param string $uri      the base URI of the data
       * @param string $data     the document data
-      * @param string $docType  the format of the input data
+      * @param string $format   the format of the input data
       * @return array           the parsed data
       */
-    public function parse($uri, $data, $docType)
+    public function parse($uri, $data, $format)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
             throw new InvalidArgumentException(
@@ -92,9 +92,9 @@ class EasyRdf_Parser_Rapper
             );
         }
 
-        if (!is_string($docType) or $docType == null or $docType == '') {
+        if (!is_string($format) or $format == null or $format == '') {
             throw new InvalidArgumentException(
-                "\$docType should be a string and cannot be null or empty"
+                "\$format should be a string and cannot be null or empty"
             );
         }
 
@@ -108,7 +108,7 @@ class EasyRdf_Parser_Rapper
         $process = proc_open(
             escapeshellcmd($this->_rapperCmd).
             " --quiet ".
-            " --input " . escapeshellarg($docType).
+            " --input " . escapeshellarg($format).
             " --output json ".
             " --ignore-errors ".
             " - " . escapeshellarg($uri),

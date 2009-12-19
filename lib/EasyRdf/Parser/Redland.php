@@ -178,10 +178,10 @@ class EasyRdf_Parser_Redland
       *
       * @param string $uri      the base URI of the data
       * @param string $data     the document data
-      * @param string $docType  the format of the input data
+      * @param string $format   the format of the input data
       * @return array           the parsed data
       */
-    public function parse($uri, $data, $docType)
+    public function parse($uri, $data, $format)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
             throw new InvalidArgumentException(
@@ -195,16 +195,16 @@ class EasyRdf_Parser_Redland
             );
         }
 
-        if (!is_string($docType) or $docType == null or $docType == '') {
+        if (!is_string($format) or $format == null or $format == '') {
             throw new InvalidArgumentException(
-                "\$docType should be a string and cannot be null or empty"
+                "\$format should be a string and cannot be null or empty"
             );
         }
     
-        $parser = librdf_new_parser($this->_world, $docType, null, null);
+        $parser = librdf_new_parser($this->_world, $format, null, null);
         if (!$parser) {
             throw new EasyRdf_Exception(
-                "Failed to create librdf_parser of type: $docType"
+                "Failed to create librdf_parser of type: $format"
             );
         }
 

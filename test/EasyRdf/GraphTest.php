@@ -87,7 +87,7 @@ class Mock_Http_Client
 
 class Mock_RdfParser
 {
-    public function parse($uri, $data, $docType)
+    public function parse($uri, $data, $format)
     {
         global $validRdf;
         if ($uri == 'valid:rdf' and $data == 'valid:rdf') {
