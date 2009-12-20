@@ -14,6 +14,7 @@
       'RDF/PHP' => 'php',
       'RDF/JSON' => 'json',
       'RDF/XML' => 'rdfxml',
+      'poshRDF' => 'poshrdf',
       'Turtle' => 'turtle',
     );
 ?>
