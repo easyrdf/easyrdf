@@ -95,7 +95,7 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Builtin
             " --quiet ".
             " --input ntriples ".
             " --output " . escapeshellarg($format).
-            " - ". 'unknown://',    # FIXME: how can this be improved?
+            " - ". 'unknown://', # FIXME: how can this be improved?
             $descriptorspec, $pipes, '/tmp', null
         );
         if (is_resource($process)) {

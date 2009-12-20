@@ -82,8 +82,11 @@ class EasyRdf_Parser_Builtin
     {
         $rdfphp = array();
         $lines = preg_split("/[\r\n]+/", $data);
-        foreach($lines as $line) {
-            if (preg_match("/(.+)\s+<([^<>]+)>\s+(.+)\s*\./", $line, $matches)) {
+        foreach ($lines as $line) {
+            if (preg_match(
+                "/(.+)\s+<([^<>]+)>\s+(.+)\s*\./", 
+                $line, $matches
+            )) {
                 $subject = $this->parse_ntriples_subject($matches[1]);
                 $predicate = $matches[2];
                 $object = $this->parse_ntriples_object($matches[3]);
@@ -98,7 +101,7 @@ class EasyRdf_Parser_Builtin
 
                 array_push($rdfphp[$subject][$predicate], $object);
             }
-         }
+        }
         
         return $rdfphp;
     }
