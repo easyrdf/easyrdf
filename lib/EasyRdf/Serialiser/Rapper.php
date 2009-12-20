@@ -48,32 +48,86 @@ require_once "EasyRdf/Serialiser/Builtin.php";
 
 
 /**
- * Class to allow serialising to RDF using the ARC2 library.
+ * Class to allow serialising to RDF using the 'rapper' command line tool.
+ *
+ * Note: the built-in N-Triples serialiser is used to pass data to Rapper.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_Builtin
+class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Builtin
 {
-    private static $_supportedTypes = array(
-        'json' => 'RDFJSON',
-        'rdfxml' => 'RDFXML',
-        'turtle' => 'Turtle',
-        'ntriples' => 'NTriples',
-        'poshrdf' => 'POSHRDF',
-    );
-
+    private $_rapperCmd = null;
+    
     /**
      * Constructor
      *
-     * @return object EasyRdf_Serialiser_Arc
+     * @param string $rapperCmd Optional path to the rapper command to use.
+     * @return object EasyRdf_Serialiser_Rapper
      */
-    public function __construct()
+    public function __construct($rapperCmd='rapper')
     {
-        require_once 'arc/ARC2.php';
+        exec("which ".escapeshellarg($rapperCmd), $output, $retval);
+        if ($retval == 0) {
+            $this->_rapperCmd = $rapperCmd;
+        } else {
+            throw new EasyRdf_Exception(
+                "The command '$rapperCmd' is not available on this system."
+            );
+        }
     }
+    
+    protected function rapper_serialise($ntriples, $format)
+    {
+        // Open a pipe to the rapper command
+        $descriptorspec = array(
+            0 => array("pipe", "r"),
+            1 => array("pipe", "w"),
+            2 => array("pipe", "w")
+        );
 
+        // Hack to produce more concise RDF/XML
+        if ($format == 'rdfxml') $format = 'rdfxml-abbrev';
+
+        $process = proc_open(
+            escapeshellcmd($this->_rapperCmd).
+            " --quiet ".
+            " --input ntriples ".
+            " --output " . escapeshellarg($format).
+            " - ". 'unknown://',    # FIXME: how can this be improved?
+            $descriptorspec, $pipes, '/tmp', null
+        );
+        if (is_resource($process)) {
+            // $pipes now looks like this:
+            // 0 => writeable handle connected to child stdin
+            // 1 => readable handle connected to child stdout
+            // 2 => readable handle connected to child stderr
+      
+            fwrite($pipes[0], $ntriples);
+            fclose($pipes[0]);
+      
+            $output = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            $error = stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
+      
+            // It is important that you close any pipes before calling
+            // proc_close in order to avoid a deadlock
+            $returnValue = proc_close($process);
+            if ($returnValue) {
+                throw new EasyRdf_Exception(
+                    "Failed to convert RDF: ".$error
+                );
+            }
+        } else {
+            throw new EasyRdf_Exception(
+                "Failed to execute rapper command."
+            );
+        }
+        
+        return $output;
+    }
 
     public function serialise($graph, $format)
     {
@@ -90,28 +144,15 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_Builtin
             );
         }
     
-
-        $rdfphp = $this->to_rdfphp($graph);
         if ($format == 'php') {
-            return $rdfphp;
-        }
-
-        if (array_key_exists($format, self::$_supportedTypes)) {
-            $className = self::$_supportedTypes[$format];
+            return $this->to_rdfphp($graph);
         } else {
-            throw new EasyRdf_Exception(
-                "Serialising documents to $format ".
-                "is not supported by EasyRdf_Serialiser_Arc."
-            );
-        }
-
-        $serialiser = ARC2::getSer($className);
-        if ($serialiser) {
-            return $serialiser->getSerializedIndex($rdfphp);
-        } else {
-            throw new EasyRdf_Exception(
-                "ARC2 failed to get a $className serialiser."
-            );
+            $ntriples = $this->to_ntriples($graph);
+            if ($format == 'ntriples') {
+                return $ntriples;
+            } else {
+                return $this->rapper_serialise($ntriples, $format);
+            }
         }
     }
 }

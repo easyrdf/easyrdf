@@ -33,62 +33,36 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
+ * @version    $Id: RapperTest.php 249 2009-12-10 22:55:19Z njh@aelius.com $
  */
 
-/**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Base.php';
+require_once 'EasyRdf/Serialiser/Rapper.php';
 
-/**
- * @see EasyRdf_Graph
- */
-require_once "EasyRdf/Graph.php";
-
-/**
- * @see EasyRdf_Namespace
- */
-require_once "EasyRdf/Namespace.php";
-
-/**
- * @see EasyRdf_Serialiser_Ntriples
- */
-require_once "EasyRdf/Serialiser/Ntriples.php";
-
-/**
- * Class to serialise an EasyRdf_Graph into Turtle
- *
- * @package    EasyRdf
- * @copyright  Copyright (c) 2009 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
- */
-class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
+class EasyRdf_Serialiser_RapperTest extends EasyRdf_Serialiser_Base
 {
-    public static function serialise($graph)
+    public function setUp()
     {
-        $ttl = '';
-        
-        // FIXME: only output prefixes used by Graph
-        foreach (EasyRdf_Namespace::namespaces() as $prefix => $ns) {
-            $ttl .= "@prefix $prefix: <$ns> .\n";
+        exec('which rapper', $output, $retval);
+        if ($retval == 0) {
+            $this->_serialiser = new EasyRdf_Serialiser_Rapper();
+            parent::setUp();
+        } else {
+            $this->markTestSkipped(
+                "The rapper command is not available on this system."
+            );
         }
-        $ttl .= "\n";
-        
-        foreach ($graph->resources() as $resource) {
-            $ttl .= "<".$resource->getUri().">\n";
-            foreach ($resource->properties() as $property) {
-                $ttl .= "    $property";
-                $values = $resource->all($property);
-                foreach ($values as $value) {
-                    $ttl .= " \"$value\"";
-                }
-                $ttl .= " ;\n";
-            }
-            $ttl .= ".\n\n";
-        }
-
-        return $ttl;
+    }
+    
+    function testRapperNotFound()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        new EasyRdf_Serialiser_Rapper('random_command_that_doesnt_exist');
+    }
+    
+    function testRapperExecError()
+    {
+        # FIXME: how can we cause proc_open() to fail?
+        $this->markTestIncomplete();
     }
 }
-

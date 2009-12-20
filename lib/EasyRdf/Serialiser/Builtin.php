@@ -104,7 +104,7 @@ class EasyRdf_Serialiser_Builtin
      * Method to serialise an EasyRdf_Graph into N-Triples
      *
      */
-    public function to_ntriples($graph)
+    protected function to_ntriples($graph)
     {
         $nt = '';
         foreach ($graph->resources() as $resource) {
@@ -125,7 +125,7 @@ class EasyRdf_Serialiser_Builtin
      *
      * http://n2.talis.com/wiki/RDF_PHP_Specification
      */
-    public function to_rdfphp($graph)
+    protected function to_rdfphp($graph)
     {
         $rdfphp = array();
         foreach ($graph->resources() as $resource) {
@@ -172,7 +172,7 @@ class EasyRdf_Serialiser_Builtin
      *
      * http://n2.talis.com/wiki/RDF_JSON_Specification
      */
-    public function to_json($graph)
+    protected function to_json($graph)
     {
         return json_encode($this->to_rdfphp($graph));
     }
@@ -180,9 +180,20 @@ class EasyRdf_Serialiser_Builtin
     /**
      * Method to serialise an EasyRdf_Graph into format of choice
      */
-    function serialise($graph, $format)
+    public function serialise($graph, $format)
     {
-        // FIXME: validate
+        if ($graph == null or !is_object($graph) or
+            get_class($graph) != 'EasyRdf_Graph') {
+            throw new InvalidArgumentException(
+                "\$graph should be an EasyRdf_Graph object and cannot be null"
+            );
+        }
+
+        if ($format == null or !is_string($format) or $format == '') {
+            throw new InvalidArgumentException(
+                "\$format should be a string and cannot be null or empty"
+            );
+        }
     
         if ($format == 'php') {
             return $this->to_rdfphp($graph);
