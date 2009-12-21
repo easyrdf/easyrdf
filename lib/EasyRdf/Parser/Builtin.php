@@ -50,7 +50,9 @@ require_once "EasyRdf/Exception.php";
  */
 class EasyRdf_Parser_Builtin
 {
-
+    /**
+     * Protected method to parse an N-Triples subject node 
+     */
     protected function parse_ntriples_subject($sub)
     {
          if (preg_match('/<([^<>]+)>/', $sub, $matches)) {
@@ -62,6 +64,9 @@ class EasyRdf_Parser_Builtin
          }
     }
     
+    /**
+     * Protected method to parse an N-Triples object node 
+     */
     protected function parse_ntriples_object($obj)
     {
          if (preg_match('/"(.+)"/', $obj, $matches)) {
@@ -78,7 +83,10 @@ class EasyRdf_Parser_Builtin
          }
     }
 
-    public function parse_ntriples($uri, $data)
+    /**
+     * Protected method to parse an N-Triples document 
+     */
+    protected function parse_ntriples($uri, $data)
     {
         $rdfphp = array();
         $lines = preg_split("/[\r\n]+/", $data);

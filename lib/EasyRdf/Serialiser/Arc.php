@@ -74,7 +74,13 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_Builtin
         require_once 'arc/ARC2.php';
     }
 
-
+    /**
+     * Serialise an EasyRdf_Graph into RDF format of choice.
+     *
+     * @param string $graph An EasyRdf_Graph object.
+     * @param string $format The name of the format to convert to.
+     * @return string The RDF in the new desired format.
+     */
     public function serialise($graph, $format)
     {
         if ($graph == null or !is_object($graph) or

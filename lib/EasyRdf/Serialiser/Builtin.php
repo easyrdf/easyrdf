@@ -62,6 +62,9 @@ require_once "EasyRdf/Namespace.php";
 class EasyRdf_Serialiser_Builtin
 {
 
+    /**
+     * Protected method to serialise a subject node into an N-Triples partial
+     */
     protected function ntriplesResource($res)
     {
         if (is_object($res)) {
@@ -80,6 +83,9 @@ class EasyRdf_Serialiser_Builtin
         }
     }
 
+    /**
+     * Protected method to serialise an object node into an N-Triples partial
+     */
     protected function ntriplesObject($obj)
     {
         if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
@@ -101,8 +107,7 @@ class EasyRdf_Serialiser_Builtin
     }
 
     /**
-     * Method to serialise an EasyRdf_Graph into N-Triples
-     *
+     * Protected method to serialise an EasyRdf_Graph into N-Triples
      */
     protected function to_ntriples($graph)
     {
@@ -178,7 +183,11 @@ class EasyRdf_Serialiser_Builtin
     }
     
     /**
-     * Method to serialise an EasyRdf_Graph into format of choice
+     * Serialise an EasyRdf_Graph into RDF format of choice.
+     *
+     * @param string $graph An EasyRdf_Graph object.
+     * @param string $format The name of the format to convert to.
+     * @return string The RDF in the new desired format.
      */
     public function serialise($graph, $format)
     {

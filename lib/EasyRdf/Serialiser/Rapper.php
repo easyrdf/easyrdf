@@ -78,6 +78,10 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Builtin
         }
     }
     
+    /**
+     * Protected method that converts N-Triples into a format of the 
+     * callers choice using the rapper command.
+     */
     protected function rapper_serialise($ntriples, $format)
     {
         // Open a pipe to the rapper command
@@ -128,7 +132,14 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Builtin
         
         return $output;
     }
-
+    
+    /**
+     * Serialise an EasyRdf_Graph into RDF format of choice.
+     *
+     * @param string $graph An EasyRdf_Graph object.
+     * @param string $format The name of the format to convert to.
+     * @return string The RDF in the new desired format.
+     */
     public function serialise($graph, $format)
     {
         if ($graph == null or !is_object($graph) or
