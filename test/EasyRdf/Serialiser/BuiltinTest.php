@@ -33,20 +33,17 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
+ * @version    $Id: RapperTest.php 249 2009-12-10 22:55:19Z njh@aelius.com $
  */
 
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Base.php';
-require_once 'EasyRdf/Parser/Redland.php';
+require_once 'EasyRdf/Serialiser/Builtin.php';
 
-class EasyRdf_Parser_RedlandTest extends EasyRdf_Parser_Base
+class EasyRdf_Serialiser_BuiltinTest extends EasyRdf_Serialiser_Base
 {
     public function setUp()
     {
-        if (extension_loaded('redland')) {
-            $this->_parser = new EasyRdf_Parser_Redland();
-        } else {
-            $this->markTestSkipped("Redland PHP extension is not available.");
-        }
+        $this->_serialiser = new EasyRdf_Serialiser_Builtin();
+        parent::setUp();
     }
 }

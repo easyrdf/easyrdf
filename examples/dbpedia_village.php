@@ -40,13 +40,10 @@
         $uri = "http://dbpedia.org/resource/Category:Villages_in_Fife";
         $graph = new EasyRdf_Graph( $uri );
         $category = $graph->get($uri);
-        # FIXME: Must be better way to do this...
-        foreach ($graph->resources() as $resource) {
-            if ($resource->get('skos:subject') == $category) {
-                $term = str_replace('http://dbpedia.org/resource/','',$resource);
-                $label = urldecode(str_replace('_',' ',$term));
-                print '<li>'.link_to_self($label, 'term='.$term)."</li>\n";
-            }
+        foreach ($graph->resourcesMatching('skos:subject',$category) as $resource) {
+            $term = str_replace('http://dbpedia.org/resource/','',$resource);
+            $label = urldecode(str_replace('_',' ',$term));
+            print '<li>'.link_to_self($label, 'term='.$term)."</li>\n";
         }
     }
 ?>

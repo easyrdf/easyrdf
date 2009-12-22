@@ -33,7 +33,7 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
+ * @version    $Id: Arc.php 249 2009-12-10 22:55:19Z njh@aelius.com $
  */
 
 /**
@@ -42,13 +42,21 @@
 require_once "EasyRdf/Exception.php";
 
 /**
- * Class to allow parsing of RDF using the 'rapper' command line tool.
+ * @see EasyRdf_Serialiser_Builtin
+ */
+require_once "EasyRdf/Serialiser/Builtin.php";
+
+
+/**
+ * Class to allow serialising to RDF using the 'rapper' command line tool.
+ *
+ * Note: the built-in N-Triples serialiser is used to pass data to Rapper.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Parser_Rapper
+class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Builtin
 {
     private $_rapperCmd = null;
     
@@ -56,7 +64,7 @@ class EasyRdf_Parser_Rapper
      * Constructor
      *
      * @param string $rapperCmd Optional path to the rapper command to use.
-     * @return object EasyRdf_Parser_Rapper
+     * @return object EasyRdf_Serialiser_Rapper
      */
     public function __construct($rapperCmd='rapper')
     {
@@ -69,35 +77,13 @@ class EasyRdf_Parser_Rapper
             );
         }
     }
-
+    
     /**
-      * Parse an RDF document
-      *
-      * @param string $uri      the base URI of the data
-      * @param string $data     the document data
-      * @param string $format   the format of the input data
-      * @return array           the parsed data
-      */
-    public function parse($uri, $data, $format)
+     * Protected method that converts N-Triples into a format of the 
+     * callers choice using the rapper command.
+     */
+    protected function rapper_serialise($ntriples, $format)
     {
-        if (!is_string($uri) or $uri == null or $uri == '') {
-            throw new InvalidArgumentException(
-                "\$uri should be a string and cannot be null or empty"
-            );
-        }
-
-        if (!is_string($data) or $data == null or $data == '') {
-            throw new InvalidArgumentException(
-                "\$data should be a string and cannot be null or empty"
-            );
-        }
-
-        if (!is_string($format) or $format == null or $format == '') {
-            throw new InvalidArgumentException(
-                "\$format should be a string and cannot be null or empty"
-            );
-        }
-
         // Open a pipe to the rapper command
         $descriptorspec = array(
             0 => array("pipe", "r"),
@@ -105,13 +91,15 @@ class EasyRdf_Parser_Rapper
             2 => array("pipe", "w")
         );
 
+        // Hack to produce more concise RDF/XML
+        if ($format == 'rdfxml') $format = 'rdfxml-abbrev';
+
         $process = proc_open(
             escapeshellcmd($this->_rapperCmd).
             " --quiet ".
-            " --input " . escapeshellarg($format).
-            " --output json ".
-            " --ignore-errors ".
-            " - " . escapeshellarg($uri),
+            " --input ntriples ".
+            " --output " . escapeshellarg($format).
+            " - ". 'unknown://', # FIXME: how can this be improved?
             $descriptorspec, $pipes, '/tmp', null
         );
         if (is_resource($process)) {
@@ -120,10 +108,10 @@ class EasyRdf_Parser_Rapper
             // 1 => readable handle connected to child stdout
             // 2 => readable handle connected to child stderr
       
-            fwrite($pipes[0], $data);
+            fwrite($pipes[0], $ntriples);
             fclose($pipes[0]);
       
-            $data = stream_get_contents($pipes[1]);
+            $output = stream_get_contents($pipes[1]);
             fclose($pipes[1]);
             $error = stream_get_contents($pipes[2]);
             fclose($pipes[2]);
@@ -133,7 +121,7 @@ class EasyRdf_Parser_Rapper
             $returnValue = proc_close($process);
             if ($returnValue) {
                 throw new EasyRdf_Exception(
-                    "Failed to parse RDF: ".$error
+                    "Failed to convert RDF: ".$error
                 );
             }
         } else {
@@ -141,8 +129,41 @@ class EasyRdf_Parser_Rapper
                 "Failed to execute rapper command."
             );
         }
+        
+        return $output;
+    }
+    
+    /**
+     * Serialise an EasyRdf_Graph into RDF format of choice.
+     *
+     * @param string $graph An EasyRdf_Graph object.
+     * @param string $format The name of the format to convert to.
+     * @return string The RDF in the new desired format.
+     */
+    public function serialise($graph, $format)
+    {
+        if ($graph == null or !is_object($graph) or
+            get_class($graph) != 'EasyRdf_Graph') {
+            throw new InvalidArgumentException(
+                "\$graph should be an EasyRdf_Graph object and cannot be null"
+            );
+        }
 
-        // Parse in the JSON
-        return json_decode($data, true);
+        if ($format == null or !is_string($format) or $format == '') {
+            throw new InvalidArgumentException(
+                "\$format should be a string and cannot be null or empty"
+            );
+        }
+    
+        if ($format == 'php') {
+            return $this->to_rdfphp($graph);
+        } else {
+            $ntriples = $this->to_ntriples($graph);
+            if ($format == 'ntriples') {
+                return $ntriples;
+            } else {
+                return $this->rapper_serialise($ntriples, $format);
+            }
+        }
     }
 }

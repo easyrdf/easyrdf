@@ -33,76 +33,37 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
+ * @version    $Id: ArcTest.php 249 2009-12-10 22:55:19Z njh@aelius.com $
  */
 
-/**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Base.php';
+require_once 'EasyRdf/Parser/Builtin.php';
 
-/**
- * @see EasyRdf_Graph
- */
-require_once "EasyRdf/Graph.php";
-
-/**
- * @see EasyRdf_Namespace
- */
-require_once "EasyRdf/Namespace.php";
-
-/**
- * Class to serialise an EasyRdf_Graph into N-Triples
- *
- * @package    EasyRdf
- * @copyright  Copyright (c) 2009 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
- */
-class EasyRdf_Serialiser_Ntriples
+class EasyRdf_Parser_BuiltinTest extends EasyRdf_Parser_Base
 {
-    protected static function serialiseResource($res)
+    public function setUp()
     {
-        if (is_object($res)) {
-            if ($res->isBNode()) {
-                return $res->getURI();
-            } else {
-                return "<".$res->getURI().">";
-            }
-        } else {
-            $uri = EasyRdf_Namespace::expand($res);
-            if ($uri) {
-                return "<$uri>";
-            } else {
-                return "<$res>";
-            }
-        }
+        $this->_parser = new EasyRdf_Parser_Builtin();
+    }
+    
+    function testParseTurtle()
+    {
+        $this->markTestSkipped(
+            "EasyRdf_Parser_Builtin() does not support Turtle."
+        );
     }
 
-    protected static function serialiseObject($obj)
+    function testParseRdfXml()
     {
-        if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
-            return self::serialiseResource($obj);
-        } else if (is_scalar($obj)) {
-            return "\"$obj\"";
-        } else {
-            echo "Unknown!";
-        }
+        $this->markTestSkipped(
+            "EasyRdf_Parser_Builtin() does not support RDF/XML."
+        );
     }
 
-    public static function serialise($graph)
+    function testParseInvalidRdfXml()
     {
-        $nt = '';
-        foreach ($graph->resources() as $resource) {
-            foreach ($resource->properties() as $property) {
-                $objects = $resource->all($property);
-                foreach ($objects as $object) {
-                    $nt .= self::serialiseResource($resource)." ";
-                    $nt .= self::serialiseResource($property)." ";
-                    $nt .= self::serialiseObject($object)." .\n";
-                }
-            }
-        }
-        return $nt;
+        $this->markTestSkipped(
+            "EasyRdf_Parser_Builtin() does not support RDF/XML."
+        );
     }
 }
-

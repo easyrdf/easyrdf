@@ -41,6 +41,9 @@
  */
 require_once "EasyRdf/Exception.php";
 
+/**
+ * @see EasyRdf_Serialiser_Builtin
+ */
 require_once "EasyRdf/Serialiser/Builtin.php";
 
 
@@ -71,10 +74,28 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_Builtin
         require_once 'arc/ARC2.php';
     }
 
-
-    function serialise($graph, $format)
+    /**
+     * Serialise an EasyRdf_Graph into RDF format of choice.
+     *
+     * @param string $graph An EasyRdf_Graph object.
+     * @param string $format The name of the format to convert to.
+     * @return string The RDF in the new desired format.
+     */
+    public function serialise($graph, $format)
     {
-        // FIXME: validate arguments
+        if ($graph == null or !is_object($graph) or
+            get_class($graph) != 'EasyRdf_Graph') {
+            throw new InvalidArgumentException(
+                "\$graph should be an EasyRdf_Graph object and cannot be null"
+            );
+        }
+
+        if ($format == null or !is_string($format) or $format == '') {
+            throw new InvalidArgumentException(
+                "\$format should be a string and cannot be null or empty"
+            );
+        }
+    
 
         $rdfphp = $this->to_rdfphp($graph);
         if ($format == 'php') {

@@ -33,7 +33,7 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
+ * @version    $Id: Rdfphp.php 197 2009-10-18 11:55:04Z njh@aelius.com $
  */
 
 /**
@@ -42,33 +42,78 @@
 require_once "EasyRdf/Exception.php";
 
 /**
- * Class to allow parsing of RDF using the 'rapper' command line tool.
+ * Class to allow parsing of RDF with no external dependancies.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Parser_Rapper
+class EasyRdf_Parser_Builtin
 {
-    private $_rapperCmd = null;
+    /**
+     * Protected method to parse an N-Triples subject node 
+     */
+    protected function parse_ntriples_subject($sub)
+    {
+         if (preg_match('/<([^<>]+)>/', $sub, $matches)) {
+             return $matches[1];         
+         } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $sub, $matches)) {
+             return $matches[1];         
+         } else {
+              echo "Failed to parse subject: $sub\n";
+         }
+    }
     
     /**
-     * Constructor
-     *
-     * @param string $rapperCmd Optional path to the rapper command to use.
-     * @return object EasyRdf_Parser_Rapper
+     * Protected method to parse an N-Triples object node 
      */
-    public function __construct($rapperCmd='rapper')
+    protected function parse_ntriples_object($obj)
     {
-        exec("which ".escapeshellarg($rapperCmd), $output, $retval);
-        if ($retval == 0) {
-            $this->_rapperCmd = $rapperCmd;
-        } else {
-            throw new EasyRdf_Exception(
-                "The command '$rapperCmd' is not available on this system."
-            );
-        }
+         if (preg_match('/"(.+)"/', $obj, $matches)) {
+             # FIXME: implement unescaping
+             # FIXME: implement datatypes
+             # FIXME: implement languages
+             return array('type' => 'literal', 'value' => $matches[1]);         
+         } else if (preg_match('/<([^<>]+)>/', $obj, $matches)) {
+             return array('type' => 'uri', 'value' => $matches[1]);         
+         } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $obj, $matches)) {
+             return array('type' => 'bnode', 'value' => $matches[1]);         
+         } else {
+              echo "Failed to parse object: $obj\n";
+         }
     }
+
+    /**
+     * Protected method to parse an N-Triples document 
+     */
+    protected function parse_ntriples($uri, $data)
+    {
+        $rdfphp = array();
+        $lines = preg_split("/[\r\n]+/", $data);
+        foreach ($lines as $line) {
+            if (preg_match(
+                "/(.+)\s+<([^<>]+)>\s+(.+)\s*\./", 
+                $line, $matches
+            )) {
+                $subject = $this->parse_ntriples_subject($matches[1]);
+                $predicate = $matches[2];
+                $object = $this->parse_ntriples_object($matches[3]);
+                
+                if (!isset($rdfphp[$subject])) {
+                    $rdfphp[$subject] = array();
+                }
+            
+                if (!isset($rdfphp[$subject][$predicate])) {
+                    $rdfphp[$subject][$predicate] = array();
+                }
+
+                array_push($rdfphp[$subject][$predicate], $object);
+            }
+        }
+        
+        return $rdfphp;
+    }
+    
 
     /**
       * Parse an RDF document
@@ -98,51 +143,17 @@ class EasyRdf_Parser_Rapper
             );
         }
 
-        // Open a pipe to the rapper command
-        $descriptorspec = array(
-            0 => array("pipe", "r"),
-            1 => array("pipe", "w"),
-            2 => array("pipe", "w")
-        );
-
-        $process = proc_open(
-            escapeshellcmd($this->_rapperCmd).
-            " --quiet ".
-            " --input " . escapeshellarg($format).
-            " --output json ".
-            " --ignore-errors ".
-            " - " . escapeshellarg($uri),
-            $descriptorspec, $pipes, '/tmp', null
-        );
-        if (is_resource($process)) {
-            // $pipes now looks like this:
-            // 0 => writeable handle connected to child stdin
-            // 1 => readable handle connected to child stdout
-            // 2 => readable handle connected to child stderr
-      
-            fwrite($pipes[0], $data);
-            fclose($pipes[0]);
-      
-            $data = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-            $error = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-      
-            // It is important that you close any pipes before calling
-            // proc_close in order to avoid a deadlock
-            $returnValue = proc_close($process);
-            if ($returnValue) {
-                throw new EasyRdf_Exception(
-                    "Failed to parse RDF: ".$error
-                );
-            }
+        if ($format == 'json') {
+            # Parse the RDF/JSON into RDF/PHP
+            return json_decode($data, true);
+        } else if ($format == 'ntriples') {
+            # Parse the RDF/JSON into RDF/PHP
+            return $this->parse_ntriples($uri, $data);
         } else {
             throw new EasyRdf_Exception(
-                "Failed to execute rapper command."
+                "EasyRdf_Parser_Builtin is unable to parse format: $format"
             );
         }
-
-        // Parse in the JSON
-        return json_decode($data, true);
     }
 }
+

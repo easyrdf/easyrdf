@@ -36,14 +36,11 @@
  * @version    $Id$
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
-             DIRECTORY_SEPARATOR.'TestHelper.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Base.php';
 require_once 'EasyRdf/Parser/Arc.php';
 
-class EasyRdf_Parser_ArcTest extends PHPUnit_Framework_TestCase
+class EasyRdf_Parser_ArcTest extends EasyRdf_Parser_Base
 {
-    protected $_parser = null;
-
     public function setUp()
     {
         if (!requireExists('arc/ARC2.php')) {
@@ -51,17 +48,11 @@ class EasyRdf_Parser_ArcTest extends PHPUnit_Framework_TestCase
         } else {
             $this->_parser = new EasyRdf_Parser_Arc();
         }
-    }
-    
-    function testParseRdfXml()
-    {
+
+
         $this->markTestSkipped(
             "Not testing ARC2 parser because it does not work in strict mode."
         );
-        #$data = readFixture('foaf.rdf');
-        #$rdf = $this->_parser->parse(
-        #    'http://www.example.com/joe/foaf.rdf',
-        #    $data, 'turtle'
-        #);
     }
+    
 }

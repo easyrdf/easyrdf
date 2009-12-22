@@ -78,7 +78,7 @@ class EasyRdf_Graph
     private $_resources = array();
     
     /** If defined, only store literals of this language */
-    private static $_lang_filter = null;
+    private static $_langFilter = null;
     
     /** Counter for the number of bnodes */
     private $_bNodeCount = 0;
@@ -208,7 +208,7 @@ class EasyRdf_Graph
                 "\$lang should be a string or null"
             );
         }
-        self::$_lang_filter = $lang;
+        self::$_langFilter = $lang;
     }
 
     /** Get the literal language filter
@@ -217,7 +217,7 @@ class EasyRdf_Graph
      */
     public static function getLangFilter()
     {
-        return self::$_lang_filter;
+        return self::$_langFilter;
     }
 
     /** Convert a mime type into a simplier document type name
@@ -299,14 +299,14 @@ class EasyRdf_Graph
      *
      * @param  string  $uri     The URI of the graph
      * @param  string  $data    Data for the graph
-     * @param  string  $docType The document type of the data
+     * @param  string  $format  The document type of the data
      * @return object EasyRdf_Graph
      */
-    public function __construct($uri=null, $data=null, $docType=null)
+    public function __construct($uri=null, $data=null, $format=null)
     {
         if ($uri) {
             $this->_uri = $uri;
-            $this->load($uri, $data, $docType);
+            $this->load($uri, $data, $format);
         }
     }
 
@@ -393,9 +393,9 @@ class EasyRdf_Graph
      *
      * @param  string  $uri     The URI of the graph
      * @param  string  $data    Data for the graph
-     * @param  string  $docType The document type of the data
+     * @param  string  $format  The document type of the data
      */
-    public function load($uri, $data=null, $docType=null)
+    public function load($uri, $data=null, $format=null)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
             throw new InvalidArgumentException(
@@ -417,30 +417,30 @@ class EasyRdf_Graph
                 );
             }
             $data = $response->getBody();
-            if ($docType == null) {
-                $docType = self::simplifyMimeType(
+            if ($format == null) {
+                $format = self::simplifyMimeType(
                     $response->getHeader('Content-Type')
                 );
             }
         }
         
         # Guess the document type if not given
-        if ($docType == null) {
-            $docType = self::guessDocType($data);
+        if ($format == null) {
+            $format = self::guessDocType($data);
         }
         
         # Parse the document
-        if ($docType == 'php') {
+        if ($format == 'php') {
             # FIXME: validate the data?
-        } else if ($docType == 'json') {
+        } else if ($format == 'json') {
             # Parse the RDF/JSON into RDF/PHP
             $data = json_decode($data, true);
         } else {
             # Parse the RDF data
-            $data = self::getRdfParser()->parse($uri, $data, $docType);
+            $data = self::getRdfParser()->parse($uri, $data, $format);
             if (!$data) {
                 throw new EasyRdf_Exception(
-                    "Failed to parse data for URI: $uri (\$docType = $docType)"
+                    "Failed to parse data for URI: $uri (\$format = $format)"
                 );
             }
         }
@@ -468,8 +468,8 @@ class EasyRdf_Graph
                             # Type has already been set
                         } else if ($obj['type'] == 'literal') {
                             if (!isset($obj['lang']) or 
-                                !isset(self::$_lang_filter) or 
-                                $obj['lang'] == self::$_lang_filter) {
+                                !isset(self::$_langFilter) or 
+                                $obj['lang'] == self::$_langFilter) {
                                 $res->add($property, $obj['value']);
                             }
                         } else if ($obj['type'] == 'uri') {
@@ -545,7 +545,7 @@ class EasyRdf_Graph
     public function resourcesMatching($property, $value)
     {
         $matched = array();
-        foreach($this->_resources as $resource) {
+        foreach ($this->_resources as $resource) {
             if ($resource->matches($property, $value)) {
                 array_push($matched, $resource);
             }

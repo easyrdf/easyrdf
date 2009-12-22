@@ -54,6 +54,7 @@ class EasyRdf_Parser_Arc
         'json' => 'JSON',
         'rdfxml' => 'RDFXML',
         'turtle' => 'Turtle',
+        'ntriples' => 'Turtle',
         'rdfa' => 'SemHTML',
     );
 
@@ -72,10 +73,10 @@ class EasyRdf_Parser_Arc
       *
       * @param string $uri      the base URI of the data
       * @param string $data     the document data
-      * @param string $docType  the format of the input data
+      * @param string $format   the format of the input data
       * @return array           the parsed data
       */
-    public function parse($uri, $data, $docType)
+    public function parse($uri, $data, $format)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
             throw new InvalidArgumentException(
@@ -89,17 +90,17 @@ class EasyRdf_Parser_Arc
             );
         }
 
-        if (!is_string($docType) or $docType == null or $docType == '') {
+        if (!is_string($format) or $format == null or $format == '') {
             throw new InvalidArgumentException(
-                "\$docType should be a string and cannot be null or empty"
+                "\$format should be a string and cannot be null or empty"
             );
         }
 
-        if (array_key_exists($docType, self::$_supportedTypes)) {
-            $className = self::$_supportedTypes[$docType];
+        if (array_key_exists($format, self::$_supportedTypes)) {
+            $className = self::$_supportedTypes[$format];
         } else {
             throw new EasyRdf_Exception(
-                "Parsing documents of type $docType ".
+                "Parsing documents of type $format ".
                 "is not supported by EasyRdf_Parser_Arc."
             );
         }
