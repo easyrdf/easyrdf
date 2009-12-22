@@ -33,7 +33,7 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id: Arc.php 249 2009-12-10 22:55:19Z njh@aelius.com $
+ * @version    $Id$
  */
 
 /**
