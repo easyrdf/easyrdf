@@ -95,6 +95,23 @@ class EasyRdf_Graph
     /** An RDF Serialiser object used by graph to generate RDF */
     private static $_rdfSerialiser = null;
     
+    /** Mapping between mime types and serialisation names */
+    private static $_mimeTypeMap = array(
+        'application/json' => 'json',
+        'text/json' => 'json',
+        'application/rdf+xml' => 'rdfxml',
+        'application/xml' => 'rdfxml',
+        'application/turtle' => 'turtle',
+        'application/x-turtle' => 'turtle',
+        'text/turtle' => 'turtle',
+        'application/ntriples' => 'ntriples',
+        'application/n-triples' => 'ntriples',
+        'application/x-ntriples' => 'ntriples',
+        # FIXME: might be erdf or something instead...
+        'text/html' => 'rdfa',
+        'application/xhtml+xml' => 'rdfa'
+    );
+    
     /** A constant for the RDF Type property URI */
     const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
@@ -229,24 +246,10 @@ class EasyRdf_Graph
      */
     public static function simplifyMimeType($mimeType)
     {
-        switch($mimeType) {
-            case 'application/json':
-            case 'text/json':
-                return 'json';
-            case 'application/rdf+xml':
-                return 'rdfxml';
-            case 'application/turtle':
-            case 'text/turtle':
-                return 'turtle';
-            case 'application/n-triples':
-                return 'ntriples';
-            case 'text/html':
-            case 'application/xhtml+xml':
-                # FIXME: might be erdf or something instead...
-                return 'rdfa';
-            default:
-                return null;
-                break;
+        if (isset(self::$_mimeTypeMap[$mimeType])) {
+            return self::$_mimeTypeMap[$mimeType];
+        } else {
+            return null;
         }
     }
     
@@ -645,6 +648,9 @@ class EasyRdf_Graph
      */
     public function serialise($format)
     {
+        if (isset(self::$_mimeTypeMap[$format])) {
+            $format = self::$_mimeTypeMap[$format];
+        }
         return self::getRdfSerialiser()->serialise($this, $format);
     }
 
