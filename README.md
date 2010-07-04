@@ -1,6 +1,6 @@
 EasyRdf
 =======
-EasyRdf is a library designed to make it easy to consume and produce RDF. It 
+EasyRdf is a PHP library designed to make it easy to consume and produce RDF. It 
 was designed for use in mixed teams of experienced and inexperienced RDF 
 developers. It is written in Object Oriented PHP. 
 
