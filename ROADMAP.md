@@ -26,17 +26,3 @@ EasyRdf 0.3
 * Added built-in RDF/PHP generator
 * Added built-in RDF/JSON generator
 * Added SKOS and RSS to the set of default namespaces.
-
-Backlog
--------
-* Add escaping/unescapting to N-triples parser/generator
-* Generate website automatically from the markdown files
-* Document the limitations of EasyRdf_Http_Client.
-* Add is_a?() method to EasyRdf_Resource
-* Add support to EasyRdf_Http_Client for HTTP/1.1 100 Continue
-* Finish implementing dump() methods
-* Write built-in turtle parser/generator
-* Write built-in RDF/XML parser/generator
-* Add support for file:// URLs to EasyRdf_Http_Client
-* Implement 'turn off magic' static class method to EasyRdf_Resource.
-* Add proper support for literals with languages
