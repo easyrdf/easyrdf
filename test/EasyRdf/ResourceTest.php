@@ -91,7 +91,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->assertStringEquals(
             'Test B',
-            $this->_resource->get('test:prop','en')
+            $this->_resource->get('test:prop', 'en')
         );
     }
 
@@ -121,8 +121,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testAll()
     {
         $all = $this->_resource->all('test:prop');
-        $this->assertStringEquals('Test A',$all[0]);
-        $this->assertStringEquals('Test B',$all[1]);
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
     }
 
     public function testAllNonExistantProperty()
@@ -210,7 +210,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testAddMultipleProperties()
     {
-        $this->_resource->add(array('test:prop1','test:prop2'), 'Test');
+        $this->_resource->add(array('test:prop1', 'test:prop2'), 'Test');
         $this->assertEquals(
             array('Test'), $this->_resource->all('test:prop1')
         );
