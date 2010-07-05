@@ -82,8 +82,7 @@
  
   <target name="cs">
     <phpcodesniffer
-      standard="ZEND"
-      format="report">
+      standard="ZEND">
       <fileset refid="source" />
       <fileset refid="tests" />
     </phpcodesniffer>
