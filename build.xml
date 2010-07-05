@@ -1,25 +1,22 @@
 <?xml version="1.0"?>
 
 <project name="EasyRdf" default="default">
-  <property name="coverdir" value="${project.basedir}/coverage" override="true" />
-  <property name="docsdir" value="${project.basedir}/docs" override="true" />
-  <property name="distdir" value="${project.basedir}/dist" override="true" />
+  <property name="reports.dir" value="${project.basedir}/reports" override="true" />
+  <property name="docs.dir" value="${project.basedir}/docs" override="true" />
+  <property name="dist.dir" value="${project.basedir}/dist" override="true" />
   <property name="logger" value="phing.listener.DefaultLogger" override="true" />
 
   <includepath classpath="${project.basedir}/lib" />
 
   <fileset id="source" dir="${project.basedir}">
+    <include name="lib/EasyRdf.php" />
     <include name="lib/EasyRdf/*.php" />
-    <include name="lib/EasyRdf/Http/*.php" />
-    <include name="lib/EasyRdf/Parser/*.php" />
-    <include name="lib/EasyRdf/Serialiser/*.php" />
+    <include name="lib/EasyRdf/**/*.php" />
   </fileset>
 
   <fileset id="tests" dir="${project.basedir}">
     <include name="test/EasyRdf/*Test.php" />
-    <include name="test/EasyRdf/Http/*Test.php" />
-    <include name="test/EasyRdf/Parser/*Test.php" />
-    <include name="test/EasyRdf/Serialiser/*Test.php" />
+    <include name="test/EasyRdf/**/*Test.php" />
   </fileset>
 
   <fileset id="examples" dir="${project.basedir}">
@@ -35,18 +32,21 @@
   </fileset>
 
 
-  <target name="test" description="Run all unit tests.">
+  <target name="test" depends="dir_setup" description="Run all unit tests.">
     <phpunit haltonfailure="true" printsummary="true">
       <batchtest>
         <fileset refid="tests" />
       </batchtest>
+      <formatter type="plain" usefile="false" />
+      <formatter type="xml" usefile="true" todir="${reports.dir}" outfile="test-results.xml" />
     </phpunit>
+    <phpunitreport format="noframes" todir="${reports.dir}/html" infile="${reports.dir}/test-results.xml" />
   </target>
 
 <!-- Can't get this to work on my laptop
   <target name="coverage" description="Run unit tests and create code coverage report">
-    <mkdir dir="${coverdir}" />
-    <coverage-setup database="${coverdir}/coverage.db">
+    <mkdir dir="${reports.dir}" />
+    <coverage-setup database="${reports.dir}/coverage.db">
       <fileset refid="source" />
     </coverage-setup>
     <phpunit codecoverage="true">
@@ -54,20 +54,20 @@
         <fileset refid="tests" />
       </batchtest>
     </phpunit>
-    <coverage-report outfile="${coverdir}/coverage.xml">
-      <report todir="${coverdir}" />
+    <coverage-report outfile="${reports.dir}/coverage.xml">
+      <report todir="${reports.dir}" />
     </coverage-report>
   </target>
  -->
  
-  <target name="coverage">
-    <mkdir dir="${coverdir}" />
-    <exec command="phpunit --coverage-html ${coverdir} test" dir="${project.basedir}" passthru="true" />
+  <target name="coverage" depends="dir_setup">
+    <mkdir dir="${reports.dir}/coverage" />
+    <exec command="phpunit --coverage-html ${reports.dir}/coverage test" dir="${project.basedir}" passthru="true" />
   </target>
   
   <target name="docs" description="Create API documentation">
     <phpdoc title="EasyRdf API Documentation"
-      destdir="${docsdir}"
+      destdir="${docs.dir}"
       sourcecode="no"
       undocumentedelements="yes"
       output="HTML:Smarty:PHP">
@@ -81,8 +81,7 @@
   </target>
  
   <target name="cs">
-    <phpcodesniffer
-      standard="ZEND">
+    <phpcodesniffer standard="ZEND">
       <fileset refid="source" />
       <fileset refid="tests" />
     </phpcodesniffer>
@@ -98,8 +97,8 @@
   
   <target name="dist" depends="docs">
     <echo msg="Creating archive..." />
-    <mkdir dir="${distdir}/easyrdf" />
-    <copy todir="${distdir}/easyrdf" >
+    <mkdir dir="${dist.dir}/easyrdf" />
+    <copy todir="${dist.dir}/easyrdf" >
       <fileset refid="source" />
       <fileset refid="tests" />
       <fileset refid="examples" />
@@ -110,14 +109,20 @@
     </copy>
     <delete file="easyrdf.tar.gz" />
     <tar destfile="easyrdf.tar.gz"
-         basedir="${distdir}"
+         basedir="${dist.dir}"
          compression="gzip" />
+  </target>
+
+  <target name="dir_setup">
+    <mkdir dir="${reports.dir}" />
+    <mkdir dir="${reports.dir}/html" />
+    <mkdir dir="${reports.dir}/coverage" />
   </target>
   
   <target name="clean">
-    <delete dir="${coverdir}" includeemptydirs="true" verbose="true" />
-    <delete dir="${docsdir}" includeemptydirs="true" verbose="true" />
-    <delete dir="${distdir}" includeemptydirs="true" verbose="true" />
+    <delete dir="${reports.dir}" includeemptydirs="true" verbose="true" />
+    <delete dir="${docs.dir}" includeemptydirs="true" verbose="true" />
+    <delete dir="${dist.dir}" includeemptydirs="true" verbose="true" />
   </target>
   
   <target name="default" description="Default target" depends="lint,test,cs" />
