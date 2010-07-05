@@ -37,9 +37,6 @@
  */
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
-require_once 'EasyRdf/Resource.php';
-require_once 'EasyRdf/Graph.php';
-require_once 'EasyRdf/TypeMapper.php';
 
 class MyType_Class extends EasyRdf_Resource
 {

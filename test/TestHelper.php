@@ -74,6 +74,11 @@ set_include_path(implode(PATH_SEPARATOR, $path));
  */
 unset($easyrdfRoot, $easyrdfLibDir, $easyrdfTestDir, $path);
 
+/*
+ * Load the code EasyRdf classes.
+ */
+require_once 'EasyRdf.php';
+
 
 /**
  * Helper function: read fixture data from file

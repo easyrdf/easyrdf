@@ -37,7 +37,6 @@
  */
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
-require_once 'EasyRdf/Resource.php';
 
 class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 {

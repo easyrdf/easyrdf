@@ -37,7 +37,6 @@
  */
 
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Base.php';
-require_once 'EasyRdf/Parser/Builtin.php';
 
 class EasyRdf_Parser_BuiltinTest extends EasyRdf_Parser_Base
 {

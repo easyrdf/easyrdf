@@ -6,11 +6,6 @@
 require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
 
 /**
- * EasyRdf_Http_Response
- */
-require_once 'EasyRdf/Http/Response.php';
-
-/**
  * PHPUnit test case
  */
 require_once 'PHPUnit/Framework/TestCase.php';

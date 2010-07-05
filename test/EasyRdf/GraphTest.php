@@ -37,7 +37,6 @@
  */
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
-require_once 'EasyRdf/Graph.php';
 
 $validRdf = array(
                 'http://example.com/joe' => array(
@@ -227,7 +226,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     public function testGetDefaultRdfParser()
     {
         $this->assertEquals(
-            'EasyRdf_Parser_Rapper',
+            'EasyRdf_Parser_Builtin',
             get_class(EasyRdf_Graph::getRdfParser())
         );
     }

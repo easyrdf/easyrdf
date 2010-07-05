@@ -2,8 +2,6 @@
 
 require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
 
-require_once 'EasyRdf/Http/Client.php';
-
 
 class EasyRdf_Http_ClientTest extends PHPUnit_Framework_TestCase
 {
