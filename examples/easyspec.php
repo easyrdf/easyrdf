@@ -1,8 +1,6 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf/Graph.php";
-    require_once "EasyRdf/Owl/Class.php";
-    require_once "EasyRdf/Owl/Property.php";
     require_once "html_tag_helpers.php";
 
     # TODO LIST:
