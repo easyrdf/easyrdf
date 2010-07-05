@@ -55,6 +55,8 @@ class EasyRdf_Parser_Rapper
      */
     public function __construct($rapperCmd='rapper')
     {
+        // FIXME: suppress stderr
+        // FIXME: check for rapper version 1.4.17
         exec("which ".escapeshellarg($rapperCmd), $output, $retval);
         if ($retval == 0) {
             $this->_rapperCmd = $rapperCmd;
