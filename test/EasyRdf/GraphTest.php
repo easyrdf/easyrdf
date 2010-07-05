@@ -733,7 +733,10 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         EasyRdf_Graph::setRdfSerialiser(new Mock_RdfSerialiser());
         $graph = new EasyRdf_Graph();
-        $this->assertEquals("<rdf></rdf>", $graph->serialise('application/rdf+xml'));
+        $this->assertEquals(
+            "<rdf></rdf>",
+            $graph->serialise('application/rdf+xml')
+        );
     }
 
     public function testDump()
