@@ -37,17 +37,6 @@
  */
 
 /**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
-
-/**
- * @see EasyRdf_Serialiser_Builtin
- */
-require_once "EasyRdf/Serialiser/Builtin.php";
-
-
-/**
  * Class to allow serialising to RDF using the 'rapper' command line tool.
  *
  * Note: the built-in N-Triples serialiser is used to pass data to Rapper.

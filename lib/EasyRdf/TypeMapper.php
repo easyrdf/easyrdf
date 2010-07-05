@@ -37,11 +37,6 @@
  */
 
 /**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
-
-/**
  * Class to map between RDF Types and PHP Classes
  *
  * @package    EasyRdf

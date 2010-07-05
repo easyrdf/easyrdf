@@ -1,8 +1,6 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf/Graph.php";
-    require_once "EasyRdf/Namespace.php";
-    require_once "EasyRdf/TypeMapper.php";
+    require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
     ## Configure the RDF parser to use

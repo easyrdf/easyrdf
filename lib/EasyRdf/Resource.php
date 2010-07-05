@@ -37,21 +37,6 @@
  */
 
 /**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
-
-/**
- * @see EasyRdf_Namespace
- */
-require_once "EasyRdf/Namespace.php";
-
-/**
- * @see EasyRdf_Utils
- */
-require_once "EasyRdf/Utils.php";
-
-/**
  * Class that represents an RDF resource
  *
  * @package    EasyRdf

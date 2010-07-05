@@ -39,16 +39,6 @@
  */
 
 /**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
-
-/**
- * @see EasyRdf_Http_Response
- */
-require_once "EasyRdf/Http/Response.php";
-
-/**
  * This class is an implemetation of an HTTP client in PHP.
  * It supports basic HTTP 1.0 and 1.1 requests. For a more complete 
  * implementation try Zend_Http_Client.

@@ -1,6 +1,6 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf/Http/Client.php";
+    require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
     $accept_options = array(

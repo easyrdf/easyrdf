@@ -37,32 +37,6 @@
  */
 
 /**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
-
-/**
- * @see EasyRdf_Namespace
- */
-require_once "EasyRdf/Namespace.php";
-
-/**
- * @see EasyRdf_Resource
- */
-require_once "EasyRdf/Resource.php";
-
-/**
- * @see EasyRdf_TypeMapper
- */
-require_once "EasyRdf/TypeMapper.php";
-
-/**
- * @see EasyRdf_Utils
- */
-require_once "EasyRdf/Utils.php";
-
-
-/**
  * Container for collection of EasyRdf_Resources.
  *
  * @package    EasyRdf
@@ -141,7 +115,6 @@ class EasyRdf_Graph
     public static function getHttpClient()
     {
         if (!self::$_httpClient) {
-            require_once "EasyRdf/Http/Client.php";
             self::$_httpClient = new EasyRdf_Http_Client();
         }
         return self::$_httpClient;
@@ -172,8 +145,7 @@ class EasyRdf_Graph
     public static function getRdfParser()
     {
         if (!self::$_rdfParser) {
-            require_once "EasyRdf/Parser/Rapper.php";
-            self::$_rdfParser = new EasyRdf_Parser_Rapper();
+            self::$_rdfParser = new EasyRdf_Parser_Builtin();
         }
         return self::$_rdfParser;
     }
@@ -203,7 +175,6 @@ class EasyRdf_Graph
     public static function getRdfSerialiser()
     {
         if (!self::$_rdfSerialiser) {
-            require_once "EasyRdf/Serialiser/Builtin.php";
             self::$_rdfSerialiser = new EasyRdf_Serialiser_Builtin();
         }
         return self::$_rdfSerialiser;

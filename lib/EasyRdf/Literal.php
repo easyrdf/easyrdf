@@ -37,76 +37,47 @@
  */
 
 /**
- * Class to allow serialising to RDF using the ARC2 library.
+ * Class that represents an RDF Literal
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_Builtin
+class EasyRdf_Literal
 {
-    private static $_supportedTypes = array(
-        'json' => 'RDFJSON',
-        'rdfxml' => 'RDFXML',
-        'turtle' => 'Turtle',
-        'ntriples' => 'NTriples',
-        'poshrdf' => 'POSHRDF',
-    );
-
-    /**
-     * Constructor
-     *
-     * @return object EasyRdf_Serialiser_Arc
-     */
-    public function __construct()
-    {
-        require_once 'arc/ARC2.php';
-    }
-
-    /**
-     * Serialise an EasyRdf_Graph into RDF format of choice.
-     *
-     * @param string $graph An EasyRdf_Graph object.
-     * @param string $format The name of the format to convert to.
-     * @return string The RDF in the new desired format.
-     */
-    public function serialise($graph, $format)
-    {
-        if ($graph == null or !is_object($graph) or
-            get_class($graph) != 'EasyRdf_Graph') {
-            throw new InvalidArgumentException(
-                "\$graph should be an EasyRdf_Graph object and cannot be null"
-            );
-        }
-
-        if ($format == null or !is_string($format) or $format == '') {
-            throw new InvalidArgumentException(
-                "\$format should be a string and cannot be null or empty"
-            );
-        }
+    /** The URI for this resource */
+    private $_value = null;
     
-
-        $rdfphp = $this->to_rdfphp($graph);
-        if ($format == 'php') {
-            return $rdfphp;
-        }
-
-        if (array_key_exists($format, self::$_supportedTypes)) {
-            $className = self::$_supportedTypes[$format];
-        } else {
-            throw new EasyRdf_Exception(
-                "Serialising documents to $format ".
-                "is not supported by EasyRdf_Serialiser_Arc."
-            );
-        }
-
-        $serialiser = ARC2::getSer($className);
-        if ($serialiser) {
-            return $serialiser->getSerializedIndex($rdfphp);
-        } else {
-            throw new EasyRdf_Exception(
-                "ARC2 failed to get a $className serialiser."
-            );
-        }
+    /** Associative array of properties */
+    private $_datatype = null;
+    
+    /** Associative array of properties */
+    private $_lang = null;
+    
+    /** Constructor
+     *
+     */
+    public function __construct($value, $datatype=null, $lang=null)
+    {
+        // It is not valid to have both a datatype and a language
+    }
+    
+    /** Returns the URI for the resource.
+     *
+     * @return string  URI of this resource.
+     */
+    public function getValue()
+    {
+        return $this->_value;
+    }
+    
+    /** Magic method to return URI of resource when casted to string
+     *
+     * @return string The URI of the resource
+     */
+    public function __toString()
+    {
+        return $this->_uri;
     }
 }
+

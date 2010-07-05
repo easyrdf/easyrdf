@@ -1,6 +1,10 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf/Graph.php";
+    require_once "EasyRdf.php";
+
+    ## FIXME: one day EasyRdf will parse RDF/XML natively
+    require_once "EasyRdf/Parser/Rapper.php";
+    EasyRdf_Graph::setRdfParser( new EasyRdf_Parser_Rapper('/usr/local/bin/rapper') );
 ?>
 <html>
 <head>

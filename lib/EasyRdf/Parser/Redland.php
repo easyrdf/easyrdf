@@ -37,11 +37,6 @@
  */
 
 /**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
-
-/**
  * Class to allow parsing of RDF using Redland (librdf) C library.
  *
  * @package    EasyRdf

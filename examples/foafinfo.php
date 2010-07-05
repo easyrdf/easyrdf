@@ -1,7 +1,11 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf/Graph.php";
+    require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
+
+    ## Configure the RDF parser to use
+    require_once "EasyRdf/Parser/Rapper.php";
+    EasyRdf_Graph::setRdfParser( new EasyRdf_Parser_Rapper('/usr/local/bin/rapper') );
 ?>
 <html>
 <head><title>FOAF Info</title></head>

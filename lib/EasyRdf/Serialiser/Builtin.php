@@ -37,21 +37,6 @@
  */
 
 /**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
-
-/**
- * @see EasyRdf_Graph
- */
-require_once "EasyRdf/Graph.php";
-
-/**
- * @see EasyRdf_Namespace
- */
-require_once "EasyRdf/Namespace.php";
-
-/**
  * Class to serialise an EasyRdf_Graph into RDF
  * with no external dependancies.
  *
