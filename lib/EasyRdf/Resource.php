@@ -205,9 +205,10 @@ class EasyRdf_Resource
      * This method will return null if the property does not exist.
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  string  $lang     The language to filter by (e.g. en)
      * @return mixed             A value associated with the property
      */
-    public function get($property)
+    public function get($property, $lang=null)
     {
         if (!is_string($property) or $property == null or $property == '') {
             throw new InvalidArgumentException(
@@ -217,7 +218,15 @@ class EasyRdf_Resource
 
         if (isset($this->_properties[$property])) {
             # FIXME: sort values so that we are likely to return the same one?
-            return $this->_properties[$property][0];
+            if ($lang) {
+                foreach ($this->_properties[$property] as $value) {
+                    if (is_object($value) && $value->getLang() == $lang)
+                        return $value;
+                }
+                return null;
+            } else {
+                return $this->_properties[$property][0];
+            }
         } else {
             return null;
         }
@@ -230,7 +239,7 @@ class EasyRdf_Resource
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @return array             A value associated with the property
      */
-    public function all($property)
+    public function all($property, $lang=null)
     {
         if (!is_string($property) or $property == null or $property == '') {
             throw new InvalidArgumentException(
@@ -254,7 +263,7 @@ class EasyRdf_Resource
      * @param  string  $glue     The string to glue the values together with.
      * @return string            Concatenation of all the values.
      */
-    public function join($property, $glue=' ')
+    public function join($property, $glue=' ', $lang=null)
     {
         if (!is_string($property) or $property == null or $property == '') {
             throw new InvalidArgumentException(
@@ -362,14 +371,14 @@ class EasyRdf_Resource
      *
      * @return string A label for the resource.
      */
-    public function label()
+    public function label($lang=null)
     {
-        if ($this->get('rdfs:label')) {
-            return $this->get('rdfs:label');
-        } else if ($this->get('foaf:name')) {
-            return $this->get('foaf:name');
-        } else if ($this->get('dc:title')) {
-            return $this->get('dc:title');
+        if ($this->get('rdfs:label', $lang)) {
+            return $this->get('rdfs:label', $lang);
+        } else if ($this->get('foaf:name', $lang)) {
+            return $this->get('foaf:name', $lang);
+        } else if ($this->get('dc:title', $lang)) {
+            return $this->get('dc:title', $lang);
         } else {
             return $this->shorten(); 
         }

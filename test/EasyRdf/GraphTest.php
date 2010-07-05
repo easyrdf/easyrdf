@@ -38,6 +38,7 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
+global $validRdf;
 $validRdf = array(
                 'http://example.com/joe' => array(
                     'http://xmlns.com/foaf/0.1/name' => array(
@@ -109,7 +110,7 @@ class Mock_RdfSerialiser
     }    
 }
 
-class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
+class EasyRdf_GraphTest extends EasyRdf_TestCase
 {
     protected $_graph = null;
 
@@ -335,21 +336,18 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph = new EasyRdf_Graph();
         $graph->load('http://www.example.com/foaf.php', $validRdf);
         
-        $this->assertEquals(
-            'EasyRdf_Resource',
-            get_class($graph->get('http://example.com/joe'))
-        );
-        $this->assertEquals(
-            'http://example.com/joe',
-            $graph->get('http://example.com/joe')->getUri()
-        );
-        $this->assertEquals(
-            'Joseph Bloggs',
-            $graph->get('http://example.com/joe')->get('foaf:name')
-        );
-        $this->assertNull(
-            $graph->get('http://example.com/joe')->type()
-        );
+        $joe = $graph->get('http://example.com/joe');
+        $this->assertNotNull($joe);
+        $this->assertEquals('EasyRdf_Resource', get_class($joe));
+        $this->assertEquals('http://example.com/joe', $joe->getUri());
+        $this->assertNull($joe->type());
+
+        $name = $joe->get('foaf:name');
+        $this->assertNotNull($name);
+        $this->assertEquals('EasyRdf_Literal', get_class($name));
+        $this->assertEquals('Joseph Bloggs', $name->getValue());
+        $this->assertEquals('en', $name->getLang());
+        $this->assertEquals(null, $name->getDatatype());
     }
 
     public function testLoadNullUri()
@@ -379,7 +377,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph = new EasyRdf_Graph();
         # Use magic URI to trigger Mock parser to return valid RDF
         $graph->load('valid:rdf', 'valid:rdf');
-        $this->assertEquals(
+        $this->assertStringEquals(
             'Joseph Bloggs',
             $graph->get('http://example.com/joe')->get('foaf:name')
         );
@@ -397,7 +395,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         EasyRdf_Graph::setHttpClient(new Mock_Http_Client());
         $graph = new EasyRdf_Graph('http://www.example.com/');
-        $this->assertEquals(
+        $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me')->get('foaf:name')
         );
@@ -416,15 +414,21 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph = new EasyRdf_Graph();
         $graph->load('file://bnodeA', $bnodeA);
         $graph->load('file://bnodeB', $bnodeB);
-        $this->assertEquals('A', $graph->get('_:eid1')->get('foaf:name'));
-        $this->assertEquals('B', $graph->get('_:eid2')->get('foaf:name'));
+        $this->assertStringEquals(
+            'A',
+            $graph->get('_:eid1')->get('foaf:name')
+        );
+        $this->assertStringEquals(
+            'B',
+            $graph->get('_:eid2')->get('foaf:name')
+        );
     }
 
     public function testGet()
     {
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
-        $this->assertEquals(
+        $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me')->get('foaf:name')
         );
@@ -458,37 +462,6 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $graph = new EasyRdf_Graph();
         $graph->get(array());
-    }
-
-    public function testGetDefaultLangFilter()
-    {
-        $this->assertEquals(null, EasyRdf_Graph::getLangFilter());
-    }
-
-    public function testSetLangFilterEnglish()
-    {
-        global $validRdf;
-        EasyRdf_Graph::setLangFilter('en');
-        $graph = new EasyRdf_Graph();
-        $graph->load('http://www.example.com/foaf.php', $validRdf);
-        $joe = $graph->get('http://example.com/joe');
-        $this->assertEquals('Joseph Bloggs', $joe->get('foaf:name'));
-    }
-
-    public function testSetLangFilterFrench()
-    {
-        global $validRdf;
-        EasyRdf_Graph::setLangFilter('fr');
-        $graph = new EasyRdf_Graph();
-        $graph->load('http://www.example.com/foaf.php', $validRdf);
-        $joe = $graph->get('http://example.com/joe');
-        $this->assertEquals(null, $joe->get('foaf:name'));
-    }
-
-    public function testSetLangFilterNonString()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Graph::setLangFilter(10);
     }
 
     public function testSetType()
@@ -593,7 +566,7 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph = new EasyRdf_Graph();
         $graph->add('http://www.example.com/joe#me', 'foaf:name', 'Joe');
         $resource = $graph->get('http://www.example.com/joe#me');
-        $this->assertEquals('Joe', $resource->get('foaf:name'));
+        $this->assertStringEquals('Joe', $resource->get('foaf:name'));
     }
     
     public function testAddSingleValueToResource()
@@ -750,11 +723,11 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
         $graph = new EasyRdf_Graph(
             'http://www.example.com/joe/foaf.rdf', $data
         );
-        $this->assertEquals(
+        $this->assertStringEquals(
             "Joe Bloggs' FOAF File",
             $graph->label()
         );
-        $this->assertEquals(
+        $this->assertStringEquals(
             "Joe Bloggs' FOAF File",
             $graph->getRdfs_label()
         );
@@ -770,9 +743,6 @@ class EasyRdf_GraphTest extends PHPUnit_Framework_TestCase
     {
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
-        $this->assertEquals(
-            'http://example.com/joe/foaf.rdf',
-            $graph->__toString()
-        );
+        $this->assertStringEquals('http://example.com/joe/foaf.rdf', $graph);
     }
 }

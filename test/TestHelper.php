@@ -75,9 +75,11 @@ set_include_path(implode(PATH_SEPARATOR, $path));
 unset($easyrdfRoot, $easyrdfLibDir, $easyrdfTestDir, $path);
 
 /*
- * Load the code EasyRdf classes.
+ * Load the core EasyRdf classes.
  */
 require_once 'EasyRdf.php';
+
+require_once 'EasyRdf/TestCase.php';
 
 
 /**

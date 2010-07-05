@@ -38,7 +38,7 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_NamespaceTest extends PHPUnit_Framework_TestCase
+class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 {
     public function testNamespaces()
     {

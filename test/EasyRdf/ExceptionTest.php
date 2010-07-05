@@ -38,7 +38,7 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_ExceptionTest extends PHPUnit_Framework_TestCase
+class EasyRdf_ExceptionTest extends EasyRdf_TestCase
 {
     public function testException()
     {

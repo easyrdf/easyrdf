@@ -39,7 +39,7 @@
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Serialiser_Base extends PHPUnit_Framework_TestCase
+class EasyRdf_Serialiser_TestCase extends EasyRdf_TestCase
 {
     protected $_serialiser = null;
     protected $_graph = null;

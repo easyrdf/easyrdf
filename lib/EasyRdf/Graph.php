@@ -51,9 +51,6 @@ class EasyRdf_Graph
     /** Array of resources contained in the graph */
     private $_resources = array();
     
-    /** If defined, only store literals of this language */
-    private static $_langFilter = null;
-    
     /** Counter for the number of bnodes */
     private $_bNodeCount = 0;
     
@@ -178,34 +175,6 @@ class EasyRdf_Graph
             self::$_rdfSerialiser = new EasyRdf_Serialiser_Builtin();
         }
         return self::$_rdfSerialiser;
-    }
-
-    /** Set a language filter for literals.
-     *
-     * For example setting setLangFilter('en') will ignore all
-     * non-english literals.
-     * Set to null to disable language filtering of literals.
-     * By default there is no language filter for literals.
-     *
-     * @param  string $lang The language to accept (for example 'en')
-     */
-    public static function setLangFilter($lang)
-    {
-        if (!is_string($lang) and $lang != null) {
-            throw new InvalidArgumentException(
-                "\$lang should be a string or null"
-            );
-        }
-        self::$_langFilter = $lang;
-    }
-
-    /** Get the literal language filter
-     *
-     * @return string The language being accepted by the filter.
-     */
-    public static function getLangFilter()
-    {
-        return self::$_langFilter;
     }
 
     /** Convert a mime type into a simplier document type name
@@ -441,11 +410,7 @@ class EasyRdf_Graph
                         if ($property == 'rdf:type') {
                             # Type has already been set
                         } else if ($obj['type'] == 'literal') {
-                            if (!isset($obj['lang']) or 
-                                !isset(self::$_langFilter) or 
-                                $obj['lang'] == self::$_langFilter) {
-                                $res->add($property, $obj['value']);
-                            }
+                            $res->add($property, new EasyRdf_Literal($obj));
                         } else if ($obj['type'] == 'uri') {
                             $type = $this->getResourceType(
                                 $data, $obj['value']

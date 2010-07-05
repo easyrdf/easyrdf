@@ -10,7 +10,7 @@ require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
  */
 require_once 'PHPUnit/Framework/TestCase.php';
 
-class EasyRdf_Http_ResponseTest extends PHPUnit_Framework_TestCase
+class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
 {
     public function testGetVersion()
     {

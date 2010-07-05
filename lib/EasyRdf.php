@@ -60,6 +60,11 @@ require_once "EasyRdf/Http/Client.php";
 require_once "EasyRdf/Http/Response.php";
 
 /**
+ * @see EasyRdf_Literal
+ */
+require_once "EasyRdf/Literal.php";
+
+/**
  * @see EasyRdf_Namespace
  */
 require_once "EasyRdf/Namespace.php";

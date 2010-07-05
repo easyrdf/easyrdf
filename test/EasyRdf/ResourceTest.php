@@ -38,7 +38,7 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
+class EasyRdf_ResourceTest extends EasyRdf_TestCase
 {
     protected $_resource = null;
     
@@ -50,7 +50,7 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         $this->_resource = new EasyRdf_Resource('http://www.example.com/#me');
         $this->_resource->set('rdf:type', 'foaf:Person');
         $this->_resource->add('test:prop', 'Test A');
-        $this->_resource->add('test:prop', 'Test B');
+        $this->_resource->add('test:prop', new EasyRdf_Literal('Test B', 'en'));
     }
 
     public function testConstructNull()
@@ -87,6 +87,14 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetWithLanguage()
+    {
+        $this->assertStringEquals(
+            'Test B',
+            $this->_resource->get('test:prop','en')
+        );
+    }
+
     public function testGetNonExistantProperty()
     {
         $this->assertNull($this->_resource->get('foo:bar'));
@@ -112,10 +120,9 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testAll()
     {
-        $this->assertEquals(
-            array('Test A','Test B'),
-            $this->_resource->all('test:prop')
-        );
+        $all = $this->_resource->all('test:prop');
+        $this->assertStringEquals('Test A',$all[0]);
+        $this->assertStringEquals('Test B',$all[1]);
     }
 
     public function testAllNonExistantProperty()
@@ -183,19 +190,22 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     public function testAdd()
     {
         $this->_resource->add('test:prop', 'Test C');
-        $this->assertEquals(
-            array('Test A', 'Test B', 'Test C'),
-            $this->_resource->all('test:prop')
-        );
+        $all = $this->_resource->all('test:prop');
+        $this->assertEquals(3, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+        $this->assertStringEquals('Test C', $all[2]);
     }
 
     public function testAddMultipleValues()
     {
         $this->_resource->add('test:prop', array('Test C', 'Test D'));
-        $this->assertEquals(
-            array('Test A', 'Test B', 'Test C', 'Test D'),
-            $this->_resource->all('test:prop')
-        );
+        $all = $this->_resource->all('test:prop');
+        $this->assertEquals(4, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+        $this->assertStringEquals('Test C', $all[2]);
+        $this->assertStringEquals('Test D', $all[3]);
     }
 
     public function testAddMultipleProperties()
@@ -212,19 +222,20 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
     public function testAddAssociateProperties()
     {
         $this->_resource->add(array('test:prop' => 'Test C'));
-        $this->assertEquals(
-            array('Test A', 'Test B', 'Test C'),
-            $this->_resource->all('test:prop')
-        );
+        $all = $this->_resource->all('test:prop');
+        $this->assertEquals(3, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+        $this->assertStringEquals('Test C', $all[2]);
     }
     
     public function testAddNull()
     {
         $this->_resource->add('test:prop', null);
-        $this->assertEquals(
-            array('Test A', 'Test B'),
-            $this->_resource->all('test:prop')
-        );
+        $all = $this->_resource->all('test:prop');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
     }
 
     public function testAddNullKey()
@@ -421,10 +432,10 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testMagicAll()
     {
-        $this->assertEquals(
-            array('Test A','Test B'),
-            $this->_resource->allTest_prop()
-        );
+        $all = $this->_resource->allTest_prop();
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
     }
 
     public function testMagicAllNonExistantProperty()
@@ -440,9 +451,9 @@ class EasyRdf_ResourceTest extends PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $this->assertEquals(
+        $this->assertStringEquals(
             'http://www.example.com/#me',
-            $this->_resource->__toString()
+            $this->_resource
         );
     }
 }

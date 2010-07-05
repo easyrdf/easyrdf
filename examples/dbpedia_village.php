@@ -7,7 +7,7 @@
     require_once "EasyRdf/Parser/Rapper.php";
     EasyRdf_Graph::setRdfParser( new EasyRdf_Parser_Rapper('/usr/local/bin/rapper') );
     
-    EasyRdf_Graph::setLangFilter('en');
+    $LANG = 'en';
     EasyRdf_Namespace::set('dbpprop', "http://dbpedia.org/property/");
     EasyRdf_Namespace::set('georss', "http://www.georss.org/georss/");
 ?>
@@ -22,14 +22,14 @@
         $graph = new EasyRdf_Graph( $uri );
         $village = $graph->get($uri);
         
-        print content_tag('h2',$village->label());
+        print content_tag('h2',$village->label($LANG));
         
         if ($village->get('foaf:depiction')) {
             print image_tag($village->get('foaf:depiction'),
               array('style'=>'max-width:400px;max-height:250px;'));
         }
         
-        print content_tag('p',$village->get('rdfs:comment'));
+        print content_tag('p',$village->get('rdfs:comment',$LANG));
         
         if ($village->get('dbpprop:longitude')) {
             $ll = $village->get('dbpprop:latitude').','.$village->get('dbpprop:longitude');

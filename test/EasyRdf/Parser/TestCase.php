@@ -39,7 +39,7 @@
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Parser_Base extends PHPUnit_Framework_TestCase
+class EasyRdf_Parser_TestCase extends EasyRdf_TestCase
 {
     protected $_parser = null;
 

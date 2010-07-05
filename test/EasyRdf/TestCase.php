@@ -36,33 +36,13 @@
  * @version    $Id$
  */
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'TestCase.php';
-require_once 'EasyRdf/Serialiser/Rapper.php';
 
-class EasyRdf_Serialiser_RapperTest extends EasyRdf_Serialiser_TestCase
+class EasyRdf_TestCase extends PHPUnit_Framework_TestCase
 {
-    public function setUp()
+
+    public function assertStringEquals($str1, $str2, $message=null)
     {
-        exec('which rapper', $output, $retval);
-        if ($retval == 0) {
-            $this->_serialiser = new EasyRdf_Serialiser_Rapper();
-            parent::setUp();
-        } else {
-            $this->markTestSkipped(
-                "The rapper command is not available on this system."
-            );
-        }
+        $this->assertEquals(strval($str1), strval($str2), $message);
     }
-    
-    function testRapperNotFound()
-    {
-        $this->setExpectedException('EasyRdf_Exception');
-        new EasyRdf_Serialiser_Rapper('random_command_that_doesnt_exist');
-    }
-    
-    function testRapperExecError()
-    {
-        # FIXME: how can we cause proc_open() to fail?
-        $this->markTestIncomplete();
-    }
+
 }

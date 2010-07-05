@@ -36,9 +36,9 @@
  * @version    $Id$
  */
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Base.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'TestCase.php';
 
-class EasyRdf_Serialiser_BuiltinTest extends EasyRdf_Serialiser_Base
+class EasyRdf_Serialiser_BuiltinTest extends EasyRdf_Serialiser_TestCase
 {
     public function setUp()
     {

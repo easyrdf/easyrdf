@@ -36,10 +36,10 @@
  * @version    $Id$
  */
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'Base.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'TestCase.php';
 require_once 'EasyRdf/Parser/Rapper.php';
 
-class EasyRdf_Parser_RapperTest extends EasyRdf_Parser_Base
+class EasyRdf_Parser_RapperTest extends EasyRdf_Parser_TestCase
 {
     public function setUp()
     {

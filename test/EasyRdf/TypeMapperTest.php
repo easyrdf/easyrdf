@@ -47,7 +47,7 @@ class MyType_Class extends EasyRdf_Resource
 }
 
 
-class EasyRdf_TypeMapperTest extends PHPUnit_Framework_TestCase
+class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 {
     /**
      * Set up the test suite before each test
