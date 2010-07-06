@@ -97,9 +97,9 @@ class EasyRdf_Serialiser_TestCase extends EasyRdf_TestCase
 
     function testSerialiseNtriples()
     {
-        $joe = $this->_graph->get('http://www.example.com/joe#me');
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:name', 'Joe Bloggs');
-        $joe->set('foaf:homepage', $this->_graph->get('http://www.example.com/joe/'));
+        $joe->set('foaf:homepage', $this->_graph->resource('http://www.example.com/joe/'));
         $this->assertEquals(
             "<http://www.example.com/joe#me> ".
                 "<http://xmlns.com/foaf/0.1/name> ".
@@ -113,7 +113,7 @@ class EasyRdf_Serialiser_TestCase extends EasyRdf_TestCase
 
     function testSerialiseNtriplesQuotes()
     {
-        $joe = $this->_graph->get('http://www.example.com/joe#me');
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:nick', '"Joey"');
         $this->assertEquals(
             "<http://www.example.com/joe#me> ".
@@ -125,7 +125,7 @@ class EasyRdf_Serialiser_TestCase extends EasyRdf_TestCase
 
     function testSerialiseNtriplesBNode()
     {
-        $joe = $this->_graph->get('http://www.example.com/joe#me');
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->_graph->add($joe, 'foaf:project', array('foaf:name' => 'Project Name'));
 
         $this->assertEquals(
@@ -138,7 +138,7 @@ class EasyRdf_Serialiser_TestCase extends EasyRdf_TestCase
 
     function testSerialisePhp()
     {
-        $joe = $this->_graph->get('http://www.example.com/joe#me');
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:name', 'Joe Bloggs');
         $this->_graph->add($joe, 'foaf:project', array('foaf:name' => 'Project Name'));
 
@@ -161,7 +161,7 @@ class EasyRdf_Serialiser_TestCase extends EasyRdf_TestCase
     {
         $this->markTestIncomplete();
     /*  FIXME: how to test this for any valid JSON?
-        $joe = $this->_graph->get('http://www.example.com/joe#me');
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:name', 'Joe Bloggs');
 
         $this->assertEquals(

@@ -20,7 +20,7 @@
     if (isset($_REQUEST['term'])) {
         $uri = "http://dbpedia.org/resource/".$_REQUEST['term'];
         $graph = new EasyRdf_Graph( $uri );
-        $village = $graph->get($uri);
+        $village = $graph->resource($uri);
 
         print content_tag('h2',$village->label($LANG));
 
@@ -41,7 +41,7 @@
     } else {
         $uri = "http://dbpedia.org/resource/Category:Villages_in_Fife";
         $graph = new EasyRdf_Graph( $uri );
-        $category = $graph->get($uri);
+        $category = $graph->resource($uri);
         foreach ($graph->resourcesMatching('skos:subject',$category) as $resource) {
             $term = str_replace('http://dbpedia.org/resource/','',$resource);
             $label = urldecode(str_replace('_',' ',$term));

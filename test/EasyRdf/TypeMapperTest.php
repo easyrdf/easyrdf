@@ -128,7 +128,7 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
         $graph = new EasyRdf_Graph(
             'http://www.example.com/joe/foaf.rdf', $data
         );
-        $joe = $graph->get('http://www.example.com/joe#me');
+        $joe = $graph->resource('http://www.example.com/joe#me');
         $this->assertEquals('MyType_Class', get_class($joe));
         $this->assertTrue($joe->myMethod());
     }

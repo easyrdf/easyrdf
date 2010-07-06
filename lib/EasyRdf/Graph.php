@@ -264,7 +264,7 @@ class EasyRdf_Graph
      * @param  mixed   $types  RDF type of a new resouce (e.g. foaf:Person)
      * @return object EasyRdf_Resouce
      */
-    public function get($uri, $types = array())
+    public function resource($uri, $types = array())
     {
         # FIXME: allow URI to be shortened?
         if (!is_string($uri) or $uri == null or $uri == '') {
@@ -311,6 +311,15 @@ class EasyRdf_Graph
     }
 
     /**
+     * Alias for $graph->resource()
+     *
+     * @deprecated 0.4
+     */
+    public function get($uri, $types = array()) {
+        return $this->resource($uri, $types);
+    }
+
+    /**
      * Create a new blank node in the graph and return it.
      *
      * If you provide an RDF type and that type is registered
@@ -322,7 +331,7 @@ class EasyRdf_Graph
      */
     public function newBNode($types=array())
     {
-        return $this->get("_:eid".(++$this->_bNodeCount), $types);
+        return $this->resource("_:eid".(++$this->_bNodeCount), $types);
     }
 
     /**
@@ -400,7 +409,7 @@ class EasyRdf_Graph
                 }
                 $res = $bnodeMap[$subj];
             } else {
-                $res = $this->get($subj, $type);
+                $res = $this->resource($subj, $type);
             }
 
             foreach ($touple as $property => $objs) {
@@ -415,7 +424,7 @@ class EasyRdf_Graph
                             $type = $this->getResourceType(
                                 $data, $obj['value']
                             );
-                            $objres = $this->get($obj['value'], $type);
+                            $objres = $this->resource($obj['value'], $type);
                             $res->add($property, $objres);
                         } else if ($obj['type'] == 'bnode') {
                             $objuri = $obj['value'];
@@ -538,7 +547,7 @@ class EasyRdf_Graph
      * The value can either be a single value or an array of values.
      *
      * Examples:
-     *   $res = $graph->get("http://www.example.com");
+     *   $res = $graph->resource("http://www.example.com");
      *   $graph->add($res, 'prefix:property', 'value');
      *   $graph->add($res, 'prefix:property', array('value1',value2'));
      *   $graph->add($res, array('prefix:property' => 'value1'));
@@ -552,7 +561,7 @@ class EasyRdf_Graph
     public function add($resource, $properties, $value=null)
     {
         if (!is_object($resource)) {
-            $resource = $this->get($resource);
+            $resource = $this->resource($resource);
         } else if (!$resource instanceof EasyRdf_Resource) {
             throw new InvalidArgumentException(
                 "\$resource should be an instance of the EasyRdf_Resource class"
@@ -617,7 +626,7 @@ class EasyRdf_Graph
     public function type()
     {
         if ($this->_uri) {
-            $res = $this->get($this->_uri);
+            $res = $this->resource($this->_uri);
             return $res->type();
         } else {
             return null;
@@ -631,7 +640,7 @@ class EasyRdf_Graph
     public function primaryTopic()
     {
         if ($this->_uri) {
-            $res = $this->get($this->_uri);
+            $res = $this->resource($this->_uri);
             return $res->get('foaf:primaryTopic');
         } else {
             return null;
@@ -651,7 +660,7 @@ class EasyRdf_Graph
     public function __call($name, $arguments)
     {
         if ($this->_uri) {
-            $res = $this->get($this->_uri);
+            $res = $this->resource($this->_uri);
             return call_user_func_array(array($res, $name), $arguments);
         } else {
             return null;

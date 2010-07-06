@@ -56,7 +56,7 @@ class EasyRdf_Resource
      * * Please do not call new EasyRdf_Resource() directly *
      *
      * To create a new resource use the get method in a graph:
-     * $resource = $graph->get('http://www.example.com/');
+     * $resource = $graph->resource('http://www.example.com/');
      *
      */
     public function __construct($uri)

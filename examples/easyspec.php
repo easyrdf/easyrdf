@@ -28,7 +28,7 @@
         EasyRdf_Namespace::set( $_REQUEST['short'], $_REQUEST['uri'] );
 
         $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
-        $ontology = $graph->get( $_REQUEST['uri'] );
+        $ontology = $graph->resource( $_REQUEST['uri'] );
 
     } else {
 

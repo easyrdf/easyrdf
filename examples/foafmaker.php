@@ -59,14 +59,14 @@
         $graph = new EasyRdf_Graph();
 
         # 1st Technique
-        $me = $graph->get($_REQUEST['uri'], 'foaf:Person');
+        $me = $graph->resource($_REQUEST['uri'], 'foaf:Person');
         $me->set('foaf:name', $_REQUEST['title'].' '.$_REQUEST['given_name'].' '.$_REQUEST['family_name']);
         if ($_REQUEST['email']) {
-            $email = $graph->get("mailto:".$_REQUEST['email']);
+            $email = $graph->resource("mailto:".$_REQUEST['email']);
             $me->add('foaf:mbox', $email);
         }
         if ($_REQUEST['homepage']) {
-            $homepage = $graph->get($_REQUEST['homepage']);
+            $homepage = $graph->resource($_REQUEST['homepage']);
             $me->add('foaf:homepage', $homepage);
         }
 
@@ -81,7 +81,7 @@
         # Add friends
         for($i=1; $i<=4; $i++) {
             if ($_REQUEST["person_$i"]) {
-                $person = $graph->get($_REQUEST["person_$i"]);
+                $person = $graph->resource($_REQUEST["person_$i"]);
                 $graph->add($me, 'foaf:knows', $person);
             }
         }

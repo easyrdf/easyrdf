@@ -24,7 +24,7 @@
             if ($graph->type() == 'foaf:PersonalProfileDocument') {
                 $person = $graph->primaryTopic();
             } else if ($graph->type() == 'foaf:Person') {
-                $person = $graph->get( $graph->getUri() );
+                $person = $graph->resource( $graph->getUri() );
             }
         }
     }
