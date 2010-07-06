@@ -121,8 +121,16 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testAll()
     {
         $all = $this->_resource->all('test:prop');
+        $this->assertEquals(2, count($all));
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
+    }
+
+    public function testAllWithLang()
+    {
+        $all = $this->_resource->all('test:prop','en');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('Test B', $all[0]);
     }
 
     public function testAllNonExistantProperty()
@@ -289,6 +297,14 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testJoinWithLang()
+    {
+        $this->assertEquals(
+            'Test B',
+            $this->_resource->join('test:prop', ' ', 'en')
+        );
+    }
+
     public function testJoinNonExistantProperty()
     {
         $this->assertEquals('', $this->_resource->join('foo:bar'));
@@ -363,13 +379,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testType()
     {
-        $this->assertEquals('foaf:Person', $this->_resource->type());
+        $this->assertStringEquals('foaf:Person', $this->_resource->type());
     }
 
     public function testPrefix()
     {
         $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
-        $this->assertEquals('foaf', $foafName->prefix());
+        $this->assertStringEquals('foaf', $foafName->prefix());
     }
 
     public function testUnknownPrefix()
@@ -399,20 +415,27 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_resource->set('rdfs:label', 'Label Text');
         $this->_resource->set('foaf:name', 'Foaf Name');
         $this->_resource->set('dc:title', 'Dc Title');
-        $this->assertEquals('Label Text', $this->_resource->label());
+        $this->assertStringEquals('Label Text', $this->_resource->label());
     }
 
     public function testLabelWithFoafName()
     {
         $this->_resource->set('foaf:name', 'Foaf Name');
         $this->_resource->set('dc:title', 'Dc Title');
-        $this->assertEquals('Foaf Name', $this->_resource->label());
+        $this->assertStringEquals('Foaf Name', $this->_resource->label());
     }
 
     public function testLabelWithDcTitle()
     {
         $this->_resource->set('dc:title', 'Dc Title');
-        $this->assertEquals('Dc Title', $this->_resource->label());
+        $this->assertStringEquals('Dc Title', $this->_resource->label());
+    }
+
+    public function testLabelWithLang()
+    {
+        $this->_resource->set('rdfs:label', 'Label Text');
+        $this->_resource->set('dc:title', new EasyRdf_Literal('Dc Title', 'en'));
+        $this->assertStringEquals('Dc Title', $this->_resource->label('en'));
     }
 
     public function testDump()
@@ -422,12 +445,12 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testMagicGet()
     {
-        $this->assertEquals('Test A', $this->_resource->getTest_prop());
+        $this->assertStringEquals('Test A', $this->_resource->getTest_prop());
     }
 
     public function testMagicGetNonExistantProperty()
     {
-        $this->assertEquals('', $this->_resource->getFoo_bar());
+        $this->assertStringEquals('', $this->_resource->getFoo_bar());
     }
 
     public function testMagicAll()

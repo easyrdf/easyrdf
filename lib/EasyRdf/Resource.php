@@ -237,6 +237,7 @@ class EasyRdf_Resource
      * This method will return an empty array if the property does not exist.
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  string  $lang     The language to filter by (e.g. en)
      * @return array             A value associated with the property
      */
     public function all($property, $lang=null)
@@ -248,7 +249,16 @@ class EasyRdf_Resource
         }
 
         if (isset($this->_properties[$property])) {
-            return $this->_properties[$property];
+            if ($lang) {
+                $values = array();
+                foreach ($this->_properties[$property] as $value) {
+                    if (is_object($value) && $value->getLang() == $lang)
+                        $values[] = $value;
+                }
+                return $values;
+            } else {
+                return $this->_properties[$property];
+            }
         } else {
             return array();
         }
@@ -261,6 +271,7 @@ class EasyRdf_Resource
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $glue     The string to glue the values together with.
+     * @param  string  $lang     The language to filter by (e.g. en)
      * @return string            Concatenation of all the values.
      */
     public function join($property, $glue=' ', $lang=null)
@@ -271,7 +282,7 @@ class EasyRdf_Resource
             );
         }
 
-        return join($glue, $this->all($property));
+        return join($glue, $this->all($property, $lang));
     }
     
     /** Get a list of all the property names for a resource.
