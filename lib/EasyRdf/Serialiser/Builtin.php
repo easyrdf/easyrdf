@@ -7,27 +7,27 @@
  *
  * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright 
+ * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or 
- *    promote products derived from this software without specific prior 
+ * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or
+ *    promote products derived from this software without specific prior
  *    written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
@@ -123,12 +123,12 @@ class EasyRdf_Serialiser_Builtin
         foreach ($graph->resources() as $resource) {
             $properties = $resource->properties();
             if (count($properties) == 0) continue;
-            
+
             $subj = $resource->getUri();
             if (!isset($rdfphp[$subj])) {
                 $rdfphp[$subj] = array();
             }
-        
+
             foreach ($properties as $property) {
                 $prop = EasyRdf_Namespace::expand($property);
                 if ($prop) {
@@ -137,7 +137,7 @@ class EasyRdf_Serialiser_Builtin
                     }
                     $objects = $resource->all($property);
                     foreach ($objects as $obj) {
-                        if (is_object($obj) and 
+                        if (is_object($obj) and
                            ($obj instanceof EasyRdf_Resource)) {
                             if ($obj->isBNode()) {
                                 $object = array('type' => 'bnode',
@@ -146,7 +146,7 @@ class EasyRdf_Serialiser_Builtin
                                 $object = array('type' => 'uri',
                                                 'value' => $obj->getUri());
                             }
-                        } else if (is_object($obj) and 
+                        } else if (is_object($obj) and
                            ($obj instanceof EasyRdf_Literal)) {
                             $object = array('type' => 'literal',
                                             'value' => $obj->getValue());
@@ -167,7 +167,7 @@ class EasyRdf_Serialiser_Builtin
         }
         return $rdfphp;
     }
-    
+
     /**
      * Method to serialise an EasyRdf_Graph into RDF/JSON
      *
@@ -177,7 +177,7 @@ class EasyRdf_Serialiser_Builtin
     {
         return json_encode($this->to_rdfphp($graph));
     }
-    
+
     /**
      * Serialise an EasyRdf_Graph into RDF format of choice.
      *
@@ -199,7 +199,7 @@ class EasyRdf_Serialiser_Builtin
                 "\$format should be a string and cannot be null or empty"
             );
         }
-    
+
         if ($format == 'php') {
             return $this->to_rdfphp($graph);
         } else if ($format == 'json') {

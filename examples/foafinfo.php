@@ -28,7 +28,7 @@
             }
         }
     }
-  
+
     if (isset($person)) {
 ?>
 
@@ -56,7 +56,7 @@
         }
         echo "</ul>\n";
     }
-    
+
     if (isset($graph)) {
         echo "<hr />";
         echo $graph->dump();

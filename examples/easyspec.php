@@ -26,12 +26,12 @@
 <?php
     if (isset($_REQUEST['uri'])) {
         EasyRdf_Namespace::set( $_REQUEST['short'], $_REQUEST['uri'] );
-    
+
         $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
         $ontology = $graph->get( $_REQUEST['uri'] );
-        
+
     } else {
-        
+
         echo "<h2>Some examples:</h2>\n";
         echo "<ul>\n";
         echo "<li><a href='easyspec.php?short=foaf&uri=http%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F'>Friend of a Friend</a></li>\n";
@@ -42,10 +42,10 @@
     }
 ?>
 
-<? 
+<?
     if (isset($ontology)) {
         echo "<h2>".$ontology->label()."</h2>\n";
-        
+
         echo "<dl>\n";
         echo "<dt>Namespace:</dt><dd>".link_to($ontology->getUri())."</dd>\n";
         if ($ontology->get('dc:date')) echo "<dt>Date:</dt><dd>".$ontology->get('dc:date')."</dd>\n";
@@ -54,7 +54,7 @@
         echo "</dl>\n";
         foreach ($ontology->all('rdfs:comment') as $comment) { echo "<p>$comment</p>\n"; }
         foreach ($ontology->all('dc:description') as $description) { echo "<p>$description</p>\n"; }
-        
+
         echo "<h2>Classes</h2>\n";
         foreach ($graph->allOfType('owl:Class') as $class) {
             if ($class->prefix() != $_REQUEST['short']) continue;
@@ -73,7 +73,7 @@
                     }
                 }
             }
-            
+
             if ($class->get('owl:disjointWith')) {
                 echo "<dt>Disjoint with:</dt>\n";
                 foreach ($class->all('owl:disjointWith') as $disjointWith) {

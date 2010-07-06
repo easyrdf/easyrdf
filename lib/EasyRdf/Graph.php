@@ -7,27 +7,27 @@
  *
  * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright 
+ * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or 
- *    promote products derived from this software without specific prior 
+ * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or
+ *    promote products derived from this software without specific prior
  *    written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
@@ -47,25 +47,25 @@ class EasyRdf_Graph
 {
     /** The URI of the graph */
     private $_uri = null;
-    
+
     /** Array of resources contained in the graph */
     private $_resources = array();
-    
+
     /** Counter for the number of bnodes */
     private $_bNodeCount = 0;
-    
+
     /** Index of resources organised by type */
     private $_typeIndex = array();
-    
+
     /** An HTTP Client object used by graph to fetch data */
     private static $_httpClient = null;
-    
+
     /** An RDF Parser object used by graph to parse RDF */
     private static $_rdfParser = null;
-    
+
     /** An RDF Serialiser object used by graph to generate RDF */
     private static $_rdfSerialiser = null;
-    
+
     /** Mapping between mime types and serialisation names */
     private static $_mimeTypeMap = array(
         'application/json' => 'json',
@@ -82,7 +82,7 @@ class EasyRdf_Graph
         'text/html' => 'rdfa',
         'application/xhtml+xml' => 'rdfa'
     );
-    
+
     /** A constant for the RDF Type property URI */
     const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
@@ -101,7 +101,7 @@ class EasyRdf_Graph
         }
         return self::$_httpClient = $httpClient;
     }
-    
+
     /** Get the HTTP Client object used to fetch RDF data
      *
      * If no HTTP Client has previously been set, then a new
@@ -131,7 +131,7 @@ class EasyRdf_Graph
         }
         self::$_rdfParser = $rdfParser;
     }
-    
+
     /** Get the RDF parser object used to parse RDF data
      *
      * If no RDF Parser has previously been set, then a new
@@ -161,7 +161,7 @@ class EasyRdf_Graph
         }
         self::$_rdfSerialiser = $rdfSerialiser;
     }
-    
+
     /** Get the RDF serialiser object used to generate RDF data
      *
      * If no RDF Serialiser has previously been set, then a new
@@ -192,7 +192,7 @@ class EasyRdf_Graph
             return null;
         }
     }
-    
+
     /** Attempt to guess the document type from some content.
      *
      * If the document type is not recognised, null is returned.
@@ -206,7 +206,7 @@ class EasyRdf_Graph
             # Data has already been parsed into RDF/PHP
             return 'php';
         }
-        
+
         # FIXME: could /etc/magic help here?
         $short = substr(trim($data), 0, 255);
         if (preg_match("/^\{/", $short)) {
@@ -228,7 +228,7 @@ class EasyRdf_Graph
             return null;
         }
     }
-    
+
     /**
      * Constructor
      *
@@ -255,7 +255,7 @@ class EasyRdf_Graph
 
     /** Get or create a resource stored in a graph
      *
-     * If the resource did not previously exist, then a new resource will 
+     * If the resource did not previously exist, then a new resource will
      * be created. If you provide an RDF type and that type is registered
      * with the EasyRDF_TypeMapper, then the resource will be an instance
      * of the class registered.
@@ -272,13 +272,13 @@ class EasyRdf_Graph
                 "\$uri should be a string and cannot be null or empty"
             );
         }
-    
+
         # Convert types to an array if it isn't one
         # FIXME: shorten types if not already short
         if (!is_array($types)) {
             $types = array($types);
         }
-    
+
         # Create resource object if it doesn't already exist
         if (!array_key_exists($uri, $this->_resources)) {
             $resClass = 'EasyRdf_Resource';
@@ -309,7 +309,7 @@ class EasyRdf_Graph
 
         return $this->_resources[$uri];
     }
-    
+
     /**
      * Create a new blank node in the graph and return it.
      *
@@ -366,12 +366,12 @@ class EasyRdf_Graph
                 );
             }
         }
-        
+
         # Guess the document type if not given
         if ($format == null) {
             $format = self::guessDocType($data);
         }
-        
+
         # Parse the document
         if ($format == 'php') {
             # FIXME: validate the data?
@@ -392,7 +392,7 @@ class EasyRdf_Graph
         $bnodeMap = array();
         foreach ($data as $subj => $touple) {
             $type = $this->getResourceType($data, $subj);
-            
+
             # Is this a bnode?
             if (substr($subj, 0, 2) == '_:') {
                 if (!isset($bnodeMap[$subj])) {
@@ -402,7 +402,7 @@ class EasyRdf_Graph
             } else {
                 $res = $this->get($subj, $type);
             }
-              
+
             foreach ($touple as $property => $objs) {
                 $property = EasyRdf_Namespace::shorten($property);
                 if (isset($property)) {
@@ -432,10 +432,10 @@ class EasyRdf_Graph
                     }
                 }
             }
-        
+
         }
     }
-    
+
     /**
      * Get the type of a resource from some RDF/PHP
      * (http://n2.talis.com/wiki/RDF_PHP_Specification)
@@ -470,10 +470,10 @@ class EasyRdf_Graph
     {
         return $this->_resources;
     }
-    
+
     /** Get an arry of resources matching a certain property and value.
      *
-     * For example this routine could be used as a way of getting 
+     * For example this routine could be used as a way of getting
      * everyone who is male:
      * $people = $graph->resourcesMatching('foaf:gender', 'male');
      *
@@ -491,7 +491,7 @@ class EasyRdf_Graph
         }
         return $matched;
     }
-    
+
     /** Get all the resources in the graph of a certain type
      *
      * If no resources of the type are available and empty
@@ -509,7 +509,7 @@ class EasyRdf_Graph
             return array();
         }
     }
-    
+
     /** Get a list of the types of resources in the graph
      *
      * @return array Array of types
@@ -518,7 +518,7 @@ class EasyRdf_Graph
     {
         return array_keys($this->_typeIndex);
     }
-    
+
     /** Get the URI of the graph
      *
      * @return string The URI of the graph
@@ -527,7 +527,7 @@ class EasyRdf_Graph
     {
         return $this->_uri;
     }
-    
+
     /** Add data to the graph
      *
      * The resource can either be a resource or the URI of a resource.
@@ -558,7 +558,7 @@ class EasyRdf_Graph
                 "\$resource should be an instance of the EasyRdf_Resource class"
             );
         }
-        
+
         if (EasyRdf_Utils::is_associative_array($properties)) {
             foreach ($properties as $property => $value) {
                 $this->add($resource, $property, $value);
@@ -577,7 +577,7 @@ class EasyRdf_Graph
             $resource->add($properties, $value);
         }
     }
-    
+
     /** Serialise the graph into RDF
      *
      * @param  string  $format  The format to serialise into
@@ -604,11 +604,11 @@ class EasyRdf_Graph
             $resource->dump($html, 1);
         }
     }
-    
+
     /** Get the resource type of the graph
      *
      * The type will be a shortened URI as a string.
-     * If the graph has multiple types then the type returned 
+     * If the graph has multiple types then the type returned
      * may be arbitrary.
      * This method will return null if the resource has no type.
      *
@@ -623,7 +623,7 @@ class EasyRdf_Graph
             return null;
         }
     }
-    
+
     /** Get the primary topic of the graph
      *
      * @return EasyRdf_Resource The primary topic of the document.
@@ -638,7 +638,7 @@ class EasyRdf_Graph
         }
     }
 
-    
+
     // BEWARE! Magic below
 
     /** Magic method to give access to properties using method calls
@@ -657,7 +657,7 @@ class EasyRdf_Graph
             return null;
         }
     }
-    
+
     /** Magic method to return URI of resource when casted to string
      *
      * @return string The URI of the resource

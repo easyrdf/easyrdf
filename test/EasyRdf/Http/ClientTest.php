@@ -48,7 +48,7 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $uri = $this->_client->getUri(true);
         $this->assertTrue(
             is_string($uri),
-            'Returned value expected to be a string, ' . 
+            'Returned value expected to be a string, ' .
             gettype($uri) . ' returned'
         );
         $this->assertEquals(

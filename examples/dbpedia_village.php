@@ -6,7 +6,7 @@
     ## FIXME: one day EasyRdf will parse RDF/XML natively
     require_once "EasyRdf/Parser/Rapper.php";
     EasyRdf_Graph::setRdfParser( new EasyRdf_Parser_Rapper('/usr/local/bin/rapper') );
-    
+
     $LANG = 'en';
     EasyRdf_Namespace::set('dbpprop', "http://dbpedia.org/property/");
     EasyRdf_Namespace::set('georss', "http://www.georss.org/georss/");
@@ -21,16 +21,16 @@
         $uri = "http://dbpedia.org/resource/".$_REQUEST['term'];
         $graph = new EasyRdf_Graph( $uri );
         $village = $graph->get($uri);
-        
+
         print content_tag('h2',$village->label($LANG));
-        
+
         if ($village->get('foaf:depiction')) {
             print image_tag($village->get('foaf:depiction'),
               array('style'=>'max-width:400px;max-height:250px;'));
         }
-        
+
         print content_tag('p',$village->get('rdfs:comment',$LANG));
-        
+
         if ($village->get('dbpprop:longitude')) {
             $ll = $village->get('dbpprop:latitude').','.$village->get('dbpprop:longitude');
             print "<iframe width='425' height='350' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://maps.google.com/maps?f=q&amp;sll=$ll&amp;output=embed'></iframe>";

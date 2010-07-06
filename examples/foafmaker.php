@@ -52,12 +52,12 @@
 
 <?php
     if (isset($_REQUEST['uri'])) {
-    
+
         require_once "EasyRdf/Serialiser/".$_REQUEST['serialiser'].'.php';
         $serialiser = "EasyRdf_Serialiser_".$_REQUEST['serialiser'];
         EasyRdf_Graph::setRdfSerialiser(new $serialiser());
         $graph = new EasyRdf_Graph();
-        
+
         # 1st Technique
         $me = $graph->get($_REQUEST['uri'], 'foaf:Person');
         $me->set('foaf:name', $_REQUEST['title'].' '.$_REQUEST['given_name'].' '.$_REQUEST['family_name']);
@@ -69,7 +69,7 @@
             $homepage = $graph->get($_REQUEST['homepage']);
             $me->add('foaf:homepage', $homepage);
         }
-        
+
         # 2nd Technique
         $graph->add( $_REQUEST['uri'], array(
             'foaf:title' => $_REQUEST['title'],
@@ -77,13 +77,13 @@
             'foaf:family_name' => $_REQUEST['family_name'],
             'foaf:nick' => $_REQUEST['nickname']
         ));
-        
+
         # Add friends
         for($i=1; $i<=4; $i++) {
             if ($_REQUEST["person_$i"]) {
                 $person = $graph->get($_REQUEST["person_$i"]);
                 $graph->add($me, 'foaf:knows', $person);
-            }      
+            }
         }
 
         # Finally output the graph
@@ -93,7 +93,7 @@
         }
         print "<pre>".htmlspecialchars($data)."</pre>";
     }
-  
+
 ?>
 
 </body>

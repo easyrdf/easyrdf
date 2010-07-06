@@ -1,7 +1,7 @@
 <?php
 
 set_include_path(
-    get_include_path() . PATH_SEPARATOR . 
+    get_include_path() . PATH_SEPARATOR .
     dirname(__FILE__) . '/../lib/'
 );
 require_once "EasyRdf/Graph.php";
@@ -32,15 +32,15 @@ foreach($documents as $filename => $type) {
     $rdf = file_get_contents($filepath);
     print "Input file: $filename\n";
     print "File size: ".filesize($filepath)." bytes\n";
-    
+
     foreach($parsers as $parser) {
         $class = "EasyRdf_Parser_$parser";
         print "  Parsing using: $class\n";
-    
+
         try {
             require_once "EasyRdf/Parser/$parser.php";
             EasyRdf_Graph::setRdfParser(new $class());
-    
+
             $start = microtime(true);
             $graph = new EasyRdf_Graph($url, $rdf, $type);
             $duration = microtime(true) - $start;
@@ -50,7 +50,7 @@ foreach($documents as $filename => $type) {
             print 'Parsing failed: '.$e->getMessage()."\n";
         }
         print "\n";
-        
+
         unset($graph);
     }
 

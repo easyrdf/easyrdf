@@ -7,27 +7,27 @@
  *
  * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright 
+ * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or 
- *    promote products derived from this software without specific prior 
+ * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or
+ *    promote products derived from this software without specific prior
  *    written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
@@ -47,15 +47,15 @@ class EasyRdf_Resource
 {
     /** The URI for this resource */
     private $_uri = null;
-    
+
     /** Associative array of properties */
     private $_properties = array();
-    
+
     /** Constructor
      *
      * * Please do not call new EasyRdf_Resource() directly *
      *
-     * To create a new resource use the get method in a graph: 
+     * To create a new resource use the get method in a graph:
      * $resource = $graph->get('http://www.example.com/');
      *
      */
@@ -66,10 +66,10 @@ class EasyRdf_Resource
                 "\$uri should be a string and cannot be null or empty"
             );
         }
-        
+
         $this->_uri = $uri;
     }
-    
+
     /** Returns the URI for the resource.
      *
      * @return string  URI of this resource.
@@ -78,12 +78,12 @@ class EasyRdf_Resource
     {
         return $this->_uri;
     }
-    
+
     /** Set value(s) for a property
      *
      * The new value(s) will replace the existing values for the property.
      * The name of the property should be a string.
-     * If you set a property to null or an empty array, then the property 
+     * If you set a property to null or an empty array, then the property
      * will be deleted.
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
@@ -97,14 +97,14 @@ class EasyRdf_Resource
                 "\$property should be a string and cannot be null or empty"
             );
         }
-        
+
         if ($values == null or (is_array($values) and count($values)==0)) {
             return $this->delete($property);
         } else {
             if (!is_array($values)) {
                 $values = array($values);
             }
-            
+
             // Convert the values to literals, if needed
             $literals = array();
             foreach ($values as $value) {
@@ -134,12 +134,12 @@ class EasyRdf_Resource
         if (isset($this->_properties[$property])) {
             unset($this->_properties[$property]);
         }
-        
+
         return null;
     }
-    
+
     /** Add values to an existing property
-     * 
+     *
      * The properties can either be a single property name or an
      * associate array of property names and values.
      *
@@ -184,7 +184,7 @@ class EasyRdf_Resource
         if ($value == null) {
              return null;
         }
-        
+
         // Get the existing values for the property
         if (array_key_exists($property, $this->_properties)) {
             $values = $this->_properties[$property];
@@ -204,13 +204,13 @@ class EasyRdf_Resource
                 array_push($values, $value);
             }
         }
-        
+
         return $this->set($property, $values);
     }
-    
+
     /** Get a single value for a property
      *
-     * If multiple values are set for a property then the value returned 
+     * If multiple values are set for a property then the value returned
      * may be arbitrary.
      * This method will return null if the property does not exist.
      *
@@ -241,7 +241,7 @@ class EasyRdf_Resource
             return null;
         }
     }
-    
+
     /** Get all values for a property
      *
      * This method will return an empty array if the property does not exist.
@@ -273,7 +273,7 @@ class EasyRdf_Resource
             return array();
         }
     }
-    
+
     /** Concatenate all values for a property into a string.
      *
      * The default is to join the values together with a space character.
@@ -294,7 +294,7 @@ class EasyRdf_Resource
 
         return join($glue, $this->all($property, $lang));
     }
-    
+
     /** Get a list of all the property names for a resource.
      *
      * This method will return an empty array if the resource has no properties.
@@ -305,10 +305,10 @@ class EasyRdf_Resource
     {
         return array_keys($this->_properties);
     }
-    
+
     /** Check to see if a value exists for a specified property
      *
-     * This method will return true if value exists for a property. 
+     * This method will return true if value exists for a property.
      *
      * @param  string  $property The name of the property (e.g. foaf:gender)
      * @param  string  $value    The value to check for (e.g. male)
@@ -318,7 +318,7 @@ class EasyRdf_Resource
     {
         return in_array($value, $this->all($property));
     }
-    
+
     /** Check to see if a resource is a blank node.
      *
      * @return bool True if this resource is a blank node.
@@ -331,7 +331,7 @@ class EasyRdf_Resource
             return false;
         }
     }
-    
+
     /** Get a list of types for a resource.
      *
      * The types will each be a shortened URI as a string.
@@ -343,11 +343,11 @@ class EasyRdf_Resource
     {
         return $this->all('rdf:type');
     }
-    
+
     /** Get a single type for a resource.
      *
      * The type will be a shortened URI as a string.
-     * If the resource has multiple types then the type returned 
+     * If the resource has multiple types then the type returned
      * may be arbitrary.
      * This method will return null if the resource has no type.
      *
@@ -357,7 +357,7 @@ class EasyRdf_Resource
     {
         return $this->get('rdf:type');
     }
-    
+
     /** Get a the prefix of the namespace that this resource is part of
      *
      * This method will return null the resource isn't part of any
@@ -369,7 +369,7 @@ class EasyRdf_Resource
     {
         return EasyRdf_Namespace::prefixOfUri($this->_uri);
     }
-    
+
     /** Get a shortened version of the resources URI.
      *
      * This method will return null the resource isn't part of any
@@ -381,12 +381,12 @@ class EasyRdf_Resource
     {
         return EasyRdf_Namespace::shorten($this->_uri);
     }
-    
+
     /** Get a human readable label for this resource
      *
      * This method will check a number of properties for the resource
-     * (in the order: rdfs:label, foaf:name, dc:title) and return an approriate 
-     * first that is available. If no label is available then it will 
+     * (in the order: rdfs:label, foaf:name, dc:title) and return an approriate
+     * first that is available. If no label is available then it will
      * attempt to shorten the URI of the resource and if that isn't possible
      * then it will return null.
      *
@@ -401,10 +401,10 @@ class EasyRdf_Resource
         } else if ($this->get('dc:title', $lang)) {
             return $this->get('dc:title', $lang);
         } else {
-            return $this->shorten(); 
+            return $this->shorten();
         }
     }
-    
+
     /** Display the resource and its properties
      *
      * This method is intended to be a debugging aid and will
@@ -429,7 +429,7 @@ class EasyRdf_Resource
         }
         echo "</pre>";
     }
-    
+
     /** Magic method to give access to properties using method calls
      *
      * This method is allows you to access the properties using method calls.
@@ -452,16 +452,16 @@ class EasyRdf_Resource
         $property = preg_replace(
             '/_/', ':', strtolower(substr($name, 3, 1)) . substr($name, 4), 1
         );
-        
+
         switch ($method) {
           case 'get':
               return $this->get($property);
               break;
-          
+
           case 'all':
               return $this->all($property);
               break;
-        
+
           default:
               throw new BadMethodCallException(
                   'Tried to call unknown method '.get_class($this).'::'.$name
@@ -469,7 +469,7 @@ class EasyRdf_Resource
               break;
         }
     }
-    
+
     /** Magic method to return URI of resource when casted to string
      *
      * @return string The URI of the resource

@@ -6,12 +6,12 @@
     ## Configure the RDF parser to use
     require_once "EasyRdf/Parser/Arc.php";
     EasyRdf_Graph::setRdfParser( new EasyRdf_Parser_Arc() );
-    
+
     # Configure the HTTP client to use
     require_once "EasyRdf/Http/Client.php";
     EasyRdf_Graph::setHttpClient( new EasyRdf_Http_Client() );
-    
-  
+
+
     class Model_MusicArtist extends EasyRdf_Resource
     {
         function birthEvent()
@@ -23,7 +23,7 @@
             }
             return null;
         }
-        
+
         function age()
         {
             $birth = $this->birthEvent();
@@ -57,7 +57,7 @@
         $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
         if ($graph) $artist = $graph->primaryTopic();
     }
-  
+
     if (isset($artist)) {
 ?>
 

@@ -7,27 +7,27 @@
  *
  * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright 
+ * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or 
- *    promote products derived from this software without specific prior 
+ * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or
+ *    promote products derived from this software without specific prior
  *    written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
@@ -49,11 +49,11 @@ echo form_tag();
 
   echo label_tag('first_name').text_field_tag('first_name', 'Joe').tag('br');
   echo label_tag('password').password_field_tag().tag('br');
-  
+
   echo label_tag('radio1_value1', 'Radio 1').radio_button_tag('radio1', 'value1').tag('br');
   echo label_tag('radio1_value2', 'Radio 2').radio_button_tag('radio1', 'value2', true).tag('br');
   echo label_tag('radio1_value3', 'Radio 3').radio_button_tag('radio1', 'value3').tag('br');
-  
+
   echo label_tag('check1', 'Check 1').check_box_tag('check1', 'value1').tag('br');
   echo label_tag('check2', 'Check 2').check_box_tag('check2', 'value2', true).tag('br');
   echo label_tag('check3', 'Check 3').check_box_tag('check3', 'value3').tag('br');
@@ -64,7 +64,7 @@ echo form_tag();
 
   echo label_tag('textarea1', 'Type Something:');
   echo text_area_tag('textarea1', "Hello World!").tag('br');
-  
+
   echo submit_tag();
 
 echo form_end_tag();
@@ -160,7 +160,7 @@ function password_field_tag($name='password', $default=null, $options=array())
 
 function radio_button_tag($name, $value, $default=false, $options=array())
 {
-    if ((isset($_REQUEST[$name]) and $_REQUEST[$name] == $value) or 
+    if ((isset($_REQUEST[$name]) and $_REQUEST[$name] == $value) or
         (!isset($_REQUEST[$name]) and $default))
     {
         $options = array_merge(array('checked' => 'checked'), $options);
@@ -171,7 +171,7 @@ function radio_button_tag($name, $value, $default=false, $options=array())
 
 function check_box_tag($name, $value='1', $default=false, $options=array())
 {
-    if ((isset($_REQUEST[$name]) and $_REQUEST[$name] == $value) or 
+    if ((isset($_REQUEST[$name]) and $_REQUEST[$name] == $value) or
         (!isset($_REQUEST['submit']) and $default))
     {
         $options = array_merge(array('checked' => 'checked'),$options);
@@ -206,7 +206,7 @@ function select_tag($name, $options, $default=null, $html_options=array())
     $opts = '';
     foreach($options as $key => $value) {
         $arr = array('value' => $value);
-        if ((isset($_REQUEST[$name]) and $_REQUEST[$name] == $value) or 
+        if ((isset($_REQUEST[$name]) and $_REQUEST[$name] == $value) or
             (!isset($_REQUEST[$name]) and $default == $value))
         {
             $arr = array_merge(array('selected' => 'selected'),$arr);

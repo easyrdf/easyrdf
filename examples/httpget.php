@@ -17,9 +17,9 @@
   <style type="text/css">
     .body
     {
-    	width: 800px;
-    	font-family: monospace;
-    	font-size: 0.8em;
+      width: 800px;
+      font-family: monospace;
+      font-size: 0.8em;
     }
   </style>
 </head>
@@ -44,7 +44,7 @@
     <b>Message</b>: <?= $response->getMessage() ?><br />
     <b>Version</b>: HTTP/<?= $response->getVersion() ?><br />
     </p>
-    
+
     <p class="headers">
     <?
         foreach ($response->getHeaders() as $name => $value) {
@@ -52,13 +52,13 @@
         }
     ?>
     </p>
-    
+
     <p class="body">
       <?= nl2br(htmlentities($response->getBody())) ?>
     </p>
 
 <?php
-    } 
+    }
 ?>
 
 </body>

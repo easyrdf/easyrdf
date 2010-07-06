@@ -7,27 +7,27 @@
  *
  * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright 
+ * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or 
- *    promote products derived from this software without specific prior 
+ * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or
+ *    promote products derived from this software without specific prior
  *    written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
@@ -41,7 +41,7 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 class EasyRdf_ResourceTest extends EasyRdf_TestCase
 {
     protected $_resource = null;
-    
+
     /**
      * Set up the test suite before each test
      */
@@ -105,13 +105,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->get(null);
     }
-    
+
     public function testGetEmptyKey()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->get('');
     }
-    
+
     public function testGetNonStringKey()
     {
         $this->setExpectedException('InvalidArgumentException');
@@ -146,13 +146,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->all(null);
     }
-    
+
     public function testAllEmptyKey()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->all('');
     }
-    
+
     public function testAllNonStringKey()
     {
         $this->setExpectedException('InvalidArgumentException');
@@ -172,19 +172,19 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->set(null, 'Test C');
     }
-    
+
     public function testSetEmptyKey()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->set('', 'Test C');
     }
-    
+
     public function testSetNonStringKey()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->set(array(), 'Test C');
     }
-    
+
     public function testSetNull()
     {
         $this->_resource->set('test:prop', null);
@@ -227,7 +227,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('Test', $all[0]);
     }
-    
+
     public function testAddAssociateProperties()
     {
         $this->_resource->add(array('test:prop' => 'Test C'));
@@ -237,7 +237,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertStringEquals('Test B', $all[1]);
         $this->assertStringEquals('Test C', $all[2]);
     }
-    
+
     public function testAddNull()
     {
         $this->_resource->add('test:prop', null);
@@ -252,13 +252,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->add(null, 'Test C');
     }
-    
+
     public function testAddEmptyKey()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->add('', 'Test C');
     }
-    
+
     public function testAddNonStringKey()
     {
         $this->setExpectedException('InvalidArgumentException');
@@ -277,13 +277,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->delete(null);
     }
-    
+
     public function testDeleteEmptyKey()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->delete('');
     }
-    
+
     public function testDeleteNonStringKey()
     {
         $this->setExpectedException('InvalidArgumentException');
@@ -324,13 +324,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->join(null, 'Test C');
     }
-    
+
     public function testJoinEmptyKey()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->_resource->join('', 'Test C');
     }
-    
+
     public function testJoinNonStringKey()
     {
         $this->setExpectedException('InvalidArgumentException');

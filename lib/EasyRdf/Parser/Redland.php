@@ -7,27 +7,27 @@
  *
  * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright 
+ * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or 
- *    promote products derived from this software without specific prior 
+ * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or
+ *    promote products derived from this software without specific prior
  *    written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
@@ -47,9 +47,9 @@ class EasyRdf_Parser_Redland
 {
     /** Variable set to the librdf world */
     private $_world = null;
-    
+
     /** Parser feature URI string for getting the error count of last parse. */
-    const LIBRDF_PARSER_FEATURE_ERROR_COUNT = 
+    const LIBRDF_PARSER_FEATURE_ERROR_COUNT =
         'http://feature.librdf.org/parser-error-count';
 
     /*
@@ -86,12 +86,12 @@ class EasyRdf_Parser_Redland
                 break;
         }
     }
-    
+
     /** Convert the URI for a node into a string */
     private static function nodeUriString($node)
     {
         $type = EasyRdf_Parser_Redland::nodeTypeString($node);
-        if ($type == 'uri') { 
+        if ($type == 'uri') {
             $uri = librdf_node_get_uri($node);
             if (!$uri) {
                 throw new EasyRdf_Exception("Failed to get URI of node");
@@ -109,7 +109,7 @@ class EasyRdf_Parser_Redland
             throw new EasyRdf_Exception("Unsupported type: ".$object['type']);
         }
     }
-    
+
     /** Convert a node into an RDF/PHP object */
     private static function rdfPhpObject($node)
     {
@@ -195,7 +195,7 @@ class EasyRdf_Parser_Redland
                 "\$format should be a string and cannot be null or empty"
             );
         }
-    
+
         $parser = librdf_new_parser($this->_world, $format, null, null);
         if (!$parser) {
             throw new EasyRdf_Exception(
@@ -232,11 +232,11 @@ class EasyRdf_Parser_Redland
                 $object = EasyRdf_Parser_Redland::rdfPhpObject(
                     librdf_statement_get_object($statement)
                 );
-                
+
                 if (!isset($rdfphp[$subject])) {
                     $rdfphp[$subject] = array();
                 }
-            
+
                 if (!isset($rdfphp[$subject][$predicate])) {
                     $rdfphp[$subject][$predicate] = array();
                 }
@@ -244,7 +244,7 @@ class EasyRdf_Parser_Redland
                 array_push($rdfphp[$subject][$predicate], $object);
             }
         } while (!librdf_stream_next($stream));
-        
+
         $errorCount = $this->parserErrorCount($parser);
         if ($errorCount) {
             throw new EasyRdf_Exception("$errorCount errors while parsing.");
@@ -253,7 +253,7 @@ class EasyRdf_Parser_Redland
         librdf_free_uri($rdfUri);
         librdf_free_stream($stream);
         librdf_free_parser($parser);
-        
+
         return $rdfphp;
     }
 }

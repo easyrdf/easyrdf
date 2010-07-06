@@ -28,7 +28,7 @@
             $review = $reviews[0];
         }
     }
-      
+
     if (isset($review)) {
         echo "<dl>\n";
         # FIXME: support gv:itemreviewed->gv:name ??

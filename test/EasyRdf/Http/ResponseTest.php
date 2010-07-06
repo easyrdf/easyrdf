@@ -23,7 +23,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             'Version is expected to be 1.1'
         );
     }
-    
+
     public function testGetMessage()
     {
         $response = EasyRdf_Http_Response::fromString(
@@ -35,7 +35,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             'Message is expected to be OK'
         );
     }
-    
+
     public function testGetBody()
     {
         $response = EasyRdf_Http_Response::fromString(
@@ -46,13 +46,13 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             $response->getBody()
         );
     }
-    
+
     public function testInvalidResponse()
     {
         $this->setExpectedException('EasyRdf_Exception');
         $response = EasyRdf_Http_Response::fromString('foobar');
     }
-    
+
     public function testInvalidStatusLine()
     {
         $this->setExpectedException('EasyRdf_Exception');
@@ -60,7 +60,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             "HTTP1.0 200 OK\r\nConnection: close\r\n\r\nBody"
         );
     }
-    
+
     public function testGetBodyChunked()
     {
         $response = EasyRdf_Http_Response::fromString(
@@ -71,7 +71,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             $response->getBody()
         );
     }
-    
+
     public function testInvalidChunkedBody()
     {
         $this->setExpectedException('EasyRdf_Exception');
@@ -80,13 +80,13 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
         );
         $response->getBody();
     }
-    
+
     public function test200Ok()
     {
         $response = EasyRdf_Http_Response::fromString(
             readFixture('http_response_200')
         );
-        
+
         $this->assertEquals(
             200,
             $response->getStatus(),
@@ -111,7 +111,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
         $response = EasyRdf_Http_Response::fromString(
             readFixture('http_response_404')
         );
-        
+
         $this->assertEquals(
             404,
             $response->getStatus(),
@@ -136,7 +136,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
         $response = EasyRdf_Http_Response::fromString(
             readFixture('http_response_500')
         );
-        
+
         $this->assertEquals(
             500,
             $response->getStatus(),
@@ -155,7 +155,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             'Response is an error, but isRedirect() returned true'
         );
     }
-    
+
     public function test300isRedirect()
     {
         $response = EasyRdf_Http_Response::fromString(
