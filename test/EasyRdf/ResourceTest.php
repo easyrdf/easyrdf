@@ -370,6 +370,20 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testHas()
+    {
+        $this->assertTrue(
+            $this->_resource->has('test:prop')
+        );
+    }
+
+    public function testNDoesNotHave()
+    {
+        $this->assertFalse(
+            $this->_resource->has('test:noprop')
+        );
+    }
+
     public function testTypes()
     {
         $types = $this->_resource->types();

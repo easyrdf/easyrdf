@@ -306,6 +306,22 @@ class EasyRdf_Resource
         return array_keys($this->_properties);
     }
 
+    /** Check to see if a property exists for this resource.
+     *
+     * This method will return true if the property exists.
+     *
+     * @param  string  $property The name of the property (e.g. foaf:gender)
+     * @return bool              True if value the property exists.
+     */
+    public function has($property)
+    {
+        if (array_key_exists($property, $this->_properties)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /** Check to see if a value exists for a specified property
      *
      * This method will return true if value exists for a property.
