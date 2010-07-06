@@ -75,15 +75,17 @@ class EasyRdf_Serialiser_Builtin
     {
         if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
             return $this->ntriplesResource($obj);
-        } else if (is_scalar($obj)) {
+        } else if (is_object($obj) and $obj instanceof EasyRdf_Literal) {
             // FIXME: peform encoding of Unicode characters as described here:
             // http://www.w3.org/TR/rdf-testcases/#ntrip_strings
-            $literal = str_replace('\\', '\\\\', $obj);
-            $literal = str_replace('"', '\\"', $literal);
-            $literal = str_replace('\n', '\\n', $literal);
-            $literal = str_replace('\r', '\\r', $literal);
-            $literal = str_replace('\t', '\\t', $literal);
-            return "\"$literal\"";
+            $value = $obj->getValue();
+            $value = str_replace('\\', '\\\\', $value);
+            $value = str_replace('"', '\\"', $value);
+            $value = str_replace('\n', '\\n', $value);
+            $value = str_replace('\r', '\\r', $value);
+            $value = str_replace('\t', '\\t', $value);
+            // FIXME: add support for languages and datatypes
+            return "\"$value\"";
         } else {
             throw new EasyRdf_Exception(
                 "Unable to serialise object to ntriples: $obj"
@@ -144,9 +146,18 @@ class EasyRdf_Serialiser_Builtin
                                 $object = array('type' => 'uri',
                                                 'value' => $obj->getUri());
                             }
-                        } else {
+                        } else if (is_object($obj) and 
+                           ($obj instanceof EasyRdf_Literal)) {
                             $object = array('type' => 'literal',
-                                            'value' => $obj);
+                                            'value' => $obj->getValue());
+                            if ($obj->getLang())
+                                $object['lang'] = $obj->getLang();
+                            if ($obj->getDatatype())
+                                $object['datatype'] = $obj->getDatatype();
+                        } else {
+                            throw new EasyRdf_Exception(
+                                "Unsupported to serialise: $obj"
+                            );
                         }
 
                         array_push($rdfphp[$subj][$prop], $object);

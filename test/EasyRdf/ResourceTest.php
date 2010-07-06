@@ -81,7 +81,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testGet()
     {
-        $this->assertEquals(
+        $this->assertStringEquals(
             'Test A',
             $this->_resource->get('test:prop')
         );
@@ -162,10 +162,9 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testSet()
     {
         $this->_resource->set('test:prop', 'Test C');
-        $this->assertEquals(
-            array('Test C'),
-            $this->_resource->all('test:prop')
-        );
+        $all = $this->_resource->all('test:prop');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('Test C', $all[0]);
     }
 
     public function testSetNullKey()
@@ -219,12 +218,14 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testAddMultipleProperties()
     {
         $this->_resource->add(array('test:prop1', 'test:prop2'), 'Test');
-        $this->assertEquals(
-            array('Test'), $this->_resource->all('test:prop1')
-        );
-        $this->assertEquals(
-            array('Test'), $this->_resource->all('test:prop2')
-        );
+
+        $all = $this->_resource->all('test:prop1');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('Test', $all[0]);
+
+        $all = $this->_resource->all('test:prop2');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('Test', $all[0]);
     }
     
     public function testAddAssociateProperties()
@@ -266,7 +267,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testDelete()
     {
-        $this->assertEquals('Test A', $this->_resource->get('test:prop'));
+        $this->assertStringEquals('Test A', $this->_resource->get('test:prop'));
         $this->_resource->delete('test:prop');
         $this->assertEquals(array(), $this->_resource->all('test:prop'));
     }
@@ -371,10 +372,9 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testTypes()
     {
-        $this->assertEquals(
-            array('foaf:Person'),
-            $this->_resource->types()
-        );
+        $types = $this->_resource->types();
+        $this->assertEquals(1, count($types));
+        $this->assertStringEquals('foaf:Person', $types[0]);
     }
 
     public function testType()

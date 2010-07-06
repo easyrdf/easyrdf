@@ -104,7 +104,17 @@ class EasyRdf_Resource
             if (!is_array($values)) {
                 $values = array($values);
             }
-            return $this->_properties[$property] = $values;
+            
+            // Convert the values to literals, if needed
+            $literals = array();
+            foreach ($values as $value) {
+                if (is_object($value)) {
+                    $literals[] = $value;
+                } else {
+                    $literals[] = new EasyRdf_Literal($value);
+                }
+            }
+            return $this->_properties[$property] = $literals;
         }
     }
 
