@@ -80,9 +80,24 @@ require_once "EasyRdf/Parser/Builtin.php";
 require_once "EasyRdf/Resource.php";
 
 /**
- * @see EasyRdf_Serialiser_Builtin
+ * @see EasyRdf_Serialiser
  */
-require_once "EasyRdf/Serialiser/Builtin.php";
+require_once "EasyRdf/Serialiser.php";
+
+/**
+ * @see EasyRdf_Serialiser_Ntriples
+ */
+require_once "EasyRdf/Serialiser/Ntriples.php";
+
+/**
+ * @see EasyRdf_Serialiser_Json
+ */
+require_once "EasyRdf/Serialiser/Json.php";
+
+/**
+ * @see EasyRdf_Serialiser_RdfPhp
+ */
+require_once "EasyRdf/Serialiser/RdfPhp.php";
 
 /**
  * @see EasyRdf_TypeMapper

@@ -45,7 +45,7 @@
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Builtin
+class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser
 {
     private $_rapperCmd = null;
 
@@ -144,15 +144,17 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Builtin
             );
         }
 
-        if ($format == 'php') {
-            return $this->to_rdfphp($graph);
-        } else {
-            $ntriples = $this->to_ntriples($graph);
-            if ($format == 'ntriples') {
-                return $ntriples;
-            } else {
-                return $this->rapper_serialise($ntriples, $format);
-            }
-        }
+        $nt_serialiser = new EasyRdf_Serialiser_Ntriples();
+        $ntriples = $nt_serialiser->serialise($graph);
+        return $this->rapper_serialise($ntriples, $format);
     }
 }
+
+// FIXME: do this automatically
+EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'dot');
+EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'json-triples');
+EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'json');
+EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'rdfxml-abbrev');
+EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'rdfxml-xmp');
+EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'rdfxml');
+EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'turtle');

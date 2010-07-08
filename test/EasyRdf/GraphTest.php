@@ -100,13 +100,9 @@ class Mock_RdfParser
 
 class Mock_RdfSerialiser
 {
-    public function serialise($graph, $format)
+    public function serialise($graph, $format=null)
     {
-        if ($format == 'rdfxml') {
-            return "<rdf></rdf>";
-        } else {
-            return null;
-        }
+        return "<rdf></rdf>";
     }
 }
 
@@ -232,14 +228,6 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
-    public function testGetDefaultRdfSerialiser()
-    {
-        $this->assertEquals(
-            'EasyRdf_Serialiser_Builtin',
-            get_class(EasyRdf_Graph::getRdfSerialiser())
-        );
-    }
-
     public function testSetHttpClient()
     {
         EasyRdf_Graph::setHttpClient(new Mock_Http_Client());
@@ -280,27 +268,6 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Graph::setRdfParser('foobar');
-    }
-
-    public function testSetRdfSerialiser()
-    {
-        EasyRdf_Graph::setRdfSerialiser(new Mock_RdfSerialiser());
-        $this->assertEquals(
-            'Mock_RdfSerialiser',
-            get_class(EasyRdf_Graph::getRdfSerialiser())
-        );
-    }
-
-    public function testSetRdfSerialiserNull()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Graph::setRdfSerialiser(null);
-    }
-
-    public function testSetRdfSerialiserString()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Graph::setRdfSerialiser('foobar');
     }
 
     public function testGetUri()
@@ -701,19 +668,20 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testSerialise()
     {
-        EasyRdf_Graph::setRdfSerialiser(new Mock_RdfSerialiser());
+        $mock = new Mock_RdfSerialiser();
         $graph = new EasyRdf_Graph();
-        $this->assertEquals("<rdf></rdf>", $graph->serialise('rdfxml'));
+        $this->assertEquals("<rdf></rdf>", $graph->serialise($mock));
     }
 
     public function testSerialiseByMime()
     {
-        EasyRdf_Graph::setRdfSerialiser(new Mock_RdfSerialiser());
-        $graph = new EasyRdf_Graph();
-        $this->assertEquals(
-            "<rdf></rdf>",
-            $graph->serialise('application/rdf+xml')
-        );
+        $this->markTestIncomplete();
+//         EasyRdf_Graph::setRdfSerialiser(new Mock_RdfSerialiser());
+//         $graph = new EasyRdf_Graph();
+//         $this->assertEquals(
+//             "<rdf></rdf>",
+//             $graph->serialise('application/rdf+xml')
+//         );
     }
 
     public function testDump()

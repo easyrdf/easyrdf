@@ -44,81 +44,36 @@
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Builtin
+class EasyRdf_Serialiser_RdfPhp
 {
-
     /**
-     * Protected method to serialise a subject node into an N-Triples partial
+     * Serialise an EasyRdf_Graph into RDF format of choice.
+     *
+     * @param string $graph An EasyRdf_Graph object.
+     * @param string $format The name of the format to convert to.
+     * @return string The RDF in the new desired format.
      */
-    protected function ntriplesResource($res)
-    {
-        if (is_object($res)) {
-            if ($res->isBNode()) {
-                return $res->getURI();
-            } else {
-                return "<".$res->getURI().">";
-            }
-        } else {
-            $uri = EasyRdf_Namespace::expand($res);
-            if ($uri) {
-                return "<$uri>";
-            } else {
-                return "<$res>";
-            }
-        }
-    }
-
-    /**
-     * Protected method to serialise an object node into an N-Triples partial
-     */
-    protected function ntriplesObject($obj)
-    {
-        if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
-            return $this->ntriplesResource($obj);
-        } else if (is_object($obj) and $obj instanceof EasyRdf_Literal) {
-            // FIXME: peform encoding of Unicode characters as described here:
-            // http://www.w3.org/TR/rdf-testcases/#ntrip_strings
-            $value = $obj->getValue();
-            $value = str_replace('\\', '\\\\', $value);
-            $value = str_replace('"', '\\"', $value);
-            $value = str_replace('\n', '\\n', $value);
-            $value = str_replace('\r', '\\r', $value);
-            $value = str_replace('\t', '\\t', $value);
-            // FIXME: add support for languages and datatypes
-            return "\"$value\"";
-        } else {
-            throw new EasyRdf_Exception(
-                "Unable to serialise object to ntriples: $obj"
-            );
-        }
-    }
-
-    /**
-     * Protected method to serialise an EasyRdf_Graph into N-Triples
-     */
-    protected function to_ntriples($graph)
-    {
-        $nt = '';
-        foreach ($graph->resources() as $resource) {
-            foreach ($resource->properties() as $property) {
-                $objects = $resource->all($property);
-                foreach ($objects as $object) {
-                    $nt .= $this->ntriplesResource($resource)." ";
-                    $nt .= $this->ntriplesResource($property)." ";
-                    $nt .= $this->ntriplesObject($object)." .\n";
-                }
-            }
-        }
-        return $nt;
-    }
 
     /**
      * Method to serialise an EasyRdf_Graph into RDF/PHP
      *
      * http://n2.talis.com/wiki/RDF_PHP_Specification
      */
-    protected function to_rdfphp($graph)
+    public function serialise($graph, $format='php')
     {
+        if ($graph == null or !is_object($graph) or
+            get_class($graph) != 'EasyRdf_Graph') {
+            throw new InvalidArgumentException(
+                "\$graph should be an EasyRdf_Graph object and cannot be null"
+            );
+        }
+
+        if ($format != 'php') {
+            throw new EasyRdf_Exception(
+                "EasyRdf_Serialiser_RdfPhp does not support: $format"
+            );
+        }
+
         $rdfphp = array();
         foreach ($graph->resources() as $resource) {
             $properties = $resource->properties();
@@ -167,50 +122,6 @@ class EasyRdf_Serialiser_Builtin
         }
         return $rdfphp;
     }
-
-    /**
-     * Method to serialise an EasyRdf_Graph into RDF/JSON
-     *
-     * http://n2.talis.com/wiki/RDF_JSON_Specification
-     */
-    protected function to_json($graph)
-    {
-        return json_encode($this->to_rdfphp($graph));
-    }
-
-    /**
-     * Serialise an EasyRdf_Graph into RDF format of choice.
-     *
-     * @param string $graph An EasyRdf_Graph object.
-     * @param string $format The name of the format to convert to.
-     * @return string The RDF in the new desired format.
-     */
-    public function serialise($graph, $format)
-    {
-        if ($graph == null or !is_object($graph) or
-            get_class($graph) != 'EasyRdf_Graph') {
-            throw new InvalidArgumentException(
-                "\$graph should be an EasyRdf_Graph object and cannot be null"
-            );
-        }
-
-        if ($format == null or !is_string($format) or $format == '') {
-            throw new InvalidArgumentException(
-                "\$format should be a string and cannot be null or empty"
-            );
-        }
-
-        if ($format == 'php') {
-            return $this->to_rdfphp($graph);
-        } else if ($format == 'json') {
-            return $this->to_json($graph);
-        } else if ($format == 'ntriples') {
-            return $this->to_ntriples($graph);
-        } else {
-            throw new EasyRdf_Exception(
-                "Unsupported serialisation format: $format"
-            );
-        }
-    }
 }
 
+EasyRdf_Serialiser::register('EasyRdf_Serialiser_RdfPhp', 'php');

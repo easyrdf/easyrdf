@@ -39,7 +39,7 @@
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Serialiser_TestCase extends EasyRdf_TestCase
+class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
 {
     protected $_serialiser = null;
     protected $_graph = null;
@@ -47,43 +47,26 @@ class EasyRdf_Serialiser_TestCase extends EasyRdf_TestCase
     public function setUp()
     {
         $this->_graph = new EasyRdf_Graph();
+        $this->_serialiser = new EasyRdf_Serialiser_Ntriples();
     }
 
     public function testSerialiseNullGraph()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise(null, 'rdfxml');
+        $this->_serialiser->serialise(null, 'ntriples');
     }
 
     public function testSerialiseNonObjectGraph()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise('string', 'rdfxml');
+        $this->_serialiser->serialise('string', 'ntriples');
     }
 
     public function testSerialiseNonGraph()
     {
         $nongraph = new EasyRdf_Resource('http://www.example.com/');
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($nongraph, 'rdfxml');
-    }
-
-    public function testSerialiseNullFormat()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($this->_graph, null);
-    }
-
-    public function testSerialiseEmptyFormat()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($this->_graph, '');
-    }
-
-    public function testSerialiseNonStringFormat()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($this->_graph, array());
+        $this->_serialiser->serialise($nongraph, 'ntriples');
     }
 
     function testSerialiseUnsupportedFormat()
@@ -93,7 +76,6 @@ class EasyRdf_Serialiser_TestCase extends EasyRdf_TestCase
             $this->_graph, 'unsupportedformat'
         );
     }
-
 
     function testSerialiseNtriples()
     {
@@ -134,42 +116,5 @@ class EasyRdf_Serialiser_TestCase extends EasyRdf_TestCase
             "_:eid1 <http://xmlns.com/foaf/0.1/name> \"Project Name\" .\n",
             $this->_serialiser->serialise($this->_graph,'ntriples')
         );
-    }
-
-    function testSerialisePhp()
-    {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $joe->set('foaf:name', 'Joe Bloggs');
-        $this->_graph->add($joe, 'foaf:project', array('foaf:name' => 'Project Name'));
-
-        $php = $this->_serialiser->serialise($this->_graph,'php');
-        $this->assertType('array', $php);
-        $subject = $php['http://www.example.com/joe#me'];
-        $this->assertType('array', $subject);
-        $object = $subject['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertType('array', $object);
-        $this->assertEquals('literal', $object['type']);
-        $this->assertEquals('Joe Bloggs', $object['value']);
-
-        $nodeid = $subject['http://xmlns.com/foaf/0.1/project'][0]['value'];
-        $this->assertType('array', $php[$nodeid]);
-        $project_name = $php[$nodeid]['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertEquals('Project Name', $project_name['value']);
-    }
-
-    function testSerialiseJson()
-    {
-        $this->markTestIncomplete();
-    /*  FIXME: how to test this for any valid JSON?
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $joe->set('foaf:name', 'Joe Bloggs');
-
-        $this->assertEquals(
-            '{"http:\/\/www.example.com\/joe#me":'.
-            '{"http:\/\/xmlns.com\/foaf\/0.1\/name":['.
-            '{"type":"literal","value":"Joe Bloggs"}]}}',
-            $this->_serialiser->serialise($this->_graph,'json')
-        );
-    */
     }
 }

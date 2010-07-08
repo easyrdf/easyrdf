@@ -36,13 +36,49 @@
  * @version    $Id$
  */
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'TestCase.php';
-
-class EasyRdf_Serialiser_BuiltinTest extends EasyRdf_Serialiser_TestCase
+/**
+ * Class to serialise an EasyRdf_Graph into RDF
+ * with no external dependancies.
+ *
+ * @package    EasyRdf
+ * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ * @license    http://www.opensource.org/licenses/bsd-license.php
+ */
+class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser
 {
-    public function setUp()
+    /**
+     * Serialise an EasyRdf_Graph into RDF format of choice.
+     *
+     * @param string $graph An EasyRdf_Graph object.
+     * @param string $format The name of the format to convert to.
+     * @return string The RDF in the new desired format.
+     */
+
+    /**
+     * Method to serialise an EasyRdf_Graph into RDF/JSON
+     *
+     * http://n2.talis.com/wiki/RDF_JSON_Specification
+     */
+    public function serialise($graph, $format='json')
     {
-        $this->_serialiser = new EasyRdf_Serialiser_Builtin();
-        parent::setUp();
+        if ($graph == null or !is_object($graph) or
+            get_class($graph) != 'EasyRdf_Graph') {
+            throw new InvalidArgumentException(
+                "\$graph should be an EasyRdf_Graph object and cannot be null"
+            );
+        }
+
+        if ($format != 'json') {
+            throw new EasyRdf_Exception(
+                "EasyRdf_Serialiser_Json does not support: $format"
+            );
+        }
+
+        $php_serialiser = new EasyRdf_Serialiser_RdfPhp();
+        return json_encode(
+            $php_serialiser->serialise($graph)
+        );
     }
 }
+
+EasyRdf_Serialiser::register('EasyRdf_Serialiser_Json', 'json');

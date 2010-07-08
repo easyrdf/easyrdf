@@ -147,36 +147,6 @@ class EasyRdf_Graph
         return self::$_rdfParser;
     }
 
-    /** Set the RDF serialiser object used to generate RDF data
-     *
-     * @param  object mixed $rdfSerialiser The new RDF serialiser object
-     * @return object mixed The new RDF serialiser object
-     */
-    public static function setRdfSerialiser($rdfSerialiser)
-    {
-        if (!is_object($rdfSerialiser) or $rdfSerialiser == null) {
-            throw new InvalidArgumentException(
-                "\$rdfSerialiser should be an object and cannot be null"
-            );
-        }
-        self::$_rdfSerialiser = $rdfSerialiser;
-    }
-
-    /** Get the RDF serialiser object used to generate RDF data
-     *
-     * If no RDF Serialiser has previously been set, then a new
-     * default (EasyRdf_Serialiser_Builtin) serialiser will be created.
-     *
-     * @return object mixed The RDF serialiser object
-     */
-    public static function getRdfSerialiser()
-    {
-        if (!self::$_rdfSerialiser) {
-            self::$_rdfSerialiser = new EasyRdf_Serialiser_Builtin();
-        }
-        return self::$_rdfSerialiser;
-    }
-
     /** Convert a mime type into a simplier document type name
      *
      * If the mime type is not recognised, null is returned.
@@ -315,7 +285,8 @@ class EasyRdf_Graph
      *
      * @deprecated 0.4
      */
-    public function get($uri, $types = array()) {
+    public function get($uri, $types = array())
+    {
         return $this->resource($uri, $types);
     }
 
@@ -593,10 +564,20 @@ class EasyRdf_Graph
      */
     public function serialise($format)
     {
-        if (isset(self::$_mimeTypeMap[$format])) {
-            $format = self::$_mimeTypeMap[$format];
+        if (is_string($format)) {
+            $class = EasyRdf_Serialiser::getByName($format);
+            if ($class == null) {
+                throw new EasyRdf_Exception(
+                    "No serialiser found for format: ".$format
+                );
+            }
+            $serialiser = new $class();
+            return $serialiser->serialise($this, $format);
+        } else if (is_object($format)) {
+            return $format->serialise($this);
+        } else {
+            throw new InvalidArgumentException();
         }
-        return self::getRdfSerialiser()->serialise($this, $format);
     }
 
     /** Display all the resources in the graph

@@ -37,79 +37,65 @@
  */
 
 /**
- * Class to allow serialising to RDF using the ARC2 library.
- *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser
+class EasyRdf_Serialiser
 {
-    private static $_supportedTypes = array(
-        'json' => 'RDFJSON',
-        'rdfxml' => 'RDFXML',
-        'turtle' => 'Turtle',
-        'ntriples' => 'NTriples',
-        'poshrdf' => 'POSHRDF',
-    );
+    private static $_serialisersByName = array();
 
-    /**
-     * Constructor
+    /** Get the registered serialiser by name
      *
-     * @return object EasyRdf_Serialiser_Arc
+     * If a name is not registered, then this method will return null.
+     *
+     * @param  string  $name   The serialisation name (e.g. ntriples)
+     * @return string          The class name (e.g. EasyRdf_Serialiser_Ntriples)
      */
-    public function __construct()
+    public static function getByName($name)
     {
-        require_once 'arc/ARC2.php';
+        if (!is_string($name) or $name == null or $name == '') {
+            throw new InvalidArgumentException(
+                "\$name should be a string and cannot be null or empty"
+            );
+        } else if (array_key_exists($name, self::$_serialisersByName)) {
+            return self::$_serialisersByName[$name];
+        } else {
+            return null;
+        }
     }
-
-    /**
-     * Serialise an EasyRdf_Graph into RDF format of choice.
+    
+    /** Register a serialiser
      *
-     * @param string $graph An EasyRdf_Graph object.
-     * @param string $format The name of the format to convert to.
-     * @return string The RDF in the new desired format.
+     * @param  string  $class  The PHP class name (e.g. EasyRdf_Serialiser_Ntriples)
+     * @param  string  $name   The name of the serialiation (e.g. ntriples)
+     * @return string          The PHP class name
      */
-    public function serialise($graph, $format)
+    public static function register($class, $name)
     {
-        if ($graph == null or !is_object($graph) or
-            get_class($graph) != 'EasyRdf_Graph') {
+        // FIXME: store the mime types and suffixes too
+        
+        if (!is_string($class) or $class == null or $class == '') {
             throw new InvalidArgumentException(
-                "\$graph should be an EasyRdf_Graph object and cannot be null"
+                "\$class should be a string and cannot be null or empty"
             );
         }
 
-        if ($format == null or !is_string($format) or $format == '') {
+        if (!is_string($name) or $name == null or $name == '') {
             throw new InvalidArgumentException(
-                "\$format should be a string and cannot be null or empty"
+                "\$name should be a string and cannot be null or empty"
             );
         }
 
-
-        $rdfphp = EasyRdf_Serialiser_RdfPhp::serialise($graph);
-
-        if (array_key_exists($format, self::$_supportedTypes)) {
-            $className = self::$_supportedTypes[$format];
-        } else {
-            throw new EasyRdf_Exception(
-                "Serialising documents to $format ".
-                "is not supported by EasyRdf_Serialiser_Arc."
-            );
-        }
-
-        $serialiser = ARC2::getSer($className);
-        if ($serialiser) {
-            return $serialiser->getSerializedIndex($rdfphp);
-        } else {
-            throw new EasyRdf_Exception(
-                "ARC2 failed to get a $className serialiser."
-            );
-        }
+        self::$_serialisersByName[$name] = $class;
+    }
+    
+    /** Get a list of serialisation format names
+     *
+     * @return array          An array of serialisation formats
+     */
+    public static function getNames()
+    {
+        return array_keys(self::$_serialisersByName);
     }
 }
-
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Arc', 'json');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Arc', 'rdfxml');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Arc', 'turtle');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Arc', 'ntriples');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Arc', 'poshrdf');

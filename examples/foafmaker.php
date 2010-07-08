@@ -3,20 +3,16 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    $serialiser_options = array(
-      'Builtin' => 'Builtin',
-      'ARC 2' => 'Arc',
-      'Rapper' => 'Rapper',
-    );
+    if (isset($_REQUEST['enable_arc']) && $_REQUEST['enable_arc'])
+        require_once "EasyRdf/Serialiser/Arc.php";
 
-    $output_options = array(
-      'N-Triples' => 'ntriples',
-      'RDF/PHP' => 'php',
-      'RDF/JSON' => 'json',
-      'RDF/XML' => 'rdfxml',
-      'poshRDF' => 'poshrdf',
-      'Turtle' => 'turtle',
-    );
+    if (isset($_REQUEST['enable_rapper']) && $_REQUEST['enable_rapper'])
+        require_once "EasyRdf/Serialiser/Rapper.php";
+
+    $format_options = array();
+    foreach (EasyRdf_Serialiser::getNames() as $format) {
+        $format_options[$format] = $format;
+    }
 ?>
 <html>
 <head><title>FOAF Maker</title></head>
@@ -43,8 +39,9 @@
 <?= labeled_text_field_tag('person_4', '', array('size'=>40)) ?><br />
 
 <h2>Output</h2>
-<?= label_tag('serialiser').select_tag('serialiser', $serialiser_options, 'builtin') ?><br />
-<?= label_tag('format').select_tag('format', $output_options, 'rdfxml') ?><br />
+Enable Arc 2? <?= check_box_tag('enable_arc') ?><br />
+Enable Rapper? <?= check_box_tag('enable_rapper') ?><br />
+<?= label_tag('format').select_tag('format', $format_options, 'rdfxml') ?><br />
 
 <?= submit_tag() ?>
 <?= form_end_tag() ?>
@@ -53,9 +50,6 @@
 <?php
     if (isset($_REQUEST['uri'])) {
 
-        require_once "EasyRdf/Serialiser/".$_REQUEST['serialiser'].'.php';
-        $serialiser = "EasyRdf_Serialiser_".$_REQUEST['serialiser'];
-        EasyRdf_Graph::setRdfSerialiser(new $serialiser());
         $graph = new EasyRdf_Graph();
 
         # 1st Technique

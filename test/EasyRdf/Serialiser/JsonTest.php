@@ -39,32 +39,59 @@
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-require_once 'EasyRdf/Serialiser/Rapper.php';
-
-class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
+class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
 {
+    protected $_serialiser = null;
+    protected $_graph = null;
+
     public function setUp()
     {
-        exec('which rapper', $output, $retval);
-        if ($retval == 0) {
-            $this->_serialiser = new EasyRdf_Serialiser_Rapper();
-            parent::setUp();
-        } else {
-            $this->markTestSkipped(
-                "The rapper command is not available on this system."
-            );
-        }
+        $this->_graph = new EasyRdf_Graph();
+        $this->_serialiser = new EasyRdf_Serialiser_Json();
     }
 
-    function testRapperNotFound()
+    public function testSerialiseNullGraph()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_serialiser->serialise(null, 'json');
+    }
+
+    public function testSerialiseNonObjectGraph()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_serialiser->serialise('string', 'json');
+    }
+
+    public function testSerialiseNonGraph()
+    {
+        $nongraph = new EasyRdf_Resource('http://www.example.com/');
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_serialiser->serialise($nongraph, 'json');
+    }
+
+    function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException('EasyRdf_Exception');
-        new EasyRdf_Serialiser_Rapper('random_command_that_doesnt_exist');
+        $rdf = $this->_serialiser->serialise(
+            $this->_graph, 'unsupportedformat'
+        );
     }
 
-    function testRapperExecError()
+    function testSerialiseJson()
     {
-        # FIXME: how can we cause proc_open() to fail?
-        $this->markTestIncomplete();
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
+        $this->_graph->add($joe, 'foaf:project', array('foaf:name' => 'Project Name'));
+
+        $this->assertEquals(
+            '{"http:\/\/www.example.com\/joe#me":{'.
+            '"http:\/\/xmlns.com\/foaf\/0.1\/name":['.
+            '{"type":"literal","value":"Joe Bloggs","lang":"en"}],'.
+            '"http:\/\/xmlns.com\/foaf\/0.1\/project":['.
+            '{"type":"bnode","value":"_:eid1"}]},"_:eid1":{'.
+            '"http:\/\/xmlns.com\/foaf\/0.1\/name":['.
+            '{"type":"literal","value":"Project Name"}]}}',
+            $this->_serialiser->serialise($this->_graph)
+        );
     }
 }
