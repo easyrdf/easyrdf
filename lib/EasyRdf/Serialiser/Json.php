@@ -74,9 +74,9 @@ class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser
             );
         }
 
-        $php_serialiser = new EasyRdf_Serialiser_RdfPhp();
+        $phpSerialiser = new EasyRdf_Serialiser_RdfPhp();
         return json_encode(
-            $php_serialiser->serialise($graph)
+            $phpSerialiser->serialise($graph)
         );
     }
 }

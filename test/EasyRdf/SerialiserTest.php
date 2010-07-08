@@ -51,7 +51,10 @@ class EasyRdf_SerialiserTest extends EasyRdf_TestCase
 
     public function testGetByName()
     {
-        $this->assertEquals('MySerialiser_Class', EasyRdf_Serialiser::getByName('my'));
+        $this->assertEquals(
+            'MySerialiser_Class',
+            EasyRdf_Serialiser::getByName('my')
+        );
     }
 
     public function testGetByNameNull()
@@ -117,6 +120,6 @@ class EasyRdf_SerialiserTest extends EasyRdf_TestCase
     {
         $names = EasyRdf_Serialiser::getNames();
         $this->assertTrue(is_array($names));
-        $this->assertTrue(in_array('ntriples',$names));
+        $this->assertTrue(in_array('ntriples', $names));
     }
 }

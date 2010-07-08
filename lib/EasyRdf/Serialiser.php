@@ -67,7 +67,7 @@ class EasyRdf_Serialiser
     
     /** Register a serialiser
      *
-     * @param  string  $class  The PHP class name (e.g. EasyRdf_Serialiser_Ntriples)
+     * @param  string  $class  The PHP class name (e.g. EasyRdf_Serialiser_Json)
      * @param  string  $name   The name of the serialiation (e.g. ntriples)
      * @return string          The PHP class name
      */

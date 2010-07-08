@@ -144,8 +144,8 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser
             );
         }
 
-        $nt_serialiser = new EasyRdf_Serialiser_Ntriples();
-        $ntriples = $nt_serialiser->serialise($graph);
+        $ntSerialiser = new EasyRdf_Serialiser_Ntriples();
+        $ntriples = $ntSerialiser->serialise($graph);
         return $this->rapper_serialise($ntriples, $format);
     }
 }

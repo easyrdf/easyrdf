@@ -82,9 +82,12 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:name', 'Joe Bloggs');
-        $this->_graph->add($joe, 'foaf:project', array('foaf:name' => 'Project Name'));
+        $this->_graph->add(
+            $joe, 'foaf:project',
+            array('foaf:name' => 'Project Name')
+        );
 
-        $php = $this->_serialiser->serialise($this->_graph,'php');
+        $php = $this->_serialiser->serialise($this->_graph, 'php');
         $this->assertType('array', $php);
         $subject = $php['http://www.example.com/joe#me'];
         $this->assertType('array', $subject);
@@ -95,7 +98,7 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
 
         $nodeid = $subject['http://xmlns.com/foaf/0.1/project'][0]['value'];
         $this->assertType('array', $php[$nodeid]);
-        $project_name = $php[$nodeid]['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertEquals('Project Name', $project_name['value']);
+        $projectName = $php[$nodeid]['http://xmlns.com/foaf/0.1/name'][0];
+        $this->assertEquals('Project Name', $projectName['value']);
     }
 }

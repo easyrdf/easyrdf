@@ -639,7 +639,10 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph = new EasyRdf_Graph(
             'http://www.example.com/joe/foaf.rdf', $data
         );
-        $this->assertStringEquals('foaf:PersonalProfileDocument', $graph->type());
+        $this->assertStringEquals(
+            'foaf:PersonalProfileDocument',
+            $graph->type()
+        );
     }
 
     public function testTypeUnknown()

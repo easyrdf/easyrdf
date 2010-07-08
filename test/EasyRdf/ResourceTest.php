@@ -128,7 +128,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testAllWithLang()
     {
-        $all = $this->_resource->all('test:prop','en');
+        $all = $this->_resource->all('test:prop', 'en');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('Test B', $all[0]);
     }
@@ -448,7 +448,10 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testLabelWithLang()
     {
         $this->_resource->set('rdfs:label', 'Label Text');
-        $this->_resource->set('dc:title', new EasyRdf_Literal('Dc Title', 'en'));
+        $this->_resource->set(
+            'dc:title',
+            new EasyRdf_Literal('Dc Title', 'en')
+        );
         $this->assertStringEquals('Dc Title', $this->_resource->label('en'));
     }
 

@@ -81,15 +81,18 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:name', 'Joe Bloggs');
-        $joe->set('foaf:homepage', $this->_graph->resource('http://www.example.com/joe/'));
+        $joe->set(
+            'foaf:homepage',
+            $this->_graph->resource('http://www.example.com/joe/')
+        );
         $this->assertEquals(
             "<http://www.example.com/joe#me> ".
-                "<http://xmlns.com/foaf/0.1/name> ".
-                "\"Joe Bloggs\" .\n".
+            "<http://xmlns.com/foaf/0.1/name> ".
+            "\"Joe Bloggs\" .\n".
             "<http://www.example.com/joe#me> ".
-                "<http://xmlns.com/foaf/0.1/homepage> ".
-                "<http://www.example.com/joe/> .\n",
-            $this->_serialiser->serialise($this->_graph,'ntriples')
+            "<http://xmlns.com/foaf/0.1/homepage> ".
+            "<http://www.example.com/joe/> .\n",
+            $this->_serialiser->serialise($this->_graph, 'ntriples')
         );
     }
 
@@ -99,22 +102,25 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         $joe->set('foaf:nick', '"Joey"');
         $this->assertEquals(
             "<http://www.example.com/joe#me> ".
-                "<http://xmlns.com/foaf/0.1/nick> ".
-                '"\"Joey\"" .'."\n",
-            $this->_serialiser->serialise($this->_graph,'ntriples')
+            "<http://xmlns.com/foaf/0.1/nick> ".
+            '"\"Joey\"" .'."\n",
+            $this->_serialiser->serialise($this->_graph, 'ntriples')
         );
     }
 
     function testSerialiseNtriplesBNode()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $this->_graph->add($joe, 'foaf:project', array('foaf:name' => 'Project Name'));
+        $this->_graph->add(
+            $joe, 'foaf:project',
+            array('foaf:name' => 'Project Name')
+        );
 
         $this->assertEquals(
             "<http://www.example.com/joe#me> ".
-              "<http://xmlns.com/foaf/0.1/project> _:eid1 .\n".
+            "<http://xmlns.com/foaf/0.1/project> _:eid1 .\n".
             "_:eid1 <http://xmlns.com/foaf/0.1/name> \"Project Name\" .\n",
-            $this->_serialiser->serialise($this->_graph,'ntriples')
+            $this->_serialiser->serialise($this->_graph, 'ntriples')
         );
     }
 }

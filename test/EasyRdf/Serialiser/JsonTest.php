@@ -81,7 +81,10 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
-        $this->_graph->add($joe, 'foaf:project', array('foaf:name' => 'Project Name'));
+        $this->_graph->add(
+            $joe, 'foaf:project',
+            array('foaf:name' => 'Project Name')
+        );
 
         $this->assertEquals(
             '{"http:\/\/www.example.com\/joe#me":{'.
