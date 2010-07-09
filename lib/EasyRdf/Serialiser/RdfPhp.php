@@ -44,7 +44,7 @@
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_RdfPhp
+class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
 {
     /**
      * Serialise an EasyRdf_Graph into RDF format of choice.
