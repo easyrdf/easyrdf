@@ -43,14 +43,14 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     public function testNamespaces()
     {
         $ns = EasyRdf_Namespace::namespaces();
-        $this->assertEquals('http://purl.org/dc/elements/1.1/', $ns['dc']);
+        $this->assertEquals('http://purl.org/dc/terms/', $ns['dc']);
         $this->assertEquals('http://xmlns.com/foaf/0.1/', $ns['foaf']);
     }
 
     public function testGetDcNamespace()
     {
         $this->assertEquals(
-            'http://purl.org/dc/elements/1.1/',
+            'http://purl.org/dc/terms/',
             EasyRdf_Namespace::get('dc')
         );
     }

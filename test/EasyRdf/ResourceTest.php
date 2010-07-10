@@ -439,10 +439,10 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertStringEquals('Foaf Name', $this->_resource->label());
     }
 
-    public function testLabelWithDcTitle()
+    public function testLabelWithDc11Title()
     {
-        $this->_resource->set('dc:title', 'Dc Title');
-        $this->assertStringEquals('Dc Title', $this->_resource->label());
+        $this->_resource->set('dc11:title', 'Dc11 Title');
+        $this->assertStringEquals('Dc11 Title', $this->_resource->label());
     }
 
     public function testLabelWithLang()
