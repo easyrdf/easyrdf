@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,19 +31,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
 
 /**
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Serialiser
 {
     private static $_serialisersByName = array();
+    private static $_serialisersByMime = array();
 
     /** Get the registered serialiser by name
      *
@@ -64,17 +65,54 @@ class EasyRdf_Serialiser
             return null;
         }
     }
-    
+
+    /** Get the registered serialiser by mime type
+     *
+     * If a mime type is not registered, then this method will return null.
+     *
+     * @param  string  $mime   The mime type (e.g. text/plain)
+     * @return string          The class name (e.g. EasyRdf_Serialiser_Ntriples)
+     */
+    public static function getByMimeType($mime)
+    {
+        if (!is_string($mime) or $mime == null or $mime == '') {
+            throw new InvalidArgumentException(
+                "\$mime should be a string and cannot be null or empty"
+            );
+        } else if (array_key_exists($mime, self::$_serialisersByMime)) {
+            return self::$_serialisersByMime[$mime];
+        } else {
+            return null;
+        }
+    }
+
+    /** Get a list of serialisation format names
+     *
+     * @return array          An array of serialisation formats
+     */
+    public static function getNames()
+    {
+        return array_keys(self::$_serialisersByName);
+    }
+
+    /** Get a list of serialisation mime types
+     *
+     * @return array          An array of mime types
+     */
+    public static function getMimeTypes()
+    {
+        return array_keys(self::$_serialisersByMime);
+    }
+
     /** Register a serialiser
      *
      * @param  string  $class  The PHP class name (e.g. EasyRdf_Serialiser_Json)
      * @param  string  $name   The name of the serialiation (e.g. ntriples)
+     * @param  string  $mime   MIME type of the serialiation (e.g. text/plain)
      * @return string          The PHP class name
      */
-    public static function register($class, $name)
+    public static function register($class, $name, $mime=null)
     {
-        // FIXME: store the mime types and suffixes too
-        
         if (!is_string($class) or $class == null or $class == '') {
             throw new InvalidArgumentException(
                 "\$class should be a string and cannot be null or empty"
@@ -88,14 +126,13 @@ class EasyRdf_Serialiser
         }
 
         self::$_serialisersByName[$name] = $class;
-    }
-    
-    /** Get a list of serialisation format names
-     *
-     * @return array          An array of serialisation formats
-     */
-    public static function getNames()
-    {
-        return array_keys(self::$_serialisersByName);
+
+        if ($mime) {
+            if (!is_array($mime))
+                $mime = array($mime);
+            foreach ($mime as $m) {
+                self::$_serialisersByMime[$m] = $class;
+            }
+        }
     }
 }

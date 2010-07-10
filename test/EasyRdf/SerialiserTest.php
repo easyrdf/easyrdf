@@ -46,14 +46,14 @@ class EasyRdf_SerialiserTest extends EasyRdf_TestCase
      */
     public function setUp()
     {
-        EasyRdf_Serialiser::register('MySerialiser_Class', 'my');
+        EasyRdf_Serialiser::register('MySerialiser_Class', 'myname', 'my/mime');
     }
 
     public function testGetByName()
     {
         $this->assertEquals(
             'MySerialiser_Class',
-            EasyRdf_Serialiser::getByName('my')
+            EasyRdf_Serialiser::getByName('myname')
         );
     }
 
@@ -80,42 +80,90 @@ class EasyRdf_SerialiserTest extends EasyRdf_TestCase
         $this->assertEquals(null, EasyRdf_Serialiser::getByName('unknown'));
     }
 
-    public function testRegisterTypeNull()
+    public function testGetByMimeType()
     {
-        $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Serialiser::register(null, 'MySerialiser_Class');
+        $this->assertEquals(
+            'MySerialiser_Class',
+            EasyRdf_Serialiser::getByMimeType('my/mime')
+        );
     }
 
-    public function testRegisterTypeEmpty()
+    public function testGetByMimeTypeNull()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Serialiser::register('', 'MySerialiser_Class');
+        EasyRdf_Serialiser::getByMimeType(null);
     }
 
-    public function testRegisterTypeNonString()
+    public function testGetByMimeTypeEmpty()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Serialiser::register(array(), 'MySerialiser_Class');
+        EasyRdf_Serialiser::getByMimeType('');
+    }
+
+    public function testGetByMimeTypeNonString()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Serialiser::getByMimeType(array());
+    }
+
+    public function testGetByMimeTypeUnknown()
+    {
+        $this->assertEquals(null, EasyRdf_Serialiser::getByMimeType('unknown'));
+    }
+
+    public function testRegisterMultipleMimeTypes()
+    {
+        EasyRdf_Serialiser::register(
+            'MySerialiser_Class2',
+            'myname2',
+            array('my1/mime1', 'my2/mime2')
+        );
+        $this->assertEquals(
+            'MySerialiser_Class2',
+            EasyRdf_Serialiser::getByMimeType('my1/mime1')
+        );
+        $this->assertEquals(
+            'MySerialiser_Class2',
+            EasyRdf_Serialiser::getByMimeType('my2/mime2')
+        );
+    }
+
+    public function testRegisterNameNull()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Serialiser::register('MySerialiser_Class', null);
+    }
+
+    public function testRegisterNameEmpty()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Serialiser::register('MySerialiser_Class', '');
+    }
+
+    public function testRegisterNameNonString()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Serialiser::register('MySerialiser_Class', array());
     }
 
     public function testRegisterClassNull()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Serialiser::register('my', null);
+        EasyRdf_Serialiser::register(null, 'myname');
     }
 
     public function testRegisterClassEmpty()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Serialiser::register('my', '');
+        EasyRdf_Serialiser::register('', 'myname');
     }
 
     public function testRegisterClassNonString()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Serialiser::register('my', array());
+        EasyRdf_Serialiser::register(array(), 'myname');
     }
-
+    
     public function testGetNames()
     {
         $names = EasyRdf_Serialiser::getNames();

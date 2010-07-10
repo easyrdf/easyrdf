@@ -131,4 +131,8 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
 }
 
 
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Ntriples', 'ntriples');
+EasyRdf_Serialiser::register(
+    'EasyRdf_Serialiser_Ntriples',
+    'ntriples',
+    array('text/plain','application/ntriples','application/x-ntriples')
+);

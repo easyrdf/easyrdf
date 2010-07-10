@@ -81,4 +81,8 @@ class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser
     }
 }
 
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Json', 'json');
+EasyRdf_Serialiser::register(
+    'EasyRdf_Serialiser_Json',
+    'json',
+    array('application/json','text/json')
+);

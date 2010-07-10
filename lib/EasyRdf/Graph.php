@@ -560,16 +560,19 @@ class EasyRdf_Graph
 
     /** Serialise the graph into RDF
      *
-     * @param  string  $format  The format to serialise into
+     * @param  string  $format  The format to serialise to (name or mime type)
      */
     public function serialise($format)
     {
         if (is_string($format)) {
             $class = EasyRdf_Serialiser::getByName($format);
             if ($class == null) {
-                throw new EasyRdf_Exception(
-                    "No serialiser found for format: ".$format
-                );
+                $class = EasyRdf_Serialiser::getByMimeType($format);
+                if ($class == null) {
+                    throw new EasyRdf_Exception(
+                        "No serialiser found for: ".$format
+                    );
+                }
             }
             $serialiser = new $class();
             return $serialiser->serialise($this, $format);
