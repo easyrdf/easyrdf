@@ -416,12 +416,14 @@ class EasyRdf_Resource
             return $this->get('foaf:name', $lang);
         } else if ($this->get('dc:title', $lang)) {
             return $this->get('dc:title', $lang);
+        } else if ($this->get('dc11:title', $lang)) {
+            return $this->get('dc11:title', $lang);
         } else {
             return $this->shorten();
         }
     }
 
-    /** Display the resource and its properties
+    /** Return view of the resource and its properties
      *
      * This method is intended to be a debugging aid and will
      * print a resource and its properties to the screen.
@@ -430,20 +432,59 @@ class EasyRdf_Resource
      */
     public function dump($html=true)
     {
-        # FIXME: finish implementing this
-        echo '<pre>';
-        echo '<b>'.$this->getUri()."</b>\n";
-        echo 'Class: '.get_class($this)."\n";
-        echo 'Types: '.implode(', ', $this->types())."\n";
-        echo "Properties:</i>\n";
-        foreach ($this->_properties as $property => $values) {
-            if ($property == 'rdf:type') continue;
-            echo "  $property => \n";
+        $plist = array();
+        foreach ($this->_properties as $prop => $values) {
+            $olist = array();
             foreach ($values as $value) {
-                echo "    $value\n";
+                $olist []= $value->dumpValue($html);
+            }
+
+            if ($html) {
+                $plist []= "<span style='font-size:130%'>&rarr;</span> ".
+                           "<span style='text-decoration:none;color:green'>".
+                           htmlentities($prop)."</span> ".
+                           "<span style='font-size:130%'>&rarr;</span> ".
+                           join(", ", $olist);
+            } else {
+                $plist []= "  -> $prop -> " . join(", ", $olist);
             }
         }
-        echo "</pre>";
+
+        if (count($plist)) {
+            if ($html) {
+                return "<div id=" . htmlentities($this->_uri) . " " .
+                       "style='font-family:arial; padding:0.5em; ".
+                       "background-color:lightgrey;border:dashed 1px grey;'>\n".
+                       "<div><a href='".htmlentities($this->_uri)."'".
+                       " style='text-decoration:none'>".
+                       htmlentities($this->_uri)."</a> ".
+                       "<span style='font-size: 0.8em'>(".
+                       get_class($this).")</span></div>\n".
+                       "<div style='padding-left: 3em'>\n".
+                       "<div>".join("</div>\n<div>", $plist)."</div>".
+                       "</div></div>\n";
+            } else {
+                return $this->_uri." (".get_class($this).")\n" .
+                       join("\n", $plist) . "\n\n";
+            }
+        } else {
+            return '';
+        }
+    }
+
+    /** Return pretty-print view of just this resource
+     *
+     * @param  bool  $html  Set to true to format the dump using HTML
+     */
+    public function dumpValue($html=true)
+    {
+        if ($html) {
+            return "<a href='".htmlentities($this->_uri).
+                   "' style='text-decoration:none;color:red'>".
+                   htmlentities($this->_uri)."</a>";
+        } else {
+            return $this->_uri;
+        }
     }
 
     /** Magic method to give access to properties using method calls

@@ -11,18 +11,29 @@
 <head><title>EasyRdf Graph Dumper</title></head>
 <body>
 <h1>EasyRdf Graph Dumper</h1>
-<?= form_tag() ?>
-<?= text_field_tag('uri', 'http://www.aelius.com/njh/foaf.rdf', array('size'=>50)) ?>
-<?= submit_tag() ?>
-<?= form_end_tag() ?>
+
+<div style="margin: 10px">
+  <?= form_tag() ?>
+  URI: <?= text_field_tag('uri', 'http://metade.org/foaf.rdf', array('size'=>80)) ?><br />
+  Format: <?= label_tag('format_html', 'HTML').' '.radio_button_tag('format', 'html', true) ?>
+          <?= label_tag('format_text', 'Text').' '.radio_button_tag('format', 'text') ?><br />
+
+  <?= submit_tag() ?>
+  <?= form_end_tag() ?>
+</div>
 
 <?php
     if (isset($_REQUEST['uri'])) {
         $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
         if ($graph) {
-            $graph->dump();
+            if (isset($_REQUEST['format']) && $_REQUEST['format'] == 'text') {
+                print "<pre>".$graph->dump(false)."</pre>";
+            } else {
+                $dump = $graph->dump(true);
+                print preg_replace("/ href='([^']*)'/e",'" href=\'?uri=".urlencode("$1")."#$1\'"', $dump);
+            }
         } else {
-            echo "<p>Failed to create graph.</p>";
+            print "<p>Failed to create graph.</p>";
         }
     }
 ?>

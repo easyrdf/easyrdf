@@ -108,4 +108,30 @@ class EasyRdf_Literal
     {
         return isset($this->_value) ? $this->_value : '';
     }
+
+    /** Return pretty-print view of the literal
+     *
+     * @param  bool  $html  Set to true to format the dump using HTML
+     */
+    public function dumpValue($html=true)
+    {
+        $text = '"'.$this->_value.'"';
+        if ($this->_lang) {
+            $text .= '@' . $this->_lang;
+        }
+        if ($this->_datatype) {
+            $dt = EasyRdf_Namespace::shorten($this->_datatype);
+            if ($dt == null)
+                $dt = '<'.$this->_datatype.'>';
+            $text .= "^^$dt";
+        }
+
+        if ($html) {
+            return "<span style='color:blue'>".
+                   htmlentities($text, ENT_COMPAT, "UTF-8").
+                   "</span>";
+        } else {
+            return $text;
+        }
+    }
 }

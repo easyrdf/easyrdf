@@ -580,19 +580,21 @@ class EasyRdf_Graph
         }
     }
 
-    /** Display all the resources in the graph
+    /** Return view of all the resources in the graph
      *
      * This method is intended to be a debugging aid and will
-     * print all the resources and their properties to the screen.
+     * return a pretty-print view of  all the resources and their
+     * properties.
      *
      * @param  bool  $html  Set to true to format the dump using HTML
      */
     public function dump($html=true)
     {
-        # FIXME: display some information about the graph
+        $r = array();
         foreach ($this->_resources as $resource) {
-            $resource->dump($html, 1);
+            $r[] = $resource->dump($html);
         }
+        return join('', $r);
     }
 
     /** Get the resource type of the graph
