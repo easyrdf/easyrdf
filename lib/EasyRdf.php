@@ -45,6 +45,11 @@
 require_once "EasyRdf/Exception.php";
 
 /**
+ * @see EasyRdf_Format
+ */
+require_once "EasyRdf/Format.php";
+
+/**
  * @see EasyRdf_Graph
  */
 require_once "EasyRdf/Graph.php";
