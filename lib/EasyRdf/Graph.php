@@ -119,7 +119,7 @@ class EasyRdf_Graph
      *
      * If the resource did not previously exist, then a new resource will
      * be created. If you provide an RDF type and that type is registered
-     * with the EasyRDF_TypeMapper, then the resource will be an instance
+     * with the EasyRdf_TypeMapper, then the resource will be an instance
      * of the class registered.
      *
      * @param  string  $uri    The URI of the resource
@@ -146,7 +146,7 @@ class EasyRdf_Graph
             $resClass = 'EasyRdf_Resource';
             foreach ($types as $type) {
                 if ($type == null or $type == null) continue;
-                $class = EasyRDF_TypeMapper::get($type);
+                $class = EasyRdf_TypeMapper::get($type);
                 if ($class != null) {
                     $resClass = $class;
                     break;
@@ -186,7 +186,7 @@ class EasyRdf_Graph
      * Create a new blank node in the graph and return it.
      *
      * If you provide an RDF type and that type is registered
-     * with the EasyRDF_TypeMapper, then the resource will be an instance
+     * with the EasyRdf_TypeMapper, then the resource will be an instance
      * of the class registered.
      *
      * @param  mixed   $types  RDF type of a new blank node (e.g. foaf:Person)
