@@ -79,6 +79,10 @@
       </projdocfileset>
     </phpdoc>
   </target>
+
+  <target name="upload_docs" depends="docs">
+    <exec command="scp -rpBC docs www.aelius.com:~njh/public_html/easyrdf/" dir="${project.basedir}" passthru="true" />
+  </target>
  
   <target name="cs">
     <phpcodesniffer standard="ZEND">
