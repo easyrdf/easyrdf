@@ -12,7 +12,7 @@
   
   <foaf:Person rdf:about="http://www.example.com/joe#me">
     <foaf:title>Mr</foaf:title>
-    <foaf:name>Joe Bloggs</foaf:name>
+    <foaf:name xml:lang="en">Joe Bloggs</foaf:name>
     <foaf:firstName>Joe</foaf:firstName>
     <foaf:family_name>Bloggs</foaf:family_name>
     <foaf:homepage rdf:resource="http://www.example.com/joe/" />

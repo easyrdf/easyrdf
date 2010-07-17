@@ -18,6 +18,6 @@
     foaf:family_name "Bloggs" ;
     foaf:firstName "Joe" ;
     foaf:homepage <http://www.example.com/joe/> ;
-    foaf:name "Joe Bloggs" ;
+    foaf:name "Joe Bloggs"@en ;
     foaf:title "Mr" .
 
