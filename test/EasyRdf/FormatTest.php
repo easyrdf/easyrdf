@@ -270,6 +270,11 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->assertEquals(array(), $this->_format->getMimeTypes());
     }
 
+    public function testToString()
+    {
+        $this->assertStringEquals('my', $this->_format);
+    }
+
     public function testSetParserClass()
     {
         $this->_format->setParserClass('MockParserClass');

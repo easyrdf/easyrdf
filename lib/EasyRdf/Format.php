@@ -94,7 +94,7 @@ class EasyRdf_Format
 
         # No match
         throw new EasyRdf_Exception(
-            "Format not found."
+            "Format is not recognised: $query"
         );
     }
 
@@ -297,6 +297,15 @@ class EasyRdf_Format
             );
         }
         return (new $serialiserClass());
+    }
+
+    /** Magic method to return the name of the format when casted to string
+     *
+     * @return string The name of the format
+     */
+    public function __toString()
+    {
+        return $this->_name;
     }
 }
 
