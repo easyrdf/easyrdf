@@ -3,9 +3,8 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    ## Configure the RDF parser to use
+    ## Load the ARC2 RDF parser
     require_once "EasyRdf/Parser/Arc.php";
-    EasyRdf_Graph::setRdfParser( new EasyRdf_Parser_Arc() );
 
     # Configure the HTTP client to use
     require_once "EasyRdf/Http/Client.php";
@@ -77,7 +76,6 @@
     }
 
     if (isset($graph)) {
-        echo "<hr />";
         echo $graph->dump();
     }
 ?>

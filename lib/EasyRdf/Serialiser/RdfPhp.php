@@ -59,14 +59,9 @@ class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
      *
      * http://n2.talis.com/wiki/RDF_PHP_Specification
      */
-    public function serialise($graph, $format='php')
+    public function serialise($graph, $format)
     {
-        if ($graph == null or !is_object($graph) or
-            get_class($graph) != 'EasyRdf_Graph') {
-            throw new InvalidArgumentException(
-                "\$graph should be an EasyRdf_Graph object and cannot be null"
-            );
-        }
+        parent::checkSerialiseParams($graph, $format);
 
         if ($format != 'php') {
             throw new EasyRdf_Exception(
@@ -124,4 +119,4 @@ class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
     }
 }
 
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_RdfPhp', 'php');
+EasyRdf_Format::registerSerialiser('php', 'EasyRdf_Serialiser_RdfPhp');

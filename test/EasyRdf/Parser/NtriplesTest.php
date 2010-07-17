@@ -3,12 +3,9 @@
 /**
  * EasyRdf
  *
- * Use this file to load the core of EasyRdf, if you don't have an autoloader.
- *
- *
  * LICENSE
  *
- * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,97 +31,51 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
 
-/**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
+require_once dirname(dirname(dirname(__FILE__))).
+             DIRECTORY_SEPARATOR.'TestHelper.php';
 
-/**
- * @see EasyRdf_Format
- */
-require_once "EasyRdf/Format.php";
+class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
+{
+    protected $_parser = null;
+    protected $_graph = null;
+    protected $_data = null;
 
-/**
- * @see EasyRdf_Graph
- */
-require_once "EasyRdf/Graph.php";
+    public function setUp()
+    {
+        $this->_graph = new EasyRdf_Graph();
+        $this->_parser = new EasyRdf_Parser_Ntriples();
+        $this->_data = readFixture('foaf.nt');
+    }
 
-/**
- * @see EasyRdf_Http_Client
- */
-require_once "EasyRdf/Http/Client.php";
+    public function testParse()
+    {
+        $this->_parser->parse($this->_graph, $this->_data, 'ntriples', null);
+        
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $this->assertNotNull($joe);
+        $this->assertEquals('EasyRdf_Resource', get_class($joe));
+        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
 
-/**
- * @see EasyRdf_Http_Response
- */
-require_once "EasyRdf/Http/Response.php";
+        $name = $joe->get('foaf:name');
+        $this->assertNotNull($name);
+        $this->assertEquals('EasyRdf_Literal', get_class($name));
+        $this->assertEquals('Joe Bloggs', $name->getValue());
+        
+        # FIXME: implement this
+        #$this->assertEquals('en', $name->getLang());
+        #$this->assertEquals(null, $name->getDatatype());
+    }
 
-/**
- * @see EasyRdf_Literal
- */
-require_once "EasyRdf/Literal.php";
-
-/**
- * @see EasyRdf_Namespace
- */
-require_once "EasyRdf/Namespace.php";
-
-/**
- * @see EasyRdf_Parser
- */
-require_once "EasyRdf/Parser.php";
-
-/**
- * @see EasyRdf_Parser_RdfPhp
- */
-require_once "EasyRdf/Parser/RdfPhp.php";
-
-/**
- * @see EasyRdf_Parser_Ntriples
- */
-require_once "EasyRdf/Parser/Ntriples.php";
-
-/**
- * @see EasyRdf_Parser_Json
- */
-require_once "EasyRdf/Parser/Json.php";
-
-/**
- * @see EasyRdf_Resource
- */
-require_once "EasyRdf/Resource.php";
-
-/**
- * @see EasyRdf_Serialiser
- */
-require_once "EasyRdf/Serialiser.php";
-
-/**
- * @see EasyRdf_Serialiser_RdfPhp
- */
-require_once "EasyRdf/Serialiser/RdfPhp.php";
-
-/**
- * @see EasyRdf_Serialiser_Ntriples
- */
-require_once "EasyRdf/Serialiser/Ntriples.php";
-
-/**
- * @see EasyRdf_Serialiser_Json
- */
-require_once "EasyRdf/Serialiser/Json.php";
-
-/**
- * @see EasyRdf_TypeMapper
- */
-require_once "EasyRdf/TypeMapper.php";
-
-/**
- * @see EasyRdf_Utils
- */
-require_once "EasyRdf/Utils.php";
+    function testParseUnsupportedFormat()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $rdf = $this->_parser->parse(
+            $this->_graph, $this->_data, 'unsupportedformat', null
+        );
+    }
+}

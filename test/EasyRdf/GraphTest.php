@@ -38,19 +38,6 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-global $validRdf;
-$validRdf = array(
-                'http://example.com/joe' => array(
-                    'http://xmlns.com/foaf/0.1/name' => array(
-                        array(
-                            'value' => 'Joseph Bloggs',
-                            'type' => 'literal',
-                            'lang' => 'en'
-                        )
-                    )
-                )
-            );
-
 class Mock_Http_Response
 {
     public function getBody()
@@ -87,14 +74,14 @@ class Mock_Http_Client
 
 class Mock_RdfParser
 {
-    public function parse($uri, $data, $format)
+    public function parse($graph, $data, $format, $base_uri)
     {
-        global $validRdf;
-        if ($uri == 'valid:rdf' and $data == 'valid:rdf') {
-            return $validRdf;
-        } else {
-            return null;
-        }
+        $graph->add(
+            'http://www.example.com/joe#me',
+            'foaf:name',
+            'Joseph Bloggs'
+        );
+        return true;
     }
 }
 
@@ -110,121 +97,11 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 {
     protected $_graph = null;
 
-    public function testSimplifyMimeTypeJson()
-    {
-        $this->assertEquals(
-            'json',
-            EasyRdf_Graph::simplifyMimeType('application/json')
-        );
-        $this->assertEquals(
-            'json',
-            EasyRdf_Graph::simplifyMimeType('text/json')
-        );
-    }
-
-    public function testSimplifyMimeTypeRdfXml()
-    {
-        $this->assertEquals(
-            'rdfxml',
-            EasyRdf_Graph::simplifyMimeType('application/rdf+xml')
-        );
-    }
-
-    public function testSimplifyMimeTypeTurtle()
-    {
-        $this->assertEquals(
-            'turtle',
-            EasyRdf_Graph::simplifyMimeType('text/turtle')
-        );
-    }
-
-    public function testSimplifyMimeTypeNTriples()
-    {
-        $this->assertEquals(
-            'ntriples',
-            EasyRdf_Graph::simplifyMimeType('application/n-triples')
-        );
-    }
-
-    public function testSimplifyMimeTypeHtml()
-    {
-        $this->assertEquals(
-            'rdfa',
-            EasyRdf_Graph::simplifyMimeType('text/html')
-        );
-    }
-
-    public function testSimplifyMimeTypeXHtml()
-    {
-        $this->assertEquals(
-            'rdfa',
-            EasyRdf_Graph::simplifyMimeType('application/xhtml+xml')
-        );
-    }
-
-    public function testSimplifyMimeTypeUnknown()
-    {
-        $this->assertNull(
-            EasyRdf_Graph::simplifyMimeType('foo/bar')
-        );
-    }
-
-    public function testGuessTypePhp()
-    {
-        $data = array('http://www.example.com' => array());
-        $this->assertEquals('php', EasyRdf_Graph::guessDocType($data));
-    }
-
-    public function testGuessTypeRdfXml()
-    {
-        $data = readFixture('foaf.rdf');
-        $this->assertEquals('rdfxml', EasyRdf_Graph::guessDocType($data));
-    }
-
-    public function testGuessTypeJson()
-    {
-        $data = readFixture('foaf.json');
-        $this->assertEquals('json', EasyRdf_Graph::guessDocType($data));
-    }
-
-    public function testGuessTypeTurtle()
-    {
-        $data = readFixture('foaf.ttl');
-        $this->assertEquals('turtle', EasyRdf_Graph::guessDocType($data));
-    }
-
-    public function testGuessTypeNtriples()
-    {
-        $data = readFixture('foaf.nt');
-        $this->assertEquals('ntriples', EasyRdf_Graph::guessDocType($data));
-    }
-
-    public function testGuessTypeRdfa()
-    {
-        $data = readFixture('foaf.html');
-        $this->assertEquals('rdfa', EasyRdf_Graph::guessDocType($data));
-    }
-
-    public function testGuessTypeUnknown()
-    {
-        $this->assertNull(
-            EasyRdf_Graph::guessDocType('blah blah blah')
-        );
-    }
-
     public function testGetDefaultHttpClient()
     {
         $this->assertEquals(
             'EasyRdf_Http_Client',
             get_class(EasyRdf_Graph::getHttpClient())
-        );
-    }
-
-    public function testGetDefaultRdfParser()
-    {
-        $this->assertEquals(
-            'EasyRdf_Parser_Builtin',
-            get_class(EasyRdf_Graph::getRdfParser())
         );
     }
 
@@ -247,27 +124,6 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Graph::setHttpClient('foobar');
-    }
-
-    public function testSetRdfParser()
-    {
-        EasyRdf_Graph::setRdfParser(new Mock_RdfParser());
-        $this->assertEquals(
-            'Mock_RdfParser',
-            get_class(EasyRdf_Graph::getRdfParser())
-        );
-    }
-
-    public function testSetRdfParserNull()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Graph::setRdfParser(null);
-    }
-
-    public function testSetRdfParserString()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Graph::setRdfParser('foobar');
     }
 
     public function testGetUri()
@@ -299,20 +155,19 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoadData()
     {
-        global $validRdf;
         $graph = new EasyRdf_Graph();
-        $graph->load('http://www.example.com/foaf.php', $validRdf);
+        $data = readFixture('foaf.json');
+        $graph->load('http://www.example.com/foaf.json', $data, 'json');
 
-        $joe = $graph->resource('http://example.com/joe');
+        $joe = $graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
         $this->assertEquals('EasyRdf_Resource', get_class($joe));
-        $this->assertEquals('http://example.com/joe', $joe->getUri());
-        $this->assertNull($joe->type());
+        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
         $this->assertEquals('EasyRdf_Literal', get_class($name));
-        $this->assertEquals('Joseph Bloggs', $name->getValue());
+        $this->assertEquals('Joe Bloggs', $name->getValue());
         $this->assertEquals('en', $name->getLang());
         $this->assertEquals(null, $name->getDatatype());
     }
@@ -338,24 +193,23 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->load(array());
     }
 
-    public function testLoadMockParser()
-    {
-        EasyRdf_Graph::setRdfParser(new Mock_RdfParser());
-        $graph = new EasyRdf_Graph();
-        # Use magic URI to trigger Mock parser to return valid RDF
-        $graph->load('valid:rdf', 'valid:rdf');
-        $this->assertStringEquals(
-            'Joseph Bloggs',
-            $graph->resource('http://example.com/joe')->get('foaf:name')
-        );
-    }
-
-    public function testLoadMockParserInvalid()
+    public function testLoadUnknownFormat()
     {
         $this->setExpectedException('EasyRdf_Exception');
-        EasyRdf_Graph::setRdfParser(new Mock_RdfParser());
         $graph = new EasyRdf_Graph();
-        $graph->load('invalid:rdf', 'invalid:rdf');
+        $graph->load('http://www.example.com/foaf.unknown', 'data');
+    }
+
+    public function testLoadMockParser()
+    {
+        EasyRdf_Format::registerParser('mock', 'Mock_RdfParser');
+
+        $graph = new EasyRdf_Graph();
+        $graph->load('http://www.example.com/foaf.mock', 'data', 'mock');
+        $this->assertStringEquals(
+            'Joseph Bloggs',
+            $graph->resource('http://www.example.com/joe#me')->get('foaf:name')
+        );
     }
 
     public function testLoadMockHttpClient()
@@ -671,18 +525,15 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testSerialise()
     {
-        EasyRdf_Serialiser::register('Mock_RdfSerialiser', 'mock1');
+        EasyRdf_Format::registerSerialiser('mock', 'Mock_RdfSerialiser');
         $graph = new EasyRdf_Graph();
-        $this->assertEquals("<rdf></rdf>", $graph->serialise('mock1'));
+        $this->assertEquals("<rdf></rdf>", $graph->serialise('mock'));
     }
 
     public function testSerialiseByMime()
     {
-        EasyRdf_Serialiser::register(
-            'Mock_RdfSerialiser',
-            'mock2',
-            'mock/mime'
-        );
+        EasyRdf_Format::registerSerialiser('mock', 'Mock_RdfSerialiser');
+        EasyRdf_Format::register('mock', 'Mock', null, 'mock/mime');
         $graph = new EasyRdf_Graph();
         $this->assertEquals(
             "<rdf></rdf>",

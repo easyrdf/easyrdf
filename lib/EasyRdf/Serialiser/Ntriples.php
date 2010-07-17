@@ -100,14 +100,9 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
      * @param string $format The name of the format to convert to (ntriples).
      * @return string The N-Triples formatted RDF.
      */
-    public function serialise($graph, $format='ntriples')
+    public function serialise($graph, $format)
     {
-        if ($graph == null or !is_object($graph) or
-            get_class($graph) != 'EasyRdf_Graph') {
-            throw new InvalidArgumentException(
-                "\$graph should be an EasyRdf_Graph object and cannot be null"
-            );
-        }
+        parent::checkSerialiseParams($graph, $format);
 
         if ($format != 'ntriples') {
             throw new EasyRdf_Exception(
@@ -130,9 +125,4 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
     }
 }
 
-
-EasyRdf_Serialiser::register(
-    'EasyRdf_Serialiser_Ntriples',
-    'ntriples',
-    array('text/plain','application/ntriples','application/x-ntriples')
-);
+EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Ntriples');

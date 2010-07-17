@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -39,69 +39,50 @@
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
+class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
 {
-    protected $_serialiser = null;
+    protected $_parser = null;
     protected $_graph = null;
+    protected $_data = null;
 
     public function setUp()
     {
         $this->_graph = new EasyRdf_Graph();
-        $this->_serialiser = new EasyRdf_Serialiser_Ntriples();
+        $this->_parser = new EasyRdf_Parser_Json();
+        $this->_data = readFixture('foaf.json');
     }
 
-    function testSerialise()
+    public function testParse()
     {
+        $this->_parser->parse($this->_graph, $this->_data, 'json', null);
+
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $joe->set('foaf:name', 'Joe Bloggs');
-        $joe->set(
-            'foaf:homepage',
-            $this->_graph->resource('http://www.example.com/joe/')
-        );
-        $this->assertEquals(
-            "<http://www.example.com/joe#me> ".
-            "<http://xmlns.com/foaf/0.1/name> ".
-            "\"Joe Bloggs\" .\n".
-            "<http://www.example.com/joe#me> ".
-            "<http://xmlns.com/foaf/0.1/homepage> ".
-            "<http://www.example.com/joe/> .\n",
-            $this->_serialiser->serialise($this->_graph, 'ntriples')
-        );
+        $this->assertNotNull($joe);
+        $this->assertEquals('EasyRdf_Resource', get_class($joe));
+        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
+
+        $name = $joe->get('foaf:name');
+        $this->assertNotNull($name);
+        $this->assertEquals('EasyRdf_Literal', get_class($name));
+        $this->assertEquals('Joe Bloggs', $name->getValue());
+        $this->assertEquals('en', $name->getLang());
+        $this->assertEquals(null, $name->getDatatype());
     }
 
-    function testSerialiseNtriplesQuotes()
+    public function testParseWithFormatObject()
     {
+        $format = EasyRdf_Format::getFormat('json');
+        $this->_parser->parse($this->_graph, $this->_data, $format, null);
+
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $joe->set('foaf:nick', '"Joey"');
-        $this->assertEquals(
-            "<http://www.example.com/joe#me> ".
-            "<http://xmlns.com/foaf/0.1/nick> ".
-            '"\"Joey\"" .'."\n",
-            $this->_serialiser->serialise($this->_graph, 'ntriples')
-        );
+        $this->assertStringEquals('Joe Bloggs', $joe->get('foaf:name'));
     }
 
-    function testSerialiseNtriplesBNode()
-    {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $this->_graph->add(
-            $joe, 'foaf:project',
-            array('foaf:name' => 'Project Name')
-        );
-
-        $this->assertEquals(
-            "<http://www.example.com/joe#me> ".
-            "<http://xmlns.com/foaf/0.1/project> _:eid1 .\n".
-            "_:eid1 <http://xmlns.com/foaf/0.1/name> \"Project Name\" .\n",
-            $this->_serialiser->serialise($this->_graph, 'ntriples')
-        );
-    }
-
-    function testSerialiseUnsupportedFormat()
+    function testParseUnsupportedFormat()
     {
         $this->setExpectedException('EasyRdf_Exception');
-        $rdf = $this->_serialiser->serialise(
-            $this->_graph, 'unsupportedformat'
+        $rdf = $this->_parser->parse(
+            $this->_graph, $this->_data, 'unsupportedformat', null
         );
     }
 }

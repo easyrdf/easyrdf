@@ -10,8 +10,10 @@
         require_once "EasyRdf/Serialiser/Rapper.php";
 
     $format_options = array();
-    foreach (EasyRdf_Serialiser::getNames() as $format) {
-        $format_options[$format] = $format;
+    foreach (EasyRdf_Format::getFormats() as $format) {
+        if ($format->getSerialiserClass()) {
+            $format_options[$format->getLabel()] = $format->getName();
+        }
     }
 ?>
 <html>

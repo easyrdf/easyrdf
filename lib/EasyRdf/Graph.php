@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -59,32 +59,6 @@ class EasyRdf_Graph
 
     /** An HTTP Client object used by graph to fetch data */
     private static $_httpClient = null;
-
-    /** An RDF Parser object used by graph to parse RDF */
-    private static $_rdfParser = null;
-
-    /** An RDF Serialiser object used by graph to generate RDF */
-    private static $_rdfSerialiser = null;
-
-    /** Mapping between mime types and serialisation names */
-    private static $_mimeTypeMap = array(
-        'application/json' => 'json',
-        'text/json' => 'json',
-        'application/rdf+xml' => 'rdfxml',
-        'application/xml' => 'rdfxml',
-        'application/turtle' => 'turtle',
-        'application/x-turtle' => 'turtle',
-        'text/turtle' => 'turtle',
-        'application/ntriples' => 'ntriples',
-        'application/n-triples' => 'ntriples',
-        'application/x-ntriples' => 'ntriples',
-        # FIXME: might be erdf or something instead...
-        'text/html' => 'rdfa',
-        'application/xhtml+xml' => 'rdfa'
-    );
-
-    /** A constant for the RDF Type property URI */
-    const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 
 
     /** Set the HTTP Client object used to fetch RDF data
@@ -115,88 +89,6 @@ class EasyRdf_Graph
             self::$_httpClient = new EasyRdf_Http_Client();
         }
         return self::$_httpClient;
-    }
-
-    /** Set the RDF parser object used to parse RDF data
-     *
-     * @param  object mixed $rdfParser The new RDF parser object
-     * @return object mixed The new RDF parser object
-     */
-    public static function setRdfParser($rdfParser)
-    {
-        if (!is_object($rdfParser) or $rdfParser == null) {
-            throw new InvalidArgumentException(
-                "\$rdfParser should be an object and cannot be null"
-            );
-        }
-        self::$_rdfParser = $rdfParser;
-    }
-
-    /** Get the RDF parser object used to parse RDF data
-     *
-     * If no RDF Parser has previously been set, then a new
-     * default (EasyRdf_Parser_Rapper) parser will be created.
-     *
-     * @return object mixed The RDF parser object
-     */
-    public static function getRdfParser()
-    {
-        if (!self::$_rdfParser) {
-            self::$_rdfParser = new EasyRdf_Parser_Builtin();
-        }
-        return self::$_rdfParser;
-    }
-
-    /** Convert a mime type into a simplier document type name
-     *
-     * If the mime type is not recognised, null is returned.
-     *
-     * @param  string $mimeType The mime type (e.g. application/rdf+xml)
-     * @return string The document type name (e.g. rdfxml)
-     */
-    public static function simplifyMimeType($mimeType)
-    {
-        if (isset(self::$_mimeTypeMap[$mimeType])) {
-            return self::$_mimeTypeMap[$mimeType];
-        } else {
-            return null;
-        }
-    }
-
-    /** Attempt to guess the document type from some content.
-     *
-     * If the document type is not recognised, null is returned.
-     *
-     * @param  string $data The document data
-     * @return string The document type (e.g. rdfxml)
-     */
-    public static function guessDocType($data)
-    {
-        if (is_array($data)) {
-            # Data has already been parsed into RDF/PHP
-            return 'php';
-        }
-
-        # FIXME: could /etc/magic help here?
-        $short = substr(trim($data), 0, 255);
-        if (preg_match("/^\{/", $short)) {
-            return 'json';
-        } else if (
-            preg_match("/<!DOCTYPE html/", $short) or
-            preg_match("/^<html/", $short)
-        ) {
-            # FIXME: might be erdf or something instead...
-            return 'rdfa';
-        } else if (preg_match("/<rdf/", $short)) {
-            return 'rdfxml';
-        } else if (preg_match("/^@prefix /", $short)) {
-            # FIXME: this could be improved
-            return 'turtle';
-        } else if (preg_match("/^<.+> <.+>/", $short)) {
-            return 'ntriples';
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -340,108 +232,27 @@ class EasyRdf_Graph
                 );
             }
             $data = $response->getBody();
-            if ($format == null) {
-                $format = self::simplifyMimeType(
-                    $response->getHeader('Content-Type')
-                );
+            if (!$format) {
+                $format = $response->getHeader('Content-Type');
+                $format = preg_replace('/;(.+)$/', '', $format);
             }
         }
+        
+        # Guess the format if it is Unknown
+        if (!$format)
+            $format = EasyRdf_Format::guessFormat($data);
 
-        # Guess the document type if not given
-        if ($format == null) {
-            $format = self::guessDocType($data);
-        }
+        if (!$format)
+            throw new EasyRdf_Exception(
+                "Unable to load data of an unknown format."
+            );
 
-        # Parse the document
-        if ($format == 'php') {
-            # FIXME: validate the data?
-        } else if ($format == 'json') {
-            # Parse the RDF/JSON into RDF/PHP
-            $data = json_decode($data, true);
-        } else {
-            # Parse the RDF data
-            $data = self::getRdfParser()->parse($uri, $data, $format);
-            if (!$data) {
-                throw new EasyRdf_Exception(
-                    "Failed to parse data for URI: $uri (\$format = $format)"
-                );
-            }
-        }
-
-        # Convert into an object graph
-        $bnodeMap = array();
-        foreach ($data as $subj => $touple) {
-            $type = $this->getResourceType($data, $subj);
-
-            # Is this a bnode?
-            if (substr($subj, 0, 2) == '_:') {
-                if (!isset($bnodeMap[$subj])) {
-                    $bnodeMap[$subj] = $this->newBNode($type);
-                }
-                $res = $bnodeMap[$subj];
-            } else {
-                $res = $this->resource($subj, $type);
-            }
-
-            foreach ($touple as $property => $objs) {
-                $property = EasyRdf_Namespace::shorten($property);
-                if (isset($property)) {
-                    foreach ($objs as $obj) {
-                        if ($property == 'rdf:type') {
-                            # Type has already been set
-                        } else if ($obj['type'] == 'literal') {
-                            $res->add($property, new EasyRdf_Literal($obj));
-                        } else if ($obj['type'] == 'uri') {
-                            $type = $this->getResourceType(
-                                $data, $obj['value']
-                            );
-                            $objres = $this->resource($obj['value'], $type);
-                            $res->add($property, $objres);
-                        } else if ($obj['type'] == 'bnode') {
-                            $objuri = $obj['value'];
-                            if (!isset($bnodeMap[$objuri])) {
-                                $type = $this->getResourceType(
-                                    $data, $obj['value']
-                                );
-                                $bnodeMap[$objuri] = $this->newBNode($type);
-                            }
-                            $res->add($property, $bnodeMap[$objuri]);
-                        } else {
-                            # FIXME: thow exception or silently ignore?
-                        }
-                    }
-                }
-            }
-
-        }
+        # Parse the data
+        $format = EasyRdf_Format::getFormat($format);
+        $parser = $format->newParser();
+        return $parser->parse($this, $data, $format, $uri);
     }
-
-    /**
-     * Get the type of a resource from some RDF/PHP
-     * (http://n2.talis.com/wiki/RDF_PHP_Specification)
-     */
-    private function getResourceType($data, $uri)
-    {
-        if (array_key_exists($uri, $data)) {
-            $subj = $data[$uri];
-            if (array_key_exists(self::RDF_TYPE_URI, $subj)) {
-                $types = array();
-                foreach ($subj[self::RDF_TYPE_URI] as $type) {
-                    if ($type['type'] == 'uri') {
-                        $type = EasyRdf_Namespace::shorten($type['value']);
-                        if ($type) {
-                            array_push($types, $type);
-                        }
-                    }
-                }
-                if (count($types) > 0) {
-                    return $types;
-                }
-            }
-        }
-        return null;
-    }
-
+    
     /** Get an associative array of all the resources stored in the graph
      *
      * @return array Array of EasyRdf_Resouces
@@ -560,27 +371,14 @@ class EasyRdf_Graph
 
     /** Serialise the graph into RDF
      *
-     * @param  string  $format  The format to serialise to (name or mime type)
+     * @param  string  $format  The format to serialise to
+     * @return mixed   The serialised graph
      */
     public function serialise($format)
     {
-        if (is_string($format)) {
-            $class = EasyRdf_Serialiser::getByName($format);
-            if ($class == null) {
-                $class = EasyRdf_Serialiser::getByMimeType($format);
-                if ($class == null) {
-                    throw new EasyRdf_Exception(
-                        "No serialiser found for: ".$format
-                    );
-                }
-            }
-            $serialiser = new $class();
-            return $serialiser->serialise($this, $format);
-        } else if (is_object($format)) {
-            return $format->serialise($this);
-        } else {
-            throw new InvalidArgumentException();
-        }
+        $format = EasyRdf_Format::getFormat($format);
+        $serialiser = $format->newSerialiser();
+        return $serialiser->serialise($this, $format->getName());
     }
 
     /** Return view of all the resources in the graph
@@ -659,6 +457,6 @@ class EasyRdf_Graph
      */
     public function __toString()
     {
-        return $this->_uri;
+        return $this->_uri == null ? '' : $this->_uri;
     }
 }

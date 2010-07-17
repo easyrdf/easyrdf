@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -39,9 +39,7 @@
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-require_once 'EasyRdf/Parser/Rapper.php';
-
-class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
+class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
 {
     protected $_parser = null;
     protected $_graph = null;
@@ -49,44 +47,35 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
     public function setUp()
     {
-        // FIXME: suppress stderr
-        // FIXME: check for rapper version 1.4.17
-        exec('which rapper', $output, $retval);
-        if ($retval == 0) {
-            $this->_parser = new EasyRdf_Parser_Rapper();
-            $this->_graph = new EasyRdf_Graph();
-            $this->_rdfxml_data = readFixture('foaf.rdf');
-        } else {
-            $this->markTestSkipped(
-                "The rapper command is not available on this system."
-            );
-        }
-    }
-
-    function testRapperNotFound()
-    {
-        $this->setExpectedException('EasyRdf_Exception');
-        new EasyRdf_Parser_Rapper('random_command_that_doesnt_exist');
-    }
-
-    public function testParseRdfXml()
-    {
-        $this->_parser->parse(
-            $this->_graph,
-            $this->_rdfxml_data,
-            'rdfxml',
-            'http://example.com/'
+        $this->_graph = new EasyRdf_Graph();
+        $this->_parser = new EasyRdf_Parser_RdfPhp();
+        $this->_data = array(
+            'http://example.com/joe' => array(
+                'http://xmlns.com/foaf/0.1/name' => array(
+                    array(
+                        'value' => 'Joseph Bloggs',
+                        'type' => 'literal',
+                        'lang' => 'en'
+                    )
+                )
+            )
         );
-        
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+    }
+
+    public function testParse()
+    {
+        $this->_parser->parse($this->_graph, $this->_data, 'php', null);
+
+        $joe = $this->_graph->resource('http://example.com/joe');
         $this->assertNotNull($joe);
         $this->assertEquals('EasyRdf_Resource', get_class($joe));
-        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
+        $this->assertEquals('http://example.com/joe', $joe->getUri());
+        $this->assertNull($joe->type());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
         $this->assertEquals('EasyRdf_Literal', get_class($name));
-        $this->assertEquals('Joe Bloggs', $name->getValue());
+        $this->assertEquals('Joseph Bloggs', $name->getValue());
         $this->assertEquals('en', $name->getLang());
         $this->assertEquals(null, $name->getDatatype());
     }
@@ -95,7 +84,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
     {
         $this->setExpectedException('EasyRdf_Exception');
         $rdf = $this->_parser->parse(
-            $this->_graph, $this->_rdfxml_data, 'unsupportedformat', null
+            $this->_graph, $this->_data, 'unsupportedformat', null
         );
     }
 }

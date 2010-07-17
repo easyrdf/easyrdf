@@ -43,14 +43,14 @@
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser
+class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
 {
     private static $_supportedTypes = array(
         'json' => 'RDFJSON',
         'rdfxml' => 'RDFXML',
         'turtle' => 'Turtle',
         'ntriples' => 'NTriples',
-        'poshrdf' => 'POSHRDF',
+        'posh' => 'POSHRDF'
     );
 
     /**
@@ -72,21 +72,7 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser
      */
     public function serialise($graph, $format)
     {
-        if ($graph == null or !is_object($graph) or
-            get_class($graph) != 'EasyRdf_Graph') {
-            throw new InvalidArgumentException(
-                "\$graph should be an EasyRdf_Graph object and cannot be null"
-            );
-        }
-
-        if ($format == null or !is_string($format) or $format == '') {
-            throw new InvalidArgumentException(
-                "\$format should be a string and cannot be null or empty"
-            );
-        }
-
-
-        $rdfphp = EasyRdf_Serialiser_RdfPhp::serialise($graph);
+        parent::checkSerialiseParams($graph, $format);
 
         if (array_key_exists($format, self::$_supportedTypes)) {
             $className = self::$_supportedTypes[$format];
@@ -99,7 +85,9 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser
 
         $serialiser = ARC2::getSer($className);
         if ($serialiser) {
-            return $serialiser->getSerializedIndex($rdfphp);
+            return $serialiser->getSerializedIndex(
+                parent::serialise($graph, 'php')
+            );
         } else {
             throw new EasyRdf_Exception(
                 "ARC2 failed to get a $className serialiser."
@@ -108,8 +96,9 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser
     }
 }
 
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Arc', 'json');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Arc', 'rdfxml');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Arc', 'turtle');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Arc', 'ntriples');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Arc', 'poshrdf');
+# FIXME: to this automatically
+EasyRdf_Format::registerSerialiser('json', 'EasyRdf_Serialiser_Arc');
+EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Arc');
+EasyRdf_Format::registerSerialiser('posh', 'EasyRdf_Serialiser_Arc');
+EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Arc');
+EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Arc');

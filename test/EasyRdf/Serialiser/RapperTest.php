@@ -47,6 +47,7 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
     {
         exec('which rapper', $output, $retval);
         if ($retval == 0) {
+            $this->_graph = new EasyRdf_Graph();
             $this->_serialiser = new EasyRdf_Serialiser_Rapper();
             parent::setUp();
         } else {
@@ -62,9 +63,29 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
         new EasyRdf_Serialiser_Rapper('random_command_that_doesnt_exist');
     }
 
-    function testRapperExecError()
+    function testSerialiseRdfXml()
     {
-        # FIXME: how can we cause proc_open() to fail?
-        $this->markTestIncomplete();
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe->set('foaf:name', 'Joe Bloggs');
+        $this->_graph->add(
+            $joe, 'foaf:project',
+            array('foaf:name' => 'Project Name')
+        );
+
+        $rdfxml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $this->assertNotNull($rdfxml);
+        $this->assertContains(
+            '<rdf:Description rdf:about="http://www.example.com/joe#me">',
+            $rdfxml
+        );
+        $this->assertContains(':name>Project Name<',$rdfxml);
+    }
+
+    function testParseUnsupportedFormat()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $rdf = $this->_serialiser->serialise(
+            $this->_graph, 'unsupportedformat'
+        );
     }
 }

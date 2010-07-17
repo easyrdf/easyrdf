@@ -36,17 +36,43 @@
  * @version    $Id$
  */
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'TestCase.php';
+require_once dirname(dirname(dirname(__FILE__))).
+             DIRECTORY_SEPARATOR.'TestHelper.php';
+
 require_once 'EasyRdf/Parser/Redland.php';
 
-class EasyRdf_Parser_RedlandTest extends EasyRdf_Parser_TestCase
+class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
 {
     public function setUp()
     {
         if (extension_loaded('redland')) {
             $this->_parser = new EasyRdf_Parser_Redland();
+            $this->_graph = new EasyRdf_Graph();
+            $this->_rdfxml_data = readFixture('foaf.rdf');
         } else {
             $this->markTestSkipped("Redland PHP extension is not available.");
         }
+    }
+
+    public function testParseRdfXml()
+    {
+        $this->_parser->parse(
+            $this->_graph,
+            $this->_rdfxml_data,
+            'rdfxml',
+            'http://example.com/'
+        );
+        
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $this->assertNotNull($joe);
+        $this->assertEquals('EasyRdf_Resource', get_class($joe));
+        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
+
+        $name = $joe->get('foaf:name');
+        $this->assertNotNull($name);
+        $this->assertEquals('EasyRdf_Literal', get_class($name));
+        $this->assertEquals('Joe Bloggs', $name->getValue());
+        $this->assertEquals('en', $name->getLang());
+        $this->assertEquals(null, $name->getDatatype());
     }
 }

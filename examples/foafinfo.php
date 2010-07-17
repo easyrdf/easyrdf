@@ -3,9 +3,8 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    ## Configure the RDF parser to use
+    ## Load the rapper based parser
     require_once "EasyRdf/Parser/Rapper.php";
-    EasyRdf_Graph::setRdfParser( new EasyRdf_Parser_Rapper('/usr/local/bin/rapper') );
 ?>
 <html>
 <head><title>FOAF Info</title></head>
@@ -58,7 +57,7 @@
     }
 
     if (isset($graph)) {
-        echo "<hr />";
+        echo "<br />";
         echo $graph->dump();
     }
 ?>

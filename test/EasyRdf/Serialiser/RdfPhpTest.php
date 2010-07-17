@@ -50,34 +50,6 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $this->_serialiser = new EasyRdf_Serialiser_RdfPhp();
     }
 
-    public function testSerialiseNullGraph()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise(null, 'php');
-    }
-
-    public function testSerialiseNonObjectGraph()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise('string', 'php');
-    }
-
-    public function testSerialiseNonGraph()
-    {
-        $nongraph = new EasyRdf_Resource('http://www.example.com/');
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($nongraph, 'php');
-    }
-
-    function testSerialiseUnsupportedFormat()
-    {
-        $this->setExpectedException('EasyRdf_Exception');
-        $rdf = $this->_serialiser->serialise(
-            $this->_graph, 'unsupportedformat'
-        );
-    }
-
-
     function testSerialisePhp()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
@@ -100,5 +72,13 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $this->assertType('array', $php[$nodeid]);
         $projectName = $php[$nodeid]['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertEquals('Project Name', $projectName['value']);
+    }
+
+    function testParseUnsupportedFormat()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $rdf = $this->_serialiser->serialise(
+            $this->_graph, 'unsupportedformat'
+        );
     }
 }

@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,28 +31,53 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'TestCase.php';
-require_once 'EasyRdf/Parser/Arc.php';
-
-class EasyRdf_Parser_ArcTest extends EasyRdf_Parser_TestCase
+/**
+ * @package    EasyRdf
+ * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @license    http://www.opensource.org/licenses/bsd-license.php
+ */
+class EasyRdf_Parser
 {
-    public function setUp()
+
+    protected function checkParseParams(&$graph, &$data, &$format, &$base_uri)
     {
-        if (!requireExists('arc/ARC2.php')) {
-            $this->markTestSkipped("ARC2 library is not available.");
-        } else {
-            $this->_parser = new EasyRdf_Parser_Arc();
+        if ($graph == null or !is_object($graph) or
+            get_class($graph) != 'EasyRdf_Graph') {
+            throw new InvalidArgumentException(
+                "\$graph should be an EasyRdf_Graph object and cannot be null"
+            );
         }
 
+        if ($data == null or $data == '') {
+            throw new InvalidArgumentException(
+                "\$data cannot be null or empty"
+            );
+        }
 
-        $this->markTestSkipped(
-            "Not testing ARC2 parser because it does not work in strict mode."
-        );
+        if ($format == null or $format == '') {
+            throw new InvalidArgumentException("\$format cannot be null or empty");
+        } else if (is_object($format) and
+                   get_class($format) == 'EasyRdf_Format') {
+            $format = $format->getName();
+        } else if (!is_string($format)) {
+            throw new InvalidArgumentException(
+                "\$format should be a string or an EasyRdf_Format object"
+            );
+        }
+
+        if ($base_uri) {
+            if (!is_string($base_uri)) {
+                throw new InvalidArgumentException(
+                    "\$base_uri should be a string"
+                );
+            }
+        } else {
+            $base_uri = null;
+        }
     }
-
 }

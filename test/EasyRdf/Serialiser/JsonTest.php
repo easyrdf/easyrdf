@@ -50,33 +50,6 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
         $this->_serialiser = new EasyRdf_Serialiser_Json();
     }
 
-    public function testSerialiseNullGraph()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise(null, 'json');
-    }
-
-    public function testSerialiseNonObjectGraph()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise('string', 'json');
-    }
-
-    public function testSerialiseNonGraph()
-    {
-        $nongraph = new EasyRdf_Resource('http://www.example.com/');
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($nongraph, 'json');
-    }
-
-    function testSerialiseUnsupportedFormat()
-    {
-        $this->setExpectedException('EasyRdf_Exception');
-        $rdf = $this->_serialiser->serialise(
-            $this->_graph, 'unsupportedformat'
-        );
-    }
-
     function testSerialiseJson()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
@@ -94,7 +67,15 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
             '{"type":"bnode","value":"_:eid1"}]},"_:eid1":{'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/name":['.
             '{"type":"literal","value":"Project Name"}]}}',
-            $this->_serialiser->serialise($this->_graph)
+            $this->_serialiser->serialise($this->_graph, 'json')
+        );
+    }
+
+    function testSerialiseUnsupportedFormat()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $rdf = $this->_serialiser->serialise(
+            $this->_graph, 'unsupportedformat'
         );
     }
 }

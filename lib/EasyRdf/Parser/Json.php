@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,38 +31,44 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'TestCase.php';
-
-class EasyRdf_Parser_BuiltinTest extends EasyRdf_Parser_TestCase
+/**
+ * Class to allow parsing of RDF with no external dependancies.
+ *
+ * http://n2.talis.com/wiki/RDF_JSON_Specification
+ *
+ * @package    EasyRdf
+ * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ * @license    http://www.opensource.org/licenses/bsd-license.php
+ */
+class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
 {
-    public function setUp()
+    /**
+      * Parse an RDF/JSON into an EasyRdf_Graph
+      *
+      * @param string $graph    the graph to parse the data into
+      * @param string $data     the RDF/JSON data
+      * @param string $base_uri the base URI of the data
+      * @param string $format   the format of the input data
+      * @return boolean         true if parsing was successful
+      */
+    public function parse($graph, $data, $format, $base_uri)
     {
-        $this->_parser = new EasyRdf_Parser_Builtin();
-    }
+        parent::checkParseParams($graph, $data, $format, $base_uri);
 
-    function testParseTurtle()
-    {
-        $this->markTestSkipped(
-            "EasyRdf_Parser_Builtin() does not support Turtle."
-        );
-    }
+        if ($format != 'json') {
+            throw new EasyRdf_Exception(
+                "EasyRdf_Parser_Json does not support: $format"
+            );
+        }
 
-    function testParseRdfXml()
-    {
-        $this->markTestSkipped(
-            "EasyRdf_Parser_Builtin() does not support RDF/XML."
-        );
-    }
-
-    function testParseInvalidRdfXml()
-    {
-        $this->markTestSkipped(
-            "EasyRdf_Parser_Builtin() does not support RDF/XML."
-        );
+        $rdfphp = json_decode(strval($data), true);
+        return parent::parse($graph, $rdfphp, 'php', $base_uri);
     }
 }
+
+EasyRdf_Format::registerParser('json','EasyRdf_Parser_Json');

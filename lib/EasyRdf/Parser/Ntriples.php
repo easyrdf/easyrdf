@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -43,7 +43,7 @@
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Parser_Builtin
+class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
 {
     /**
      * Protected method to parse an N-Triples subject node
@@ -79,12 +79,26 @@ class EasyRdf_Parser_Builtin
     }
 
     /**
-     * Protected method to parse an N-Triples document
-     */
-    protected function parse_ntriples($uri, $data)
+      * Parse an RDF document as N-Triples
+      *
+      * @param string $graph    the graph to parse the data into
+      * @param string $data     the document data
+      * @param string $base_uri the base URI of the data
+      * @param string $format   the format of the input data
+      * @return boolean         true if parsing was successful
+      */
+    public function parse($graph, $data, $format, $base_uri)
     {
+        parent::checkParseParams($graph, $data, $format, $base_uri);
+
+        if ($format != 'ntriples') {
+            throw new EasyRdf_Exception(
+                "EasyRdf_Parser_Ntriples does not support: $format"
+            );
+        }
+
         $rdfphp = array();
-        $lines = preg_split("/[\r\n]+/", $data);
+        $lines = preg_split("/[\r\n]+/", strval($data));
         foreach ($lines as $line) {
             if (preg_match(
                 "/(.+)\s+<([^<>]+)>\s+(.+)\s*\./",
@@ -106,49 +120,9 @@ class EasyRdf_Parser_Builtin
             }
         }
 
-        return $rdfphp;
-    }
-
-
-    /**
-      * Parse an RDF document
-      *
-      * @param string $uri      the base URI of the data
-      * @param string $data     the document data
-      * @param string $format   the format of the input data
-      * @return array           the parsed data
-      */
-    public function parse($uri, $data, $format)
-    {
-        if (!is_string($uri) or $uri == null or $uri == '') {
-            throw new InvalidArgumentException(
-                "\$uri should be a string and cannot be null or empty"
-            );
-        }
-
-        if (!is_string($data) or $data == null or $data == '') {
-            throw new InvalidArgumentException(
-                "\$data should be a string and cannot be null or empty"
-            );
-        }
-
-        if (!is_string($format) or $format == null or $format == '') {
-            throw new InvalidArgumentException(
-                "\$format should be a string and cannot be null or empty"
-            );
-        }
-
-        if ($format == 'json') {
-            # Parse the RDF/JSON into RDF/PHP
-            return json_decode($data, true);
-        } else if ($format == 'ntriples') {
-            # Parse the RDF/JSON into RDF/PHP
-            return $this->parse_ntriples($uri, $data);
-        } else {
-            throw new EasyRdf_Exception(
-                "EasyRdf_Parser_Builtin is unable to parse format: $format"
-            );
-        }
+        # FIXME: generate objects directly, instead of this second stage
+        return parent::parse($graph, $rdfphp, 'php', $base_uri);
     }
 }
 
+EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Ntriples');

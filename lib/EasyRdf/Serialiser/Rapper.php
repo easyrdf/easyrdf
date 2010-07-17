@@ -45,7 +45,7 @@
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser
+class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
 {
     private $_rapperCmd = null;
 
@@ -68,11 +68,18 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser
     }
 
     /**
-     * Protected method that converts N-Triples into a format of the
-     * callers choice using the rapper command.
+     * Serialise an EasyRdf_Graph into RDF format of choice.
+     *
+     * @param string $graph An EasyRdf_Graph object.
+     * @param string $format The name of the format to convert to.
+     * @return string The RDF in the new desired format.
      */
-    protected function rapper_serialise($ntriples, $format)
+    public function serialise($graph, $format)
     {
+        parent::checkSerialiseParams($graph, $format);
+
+        $ntriples = parent::serialise($graph, 'ntriples');
+
         // Open a pipe to the rapper command
         $descriptorspec = array(
             0 => array("pipe", "r"),
@@ -121,40 +128,12 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser
 
         return $output;
     }
-
-    /**
-     * Serialise an EasyRdf_Graph into RDF format of choice.
-     *
-     * @param string $graph An EasyRdf_Graph object.
-     * @param string $format The name of the format to convert to.
-     * @return string The RDF in the new desired format.
-     */
-    public function serialise($graph, $format)
-    {
-        if ($graph == null or !is_object($graph) or
-            get_class($graph) != 'EasyRdf_Graph') {
-            throw new InvalidArgumentException(
-                "\$graph should be an EasyRdf_Graph object and cannot be null"
-            );
-        }
-
-        if ($format == null or !is_string($format) or $format == '') {
-            throw new InvalidArgumentException(
-                "\$format should be a string and cannot be null or empty"
-            );
-        }
-
-        $ntSerialiser = new EasyRdf_Serialiser_Ntriples();
-        $ntriples = $ntSerialiser->serialise($graph);
-        return $this->rapper_serialise($ntriples, $format);
-    }
 }
 
 // FIXME: do this automatically
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'dot');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'json-triples');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'json');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'rdfxml-abbrev');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'rdfxml-xmp');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'rdfxml');
-EasyRdf_Serialiser::register('EasyRdf_Serialiser_Rapper', 'turtle');
+EasyRdf_Format::register('dot','Graphviz');
+EasyRdf_Format::register('json-triples','RDF/JSON Triples');
+EasyRdf_Format::registerSerialiser('dot', 'EasyRdf_Serialiser_Rapper');
+EasyRdf_Format::registerSerialiser('json-triples', 'EasyRdf_Serialiser_Rapper');
+EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Rapper');
+EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Rapper');

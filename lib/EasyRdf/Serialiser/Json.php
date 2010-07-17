@@ -44,7 +44,7 @@
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser
+class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser_RdfPhp
 {
     /**
      * Serialise an EasyRdf_Graph into RDF format of choice.
@@ -59,14 +59,9 @@ class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser
      *
      * http://n2.talis.com/wiki/RDF_JSON_Specification
      */
-    public function serialise($graph, $format='json')
+    public function serialise($graph, $format)
     {
-        if ($graph == null or !is_object($graph) or
-            get_class($graph) != 'EasyRdf_Graph') {
-            throw new InvalidArgumentException(
-                "\$graph should be an EasyRdf_Graph object and cannot be null"
-            );
-        }
+        parent::checkSerialiseParams($graph, $format);
 
         if ($format != 'json') {
             throw new EasyRdf_Exception(
@@ -74,15 +69,8 @@ class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser
             );
         }
 
-        $phpSerialiser = new EasyRdf_Serialiser_RdfPhp();
-        return json_encode(
-            $phpSerialiser->serialise($graph)
-        );
+        return json_encode(parent::serialise($graph, 'php'));
     }
 }
 
-EasyRdf_Serialiser::register(
-    'EasyRdf_Serialiser_Json',
-    'json',
-    array('application/json','text/json')
-);
+EasyRdf_Format::registerSerialiser('json', 'EasyRdf_Serialiser_Json');

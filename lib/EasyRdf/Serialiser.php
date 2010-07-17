@@ -43,96 +43,24 @@
  */
 class EasyRdf_Serialiser
 {
-    private static $_serialisersByName = array();
-    private static $_serialisersByMime = array();
-
-    /** Get the registered serialiser by name
-     *
-     * If a name is not registered, then this method will return null.
-     *
-     * @param  string  $name   The serialisation name (e.g. ntriples)
-     * @return string          The class name (e.g. EasyRdf_Serialiser_Ntriples)
-     */
-    public static function getByName($name)
+    protected function checkSerialiseParams(&$graph, &$format)
     {
-        if (!is_string($name) or $name == null or $name == '') {
+        if ($graph == null or !is_object($graph) or
+            get_class($graph) != 'EasyRdf_Graph') {
             throw new InvalidArgumentException(
-                "\$name should be a string and cannot be null or empty"
-            );
-        } else if (array_key_exists($name, self::$_serialisersByName)) {
-            return self::$_serialisersByName[$name];
-        } else {
-            return null;
-        }
-    }
-
-    /** Get the registered serialiser by mime type
-     *
-     * If a mime type is not registered, then this method will return null.
-     *
-     * @param  string  $mime   The mime type (e.g. text/plain)
-     * @return string          The class name (e.g. EasyRdf_Serialiser_Ntriples)
-     */
-    public static function getByMimeType($mime)
-    {
-        if (!is_string($mime) or $mime == null or $mime == '') {
-            throw new InvalidArgumentException(
-                "\$mime should be a string and cannot be null or empty"
-            );
-        } else if (array_key_exists($mime, self::$_serialisersByMime)) {
-            return self::$_serialisersByMime[$mime];
-        } else {
-            return null;
-        }
-    }
-
-    /** Get a list of serialisation format names
-     *
-     * @return array          An array of serialisation formats
-     */
-    public static function getNames()
-    {
-        return array_keys(self::$_serialisersByName);
-    }
-
-    /** Get a list of serialisation mime types
-     *
-     * @return array          An array of mime types
-     */
-    public static function getMimeTypes()
-    {
-        return array_keys(self::$_serialisersByMime);
-    }
-
-    /** Register a serialiser
-     *
-     * @param  string  $class  The PHP class name (e.g. EasyRdf_Serialiser_Json)
-     * @param  string  $name   The name of the serialiation (e.g. ntriples)
-     * @param  string  $mime   MIME type of the serialiation (e.g. text/plain)
-     * @return string          The PHP class name
-     */
-    public static function register($class, $name, $mime=null)
-    {
-        if (!is_string($class) or $class == null or $class == '') {
-            throw new InvalidArgumentException(
-                "\$class should be a string and cannot be null or empty"
+                "\$graph should be an EasyRdf_Graph object and cannot be null"
             );
         }
 
-        if (!is_string($name) or $name == null or $name == '') {
+        if ($format == null or $format == '') {
+            throw new InvalidArgumentException("\$format cannot be null or empty");
+        } else if (is_object($format) and
+                   get_class($format) == 'EasyRdf_Format') {
+            $format = $format->getName();
+        } else if (!is_string($format)) {
             throw new InvalidArgumentException(
-                "\$name should be a string and cannot be null or empty"
+                "\$format should be a string or an EasyRdf_Format object"
             );
-        }
-
-        self::$_serialisersByName[$name] = $class;
-
-        if ($mime) {
-            if (!is_array($mime))
-                $mime = array($mime);
-            foreach ($mime as $m) {
-                self::$_serialisersByMime[$m] = $class;
-            }
         }
     }
 }

@@ -38,17 +38,17 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class MockSerialiser extends EasyRdf_Serialiser
+class MockParser extends EasyRdf_Parser
 {
-    public function serialise($graph, $format)
+    public function parse($graph, $data, $format, $base_uri)
     {
-        parent::checkSerialiseParams($graph, $format);
-        // Serialising goes here
+        parent::checkParseParams($graph, $data, $format, $base_uri);
+        // Parsing goes here
         return true;
     }
 }
 
-class EasyRdf_SerialiserTest extends EasyRdf_TestCase
+class EasyRdf_ParserTest extends EasyRdf_TestCase
 {
     /**
      * Set up the test suite before each test
@@ -56,64 +56,93 @@ class EasyRdf_SerialiserTest extends EasyRdf_TestCase
     public function setUp()
     {
         $this->_graph = new EasyRdf_Graph();
-        $this->_serialiser = new MockSerialiser();
+        $this->_parser = new MockParser();
+        $this->_data = readFixture('foaf.json');
     }
 
-    public function testSerialise()
+    public function testParse()
     {
         $this->assertTrue(
-            $this->_serialiser->serialise($this->_graph, 'php')
+            $this->_parser->parse(
+                $this->_graph,
+                $this->_data,
+                'json',
+                null
+            )
         );
     }
 
-    public function testSerialiseFormatObject()
+    public function testParseFormatObject()
     {
         $format = EasyRdf_Format::getFormat('json');
         $this->assertTrue(
-            $this->_serialiser->serialise($this->_graph, $format)
+            $this->_parser->parse(
+                $this->_graph,
+                $this->_data,
+                $format,
+                null
+            )
         );
     }
 
-    public function testSerialiseNullGraph()
+    public function testParseNullGraph()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise(null, 'php');
+        $this->_parser->parse(null, $this->_data, 'json', null);
     }
 
-    public function testSerialiseNonObjectGraph()
+    public function testParseNonObjectGraph()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise('string', 'php');
+        $this->_parser->parse('string', $this->_data, 'json', null);
     }
 
-    public function testSerialiseNonGraph()
+    public function testParseNonGraph()
     {
         $nongraph = new EasyRdf_Resource('http://www.example.com/');
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($nongraph, 'php');
+        $this->_parser->parse($nongraph, $this->_data, 'json', null);
     }
 
-    public function testSerialiseNullFormat()
+    public function testParseNullData()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($this->_graph, null);
+        $this->_parser->parse($this->_graph, null, 'json', null);
     }
 
-    public function testSerialiseEmptyFormat()
+    public function testParseEmptyData()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($this->_graph, '');
+        $this->_parser->parse($this->_graph, '', 'json', null);
     }
 
-    public function testSerialiseBadObjectFormat()
+    public function testParseNullFormat()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($this->_graph, $this);
+        $this->_parser->parse($this->_graph, $this->_data, null, null);
     }
 
-    public function testSerialiseIntegerFormat()
+    public function testParseEmptyFormat()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($this->_graph, 1);
+        $this->_parser->parse($this->_graph, $this->_data, '', null);
+    }
+
+    public function testParseBadObjectFormat()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse($this->_graph, $this->_data, $this, null);
+    }
+
+    public function testParseIntegerFormat()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse($this->_graph, $this->_data, 1, null);
+    }
+
+    public function testParseNonStringBaseUri()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_parser->parse($this->_graph, $this->_data, 'json', 1);
     }
 }

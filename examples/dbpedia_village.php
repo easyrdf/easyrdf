@@ -5,7 +5,6 @@
 
     ## FIXME: one day EasyRdf will parse RDF/XML natively
     require_once "EasyRdf/Parser/Rapper.php";
-    EasyRdf_Graph::setRdfParser( new EasyRdf_Parser_Rapper('/usr/local/bin/rapper') );
 
     $LANG = 'en';
     EasyRdf_Namespace::set('dbpprop', "http://dbpedia.org/property/");
@@ -36,7 +35,7 @@
             print "<iframe width='425' height='350' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://maps.google.com/maps?f=q&amp;sll=$ll&amp;output=embed'></iframe>";
         }
 
-        echo "<br /><hr />";
+        echo "<br /><br />";
         echo $graph->dump();
     } else {
         $uri = "http://dbpedia.org/resource/Category:Villages_in_Fife";

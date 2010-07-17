@@ -43,7 +43,7 @@
  * @copyright  Copyright (c) 2009 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Parser_Redland
+class EasyRdf_Parser_Redland extends EasyRdf_Parser_RdfPhp
 {
     /** Variable set to the librdf world */
     private $_world = null;
@@ -176,25 +176,9 @@ class EasyRdf_Parser_Redland
       * @param string $format   the format of the input data
       * @return array           the parsed data
       */
-    public function parse($uri, $data, $format)
+    public function parse($graph, $data, $format, $base_uri)
     {
-        if (!is_string($uri) or $uri == null or $uri == '') {
-            throw new InvalidArgumentException(
-                "\$uri should be a string and cannot be null or empty"
-            );
-        }
-
-        if (!is_string($data) or $data == null or $data == '') {
-            throw new InvalidArgumentException(
-                "\$data should be a string and cannot be null or empty"
-            );
-        }
-
-        if (!is_string($format) or $format == null or $format == '') {
-            throw new InvalidArgumentException(
-                "\$format should be a string and cannot be null or empty"
-            );
-        }
+        parent::checkParseParams($graph, $data, $format, $base_uri);
 
         $parser = librdf_new_parser($this->_world, $format, null, null);
         if (!$parser) {
@@ -203,10 +187,10 @@ class EasyRdf_Parser_Redland
             );
         }
 
-        $rdfUri = librdf_new_uri($this->_world, $uri);
+        $rdfUri = librdf_new_uri($this->_world, $base_uri);
         if (!$rdfUri) {
             throw new EasyRdf_Exception(
-                "Failed to create librdf_uri from: $uri"
+                "Failed to create librdf_uri from: $base_uri"
             );
         }
 
@@ -254,6 +238,13 @@ class EasyRdf_Parser_Redland
         librdf_free_stream($stream);
         librdf_free_parser($parser);
 
-        return $rdfphp;
+        // FIXME: remove this second parse step
+        return parent::parse($graph, $rdfphp, 'php', $base_uri);
     }
 }
+
+## FIXME: do this automatically
+EasyRdf_Format::registerParser('rdfxml','EasyRdf_Parser_Redland');
+EasyRdf_Format::registerParser('turtle','EasyRdf_Parser_Redland');
+EasyRdf_Format::registerParser('ntriples','EasyRdf_Parser_Redland');
+EasyRdf_Format::registerParser('rdfa','EasyRdf_Parser_Redland');
