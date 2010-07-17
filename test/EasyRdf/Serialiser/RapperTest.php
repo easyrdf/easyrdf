@@ -78,7 +78,7 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
             '<rdf:Description rdf:about="http://www.example.com/joe#me">',
             $rdfxml
         );
-        $this->assertContains(':name>Project Name<',$rdfxml);
+        $this->assertContains(':name>Project Name<', $rdfxml);
     }
 
     function testParseUnsupportedFormat()

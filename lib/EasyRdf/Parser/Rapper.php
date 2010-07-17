@@ -75,9 +75,9 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
       * @param string $format   the format of the input data
       * @return array           the parsed data
       */
-    public function parse($graph, $data, $format, $base_uri)
+    public function parse($graph, $data, $format, $baseUri)
     {
-        parent::checkParseParams($graph, $data, $format, $base_uri);
+        parent::checkParseParams($graph, $data, $format, $baseUri);
 
         // Open a pipe to the rapper command
         $descriptorspec = array(
@@ -92,7 +92,7 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
             " --input " . escapeshellarg($format).
             " --output json ".
             " --ignore-errors ".
-            " - " . escapeshellarg($base_uri),
+            " - " . escapeshellarg($baseUri),
             $descriptorspec, $pipes, '/tmp', null
         );
         if (is_resource($process)) {
@@ -124,12 +124,12 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
         }
 
         // Parse in the JSON
-        return parent::parse($graph, $data, 'json', $base_uri);
+        return parent::parse($graph, $data, 'json', $baseUri);
     }
 }
 
 ## FIXME: do this automatically
-EasyRdf_Format::registerParser('rdfxml','EasyRdf_Parser_Rapper');
-EasyRdf_Format::registerParser('turtle','EasyRdf_Parser_Rapper');
-EasyRdf_Format::registerParser('ntriples','EasyRdf_Parser_Rapper');
-EasyRdf_Format::registerParser('rdfa','EasyRdf_Parser_Rapper');
+EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_Rapper');
+EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Rapper');
+EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Rapper');
+EasyRdf_Format::registerParser('rdfa', 'EasyRdf_Parser_Rapper');

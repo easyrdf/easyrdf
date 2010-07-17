@@ -40,9 +40,9 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class MockParser extends EasyRdf_Parser
 {
-    public function parse($graph, $data, $format, $base_uri)
+    public function parse($graph, $data, $format, $baseUri)
     {
-        parent::checkParseParams($graph, $data, $format, $base_uri);
+        parent::checkParseParams($graph, $data, $format, $baseUri);
         // Parsing goes here
         return true;
     }

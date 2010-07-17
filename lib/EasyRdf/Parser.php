@@ -44,7 +44,7 @@
 class EasyRdf_Parser
 {
 
-    protected function checkParseParams(&$graph, &$data, &$format, &$base_uri)
+    protected function checkParseParams(&$graph, &$data, &$format, &$baseUri)
     {
         if ($graph == null or !is_object($graph) or
             get_class($graph) != 'EasyRdf_Graph') {
@@ -60,7 +60,9 @@ class EasyRdf_Parser
         }
 
         if ($format == null or $format == '') {
-            throw new InvalidArgumentException("\$format cannot be null or empty");
+            throw new InvalidArgumentException(
+                "\$format cannot be null or empty"
+            );
         } else if (is_object($format) and
                    get_class($format) == 'EasyRdf_Format') {
             $format = $format->getName();
@@ -70,14 +72,14 @@ class EasyRdf_Parser
             );
         }
 
-        if ($base_uri) {
-            if (!is_string($base_uri)) {
+        if ($baseUri) {
+            if (!is_string($baseUri)) {
                 throw new InvalidArgumentException(
-                    "\$base_uri should be a string"
+                    "\$baseUri should be a string"
                 );
             }
         } else {
-            $base_uri = null;
+            $baseUri = null;
         }
     }
 }

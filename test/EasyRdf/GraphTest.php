@@ -74,7 +74,7 @@ class Mock_Http_Client
 
 class Mock_RdfParser
 {
-    public function parse($graph, $data, $format, $base_uri)
+    public function parse($graph, $data, $format, $baseUri)
     {
         $graph->add(
             'http://www.example.com/joe#me',

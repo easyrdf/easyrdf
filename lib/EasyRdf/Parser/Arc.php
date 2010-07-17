@@ -70,9 +70,9 @@ class EasyRdf_Parser_Arc extends EasyRdf_Parser_RdfPhp
       * @param string $format   the format of the input data
       * @return array           the parsed data
       */
-    public function parse($graph, $data, $format, $base_uri)
+    public function parse($graph, $data, $format, $baseUri)
     {
-        parent::checkParseParams($graph, $data, $format, $base_uri);
+        parent::checkParseParams($graph, $data, $format, $baseUri);
 
         if (array_key_exists($format, self::$_supportedTypes)) {
             $className = self::$_supportedTypes[$format];
@@ -85,9 +85,9 @@ class EasyRdf_Parser_Arc extends EasyRdf_Parser_RdfPhp
 
         $parser = ARC2::getParser($className);
         if ($parser) {
-            $parser->parse($base_uri, $data);
+            $parser->parse($baseUri, $data);
             $rdfphp = $parser->getSimpleIndex(false);
-            return parent::parse($graph, $rdfphp, 'php', $base_uri);
+            return parent::parse($graph, $rdfphp, 'php', $baseUri);
         } else {
             throw new EasyRdf_Exception(
                 "ARC2 failed to get a $className parser."
@@ -97,7 +97,7 @@ class EasyRdf_Parser_Arc extends EasyRdf_Parser_RdfPhp
 }
 
 ## FIXME: do this automatically
-EasyRdf_Format::registerParser('rdfxml','EasyRdf_Parser_Arc');
-EasyRdf_Format::registerParser('turtle','EasyRdf_Parser_Arc');
-EasyRdf_Format::registerParser('ntriples','EasyRdf_Parser_Arc');
-EasyRdf_Format::registerParser('rdfa','EasyRdf_Parser_Arc');
+EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_Arc');
+EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Arc');
+EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Arc');
+EasyRdf_Format::registerParser('rdfa', 'EasyRdf_Parser_Arc');

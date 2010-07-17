@@ -53,7 +53,9 @@ class EasyRdf_Serialiser
         }
 
         if ($format == null or $format == '') {
-            throw new InvalidArgumentException("\$format cannot be null or empty");
+            throw new InvalidArgumentException(
+                "\$format cannot be null or empty"
+            );
         } else if (is_object($format) and
                    get_class($format) == 'EasyRdf_Format') {
             $format = $format->getName();

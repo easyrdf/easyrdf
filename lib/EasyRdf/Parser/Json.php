@@ -52,13 +52,13 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
       *
       * @param string $graph    the graph to parse the data into
       * @param string $data     the RDF/JSON data
-      * @param string $base_uri the base URI of the data
+      * @param string $baseUri the base URI of the data
       * @param string $format   the format of the input data
       * @return boolean         true if parsing was successful
       */
-    public function parse($graph, $data, $format, $base_uri)
+    public function parse($graph, $data, $format, $baseUri)
     {
-        parent::checkParseParams($graph, $data, $format, $base_uri);
+        parent::checkParseParams($graph, $data, $format, $baseUri);
 
         if ($format != 'json') {
             throw new EasyRdf_Exception(
@@ -67,8 +67,8 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
         }
 
         $rdfphp = json_decode(strval($data), true);
-        return parent::parse($graph, $rdfphp, 'php', $base_uri);
+        return parent::parse($graph, $rdfphp, 'php', $baseUri);
     }
 }
 
-EasyRdf_Format::registerParser('json','EasyRdf_Parser_Json');
+EasyRdf_Format::registerParser('json', 'EasyRdf_Parser_Json');

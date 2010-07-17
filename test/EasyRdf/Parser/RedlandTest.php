@@ -48,7 +48,7 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
         if (extension_loaded('redland')) {
             $this->_parser = new EasyRdf_Parser_Redland();
             $this->_graph = new EasyRdf_Graph();
-            $this->_rdfxml_data = readFixture('foaf.rdf');
+            $this->_data = readFixture('foaf.rdf');
         } else {
             $this->markTestSkipped("Redland PHP extension is not available.");
         }
@@ -58,7 +58,7 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
     {
         $this->_parser->parse(
             $this->_graph,
-            $this->_rdfxml_data,
+            $this->_data,
             'rdfxml',
             'http://example.com/'
         );

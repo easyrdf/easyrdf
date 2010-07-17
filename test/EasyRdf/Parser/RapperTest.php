@@ -55,7 +55,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         if ($retval == 0) {
             $this->_parser = new EasyRdf_Parser_Rapper();
             $this->_graph = new EasyRdf_Graph();
-            $this->_rdfxml_data = readFixture('foaf.rdf');
+            $this->_data = readFixture('foaf.rdf');
         } else {
             $this->markTestSkipped(
                 "The rapper command is not available on this system."
@@ -73,7 +73,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
     {
         $this->_parser->parse(
             $this->_graph,
-            $this->_rdfxml_data,
+            $this->_data,
             'rdfxml',
             'http://example.com/'
         );
@@ -95,7 +95,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
     {
         $this->setExpectedException('EasyRdf_Exception');
         $rdf = $this->_parser->parse(
-            $this->_graph, $this->_rdfxml_data, 'unsupportedformat', null
+            $this->_graph, $this->_data, 'unsupportedformat', null
         );
     }
 }

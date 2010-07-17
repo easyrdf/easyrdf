@@ -83,13 +83,13 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
       *
       * @param string $graph    the graph to parse the data into
       * @param string $data     the document data
-      * @param string $base_uri the base URI of the data
+      * @param string $baseUri the base URI of the data
       * @param string $format   the format of the input data
       * @return boolean         true if parsing was successful
       */
-    public function parse($graph, $data, $format, $base_uri)
+    public function parse($graph, $data, $format, $baseUri)
     {
-        parent::checkParseParams($graph, $data, $format, $base_uri);
+        parent::checkParseParams($graph, $data, $format, $baseUri);
 
         if ($format != 'ntriples') {
             throw new EasyRdf_Exception(
@@ -121,7 +121,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
         }
 
         # FIXME: generate objects directly, instead of this second stage
-        return parent::parse($graph, $rdfphp, 'php', $base_uri);
+        return parent::parse($graph, $rdfphp, 'php', $baseUri);
     }
 }
 

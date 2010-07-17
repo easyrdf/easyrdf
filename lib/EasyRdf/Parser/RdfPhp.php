@@ -87,7 +87,8 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
         return null;
     }
     
-    protected function addProperty($graph, $data, $res, $property, $objects) {
+    protected function addProperty($graph, $data, $res, $property, $objects)
+    {
         $property = EasyRdf_Namespace::shorten($property);
         if (!isset($property))
             return;
@@ -123,13 +124,13 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
       *
       * @param string $graph    the graph to parse the data into
       * @param string $data     the RDF/PHP data
-      * @param string $base_uri the base URI of the data
+      * @param string $baseUri the base URI of the data
       * @param string $format   the format of the input data
       * @return boolean         true if parsing was successful
       */
-    public function parse($graph, $data, $format, $base_uri)
+    public function parse($graph, $data, $format, $baseUri)
     {
-        parent::checkParseParams($graph, $data, $format, $base_uri);
+        parent::checkParseParams($graph, $data, $format, $baseUri);
 
         if ($format != 'php') {
             throw new EasyRdf_Exception(
@@ -160,4 +161,4 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
     }
 }
 
-EasyRdf_Format::registerParser('php','EasyRdf_Parser_RdfPhp');
+EasyRdf_Format::registerParser('php', 'EasyRdf_Parser_RdfPhp');
