@@ -46,7 +46,6 @@
 class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
 {
     private static $_supportedTypes = array(
-        'json' => 'RDFJSON',
         'rdfxml' => 'RDFXML',
         'turtle' => 'Turtle',
         'ntriples' => 'NTriples',
@@ -97,7 +96,7 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
 }
 
 # FIXME: to this automatically
-EasyRdf_Format::registerSerialiser('json', 'EasyRdf_Serialiser_Arc');
+EasyRdf_Format::register('posh', 'poshRDF');
 EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Arc');
 EasyRdf_Format::registerSerialiser('posh', 'EasyRdf_Serialiser_Arc');
 EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Arc');
