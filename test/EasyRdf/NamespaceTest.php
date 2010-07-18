@@ -175,6 +175,12 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testShortenResource()
+    {
+        $resource = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $this->assertEquals('foaf:name', EasyRdf_Namespace::shorten($resource));
+    }
+
     public function testShortenUnknownUrl()
     {
         $this->assertEquals(

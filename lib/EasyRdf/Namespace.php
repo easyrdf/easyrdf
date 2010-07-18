@@ -152,9 +152,17 @@ class EasyRdf_Namespace
       */
     public static function shorten($uri)
     {
-        if (!is_string($uri) or $uri == null or $uri == '') {
+        if ($uri == null or $uri == '') {
             throw new InvalidArgumentException(
-                "\$uri should be a string and cannot be null or empty"
+                "\$uri cannot be null or empty"
+            );
+        }
+
+        if (is_object($uri) and get_class($uri) == 'EasyRdf_Resource') {
+            $uri = $uri->getUri();
+        } else if (!is_string($uri)) {
+            throw new InvalidArgumentException(
+                "\$uri should be a string or EasyRdf_Resource"
             );
         }
 
