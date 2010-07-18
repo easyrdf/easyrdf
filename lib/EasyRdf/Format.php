@@ -320,7 +320,12 @@ EasyRdf_Format::register(
     'ntriples',
     'N-Triples',
     'http://www.w3.org/TR/rdf-testcases/#ntriples',
-    array('text/plain', 'application/ntriples', 'application/x-ntriples')
+    array(
+        'text/plain',
+        'text/ntriples',
+        'application/ntriples',
+        'application/x-ntriples'
+    )
 );
 
 EasyRdf_Format::register(
@@ -348,5 +353,9 @@ EasyRdf_Format::register(
     'turtle',
     'Turtle Terse RDF Triple Language',
     'http://www.dajobe.org/2004/01/turtle',
-    array('application/turtle','application/x-turtle')
+    array(
+        'text/turtle',
+        'application/turtle',
+        'application/x-turtle'
+    )
 );
