@@ -71,6 +71,19 @@ class EasyRdf_Literal
             $this->_lang = $lang ? $lang : null;
             $this->_datatype = $datatype ? $datatype : null;
         }
+
+        // All datatypes must be qnames
+        if ($this->_datatype and
+            !preg_match("/^(\w+):(\w+)$/", $this->_datatype)) {
+            $datatype = EasyRdf_Namespace::shorten($this->_datatype);
+            if ($datatype) {
+                $this->_datatype = $datatype;
+            } else {
+                throw new EasyRdf_Exception(
+                    "Failed to shorten datatype: ".$this->_datatype
+                );
+            }
+        }
     }
 
     /** Returns the value of the literal.
@@ -120,10 +133,7 @@ class EasyRdf_Literal
             $text .= '@' . $this->_lang;
         }
         if ($this->_datatype) {
-            $dt = EasyRdf_Namespace::shorten($this->_datatype);
-            if ($dt == null)
-                $dt = '<'.$this->_datatype.'>';
-            $text .= "^^$dt";
+            $text .= "^^" . $this->_datatype;
         }
 
         if ($html) {

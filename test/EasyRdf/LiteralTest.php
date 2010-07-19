@@ -58,10 +58,20 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testConstructWithDatatype()
     {
-        $literal = new EasyRdf_Literal(1, null, 'http://foo.com/');
+        $literal = new EasyRdf_Literal(1, null, 'xsd:integer');
         $this->assertEquals(1, $literal->getValue());
         $this->assertEquals(null, $literal->getLang());
-        $this->assertEquals('http://foo.com/', $literal->getDatatype());
+        $this->assertEquals('xsd:integer', $literal->getDatatype());
+    }
+
+    public function testConstructWithUriDatatype()
+    {
+        $literal = new EasyRdf_Literal(
+            1, null, 'http://www.w3.org/2001/XMLSchema#integer'
+        );
+        $this->assertEquals(1, $literal->getValue());
+        $this->assertEquals(null, $literal->getLang());
+        $this->assertEquals('xsd:integer', $literal->getDatatype());
     }
 
     public function testConstructWithAssociativeArray()
@@ -87,10 +97,10 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = new EasyRdf_Literal(array(
             'value' => 'Rat',
-            'datatype' => 'http://example.com/'
+            'datatype' => 'xsd:integer'
         ));
         $this->assertEquals('Rat', $literal->getValue());
-        $this->assertEquals('http://example.com/', $literal->getDatatype());
+        $this->assertEquals('xsd:integer', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
     }
 
