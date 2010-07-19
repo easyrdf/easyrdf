@@ -72,6 +72,17 @@ class EasyRdf_Literal
             $this->_datatype = $datatype ? $datatype : null;
         }
 
+        // Automatic datatype selection
+        if ($this->_datatype == null) {
+            if (is_float($this->_value)) {
+                $this->_datatype = 'xsd:decimal';
+            } else if (is_int($this->_value)) {
+                $this->_datatype = 'xsd:integer';
+            } else if (is_bool($this->_value)) {
+                $this->_datatype = 'xsd:boolean';
+            }
+        }
+
         // All datatypes must be qnames
         if ($this->_datatype and
             !preg_match("/^(\w+):(\w+)$/", $this->_datatype)) {

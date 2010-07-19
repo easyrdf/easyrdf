@@ -104,6 +104,38 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals(null, $literal->getLang());
     }
 
+    public function testConstructWithInteger()
+    {
+        $literal = new EasyRdf_Literal(10);
+        $this->assertEquals(10, $literal->getValue());
+        $this->assertEquals('xsd:integer', $literal->getDatatype());
+        $this->assertEquals(null, $literal->getLang());
+    }
+
+    public function testConstructWithFloat()
+    {
+        $literal = new EasyRdf_Literal(1.5);
+        $this->assertEquals(1.5, $literal->getValue());
+        $this->assertEquals('xsd:decimal', $literal->getDatatype());
+        $this->assertEquals(null, $literal->getLang());
+    }
+
+    public function testConstructWithBooleanTrue()
+    {
+        $literal = new EasyRdf_Literal(true);
+        $this->assertEquals(true, $literal->getValue());
+        $this->assertEquals('xsd:boolean', $literal->getDatatype());
+        $this->assertEquals(null, $literal->getLang());
+    }
+
+    public function testConstructWithBooleanFalse()
+    {
+        $literal = new EasyRdf_Literal(false);
+        $this->assertEquals(false, $literal->getValue());
+        $this->assertEquals('xsd:boolean', $literal->getDatatype());
+        $this->assertEquals(null, $literal->getLang());
+    }
+
     public function testToString()
     {
         $literal = new EasyRdf_Literal('Rat');
