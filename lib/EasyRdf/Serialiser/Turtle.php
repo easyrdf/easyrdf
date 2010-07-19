@@ -93,7 +93,8 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                 } else if ($datatype == 'xsd:double') {
                     return sprintf('%e^^%s', $value, $datatype);
                 } else if ($datatype == 'xsd:boolean') {
-                    return sprintf('%s^^%s',
+                    return sprintf(
+                        '%s^^%s',
                         $value ? 'true' : 'false',
                         $datatype
                     );
@@ -113,7 +114,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     protected function serialisePrefixes()
     {
         $turtle = '';
-        foreach($this->_prefixes as $prefix => $count) {
+        foreach ($this->_prefixes as $prefix => $count) {
             $url = EasyRdf_Namespace::get($prefix);
             $turtle .= "@prefix $prefix: <$url> .\n";
         }
@@ -150,31 +151,31 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                 $turtle .= "\n   ";
             }
 
-            $p_count = 0;
+            $pCount = 0;
             foreach ($properties as $property) {
                 $this->addPrefix($property);
-                $p_str = $property == 'rdf:type' ? 'a' : $property;
+                $pStr = $property == 'rdf:type' ? 'a' : $property;
 
-                if ($p_count) {
+                if ($pCount) {
                     $turtle .= " ;\n   ";
                 }
 
-                $turtle .= " " . $p_str;
+                $turtle .= " " . $pStr;
                 $objects = $subject->all($property);
 
-                $o_count = 0;
+                $oCount = 0;
                 foreach ($objects as $object) {
                     # FIXME: remove this when types are stored as Resources
-                    if ($p_str == 'a') {
+                    if ($pStr == 'a') {
                         $uri = EasyRdf_Namespace::expand($object);
                         $object = new EasyRdf_Resource($uri);
                     }
-                    if ($o_count)
+                    if ($oCount)
                         $turtle .= ",";
                     $turtle .= " " . $this->serialiseObject($object);
-                    $o_count++;
+                    $oCount++;
                 }
-                $p_count++;
+                $pCount++;
             }
 
             $turtle .= " .\n\n";

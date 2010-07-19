@@ -110,7 +110,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     function testSerialiseLang()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:name', new EasyRdf_Literal('Joe','en'));
+        $joe->set('foaf:name', new EasyRdf_Literal('Joe', 'en'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertContains(
@@ -122,10 +122,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     function testSerialiseBooleanDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:truth', new EasyRdf_Literal(array(
-            'value' => true,
-            'datatype' => 'xsd:boolean'
-        )));
+        $joe->set('foaf:truth', new EasyRdf_Literal(true, null, 'xsd:boolean'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertContains(
@@ -137,10 +134,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     function testSerialiseDecimalDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:age', new EasyRdf_Literal(array(
-            'value' => 1.5,
-            'datatype' => 'xsd:decimal'
-        )));
+        $joe->set('foaf:age', new EasyRdf_Literal(1.5, null, 'xsd:decimal'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertContains(
@@ -152,10 +146,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     function testSerialiseDoubleDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:age', new EasyRdf_Literal(array(
-            'value' => 1.5,
-            'datatype' => 'xsd:double'
-        )));
+        $joe->set('foaf:age', new EasyRdf_Literal(1.5, null, 'xsd:double'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertContains(
@@ -167,10 +158,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     function testSerialiseIntegerDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:age', new EasyRdf_Literal(array(
-            'value' => 49,
-            'datatype' => 'xsd:integer'
-        )));
+        $joe->set('foaf:age', new EasyRdf_Literal(49, null, 'xsd:integer'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertContains(
@@ -182,10 +170,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     function testSerialiseOtherDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:foo', new EasyRdf_Literal(array(
-            'value' => 'foobar',
-            'datatype' => 'xsd:other'
-        )));
+        $joe->set('foaf:foo', new EasyRdf_Literal('foobar', null, 'xsd:other'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertContains(
