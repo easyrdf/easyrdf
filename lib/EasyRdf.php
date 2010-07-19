@@ -120,6 +120,11 @@ require_once "EasyRdf/Serialiser/Ntriples.php";
 require_once "EasyRdf/Serialiser/Json.php";
 
 /**
+ * @see EasyRdf_Serialiser_Turtle
+ */
+require_once "EasyRdf/Serialiser/Turtle.php";
+
+/**
  * @see EasyRdf_TypeMapper
  */
 require_once "EasyRdf/TypeMapper.php";
