@@ -123,6 +123,25 @@ class EasyRdf_Namespace
     }
 
     /**
+      * Delete an existing namespace.
+      *
+      * @param string $prefix The namespace prefix (eg 'foaf')
+      */
+    public static function delete($prefix)
+    {
+        if (!is_string($prefix) or $prefix == null or $prefix == '') {
+            throw new InvalidArgumentException(
+                "\$prefix should be a string and cannot be null or empty"
+            );
+        }
+
+        $prefix = strtolower($prefix);
+        if (isset(self::$_namespaces[$prefix])) {
+            unset(self::$_namespaces[$prefix]);
+        }
+    }
+
+    /**
       * Return the prefix namespace that a URI belongs to.
       *
       * @param string $uri A full URI (eg 'http://xmlns.com/foaf/0.1/name')

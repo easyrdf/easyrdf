@@ -40,6 +40,11 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 {
+    public function tearDown()
+    {
+        EasyRdf_Namespace::delete('po');
+    }
+
     public function testNamespaces()
     {
         $ns = EasyRdf_Namespace::namespaces();
@@ -167,6 +172,32 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         EasyRdf_Namespace::set('ko', array());
     }
 
+    public function testDeleteNamespace()
+    {
+        EasyRdf_Namespace::set('po', 'http://purl.org/ontology/po/');
+        $this->assertNotNull(EasyRdf_Namespace::get('po'));
+        EasyRdf_Namespace::delete('po');
+        $this->assertNull(EasyRdf_Namespace::get('po'));
+    }
+
+    public function testDeleteEmptyNamespace()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Namespace::delete('');
+    }
+
+    public function testDeleteNullNamespace()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Namespace::delete(null);
+    }
+
+    public function testDeleteNonStringNamespace()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Namespace::delete($this);
+    }
+
     public function testShortenFoafName()
     {
         $this->assertEquals(
@@ -204,7 +235,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     public function testShortenNonString()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::shorten(array());
+        EasyRdf_Namespace::shorten($this);
     }
 
     public function testPrefixOfUriFoafName()
