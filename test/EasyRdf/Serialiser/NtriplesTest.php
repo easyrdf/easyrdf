@@ -69,7 +69,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseNtriplesQuotes()
+    function testSerialiseQuotes()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:nick', '"Joey"');
@@ -81,7 +81,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseNtriplesBNode()
+    function testSerialiseBNode()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->_graph->add(
@@ -94,6 +94,33 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
             "<http://xmlns.com/foaf/0.1/project> _:eid1 .\n".
             "_:eid1 <http://xmlns.com/foaf/0.1/name> \"Project Name\" .\n",
             $this->_serialiser->serialise($this->_graph, 'ntriples')
+        );
+    }
+    function testSerialiseLang()
+    {
+        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe->set('foaf:name', new EasyRdf_Literal('Joe', 'en'));
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'ntriples');
+        $this->assertStringEquals(
+            "<http://example.com/joe#me> ".
+            "<http://xmlns.com/foaf/0.1/name> ".
+            "\"Joe\"@en .\n",
+            $turtle
+        );
+    }
+
+    function testSerialiseDatatype()
+    {
+        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe->set('foaf:foo', new EasyRdf_Literal(1, null, 'xsd:integer'));
+
+        $ntriples = $this->_serialiser->serialise($this->_graph, 'ntriples');
+        $this->assertStringEquals(
+            "<http://example.com/joe#me> ".
+            "<http://xmlns.com/foaf/0.1/foo> ".
+            "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer> .\n",
+            $ntriples
         );
     }
 

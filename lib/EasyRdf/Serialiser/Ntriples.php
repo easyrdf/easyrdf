@@ -84,8 +84,15 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
             $value = str_replace('\n', '\\n', $value);
             $value = str_replace('\r', '\\r', $value);
             $value = str_replace('\t', '\\t', $value);
-            // FIXME: add support for languages and datatypes
-            return "\"$value\"";
+
+            if ($obj->getLang()) {
+                return '"' . $value . '"' . '@' . $obj->getLang();
+            } else if ($obj->getDatatype()) {
+                $datatype = EasyRdf_Namespace::expand($obj->getDatatype());
+                return '"' . $value . '"' . "^^<$datatype>";
+            } else {
+                return '"' . $value . '"';
+            }
         } else {
             throw new EasyRdf_Exception(
                 "Unable to serialise object to ntriples: $obj"
