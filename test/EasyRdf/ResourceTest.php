@@ -47,7 +47,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
      */
     public function setUp()
     {
-        $this->_resource = new EasyRdf_Resource('http://www.example.com/#me');
+        $this->_resource = new EasyRdf_Resource('http://example.com/#me');
         $this->_resource->set('rdf:type', 'foaf:Person');
         $this->_resource->add('test:prop', 'Test A');
         $this->_resource->add('test:prop', new EasyRdf_Literal('Test B', 'en'));
@@ -74,7 +74,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testGetUri()
     {
         $this->assertEquals(
-            'http://www.example.com/#me',
+            'http://example.com/#me',
             $this->_resource->getUri()
         );
     }
@@ -404,7 +404,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testUnknownPrefix()
     {
-        $unknown = new EasyRdf_Resource('http://www.example.com/foo');
+        $unknown = new EasyRdf_Resource('http://example.com/foo');
         $this->assertNull($unknown->prefix());
     }
 
@@ -415,7 +415,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     }
     public function testShortenUnknown()
     {
-        $unknown = new EasyRdf_Resource('http://www.example.com/foo');
+        $unknown = new EasyRdf_Resource('http://example.com/foo');
         $this->assertNull($unknown->shorten());
     }
 
@@ -454,12 +454,65 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
         $this->assertStringEquals('Dc Title', $this->_resource->label('en'));
     }
-
+    
+    public function testDumpValue()
+    {
+        $this->assertEquals(
+            'http://example.com/#me',
+            $this->_resource->dumpValue(false)
+        );
+        
+        $html = $this->_resource->dumpValue(true);
+        $this->assertContains("<a href='http://example.com/#me'", $html);
+        $this->assertContains("http://example.com/#me</a>", $html);
+    }
+    
     public function testDump()
     {
-        $this->markTestIncomplete();
-    }
+        $text = $this->_resource->dump(false);
+        $this->assertContains(
+            "http://example.com/#me (EasyRdf_Resource)", $text
+        );
+        $this->assertContains(
+            '-> rdf:type -> "foaf:Person"', $text
+        );
+        $this->assertContains(
+            '-> test:prop -> "Test A", "Test B"@en', $text
+        );
 
+        $html = $this->_resource->dump(true);
+        $this->assertContains("<div id='http://example.com/#me'", $html);
+        $this->assertContains(
+            "<a href='http://example.com/#me' style='text-decoration:none'>".
+            "http://example.com/#me</a>", $html
+        );
+        $this->assertContains(
+            "<span style='text-decoration:none;color:green'>rdf:type</span>",
+            $html
+        );
+        $this->assertContains(
+            "<span style='color:blue'>&quot;foaf:Person&quot;</span>", $html
+        );
+
+        $this->assertContains(
+            "<span style='text-decoration:none;color:green'>test:prop</span>",
+            $html
+        );
+        $this->assertContains(
+            "<span style='color:blue'>&quot;Test A&quot;</span>", $html
+        );
+        $this->assertContains(
+            "<span style='color:blue'>&quot;Test B&quot;@en</span>", $html
+        );
+    }
+    
+    public function testDumpWithNoProperties()
+    {
+        $resource = new EasyRdf_Resource("http://example.com/empty");
+        $this->assertEquals('', $resource->dump(false));
+        $this->assertEquals('', $resource->dump(true));
+    }
+    
     public function testMagicGet()
     {
         $this->assertStringEquals('Test A', $this->_resource->getTest_prop());
@@ -492,7 +545,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testToString()
     {
         $this->assertStringEquals(
-            'http://www.example.com/#me',
+            'http://example.com/#me',
             $this->_resource
         );
     }

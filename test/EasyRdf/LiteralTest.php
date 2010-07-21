@@ -74,6 +74,14 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals('xsd:integer', $literal->getDatatype());
     }
 
+    public function testConstructWithUnshortenableUriDatatype()
+    {
+        $this->setExpectedException('EasyRdf_Exception');
+        $literal = new EasyRdf_Literal(
+            1, null, 'http://example.com/integer'
+        );
+    }
+
     public function testConstructWithAssociativeArray()
     {
         $literal = new EasyRdf_Literal(array('value' => 'Rat'));
@@ -140,5 +148,44 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = new EasyRdf_Literal('Rat');
         $this->assertStringEquals('Rat', $literal);
+    }
+    
+    public function testDumpValue()
+    {
+        $literal = new EasyRdf_Literal("hello & world");
+        $this->assertEquals(
+            '"hello & world"',
+            $literal->dumpValue(false)
+        );
+        $this->assertEquals(
+            "<span style='color:blue'>&quot;hello &amp; world&quot;</span>",
+            $literal->dumpValue(true)
+        );
+    }
+    
+    public function testDumpValueWithLanguage()
+    {
+        $literal = new EasyRdf_Literal("Nick", 'en');
+        $this->assertEquals(
+            '"Nick"@en',
+            $literal->dumpValue(false)
+        );
+        $this->assertEquals(
+            "<span style='color:blue'>&quot;Nick&quot;@en</span>",
+            $literal->dumpValue(true)
+        );
+    }
+    
+    public function testDumpValueWithDatatype()
+    {
+        $literal = new EasyRdf_Literal(1, null, 'xsd:integer');
+        $this->assertEquals(
+            '"1"^^xsd:integer',
+            $literal->dumpValue(false)
+        );
+        $this->assertEquals(
+            "<span style='color:blue'>&quot;1&quot;^^xsd:integer</span>",
+            $literal->dumpValue(true)
+        );
     }
 }

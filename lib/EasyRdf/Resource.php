@@ -452,7 +452,7 @@ class EasyRdf_Resource
 
         if (count($plist)) {
             if ($html) {
-                return "<div id=" . htmlentities($this->_uri) . " " .
+                return "<div id='".htmlentities($this->_uri)."' " .
                        "style='font-family:arial; padding:0.5em; ".
                        "background-color:lightgrey;border:dashed 1px grey;'>\n".
                        "<div><a href='".htmlentities($this->_uri)."'".

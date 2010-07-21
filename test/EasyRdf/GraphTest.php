@@ -543,7 +543,17 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testDump()
     {
-        $this->markTestIncomplete();
+        $graph = new EasyRdf_Graph();
+        $graph->add('http://example.com/joe#me', 'foaf:name', 'Joe');
+
+        $text = $graph->dump(false);
+        $this->assertContains('http://example.com/joe#me', $text);
+        $this->assertContains('-> foaf:name -> "Joe"', $text);
+
+        $html = $graph->dump(true);
+        $this->assertContains('http://example.com/joe#me', $html);
+        $this->assertContains('>foaf:name</span>', $html);
+        $this->assertContains('>&quot;Joe&quot;</span>', $html);
     }
 
     public function testMagicGet()
