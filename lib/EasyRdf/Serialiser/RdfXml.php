@@ -52,10 +52,10 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         list ($prefix) = explode(':', $qname);
         $this->_prefixes[$prefix] = true;
     }
-    
+
     /**
      * Protected method to serialise an object node into an XML partial
-     */    
+     */
     protected function rdfxmlResource($res)
     {
         if (is_object($res)) {
@@ -71,16 +71,16 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             } else {
                 return "$res";
             }
-        }       
+        }
     }
-    
+
     /**
      * Protected method to serialise an object node into an XML object
      */
     protected function rdfxmlObject($obj)
     {
         if (is_object($obj) and $obj instanceof EasyRdf_Literal) {
-            $obj = $obj->getValue();        
+            $obj = $obj->getValue();
         }
         if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
             return $this->rdfxmlResource($obj);
@@ -99,12 +99,12 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             );
         }
     }
-    
+
     /**
      * Method to serialise an EasyRdf_Graph into RDF/XML
      *
      * http://n2.talis.com/wiki/RDF_JSON_Specification
-     * 
+     *
      * @param string $graph An EasyRdf_Graph object.
      * @param string $format The name of the format to convert to (rdfxml).
      * @return string The xml formatted RDF.
@@ -126,12 +126,12 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             $xml .= '<rdf:Description rdf:about="'.$this->rdfxmlResource($resource).'">'."\n";
             foreach ($resource->properties() as $property) {
                 $objects = $resource->all($property);
-                
+
                 foreach ($objects as $object) {
                     $tagName = EasyRdf_NameSpace::shorten($this->rdfxmlResource($property));
                     //@TODO: This should be a getPrefix function in Namespace.php
                     $prefix = explode(':', $tagName);
-                    $prefix = $prefix[0];                   
+                    $prefix = $prefix[0];
                     $namespaces[$prefix] = EasyRdf_NameSpace::get($prefix);
                     if ($object instanceof EasyRdf_Resource) {
                         $value = $this->rdfxmlObject($object);
@@ -166,7 +166,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                         $xml .= str_replace('&', '&amp;', $value);
                         $xml .= "</".$tagName.">\n";
                     }
-                    
+
                 }
             }
             $xml .= "</rdf:Description>\n\n";
@@ -179,7 +179,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         //return false;
         return '<rdf:RDF '. $namespaceStr . ">\n" . $xml . '</rdf:RDF>';
     }
-    
+
 }
 
 EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_RdfXml');
