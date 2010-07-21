@@ -106,7 +106,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
             }
         } else {
             throw new EasyRdf_Exception(
-                "Unable to serialise object to turtle: $object"
+                "Unable to serialise object to turtle: ".gettype($object)
             );
         }
     }

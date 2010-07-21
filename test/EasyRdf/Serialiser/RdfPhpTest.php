@@ -52,7 +52,9 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
 
     function testSerialisePhp()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->_graph->resource(
+            'http://www.example.com/joe#me', 'foaf:Person'
+        );
         $joe->set('foaf:name', 'Joe Bloggs');
         $this->_graph->add(
             $joe, 'foaf:project',
@@ -63,6 +65,9 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $this->assertType('array', $php);
         $subject = $php['http://www.example.com/joe#me'];
         $this->assertType('array', $subject);
+        $type = $subject['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0];
+        $this->assertEquals('uri', $type['type']);
+        $this->assertEquals('http://xmlns.com/foaf/0.1/Person', $type['value']);
         $object = $subject['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertType('array', $object);
         $this->assertEquals('literal', $object['type']);
@@ -74,7 +79,15 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $this->assertEquals('Project Name', $projectName['value']);
     }
 
-    function testParseUnsupportedFormat()
+    function testSerialiseInvalidObject()
+    {
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe->set('rdf:foo', $this);
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_serialiser->serialise($this->_graph, 'php');
+    }
+
+    function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException('EasyRdf_Exception');
         $rdf = $this->_serialiser->serialise(

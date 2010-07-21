@@ -52,13 +52,14 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
      */
     protected function ntriplesResource($res)
     {
-        if (is_object($res)) {
+        if (is_object($res) and $res instanceof EasyRdf_Resource) {
             if ($res->isBNode()) {
                 return $res->getURI();
             } else {
                 return "<".$res->getURI().">";
             }
         } else {
+            # FIXME: remove this when types are stored as Resources
             $uri = EasyRdf_Namespace::expand($res);
             if ($uri) {
                 return "<$uri>";
@@ -95,7 +96,7 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
             }
         } else {
             throw new EasyRdf_Exception(
-                "Unable to serialise object to ntriples: $obj"
+                "Unable to serialise object to ntriples: ".gettype($obj)
             );
         }
     }
@@ -124,7 +125,13 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
                 foreach ($objects as $object) {
                     $nt .= $this->ntriplesResource($resource)." ";
                     $nt .= $this->ntriplesResource($property)." ";
-                    $nt .= $this->ntriplesObject($object)." .\n";
+
+                    # FIXME: remove this when types are stored as Resources
+                    if ($property == 'rdf:type') {
+                        $nt .= $this->ntriplesResource($object)." .\n";
+                    } else {
+                        $nt .= $this->ntriplesObject($object)." .\n";
+                    }
                 }
             }
         }

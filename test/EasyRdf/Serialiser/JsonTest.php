@@ -52,7 +52,9 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
 
     function testSerialiseJson()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->_graph->resource(
+            'http://www.example.com/joe#me', 'foaf:Person'
+        );
         $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
         $this->_graph->add(
             $joe, 'foaf:project',
@@ -61,6 +63,8 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
 
         $this->assertEquals(
             '{"http:\/\/www.example.com\/joe#me":{'.
+            '"http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#type":['.
+            '{"type":"uri","value":"http:\/\/xmlns.com\/foaf\/0.1\/Person"}],'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/name":['.
             '{"type":"literal","value":"Joe Bloggs","lang":"en"}],'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/project":['.

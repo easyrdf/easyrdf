@@ -179,6 +179,14 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
+    function testSerialiseInvalidObject()
+    {
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe->set('rdf:foo', $this);
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_serialiser->serialise($this->_graph, 'turtle');
+    }
+
     function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException('EasyRdf_Exception');

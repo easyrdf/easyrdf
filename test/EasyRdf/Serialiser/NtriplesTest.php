@@ -52,13 +52,18 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
 
     function testSerialise()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->_graph->resource(
+            'http://www.example.com/joe#me', 'foaf:Person'
+        );
         $joe->set('foaf:name', 'Joe Bloggs');
         $joe->set(
             'foaf:homepage',
             $this->_graph->resource('http://www.example.com/joe/')
         );
         $this->assertEquals(
+            "<http://www.example.com/joe#me> ".
+            "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ".
+            "<http://xmlns.com/foaf/0.1/Person> .\n".
             "<http://www.example.com/joe#me> ".
             "<http://xmlns.com/foaf/0.1/name> ".
             "\"Joe Bloggs\" .\n".
@@ -122,6 +127,14 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
             "\"1\"^^<http://www.w3.org/2001/XMLSchema#integer> .\n",
             $ntriples
         );
+    }
+
+    function testSerialiseInvalidObject()
+    {
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe->set('rdf:foo', $this);
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_serialiser->serialise($this->_graph, 'ntriples');
     }
 
     function testSerialiseUnsupportedFormat()
