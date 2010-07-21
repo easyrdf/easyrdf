@@ -135,7 +135,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                     $namespaces[$prefix] = EasyRdf_NameSpace::get($prefix);
                     if ($object instanceof EasyRdf_Resource) {
                         $value = $this->rdfxmlObject($object);
-                        $xml .= "\t<".$tagName;
+                        $xml .= "  <".$tagName;
                         $xml .= " rdf:resource='".$value."'/>\n";
                     } else {
                         $dataType = "";
@@ -157,7 +157,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                         } else {
                             $value = $this->rdfxmlObject($object);
                         }
-                        $xml .= "\t<".$tagName.$dataType.$lang.">";
+                        $xml .= "  <".$tagName.$dataType.$lang.">";
                         // everything between xml tags should be html encoded
                         $value = htmlentities($value, null, 'UTF-8');
                         // validators think that html entities are namespaces,
@@ -177,7 +177,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             $namespaceStr .= 'xmlns:'.$prefix.'="'.$namespace.'" ';
         }
         //return false;
-        return '<rdf:RDF '. $namespaceStr . ">\n " . $xml . '</rdf:RDF>';
+        return '<rdf:RDF '. $namespaceStr . ">\n" . $xml . '</rdf:RDF>';
     }
     
 }
