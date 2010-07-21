@@ -7,7 +7,7 @@
     #require_once "EasyRdf/Serialiser/Arc.php";
   
     $graph = new EasyRdf_Graph();
-    $me = $graph->resource('http://www.example.com/joe#me');
+    $me = $graph->resource('http://www.example.com/joe#me', 'foaf:Person');
     $me->set('foaf:name', 'Joseph Bloggs');
     $me->set('foaf:title', 'Mr');
     $me->set('foaf:nick', 'Joe');    
