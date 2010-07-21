@@ -60,14 +60,14 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
 
         $this->assertEquals(
-            "<rdf:RDF xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:dc=\"http://purl.org/dc/terms/\" xmlns:dc11=\"http://purl.org/dc/elements/1.1/\" xmlns:doap=\"http://usefulinc.com/ns/doap#\" xmlns:exif=\"http://www.w3.org/2003/12/exif/ns#\" xmlns:foaf=\"http://xmlns.com/foaf/0.1/\" xmlns:http=\"http://www.w3.org/2006/http#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:rss=\"http://purl.org/rss/1.0/\" xmlns:sioc=\"http://rdfs.org/sioc/ns#\" xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\" xmlns:synd=\"http://purl.org/rss/1.0/modules/syndication/\" xmlns:wot=\"http://xmlns.com/wot/0.1/\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/vocab#\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema#\" >\n".
-            "<rdf:Description rdf:about=\"http://www.example.com/joe#me\">\n".
-            "  <foaf:name>Joe Bloggs</foaf:name>\n".
-            "  <foaf:homepage rdf:resource='http://www.example.com/joe/'/>\n".
-            "</rdf:Description>\n\n".
-            "<rdf:Description rdf:about=\"http://www.example.com/joe/\">\n".
-            "</rdf:Description>\n\n" .
-            "</rdf:RDF>",
+            "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n".
+            "  <rdf:Description rdf:about=\"http://www.example.com/joe#me\">\n".
+            "    <foaf:name>Joe Bloggs</foaf:name>\n".
+            "    <foaf:homepage rdf:resource=\"http://www.example.com/joe/\" />\n".
+            "  </rdf:Description>\n".
+            "</rdf:RDF>\n",
             $this->_serialiser->serialise($this->_graph, 'rdfxml')
         );
     }

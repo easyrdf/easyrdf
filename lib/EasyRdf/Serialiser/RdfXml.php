@@ -120,23 +120,27 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         }
 
         // store of namespaces to be appended to the rdf:RDF tag
-        $namespaces = EasyRdf_Namespace::namespaces();
+        $this->_prefixes = array('rdf' => true);
+
+        $resCount = 0;
         $xml = '';
         foreach ($graph->resources() as $resource) {
-            $xml .= '<rdf:Description rdf:about="'.$this->rdfxmlResource($resource).'">'."\n";
-            foreach ($resource->properties() as $property) {
-                $objects = $resource->all($property);
+            $properties = $resource->properties();
+            if (count($properties) == 0)
+                continue;
 
+            if ($resCount)
+                $xml .= "\n";
+
+            $xml .= '  <rdf:Description rdf:about="'.$this->rdfxmlResource($resource).'">'."\n";
+            foreach ($properties as $property) {
+                $objects = $resource->all($property);
+                $this->addPrefix($property);
                 foreach ($objects as $object) {
-                    $tagName = EasyRdf_NameSpace::shorten($this->rdfxmlResource($property));
-                    //@TODO: This should be a getPrefix function in Namespace.php
-                    $prefix = explode(':', $tagName);
-                    $prefix = $prefix[0];
-                    $namespaces[$prefix] = EasyRdf_NameSpace::get($prefix);
                     if ($object instanceof EasyRdf_Resource) {
                         $value = $this->rdfxmlObject($object);
-                        $xml .= "  <".$tagName;
-                        $xml .= " rdf:resource='".$value."'/>\n";
+                        $xml .= "    <".$property;
+                        $xml .= " rdf:resource=\"".htmlspecialchars($value)."\" />\n";
                     } else {
                         $dataType = "";
                         $lang = "";
@@ -157,27 +161,33 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                         } else {
                             $value = $this->rdfxmlObject($object);
                         }
-                        $xml .= "  <".$tagName.$dataType.$lang.">";
+                        $xml .= "    <".$property.$dataType.$lang.">";
                         // everything between xml tags should be html encoded
-                        $value = htmlentities($value, null, 'UTF-8');
+                        $value = htmlspecialchars($value);
                         // validators think that html entities are namespaces,
                         // so encode the &
                         // http://www.semanticoverflow.com/questions/984/html-entities-in-rdfxmlliteral
                         $xml .= str_replace('&', '&amp;', $value);
-                        $xml .= "</".$tagName.">\n";
+                        $xml .= "</".$property.">\n";
                     }
 
                 }
             }
-            $xml .= "</rdf:Description>\n\n";
+            $xml .= "  </rdf:Description>\n";
+            $resCount++;
         }
         // iterate through namepsaces array prefix and output a string.
         $namespaceStr = '';
-        foreach ($namespaces as $prefix => $namespace) {
-            $namespaceStr .= 'xmlns:'.$prefix.'="'.$namespace.'" ';
+        foreach ($this->_prefixes as $prefix => $count) {
+            $url = EasyRdf_Namespace::get($prefix);
+            if (strlen($namespaceStr)) {
+                $namespaceStr .= "\n        ";
+            }
+            $namespaceStr .= ' xmlns:'.$prefix.'="'.htmlspecialchars($url).'"';
         }
-        //return false;
-        return '<rdf:RDF '. $namespaceStr . ">\n" . $xml . '</rdf:RDF>';
+
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n".
+               "<rdf:RDF". $namespaceStr . ">\n" . $xml . "</rdf:RDF>\n";
     }
 
 }
