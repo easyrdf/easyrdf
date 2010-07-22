@@ -52,7 +52,9 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
     function testSerialiseRdfXml()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->_graph->resource(
+            'http://www.example.com/joe#me', 'foaf:Person'
+        );
         $joe->set('foaf:name', 'Joe Bloggs');
         $joe->set(
             'foaf:homepage',
@@ -63,13 +65,36 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n".
+            "\n".
             "  <rdf:Description rdf:about=\"http://www.example.com/joe#me\">\n".
+            "    <rdf:type rdf:resource=\"http://xmlns.com/foaf/0.1/Person\"/>\n".
             "    <foaf:name>Joe Bloggs</foaf:name>\n".
             "    <foaf:homepage rdf:resource=\"http://www.example.com/joe/\"/>\n".
             "  </rdf:Description>\n".
+            "\n".
             "</rdf:RDF>\n",
             $this->_serialiser->serialise($this->_graph, 'rdfxml')
         );
+    }
+
+    function testSerialiseRdfXmlWithLang()
+    {
+        $this->_graph->add(
+            'http://www.example.com/joe#me',
+            array('foaf:name' =>
+            new EasyRdf_Literal('Joe', 'en'))
+        );
+
+        $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $this->assertContains('<foaf:name xml:lang="en">Joe</foaf:name>', $xml);
+    }
+    
+    function testSerialiseInvalidObject()
+    {
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe->set('rdf:foo', $this);
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_serialiser->serialise($this->_graph, 'rdfxml');
     }
 
     function testSerialiseUnsupportedFormat()
