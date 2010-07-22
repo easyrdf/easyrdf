@@ -150,7 +150,6 @@ class EasyRdf_Format
             return 'php';
         }
 
-        # FIXME: could /etc/magic help here?
         $short = substr(trim($data), 0, 255);
         if (preg_match("/^\{/", $short)) {
             return 'json';
