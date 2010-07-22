@@ -83,20 +83,27 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                        "\"/>\n";
             }
         } else if (is_object($obj) and $obj instanceof EasyRdf_Literal) {
-            $value = htmlspecialchars($obj->getValue());
             $atrributes = "";
             if ($obj->getDatatype()) {
-                $atrributes = ' rdf:datatype="'.$obj->getDatatype().'"';
+                if ($obj->getDatatype() == 'rdf:XMLLiteral') {
+                    $atrributes .= " rdf:parseType=\"Literal\"";
+                    $value = $obj->getValue();
+                } else {
+                    $datatype = EasyRdf_Namespace::expand($obj->getDatatype());
+                    $atrributes .= ' rdf:datatype="'.
+                                   htmlspecialchars($datatype).'"';
+                }
             } elseif ($obj->getLang()) {
-                $atrributes = ' xml:lang="'.$obj->getLang().'"';
+                $atrributes .= ' xml:lang="'.
+                               htmlspecialchars($obj->getLang()).'"';
+            }
+            
+            // Escape value
+            if (!isset($value)) {
+                $value = htmlspecialchars($obj->getValue());
             }
 
-            // validators think that html entities are namespaces,
-            // so encode the &
-            // http://www.semanticoverflow.com/questions/984/html-entities-in-rdfxmlliteral
-            return "    <".$property.$atrributes.">" .
-                   str_replace('&', '&amp;', $value) . 
-                   "</".$property.">\n";
+            return "    <$property$atrributes>$value</$property>\n";
         } else {
             throw new EasyRdf_Exception(
                 "Unable to serialise object to xml: ".getType($obj)

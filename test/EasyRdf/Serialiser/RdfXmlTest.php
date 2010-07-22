@@ -77,6 +77,25 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
+    function testSerialiseRdfXmlWithBNodes()
+    {
+        $nodeA = $this->_graph->newBNode();
+        $nodeB = $this->_graph->newBNode();
+        $this->_graph->add($nodeA, 'rdf:foobar', $nodeB);
+
+        $this->assertEquals(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n".
+            "\n".
+            "  <rdf:Description rdf:nodeID=\"eid1\">\n".
+            "    <rdf:foobar rdf:nodeID=\"eid2\"/>\n".
+            "  </rdf:Description>\n".
+            "\n".
+            "</rdf:RDF>\n",
+            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+        );
+    }
+
     function testSerialiseRdfXmlWithLang()
     {
         $this->_graph->add(
@@ -86,7 +105,39 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
 
         $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
-        $this->assertContains('<foaf:name xml:lang="en">Joe</foaf:name>', $xml);
+        $this->assertContains(
+            '<foaf:name xml:lang="en">Joe</foaf:name>', $xml
+        );
+    }
+
+    function testSerialiseRdfXmlWithDatatype()
+    {
+        $this->_graph->add(
+            'http://www.example.com/joe#me',
+            array('foaf:age' =>
+            new EasyRdf_Literal(59, null, 'xsd:int'))
+        );
+
+        $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $this->assertContains(
+            "<foaf:age rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">".
+            "59</foaf:age>", $xml
+        );
+        
+    }
+
+    function testSerialiseRdfXmlWithXMLLiteral()
+    {
+        $this->_graph->add(
+            'http://www.example.com/joe#me',
+            array('foaf:bio' =>
+            new EasyRdf_Literal("<b>html</b>", null, 'rdf:XMLLiteral'))
+        );
+
+        $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $this->assertContains(
+            "<foaf:bio rdf:parseType=\"Literal\"><b>html</b></foaf:bio>", $xml
+        );
     }
     
     function testSerialiseInvalidObject()

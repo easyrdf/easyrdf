@@ -122,6 +122,11 @@ require_once "EasyRdf/Serialiser/Json.php";
 /**
  * @see EasyRdf_Serialiser_Turtle
  */
+require_once "EasyRdf/Serialiser/RdfXml.php";
+
+/**
+ * @see EasyRdf_Serialiser_Turtle
+ */
 require_once "EasyRdf/Serialiser/Turtle.php";
 
 /**
