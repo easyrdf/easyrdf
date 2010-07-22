@@ -347,6 +347,21 @@ class EasyRdf_Resource
             return false;
         }
     }
+    
+    /** Get the identifier for a blank node
+     *
+     * Returns null if the resource is not a blank node.
+     *
+     * @return string The identifer for the bnode
+     */
+    public function getNodeId()
+    {
+        if ($this->isBnode()) {
+            return substr($this->_uri, 2);
+        } else {
+            return null;
+        }
+    }
 
     /** Get a list of types for a resource.
      *

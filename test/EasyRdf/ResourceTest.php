@@ -348,6 +348,17 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals(false, $this->_resource->isBnode());
     }
 
+    public function testGetNodeId()
+    {
+        $bnode = new EasyRdf_Resource('_:foobar');
+        $this->assertEquals('foobar', $bnode->getNodeId());
+    }
+
+    public function testInvalidGetNodeId()
+    {
+        $this->assertEquals(null, $this->_resource->getNodeId());
+    }
+
     public function testProperties()
     {
         $this->assertEquals(
