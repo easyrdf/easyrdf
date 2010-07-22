@@ -52,14 +52,9 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
     function testSerialiseRdfXml()
     {
-        $joe = $this->_graph->resource(
-            'http://www.example.com/joe#me', 'foaf:Person'
-        );
+        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');
-        $joe->set(
-            'foaf:homepage',
-            $this->_graph->resource('http://www.example.com/joe/')
-        );
+        $joe->set('foaf:homepage', $this->_graph->resource('http://www.example.com/joe/'));
 
         $this->assertEquals(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
@@ -120,8 +115,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
         $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
         $this->assertContains(
-            "<foaf:age rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">".
-            "59</foaf:age>", $xml
+            "<foaf:age rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">59</foaf:age>", $xml
         );
 
     }
@@ -151,8 +145,6 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
     function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException('EasyRdf_Exception');
-        $rdf = $this->_serialiser->serialise(
-            $this->_graph, 'unsupportedformat'
-        );
+        $rdf = $this->_serialiser->serialise($this->_graph, 'unsupportedformat');
     }
 }
