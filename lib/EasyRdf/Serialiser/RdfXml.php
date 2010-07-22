@@ -77,33 +77,36 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
     /**
      * Protected method to serialise an object node into an XML object
      */
-    protected function rdfxmlObject($obj)
+    protected function rdfxmlObject($property, $obj)
     {
-        if (is_object($obj) and $obj instanceof EasyRdf_Literal) {
-            $obj = $obj->getValue();
-        }
         if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
-            return $this->rdfxmlResource($obj);
-        } else if (is_scalar($obj)) {
-            // FIXME: peform encoding of Unicode characters as described here:
-            // http://www.w3.org/TR/rdf-testcases/#ntrip_strings
-            $literal = str_replace('\\', '\\\\', $obj);
-            $literal = str_replace('"', '', $literal);
-            $literal = str_replace('\n', '', $literal);
-            $literal = str_replace('\r', '', $literal);
-            $literal = str_replace('\t', '', $literal);
-            return $literal;
+            $value = $this->rdfxmlResource($obj);
+            return "    <".$property.
+                   " rdf:resource=\"".htmlspecialchars($value)."\"/>\n";
+        } else if (is_object($obj) and $obj instanceof EasyRdf_Literal) {
+            $value = htmlspecialchars($obj->getValue());
+            $atrributes = "";
+            if ($obj->getDatatype()) {
+                $atrributes = ' rdf:datatype="'.$obj->getDatatype().'"';
+            } elseif ($obj->getLang()) {
+                $atrributes = ' xml:lang="'.$obj->getLang().'"';
+            }
+
+            // validators think that html entities are namespaces,
+            // so encode the &
+            // http://www.semanticoverflow.com/questions/984/html-entities-in-rdfxmlliteral
+            return "    <".$property.$atrributes.">" .
+                   str_replace('&', '&amp;', $value) . 
+                   "</".$property.">\n";
         } else {
             throw new EasyRdf_Exception(
-                "Unable to serialise object to xml: $obj. Object is of type ".getType($obj)
+                "Unable to serialise object to xml: ".getType($obj)
             );
         }
     }
 
     /**
      * Method to serialise an EasyRdf_Graph into RDF/XML
-     *
-     * http://n2.talis.com/wiki/RDF_JSON_Specification
      *
      * @param string $graph An EasyRdf_Graph object.
      * @param string $format The name of the format to convert to (rdfxml).
@@ -132,50 +135,19 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             if ($resCount)
                 $xml .= "\n";
 
-            $xml .= '  <rdf:Description rdf:about="'.$this->rdfxmlResource($resource).'">'."\n";
+            $xml .= '  <rdf:Description rdf:about="'.
+                    $resource->get($resource).'">'."\n";
             foreach ($properties as $property) {
-                $objects = $resource->all($property);
                 $this->addPrefix($property);
+                $objects = $resource->all($property);
                 foreach ($objects as $object) {
-                    if ($object instanceof EasyRdf_Resource) {
-                        $value = $this->rdfxmlObject($object);
-                        $xml .= "    <".$property;
-                        $xml .= " rdf:resource=\"".htmlspecialchars($value)."\" />\n";
-                    } else {
-                        $dataType = "";
-                        $lang = "";
-                        if (EasyRdf_Utils::is_associative_array($object)) {
-                            $value = $this->rdfxmlObject($object['value']);
-                            if (array_key_exists('datatype', $object)) {
-                                $dataType = ' rdf:datatype="'.$this->rdfxmlObject($object['datatype']).'"';
-                            }
-                        } else if (is_object($object) and $object instanceof EasyRdf_Literal) {
-                            $value = $object->getValue();
-                            if ($object->getDatatype()) {
-                                $dataType = ' rdf:datatype="'.$object->getDatatype().'"';
-                            }
-                            if ($object->getLang()) {
-                                $lang = ' xml:lang="'.$object->getLang().'"';
-                            }
-
-                        } else {
-                            $value = $this->rdfxmlObject($object);
-                        }
-                        $xml .= "    <".$property.$dataType.$lang.">";
-                        // everything between xml tags should be html encoded
-                        $value = htmlspecialchars($value);
-                        // validators think that html entities are namespaces,
-                        // so encode the &
-                        // http://www.semanticoverflow.com/questions/984/html-entities-in-rdfxmlliteral
-                        $xml .= str_replace('&', '&amp;', $value);
-                        $xml .= "</".$property.">\n";
-                    }
-
+                    $xml .= $this->rdfxmlObject($property, $object);
                 }
             }
             $xml .= "  </rdf:Description>\n";
             $resCount++;
         }
+
         // iterate through namepsaces array prefix and output a string.
         $namespaceStr = '';
         foreach ($this->_prefixes as $prefix => $count) {
@@ -186,7 +158,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             $namespaceStr .= ' xmlns:'.$prefix.'="'.htmlspecialchars($url).'"';
         }
 
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n".
+        return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
                "<rdf:RDF". $namespaceStr . ">\n" . $xml . "</rdf:RDF>\n";
     }
 

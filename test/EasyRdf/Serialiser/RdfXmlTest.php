@@ -60,12 +60,12 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
 
         $this->assertEquals(
-            "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n".
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n".
             "  <rdf:Description rdf:about=\"http://www.example.com/joe#me\">\n".
             "    <foaf:name>Joe Bloggs</foaf:name>\n".
-            "    <foaf:homepage rdf:resource=\"http://www.example.com/joe/\" />\n".
+            "    <foaf:homepage rdf:resource=\"http://www.example.com/joe/\"/>\n".
             "  </rdf:Description>\n".
             "</rdf:RDF>\n",
             $this->_serialiser->serialise($this->_graph, 'rdfxml')
