@@ -123,7 +123,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "<foaf:age rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">".
             "59</foaf:age>", $xml
         );
-        
+
     }
 
     function testSerialiseRdfXmlWithXMLLiteral()
@@ -139,7 +139,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "<foaf:bio rdf:parseType=\"Literal\"><b>html</b></foaf:bio>", $xml
         );
     }
-    
+
     function testSerialiseInvalidObject()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');

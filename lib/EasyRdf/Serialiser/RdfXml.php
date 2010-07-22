@@ -97,7 +97,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                 $atrributes .= ' xml:lang="'.
                                htmlspecialchars($obj->getLang()).'"';
             }
-            
+
             // Escape value
             if (!isset($value)) {
                 $value = htmlspecialchars($obj->getValue());
