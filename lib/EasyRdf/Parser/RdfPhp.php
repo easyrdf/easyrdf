@@ -118,7 +118,9 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
                 }
                 $res->add($property, $this->_bnodeMap[$objuri]);
             } else {
-                # FIXME: thow exception or silently ignore?
+                throw new EasyRdf_Exception(
+                    "Document contains unsupported type: " . $object['type']
+                );
             }
         }
     }
