@@ -37,13 +37,18 @@
  */
 
 /**
+ * Parent class for the EasyRdf parsers
+ *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Parser
 {
-
+    /**
+     * Check and cleanup parameters passed to parse() method
+     * @ignore
+     */
     protected function checkParseParams(&$graph, &$data, &$format, &$baseUri)
     {
         if ($graph == null or !is_object($graph) or

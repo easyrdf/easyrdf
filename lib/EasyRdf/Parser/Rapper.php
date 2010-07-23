@@ -37,7 +37,7 @@
  */
 
 /**
- * Class to allow parsing of RDF using the 'rapper' command line tool.
+ * Class to parse RDF using the 'rapper' command line tool.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
@@ -68,12 +68,13 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
     }
 
     /**
-      * Parse an RDF document
+      * Parse an RDF document into an EasyRdf_Graph
       *
-      * @param string $uri      the base URI of the data
-      * @param string $data     the document data
+      * @param string $graph    the graph to load the data into
+      * @param string $data     the RDF document data
       * @param string $format   the format of the input data
-      * @return array           the parsed data
+      * @param string $baseUri  the base URI of the data being parsed
+      * @return boolean         true if parsing was successful
       */
     public function parse($graph, $data, $format, $baseUri)
     {

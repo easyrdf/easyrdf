@@ -26,9 +26,9 @@
   <fileset id="docs" dir="${project.basedir}">
     <include name="docs/*" />
     <include name="docs/*/*" />
-    <include name="README" />
-    <include name="LICENSE" />
-    <include name="ROADMAP" />
+    <include name="README.md" />
+    <include name="LICENSE.md" />
+    <include name="CHANGELOG.md" />
   </fileset>
 
 
@@ -70,12 +70,12 @@
       destdir="${docs.dir}"
       sourcecode="no"
       undocumentedelements="yes"
-      output="HTML:Smarty:PHP">
+      output="HTML:frames:default">
       <fileset refid="source" />
       <projdocfileset dir="${project.basedir}">
-        <include name="README" />
-        <include name="INSTALL" />
-        <include name="CHANGELOG" />
+        <include name="README.md" />
+        <include name="CHANGELOG.md" />
+        <include name="LICENSE.md" />
       </projdocfileset>
     </phpdoc>
   </target>

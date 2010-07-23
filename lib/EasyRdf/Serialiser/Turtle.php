@@ -37,8 +37,10 @@
  */
 
 /**
- * Class to serialise an EasyRdf_Graph into RDF
+ * Class to serialise an EasyRdf_Graph to Turtle
  * with no external dependancies.
+ *
+ * http://www.dajobe.org/2004/01/turtle
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
@@ -46,14 +48,20 @@
  */
 class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 {
-    protected $_prefixes = array();
+    private $_prefixes = array();
 
+    /**
+     * @ignore
+     */
     protected function addPrefix($qname)
     {
         list ($prefix) = explode(':', $qname);
         $this->_prefixes[$prefix] = true;
     }
 
+    /**
+     * @ignore
+     */
     protected function serialiseResource($resource)
     {
         $uri = $resource->getUri();
@@ -70,6 +78,9 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         }
     }
 
+    /**
+     * @ignore
+     */
     protected function serialiseObject($object)
     {
         if (get_class($object) == 'EasyRdf_Resource') {
@@ -111,6 +122,9 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         }
     }
 
+    /**
+     * @ignore
+     */
     protected function serialisePrefixes()
     {
         $turtle = '';
@@ -124,8 +138,9 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     /**
      * Serialise an EasyRdf_Graph to Turtle.
      *
-     * @param string $graph An EasyRdf_Graph object.
-     * @return string The RDF in Turtle format.
+     * @param string  $graph   An EasyRdf_Graph object.
+     * @param string  $format  The name of the format to convert to.
+     * @return string          The RDF in the new desired format.
      */
     public function serialise($graph, $format)
     {

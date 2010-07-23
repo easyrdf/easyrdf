@@ -37,7 +37,8 @@
  */
 
 /**
- * Class to allow serialising to RDF using the 'rapper' command line tool.
+ * Class to serialise an EasyRdf_Graph to RDF 
+ * using the 'rapper' command line tool.
  *
  * Note: the built-in N-Triples serialiser is used to pass data to Rapper.
  *
@@ -68,11 +69,11 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
     }
 
     /**
-     * Serialise an EasyRdf_Graph into RDF format of choice.
+     * Serialise an EasyRdf_Graph to the RDF format of choice.
      *
-     * @param string $graph An EasyRdf_Graph object.
-     * @param string $format The name of the format to convert to.
-     * @return string The RDF in the new desired format.
+     * @param string  $graph   An EasyRdf_Graph object.
+     * @param string  $format  The name of the format to convert to.
+     * @return string          The RDF in the new desired format.
      */
     public function serialise($graph, $format)
     {

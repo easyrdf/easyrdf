@@ -290,6 +290,7 @@ class EasyRdf_Http_Client
     /**
      * Prepare the request headers
      *
+     * @ignore
      * @return array
      */
     protected function _prepareHeaders($host, $port)

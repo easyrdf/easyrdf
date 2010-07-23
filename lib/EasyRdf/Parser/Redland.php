@@ -37,7 +37,7 @@
  */
 
 /**
- * Class to allow parsing of RDF using Redland (librdf) C library.
+ * Class to parse RDF using Redland (librdf) C library.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
@@ -67,8 +67,11 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser_RdfPhp
      */
 
 
-    /** Convert a librdf node type into a string */
-    private static function nodeTypeString($node)
+    /**
+     * Convert a librdf node type into a string
+     * @ignore
+     */
+    protected static function nodeTypeString($node)
     {
         switch(librdf_node_get_type($node))
         {
@@ -87,8 +90,11 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser_RdfPhp
         }
     }
 
-    /** Convert the URI for a node into a string */
-    private static function nodeUriString($node)
+    /**
+     * Convert the URI for a node into a string
+     * @ignore
+     */
+    protected static function nodeUriString($node)
     {
         $type = EasyRdf_Parser_Redland::nodeTypeString($node);
         if ($type == 'uri') {
@@ -110,8 +116,11 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser_RdfPhp
         }
     }
 
-    /** Convert a node into an RDF/PHP object */
-    private static function rdfPhpObject($node)
+    /**
+     * Convert a node into an RDF/PHP object
+     * @ignore
+     */
+    protected static function rdfPhpObject($node)
     {
         $object = array();
         $object['type'] = EasyRdf_Parser_Redland::nodeTypeString($node);
@@ -135,8 +144,11 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser_RdfPhp
         return $object;
     }
 
-    /** Return the number of errors during parsing */
-    private function parserErrorCount($parser)
+    /**
+     * Return the number of errors during parsing
+     * @ignore
+     */
+    protected function parserErrorCount($parser)
     {
         $errorUri = librdf_new_uri(
             $this->_world, self::LIBRDF_PARSER_FEATURE_ERROR_COUNT
@@ -169,12 +181,13 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser_RdfPhp
     }
 
     /**
-      * Parse an RDF document
+      * Parse an RDF document into an EasyRdf_Graph
       *
-      * @param string $uri      the base URI of the data
-      * @param string $data     the document data
+      * @param string $graph    the graph to load the data into
+      * @param string $data     the RDF document data
       * @param string $format   the format of the input data
-      * @return array           the parsed data
+      * @param string $baseUri  the base URI of the data being parsed
+      * @return boolean         true if parsing was successful
       */
     public function parse($graph, $data, $format, $baseUri)
     {

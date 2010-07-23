@@ -37,7 +37,7 @@
  */
 
 /**
- * Class to serialise an EasyRdf_Graph into RDF
+ * Class to serialise an EasyRdf_Graph to RDF/JSON
  * with no external dependancies.
  *
  * @package    EasyRdf
@@ -47,17 +47,13 @@
 class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser_RdfPhp
 {
     /**
-     * Serialise an EasyRdf_Graph into RDF format of choice.
-     *
-     * @param string $graph An EasyRdf_Graph object.
-     * @param string $format The name of the format to convert to.
-     * @return string The RDF in the new desired format.
-     */
-
-    /**
-     * Method to serialise an EasyRdf_Graph into RDF/JSON
+     * Method to serialise an EasyRdf_Graph to RDF/JSON
      *
      * http://n2.talis.com/wiki/RDF_JSON_Specification
+     *
+     * @param string  $graph   An EasyRdf_Graph object.
+     * @param string  $format  The name of the format to convert to.
+     * @return string          The RDF in the new desired format.
      */
     public function serialise($graph, $format)
     {

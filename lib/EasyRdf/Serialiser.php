@@ -37,12 +37,18 @@
  */
 
 /**
+ * Parent class for the EasyRdf serialiser
+ *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Serialiser
 {
+    /**
+     * Check and cleanup parameters passed to serialise() method
+     * @ignore
+     */
     protected function checkSerialiseParams(&$graph, &$format)
     {
         if ($graph == null or !is_object($graph) or

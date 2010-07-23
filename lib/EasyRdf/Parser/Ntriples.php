@@ -37,7 +37,7 @@
  */
 
 /**
- * Class to allow parsing of RDF with no external dependancies.
+ * A pure-php class to parse N-Triples with no dependancies.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
@@ -46,9 +46,9 @@
 class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
 {
     /**
-     * Protected method to parse an N-Triples subject node
+     * @ignore
      */
-    protected function parse_ntriples_subject($sub)
+    protected function parseNtriplesSubject($sub)
     {
          if (preg_match('/<([^<>]+)>/', $sub, $matches)) {
              return $matches[1];
@@ -60,9 +60,9 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
     }
 
     /**
-     * Protected method to parse an N-Triples object node
+     * @ignore
      */
-    protected function parse_ntriples_object($obj)
+    protected function parseNtriplesObject($obj)
     {
          if (preg_match('/"(.+)"/', $obj, $matches)) {
              # FIXME: implement unescaping
@@ -79,12 +79,12 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
     }
 
     /**
-      * Parse an RDF document as N-Triples
+      * Parse an N-Triples document into an EasyRdf_Graph
       *
-      * @param string $graph    the graph to parse the data into
-      * @param string $data     the document data
-      * @param string $baseUri the base URI of the data
+      * @param string $graph    the graph to load the data into
+      * @param string $data     the RDF document data
       * @param string $format   the format of the input data
+      * @param string $baseUri  the base URI of the data being parsed
       * @return boolean         true if parsing was successful
       */
     public function parse($graph, $data, $format, $baseUri)
@@ -104,9 +104,9 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
                 "/(.+)\s+<([^<>]+)>\s+(.+)\s*\./",
                 $line, $matches
             )) {
-                $subject = $this->parse_ntriples_subject($matches[1]);
+                $subject = $this->parseNtriplesSubject($matches[1]);
                 $predicate = $matches[2];
-                $object = $this->parse_ntriples_object($matches[3]);
+                $object = $this->parseNtriplesObject($matches[3]);
 
                 if (!isset($rdfphp[$subject])) {
                     $rdfphp[$subject] = array();

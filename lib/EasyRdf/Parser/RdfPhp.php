@@ -37,7 +37,7 @@
  */
 
 /**
- * Class to allow parsing of RDF with no external dependancies.
+ * Class to parse RDF with no external dependancies.
  *
  * http://n2.talis.com/wiki/RDF_PHP_Specification
  *
@@ -47,7 +47,7 @@
  */
 class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
 {
-    protected $_bnodeMap = array();
+    private $_bnodeMap = array();
 
     /** A constant for the RDF Type property URI */
     const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
@@ -64,6 +64,7 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
 
     /**
      * Get the type of a resource from some RDF/PHP
+     * @ignore
      */
     protected function getResourceType($data, $uri)
     {
@@ -87,6 +88,9 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
         return null;
     }
     
+    /**
+     * @ignore
+     */
     protected function addProperty($graph, $data, $res, $property, $objects)
     {
         $property = EasyRdf_Namespace::shorten($property);
@@ -120,12 +124,12 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
     }
 
     /**
-      * Parse an RDF/PHP into an EasyRdf_Graph
+      * Parse RDF/PHP into an EasyRdf_Graph
       *
-      * @param string $graph    the graph to parse the data into
-      * @param string $data     the RDF/PHP data
-      * @param string $baseUri the base URI of the data
+      * @param string $graph    the graph to load the data into
+      * @param string $data     the RDF document data
       * @param string $format   the format of the input data
+      * @param string $baseUri  the base URI of the data being parsed
       * @return boolean         true if parsing was successful
       */
     public function parse($graph, $data, $format, $baseUri)

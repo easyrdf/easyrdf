@@ -37,7 +37,7 @@
  */
 
 /**
- * Class to serialise an EasyRdf_Graph into RDF
+ * Class to serialise an EasyRdf_Graph to N-Triples
  * with no external dependancies.
  *
  * @package    EasyRdf
@@ -46,9 +46,8 @@
  */
 class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
 {
-
     /**
-     * Protected method to serialise a subject node into an N-Triples partial
+     * @ignore
      */
     protected function ntriplesResource($res)
     {
@@ -70,7 +69,7 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
     }
 
     /**
-     * Protected method to serialise an object node into an N-Triples partial
+     * @ignore
      */
     protected function ntriplesObject($obj)
     {
@@ -104,9 +103,9 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
     /**
      * Serialise an EasyRdf_Graph into N-Triples
      *
-     * @param string $graph An EasyRdf_Graph object.
-     * @param string $format The name of the format to convert to (ntriples).
-     * @return string The N-Triples formatted RDF.
+     * @param string  $graph   An EasyRdf_Graph object.
+     * @param string  $format  The name of the format to convert to.
+     * @return string          The RDF in the new desired format.
      */
     public function serialise($graph, $format)
     {

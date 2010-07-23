@@ -37,7 +37,7 @@
  */
 
 /**
- * Class to allow parsing of RDF with no external dependancies.
+ * A pure-php class to parse RDF/JSON with no dependancies.
  *
  * http://n2.talis.com/wiki/RDF_JSON_Specification
  *
@@ -48,12 +48,12 @@
 class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
 {
     /**
-      * Parse an RDF/JSON into an EasyRdf_Graph
+      * Parse a RDF/JSON into an EasyRdf_Graph
       *
-      * @param string $graph    the graph to parse the data into
-      * @param string $data     the RDF/JSON data
-      * @param string $baseUri the base URI of the data
+      * @param string $graph    the graph to load the data into
+      * @param string $data     the RDF document data
       * @param string $format   the format of the input data
+      * @param string $baseUri  the base URI of the data being parsed
       * @return boolean         true if parsing was successful
       */
     public function parse($graph, $data, $format, $baseUri)

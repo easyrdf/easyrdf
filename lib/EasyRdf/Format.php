@@ -45,12 +45,12 @@ class EasyRdf_Format
 {
     private static $_formats = array();
     
-    protected $_name = array();
-    protected $_label = null;
-    protected $_uri = null;
-    protected $_mimeTypes = array();
-    protected $_parserClass = null;
-    protected $_serialiserClass = null;
+    private $_name = array();
+    private $_label = null;
+    private $_uri = null;
+    private $_mimeTypes = array();
+    private $_parserClass = null;
+    private $_serialiserClass = null;
 
     /** Get a list of format names
      *
@@ -70,11 +70,22 @@ class EasyRdf_Format
         return self::$_formats;
     }
     
+    /** Check if a named graph exists
+     *
+     * @param string $name    the name of the format
+     * @return boolean        true if the format exists
+     */
     public static function formatExists($name)
     {
         return array_key_exists($name, self::$_formats);
     }
     
+    /** Get a EasyRdf_Format from a name, uri or mime type
+     *
+     * @param string $query   a query string to search for
+     * @return object         the first EasyRdf_Format that matches the query
+     * @throws EasyRdf_Exception  if no format is found
+     */
     public static function getFormat($query)
     {
         if (!is_string($query) or $query == null or $query == '') {
@@ -85,7 +96,6 @@ class EasyRdf_Format
 
         foreach (self::$_formats as $format) {
            if ($query == $format->_name or
-               $query == $format->_label or 
                $query == $format->_uri or 
                in_array($query, $format->_mimeTypes)) {
                return $format;
@@ -100,8 +110,11 @@ class EasyRdf_Format
 
     /** Register a new format
      *
-     * @param  string  $name   The name of the serialiation (e.g. ntriples)
-     * @return string          The new EasyRdf_Format object
+     * @param  string  $name      The name of the format (e.g. ntriples)
+     * @param  string  $label     The label for the format (e.g. N-Triples)
+     * @param  string  $uri       The URI for the format
+     * @param  string  $mimeTypes One or more mime types for the format
+     * @return object             The new EasyRdf_Format object
      */
     public static function register($name, $label=null, $uri=null,
                                     $mimeTypes=array())
@@ -122,6 +135,11 @@ class EasyRdf_Format
         return self::$_formats[$name];
     }
     
+    /** Class method to register a parser class to a format name
+     *
+     * @param  string  $name   The name of the format (e.g. ntriples)
+     * @param  string  $class  The name of the class (e.g. EasyRdf_Parser_Ntriples)
+     */
     public static function registerParser($name, $class)
     {
         if (!self::formatExists($name))
@@ -129,6 +147,11 @@ class EasyRdf_Format
         self::getFormat($name)->setParserClass($class);
     }
     
+    /** Class method to register a serialiser class to a format name
+     *
+     * @param  string  $name   The name of the format (e.g. ntriples)
+     * @param  string  $class  The name of the class (e.g. EasyRdf_Serialiser_Ntriples)
+     */
     public static function registerSerialiser($name, $class)
     {
         if (!self::formatExists($name))
@@ -136,12 +159,12 @@ class EasyRdf_Format
         self::getFormat($name)->setSerialiserClass($class);
     }
 
-    /** Attempt to guess the document type from some content.
+    /** Attempt to guess the document format from some content.
      *
-     * If the document type is not recognised, null is returned.
+     * If the document format is not recognised, null is returned.
      *
      * @param  string $data The document data
-     * @return string The document type (e.g. rdfxml)
+     * @return string The format name (e.g. rdfxml)
      */
     public static function guessFormat($data)
     {
@@ -171,22 +194,42 @@ class EasyRdf_Format
         }
     }
 
+    /**
+     * This constructor is for internal use only.
+     * To create a new format, use the register method.
+     *
+     * @param  string  $name    The name of the format
+     * @see    EasyRdf_Format::register()
+     * @ignore
+     */
     public function __construct($name)
     {
         $this->_name = $name;
         $this->_label = $name;  # Only a default
     }
 
+    /** Get the name of a format object
+     *
+     * @return string The name of the format (e.g. rdfxml)
+     */
     public function getName()
     {
         return $this->_name;
     }
     
+    /** Get the label for a format object
+     *
+     * @return string The format label (e.g. RDF/XML)
+     */
     public function getLabel()
     {
         return $this->_label;
     }
     
+    /** Set the label for a format object
+     *
+     * @param  string $label  The new label for the format
+     */
     public function setLabel($label)
     {
         if ($label) {
@@ -201,11 +244,19 @@ class EasyRdf_Format
         }
     }
     
+    /** Get the URI for a format object
+     *
+     * @return string The format URI
+     */
     public function getUri()
     {
         return $this->_uri;
     }
     
+    /** Set the URI for a format object
+     *
+     * @param string $uri  The new URI for the format
+     */
     public function setUri($uri)
     {
         if ($uri) {
@@ -220,12 +271,19 @@ class EasyRdf_Format
         }
     }
 
-    
+    /** Get the registered mime types for a format object
+     *
+     * @return array One or more MIME types in an array
+     */
     public function getMimeTypes()
     {
         return $this->_mimeTypes;
     }
     
+    /** Set the MIME Types for a format object
+     *
+     * @param array $mimeTypes  One or more mime types
+     */
     public function setMimeTypes($mimeTypes)
     {
         if ($mimeTypes) {
@@ -237,7 +295,11 @@ class EasyRdf_Format
             $this->_mimeTypes = array();
         }
     }
-    
+
+    /** Set the parser to use for a format
+     *
+     * @param string $class  The name of the class
+     */
     public function setParserClass($class)
     {
         if ($class) {
@@ -252,11 +314,19 @@ class EasyRdf_Format
         }
     }
     
+    /** Get the name of the class to use to parse the format
+     *
+     * @return string The name of the class
+     */
     public function getParserClass()
     {
         return $this->_parserClass;
     }
     
+    /** Create a new parser to parse this format
+     *
+     * @return object The new parser object
+     */
     public function newParser()
     {
         $parserClass = $this->_parserClass;
@@ -268,6 +338,10 @@ class EasyRdf_Format
         return (new $parserClass());
     }
     
+    /** Set the serialiser to use for a format
+     *
+     * @param string $class  The name of the class
+     */
     public function setSerialiserClass($class)
     {
         if ($class) {
@@ -282,11 +356,19 @@ class EasyRdf_Format
         }
     }
     
+    /** Get the name of the class to use to serialise the format
+     *
+     * @return string The name of the class
+     */
     public function getSerialiserClass()
     {
         return $this->_serialiserClass;
     }
     
+    /** Create a new serialiser to parse this format
+     *
+     * @return object The new serialiser object
+     */
     public function newSerialiser()
     {
         $serialiserClass = $this->_serialiserClass;

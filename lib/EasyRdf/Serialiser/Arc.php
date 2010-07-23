@@ -37,7 +37,7 @@
  */
 
 /**
- * Class to allow serialising to RDF using the ARC2 library.
+ * Class to serialise RDF using the ARC2 library.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
@@ -65,9 +65,9 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
     /**
      * Serialise an EasyRdf_Graph into RDF format of choice.
      *
-     * @param string $graph An EasyRdf_Graph object.
-     * @param string $format The name of the format to convert to.
-     * @return string The RDF in the new desired format.
+     * @param string  $graph   An EasyRdf_Graph object.
+     * @param string  $format  The name of the format to convert to.
+     * @return string          The RDF in the new desired format.
      */
     public function serialise($graph, $format)
     {

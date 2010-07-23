@@ -36,7 +36,7 @@
  */
 
 /**
- * Class to serialise an EasyRdf_Graph into RDF
+ * Class to serialise an EasyRdf_Graph to RDF/XML
  * with no external dependancies.
  *
  * @package    EasyRdf
@@ -45,8 +45,11 @@
  */
 class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
 {
-    protected $_prefixes = array();
+    private $_prefixes = array();
 
+    /**
+     * @ignore
+     */
     protected function addPrefix($qname)
     {
         list ($prefix) = explode(':', $qname);
@@ -55,6 +58,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
 
     /**
      * Protected method to serialise an object node into an XML partial
+     * @ignore
      */
     protected function rdfxmlResource($res)
     {
@@ -69,6 +73,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
 
     /**
      * Protected method to serialise an object node into an XML object
+     * @ignore
      */
     protected function rdfxmlObject($property, $obj)
     {
@@ -112,11 +117,11 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
     }
 
     /**
-     * Method to serialise an EasyRdf_Graph into RDF/XML
+     * Method to serialise an EasyRdf_Graph to RDF/XML
      *
-     * @param string $graph An EasyRdf_Graph object.
-     * @param string $format The name of the format to convert to (rdfxml).
-     * @return string The xml formatted RDF.
+     * @param string  $graph   An EasyRdf_Graph object.
+     * @param string  $format  The name of the format to convert to.
+     * @return string          The RDF in the new desired format.
      */
     public function serialise($graph, $format)
     {
