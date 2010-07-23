@@ -130,7 +130,7 @@
   </target>
   
   <target name="fixme" description="Search for code that needs fixing">
-    <exec command="git grep -E 'FIXME|TODO' lib" dir="${project.basedir}" passthru="true" />
+    <exec command="git grep -n -E 'FIXME|TODO' lib" dir="${project.basedir}" passthru="true" />
   </target>
   
   <target name="default" description="Default target" depends="lint,test,cs" />
