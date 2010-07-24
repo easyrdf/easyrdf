@@ -85,7 +85,7 @@
   </target>
  
   <target name="cs">
-    <phpcodesniffer standard="ZEND" showWarnings="false" haltonerror="true">
+    <phpcodesniffer standard="Zend" showWarnings="false" haltonerror="true">
       <fileset refid="source" />
       <fileset refid="tests" />
     </phpcodesniffer>
