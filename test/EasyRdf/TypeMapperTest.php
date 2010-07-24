@@ -49,13 +49,17 @@ class MyType_Class extends EasyRdf_Resource
 
 class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 {
-    /**
-     * Set up the test suite before each test
-     */
     public function setUp()
     {
         EasyRdf_TypeMapper::set('my:type', 'MyType_Class');
     }
+
+    public function tearDown()
+    {
+        EasyRdf_TypeMapper::delete('my:type');
+        EasyRdf_TypeMapper::delete('foaf:Person');
+    }
+
 
     public function testGet()
     {
@@ -119,6 +123,31 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
     {
         $this->setExpectedException('InvalidArgumentException');
         EasyRdf_TypeMapper::set('my:type', array());
+    }
+
+    public function testDelete()
+    {
+        $this->assertEquals('MyType_Class', EasyRdf_TypeMapper::get('my:type'));
+        EasyRdf_TypeMapper::delete('my:type');
+        $this->assertEquals(null, EasyRdf_TypeMapper::get('my:type'));
+    }
+
+    public function testDeleteTypeNull()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_TypeMapper::delete(null);
+    }
+
+    public function testDeleteTypeEmpty()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_TypeMapper::delete('');
+    }
+
+    public function testDeleteTypeNonString()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_TypeMapper::delete(array());
     }
 
     public function testInstantiate()

@@ -52,7 +52,7 @@ class EasyRdf_TypeMapper
      *
      * If a type is not registered, then this method will return null.
      *
-     * @param  string  $type   The RDF type (e.g. foaf:name)
+     * @param  string  $type   The RDF type (e.g. foaf:Person)
      * @return string          The class name (e.g. Model_Foaf_Name)
      */
     public static function get($type)
@@ -70,7 +70,7 @@ class EasyRdf_TypeMapper
 
     /** Register an RDF type with a PHP Class name
      *
-     * @param  string  $type   The RDF type (e.g. foaf:name)
+     * @param  string  $type   The RDF type (e.g. foaf:Person)
      * @param  string  $class  The PHP class name (e.g. Model_Foaf_Name)
      * @return string          The PHP class name
      */
@@ -91,4 +91,21 @@ class EasyRdf_TypeMapper
         return self::$_map[$type] = $class;
     }
 
+    /**
+      * Delete an existing RDF type mapping.
+      *
+      * @param  string  $type   The RDF type (e.g. foaf:Person)
+      */
+    public static function delete($type)
+    {
+        if (!is_string($type) or $type == null or $type == '') {
+            throw new InvalidArgumentException(
+                "\$type should be a string and cannot be null or empty"
+            );
+        }
+
+        if (isset(self::$_map[$type])) {
+            unset(self::$_map[$type]);
+        }
+    }
 }
