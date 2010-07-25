@@ -11,17 +11,26 @@ Data is typically loaded into a EasyRdf_Graph object from source RDF documents.
 The source document could either be an RDF file on the web or the output of a
 Construct or Describe SPARQL query from a triplestore.
 
-
-Requirements
-------------
-
-* PHP 5.2.0
-
 ### Example ###
 
     $foaf = new EasyRdf_Graph("http://www.aelius.com/njh/foaf.rdf");
     $me = $foaf->primaryTopic();
     echo "My name is: ".$me->get('foaf:name')."\n";
+
+<!-- DOWNLOADS -->
+
+Links
+-----
+
+* [EasyRdf Homepage](http://www.aelius.com/njh/)
+* [API documentation](http://www.aelius.com/njh/easyrdf/docs/)
+* Source Code: <http://github.com/njh/easyrdf>
+* Issue Tracker: <http://github.com/njh/easyrdf/issues>
+
+Requirements
+------------
+
+* PHP 5.2.0
 
 
 Features
