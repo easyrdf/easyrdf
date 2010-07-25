@@ -17,13 +17,17 @@ Construct or Describe SPARQL query from a triplestore.
     $me = $foaf->primaryTopic();
     echo "My name is: ".$me->get('foaf:name')."\n";
 
-<!-- DOWNLOADS -->
+Downloads
+---------
+
+The latest version of EasyRdf can be downloaded from GitHub.
 
 Links
 -----
 
 * [EasyRdf Homepage](http://www.aelius.com/njh/)
 * [API documentation](http://www.aelius.com/njh/easyrdf/docs/)
+* [Change Log](http://github.com/njh/easyrdf/blob/master/CHANGELOG.md)
 * Source Code: <http://github.com/njh/easyrdf>
 * Issue Tracker: <http://github.com/njh/easyrdf/issues>
 
