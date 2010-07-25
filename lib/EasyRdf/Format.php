@@ -70,6 +70,17 @@ class EasyRdf_Format
         return self::$_formats;
     }
     
+    public static function getHttpAcceptHeader()
+    {
+        $accept = array();
+        foreach (self::$_formats as $format) {
+            if ($format->_parserClass and count($format->_mimeTypes) > 1) {
+                $accept[] = $format->_mimeTypes[0];
+            }
+        }
+        return join(',', $accept);
+    }
+    
     /** Check if a named graph exists
      *
      * @param string $name    the name of the format
@@ -391,6 +402,11 @@ class EasyRdf_Format
 }
 
 
+/*
+   Register default set of supported formats
+   NOTE: they are ordered by preference
+*/
+
 EasyRdf_Format::register(
     'php',
     'RDF/PHP',
@@ -398,10 +414,10 @@ EasyRdf_Format::register(
 );
 
 EasyRdf_Format::register(
-    'n3',
-    'Notation3',
-    'http://www.w3.org/2000/10/swap/grammar/n3#',
-    array('text/n3')
+    'json',
+    'RDF/JSON Resource-Centric',
+    'http://n2.talis.com/wiki/RDF_JSON_Specification',
+    array('application/json', 'text/json')
 );
 
 EasyRdf_Format::register(
@@ -417,17 +433,14 @@ EasyRdf_Format::register(
 );
 
 EasyRdf_Format::register(
-    'json',
-    'RDF/JSON Resource-Centric',
-    'http://n2.talis.com/wiki/RDF_JSON_Specification',
-    array('application/json', 'text/json')
-);
-
-EasyRdf_Format::register(
-    'rdfa',
-    'RDF/A',
-    'http://www.w3.org/TR/rdfa/',
-    array('text/html','application/xhtml+xml')
+    'turtle',
+    'Turtle Terse RDF Triple Language',
+    'http://www.dajobe.org/2004/01/turtle',
+    array(
+        'text/turtle',
+        'application/turtle',
+        'application/x-turtle'
+    )
 );
 
 EasyRdf_Format::register(
@@ -438,12 +451,15 @@ EasyRdf_Format::register(
 );
 
 EasyRdf_Format::register(
-    'turtle',
-    'Turtle Terse RDF Triple Language',
-    'http://www.dajobe.org/2004/01/turtle',
-    array(
-        'text/turtle',
-        'application/turtle',
-        'application/x-turtle'
-    )
+    'n3',
+    'Notation3',
+    'http://www.w3.org/2000/10/swap/grammar/n3#',
+    array('text/n3')
+);
+
+EasyRdf_Format::register(
+    'rdfa',
+    'RDF/A',
+    'http://www.w3.org/TR/rdfa/',
+    array('text/html','application/xhtml+xml')
 );

@@ -223,8 +223,7 @@ class EasyRdf_Graph
             # FIXME: prevent loading the same URI multiple times
             $client = self::getHttpClient();
             $client->setUri($uri);
-            # FIXME: set the accept header to formats we are able to parse
-            $client->setHeaders('Accept', 'application/rdf+xml');
+            $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
             $response = $client->request();
             if (!$response->isSuccessful()) {
                 throw new EasyRdf_Exception(

@@ -88,6 +88,12 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
             $this->assertEquals('EasyRdf_Format', get_class($format));
         }
     }
+
+    public function testGetHttpAcceptHeader()
+    {
+        $accept = explode(',', EasyRdf_Format::getHttpAcceptHeader());
+        $this->assertContains('application/json', $accept);
+    }
     
     public function testFormatExistsTrue()
     {
