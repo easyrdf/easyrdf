@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
 <project name="EasyRdf" default="default">
+  <property name="version" value="0.4" />
+  
   <property name="reports.dir" value="${project.basedir}/reports" override="true" />
   <property name="docs.dir" value="${project.basedir}/docs" override="true" />
   <property name="dist.dir" value="${project.basedir}/dist" override="true" />
@@ -17,6 +19,12 @@
   <fileset id="tests" dir="${project.basedir}">
     <include name="test/EasyRdf/*Test.php" />
     <include name="test/EasyRdf/**/*Test.php" />
+  </fileset>
+
+  <fileset id="test-support" dir="${project.basedir}">
+    <include name="test/TestHelper.php" />
+    <include name="test/EasyRdf/TestCase.php" />
+    <include name="test/fixtures/*" />
   </fileset>
 
   <fileset id="examples" dir="${project.basedir}">
@@ -66,7 +74,7 @@
   </target>
 
   <target name="docs" description="Create API documentation">
-    <phpdoc title="EasyRdf API Documentation"
+    <phpdoc title="EasyRdf ${version} API Documentation"
       destdir="${docs.dir}"
       sourcecode="no"
       undocumentedelements="yes"
@@ -99,20 +107,21 @@
     </phplint>
   </target>
 
-  <target name="dist" depends="docs">
+  <target name="dist" depends="clean,docs">
     <echo msg="Creating archive..." />
-    <mkdir dir="${dist.dir}/easyrdf" />
-    <copy todir="${dist.dir}/easyrdf" >
+    <mkdir dir="${dist.dir}/easyrdf-${version}" />
+    <copy todir="${dist.dir}/easyrdf-${version}" >
       <fileset refid="source" />
       <fileset refid="tests" />
+      <fileset refid="test-support" />
       <fileset refid="examples" />
       <fileset refid="docs" />
       <fileset dir="${project.basedir}">
         <include name="build.xml" />
       </fileset>
     </copy>
-    <delete file="easyrdf.tar.gz" />
-    <tar destfile="easyrdf.tar.gz"
+    <delete file="easyrdf-${version}.tar.gz" />
+    <tar destfile="easyrdf-${version}.tar.gz"
          basedir="${dist.dir}"
          compression="gzip" />
   </target>
@@ -138,6 +147,6 @@
     <exec command="git grep -n -E '[ 	]+$'" dir="${project.basedir}" passthru="true" />
   </target>
 
-  <target name="default" description="Default target" depends="lint,test,cs,whitespace" />
+  <target name="default" description="Default target" depends="lint,test,cs" />
 
 </project>
