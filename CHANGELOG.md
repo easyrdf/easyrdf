@@ -1,3 +1,17 @@
+EasyRdf 0.4
+-----------
+* Moved source code to Github
+* Added an EasyRdf_Literal class
+* Added proper support for Datatypes and Languages
+* Added built-in RDF/XML serialiser
+* Added built-in Turtle serialiser
+* Added a new EasyRdf_Format class to deal with mime types etc.
+* finished a major refactoring of the Parser/Serialiser registration
+* removed all parsing related code from EasyRdf_Graph
+* Added a basic serialisation example
+* Added additional common namespaces
+* Test fixes
+
 EasyRdf 0.3
 -----------
 * Generated Wiki pages from phpdoc
@@ -6,8 +20,8 @@ EasyRdf 0.3
 * Added support for serialisation
 * Wrote RDF generation example (foafmaker.php)
 * Added built-in ntriples parser/generator
-* Added built-in RDF/PHP generator
-* Added built-in RDF/JSON generator
+* Added built-in RDF/PHP serialiser
+* Added built-in RDF/JSON serialiser
 * Added SKOS and RSS to the set of default namespaces.
 
 EasyRdf 0.2
