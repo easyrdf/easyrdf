@@ -347,7 +347,7 @@ class EasyRdf_Resource
             return false;
         }
     }
-    
+
     /** Get the identifier for a blank node
      *
      * Returns null if the resource is not a blank node.

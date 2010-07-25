@@ -44,7 +44,7 @@
 class EasyRdf_Format
 {
     private static $_formats = array();
-    
+
     private $_name = array();
     private $_label = null;
     private $_uri = null;
@@ -60,7 +60,7 @@ class EasyRdf_Format
     {
         return array_keys(self::$_formats);
     }
-    
+
     /** Get a list of all the registsed formats
      *
      * @return array          An array of format objects
@@ -69,7 +69,7 @@ class EasyRdf_Format
     {
         return self::$_formats;
     }
-    
+
     public static function getHttpAcceptHeader()
     {
         $accept = array();
@@ -80,7 +80,7 @@ class EasyRdf_Format
         }
         return join(',', $accept);
     }
-    
+
     /** Check if a named graph exists
      *
      * @param string $name    the name of the format
@@ -90,7 +90,7 @@ class EasyRdf_Format
     {
         return array_key_exists($name, self::$_formats);
     }
-    
+
     /** Get a EasyRdf_Format from a name, uri or mime type
      *
      * @param string $query   a query string to search for
@@ -107,7 +107,7 @@ class EasyRdf_Format
 
         foreach (self::$_formats as $format) {
            if ($query == $format->_name or
-               $query == $format->_uri or 
+               $query == $format->_uri or
                in_array($query, $format->_mimeTypes)) {
                return $format;
            }
@@ -139,13 +139,13 @@ class EasyRdf_Format
         if (!array_key_exists($name, self::$_formats)) {
             self::$_formats[$name] = new EasyRdf_Format($name);
         }
-        
+
         self::$_formats[$name]->setLabel($label);
         self::$_formats[$name]->setUri($uri);
         self::$_formats[$name]->setMimeTypes($mimeTypes);
         return self::$_formats[$name];
     }
-    
+
     /** Class method to register a parser class to a format name
      *
      * @param  string  $name   The name of the format (e.g. ntriples)
@@ -157,7 +157,7 @@ class EasyRdf_Format
             self::register($name);
         self::getFormat($name)->setParserClass($class);
     }
-    
+
     /** Class method to register a serialiser class to a format name
      *
      * @param  string  $name   The name of the format (e.g. ntriples)
@@ -227,7 +227,7 @@ class EasyRdf_Format
     {
         return $this->_name;
     }
-    
+
     /** Get the label for a format object
      *
      * @return string The format label (e.g. RDF/XML)
@@ -236,7 +236,7 @@ class EasyRdf_Format
     {
         return $this->_label;
     }
-    
+
     /** Set the label for a format object
      *
      * @param  string $label  The new label for the format
@@ -254,7 +254,7 @@ class EasyRdf_Format
             return $this->_label = null;
         }
     }
-    
+
     /** Get the URI for a format object
      *
      * @return string The format URI
@@ -263,7 +263,7 @@ class EasyRdf_Format
     {
         return $this->_uri;
     }
-    
+
     /** Set the URI for a format object
      *
      * @param string $uri  The new URI for the format
@@ -290,7 +290,7 @@ class EasyRdf_Format
     {
         return $this->_mimeTypes;
     }
-    
+
     /** Set the MIME Types for a format object
      *
      * @param array $mimeTypes  One or more mime types
@@ -324,7 +324,7 @@ class EasyRdf_Format
             $this->_parserClass = null;
         }
     }
-    
+
     /** Get the name of the class to use to parse the format
      *
      * @return string The name of the class
@@ -333,7 +333,7 @@ class EasyRdf_Format
     {
         return $this->_parserClass;
     }
-    
+
     /** Create a new parser to parse this format
      *
      * @return object The new parser object
@@ -348,7 +348,7 @@ class EasyRdf_Format
         }
         return (new $parserClass());
     }
-    
+
     /** Set the serialiser to use for a format
      *
      * @param string $class  The name of the class
@@ -366,7 +366,7 @@ class EasyRdf_Format
             $this->_serialiserClass = null;
         }
     }
-    
+
     /** Get the name of the class to use to serialise the format
      *
      * @return string The name of the class
@@ -375,7 +375,7 @@ class EasyRdf_Format
     {
         return $this->_serialiserClass;
     }
-    
+
     /** Create a new serialiser to parse this format
      *
      * @return object The new serialiser object

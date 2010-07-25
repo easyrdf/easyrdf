@@ -1,17 +1,17 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf.php";
-    
+
     ## Uncomment these if you have rapper / Arc2 installed
     #require_once "EasyRdf/Serialiser/Rapper.php";
     #require_once "EasyRdf/Serialiser/Arc.php";
-  
+
     $graph = new EasyRdf_Graph();
     $me = $graph->resource('http://www.example.com/joe#me', 'foaf:Person');
     $me->set('foaf:name', 'Joseph Bloggs');
     $me->set('foaf:title', 'Mr');
-    $me->set('foaf:nick', 'Joe');    
-    $me->add('foaf:homepage', $graph->resource('http://example.com/joe/'));    
+    $me->set('foaf:nick', 'Joe');
+    $me->add('foaf:homepage', $graph->resource('http://example.com/joe/'));
 
     $format = preg_replace("/[^\w\-]+/", '', strtolower($_REQUEST['format']));
     if (!$format) $format = 'ntriples';

@@ -77,7 +77,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
             'rdfxml',
             'http://example.com/'
         );
-        
+
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
         $this->assertEquals('EasyRdf_Resource', get_class($joe));

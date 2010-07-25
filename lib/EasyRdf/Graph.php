@@ -236,7 +236,7 @@ class EasyRdf_Graph
                 $format = preg_replace('/;(.+)$/', '', $format);
             }
         }
-        
+
         # Guess the format if it is Unknown
         if (!$format)
             $format = EasyRdf_Format::guessFormat($data);
@@ -251,7 +251,7 @@ class EasyRdf_Graph
         $parser = $format->newParser();
         return $parser->parse($this, $data, $format, $uri);
     }
-    
+
     /** Get an associative array of all the resources stored in the graph
      *
      * @return array Array of EasyRdf_Resouces

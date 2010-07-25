@@ -87,7 +87,7 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
         }
         return null;
     }
-    
+
     /**
      * @ignore
      */
@@ -96,7 +96,7 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
         $property = EasyRdf_Namespace::shorten($property);
         if (!isset($property))
             return;
-        
+
         foreach ($objects as $object) {
             if ($property == 'rdf:type') {
                 # Type has already been set

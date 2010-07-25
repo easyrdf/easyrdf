@@ -1,15 +1,15 @@
 EasyRdf
 =======
-EasyRdf is a PHP library designed to make it easy to consume and produce RDF. It 
-was designed for use in mixed teams of experienced and inexperienced RDF 
-developers. It is written in Object Oriented PHP. 
+EasyRdf is a PHP library designed to make it easy to consume and produce RDF. It
+was designed for use in mixed teams of experienced and inexperienced RDF
+developers. It is written in Object Oriented PHP.
 
 During parsing EasyRdf builds up a graph of PHP objects that can then be walked
 around to get the data to be placed on the page.
 
 Data is typically loaded into a EasyRdf_Graph object from source RDF documents.
-The source document could either be an RDF file on the web or the output of a 
-Construct or Describe SPARQL query from a triplestore.  
+The source document could either be an RDF file on the web or the output of a
+Construct or Describe SPARQL query from a triplestore.
 
 
 Requirements
@@ -38,8 +38,8 @@ Features
   * Built-in: RDF/JSON, N-Triples
   * ARC2: RDF/JSON, RDF/XML, N-Triples, Turtle, POSHRDF
   * rapper: RDF/JSON, N-Triples, RDF/XML, Turtle, RSS, Atom, Dot, ...
-* Optional support for Zend_Http_Client 
-* No required external dependancies upon other libraries (PEAR, Zend, etc...) 
+* Optional support for Zend_Http_Client
+* No required external dependancies upon other libraries (PEAR, Zend, etc...)
 * Complies with Zend Framework coding style.
 * Type mapper - resources of type foaf:Person can be mapped into PHP object of class Foaf_Person
 * Comes with a number of examples

@@ -37,7 +37,7 @@
  */
 
 /**
- * Class to serialise an EasyRdf_Graph to RDF 
+ * Class to serialise an EasyRdf_Graph to RDF
  * using the 'rapper' command line tool.
  *
  * Note: the built-in N-Triples serialiser is used to pass data to Rapper.

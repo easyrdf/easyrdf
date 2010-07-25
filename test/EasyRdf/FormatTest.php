@@ -94,12 +94,12 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $accept = explode(',', EasyRdf_Format::getHttpAcceptHeader());
         $this->assertContains('application/json', $accept);
     }
-    
+
     public function testFormatExistsTrue()
     {
         assert(EasyRdf_Format::formatExists('my'));
     }
-    
+
     public function testFormatExistsFalse()
     {
         assert(!EasyRdf_Format::formatExists('testFormatExistsFalse'));
@@ -307,7 +307,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $this->_format->setParserClass($this);
     }
-    
+
     public function testRegisterParser()
     {
         EasyRdf_Format::registerParser('my', 'MockParserClass');
@@ -316,7 +316,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
             $this->_format->getParserClass()
         );
     }
-    
+
     public function testRegisterParserForUnknownFormat()
     {
         EasyRdf_Format::registerParser('testRegisterParser', 'MockParserClass');
@@ -381,7 +381,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->_format->setSerialiserClass(null);
         $serialiser = $this->_format->newSerialiser();
     }
-    
+
     public function testRegisterSerialiser()
     {
         EasyRdf_Format::registerSerialiser('my', 'MockSerialiserClass');
@@ -390,7 +390,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
             $this->_format->getSerialiserClass()
         );
     }
-    
+
     public function testRegisterSerialiserForUnknownFormat()
     {
         EasyRdf_Format::registerSerialiser(

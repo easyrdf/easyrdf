@@ -9,7 +9,7 @@
     <foaf:maker rdf:resource="http://www.example.com/joe#me" />
     <foaf:primaryTopic rdf:resource="http://www.example.com/joe#me" />
   </foaf:PersonalProfileDocument>
-  
+
   <foaf:Person rdf:about="http://www.example.com/joe#me">
     <foaf:title>Mr</foaf:title>
     <foaf:name xml:lang="en">Joe Bloggs</foaf:name>

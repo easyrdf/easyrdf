@@ -149,7 +149,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $literal = new EasyRdf_Literal('Rat');
         $this->assertStringEquals('Rat', $literal);
     }
-    
+
     public function testDumpValue()
     {
         $literal = new EasyRdf_Literal("hello & world");
@@ -162,7 +162,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
             $literal->dumpValue(true)
         );
     }
-    
+
     public function testDumpValueWithLanguage()
     {
         $literal = new EasyRdf_Literal("Nick", 'en');
@@ -175,7 +175,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
             $literal->dumpValue(true)
         );
     }
-    
+
     public function testDumpValueWithDatatype()
     {
         $literal = new EasyRdf_Literal(1, null, 'xsd:integer');

@@ -55,7 +55,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
     public function testParse()
     {
         $this->_parser->parse($this->_graph, $this->_data, 'ntriples', null);
-        
+
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
         $this->assertEquals('EasyRdf_Resource', get_class($joe));
@@ -65,7 +65,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->assertNotNull($name);
         $this->assertEquals('EasyRdf_Literal', get_class($name));
         $this->assertEquals('Joe Bloggs', $name->getValue());
-        
+
         # FIXME: implement this
         #$this->assertEquals('en', $name->getLang());
         #$this->assertEquals(null, $name->getDatatype());

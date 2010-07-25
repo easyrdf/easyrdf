@@ -59,12 +59,12 @@
     </coverage-report>
   </target>
  -->
- 
+
   <target name="coverage" depends="dir_setup">
     <mkdir dir="${reports.dir}/coverage" />
     <exec command="phpunit --coverage-html ${reports.dir}/coverage test" dir="${project.basedir}" passthru="true" />
   </target>
-  
+
   <target name="docs" description="Create API documentation">
     <phpdoc title="EasyRdf API Documentation"
       destdir="${docs.dir}"
@@ -83,7 +83,7 @@
   <target name="upload_docs" depends="docs">
     <exec command="scp -rpBC docs www.aelius.com:~njh/public_html/easyrdf/" dir="${project.basedir}" passthru="true" />
   </target>
- 
+
   <target name="cs">
     <phpcodesniffer standard="Zend" showWarnings="false" haltonerror="true">
       <fileset refid="source" />
@@ -98,7 +98,7 @@
       <fileset refid="examples" />
     </phplint>
   </target>
-  
+
   <target name="dist" depends="docs">
     <echo msg="Creating archive..." />
     <mkdir dir="${dist.dir}/easyrdf" />
@@ -122,17 +122,22 @@
     <mkdir dir="${reports.dir}/html" />
     <mkdir dir="${reports.dir}/coverage" />
   </target>
-  
+
   <target name="clean">
     <delete dir="${reports.dir}" includeemptydirs="true" verbose="true" />
     <delete dir="${docs.dir}" includeemptydirs="true" verbose="true" />
     <delete dir="${dist.dir}" includeemptydirs="true" verbose="true" />
   </target>
-  
+
   <target name="fixme" description="Search for code that needs fixing">
     <exec command="git grep -n -E 'FIXME|TODO' lib" dir="${project.basedir}" passthru="true" />
   </target>
-  
-  <target name="default" description="Default target" depends="lint,test,cs" />
+
+  <target name="whitespace" description="Search for trailing whitespace">
+    <echo msg="Checking for trailing whitespace..." />
+    <exec command="git grep -n -E '[ 	]+$'" dir="${project.basedir}" passthru="true" />
+  </target>
+
+  <target name="default" description="Default target" depends="lint,test,cs,whitespace" />
 
 </project>
