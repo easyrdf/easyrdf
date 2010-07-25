@@ -25,7 +25,7 @@ The latest version of EasyRdf can be downloaded from GitHub.
 Links
 -----
 
-* [EasyRdf Homepage](http://www.aelius.com/njh/)
+* [EasyRdf Homepage](http://www.aelius.com/njh/easyrdf/)
 * [API documentation](http://www.aelius.com/njh/easyrdf/docs/)
 * [Change Log](http://github.com/njh/easyrdf/blob/master/CHANGELOG.md)
 * Source Code: <http://github.com/njh/easyrdf>
