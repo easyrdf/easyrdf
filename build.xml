@@ -136,6 +136,7 @@
     <delete dir="${reports.dir}" includeemptydirs="true" verbose="true" />
     <delete dir="${docs.dir}" includeemptydirs="true" verbose="true" />
     <delete dir="${dist.dir}" includeemptydirs="true" verbose="true" />
+    <delete file="index.html" verbose="true" />
   </target>
 
   <target name="fixme" description="Search for code that needs fixing">
