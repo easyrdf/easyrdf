@@ -86,14 +86,7 @@ class EasyRdf_Literal
         // All datatypes must be qnames
         if ($this->_datatype and
             !preg_match("/^(\w+):(\w+)$/", $this->_datatype)) {
-            $datatype = EasyRdf_Namespace::shorten($this->_datatype);
-            if ($datatype) {
-                $this->_datatype = $datatype;
-            } else {
-                throw new EasyRdf_Exception(
-                    "Failed to shorten datatype: ".$this->_datatype
-                );
-            }
+            $this->_datatype = EasyRdf_Namespace::shorten($this->_datatype);
         }
     }
 

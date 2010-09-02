@@ -76,10 +76,12 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testConstructWithUnshortenableUriDatatype()
     {
-        $this->setExpectedException('EasyRdf_Exception');
         $literal = new EasyRdf_Literal(
             1, null, 'http://example.com/integer'
         );
+        $this->assertEquals('1', $literal->getValue());
+        $this->assertEquals(null, $literal->getLang());
+        $this->assertEquals(null, $literal->getDatatype());
     }
 
     public function testConstructWithAssociativeArray()
