@@ -47,12 +47,14 @@ class EasyRdf_Namespace
 {
     /** Namespace registery */
     private static $_namespaces = array(
+      'bibo' => 'http://purl.org/ontology/bibo/',
       'cc' => 'http://creativecommons.org/ns#',
       'dc' => 'http://purl.org/dc/terms/',
       'dc11' => 'http://purl.org/dc/elements/1.1/',
       'doap' => 'http://usefulinc.com/ns/doap#',
       'exif' => 'http://www.w3.org/2003/12/exif/ns#',
       'foaf' => 'http://xmlns.com/foaf/0.1/',
+      'geo' => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
       'http' => 'http://www.w3.org/2006/http#',
       'owl' => 'http://www.w3.org/2002/07/owl#',
       'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
