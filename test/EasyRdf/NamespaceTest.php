@@ -215,7 +215,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     public function testShortenUnknownUrl()
     {
         $this->assertEquals(
-            null,
+            'http://www.aelius.com/njh/',
             EasyRdf_Namespace::shorten('http://www.aelius.com/njh/')
         );
     }
@@ -280,17 +280,27 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         );
     }
 
-    public function testExpandMissingUnderscore()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Namespace::expand('unknown');
-    }
-
-    public function testExpandUnknown()
+    public function testExpandMissingColon()
     {
         $this->assertEquals(
-            null,
-            EasyRdf_Namespace::expand('unknown:unknown')
+            'unknown',
+            EasyRdf_Namespace::expand('unknown')
+        );
+    }
+
+    public function testExpandExpanded()
+    {
+        $this->assertEquals(
+            'http://www.aelius.com/njh/',
+            EasyRdf_Namespace::expand('http://www.aelius.com/njh/')
+        );
+    }
+
+    public function testExpandURN()
+    {
+        $this->assertEquals(
+            'urn:isbn:0451450523',
+            EasyRdf_Namespace::expand('urn:isbn:0451450523')
         );
     }
 }

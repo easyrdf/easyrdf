@@ -92,6 +92,12 @@ class EasyRdf_Namespace
             );
         }
 
+        if (preg_match('/\W/', $prefix)) {
+            throw new InvalidArgumentException(
+                "\$prefix should only contain alpha-numeric characters"
+            );
+        }
+
         $prefix = strtolower($prefix);
         if (array_key_exists($prefix, self::$_namespaces)) {
             return self::$_namespaces[$prefix];
@@ -111,6 +117,12 @@ class EasyRdf_Namespace
         if (!is_string($prefix) or $prefix == null or $prefix == '') {
             throw new InvalidArgumentException(
                 "\$prefix should be a string and cannot be null or empty"
+            );
+        }
+
+        if (preg_match('/\W/', $prefix)) {
+            throw new InvalidArgumentException(
+                "\$prefix should only contain alpha-numeric characters"
             );
         }
 
@@ -158,10 +170,10 @@ class EasyRdf_Namespace
         }
 
         foreach (self::$_namespaces as $prefix => $long) {
-            if (strpos($uri, $long) === 0) {
+            if (substr($uri, 0, strlen($long)) == $long)
                 return $prefix;
-            }
         }
+
         return null;
     }
 
@@ -192,7 +204,8 @@ class EasyRdf_Namespace
                 return $prefix . ':' . substr($uri, strlen($long));
             }
         }
-        return null;
+
+        return $uri;
     }
 
     /**
@@ -203,17 +216,12 @@ class EasyRdf_Namespace
       */
     public static function expand($shortUri)
     {
-        if (preg_match("/^(\w+?):(.+)$/", $shortUri, $matches)) {
+        if (preg_match("/^(\w+?):([\w\-]+)$/", $shortUri, $matches)) {
             $long = self::get($matches[1]);
             if ($long) {
                 return $long . $matches[2];
-            } else {
-                return null;
             }
-        } else {
-            throw new InvalidArgumentException(
-                "\$shortUri should be in the form prefix:suffix"
-            );
         }
+        return $shortUri;
     }
 }
