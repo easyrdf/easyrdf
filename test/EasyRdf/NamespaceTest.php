@@ -315,4 +315,22 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
             EasyRdf_Namespace::expand('urn:isbn:0451450523')
         );
     }
+
+    public function testExpandNull()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Namespace::expand(null);
+    }
+
+    public function testExpandEmpty()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Namespace::expand('');
+    }
+
+    public function testExpandNonString()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Namespace::expand($this);
+    }
 }
