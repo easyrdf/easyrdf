@@ -93,7 +93,9 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
             " --input " . escapeshellarg($format).
             " --output json ".
             " --ignore-errors ".
-            " - " . escapeshellarg($baseUri),
+            " --input-uri " . escapeshellarg($baseUri).
+            " --output-uri -".
+            " - ",
             $descriptorspec, $pipes, '/tmp', null
         );
         if (is_resource($process)) {
