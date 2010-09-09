@@ -49,8 +49,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->_resource = new EasyRdf_Resource('http://example.com/#me');
         $this->_resource->set('rdf:type', 'foaf:Person');
-        $this->_resource->add('test:prop', 'Test A');
-        $this->_resource->add('test:prop', new EasyRdf_Literal('Test B', 'en'));
+        $this->_resource->add('rdf:test', 'Test A');
+        $this->_resource->add('rdf:test', new EasyRdf_Literal('Test B', 'en'));
     }
 
     public function testConstructNull()
@@ -83,7 +83,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->assertStringEquals(
             'Test A',
-            $this->_resource->get('test:prop')
+            $this->_resource->get('rdf:test')
         );
     }
 
@@ -91,7 +91,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->assertStringEquals(
             'Test B',
-            $this->_resource->get('test:prop', 'en')
+            $this->_resource->get('rdf:test', 'en')
         );
     }
 
@@ -120,7 +120,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testAll()
     {
-        $all = $this->_resource->all('test:prop');
+        $all = $this->_resource->all('rdf:test');
         $this->assertEquals(2, count($all));
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
@@ -128,7 +128,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testAllWithLang()
     {
-        $all = $this->_resource->all('test:prop', 'en');
+        $all = $this->_resource->all('rdf:test', 'en');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('Test B', $all[0]);
     }
@@ -161,8 +161,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testSet()
     {
-        $this->_resource->set('test:prop', 'Test C');
-        $all = $this->_resource->all('test:prop');
+        $this->_resource->set('rdf:test', 'Test C');
+        $all = $this->_resource->all('rdf:test');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('Test C', $all[0]);
     }
@@ -187,17 +187,17 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testSetNull()
     {
-        $this->_resource->set('test:prop', null);
+        $this->_resource->set('rdf:test', null);
         $this->assertEquals(
             array(),
-            $this->_resource->all('test:prop')
+            $this->_resource->all('rdf:test')
         );
     }
 
     public function testAdd()
     {
-        $this->_resource->add('test:prop', 'Test C');
-        $all = $this->_resource->all('test:prop');
+        $this->_resource->add('rdf:test', 'Test C');
+        $all = $this->_resource->all('rdf:test');
         $this->assertEquals(3, count($all));
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
@@ -206,8 +206,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testAddMultipleValues()
     {
-        $this->_resource->add('test:prop', array('Test C', 'Test D'));
-        $all = $this->_resource->all('test:prop');
+        $this->_resource->add('rdf:test', array('Test C', 'Test D'));
+        $all = $this->_resource->all('rdf:test');
         $this->assertEquals(4, count($all));
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
@@ -217,21 +217,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testAddMultipleProperties()
     {
-        $this->_resource->add(array('test:prop1', 'test:prop2'), 'Test');
+        $this->_resource->add(array('rdf:test1', 'rdf:test2'), 'Test');
 
-        $all = $this->_resource->all('test:prop1');
+        $all = $this->_resource->all('rdf:test1');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('Test', $all[0]);
 
-        $all = $this->_resource->all('test:prop2');
+        $all = $this->_resource->all('rdf:test2');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('Test', $all[0]);
     }
 
     public function testAddAssociateProperties()
     {
-        $this->_resource->add(array('test:prop' => 'Test C'));
-        $all = $this->_resource->all('test:prop');
+        $this->_resource->add(array('rdf:test' => 'Test C'));
+        $all = $this->_resource->all('rdf:test');
         $this->assertEquals(3, count($all));
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
@@ -240,8 +240,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testAddNull()
     {
-        $this->_resource->add('test:prop', null);
-        $all = $this->_resource->all('test:prop');
+        $this->_resource->add('rdf:test', null);
+        $all = $this->_resource->all('rdf:test');
         $this->assertEquals(2, count($all));
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
@@ -267,9 +267,9 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testDelete()
     {
-        $this->assertStringEquals('Test A', $this->_resource->get('test:prop'));
-        $this->_resource->delete('test:prop');
-        $this->assertEquals(array(), $this->_resource->all('test:prop'));
+        $this->assertStringEquals('Test A', $this->_resource->get('rdf:test'));
+        $this->_resource->delete('rdf:test');
+        $this->assertEquals(array(), $this->_resource->all('rdf:test'));
     }
 
     public function testDeleteNullKey()
@@ -294,7 +294,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->assertEquals(
             'Test A Test B',
-            $this->_resource->join('test:prop')
+            $this->_resource->join('rdf:test')
         );
     }
 
@@ -302,7 +302,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->assertEquals(
             'Test B',
-            $this->_resource->join('test:prop', ' ', 'en')
+            $this->_resource->join('rdf:test', ' ', 'en')
         );
     }
 
@@ -315,7 +315,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->assertEquals(
             'Test A:Test B',
-            $this->_resource->join('test:prop', ':')
+            $this->_resource->join('rdf:test', ':')
         );
     }
 
@@ -362,7 +362,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testProperties()
     {
         $this->assertEquals(
-            array('rdf:type', 'test:prop'),
+            array('rdf:type', 'rdf:test'),
             $this->_resource->properties()
         );
     }
@@ -370,21 +370,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testMatches()
     {
         $this->assertTrue(
-            $this->_resource->matches('test:prop', 'Test A')
+            $this->_resource->matches('rdf:test', 'Test A')
         );
     }
 
     public function testNotMatches()
     {
         $this->assertFalse(
-            $this->_resource->matches('test:prop', 'Test C')
+            $this->_resource->matches('rdf:test', 'Test C')
         );
     }
 
     public function testHas()
     {
         $this->assertTrue(
-            $this->_resource->has('test:prop')
+            $this->_resource->has('rdf:test')
         );
     }
 
@@ -424,10 +424,11 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
         $this->assertEquals('foaf:name', $foafName->shorten());
     }
+
     public function testShortenUnknown()
     {
         $unknown = new EasyRdf_Resource('http://example.com/foo');
-        $this->assertNull($unknown->shorten());
+        $this->assertEquals('http://example.com/foo', $unknown->shorten());
     }
 
     public function testLabelNoRdfsLabel()
@@ -488,7 +489,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             '-> rdf:type -> "foaf:Person"', $text
         );
         $this->assertContains(
-            '-> test:prop -> "Test A", "Test B"@en', $text
+            '-> rdf:test -> "Test A", "Test B"@en', $text
         );
 
         $html = $this->_resource->dump(true);
@@ -506,7 +507,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
 
         $this->assertContains(
-            "<span style='text-decoration:none;color:green'>test:prop</span>",
+            "<span style='text-decoration:none;color:green'>rdf:test</span>",
             $html
         );
         $this->assertContains(
@@ -526,7 +527,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testMagicGet()
     {
-        $this->assertStringEquals('Test A', $this->_resource->getTest_prop());
+        $this->assertStringEquals('Test A', $this->_resource->getRdf_test());
     }
 
     public function testMagicGetNonExistantProperty()
@@ -536,7 +537,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testMagicAll()
     {
-        $all = $this->_resource->allTest_prop();
+        $all = $this->_resource->allRdf_test();
         $this->assertEquals(2, count($all));
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
