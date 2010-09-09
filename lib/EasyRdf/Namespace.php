@@ -203,7 +203,7 @@ class EasyRdf_Namespace
         }
 
         foreach (self::$_namespaces as $prefix => $long) {
-            if (strpos($uri, $long) === 0) {
+            if (substr($uri, 0, strlen($long)) == $long) {
                 return $prefix . ':' . substr($uri, strlen($long));
             }
         }
