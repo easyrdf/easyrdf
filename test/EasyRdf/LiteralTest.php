@@ -81,7 +81,10 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         );
         $this->assertEquals('1', $literal->getValue());
         $this->assertEquals(null, $literal->getLang());
-        $this->assertEquals(null, $literal->getDatatype());
+        $this->assertEquals(
+            'http://example.com/integer',
+            $literal->getDatatype()
+        );
     }
 
     public function testConstructWithAssociativeArray()
@@ -144,6 +147,15 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals(false, $literal->getValue());
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
+    }
+
+    public function testGetDatatypeUri()
+    {
+        $literal = new EasyRdf_Literal(1);
+        $this->assertEquals(
+            'http://www.w3.org/2001/XMLSchema#integer',
+            $literal->getDatatypeUri()
+        );
     }
 
     public function testToString()

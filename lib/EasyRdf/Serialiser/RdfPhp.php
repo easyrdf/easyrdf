@@ -75,7 +75,7 @@ class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
 
         $rdfphp = array();
         foreach ($graph->resources() as $resource) {
-            $properties = $resource->properties();
+            $properties = $resource->propertyUris();
             if (count($properties) == 0) continue;
 
             $subj = $resource->getUri();
@@ -84,44 +84,41 @@ class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
             }
 
             foreach ($properties as $property) {
-                $prop = EasyRdf_Namespace::expand($property);
-                if ($prop) {
-                    if (!isset($rdfphp[$subj][$prop])) {
-                        $rdfphp[$subj][$prop] = array();
+                if (!isset($rdfphp[$subj][$property])) {
+                    $rdfphp[$subj][$property] = array();
+                }
+                $objects = $resource->all($property);
+                foreach ($objects as $obj) {
+                    # FIXME: remove this when types are stored as Resources
+                    if ($property == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type') {
+                        $uri = EasyRdf_Namespace::expand("$obj");
+                        $obj = new EasyRdf_Resource($uri);
                     }
-                    $objects = $resource->all($property);
-                    foreach ($objects as $obj) {
-                        # FIXME: remove this when types are stored as Resources
-                        if ($property == 'rdf:type') {
-                            $uri = EasyRdf_Namespace::expand($obj);
-                            $obj = new EasyRdf_Resource($uri);
-                        }
 
-                        if (is_object($obj) and
-                           ($obj instanceof EasyRdf_Resource)) {
-                            if ($obj->isBNode()) {
-                                $object = array('type' => 'bnode',
-                                                'value' => $obj->getUri());
-                            } else {
-                                $object = array('type' => 'uri',
-                                                'value' => $obj->getUri());
-                            }
-                        } else if (is_object($obj) and
-                           ($obj instanceof EasyRdf_Literal)) {
-                            $object = array('type' => 'literal',
-                                            'value' => $obj->getValue());
-                            if ($obj->getLang())
-                                $object['lang'] = $obj->getLang();
-                            if ($obj->getDatatype())
-                                $object['datatype'] = $obj->getDatatype();
+                    if (is_object($obj) and
+                       ($obj instanceof EasyRdf_Resource)) {
+                        if ($obj->isBNode()) {
+                            $object = array('type' => 'bnode',
+                                            'value' => $obj->getUri());
                         } else {
-                            throw new EasyRdf_Exception(
-                                "Unsupported to serialise: ".gettype($obj)
-                            );
+                            $object = array('type' => 'uri',
+                                            'value' => $obj->getUri());
                         }
-
-                        array_push($rdfphp[$subj][$prop], $object);
+                    } else if (is_object($obj) and
+                       ($obj instanceof EasyRdf_Literal)) {
+                        $object = array('type' => 'literal',
+                                        'value' => $obj->getValue());
+                        if ($obj->getLang())
+                            $object['lang'] = $obj->getLang();
+                        if ($obj->getDatatype())
+                            $object['datatype'] = $obj->getDatatype();
+                    } else {
+                        throw new EasyRdf_Exception(
+                            "Unsupported to serialise: ".gettype($obj)
+                        );
                     }
+
+                    array_push($rdfphp[$subj][$property], $object);
                 }
             }
         }

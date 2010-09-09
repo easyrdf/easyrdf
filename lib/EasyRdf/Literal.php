@@ -83,10 +83,9 @@ class EasyRdf_Literal
             }
         }
 
-        // All datatypes must be qnames
-        if ($this->_datatype and
-            !preg_match("/^(\w+):(\w+)$/", $this->_datatype)) {
-            $this->_datatype = EasyRdf_Namespace::shorten($this->_datatype);
+        // Expand shortened URIs (qnames)
+        if ($this->_datatype) {
+            $this->_datatype = EasyRdf_Namespace::expand($this->_datatype);
         }
     }
 
@@ -99,13 +98,26 @@ class EasyRdf_Literal
         return $this->_value;
     }
 
-    /** Returns the datatype of the literal.
+    /** Returns the full datatype URI of the literal.
      *
-     * @return string  Datatype of this literal.
+     * @return string  Datatype URI of this literal.
+     */
+    public function getDatatypeUri()
+    {
+        return $this->_datatype;
+    }
+
+    /** Returns the shortened datatype URI of the literal.
+     *
+     * @return string  Datatype of this literal (e.g. xsd:integer).
      */
     public function getDatatype()
     {
-        return $this->_datatype;
+        if ($this->_datatype) {
+            return EasyRdf_Namespace::shorten($this->_datatype);
+        } else {
+            return null;
+        }
     }
 
     /** Returns the language of the literal.
@@ -137,7 +149,8 @@ class EasyRdf_Literal
             $text .= '@' . $this->_lang;
         }
         if ($this->_datatype) {
-            $text .= "^^" . $this->_datatype;
+            $datatype = EasyRdf_Namespace::shorten($this->_datatype);
+            $text .= "^^$datatype";
         }
 
         if ($html) {

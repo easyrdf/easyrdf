@@ -93,12 +93,8 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
      */
     protected function addProperty($graph, $data, $res, $property, $objects)
     {
-        $property = EasyRdf_Namespace::shorten($property);
-        if (!isset($property))
-            return;
-
         foreach ($objects as $object) {
-            if ($property == 'rdf:type') {
+            if ($property == self::RDF_TYPE_URI) {
                 # Type has already been set
             } else if ($object['type'] == 'literal') {
                 $res->add($property, new EasyRdf_Literal($object));

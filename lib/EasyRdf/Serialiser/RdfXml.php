@@ -47,6 +47,9 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
 {
     private $_prefixes = array();
 
+    /** A constant for the RDF Type property URI */
+    const RDF_XML_LITERAL = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral';
+
     /**
      * @ignore
      */
@@ -89,14 +92,14 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             }
         } else if (is_object($obj) and $obj instanceof EasyRdf_Literal) {
             $atrributes = "";
-            if ($obj->getDatatype()) {
-                if ($obj->getDatatype() == 'rdf:XMLLiteral') {
+            $datatype = $obj->getDatatypeUri();
+            if ($datatype) {
+                if ($datatype == self::RDF_XML_LITERAL) {
                     $atrributes .= " rdf:parseType=\"Literal\"";
                     $value = $obj->getValue();
                 } else {
-                    $datatype = EasyRdf_Namespace::expand($obj->getDatatype());
-                    $atrributes .= ' rdf:datatype="'.
-                                   htmlspecialchars($datatype).'"';
+                    $datatype = htmlspecialchars($datatype);
+                    $atrributes .= " rdf:datatype=\"$datatype\"";
                 }
             } elseif ($obj->getLang()) {
                 $atrributes .= ' xml:lang="'.
@@ -149,7 +152,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                 foreach ($objects as $object) {
                     # FIXME: remove this when types are stored as Resources
                     if ($property == 'rdf:type') {
-                        $uri = EasyRdf_Namespace::expand($object);
+                        $uri = EasyRdf_Namespace::expand("$object");
                         $object = new EasyRdf_Resource($uri);
                     }
                     $xml .= $this->rdfxmlObject($property, $object);

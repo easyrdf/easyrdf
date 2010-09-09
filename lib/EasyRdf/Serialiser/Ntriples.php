@@ -59,7 +59,7 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
             }
         } else {
             # FIXME: remove this when types are stored as Resources
-            $uri = EasyRdf_Namespace::expand($res);
+            $uri = EasyRdf_Namespace::expand("$res");
             if ($uri) {
                 return "<$uri>";
             } else {
@@ -87,8 +87,8 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
 
             if ($obj->getLang()) {
                 return '"' . $value . '"' . '@' . $obj->getLang();
-            } else if ($obj->getDatatype()) {
-                $datatype = EasyRdf_Namespace::expand($obj->getDatatype());
+            } else if ($obj->getDatatypeUri()) {
+                $datatype = $obj->getDatatypeUri();
                 return '"' . $value . '"' . "^^<$datatype>";
             } else {
                 return '"' . $value . '"';
@@ -119,14 +119,14 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
 
         $nt = '';
         foreach ($graph->resources() as $resource) {
-            foreach ($resource->properties() as $property) {
+            foreach ($resource->propertyUris() as $property) {
                 $objects = $resource->all($property);
                 foreach ($objects as $object) {
                     $nt .= $this->ntriplesResource($resource)." ";
                     $nt .= $this->ntriplesResource($property)." ";
 
                     # FIXME: remove this when types are stored as Resources
-                    if ($property == 'rdf:type') {
+                    if ($property == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type') {
                         $nt .= $this->ntriplesResource($object)." .\n";
                     } else {
                         $nt .= $this->ntriplesObject($object)." .\n";

@@ -68,9 +68,8 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         if ($resource->isBNode()) {
             return $uri;
         } else {
-            $short = EasyRdf_Namespace::shorten($uri);
-            if ($short) {
-                return $short;
+            if (EasyRdf_Namespace::prefixOfUri($uri)) {
+                return EasyRdf_Namespace::shorten($uri);
             } else {
                 $uri = str_replace('>', '\\>', $uri);
                 return "<$uri>";
@@ -156,7 +155,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 
         $turtle = '';
         foreach ($graph->resources() as $subject) {
-            $properties = $subject->properties();
+            $properties = $subject->propertyUris();
             if (count($properties) == 0)
                 continue;
 
@@ -168,8 +167,13 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 
             $pCount = 0;
             foreach ($properties as $property) {
-                $this->addPrefix($property);
-                $pStr = $property == 'rdf:type' ? 'a' : $property;
+                $short = EasyRdf_Namespace::shorten($property);
+                if ($short) {
+                    $this->addPrefix($short);
+                    $pStr = $short == 'rdf:type' ? 'a' : $short;
+                } else {
+                    $pStr = '<'.str_replace('>', '\\>', $property).'>';
+                }
 
                 if ($pCount) {
                     $turtle .= " ;\n   ";
@@ -182,7 +186,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                 foreach ($objects as $object) {
                     # FIXME: remove this when types are stored as Resources
                     if ($pStr == 'a') {
-                        $uri = EasyRdf_Namespace::expand($object);
+                        $uri = EasyRdf_Namespace::expand("$object");
                         $object = new EasyRdf_Resource($uri);
                     }
                     if ($oCount)

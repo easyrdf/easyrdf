@@ -114,6 +114,10 @@ class EasyRdf_Resource
                     $literals[] = new EasyRdf_Literal($value);
                 }
             }
+
+            $property = EasyRdf_Namespace::expand($property);
+            # FIXME: check for error
+
             return $this->_properties[$property] = $literals;
         }
     }
@@ -130,6 +134,9 @@ class EasyRdf_Resource
                 "\$property should be a string and cannot be null or empty"
             );
         }
+
+        $property = EasyRdf_Namespace::expand($property);
+        # FIXME: check for error
 
         if (isset($this->_properties[$property])) {
             unset($this->_properties[$property]);
@@ -186,8 +193,8 @@ class EasyRdf_Resource
         }
 
         // Get the existing values for the property
-        if (array_key_exists($property, $this->_properties)) {
-            $values = $this->_properties[$property];
+        if ($this->has($property)) {
+            $values = $this->all($property);
         } else {
             $values = array();
         }
@@ -226,6 +233,11 @@ class EasyRdf_Resource
             );
         }
 
+        $property = EasyRdf_Namespace::expand($property);
+        if ($property == null)
+            return null;
+        # FIXME: check for error
+
         if (isset($this->_properties[$property])) {
             # FIXME: sort values so that we are likely to return the same one?
             if ($lang) {
@@ -257,6 +269,9 @@ class EasyRdf_Resource
                 "\$property should be a string and cannot be null or empty"
             );
         }
+
+        $property = EasyRdf_Namespace::expand($property);
+        # FIXME: check for error
 
         if (isset($this->_properties[$property])) {
             if ($lang) {
@@ -295,15 +310,30 @@ class EasyRdf_Resource
         return join($glue, $this->all($property, $lang));
     }
 
-    /** Get a list of all the property names for a resource.
+    /** Get a list of the full URIs for the properties of this resource.
      *
      * This method will return an empty array if the resource has no properties.
      *
-     * @return array            Concatenation of all the values.
+     * @return array            Array of full URIs
+     */
+    public function propertyUris()
+    {
+        return array_keys($this->_properties);
+    }
+
+    /** Get a list of all the shortened property names (qnames) for a resource.
+     *
+     * This method will return an empty array if the resource has no properties.
+     *
+     * @return array            Array of shortened URIs
      */
     public function properties()
     {
-        return array_keys($this->_properties);
+        $properties = array();
+        foreach ($this->_properties as $property => $value) {
+            $properties[] = EasyRdf_Namespace::shorten($property);
+        }
+        return $properties;
     }
 
     /** Check to see if a property exists for this resource.
@@ -315,6 +345,9 @@ class EasyRdf_Resource
      */
     public function has($property)
     {
+        $property = EasyRdf_Namespace::expand($property);
+        # FIXME: check for error
+
         if (array_key_exists($property, $this->_properties)) {
             return true;
         } else {
@@ -403,7 +436,7 @@ class EasyRdf_Resource
 
     /** Get a shortened version of the resources URI.
      *
-     * This method will return null the resource isn't part of any
+     * This method will return the full URI if the resource isn't part of any
      * registered namespace.
      *
      * @return string The shortened URI of this resource (e.g. foaf:name)
@@ -434,7 +467,11 @@ class EasyRdf_Resource
         } else if ($this->get('dc11:title', $lang)) {
             return $this->get('dc11:title', $lang);
         } else {
-            return $this->shorten();
+            if (EasyRdf_Namespace::prefixOfUri($this->_uri)) {
+                return $this->shorten();
+            } else {
+                return null;
+            }
         }
     }
 
@@ -454,6 +491,7 @@ class EasyRdf_Resource
                 $olist []= $value->dumpValue($html);
             }
 
+            $prop = EasyRdf_Namespace::shorten($prop);
             if ($html) {
                 $plist []= "<span style='font-size:130%'>&rarr;</span> ".
                            "<span style='text-decoration:none;color:green'>".
