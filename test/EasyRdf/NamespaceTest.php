@@ -118,6 +118,12 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         EasyRdf_Namespace::get(array());
     }
 
+    public function testGetNonAlphanumeric()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Namespace::get('/K.O/');
+    }
+
     public function testAddNamespace()
     {
         EasyRdf_Namespace::set('po', 'http://purl.org/ontology/po/');
@@ -152,6 +158,12 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     {
         $this->setExpectedException('InvalidArgumentException');
         EasyRdf_Namespace::set(array(), 'http://purl.org/ontology/ko/');
+    }
+
+    public function testAddNamespaceShortNonAlphanumeric()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        EasyRdf_Namespace::set('/K.O/', 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceLongNull()

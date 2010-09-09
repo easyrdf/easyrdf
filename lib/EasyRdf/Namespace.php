@@ -180,6 +180,9 @@ class EasyRdf_Namespace
     /**
       * Shorten a URI by substituting in the namespace prefix.
       *
+      * If it isn't possible to shorten the URI, then the original URI will
+      * be returned.
+      *
       * @param string $uri The full URI (eg 'http://xmlns.com/foaf/0.1/name')
       * @return string The shortened URI (eg 'foaf:name')
       */
@@ -209,7 +212,10 @@ class EasyRdf_Namespace
     }
 
     /**
-      * Expand a shortened URI back into a full URI.
+      * Expand a shortened URI (qname) back into a full URI.
+      *
+      * If it isn't possible to expand the qname, for example if the namespace
+      * isn't registered, then the original string will be returned.
       *
       * @param string $shortUri The short URI (eg 'foaf:name')
       * @return string The full URI (eg 'http://xmlns.com/foaf/0.1/name')
