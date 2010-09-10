@@ -11,19 +11,22 @@ $parsers = array(
     'Json',
     'Ntriples',
     'Rapper',
-#    'Redland',
+    'Redland',
 );
 
 $documents = array(
     'foaf.rdf' => 'rdfxml',
     'foaf.ttl' => 'turtle',
     'foaf.nt' => 'ntriples',
+    'foaf.json' => 'json',
     'dundee.rdf' => 'rdfxml',
     'dundee.ttl' => 'turtle',
     'dundee.nt' => 'ntriples',
+    'dundee.json' => 'json',
     'london.rdf' => 'rdfxml',
     'london.ttl' => 'turtle',
     'london.nt' => 'ntriples',
+    'london.json' => 'json',
 );
 
 foreach($documents as $filename => $type) {
