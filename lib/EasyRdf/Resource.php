@@ -116,8 +116,6 @@ class EasyRdf_Resource
             }
 
             $property = EasyRdf_Namespace::expand($property);
-            # FIXME: check for error
-
             return $this->_properties[$property] = $literals;
         }
     }
@@ -136,8 +134,6 @@ class EasyRdf_Resource
         }
 
         $property = EasyRdf_Namespace::expand($property);
-        # FIXME: check for error
-
         if (isset($this->_properties[$property])) {
             unset($this->_properties[$property]);
         }
@@ -234,10 +230,6 @@ class EasyRdf_Resource
         }
 
         $property = EasyRdf_Namespace::expand($property);
-        if ($property == null)
-            return null;
-        # FIXME: check for error
-
         if (isset($this->_properties[$property])) {
             # FIXME: sort values so that we are likely to return the same one?
             if ($lang) {
@@ -271,8 +263,6 @@ class EasyRdf_Resource
         }
 
         $property = EasyRdf_Namespace::expand($property);
-        # FIXME: check for error
-
         if (isset($this->_properties[$property])) {
             if ($lang) {
                 $values = array();
@@ -346,8 +336,6 @@ class EasyRdf_Resource
     public function has($property)
     {
         $property = EasyRdf_Namespace::expand($property);
-        # FIXME: check for error
-
         if (array_key_exists($property, $this->_properties)) {
             return true;
         } else {
