@@ -4,45 +4,52 @@ set_include_path(
     get_include_path() . PATH_SEPARATOR .
     dirname(__FILE__) . '/../lib/'
 );
-require_once "EasyRdf/Graph.php";
+require_once "EasyRdf.php";
 
 $parsers = array(
     'Arc',
-    'Builtin',
+    'Json',
+    'Ntriples',
     'Rapper',
-    'Redland',
+#    'Redland',
 );
 
 $documents = array(
     'foaf.rdf' => 'rdfxml',
-    'foaf.json' => 'json',
+    'foaf.ttl' => 'turtle',
     'foaf.nt' => 'ntriples',
     'dundee.rdf' => 'rdfxml',
-    'dundee.json' => 'json',
+    'dundee.ttl' => 'turtle',
     'dundee.nt' => 'ntriples',
     'london.rdf' => 'rdfxml',
-    'london.json' => 'json',
+    'london.ttl' => 'turtle',
     'london.nt' => 'ntriples',
 );
 
 foreach($documents as $filename => $type) {
 
-    $filepath = dirname(__FILE__) . "/fixtures/$filename";
-    $url = "http://www.example.com/$filename";
-    $rdf = file_get_contents($filepath);
     print "Input file: $filename\n";
-    print "File size: ".filesize($filepath)." bytes\n";
+    $filepath = dirname(__FILE__) . "/fixtures/$filename";
+    if (!file_exists($filepath)) {
+        print "Error: File does not exist.\n";
+        continue;
+    }
+    
+    $url = "http://www.example.com/$filename";
+    $data = file_get_contents($filepath);
+    print "File size: ".strlen($data)." bytes\n";
 
-    foreach($parsers as $parser) {
-        $class = "EasyRdf_Parser_$parser";
+    foreach($parsers as $parser_name) {
+        $class = "EasyRdf_Parser_$parser_name";
         print "  Parsing using: $class\n";
 
         try {
-            require_once "EasyRdf/Parser/$parser.php";
-            EasyRdf_Graph::setRdfParser(new $class());
+            require_once "EasyRdf/Parser/$parser_name.php";
+            $parser = new $class();
+            $graph = new EasyRdf_Graph();
 
             $start = microtime(true);
-            $graph = new EasyRdf_Graph($url, $rdf, $type);
+            $parser->parse($graph, $data, $type, $url);
             $duration = microtime(true) - $start;
             print "  Parse time: $duration seconds\n";
             print "  Resource count: ".count($graph->resources())."\n";
