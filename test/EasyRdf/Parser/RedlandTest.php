@@ -60,7 +60,7 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
             $this->_graph,
             $this->_data,
             'rdfxml',
-            'http://example.com/'
+            'http://www.example.com/joe/foaf.rdf'
         );
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
@@ -71,8 +71,12 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
         $this->assertEquals('EasyRdf_Literal', get_class($name));
-        $this->assertEquals('Joe Bloggs', $name->getValue());
+        $this->assertStringEquals('Joe Bloggs', $name);
         $this->assertEquals('en', $name->getLang());
         $this->assertEquals(null, $name->getDatatype());
+
+        $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
+        $this->assertNotNull($foaf);
+        $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
 }
