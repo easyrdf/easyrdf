@@ -101,22 +101,9 @@ class EasyRdf_Resource
         if ($values == null or (is_array($values) and count($values)==0)) {
             return $this->delete($property);
         } else {
-            if (!is_array($values)) {
-                $values = array($values);
-            }
-
-            // Convert the values to literals, if needed
-            $literals = array();
-            foreach ($values as $value) {
-                if (is_object($value)) {
-                    $literals[] = $value;
-                } else {
-                    $literals[] = new EasyRdf_Literal($value);
-                }
-            }
-
+            $objects = $this->convertArgumentsToObjects($values);
             $property = EasyRdf_Namespace::expand($property);
-            return $this->_properties[$property] = $literals;
+            return $this->_properties[$property] = $objects;
         }
     }
 
@@ -200,27 +187,21 @@ class EasyRdf_Resource
              return null;
         }
 
-        // Get the existing values for the property
-        if ($this->has($property)) {
-            $values = $this->all($property);
-        } else {
-            $values = array();
+        // Create the property if it doesn't already exist
+        $property = EasyRdf_Namespace::expand($property);
+        if (!array_key_exists($property, $this->_properties)) {
+            $this->_properties[$property] = array();
         }
 
-        // Add to array of values, if it isn't already there
-        if (is_array($value)) {
-            foreach ($value as $v) {
-                if (!in_array($v, $values)) {
-                    array_push($values, $v);
-                }
-            }
-        } else {
-            if (!in_array($value, $values)) {
-                array_push($values, $value);
+        // Add the objects, if they don't already exist
+        $objects = $this->convertArgumentsToObjects($value);
+        foreach ($objects as $o) {
+            if (!in_array($o, $this->_properties[$property])) {
+                array_push($this->_properties[$property], $o);
             }
         }
 
-        return $this->set($property, $values);
+        return $this->_properties[$property];
     }
 
     /** Get a single value for a property
@@ -538,6 +519,27 @@ class EasyRdf_Resource
         } else {
             return $this->_uri;
         }
+    }
+
+    /** Convert an array of values into an array of objects
+     *
+     * @param  array  $values  Array of value to convert
+     */
+    protected function convertArgumentsToObjects($values)
+    {
+        if (!is_array($values)) {
+            $values = array($values);
+        }
+
+        $objects = array();
+        foreach ($values as $value) {
+            if (is_object($value)) {
+                $objects[] = $value;
+            } else {
+                $objects[] = new EasyRdf_Literal($value);
+            }
+        }
+        return $objects;
     }
 
     /** Magic method to give access to properties using method calls
