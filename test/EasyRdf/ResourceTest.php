@@ -290,6 +290,14 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_resource->delete(array());
     }
 
+    public function testDeleteValue()
+    {
+        $testa = $this->_resource->get('rdf:test');
+        $this->_resource->delete('rdf:test', $testa);
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(1, count($all));
+    }
+
     public function testJoinDefaultGlue()
     {
         $this->assertEquals(

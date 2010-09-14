@@ -120,12 +120,13 @@ class EasyRdf_Resource
         }
     }
 
-    /** Delete a property
+    /** Delete a property (or optionally just a specific value)
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  object  $value The value to delete (null to delete all values)
      * @return null
      */
-    public function delete($property)
+    public function delete($property, $value=null)
     {
         if (!is_string($property) or $property == null or $property == '') {
             throw new InvalidArgumentException(
@@ -135,7 +136,18 @@ class EasyRdf_Resource
 
         $property = EasyRdf_Namespace::expand($property);
         if (isset($this->_properties[$property])) {
-            unset($this->_properties[$property]);
+            if ($value) {
+                foreach($this->_properties[$property] as $k => $v) {
+                    if ($v == $value) {
+                        unset($this->_properties[$property][$k]);
+                    }
+                }
+                if (count($this->_properties[$property]) == 0) {
+                    unset($this->_properties[$property]);
+                }
+            } else {
+                unset($this->_properties[$property]);
+            }
         }
 
         return null;
