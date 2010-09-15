@@ -127,7 +127,7 @@ class EasyRdf_Resource
 
         $property = EasyRdf_Namespace::expand($property);
         if (isset($this->_properties[$property])) {
-            foreach($this->_properties[$property] as $k => $v) {
+            foreach ($this->_properties[$property] as $k => $v) {
                 if (!$value or $v == $value) {
                     unset($this->_properties[$property][$k]);
                     if (is_a($v, 'EasyRdf_Resource')) {
@@ -573,7 +573,7 @@ class EasyRdf_Resource
     public function deleteInverse($property, $value)
     {
         if (isset($this->_inverseProperties[$property])) {
-            foreach($this->_inverseProperties[$property] as $k => $v) {
+            foreach ($this->_inverseProperties[$property] as $k => $v) {
                 if ($v == $value) {
                     unset($this->_inverseProperties[$property][$k]);
                 }
