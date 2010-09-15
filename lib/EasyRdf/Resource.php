@@ -51,6 +51,10 @@ class EasyRdf_Resource
     /** Associative array of properties */
     private $_properties = array();
 
+    /** Associative array of inverse properties */
+    private $_inverseProperties = array();
+
+
     /** Constructor
      *
      * * Please do not call new EasyRdf_Resource() directly *
@@ -98,13 +102,13 @@ class EasyRdf_Resource
             );
         }
 
-        if ($values == null or (is_array($values) and count($values)==0)) {
-            return $this->delete($property);
-        } else {
-            $objects = $this->convertArgumentsToObjects($values);
-            $property = EasyRdf_Namespace::expand($property);
-            return $this->_properties[$property] = $objects;
-        }
+        // Delete the old values
+        $this->delete($property);
+
+        // Add the new values
+        $this->add($property, $values);
+
+        return $this->all($property);
     }
 
     /** Delete a property (or optionally just a specific value)
@@ -123,16 +127,15 @@ class EasyRdf_Resource
 
         $property = EasyRdf_Namespace::expand($property);
         if (isset($this->_properties[$property])) {
-            if ($value) {
-                foreach($this->_properties[$property] as $k => $v) {
-                    if ($v == $value) {
-                        unset($this->_properties[$property][$k]);
+            foreach($this->_properties[$property] as $k => $v) {
+                if (!$value or $v == $value) {
+                    unset($this->_properties[$property][$k]);
+                    if (is_a($v, 'EasyRdf_Resource')) {
+                        $v->deleteInverse($property, $this);
                     }
                 }
-                if (count($this->_properties[$property]) == 0) {
-                    unset($this->_properties[$property]);
-                }
-            } else {
+            }
+            if (count($this->_properties[$property]) == 0) {
                 unset($this->_properties[$property]);
             }
         }
@@ -157,7 +160,7 @@ class EasyRdf_Resource
      * @param  mixed $value      The new value for the property
      * @return array             Array of all values associated with property.
      */
-    public function add($properties, $value=null)
+    public function add($properties, $values=null)
     {
         if ($properties == null or $properties == '') {
             throw new InvalidArgumentException(
@@ -174,7 +177,7 @@ class EasyRdf_Resource
                 return;
             } else {
                 foreach ($properties as $property) {
-                    $this->add($property, $value);
+                    $this->add($property, $values);
                 }
                 return;
             }
@@ -183,21 +186,37 @@ class EasyRdf_Resource
         }
 
         // No value given?
-        if ($value == null) {
+        if ($values == null) {
              return null;
         }
 
         // Create the property if it doesn't already exist
         $property = EasyRdf_Namespace::expand($property);
-        if (!array_key_exists($property, $this->_properties)) {
+        if (!isset($this->_properties[$property])) {
             $this->_properties[$property] = array();
         }
 
+        if (!is_array($values)) {
+            $values = array($values);
+        }
+
+        // Convert literal values into objects
+        $objects = array();
+        foreach ($values as $value) {
+            if (is_object($value)) {
+                $objects[] = $value;
+            } else {
+                $objects[] = new EasyRdf_Literal($value);
+            }
+        }
+
         // Add the objects, if they don't already exist
-        $objects = $this->convertArgumentsToObjects($value);
-        foreach ($objects as $o) {
-            if (!in_array($o, $this->_properties[$property])) {
-                array_push($this->_properties[$property], $o);
+        foreach ($objects as $object) {
+            if (!in_array($object, $this->_properties[$property])) {
+                array_push($this->_properties[$property], $object);
+                if (is_a($object, 'EasyRdf_Resource')) {
+                    $object->addInverse($property, $this);
+                }
             }
         }
 
@@ -222,21 +241,28 @@ class EasyRdf_Resource
             );
         }
 
+        # Is an inverse property being requested?
+        if (substr($property, 0, 1) == '-') {
+            $property = substr($property, 1);
+            $properties = $this->_inverseProperties;
+        } else {
+            $properties = $this->_properties;
+        }
+
         $property = EasyRdf_Namespace::expand($property);
-        if (isset($this->_properties[$property])) {
+        if (isset($properties[$property])) {
             # FIXME: sort values so that we are likely to return the same one?
             if ($lang) {
-                foreach ($this->_properties[$property] as $value) {
+                foreach ($properties[$property] as $value) {
                     if (is_object($value) && $value->getLang() == $lang)
                         return $value;
                 }
-                return null;
-            } else {
-                return $this->_properties[$property][0];
+            } else if (count($properties[$property]) > 0) {
+                return $properties[$property][0];
             }
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /** Get all values for a property
@@ -329,7 +355,7 @@ class EasyRdf_Resource
     public function has($property)
     {
         $property = EasyRdf_Namespace::expand($property);
-        if (array_key_exists($property, $this->_properties)) {
+        if (isset($this->_properties[$property])) {
             return true;
         } else {
             return false;
@@ -521,26 +547,40 @@ class EasyRdf_Resource
         }
     }
 
-    /** Convert an array of values into an array of objects
+    /** This function is for internal use only.
+     * 
+     * Adds an inverse property to a resource.
      *
-     * @param  array  $values  Array of value to convert
+     * @ignore
      */
-    protected function convertArgumentsToObjects($values)
+    public function addInverse($property, $value)
     {
-        if (!is_array($values)) {
-            $values = array($values);
+        if (!isset($this->_inverseProperties[$property])) {
+            $this->_inverseProperties[$property] = array();
         }
 
-        $objects = array();
-        foreach ($values as $value) {
-            if (is_object($value)) {
-                $objects[] = $value;
-            } else {
-                $objects[] = new EasyRdf_Literal($value);
+        if (!in_array($value, $this->_inverseProperties[$property])) {
+            array_push($this->_inverseProperties[$property], $value);
+        }
+    }
+
+    /** This function is for internal use only.
+     * 
+     * Deletes an inverse property from a resource.
+     *
+     * @ignore
+     */
+    public function deleteInverse($property, $value)
+    {
+        if (isset($this->_inverseProperties[$property])) {
+            foreach($this->_inverseProperties[$property] as $k => $v) {
+                if ($v == $value) {
+                    unset($this->_inverseProperties[$property][$k]);
+                }
             }
         }
-        return $objects;
     }
+
 
     /** Magic method to give access to properties using method calls
      *

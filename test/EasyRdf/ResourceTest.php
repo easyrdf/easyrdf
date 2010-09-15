@@ -95,6 +95,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetInverse()
+    {
+        $homepage = new EasyRdf_Resource('http://example.com/');
+        $this->_resource->add('foaf:homepage', $homepage);
+        $this->assertEquals($this->_resource, $homepage->get('-foaf:homepage'));
+    }
+
     public function testGetNonExistantProperty()
     {
         $this->assertNull($this->_resource->get('foo:bar'));
@@ -165,6 +172,31 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $all = $this->_resource->all('rdf:test');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('Test C', $all[0]);
+    }
+
+    public function testSetInverse()
+    {
+        $homepage1 = new EasyRdf_Resource('http://example.com/1');
+        $homepage2 = new EasyRdf_Resource('http://example.com/2');
+        $this->_resource->set('foaf:homepage', $homepage1);
+        $this->assertEquals(
+            $this->_resource,
+            $homepage1->get('-foaf:homepage')
+        );
+        $this->assertEquals(
+            null,
+            $homepage2->get('-foaf:homepage')
+        );
+
+        $this->_resource->set('foaf:homepage', $homepage2);
+        $this->assertEquals(
+            null,
+            $homepage1->get('-foaf:homepage')
+        );
+        $this->assertEquals(
+            $this->_resource,
+            $homepage2->get('-foaf:homepage')
+        );
     }
 
     public function testSetNullKey()
