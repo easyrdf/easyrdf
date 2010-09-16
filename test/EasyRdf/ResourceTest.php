@@ -526,6 +526,11 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertStringEquals('Dc11 Title', $this->_resource->label());
     }
 
+    public function testLabelForShortenableUri()
+    {
+        $this->assertEquals('foaf:Person', $this->_type->label());
+    }
+
     public function testLabelWithLang()
     {
         $this->_resource->set('rdfs:label', 'Label Text');
