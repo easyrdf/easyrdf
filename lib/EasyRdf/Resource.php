@@ -241,7 +241,7 @@ class EasyRdf_Resource
             );
         }
 
-        # Is an inverse property being requested?
+        // Is an inverse property being requested?
         if (substr($property, 0, 1) == '-') {
             $property = substr($property, 1);
             $properties = $this->_inverseProperties;
@@ -281,17 +281,25 @@ class EasyRdf_Resource
             );
         }
 
+        // Is an inverse property being requested?
+        if (substr($property, 0, 1) == '-') {
+            $property = substr($property, 1);
+            $properties = $this->_inverseProperties;
+        } else {
+            $properties = $this->_properties;
+        }
+
         $property = EasyRdf_Namespace::expand($property);
-        if (isset($this->_properties[$property])) {
+        if (isset($properties[$property])) {
             if ($lang) {
                 $values = array();
-                foreach ($this->_properties[$property] as $value) {
+                foreach ($properties[$property] as $value) {
                     if (is_object($value) && $value->getLang() == $lang)
                         $values[] = $value;
                 }
                 return $values;
             } else {
-                return $this->_properties[$property];
+                return $properties[$property];
             }
         } else {
             return array();
@@ -412,7 +420,12 @@ class EasyRdf_Resource
      */
     public function types()
     {
-        return $this->all('rdf:type');
+        $types = array();
+        foreach ($this->all('rdf:type') as $uri) {
+            $type = EasyRdf_Namespace::shorten($uri);
+            array_push($types, $type);
+        }
+        return $types;
     }
 
     /** Get a single type for a resource.
@@ -425,6 +438,25 @@ class EasyRdf_Resource
      * @return string A type assocated with the resource (e.g. foaf:Person)
      */
     public function type()
+    {
+        $uri = $this->get('rdf:type');
+        if ($uri) {
+            return EasyRdf_Namespace::shorten($uri);
+        } else {
+            return null;
+        }
+    }
+
+    /** Get a single type for a resource, as a resource.
+     *
+     * The type will be returned as an EasyRdf_Resource.
+     * If the resource has multiple types then the type returned
+     * may be arbitrary.
+     * This method will return null if the resource has no type.
+     *
+     * @return EasyRdf_Resource A type assocated with the resource.
+     */
+    public function typeResource()
     {
         return $this->get('rdf:type');
     }
@@ -548,7 +580,7 @@ class EasyRdf_Resource
     }
 
     /** This function is for internal use only.
-     * 
+     *
      * Adds an inverse property to a resource.
      *
      * @ignore
@@ -565,7 +597,7 @@ class EasyRdf_Resource
     }
 
     /** This function is for internal use only.
-     * 
+     *
      * Deletes an inverse property from a resource.
      *
      * @ignore

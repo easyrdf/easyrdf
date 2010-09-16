@@ -47,8 +47,11 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
      */
     public function setUp()
     {
+        // NOTE: this is not the right way to create resources
+        // but this is just for testing...
+        $this->_type = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/Person');
         $this->_resource = new EasyRdf_Resource('http://example.com/#me');
-        $this->_resource->set('rdf:type', 'foaf:Person');
+        $this->_resource->set('rdf:type', $this->_type);
         $this->_resource->add('rdf:test', 'Test A');
         $this->_resource->add('rdf:test', new EasyRdf_Literal('Test B', 'en'));
     }
@@ -138,6 +141,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $all = $this->_resource->all('rdf:test', 'en');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('Test B', $all[0]);
+    }
+
+    public function testAllInverse()
+    {
+        $all = $this->_type->all('-rdf:type');
+        $this->assertEquals(1, count($all));
+        $this->assertEquals($this->_resource, $all[0]);
     }
 
     public function testAllNonExistantProperty()
@@ -458,6 +468,14 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertStringEquals('foaf:Person', $this->_resource->type());
     }
 
+    public function testTypeResource()
+    {
+        $this->assertEquals(
+            $this->_type,
+            $this->_resource->typeResource()
+        );
+    }
+
     public function testPrefix()
     {
         $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
@@ -537,7 +555,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             "http://example.com/#me (EasyRdf_Resource)", $text
         );
         $this->assertContains(
-            '-> rdf:type -> "foaf:Person"', $text
+            '-> rdf:type -> http://xmlns.com/foaf/0.1/Person', $text
         );
         $this->assertContains(
             '-> rdf:test -> "Test A", "Test B"@en', $text
@@ -554,9 +572,11 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             $html
         );
         $this->assertContains(
-            "<span style='color:blue'>&quot;foaf:Person&quot;</span>", $html
+            "<a href='http://xmlns.com/foaf/0.1/Person' ".
+            "style='text-decoration:none;color:red'>".
+            "http://xmlns.com/foaf/0.1/Person</a>",
+            $html
         );
-
         $this->assertContains(
             "<span style='text-decoration:none;color:green'>rdf:test</span>",
             $html

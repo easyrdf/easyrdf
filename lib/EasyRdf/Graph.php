@@ -54,9 +54,6 @@ class EasyRdf_Graph
     /** Counter for the number of bnodes */
     private $_bNodeCount = 0;
 
-    /** Index of resources organised by type */
-    private $_typeIndex = array();
-
     /** An HTTP Client object used by graph to fetch data */
     private static $_httpClient = null;
 
@@ -128,20 +125,23 @@ class EasyRdf_Graph
      */
     public function resource($uri, $types = array())
     {
-        # FIXME: allow URI to be shortened?
         if (!is_string($uri) or $uri == null or $uri == '') {
             throw new InvalidArgumentException(
                 "\$uri should be a string and cannot be null or empty"
             );
         }
 
-        # Convert types to an array if it isn't one
-        # FIXME: shorten types if not already short
-        if (!is_array($types)) {
+        // Expand the URI if it is shortened
+        $uri = EasyRdf_Namespace::expand($uri);
+
+        // Convert types to an array if it isn't one
+        if (!$types) {
+            $types = array();
+        } else if (!is_array($types)) {
             $types = array($types);
         }
 
-        # Create resource object if it doesn't already exist
+        // Create resource object if it doesn't already exist
         if (!array_key_exists($uri, $this->_resources)) {
             $resClass = 'EasyRdf_Resource';
             foreach ($types as $type) {
@@ -153,20 +153,12 @@ class EasyRdf_Graph
                 }
             }
             $this->_resources[$uri] = new $resClass($uri);
+        }
 
-            # Add resource to the type index
-            $resource = $this->_resources[$uri];
-            foreach ($types as $type) {
-                if ($type != null and $type != '') {
-                    $resource->add('rdf:type', $type);
-                    if (!isset($this->_typeIndex[$type])) {
-                        $this->_typeIndex[$type] = array();
-                    }
-                    if (!in_array($resource, $this->_typeIndex[$type])) {
-                        array_push($this->_typeIndex[$type], $resource);
-                    }
-                }
-            }
+        // Add the rdf:type triples
+        foreach ($types as $type) {
+            $type = $this->resource($type);
+            $this->_resources[$uri]->add('rdf:type', $type);
         }
 
         return $this->_resources[$uri];
@@ -292,21 +284,9 @@ class EasyRdf_Graph
      */
     public function allOfType($type)
     {
-        # FIXME: shorten if $type is a URL
-        if (isset($this->_typeIndex[$type])) {
-            return $this->_typeIndex[$type];
-        } else {
-            return array();
-        }
-    }
-
-    /** Get a list of the types of resources in the graph
-     *
-     * @return array Array of types
-     */
-    public function allTypes()
-    {
-        return array_keys($this->_typeIndex);
+        $uri = EasyRdf_Namespace::expand($type);
+        $resource = $this->resource($uri);
+        return $resource->all('-rdf:type');
     }
 
     /** Get the URI of the graph
