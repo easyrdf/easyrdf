@@ -461,6 +461,22 @@ class EasyRdf_Resource
         return $this->get('rdf:type');
     }
 
+    /** Check if a resource is of the specified type
+     *
+     * @param  string  $type The type to check (e.g. foaf:Person)
+     * @return boolean       True if resource is of specified type.
+     */
+    public function is_a($type)
+    {
+        $type = EasyRdf_Namespace::expand($type);
+        foreach($this->all('rdf:type') as $t) {
+            if ($t->getUri() == $type) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** Get a the prefix of the namespace that this resource is part of
      *
      * This method will return null the resource isn't part of any

@@ -476,6 +476,23 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testIsA()
+    {
+        $this->assertTrue($this->_resource->is_a('foaf:Person'));
+    }
+
+    public function testIsAFullUri()
+    {
+        $this->assertTrue(
+            $this->_resource->is_a('http://xmlns.com/foaf/0.1/Person')
+       );
+    }
+
+    public function testIsntA()
+    {
+        $this->assertFalse($this->_resource->is_a('foaf:Rat'));
+    }
+
     public function testPrefix()
     {
         $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
