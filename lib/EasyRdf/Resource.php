@@ -469,7 +469,7 @@ class EasyRdf_Resource
     public function is_a($type)
     {
         $type = EasyRdf_Namespace::expand($type);
-        foreach($this->all('rdf:type') as $t) {
+        foreach ($this->all('rdf:type') as $t) {
             if ($t->getUri() == $type) {
                 return true;
             }

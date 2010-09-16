@@ -485,7 +485,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->assertTrue(
             $this->_resource->is_a('http://xmlns.com/foaf/0.1/Person')
-       );
+        );
     }
 
     public function testIsntA()
