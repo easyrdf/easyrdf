@@ -75,7 +75,7 @@ echo form_end_tag();
 function tag_options($options)
 {
     $html = "";
-    foreach($options as $key => $value) {
+    foreach ($options as $key => $value) {
         $html .= " ".htmlspecialchars($key)."=\"".
                      htmlspecialchars($value)."\"";
     }
@@ -204,7 +204,7 @@ function labeled_text_field_tag($name, $default=null, $options=array())
 function select_tag($name, $options, $default=null, $html_options=array())
 {
     $opts = '';
-    foreach($options as $key => $value) {
+    foreach ($options as $key => $value) {
         $arr = array('value' => $value);
         if ((isset($_REQUEST[$name]) and $_REQUEST[$name] == $value) or
             (!isset($_REQUEST[$name]) and $default == $value))

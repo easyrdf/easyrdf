@@ -17,7 +17,7 @@
 
   $downloads = "<ul>\n";
   $lines = preg_split("/[\n\r]+/",file_get_contents("http://github.com/njh/easyrdf/downloads"));
-  foreach($lines as $line) {
+  foreach ($lines as $line) {
       if (preg_match('[<a href="(/downloads/njh/easyrdf/.+)">(.+)</a>]', $line, $matches)) {
           $downloads .= "<li><a href='http://github.com$matches[1]'>$matches[2]</a></li>\n";
       }

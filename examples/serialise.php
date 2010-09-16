@@ -23,7 +23,7 @@
 
 <ul>
 <?php
-    foreach(EasyRdf_Format::getFormats() as $f) {
+    foreach (EasyRdf_Format::getFormats() as $f) {
         if ($f->getSerialiserClass()) {
             if ($f->getName() == $format) {
                 print "<li><b>".$f->getLabel()."</b></li>\n";

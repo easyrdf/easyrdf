@@ -29,7 +29,7 @@ $documents = array(
     'london.json' => 'json',
 );
 
-foreach($documents as $filename => $type) {
+foreach ($documents as $filename => $type) {
 
     print "Input file: $filename\n";
     $filepath = dirname(__FILE__) . "/fixtures/$filename";
@@ -42,7 +42,7 @@ foreach($documents as $filename => $type) {
     $data = file_get_contents($filepath);
     print "File size: ".strlen($data)." bytes\n";
 
-    foreach($parsers as $parser_name) {
+    foreach ($parsers as $parser_name) {
         $class = "EasyRdf_Parser_$parser_name";
         print "  Parsing using: $class\n";
 

@@ -15,7 +15,7 @@
     {
         function birthEvent()
         {
-            foreach($this->all('bio:event') as $event) {
+            foreach ($this->all('bio:event') as $event) {
                 if (in_array('bio:Birth', $event->types())) {
                     return $event;
                 }
