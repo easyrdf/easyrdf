@@ -94,25 +94,31 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 
             if ($object->getLang()) {
                 return '"' . $value . '"' . '@' . $object->getLang();
-            } else if ($object->getDatatype()) {
-                $datatype = $object->getDatatype();
-                if ($datatype == 'xsd:integer') {
-                    return sprintf('%d^^%s', $value, $datatype);
-                } else if ($datatype == 'xsd:decimal') {
-                    return sprintf('%g^^%s', $value, $datatype);
-                } else if ($datatype == 'xsd:double') {
-                    return sprintf('%e^^%s', $value, $datatype);
-                } else if ($datatype == 'xsd:boolean') {
-                    return sprintf(
-                        '%s^^%s',
-                        $value ? 'true' : 'false',
-                        $datatype
-                    );
+            } else if ($object->getDatatypeUri()) {
+                $datatype = $object->getDatatypeUri();
+                if (EasyRdf_Namespace::prefixOfUri($datatype)) {
+                    $datatype = EasyRdf_Namespace::shorten($datatype);
+                    if ($datatype == 'xsd:integer') {
+                        return sprintf('%d^^%s', $value, $datatype);
+                    } else if ($datatype == 'xsd:decimal') {
+                        return sprintf('%g^^%s', $value, $datatype);
+                    } else if ($datatype == 'xsd:double') {
+                        return sprintf('%e^^%s', $value, $datatype);
+                    } else if ($datatype == 'xsd:boolean') {
+                        return sprintf(
+                            '%s^^%s',
+                            $value ? 'true' : 'false',
+                            $datatype
+                        );
+                    } else {
+                        return sprintf('"%s"^^%s', $value, $datatype);
+                    }
                 } else {
-                    return sprintf('"%s"^^%s', $value, $datatype);
+                    $datatype = str_replace('>', '\\>', $datatype);
+                    return sprintf('"%s"^^<%s>', $value, $datatype);
                 }
             } else {
-                return '"' . $value . '"';
+                return sprintf('"%s"', $value);
             }
         } else {
             throw new EasyRdf_Exception(
@@ -167,10 +173,10 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 
             $pCount = 0;
             foreach ($properties as $property) {
-                $short = EasyRdf_Namespace::shorten($property);
-                if ($short) {
+                if (EasyRdf_Namespace::prefixOfUri($property)) {
+                    $short = EasyRdf_Namespace::shorten($property);
                     $this->addPrefix($short);
-                    $pStr = $short == 'rdf:type' ? 'a' : $short;
+                    $pStr = ($short == 'rdf:type' ? 'a' : $short);
                 } else {
                     $pStr = '<'.str_replace('>', '\\>', $property).'>';
                 }
@@ -184,11 +190,6 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 
                 $oCount = 0;
                 foreach ($objects as $object) {
-                    # FIXME: remove this when types are stored as Resources
-                    if ($pStr == 'a') {
-                        $uri = EasyRdf_Namespace::expand("$object");
-                        $object = new EasyRdf_Resource($uri);
-                    }
                     if ($oCount)
                         $turtle .= ",";
                     $turtle .= " " . $this->serialiseObject($object);

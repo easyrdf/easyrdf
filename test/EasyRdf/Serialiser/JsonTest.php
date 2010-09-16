@@ -56,6 +56,7 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
             'http://www.example.com/joe#me', 'foaf:Person'
         );
         $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
+        $joe->set('foaf:age', 59);
         $this->_graph->add(
             $joe, 'foaf:project',
             array('foaf:name' => 'Project Name')
@@ -67,6 +68,9 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
             '{"type":"uri","value":"http:\/\/xmlns.com\/foaf\/0.1\/Person"}],'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/name":['.
             '{"type":"literal","value":"Joe Bloggs","lang":"en"}],'.
+            '"http:\/\/xmlns.com\/foaf\/0.1\/age":['.
+            '{"type":"literal","value":59,"datatype":'.
+            '"http:\/\/www.w3.org\/2001\/XMLSchema#integer"}],'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/project":['.
             '{"type":"bnode","value":"_:eid1"}]},"_:eid1":{'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/name":['.

@@ -179,6 +179,37 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
+    function testSerialiseNonQnameDatatype()
+    {
+        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe->set(
+            'foaf:foo',
+            new EasyRdf_Literal('foobar', null, 'http://example.com/datatype')
+        );
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertContains(
+            "<http://example.com/joe#me> ".
+            "foaf:foo ".
+            "\"foobar\"^^<http://example.com/datatype> .",
+            $turtle
+        );
+    }
+
+    function testSerialiseUnshortenableProperty()
+    {
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe->set('http://example.com/property', 'bar');
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertContains(
+            "<http://www.example.com/joe#me> ".
+            "<http://example.com/property> ".
+            "\"bar\" .",
+            $turtle
+        );
+    }
+
     function testSerialiseInvalidObject()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');

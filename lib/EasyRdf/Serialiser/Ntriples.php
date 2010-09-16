@@ -51,20 +51,10 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
      */
     protected function ntriplesResource($res)
     {
-        if (is_object($res) and $res instanceof EasyRdf_Resource) {
-            if ($res->isBNode()) {
-                return $res->getURI();
-            } else {
-                return "<".$res->getURI().">";
-            }
+        if ($res->isBNode()) {
+            return $res->getURI();
         } else {
-            # FIXME: remove this when types are stored as Resources
-            $uri = EasyRdf_Namespace::expand("$res");
-            if ($uri) {
-                return "<$uri>";
-            } else {
-                return "<$res>";
-            }
+            return "<".$res->getURI().">";
         }
     }
 
@@ -73,9 +63,9 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
      */
     protected function ntriplesObject($obj)
     {
-        if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
+        if (is_a($obj, 'EasyRdf_Resource')) {
             return $this->ntriplesResource($obj);
-        } else if (is_object($obj) and $obj instanceof EasyRdf_Literal) {
+        } else if (is_a($obj, 'EasyRdf_Literal')) {
             // FIXME: peform encoding of Unicode characters as described here:
             // http://www.w3.org/TR/rdf-testcases/#ntrip_strings
             $value = $obj->getValue();
@@ -123,14 +113,8 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
                 $objects = $resource->all($property);
                 foreach ($objects as $object) {
                     $nt .= $this->ntriplesResource($resource)." ";
-                    $nt .= $this->ntriplesResource($property)." ";
-
-                    # FIXME: remove this when types are stored as Resources
-                    if ($property == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type') {
-                        $nt .= $this->ntriplesResource($object)." .\n";
-                    } else {
-                        $nt .= $this->ntriplesObject($object)." .\n";
-                    }
+                    $nt .= "<$property> ";
+                    $nt .= $this->ntriplesObject($object)." .\n";
                 }
             }
         }

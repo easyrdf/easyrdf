@@ -150,11 +150,6 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                 $this->addPrefix($property);
                 $objects = $resource->all($property);
                 foreach ($objects as $object) {
-                    # FIXME: remove this when types are stored as Resources
-                    if ($property == 'rdf:type') {
-                        $uri = EasyRdf_Namespace::expand("$object");
-                        $object = new EasyRdf_Resource($uri);
-                    }
                     $xml .= $this->rdfxmlObject($property, $object);
                 }
             }

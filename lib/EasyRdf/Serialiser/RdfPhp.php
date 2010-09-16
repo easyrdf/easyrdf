@@ -89,12 +89,6 @@ class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
                 }
                 $objects = $resource->all($property);
                 foreach ($objects as $obj) {
-                    # FIXME: remove this when types are stored as Resources
-                    if ($property == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type') {
-                        $uri = EasyRdf_Namespace::expand("$obj");
-                        $obj = new EasyRdf_Resource($uri);
-                    }
-
                     if (is_object($obj) and
                        ($obj instanceof EasyRdf_Resource)) {
                         if ($obj->isBNode()) {
@@ -111,7 +105,7 @@ class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
                         if ($obj->getLang())
                             $object['lang'] = $obj->getLang();
                         if ($obj->getDatatype())
-                            $object['datatype'] = $obj->getDatatype();
+                            $object['datatype'] = $obj->getDatatypeUri();
                     } else {
                         throw new EasyRdf_Exception(
                             "Unsupported to serialise: ".gettype($obj)
