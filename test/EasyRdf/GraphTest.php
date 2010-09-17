@@ -255,6 +255,16 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetShortenedResource()
+    {
+        $graph = new EasyRdf_Graph();
+        $person = $graph->resource('foaf:Person');
+        $this->assertStringEquals(
+            'http://xmlns.com/foaf/0.1/Person',
+            $person->getUri()
+        );
+    }
+
     public function testGetResourceUnknown()
     {
         $graph = new EasyRdf_Graph();
@@ -288,8 +298,21 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testSetType()
     {
         $graph = new EasyRdf_Graph();
-        $resource = $graph->resource('http://www.foo.com/bar', 'rdf:Bar');
-        $this->assertStringEquals('rdf:Bar', $resource->type());
+        $resource = $graph->resource(
+            'http://www.foo.com/bar',
+            'foaf:Person'
+        );
+        $this->assertStringEquals('foaf:Person', $resource->type());
+    }
+
+    public function testSetTypeWithUri()
+    {
+        $graph = new EasyRdf_Graph();
+        $resource = $graph->resource(
+            'http://www.foo.com/bar',
+            'http://xmlns.com/foaf/0.1/Person'
+        );
+        $this->assertStringEquals('foaf:Person', $resource->type());
     }
 
     public function testSetMultipleTypes()

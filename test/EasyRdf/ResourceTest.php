@@ -90,6 +90,16 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetWithUri()
+    {
+        $this->assertStringEquals(
+            'Test A',
+            $this->_resource->get(
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+            )
+        );
+    }
+
     public function testGetWithLanguage()
     {
         $this->assertStringEquals(
@@ -131,6 +141,16 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testAll()
     {
         $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+    }
+
+    public function testAllWithUri()
+    {
+        $all = $this->_resource->all(
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+        );
         $this->assertEquals(2, count($all));
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
@@ -179,6 +199,17 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testSet()
     {
         $this->_resource->set('rdf:test', 'Test C');
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('Test C', $all[0]);
+    }
+
+    public function testSetWithUri()
+    {
+        $this->_resource->set(
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test',
+            'Test C'
+        );
         $all = $this->_resource->all('rdf:test');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('Test C', $all[0]);
@@ -239,6 +270,19 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testAdd()
     {
         $this->_resource->add('rdf:test', 'Test C');
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(3, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+        $this->assertStringEquals('Test C', $all[2]);
+    }
+
+    public function testAddWithUri()
+    {
+        $this->_resource->add(
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test',
+            'Test C'
+        );
         $all = $this->_resource->all('rdf:test');
         $this->assertEquals(3, count($all));
         $this->assertStringEquals('Test A', $all[0]);
@@ -314,6 +358,15 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals(array(), $this->_resource->all('rdf:test'));
     }
 
+    public function testDeleteWithUri()
+    {
+        $this->assertStringEquals('Test A', $this->_resource->get('rdf:test'));
+        $this->_resource->delete(
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+        );
+        $this->assertEquals(array(), $this->_resource->all('rdf:test'));
+    }
+
     public function testDeleteNullKey()
     {
         $this->setExpectedException('InvalidArgumentException');
@@ -345,6 +398,16 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals(
             'Test A Test B',
             $this->_resource->join('rdf:test')
+        );
+    }
+
+    public function testJoinWithUri()
+    {
+        $this->assertEquals(
+            'Test A Test B',
+            $this->_resource->join(
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+            )
         );
     }
 
