@@ -74,10 +74,7 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
                 $types = array();
                 foreach ($subj[self::RDF_TYPE_URI] as $type) {
                     if ($type['type'] == 'uri') {
-                        $type = EasyRdf_Namespace::shorten($type['value']);
-                        if ($type) {
-                            array_push($types, $type);
-                        }
+                        array_push($types, $type['value']);
                     }
                 }
                 if (count($types) > 0) {

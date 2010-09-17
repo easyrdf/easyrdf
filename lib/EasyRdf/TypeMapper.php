@@ -61,7 +61,10 @@ class EasyRdf_TypeMapper
             throw new InvalidArgumentException(
                 "\$type should be a string and cannot be null or empty"
             );
-        } else if (array_key_exists($type, self::$_map)) {
+        }
+
+        $type = EasyRdf_Namespace::expand($type);
+        if (array_key_exists($type, self::$_map)) {
             return self::$_map[$type];
         } else {
             return null;
@@ -88,6 +91,7 @@ class EasyRdf_TypeMapper
             );
         }
 
+        $type = EasyRdf_Namespace::expand($type);
         return self::$_map[$type] = $class;
     }
 
@@ -104,6 +108,7 @@ class EasyRdf_TypeMapper
             );
         }
 
+        $type = EasyRdf_Namespace::expand($type);
         if (isset(self::$_map[$type])) {
             unset(self::$_map[$type]);
         }

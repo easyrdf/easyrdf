@@ -51,19 +51,32 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 {
     public function setUp()
     {
-        EasyRdf_TypeMapper::set('my:type', 'MyType_Class');
+        EasyRdf_TypeMapper::set('rdf:mytype', 'MyType_Class');
     }
 
     public function tearDown()
     {
-        EasyRdf_TypeMapper::delete('my:type');
+        EasyRdf_TypeMapper::delete('rdf:mytype');
         EasyRdf_TypeMapper::delete('foaf:Person');
     }
 
 
     public function testGet()
     {
-        $this->assertEquals('MyType_Class', EasyRdf_TypeMapper::get('my:type'));
+        $this->assertEquals(
+            'MyType_Class',
+            EasyRdf_TypeMapper::get('rdf:mytype')
+        );
+    }
+
+    public function testGetUri()
+    {
+        $this->assertEquals(
+            'MyType_Class',
+            EasyRdf_TypeMapper::get(
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#mytype'
+            )
+        );
     }
 
     public function testGetNull()
@@ -89,6 +102,19 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
         $this->assertEquals(null, EasyRdf_TypeMapper::get('unknown:type'));
     }
 
+    public function testSetUri()
+    {
+        EasyRdf_TypeMapper::set(
+            'http://xmlns.com/foaf/0.1/Person',
+            'MyType_Class'
+        );
+
+        $this->assertEquals(
+            'MyType_Class',
+            EasyRdf_TypeMapper::get('foaf:Person')
+        );
+    }
+
     public function testSetTypeNull()
     {
         $this->setExpectedException('InvalidArgumentException');
@@ -110,26 +136,26 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
     public function testSetClassNull()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::set('my:type', null);
+        EasyRdf_TypeMapper::set('rdf:mytype', null);
     }
 
     public function testSetClassEmpty()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::set('my:type', '');
+        EasyRdf_TypeMapper::set('rdf:mytype', '');
     }
 
     public function testSetClassNonString()
     {
         $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_TypeMapper::set('my:type', array());
+        EasyRdf_TypeMapper::set('rdf:mytype', array());
     }
 
     public function testDelete()
     {
-        $this->assertEquals('MyType_Class', EasyRdf_TypeMapper::get('my:type'));
-        EasyRdf_TypeMapper::delete('my:type');
-        $this->assertEquals(null, EasyRdf_TypeMapper::get('my:type'));
+        $this->assertEquals('MyType_Class', EasyRdf_TypeMapper::get('rdf:mytype'));
+        EasyRdf_TypeMapper::delete('rdf:mytype');
+        $this->assertEquals(null, EasyRdf_TypeMapper::get('rdf:mytype'));
     }
 
     public function testDeleteTypeNull()
