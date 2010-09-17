@@ -145,7 +145,6 @@ class EasyRdf_Graph
         if (!array_key_exists($uri, $this->_resources)) {
             $resClass = 'EasyRdf_Resource';
             foreach ($types as $type) {
-                if ($type == null or $type == null) continue;
                 $class = EasyRdf_TypeMapper::get($type);
                 if ($class != null) {
                     $resClass = $class;
