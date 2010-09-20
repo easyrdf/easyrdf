@@ -320,13 +320,13 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph = new EasyRdf_Graph();
         $resource = $graph->resource(
             'http://www.foo.com/bar',
-            array('foo:Bar', 'bar:Foo')
+            array('rdf:Type1', 'rdf:Type2')
         );
 
         $types = $resource->types();
         $this->assertEquals(2, count($types));
-        $this->assertStringEquals('foo:Bar', $types[0]);
-        $this->assertStringEquals('bar:Foo', $types[1]);
+        $this->assertStringEquals('rdf:Type1', $types[0]);
+        $this->assertStringEquals('rdf:Type2', $types[1]);
     }
 
     public function testResources()
@@ -488,7 +488,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->setExpectedException('InvalidArgumentException');
         $graph = new EasyRdf_Graph();
         $invalidResource = new EasyRdf_Utils();
-        $graph->add($invalidResource, 'foo:bar', 'value');
+        $graph->add($invalidResource, 'foaf:name', 'value');
     }
 
     public function testType()
