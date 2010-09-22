@@ -141,16 +141,24 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
 
         $xml = '';
         foreach ($graph->resources() as $resource) {
-            $properties = $resource->properties();
+            $properties = $resource->propertyUris();
             if (count($properties) == 0)
                 continue;
 
             $xml .= "\n  ".$this->rdfxmlResource($resource)."\n";
             foreach ($properties as $property) {
-                $this->addPrefix($property);
-                $objects = $resource->all($property);
-                foreach ($objects as $object) {
-                    $xml .= $this->rdfxmlObject($property, $object);
+                $short = EasyRdf_Namespace::shorten($property, true);
+                if ($short) {
+                    $this->addPrefix($short);
+                    $objects = $resource->all($property);
+                    foreach ($objects as $object) {
+                        $xml .= $this->rdfxmlObject($short, $object);
+                    }
+                } else {
+                    throw new EasyRdf_Exception(
+                        "It is not possible to serialse the property ".
+                        "'$property' to RDF/XML."
+                    );
                 }
             }
             $xml .= "  </rdf:Description>\n";

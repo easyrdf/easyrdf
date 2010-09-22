@@ -50,6 +50,11 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $this->_serialiser = new EasyRdf_Serialiser_Turtle();
     }
 
+    public function tearDown()
+    {
+        EasyRdf_Namespace::reset();
+    }
+
     function testSerialise()
     {
         $joe = $this->_graph->resource(
@@ -179,19 +184,53 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseNonQnameDatatype()
+    function testSerialiseUnknownDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set(
             'foaf:foo',
-            new EasyRdf_Literal('foobar', null, 'http://example.com/datatype')
+            new EasyRdf_Literal('foobar', null, 'http://example.com/ns/type')
         );
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertContains(
             "<http://example.com/joe#me> ".
             "foaf:foo ".
-            "\"foobar\"^^<http://example.com/datatype> .",
+            "\"foobar\"^^ns0:type .",
+            $turtle
+        );
+    }
+
+    function testSerialiseUnshortenableDatatype()
+    {
+        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe->set(
+            'foaf:foo',
+            new EasyRdf_Literal('foobar', null, 'http://example.com/datatype/')
+        );
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertContains(
+            "<http://example.com/joe#me> ".
+            "foaf:foo ".
+            "\"foobar\"^^<http://example.com/datatype/> .",
+            $turtle
+        );
+    }
+
+    function testSerialisePropertyWithUnknownNamespace()
+    {
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe->set('http://example.com/ns/prop', 'bar');
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertContains(
+            "@prefix ns0: <http://example.com/ns/> .", $turtle
+        );
+        $this->assertContains(
+            "<http://www.example.com/joe#me> ".
+            "ns0:prop ".
+            "\"bar\" .",
             $turtle
         );
     }
@@ -199,12 +238,12 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     function testSerialiseUnshortenableProperty()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $joe->set('http://example.com/property', 'bar');
+        $joe->set('http://example.com/property/', 'bar');
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertContains(
             "<http://www.example.com/joe#me> ".
-            "<http://example.com/property> ".
+            "<http://example.com/property/> ".
             "\"bar\" .",
             $turtle
         );

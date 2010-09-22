@@ -50,6 +50,11 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->_serialiser = new EasyRdf_Serialiser_RdfXml();
     }
 
+    public function tearDown()
+    {
+        EasyRdf_Namespace::reset();
+    }
+
     function testSerialiseRdfXml()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
@@ -118,6 +123,31 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "<foaf:age rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">59</foaf:age>", $xml
         );
 
+    }
+
+    function testSerialiseRdfXmlWithUnknownProperty()
+    {
+        $this->_graph->add(
+            'http://www.example.com/joe#me',
+            'http://www.example.com/ns/foo',
+            'bar'
+        );
+
+        $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $this->assertContains("<ns0:foo>bar</ns0:foo>", $xml);
+        $this->assertContains("xmlns:ns0=\"http://www.example.com/ns/\"", $xml);
+    }
+
+    function testSerialiseRdfXmlWithUnshortenableProperty()
+    {
+        $this->_graph->add(
+            'http://www.example.com/joe#me',
+            'http://www.example.com/foo/',
+            'bar'
+        );
+
+        $this->setExpectedException('EasyRdf_Exception');
+        $this->_serialiser->serialise($this->_graph, 'rdfxml');
     }
 
     function testSerialiseRdfXmlWithXMLLiteral()
