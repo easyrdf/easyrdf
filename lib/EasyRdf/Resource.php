@@ -227,14 +227,27 @@ class EasyRdf_Resource
      *
      * If multiple values are set for a property then the value returned
      * may be arbitrary.
+     *
+     * If $property is an array, then the first item in the array that matches
+     * a property that exists is returned.
+     *
      * This method will return null if the property does not exist.
      *
-     * @param  string  $property The name of the property (e.g. foaf:name)
-     * @param  string  $lang     The language to filter by (e.g. en)
-     * @return mixed             A value associated with the property
+     * @param  string|array $property The name of the property (e.g. foaf:name)
+     * @param  string       $lang     The language to filter by (e.g. en)
+     * @return mixed                  A value associated with the property
      */
     public function get($property, $lang=null)
     {
+        if (is_array($property)) {
+            foreach($property as $p) {
+                $value = $this->get($p, $lang);
+                if ($value)
+                    return $value;
+            }
+            return null;
+        }
+
         if (!is_string($property) or $property == null or $property == '') {
             throw new InvalidArgumentException(
                 "\$property should be a string and cannot be null or empty"

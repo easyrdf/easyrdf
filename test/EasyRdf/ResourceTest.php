@@ -115,6 +115,38 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals($this->_resource, $homepage->get('-foaf:homepage'));
     }
 
+    public function testGetArray()
+    {
+        $this->assertStringEquals(
+            'Test A',
+            $this->_resource->get(array('rdf:test', 'rdf:foobar'))
+        );
+    }
+
+    public function testGetArray2()
+    {
+        $this->assertStringEquals(
+            'Test A',
+            $this->_resource->get(array('rdf:foobar', 'rdf:test'))
+        );
+    }
+
+    public function testGetArrayWithLang()
+    {
+        $this->assertStringEquals(
+            'Test B',
+            $this->_resource->get(array('rdf:foobar', 'rdf:test'), 'en')
+        );
+    }
+
+    public function testGetEmptyArray()
+    {
+        $this->assertEquals(
+            null,
+            $this->_resource->get(array())
+        );
+    }
+
     public function testGetNonExistantProperty()
     {
         $this->assertNull($this->_resource->get('foo:bar'));
@@ -135,7 +167,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testGetNonStringKey()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $this->_resource->get(array());
+        $this->_resource->get($this);
     }
 
     public function testAll()
