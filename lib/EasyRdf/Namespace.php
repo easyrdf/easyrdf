@@ -163,7 +163,7 @@ class EasyRdf_Namespace
       */
     public static function reset()
     {
-        while(self::$_anonymousNamespaceCount) {
+        while (self::$_anonymousNamespaceCount > 0) {
             self::delete('ns'.(self::$_anonymousNamespaceCount-1));
             self::$_anonymousNamespaceCount--;
         }

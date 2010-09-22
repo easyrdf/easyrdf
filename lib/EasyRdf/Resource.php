@@ -240,7 +240,7 @@ class EasyRdf_Resource
     public function get($property, $lang=null)
     {
         if (is_array($property)) {
-            foreach($property as $p) {
+            foreach ($property as $p) {
                 $value = $this->get($p, $lang);
                 if ($value)
                     return $value;
