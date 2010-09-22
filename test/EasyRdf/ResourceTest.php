@@ -577,7 +577,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testShortenUnknown()
     {
         $unknown = new EasyRdf_Resource('http://example.com/foo');
-        $this->assertEquals('http://example.com/foo', $unknown->shorten());
+        $this->assertEquals(null, $unknown->shorten());
     }
 
     public function testLabelNoRdfsLabel()

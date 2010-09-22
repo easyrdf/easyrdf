@@ -68,6 +68,9 @@ class EasyRdf_Namespace
       'xsd' => 'http://www.w3.org/2001/XMLSchema#'
     );
 
+    /** Counter for numbering anonymous namespaces */
+    private static $_anonymousNamespaceCount = 0;
+
     /**
       * Return all the namespaces registered
       *
@@ -156,6 +159,17 @@ class EasyRdf_Namespace
     }
 
     /**
+      * Delete the anonymous namespaces and reset the counter to 0
+      */
+    public static function reset()
+    {
+        while(self::$_anonymousNamespaceCount) {
+            self::delete('ns'.(self::$_anonymousNamespaceCount-1));
+            self::$_anonymousNamespaceCount--;
+        }
+    }
+
+    /**
       * Return the prefix namespace that a URI belongs to.
       *
       * @param string $uri A full URI (eg 'http://xmlns.com/foaf/0.1/name')
@@ -163,11 +177,21 @@ class EasyRdf_Namespace
       */
     public static function prefixOfUri($uri)
     {
-        if (!is_string($uri) or $uri == null or $uri == '') {
+        # FIXME: sort out code duplication with shorten()
+        if ($uri == null or $uri == '') {
             throw new InvalidArgumentException(
-                "\$uri should be a string and cannot be null or empty"
+                "\$uri cannot be null or empty"
             );
         }
+
+        if (is_object($uri) and is_a($uri, 'EasyRdf_Resource')) {
+            $uri = $uri->getUri();
+        } else if (!is_string($uri)) {
+            throw new InvalidArgumentException(
+                "\$uri should be a string or EasyRdf_Resource"
+            );
+        }
+
 
         foreach (self::$_namespaces as $prefix => $long) {
             if (substr($uri, 0, strlen($long)) == $long)
@@ -180,13 +204,17 @@ class EasyRdf_Namespace
     /**
       * Shorten a URI by substituting in the namespace prefix.
       *
-      * If it isn't possible to shorten the URI, then the original URI will
-      * be returned.
+      * If $createNamespace is true, and the URI isn't part of an existing 
+      * namespace, then EasyRdf will attempt to create a new namespace and
+      * use that namespace to shorten the URI (for example ns0:term).
       *
-      * @param string $uri The full URI (eg 'http://xmlns.com/foaf/0.1/name')
-      * @return string The shortened URI (eg 'foaf:name')
+      * If it isn't possible to shorten the URI, then null will be returned.
+      *
+      * @param string  $uri The full URI (eg 'http://xmlns.com/foaf/0.1/name')
+      * @param bool    $createNamespace If true, a new namespace will be created
+      * @return string The shortened URI (eg 'foaf:name') or null
       */
-    public static function shorten($uri)
+    public static function shorten($uri, $createNamespace=false)
     {
         if ($uri == null or $uri == '') {
             throw new InvalidArgumentException(
@@ -194,7 +222,7 @@ class EasyRdf_Namespace
             );
         }
 
-        if (is_object($uri) and get_class($uri) == 'EasyRdf_Resource') {
+        if (is_object($uri) and is_a($uri, 'EasyRdf_Resource')) {
             $uri = $uri->getUri();
         } else if (!is_string($uri)) {
             throw new InvalidArgumentException(
@@ -208,7 +236,17 @@ class EasyRdf_Namespace
             }
         }
 
-        return $uri;
+        if ($createNamespace) {
+            // Try and create a new namespace
+            # FIXME: check the valid characters for an XML element name
+            if (preg_match("/^(.+?)([\w\-]+)$/", $uri, $matches)) {
+                $prefix = "ns".(self::$_anonymousNamespaceCount++);
+                self::set($prefix, $matches[1]);
+                return $prefix . ':' . $matches[2];
+            }
+        }
+
+        return null;
     }
 
     /**

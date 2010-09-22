@@ -81,10 +81,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         );
         $this->assertEquals('1', $literal->getValue());
         $this->assertEquals(null, $literal->getLang());
-        $this->assertEquals(
-            'http://example.com/integer',
-            $literal->getDatatype()
-        );
+        $this->assertEquals(null, $literal->getDatatype());
     }
 
     public function testConstructWithAssociativeArray()

@@ -348,7 +348,9 @@ class EasyRdf_Resource
     {
         $properties = array();
         foreach ($this->_properties as $property => $value) {
-            $properties[] = EasyRdf_Namespace::shorten($property);
+            $short = EasyRdf_Namespace::shorten($property);
+            if ($short)
+                $properties[] = $short;
         }
         return $properties;
     }
@@ -522,11 +524,7 @@ class EasyRdf_Resource
         } else if ($this->get('dc11:title', $lang)) {
             return $this->get('dc11:title', $lang);
         } else {
-            if (EasyRdf_Namespace::prefixOfUri($this->_uri)) {
-                return $this->shorten();
-            } else {
-                return null;
-            }
+            return $this->shorten();
         }
     }
 

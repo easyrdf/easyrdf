@@ -43,6 +43,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     public function tearDown()
     {
         EasyRdf_Namespace::delete('po');
+        EasyRdf_Namespace::reset();
     }
 
     public function testNamespaces()
@@ -224,11 +225,39 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         $this->assertEquals('foaf:name', EasyRdf_Namespace::shorten($resource));
     }
 
-    public function testShortenUnknownUrl()
+    public function testShortenUnknown()
     {
         $this->assertEquals(
-            'http://www.aelius.com/njh/',
-            EasyRdf_Namespace::shorten('http://www.aelius.com/njh/')
+            null,
+            EasyRdf_Namespace::shorten('http://example.com/ns/foo/bar')
+        );
+    }
+
+    public function testShortenAndCreateOneUnknown()
+    {
+        $this->assertEquals(
+            'ns0:bar',
+            EasyRdf_Namespace::shorten('http://example.com/ns/foo/bar', true)
+        );
+    }
+
+    public function testShortenAndCreateTwoUnknown()
+    {
+        $this->assertEquals(
+            'ns0:bar',
+            EasyRdf_Namespace::shorten('http://example.com/ns/foo/bar', true)
+        );
+        $this->assertEquals(
+            'ns1:bar',
+            EasyRdf_Namespace::shorten('http://example.org/ns/foo/bar', true)
+        );
+    }
+
+    public function testShortenUnshortenable()
+    {
+        $this->assertEquals(
+            null,
+            EasyRdf_Namespace::shorten('http://example.com/foo/', true)
         );
     }
 
