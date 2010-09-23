@@ -520,25 +520,16 @@ class EasyRdf_Resource
      *
      * This method will check a number of properties for the resource
      * (in the order: rdfs:label, foaf:name, dc:title) and return an approriate
-     * first that is available. If no label is available then it will
-     * attempt to shorten the URI of the resource and if that isn't possible
-     * then it will return null.
+     * first that is available. If no label is available then it will 
+     * return null.
      *
      * @return string A label for the resource.
      */
     public function label($lang=null)
     {
-        if ($this->get('rdfs:label', $lang)) {
-            return $this->get('rdfs:label', $lang);
-        } else if ($this->get('foaf:name', $lang)) {
-            return $this->get('foaf:name', $lang);
-        } else if ($this->get('dc:title', $lang)) {
-            return $this->get('dc:title', $lang);
-        } else if ($this->get('dc11:title', $lang)) {
-            return $this->get('dc11:title', $lang);
-        } else {
-            return $this->shorten();
-        }
+        return $this->get(
+            array('rdfs:label', 'foaf:name', 'dc:title', 'dc11:title'), $lang
+        );
     }
 
     /** Return view of the resource and its properties
