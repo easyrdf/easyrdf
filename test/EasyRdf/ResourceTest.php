@@ -588,6 +588,28 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertFalse($this->_resource->is_a('foaf:Rat'));
     }
 
+    public function testPrimaryTopic()
+    {
+        $doc = new EasyRdf_Resource('http://example.com/foaf.rdf');
+        $person = new EasyRdf_Resource('http://example.com/foaf.rdf#me');
+        $doc->add('foaf:primaryTopic', $person);
+        $this->assertEquals(
+            'http://example.com/foaf.rdf#me',
+            $doc->primaryTopic()->getUri()
+        );
+    }
+
+    public function testIsPrimaryTopicOf()
+    {
+        $doc = new EasyRdf_Resource('http://example.com/foaf.rdf');
+        $person = new EasyRdf_Resource('http://example.com/foaf.rdf#me');
+        $person->add('foaf:isPrimaryTopicOf', $doc);
+        $this->assertEquals(
+            'http://example.com/foaf.rdf#me',
+            $doc->primaryTopic()->getUri()
+        );
+    }
+
     public function testPrefix()
     {
         $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');

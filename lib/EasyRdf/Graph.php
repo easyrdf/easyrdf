@@ -402,8 +402,7 @@ class EasyRdf_Graph
     public function primaryTopic()
     {
         if ($this->_uri) {
-            $res = $this->resource($this->_uri);
-            return $res->get('foaf:primaryTopic');
+            return $this->resource($this->_uri)->primaryTopic();
         } else {
             return null;
         }

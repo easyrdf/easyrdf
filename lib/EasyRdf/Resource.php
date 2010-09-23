@@ -492,6 +492,19 @@ class EasyRdf_Resource
         return false;
     }
 
+    /** Get the primary topic of this resource.
+     *
+     * Returns null if no primary topic is available.
+     *
+     * @return EasyRdf_Resource The primary topic of this resource.
+     */
+    public function primaryTopic()
+    {
+        return $this->get(
+            array('foaf:primaryTopic', '-foaf:isPrimaryTopicOf')
+        );
+    }
+
     /** Get a the prefix of the namespace that this resource is part of
      *
      * This method will return null the resource isn't part of any
