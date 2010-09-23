@@ -287,6 +287,15 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testrefixOfUriForResource()
+    {
+        $resource = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $this->assertEquals(
+            'foaf',
+            EasyRdf_Namespace::prefixOfUri($resource)
+        );
+    }
+
     public function testPrefixOfUnknownUrl()
     {
         $this->assertEquals(
