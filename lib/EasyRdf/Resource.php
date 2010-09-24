@@ -601,12 +601,20 @@ class EasyRdf_Resource
      */
     public function dumpValue($html=true)
     {
+        $short = $this->shorten();
         if ($html) {
-            return "<a href='".htmlentities($this->_uri).
-                   "' style='text-decoration:none;color:red'>".
-                   htmlentities($this->_uri)."</a>";
+            $escaped = htmlentities($this->_uri);
+            if ($short) {
+                return "<a href='$escaped' style='text-decoration:none;color:red'>$short</a>";
+            } else {
+                return "<a href='$escaped' style='text-decoration:none;color:red'>$escaped</a>";
+            }
         } else {
-            return $this->_uri;
+            if ($short) {
+                return $short;
+            } else {
+                return $this->_uri;
+            }
         }
     }
 

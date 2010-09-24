@@ -682,6 +682,20 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertContains("http://example.com/#me</a>", $html);
     }
 
+    public function testDumpShortenableValue()
+    {
+        $this->assertEquals(
+            'foaf:Person',
+            $this->_type->dumpValue(false)
+        );
+
+        $html = $this->_type->dumpValue(true);
+        $this->assertContains(
+            "<a href='http://xmlns.com/foaf/0.1/Person'", $html
+        );
+        $this->assertContains("foaf:Person</a>", $html);
+    }
+
     public function testDump()
     {
         $text = $this->_resource->dump(false);
@@ -689,7 +703,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             "http://example.com/#me (EasyRdf_Resource)", $text
         );
         $this->assertContains(
-            '-> rdf:type -> http://xmlns.com/foaf/0.1/Person', $text
+            '-> rdf:type -> foaf:Person', $text
         );
         $this->assertContains(
             '-> rdf:test -> "Test A", "Test B"@en', $text
@@ -707,8 +721,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
         $this->assertContains(
             "<a href='http://xmlns.com/foaf/0.1/Person' ".
-            "style='text-decoration:none;color:red'>".
-            "http://xmlns.com/foaf/0.1/Person</a>",
+            "style='text-decoration:none;color:red'>foaf:Person</a>",
             $html
         );
         $this->assertContains(
