@@ -34,7 +34,7 @@
 <dl>
   <dt>Name:</dt><dd><?= $person->get('foaf:name') ?></dd>
   <dt>Homepage:</dt><dd><?= link_to( $person->get('foaf:homepage') ) ?></dd>
-  <dt>Description:</dt><dd><?= $person->get('dc:description') ?></dd>
+  <dt>Description:</dt><dd><?= $person->get(array('dc:description','dc11:description')) ?></dd>
 </dl>
 
 <?php
