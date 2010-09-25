@@ -712,7 +712,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $html = $this->_resource->dump(true);
         $this->assertContains("<div id='http://example.com/#me'", $html);
         $this->assertContains(
-            "<a href='http://example.com/#me' style='text-decoration:none'>".
+            "<a href='http://example.com/#me' ".
+            "style='text-decoration:none;color:blue'>".
             "http://example.com/#me</a>", $html
         );
         $this->assertContains(

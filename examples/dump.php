@@ -29,7 +29,7 @@
                 print "<pre>".$graph->dump(false)."</pre>";
             } else {
                 $dump = $graph->dump(true);
-                print preg_replace("/ href='([^']*)'/e",'" href=\'?uri=".urlencode("$1")."#$1\'"', $dump);
+                print preg_replace("/ href='([^#][^']*)'/e",'" href=\'?uri=".urlencode("$1")."#$1\'"', $dump);
             }
         } else {
             print "<p>Failed to create graph.</p>";

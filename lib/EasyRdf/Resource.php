@@ -561,15 +561,17 @@ class EasyRdf_Resource
                 $olist []= $value->dumpValue($html);
             }
 
-            $prop = EasyRdf_Namespace::shorten($prop);
+            $pstr = EasyRdf_Namespace::shorten($prop);
+            if ($pstr == null)
+                $pstr = $prop;
             if ($html) {
                 $plist []= "<span style='font-size:130%'>&rarr;</span> ".
                            "<span style='text-decoration:none;color:green'>".
-                           htmlentities($prop)."</span> ".
+                           htmlentities($pstr) . "</span> ".
                            "<span style='font-size:130%'>&rarr;</span> ".
                            join(", ", $olist);
             } else {
-                $plist []= "  -> $prop -> " . join(", ", $olist);
+                $plist []= "  -> $pstr -> " . join(", ", $olist);
             }
         }
 
@@ -578,9 +580,7 @@ class EasyRdf_Resource
                 return "<div id='".htmlentities($this->_uri)."' " .
                        "style='font-family:arial; padding:0.5em; ".
                        "background-color:lightgrey;border:dashed 1px grey;'>\n".
-                       "<div><a href='".htmlentities($this->_uri)."'".
-                       " style='text-decoration:none'>".
-                       htmlentities($this->_uri)."</a> ".
+                       "<div>".$this->dumpValue(true, 'blue')." ".
                        "<span style='font-size: 0.8em'>(".
                        get_class($this).")</span></div>\n".
                        "<div style='padding-left: 3em'>\n".
@@ -599,15 +599,20 @@ class EasyRdf_Resource
      *
      * @param  bool  $html  Set to true to format the dump using HTML
      */
-    public function dumpValue($html=true)
+    public function dumpValue($html=true, $color='red')
     {
         $short = $this->shorten();
         if ($html) {
             $escaped = htmlentities($this->_uri);
-            if ($short) {
-                return "<a href='$escaped' style='text-decoration:none;color:red'>$short</a>";
+            if ($this->isBnode()) {
+                $href = '#' . $escaped;
             } else {
-                return "<a href='$escaped' style='text-decoration:none;color:red'>$escaped</a>";
+                $href = $escaped;
+            }
+            if ($short) {
+                return "<a href='$href' style='text-decoration:none;color:$color'>$short</a>";
+            } else {
+                return "<a href='$href' style='text-decoration:none;color:$color'>$escaped</a>";
             }
         } else {
             if ($short) {
