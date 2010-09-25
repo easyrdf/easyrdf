@@ -135,7 +135,7 @@ class EasyRdf_Literal
      */
     public function __toString()
     {
-        return isset($this->_value) ? $this->_value : '';
+        return isset($this->_value) ? strval($this->_value) : '';
     }
 
     /** Return pretty-print view of the literal

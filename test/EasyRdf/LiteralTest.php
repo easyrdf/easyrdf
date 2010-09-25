@@ -158,7 +158,13 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     public function testToString()
     {
         $literal = new EasyRdf_Literal('Rat');
-        $this->assertStringEquals('Rat', $literal);
+        $this->assertEquals('Rat', strval($literal));
+    }
+
+    public function testFoatToString()
+    {
+        $literal = new EasyRdf_Literal(0.5);
+        $this->assertEquals('0.5', strval($literal));
     }
 
     public function testDumpValue()
