@@ -7,8 +7,9 @@
     require_once "EasyRdf/Parser/Rapper.php";
 
     $LANG = 'en';
-    EasyRdf_Namespace::set('dbpprop', "http://dbpedia.org/property/");
-    EasyRdf_Namespace::set('georss', "http://www.georss.org/georss/");
+    EasyRdf_Namespace::set('dbowl', 'http://dbpedia.org/ontology/');
+    EasyRdf_Namespace::set('dbpprop', 'http://dbpedia.org/property/');
+    EasyRdf_Namespace::set('dbpedia', 'http://dbpedia.org/resource/');
 ?>
 <html>
 <head><title>Village Info</title></head>
@@ -30,8 +31,8 @@
 
         print content_tag('p',$village->get('rdfs:comment',$LANG));
 
-        if ($village->get('dbpprop:longitude')) {
-            $ll = $village->get('dbpprop:latitude').','.$village->get('dbpprop:longitude');
+        if ($village->get('geo:long')) {
+            $ll = $village->get('geo:lat').','.$village->get('geo:long');
             print "<iframe width='425' height='350' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://maps.google.com/maps?f=q&amp;sll=$ll&amp;output=embed'></iframe>";
         }
 
