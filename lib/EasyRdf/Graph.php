@@ -164,16 +164,6 @@ class EasyRdf_Graph
     }
 
     /**
-     * Alias for $graph->resource()
-     *
-     * @deprecated 0.4
-     */
-    public function get($uri, $types = array())
-    {
-        return $this->resource($uri, $types);
-    }
-
-    /**
      * Create a new blank node in the graph and return it.
      *
      * If you provide an RDF type and that type is registered
