@@ -184,7 +184,7 @@ class EasyRdf_Namespace
             );
         }
 
-        if (is_object($uri) and is_a($uri, 'EasyRdf_Resource')) {
+        if (is_object($uri) and ($uri instanceof EasyRdf_Resource)) {
             $uri = $uri->getUri();
         } else if (!is_string($uri)) {
             throw new InvalidArgumentException(
@@ -222,7 +222,7 @@ class EasyRdf_Namespace
             );
         }
 
-        if (is_object($uri) and is_a($uri, 'EasyRdf_Resource')) {
+        if (is_object($uri) and ($uri instanceof EasyRdf_Resource)) {
             $uri = $uri->getUri();
         } else if (!is_string($uri)) {
             throw new InvalidArgumentException(

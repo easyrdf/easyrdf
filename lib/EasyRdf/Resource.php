@@ -130,7 +130,7 @@ class EasyRdf_Resource
             foreach ($this->_properties[$property] as $k => $v) {
                 if (!$value or $v == $value) {
                     unset($this->_properties[$property][$k]);
-                    if (is_a($v, 'EasyRdf_Resource')) {
+                    if ($v instanceof EasyRdf_Resource) {
                         $v->deleteInverse($property, $this);
                     }
                 }
@@ -214,7 +214,7 @@ class EasyRdf_Resource
         foreach ($objects as $object) {
             if (!in_array($object, $this->_properties[$property])) {
                 array_push($this->_properties[$property], $object);
-                if (is_a($object, 'EasyRdf_Resource')) {
+                if ($object instanceof EasyRdf_Resource) {
                     $object->addInverse($property, $this);
                 }
             }

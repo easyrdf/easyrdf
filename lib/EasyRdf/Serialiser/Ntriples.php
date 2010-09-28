@@ -63,9 +63,9 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
      */
     protected function ntriplesObject($obj)
     {
-        if (is_a($obj, 'EasyRdf_Resource')) {
+        if ($obj instanceof EasyRdf_Resource) {
             return $this->ntriplesResource($obj);
-        } else if (is_a($obj, 'EasyRdf_Literal')) {
+        } else if ($obj instanceof EasyRdf_Literal) {
             // FIXME: peform encoding of Unicode characters as described here:
             // http://www.w3.org/TR/rdf-testcases/#ntrip_strings
             $value = $obj->getValue();
