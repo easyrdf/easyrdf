@@ -212,7 +212,7 @@ class EasyRdf_Resource
 
         // Add the objects, if they don't already exist
         foreach ($objects as $object) {
-            if (!in_array($object, $this->_properties[$property])) {
+            if (!$this->matches($property, $object)) {
                 array_push($this->_properties[$property], $object);
                 if ($object instanceof EasyRdf_Resource) {
                     $object->addInverse($property, $this);
@@ -395,7 +395,14 @@ class EasyRdf_Resource
      */
     public function matches($property, $value)
     {
-        return in_array($value, $this->all($property));
+        foreach($this->all($property) as $v) {
+            if ($v instanceof EasyRdf_Resource and $v === $value) {
+                return true;
+            } else if ($v == $value) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Check to see if a resource is a blank node.
@@ -635,9 +642,13 @@ class EasyRdf_Resource
             $this->_inverseProperties[$property] = array();
         }
 
-        if (!in_array($value, $this->_inverseProperties[$property])) {
-            array_push($this->_inverseProperties[$property], $value);
+        // Is the object already in the array?
+        foreach($this->_inverseProperties[$property] as $v) {
+            if ($v === $value)
+                return;
         }
+
+        array_push($this->_inverseProperties[$property], $value);
     }
 
     /** This function is for internal use only.

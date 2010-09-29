@@ -356,6 +356,25 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertStringEquals('Test C', $all[2]);
     }
 
+    public function testAddLiteralMultipleTimes()
+    {
+        $this->_resource->set('rdf:test', 'foobar');
+        $this->_resource->add('rdf:test', 'foobar');
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('foobar', $all[0]);
+    }
+
+    public function testAddLiteralDifferentLanguages()
+    {
+        $this->_resource->set('rdf:test', new EasyRdf_Literal('foobar', 'en'));
+        $this->_resource->add('rdf:test', new EasyRdf_Literal('foobar', 'fr'));
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('foobar', $all[0]);
+        $this->assertStringEquals('foobar', $all[1]);
+    }
+
     public function testAddNull()
     {
         $this->_resource->add('rdf:test', null);
@@ -523,10 +542,60 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
-    public function testMatches()
+    public function testMatchesLiteralValue()
     {
+        $this->_resource->set('rdf:test', 'foobar');
         $this->assertTrue(
-            $this->_resource->matches('rdf:test', 'Test A')
+            $this->_resource->matches('rdf:test', 'foobar')
+        );
+    }
+
+    public function testMatchesDifferentLiteralObjects()
+    {
+        $lit1 = new EasyRdf_Literal('foobar');
+        $lit2 = new EasyRdf_Literal('foobar');
+        $this->_resource->set('rdf:test', $lit1);
+        $this->assertTrue(
+            $this->_resource->matches('rdf:test', $lit2)
+        );
+    }
+
+    public function testNotMatchesDifferentLanguages()
+    {
+        $lit1 = new EasyRdf_Literal('foobar', 'en');
+        $lit2 = new EasyRdf_Literal('foobar', 'fr');
+        $this->_resource->set('rdf:test', $lit1);
+        $this->assertFalse(
+            $this->_resource->matches('rdf:test', $lit2)
+        );
+    }
+
+    public function testNotMatchesDifferentDatatypes()
+    {
+        $lit1 = new EasyRdf_Literal('1');
+        $lit2 = new EasyRdf_Literal(1);
+        $this->_resource->set('rdf:test', $lit1);
+        $this->assertFalse(
+            $this->_resource->matches('rdf:test', $lit2)
+        );
+    }
+    
+    public function testMatchesSameResourceObject()
+    {
+        $res = new EasyRdf_Resource('http://example.co/foo');
+        $this->_resource->set('rdf:test', $res);
+        $this->assertTrue(
+            $this->_resource->matches('rdf:test', $res)
+        );
+    }
+    
+    public function testNotMatchesDifferentResourceObjects()
+    {
+        $res1 = new EasyRdf_Resource('http://example.co/foo');
+        $res2 = new EasyRdf_Resource('http://example.co/foo');
+        $this->_resource->set('rdf:test', $res1);
+        $this->assertFalse(
+            $this->_resource->matches('rdf:test', $res2)
         );
     }
 
