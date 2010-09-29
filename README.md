@@ -34,7 +34,7 @@ Links
 Requirements
 ------------
 
-* PHP 5.2.0
+* PHP 5.2.1
 
 
 Features
