@@ -395,7 +395,7 @@ class EasyRdf_Resource
      */
     public function matches($property, $value)
     {
-        foreach($this->all($property) as $v) {
+        foreach ($this->all($property) as $v) {
             if ($v instanceof EasyRdf_Resource and $v === $value) {
                 return true;
             } else if ($v == $value) {
@@ -643,7 +643,7 @@ class EasyRdf_Resource
         }
 
         // Is the object already in the array?
-        foreach($this->_inverseProperties[$property] as $v) {
+        foreach ($this->_inverseProperties[$property] as $v) {
             if ($v === $value)
                 return;
         }
