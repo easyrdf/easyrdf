@@ -1,3 +1,8 @@
+EasyRdf 0.5.1
+-------------
+* Bug fixes for PHP 5.2
+
+
 EasyRdf 0.5.0
 -------------
 * Added support for inverse properties.
