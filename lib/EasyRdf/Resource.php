@@ -650,7 +650,7 @@ class EasyRdf_Resource
     {
         if (isset($this->_inverseProperties[$property])) {
             foreach ($this->_inverseProperties[$property] as $k => $v) {
-                if ($v == $value) {
+                if ($v === $value) {
                     unset($this->_inverseProperties[$property][$k]);
                 }
             }
