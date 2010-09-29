@@ -417,7 +417,7 @@ EasyRdf_Format::register(
     'json',
     'RDF/JSON Resource-Centric',
     'http://n2.talis.com/wiki/RDF_JSON_Specification',
-    array('application/json', 'text/json')
+    array('application/json', 'text/json', 'application/rdf+json')
 );
 
 EasyRdf_Format::register(
