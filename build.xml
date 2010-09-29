@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="EasyRdf" default="default">
-  <property name="version" value="0.5.0" />
+  <property name="version" value="0.5.1" />
   
   <property name="reports.dir" value="${project.basedir}/reports" override="true" />
   <property name="docs.dir" value="${project.basedir}/docs" override="true" />
