@@ -63,6 +63,7 @@ More Examples
 
 * [artistinfo.php](http://github.com/njh/easyrdf/blob/master/examples/artistinfo.php#path) - Example of mapping an RDF type to a PHP Class
 * [basic.php](http://github.com/njh/easyrdf/blob/master/examples/basic.php#path) - Basic "Hello World" type example
+* [converter.php](http://github.com/njh/easyrdf/blob/master/examples/converter.php#path) - Convert RDF from one format to another
 * [dump.php](http://github.com/njh/easyrdf/blob/master/examples/dump.php#path) - Display the contents of a graph
 * [easyspec.php](http://github.com/njh/easyrdf/blob/master/examples/easyspec.php#path) - Format an RDF Vocabulary
 * [foafinfo.php](http://github.com/njh/easyrdf/blob/master/examples/foafinfo.php#path) - Display the information in a FOAF file
