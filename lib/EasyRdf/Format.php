@@ -454,7 +454,10 @@ EasyRdf_Format::register(
     'n3',
     'Notation3',
     'http://www.w3.org/2000/10/swap/grammar/n3#',
-    array('text/n3')
+    array(
+        'text/n3',
+        'text/rdf+n3'
+    )
 );
 
 EasyRdf_Format::register(
