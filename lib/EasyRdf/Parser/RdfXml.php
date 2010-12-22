@@ -48,8 +48,6 @@
 class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 {
     protected $_base;
-    protected $_errors;
-    protected $_warnings;
     protected $_bnodePrefix;
     protected $_bnodeId = 0;
 
@@ -64,7 +62,6 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected $_nsp;
     protected $_sStack;
     protected $_sCount;
-    protected $_targetEncoding;
 
     /**
      * Constructor
@@ -78,8 +75,6 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function init($graph, $base)
     {
         $this->base = $base;
-        $this->errors = array();
-        $this->warnings = array();
         $this->bnodePrefix = 'arc'.substr(md5(uniqid(rand())), 0, 4).'b';
         $this->bnodeId = 0;
 
@@ -93,7 +88,6 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->nsp = array($this->xml => 'xml', $this->rdf => 'rdf');
         $this->sStack = array();
         $this->sCount = 0;
-        $this->targetEncoding = '';
     }
 
     protected function createBnodeID()
@@ -180,12 +174,10 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
-    protected function getEncoding($src = 'config')
+    protected function getEncoding()
     {
-        if ($src == 'parser') {
-            return $this->targetEncoding;
-        } else if (($src == 'config') && $this->encoding) {
-            return $this->encoding;
+        if ($this->_encoding) {
+            return $this->_encoding;
         }
         #    return $this->reader->getEncoding();
         return '';
@@ -264,7 +256,9 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             case 4: return $this->startState4($t, $a);
             case 5: return $this->startState5($t, $a);
             case 6: return $this->startState6($t, $a);
-            default: $this->addError('startElementHandler() called at state ' . $this->state . ' in '.$t);
+            default: throw new EasyRdf_Exception(
+                'startElementHandler() called at state ' . $this->state . ' in '.$t
+            );
         }
     }
 
@@ -277,7 +271,9 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             case 4: return $this->endState4($t);
             case 5: return $this->endState5($t);
             case 6: return $this->endState6($t);
-            default: $this->addError('endElementHandler() called at state ' . $this->state . ' in '.$t);
+            default: throw new EasyRdf_Exception(
+                'endElementHandler() called at state ' . $this->state . ' in '.$t
+            );
         }
     }
 
@@ -749,7 +745,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
       * @param string $baseUri  the base URI of the data being parsed
       * @return boolean         true if parsing was successful
       */
-    public function parse($graph, $data, $format, $baseUri, $isoFallback = false)
+    public function parse($graph, $data, $format, $baseUri)
     {
         parent::checkParseParams($graph, $data, $format, $baseUri);
 
@@ -765,30 +761,13 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->initXMLParser();
 
         /* parse */
-        if ($isoFallback) {
-            $data = '<?xml version="1.0" encoding="ISO-8859-1"?>' . "\n" .
-                    preg_replace('/^\<\?xml [^\>]+\?\>\s*/s', '', $data);
-        }
         if (!xml_parse($this->_xmlParser, $data, false)) {
-            $errorStr = xml_errorString(xml_get_error_code($this->_xmlParser));
-            $line = xml_get_current_line_number($this->_xmlParser);
-            $this->tmpError = 'XML error: "' . $errorStr .
-                              '" at line ' . $line .
-                              ' (parsing as ' . $this->getEncoding() . ')';
-            if (!$isoFallback && preg_match("/Invalid character/i", $errorStr)) {
-                xml_parser_free($this->_xmlParser);
-                unset($this->_xmlParser);
-                $this->encoding = 'ISO-8859-1';
-                return $this->parse($graph, $data, $format, $baseUri, true);
-            } else {
-                return $this->addError($this->tmpError);
-            }
+            throw new EasyRdf_Exception(
+                'XML error: "' . xml_error_string(xml_get_error_code($this->_xmlParser)) .
+                '" at line ' . xml_get_current_line_number($this->_xmlParser)
+            );
         }
 
-        $this->targetEncoding = xml_parser_get_option(
-            $this->_xmlParser,
-            XML_OPTION_TARGET_ENCODING
-        );
         xml_parser_free($this->_xmlParser);
 
         // Success
