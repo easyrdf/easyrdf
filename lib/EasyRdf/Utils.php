@@ -91,4 +91,63 @@ class EasyRdf_Utils
 
     }
 
+    /**
+     * Resolve a URI to a base URI.
+     *
+     * Note: this method only checks the key of the first value in the array.
+     *
+     * @param mixed $param The variable to check
+     * @return bool true if the variable is an associative array
+     */
+    public static function resolveUriReference($baseUri, $referenceUri)
+    {
+        /* quick check */
+        if (preg_match("/^[a-z0-9\_]+\:/i", $referenceUri)) {/* abs path or bnode */
+            return $referenceUri;
+        }
+        if (preg_match('/^\$\{.*\}/', $referenceUri)) {/* placeholder, assume abs URI */
+           return $referenceUri;
+        }
+        if (preg_match("/^\/\//", $referenceUri)) {/* net path, assume http */
+           return 'http:' . $referenceUri;
+        }
+
+        /* other URIs */
+        $baseUri = preg_replace('/\#.*$/', '', $baseUri);
+        if ($referenceUri === true) {/* empty (but valid) URIref via turtle parser: <> */
+            return $baseUri;
+        }
+        $referenceUri = preg_replace("/^\.\//", '', $referenceUri);
+
+        /* w/o trailing slash */
+        $root = preg_match('/(^[a-z0-9]+\:[\/]{1,3}[^\/]+)[\/|$]/i', $baseUri, $m) ? $m[1] : $baseUri;
+        $baseUri .= ($baseUri == $root) ? '/' : '';
+        if (preg_match('/^\//', $referenceUri)) {
+            /* leading slash */
+            return $root . $referenceUri;
+        }
+        if (!$referenceUri) {
+            return $baseUri;
+        }
+        if (preg_match('/^([\#\?])/', $referenceUri, $m)) {
+            return preg_replace('/\\' .$m[1]. '.*$/', '', $baseUri) . $referenceUri;
+        }
+        if (preg_match('/^(\&)(.*)$/', $referenceUri, $m)) {/* not perfect yet */
+            return preg_match('/\?/', $baseUri) ? $baseUri . $m[1] . $m[2] : $baseUri . '?' . $m[2];
+        }
+        if (preg_match("/^[a-z0-9]+\:/i", $referenceUri)) {/* abs path */
+            return $referenceUri;
+        }
+
+        /* rel path: remove stuff after last slash */
+        $baseUri = substr($baseUri, 0, strrpos($baseUri, '/')+1);
+
+        /* resolve ../ */
+        while (preg_match('/^(\.\.\/)(.*)$/', $referenceUri, $m)) {
+            $referenceUri = $m[2];
+            $baseUri = ($baseUri == $root.'/') ? $baseUri : preg_replace('/^(.*\/)[^\/]+\/$/', '\\1', $baseUri);
+        }
+        return $baseUri . $referenceUri;
+    }
+
 }

@@ -74,11 +74,11 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 
     protected function init($graph, $base)
     {
-        $this->base = $base;
         $this->bnodePrefix = 'arc'.substr(md5(uniqid(rand())), 0, 4).'b';
         $this->bnodeId = 0;
 
         $this->graph = $graph;
+        $this->base = $base;
         $this->encoding = false;
         $this->state = 0;
         $this->xLang = '';
@@ -94,69 +94,6 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     {
         $this->bnodeId++;
         return '_:' . $this->bnodePrefix . $this->bnodeId;
-    }
-
-    protected function calcURI($path, $base = "")
-    {
-        /* quick check */
-        if (preg_match("/^[a-z0-9\_]+\:/i", $path)) {/* abs path or bnode */
-            return $path;
-        }
-        if (preg_match('/^\$\{.*\}/', $path)) {/* placeholder, assume abs URI */
-           return $path;
-        }
-        if (preg_match("/^\/\//", $path)) {/* net path, assume http */
-           return 'http:' . $path;
-        }
-        /* other URIs */
-        $base = $base ? $base : $this->base;
-        $base = preg_replace('/\#.*$/', '', $base);
-        if ($path === true) {/* empty (but valid) URIref via turtle parser: <> */
-            return $base;
-        }
-        $path = preg_replace("/^\.\//", '', $path);
-
-        /* w/o trailing slash */
-        $root = preg_match('/(^[a-z0-9]+\:[\/]{1,3}[^\/]+)[\/|$]/i', $base, $m) ? $m[1] : $base;
-        $base .= ($base == $root) ? '/' : '';
-        if (preg_match('/^\//', $path)) {
-            /* leading slash */
-            return $root . $path;
-        }
-        if (!$path) {
-            return $base;
-        }
-        if (preg_match('/^([\#\?])/', $path, $m)) {
-            return preg_replace('/\\' .$m[1]. '.*$/', '', $base) . $path;
-        }
-        if (preg_match('/^(\&)(.*)$/', $path, $m)) {/* not perfect yet */
-            return preg_match('/\?/', $base) ? $base . $m[1] . $m[2] : $base . '?' . $m[2];
-        }
-        if (preg_match("/^[a-z0-9]+\:/i", $path)) {/* abs path */
-            return $path;
-        }
-        /* rel path: remove stuff after last slash */
-        $base = substr($base, 0, strrpos($base, '/')+1);
-        /* resolve ../ */
-        while (preg_match('/^(\.\.\/)(.*)$/', $path, $m)) {
-            $path = $m[2];
-            $base = ($base == $root.'/') ? $base : preg_replace('/^(.*\/)[^\/]+\/$/', '\\1', $base);
-        }
-        return $base . $path;
-    }
-
-    protected function calcBase($path)
-    {
-        $r = $path;
-        $r = preg_replace('/\#.*$/', '', $r);/* remove hash */
-        $r = preg_replace('/^\/\//', 'http://', $r);/* net path (//), assume http */
-        if (preg_match('/^[a-z0-9]+\:/', $r)) {/* scheme, abs path */
-            while (preg_match('/^(.+\/)(\.\.\/.*)$/U', $r, $m)) {
-                $r = $this->calcURI($m[1], $m[2]);
-            }
-            return $r;
-        }
-        return 'file://' . realpath($r);/* real path */
     }
 
     protected function initXMLParser()
@@ -302,18 +239,33 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function startState1($t, $a)
     {
         $s = array(
-            'x_base' => isset($a[$this->xml.'base']) ? $this->calcURI($a[$this->xml.'base']) : $this->getParentXBase(),
-            'x_lang' => isset($a[$this->xml.'lang']) ? $a[$this->xml.'lang'] : $this->getParentXLang(),
+            'x_base' => $this->getParentXBase(),
+            'x_lang' => $this->getParentXLang(),
             'li_count' => 0,
         );
+
+        if (isset($a[$this->xml.'base'])) {
+            $s['x_base'] = EasyRdf_Utils::resolveUriReference(
+                $this->base,
+                $a[$this->xml.'base']
+            );
+        }
+
+        if (isset($a[$this->xml.'lang'])) {
+            $s['x_lang'] = $a[$this->xml.'lang'];
+        }
+
         /* ID */
         if (isset($a[$this->rdf.'ID'])) {
             $s['type'] = 'uri';
-            $s['value'] = $this->calcURI('#'.$a[$this->rdf.'ID'], $s['x_base']);
+            $s['value'] = EasyRdf_Utils::resolveUriReference(
+                $s['x_base'],
+                '#'.$a[$this->rdf.'ID']
+            );
             /* about */
         } elseif (isset($a[$this->rdf.'about'])) {
             $s['type'] = 'uri';
-            $s['value'] = $this->calcURI($a[$this->rdf.'about'], $s['x_base']);
+            $s['value'] = EasyRdf_Utils::resolveUriReference($s['x_base'], $a[$this->rdf.'about']);
             /* bnode */
         } else {
             $s['type'] = 'bnode';
@@ -389,7 +341,10 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
         /* base */
         if (isset($a[$this->xml.'base'])) {
-            $s['p_x_base'] = $this->calcURI($a[$this->xml.'base'], $s['x_base']);
+            $s['p_x_base'] = EasyRdf_Utils::resolveUriReference(
+                $s['x_base'],
+                $a[$this->xml.'base']
+            );
         }
         $b = isset($s['p_x_base']) && $s['p_x_base'] ? $s['p_x_base'] : $s['x_base'];
         /* lang */
@@ -415,7 +370,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             unset($a['resource']);
         }
         if (isset($a[$this->rdf.'resource'])) {
-            $o['value'] = $this->calcURI($a[$this->rdf.'resource'], $b);
+            $o['value'] = EasyRdf_Utils::resolveUriReference($b, $a[$this->rdf.'resource']);
             $o['type'] = 'uri';
             $this->addTriple($s['value'], $s['p'], $o['value'], $s['type'], $o['type']);
             /* type */
@@ -429,7 +384,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         /* reification */
         if (isset($s['p_id'])) {
             $this->reify(
-                $this->calcURI('#'.$s['p_id'], $b),
+                EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
                 $s['value'], $s['p'], $o['value'],
                 $s['type'], $o['type']
             );
@@ -445,7 +400,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             /* reification */
             if (isset($s['p_id'])) {
                 $this->reify(
-                    $this->calcURI('#'.$s['p_id'], $b),
+                    EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
                     $s['value'], $s['p'], $o['value'],
                     $s['type'], $o['type']
                 );
@@ -467,7 +422,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 /* reification */
                 if (isset($s['p_id'])) {
                     $this->reify(
-                        $this->calcURI('#'.$s['p_id'], $b),
+                        EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
                         $s['value'], $s['p'], $o['value'],
                         $s['type'], $o['type']
                     );
@@ -500,7 +455,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                     /* reification */
                     if (isset($s['p_id'])) {
                         $this->reify(
-                            $this->calcURI('#'.$s['p_id'], $b),
+                            EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
                             $s['value'], $s['p'], $o['value'],
                             $s['type'], $o['type']
                         );
@@ -625,7 +580,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 /* reification */
                 if (isset($s['p_id']) && $s['p_id']) {
                     $this->reify(
-                        $this->calcURI('#'.$s['p_id'], $b),
+                        EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
                         $s['value'], $s['p'], $subS['value'],
                         $s['type'], $subS['type']
                     );
@@ -645,7 +600,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 /* reification */
                 if (isset($s['p_id']) && $s['p_id']) {
                     $this->reify(
-                        $this->calcURI('#'.$s['p_id'], $b),
+                        EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
                         $s['value'], $s['p'],
                         $o['value'], $s['type'],
                         $o['type'], $dt, $l
