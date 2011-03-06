@@ -47,12 +47,8 @@
  */
 class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 {
-    protected $_base;
-    protected $_bnodePrefix;
-    protected $_bnodeId = 0;
-
-    protected $_xmlParser = null;
     protected $_graph = null;
+    protected $_base;
     protected $_encoding;
     protected $_state;
     protected $_xLang;
@@ -62,6 +58,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected $_nsp;
     protected $_sStack;
     protected $_sCount;
+    protected $_bnodeId;
 
     /**
      * Constructor
@@ -74,26 +71,24 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 
     protected function init($graph, $base)
     {
-        $this->bnodePrefix = 'arc'.substr(md5(uniqid(rand())), 0, 4).'b';
-        $this->bnodeId = 0;
-
-        $this->graph = $graph;
-        $this->base = $base;
-        $this->encoding = false;
-        $this->state = 0;
-        $this->xLang = '';
-        $this->xBase = $base;
-        $this->xml = 'http://www.w3.org/XML/1998/namespace';
-        $this->rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
-        $this->nsp = array($this->xml => 'xml', $this->rdf => 'rdf');
-        $this->sStack = array();
-        $this->sCount = 0;
+        $this->_graph = $graph;
+        $this->_base = $base;
+        $this->_encoding = false;
+        $this->_state = 0;
+        $this->_xLang = '';
+        $this->_xBase = $base;
+        $this->_xml = 'http://www.w3.org/XML/1998/namespace';
+        $this->_rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+        $this->_nsp = array($this->_xml => 'xml', $this->_rdf => 'rdf');
+        $this->_sStack = array();
+        $this->_sCount = 0;
+        $this->_bnodeId = 0;
     }
 
     protected function createBnodeID()
     {
-        $this->bnodeId++;
-        return '_:' . $this->bnodePrefix . $this->bnodeId;
+        $this->_bnodeId++;
+        return '_:b' . $this->_bnodeId;
     }
 
     protected function initXMLParser()
@@ -122,53 +117,71 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 
     protected function pushS(&$s)
     {
-        $s['pos'] = $this->sCount;
-        $this->sStack[$this->sCount] = $s;
-        $this->sCount++;
+        $s['pos'] = $this->_sCount;
+        $this->_sStack[$this->_sCount] = $s;
+        $this->_sCount++;
     }
 
     protected function popS()
     {
         $r = array();
-        $this->sCount--;
-        for ($i = 0, $iMax = $this->sCount; $i < $iMax; $i++) {
-            $r[$i] = $this->sStack[$i];
+        $this->_sCount--;
+        for ($i = 0, $iMax = $this->_sCount; $i < $iMax; $i++) {
+            $r[$i] = $this->_sStack[$i];
         }
-        $this->sStack = $r;
+        $this->_sStack = $r;
     }
 
     protected function updateS($s)
     {
-        $this->sStack[$s['pos']] = $s;
+        $this->_sStack[$s['pos']] = $s;
     }
 
     protected function getParentS()
     {
-        return ($this->sCount && isset($this->sStack[$this->sCount - 1])) ? $this->sStack[$this->sCount - 1] : false;
+        if ($this->_sCount && isset($this->_sStack[$this->_sCount - 1])) {
+            return $this->_sStack[$this->_sCount - 1];
+        } else {
+            return false;
+        }
     }
 
     protected function getParentXBase()
     {
         if ($p = $this->getParentS()) {
-            return isset($p['p_x_base']) && $p['p_x_base'] ? $p['p_x_base'] : (isset($p['x_base']) ? $p['x_base'] : '');
+            if (isset($p['p_x_base']) && $p['p_x_base']) {
+                return $p['p_x_base'];
+            } else if (isset($p['x_base'])) {
+                return $p['x_base'];
+            } else {
+                return '';
+            }
+        } else {
+            return $this->_xBase;
         }
-        return $this->xBase;
     }
 
     protected function getParentXLang()
     {
         if ($p = $this->getParentS()) {
-            return isset($p['p_x_lang']) && $p['p_x_lang'] ? $p['p_x_lang'] : (isset($p['x_lang']) ? $p['x_lang'] : '');
+            if (isset($p['p_x_lang']) && $p['p_x_lang']) {
+                return $p['p_x_lang'];
+            } else if (isset($p['x_lang'])) {
+                return $p['x_lang'];
+            } else {
+                return '';
+            }
+        } else {
+            return $this->_xLang;
         }
-        return $this->xLang;
     }
 
     protected function addTriple($s, $p, $o, $sType, $oType, $oDatatype = '', $oLang = '')
     {
-        $subject = $this->graph->resource($s);
+        $subject = $this->_graph->resource($s);
 
         if ($oType == 'uri' or $oType == 'bnode') {
-            $object = $this->graph->resource($o);
+            $object = $this->_graph->resource($o);
         } else if ($oType == 'literal') {
             $object = new EasyRdf_Literal($o, $oLang, $oDatatype);
         }
@@ -178,15 +191,15 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 
     protected function reify($t, $s, $p, $o, $sType, $oType, $oDatatype = '', $oLang = '')
     {
-        $this->addTriple($t, $this->rdf.'type', $this->rdf.'Statement', 'uri', 'uri');
-        $this->addTriple($t, $this->rdf.'subject', $s, 'uri', $sType);
-        $this->addTriple($t, $this->rdf.'predicate', $p, 'uri', 'uri');
-        $this->addTriple($t, $this->rdf.'object', $o, 'uri', $oType, $oDatatype, $oLang);
+        $this->addTriple($t, $this->_rdf.'type', $this->_rdf.'Statement', 'uri', 'uri');
+        $this->addTriple($t, $this->_rdf.'subject', $s, 'uri', $sType);
+        $this->addTriple($t, $this->_rdf.'predicate', $p, 'uri', 'uri');
+        $this->addTriple($t, $this->_rdf.'object', $o, 'uri', $oType, $oDatatype, $oLang);
     }
 
     protected function startElementHandler($p, $t, $a)
     {
-        switch($this->state) {
+        switch($this->_state) {
             case 0: return $this->startState0($t, $a);
             case 1: return $this->startState1($t, $a);
             case 2: return $this->startState2($t, $a);
@@ -194,14 +207,14 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             case 5: return $this->startState5($t, $a);
             case 6: return $this->startState6($t, $a);
             default: throw new EasyRdf_Exception(
-                'startElementHandler() called at state ' . $this->state . ' in '.$t
+                'startElementHandler() called at state ' . $this->_state . ' in '.$t
             );
         }
     }
 
     protected function endElementHandler($p, $t)
     {
-        switch($this->state){
+        switch($this->_state){
             case 1: return $this->endState1($t);
             case 2: return $this->endState2($t);
             case 3: return $this->endState3($t);
@@ -209,14 +222,14 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             case 5: return $this->endState5($t);
             case 6: return $this->endState6($t);
             default: throw new EasyRdf_Exception(
-                'endElementHandler() called at state ' . $this->state . ' in '.$t
+                'endElementHandler() called at state ' . $this->_state . ' in '.$t
             );
         }
     }
 
     protected function cdataHandler($p, $d)
     {
-        switch($this->state){
+        switch($this->_state){
             case 4: return $this->cdataState4($d);
             case 6: return $this->cdataState6($d);
             default: return false;
@@ -225,13 +238,13 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 
     protected function newNamespaceHandler($p, $prf, $uri)
     {
-        $this->nsp[$uri] = isset($this->nsp[$uri]) ? $this->nsp[$uri] : $prf;
+        $this->_nsp[$uri] = isset($this->_nsp[$uri]) ? $this->_nsp[$uri] : $prf;
     }
 
     protected function startState0($t, $a)
     {
-        $this->state = 1;
-        if ($t !== $this->rdf.'RDF') {
+        $this->_state = 1;
+        if ($t !== $this->_rdf.'RDF') {
             $this->startState1($t, $a);
         }
     }
@@ -244,39 +257,39 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             'li_count' => 0,
         );
 
-        if (isset($a[$this->xml.'base'])) {
+        if (isset($a[$this->_xml.'base'])) {
             $s['x_base'] = EasyRdf_Utils::resolveUriReference(
                 $this->base,
-                $a[$this->xml.'base']
+                $a[$this->_xml.'base']
             );
         }
 
-        if (isset($a[$this->xml.'lang'])) {
-            $s['x_lang'] = $a[$this->xml.'lang'];
+        if (isset($a[$this->_xml.'lang'])) {
+            $s['x_lang'] = $a[$this->_xml.'lang'];
         }
 
         /* ID */
-        if (isset($a[$this->rdf.'ID'])) {
+        if (isset($a[$this->_rdf.'ID'])) {
             $s['type'] = 'uri';
             $s['value'] = EasyRdf_Utils::resolveUriReference(
                 $s['x_base'],
-                '#'.$a[$this->rdf.'ID']
+                '#'.$a[$this->_rdf.'ID']
             );
             /* about */
-        } elseif (isset($a[$this->rdf.'about'])) {
+        } elseif (isset($a[$this->_rdf.'about'])) {
             $s['type'] = 'uri';
-            $s['value'] = EasyRdf_Utils::resolveUriReference($s['x_base'], $a[$this->rdf.'about']);
+            $s['value'] = EasyRdf_Utils::resolveUriReference($s['x_base'], $a[$this->_rdf.'about']);
             /* bnode */
         } else {
             $s['type'] = 'bnode';
-            if (isset($a[$this->rdf.'nodeID'])) {
-                $s['value'] = '_:'.$a[$this->rdf.'nodeID'];
+            if (isset($a[$this->_rdf.'nodeID'])) {
+                $s['value'] = '_:'.$a[$this->_rdf.'nodeID'];
             } else {
                 $s['value'] = $this->createBnodeID();
             }
         }
         /* sub-node */
-        if ($this->state === 4) {
+        if ($this->_state === 4) {
             $supS = $this->getParentS();
             /* new collection */
             if (isset($supS['o_is_coll']) && $supS['o_is_coll']) {
@@ -288,7 +301,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                     'x_lang' => $s['x_lang']
                 );
                 $this->addTriple($supS['value'], $supS['p'], $coll['value'], $supS['type'], $coll['type']);
-                $this->addTriple($coll['value'], $this->rdf . 'first', $s['value'], $coll['type'], $s['type']);
+                $this->addTriple($coll['value'], $this->_rdf . 'first', $s['value'], $coll['type'], $s['type']);
                 $this->pushS($coll);
 
             /* new entry in existing coll */
@@ -300,8 +313,8 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 'x_base' => $s['x_base'],
                 'x_lang' => $s['x_lang']
                 );
-                $this->addTriple($supS['value'], $this->rdf . 'rest', $coll['value'], $supS['type'], $coll['type']);
-                $this->addTriple($coll['value'], $this->rdf . 'first', $s['value'], $coll['type'], $s['type']);
+                $this->addTriple($supS['value'], $this->_rdf . 'rest', $coll['value'], $supS['type'], $coll['type']);
+                $this->addTriple($coll['value'], $this->_rdf . 'first', $s['value'], $coll['type'], $s['type']);
                 $this->pushS($coll);
                 /* normal sub-node */
             } elseif (isset($supS['p']) && $supS['p']) {
@@ -309,20 +322,20 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             }
         }
         /* typed node */
-        if ($t !== $this->rdf.'Description') {
-            $this->addTriple($s['value'], $this->rdf.'type', $t, $s['type'], 'uri');
+        if ($t !== $this->_rdf.'Description') {
+            $this->addTriple($s['value'], $this->_rdf.'type', $t, $s['type'], 'uri');
         }
         /* (additional) typing attr */
-        if (isset($a[$this->rdf.'type'])) {
-            $this->addTriple($s['value'], $this->rdf.'type', $a[$this->rdf.'type'], $s['type'], 'uri');
+        if (isset($a[$this->_rdf.'type'])) {
+            $this->addTriple($s['value'], $this->_rdf.'type', $a[$this->_rdf.'type'], $s['type'], 'uri');
         }
         /* Seq|Bag|Alt */
-        if (in_array($t, array($this->rdf.'Seq', $this->rdf.'Bag', $this->rdf.'Alt'))) {
+        if (in_array($t, array($this->_rdf.'Seq', $this->_rdf.'Bag', $this->_rdf.'Alt'))) {
             $s['is_con'] = true;
         }
         /* any other attrs (skip rdf and xml, except rdf:_, rdf:value, rdf:Seq) */
         foreach ($a as $k => $v) {
-            if (((strpos($k, $this->xml) === false) && (strpos($k, $this->rdf) === false)) ||
+            if (((strpos($k, $this->_xml) === false) && (strpos($k, $this->_rdf) === false)) ||
                 preg_match('/(\_[0-9]+|value|Seq|Bag|Alt|Statement|Property|List)$/', $k)) {
                 if (strpos($k, ':')) {
                     $this->addTriple($s['value'], $k, $v, $s['type'], 'literal', '', $s['x_lang']);
@@ -330,7 +343,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             }
         }
         $this->pushS($s);
-        $this->state = 2;
+        $this->_state = 2;
     }
 
     protected function startState2($t, $a)
@@ -340,44 +353,44 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             unset($s[$k]);
         }
         /* base */
-        if (isset($a[$this->xml.'base'])) {
+        if (isset($a[$this->_xml.'base'])) {
             $s['p_x_base'] = EasyRdf_Utils::resolveUriReference(
                 $s['x_base'],
-                $a[$this->xml.'base']
+                $a[$this->_xml.'base']
             );
         }
         $b = isset($s['p_x_base']) && $s['p_x_base'] ? $s['p_x_base'] : $s['x_base'];
         /* lang */
-        if (isset($a[$this->xml.'lang'])) {
-            $s['p_x_lang'] = $a[$this->xml.'lang'];
+        if (isset($a[$this->_xml.'lang'])) {
+            $s['p_x_lang'] = $a[$this->_xml.'lang'];
         }
         $l = isset($s['p_x_lang']) && $s['p_x_lang'] ? $s['p_x_lang'] : $s['x_lang'];
         /* adjust li */
-        if ($t === $this->rdf.'li') {
+        if ($t === $this->_rdf.'li') {
             $s['li_count']++;
-            $t = $this->rdf.'_'.$s['li_count'];
+            $t = $this->_rdf.'_'.$s['li_count'];
         }
         /* set p */
         $s['p'] = $t;
         /* reification */
-        if (isset($a[$this->rdf.'ID'])) {
-            $s['p_id'] = $a[$this->rdf.'ID'];
+        if (isset($a[$this->_rdf.'ID'])) {
+            $s['p_id'] = $a[$this->_rdf.'ID'];
         }
         $o = array('value' => '', 'type' => '', 'x_base' => $b, 'x_lang' => $l);
         /* resource/rdf:resource */
         if (isset($a['resource'])) {
-            $a[$this->rdf . 'resource'] = $a['resource'];
+            $a[$this->_rdf . 'resource'] = $a['resource'];
             unset($a['resource']);
         }
-        if (isset($a[$this->rdf.'resource'])) {
-            $o['value'] = EasyRdf_Utils::resolveUriReference($b, $a[$this->rdf.'resource']);
+        if (isset($a[$this->_rdf.'resource'])) {
+            $o['value'] = EasyRdf_Utils::resolveUriReference($b, $a[$this->_rdf.'resource']);
             $o['type'] = 'uri';
             $this->addTriple($s['value'], $s['p'], $o['value'], $s['type'], $o['type']);
             /* type */
-            if (isset($a[$this->rdf.'type'])) {
+            if (isset($a[$this->_rdf.'type'])) {
                 $this->addTriple(
-                    $o['value'], $this->rdf.'type',
-                    $a[$this->rdf.'type'],
+                    $o['value'], $this->_rdf.'type',
+                    $a[$this->_rdf.'type'],
                     'uri', 'uri'
                 );
             }
@@ -390,13 +403,13 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             );
             unset($s['p_id']);
         }
-        $this->state = 3;
+        $this->_state = 3;
         /* named bnode */
-        } elseif (isset($a[$this->rdf.'nodeID'])) {
-            $o['value'] = '_:' . $a[$this->rdf.'nodeID'];
+        } elseif (isset($a[$this->_rdf.'nodeID'])) {
+            $o['value'] = '_:' . $a[$this->_rdf.'nodeID'];
             $o['type'] = 'bnode';
             $this->addTriple($s['value'], $s['p'], $o['value'], $s['type'], $o['type']);
-            $this->state = 3;
+            $this->_state = 3;
             /* reification */
             if (isset($s['p_id'])) {
                 $this->reify(
@@ -406,14 +419,14 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 );
             }
             /* parseType */
-        } elseif (isset($a[$this->rdf.'parseType'])) {
-            if ($a[$this->rdf.'parseType'] === 'Literal') {
+        } elseif (isset($a[$this->_rdf.'parseType'])) {
+            if ($a[$this->_rdf.'parseType'] === 'Literal') {
                 $s['o_xml_level'] = 0;
                 $s['o_xml_data'] = '';
                 $s['p_xml_literal_level'] = 0;
                 $s['ns'] = array();
-                $this->state = 6;
-            } elseif ($a[$this->rdf.'parseType'] === 'Resource') {
+                $this->_state = 6;
+            } elseif ($a[$this->_rdf.'parseType'] === 'Resource') {
                 $o['value'] = $this->createBnodeID();
                 $o['type'] = 'bnode';
                 $o['hasClosingTag'] = 0;
@@ -428,23 +441,23 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                     );
                     unset($s['p_id']);
                 }
-                $this->state = 2;
-            } elseif ($a[$this->rdf.'parseType'] === 'Collection') {
+                $this->_state = 2;
+            } elseif ($a[$this->_rdf.'parseType'] === 'Collection') {
                 $s['o_is_coll'] = true;
-                $this->state = 4;
+                $this->_state = 4;
             }
         /* sub-node or literal */
         } else {
             $s['o_cdata'] = '';
-            if (isset($a[$this->rdf.'datatype'])) {
-                $s['o_datatype'] = $a[$this->rdf.'datatype'];
+            if (isset($a[$this->_rdf.'datatype'])) {
+                $s['o_datatype'] = $a[$this->_rdf.'datatype'];
             }
-            $this->state = 4;
+            $this->_state = 4;
         }
         /* any other attrs (skip rdf and xml) */
         foreach ($a as $k => $v) {
-            if (((strpos($k, $this->xml) === false) &&
-             (strpos($k, $this->rdf) === false)) ||
+            if (((strpos($k, $this->_xml) === false) &&
+             (strpos($k, $this->_rdf) === false)) ||
              preg_match('/(\_[0-9]+|value)$/', $k)) {
                 if (strpos($k, ':')) {
                     if (!$o['value']) {
@@ -462,7 +475,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                         unset($s['p_id']);
                     }
                     $this->addTriple($o['value'], $k, $v, $o['type'], 'literal');
-                    $this->state = 3;
+                    $this->_state = 3;
                 }
             }
         }
@@ -476,7 +489,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 
     protected function startState5($t, $a)
     {
-        $this->state = 4;
+        $this->_state = 4;
         return $this->startState4($t, $a);
     }
 
@@ -491,8 +504,8 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         } else {
             $nsUri = $parts[0];
             $name = $parts[1];
-            if (!isset($this->nsp[$nsUri])) {
-                foreach ($this->nsp as $tmp1 => $tmp2) {
+            if (!isset($this->_nsp[$nsUri])) {
+                foreach ($this->_nsp as $tmp1 => $tmp2) {
                     if (strpos($t, $tmp1) === 0) {
                         $nsUri = $tmp1;
                         $name = substr($t, strlen($tmp1));
@@ -500,7 +513,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                     }
                 }
             }
-            $nsp = $this->nsp[$nsUri];
+            $nsp = $this->_nsp[$nsUri];
             $data .= $nsp ? '<' . $nsp . ':' . $name : '<' . $name;
             /* ns */
             if (!isset($ns[$nsp.'='.$nsUri]) || !$ns[$nsp.'='.$nsUri]) {
@@ -516,7 +529,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             } else {
                 $nsUri = $parts[0];
                 $name = $parts[1];
-                $nsp = $this->v($nsUri, '', $this->nsp);
+                $nsp = $this->v($nsUri, '', $this->_nsp);
                 $data .= $nsp ? ' '.$nsp.':'.$name.'="'.$v.'"' : ' '.$name.'="'.$v.'"' ;
             }
         }
@@ -532,7 +545,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function endState1($t)
     {
         /* end of doc */
-        $this->state = 0;
+        $this->_state = 0;
     }
 
     protected function endState2($t)
@@ -541,17 +554,17 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         if ($s = $this->getParentS()) {
             $hasClosingTag = (isset($s['hasClosingTag']) && !$s['hasClosingTag']) ? 0 : 1;
             $this->popS();
-            $this->state = 5;
+            $this->_state = 5;
             if ($s = $this->getParentS()) {
                 /* new s */
                 if (!isset($s['p']) || !$s['p']) {
                     /* p close after collection|parseType=Resource|node close after p close */
-                    $this->state = $this->sCount ? 4 : 1;
+                    $this->_state = $this->_sCount ? 4 : 1;
                     if (!$hasClosingTag) {
-                        $this->state = 2;
+                        $this->_state = 2;
                     }
                 } elseif (!$hasClosingTag) {
-                    $this->state = 2;
+                    $this->_state = 2;
                 }
             }
         }
@@ -560,7 +573,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function endState3($t)
     {
         /* p close */
-        $this->state = 2;
+        $this->_state = 2;
     }
 
     protected function endState4($t)
@@ -570,7 +583,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             $b = isset($s['p_x_base']) && $s['p_x_base'] ?
                 $s['p_x_base'] : (isset($s['x_base']) ? $s['x_base'] : '');
             if (isset($s['is_coll']) && $s['is_coll']) {
-                $this->addTriple($s['value'], $this->rdf . 'rest', $this->rdf . 'nil', $s['type'], 'uri');
+                $this->addTriple($s['value'], $this->_rdf . 'rest', $this->_rdf . 'nil', $s['type'], 'uri');
                 /* back to collection start */
                 while ((!isset($s['p']) || ($s['p'] != $t))) {
                     $subS = $s;
@@ -611,7 +624,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 unset($s['p']);
                 $this->updateS($s);
             }
-            $this->state = 2;
+            $this->_state = 2;
         }
     }
 
@@ -621,7 +634,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         if ($s = $this->getParentS()) {
             unset($s['p']);
             $this->updateS($s);
-            $this->state = 2;
+            $this->_state = 2;
         }
     }
 
@@ -638,10 +651,10 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 $this->addTriple(
                     $s['value'], $s['p'],
                     trim($data, ' '), $s['type'],
-                    'literal', $this->rdf.'XMLLiteral', $l
+                    'literal', $this->_rdf.'XMLLiteral', $l
                 );
                 unset($s['o_xml_data']);
-                $this->state = 2;
+                $this->_state = 2;
             } else {
                 $parts = $this->splitURI($t);
                 if (count($parts) == 1) {
@@ -649,8 +662,8 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 } else {
                     $nsUri = $parts[0];
                     $name = $parts[1];
-                    if (!isset($this->nsp[$nsUri])) {
-                        foreach ($this->nsp as $tmp1 => $tmp2) {
+                    if (!isset($this->_nsp[$nsUri])) {
+                        foreach ($this->_nsp as $tmp1 => $tmp2) {
                             if (strpos($t, $tmp1) === 0) {
                                 $nsUri = $tmp1;
                                 $name = substr($t, strlen($tmp1));
@@ -658,7 +671,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                             }
                         }
                     }
-                    $nsp = $this->nsp[$nsUri];
+                    $nsp = $this->_nsp[$nsUri];
                     $data .= $nsp ? '</'.$nsp.':'.$name.'>' : '</'.$name.'>';
                 }
                 $s['o_xml_data'] = $data;
