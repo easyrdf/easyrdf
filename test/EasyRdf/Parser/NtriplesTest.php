@@ -71,6 +71,19 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         #$this->assertEquals(null, $name->getDatatype());
     }
 
+
+    public function testParseEscaped()
+    {
+        $this->_parser->parse($this->_graph, '<a> <b> "\t" .', 'ntriples', null);
+
+        $a = $this->_graph->resource('a');
+        $this->assertNotNull($a);
+
+        $b = $a->get('b');
+        $this->assertNotNull($b);
+        $this->assertEquals("\t", $b->getValue());
+    }
+
     function testParseUnsupportedFormat()
     {
         $this->setExpectedException('EasyRdf_Exception');
