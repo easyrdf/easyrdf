@@ -301,7 +301,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                     'x_lang' => $s['x_lang']
                 );
                 $this->addTriple($supS['value'], $supS['p'], $coll['value'], $supS['type'], $coll['type']);
-                $this->addTriple($coll['value'], $this->_rdf . 'first', $s['value'], $coll['type'], $s['type']);
+                $this->addTriple($coll['value'], $this->_rdf.'first', $s['value'], $coll['type'], $s['type']);
                 $this->pushS($coll);
 
             /* new entry in existing coll */
@@ -313,8 +313,8 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 'x_base' => $s['x_base'],
                 'x_lang' => $s['x_lang']
                 );
-                $this->addTriple($supS['value'], $this->_rdf . 'rest', $coll['value'], $supS['type'], $coll['type']);
-                $this->addTriple($coll['value'], $this->_rdf . 'first', $s['value'], $coll['type'], $s['type']);
+                $this->addTriple($supS['value'], $this->_rdf.'rest', $coll['value'], $supS['type'], $coll['type']);
+                $this->addTriple($coll['value'], $this->_rdf.'first', $s['value'], $coll['type'], $s['type']);
                 $this->pushS($coll);
                 /* normal sub-node */
             } elseif (isset($supS['p']) && $supS['p']) {
@@ -379,7 +379,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $o = array('value' => '', 'type' => '', 'x_base' => $b, 'x_lang' => $l);
         /* resource/rdf:resource */
         if (isset($a['resource'])) {
-            $a[$this->_rdf . 'resource'] = $a['resource'];
+            $a[$this->_rdf.'resource'] = $a['resource'];
             unset($a['resource']);
         }
         if (isset($a[$this->_rdf.'resource'])) {
@@ -583,7 +583,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             $b = isset($s['p_x_base']) && $s['p_x_base'] ?
                 $s['p_x_base'] : (isset($s['x_base']) ? $s['x_base'] : '');
             if (isset($s['is_coll']) && $s['is_coll']) {
-                $this->addTriple($s['value'], $this->_rdf . 'rest', $this->_rdf . 'nil', $s['type'], 'uri');
+                $this->addTriple($s['value'], $this->_rdf.'rest', $this->_rdf.'nil', $s['type'], 'uri');
                 /* back to collection start */
                 while ((!isset($s['p']) || ($s['p'] != $t))) {
                     $subS = $s;
