@@ -64,6 +64,22 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals('xsd:integer', $literal->getDatatype());
     }
 
+    public function testConstructWithLanguageAndDatatype()
+    {
+        $literal = new EasyRdf_Literal('Rat', 'en', 'http://www.w3.org/2001/XMLSchema#string');
+        $this->assertEquals('Rat', $literal->getValue());
+        $this->assertEquals(null, $literal->getLang());
+        $this->assertEquals('xsd:string', $literal->getDatatype());
+    }
+
+    public function testConstructIntegerLiteralWithLanguage()
+    {
+        $literal = new EasyRdf_Literal(10, 'en');
+        $this->assertEquals(10, $literal->getValue());
+        $this->assertEquals('en', $literal->getLang());
+        $this->assertEquals(null, $literal->getDatatype());
+    }
+
     public function testConstructWithUriDatatype()
     {
         $literal = new EasyRdf_Literal(

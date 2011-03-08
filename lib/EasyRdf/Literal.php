@@ -73,7 +73,7 @@ class EasyRdf_Literal
         }
 
         // Automatic datatype selection
-        if ($this->_datatype == null) {
+        if ($this->_datatype == null && $this->_lang == null) {
             if (is_float($this->_value)) {
                 $this->_datatype = 'xsd:decimal';
             } else if (is_int($this->_value)) {
@@ -83,9 +83,12 @@ class EasyRdf_Literal
             }
         }
 
-        // Expand shortened URIs (qnames)
         if ($this->_datatype) {
+            // Expand shortened URIs (qnames)
             $this->_datatype = EasyRdf_Namespace::expand($this->_datatype);
+
+            // Literals can not have both a language and a datatype
+            $this->_lang = null;
         }
     }
 
