@@ -1,6 +1,7 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../../lib/');
     require_once "EasyRdf.php";
+    require_once "EasyRdf/Parser/Rapper.php";
 
     # Load the manifest
     EasyRdf_Namespace::set('test', 'http://www.w3.org/2000/10/rdf-tests/rdfcore/testSchema#');
@@ -23,13 +24,17 @@
             echo "File does not exist.\n";
             continue;
         }
-        
+
+        echo "Status: ".$test->get('test:status')."\n";
+        if ($test->get('test:status') != 'APPROVED')
+            continue;
+
         $graph = parse_testdata( $test->get('test:inputDocument') );
         $out_path = testdata_filepath( $test->get('test:outputDocument') );
 
         $easyrdf_out_path = $out_path . ".easyrdf";
         file_put_contents($easyrdf_out_path, $graph->serialise('ntriples'));
-        
+
         system("rdfdiff -f ntriples -t ntriples $out_path $easyrdf_out_path", $result);
         if ($result == 0) {
             echo "OK!\n";
@@ -39,7 +44,7 @@
             $failCount++;
         }
     }
-    
+
     echo "Tests that pass: $passCount\n";
     echo "Tests that fail: $failCount\n";
 
