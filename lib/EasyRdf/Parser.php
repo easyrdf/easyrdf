@@ -58,12 +58,6 @@ class EasyRdf_Parser
             );
         }
 
-        if ($data == null or $data == '') {
-            throw new InvalidArgumentException(
-                "\$data cannot be null or empty"
-            );
-        }
-
         if ($format == null or $format == '') {
             throw new InvalidArgumentException(
                 "\$format cannot be null or empty"

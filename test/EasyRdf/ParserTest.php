@@ -106,14 +106,16 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
 
     public function testParseNullData()
     {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse($this->_graph, null, 'json', null);
+        $this->assertTrue(
+            $this->_parser->parse($this->_graph, null, 'json', null)
+        );
     }
 
     public function testParseEmptyData()
     {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse($this->_graph, '', 'json', null);
+        $this->assertTrue(
+            $this->_parser->parse($this->_graph, '', 'json', null)
+        );
     }
 
     public function testParseNullFormat()
