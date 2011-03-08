@@ -59,7 +59,6 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
      */
     public function __construct()
     {
-        $this->_bnodeMap = array();
     }
 
     /**
@@ -137,7 +136,9 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
             );
         }
 
-        # Convert into an object graph
+        // Reset the bnode mapping
+        $this->_bnodeMap = array();
+
         foreach ($data as $subject => $touple) {
             $type = $this->getResourceType($data, $subject);
 
