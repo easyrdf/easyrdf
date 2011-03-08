@@ -94,10 +94,9 @@ class EasyRdf_Utils
     /**
      * Resolve a URI to a base URI.
      *
-     * Note: this method only checks the key of the first value in the array.
-     *
-     * @param mixed $param The variable to check
-     * @return bool true if the variable is an associative array
+     * @param  string $baseUri      The base URI
+     * @param  string $referenceUri The URI to resolve
+     * @return string The newly resolved URI as a string.
      */
     public static function resolveUriReference($baseUri, $referenceUri)
     {
