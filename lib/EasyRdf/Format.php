@@ -200,6 +200,9 @@ class EasyRdf_Format
             return 'turtle';
         } else if (preg_match("/^<.+> <.+>/", $short)) {
             return 'ntriples';
+        } else if (preg_match("/^<\?xml /", $short)) {
+            # FIXME: this could be improved
+            return 'rdfxml';
         } else {
             return null;
         }
