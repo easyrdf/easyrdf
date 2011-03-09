@@ -63,20 +63,20 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         );
 
         $php = $this->_serialiser->serialise($this->_graph, 'php');
-        $this->assertType('array', $php);
+        $this->assertInternalType('array', $php);
         $subject = $php['http://www.example.com/joe#me'];
-        $this->assertType('array', $subject);
+        $this->assertInternalType('array', $subject);
         $type = $subject['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0];
         $this->assertEquals('uri', $type['type']);
         $this->assertEquals('http://xmlns.com/foaf/0.1/Person', $type['value']);
         $name = $subject['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertType('array', $name);
+        $this->assertInternalType('array', $name);
         $this->assertEquals('literal', $name['type']);
         $this->assertEquals('Joe Bloggs', $name['value']);
         $this->assertFalse(isset($name['datatype']));
         $this->assertEquals('en', $name['lang']);
         $age = $subject['http://xmlns.com/foaf/0.1/age'][0];
-        $this->assertType('array', $age);
+        $this->assertInternalType('array', $age);
         $this->assertEquals('literal', $age['type']);
         $this->assertEquals('59', $age['value']);
         $this->assertEquals(
@@ -86,7 +86,7 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $this->assertFalse(isset($age['lang']));
 
         $nodeid = $subject['http://xmlns.com/foaf/0.1/project'][0]['value'];
-        $this->assertType('array', $php[$nodeid]);
+        $this->assertInternalType('array', $php[$nodeid]);
         $projectName = $php[$nodeid]['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertEquals('Project Name', $projectName['value']);
         $this->assertFalse(isset($projectName['lang']));
