@@ -10,6 +10,7 @@ $parsers = array(
     'Arc',
     'Json',
     'Ntriples',
+    'RdfXml',
     'Rapper',
     'Redland',
 );
