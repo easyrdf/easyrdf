@@ -146,7 +146,9 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
         $rdfphp = array();
         $lines = preg_split("/[\r\n]+/", strval($data));
         foreach ($lines as $line) {
-            if (preg_match(
+            if (preg_match("/^\s*#/", $line)) {
+                continue;
+            } else if (preg_match(
                 "/(.+)\s+<([^<>]+)>\s+(.+)\s*\./",
                 $line, $matches
             )) {

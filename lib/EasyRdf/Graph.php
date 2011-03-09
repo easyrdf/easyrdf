@@ -120,8 +120,8 @@ class EasyRdf_Graph
      * of the class registered.
      *
      * @param  string  $uri    The URI of the resource
-     * @param  mixed   $types  RDF type of a new resouce (e.g. foaf:Person)
-     * @return object EasyRdf_Resouce
+     * @param  mixed   $types  RDF type of a new resource (e.g. foaf:Person)
+     * @return object EasyRdf_Resource
      */
     public function resource($uri, $types = array())
     {
@@ -163,6 +163,24 @@ class EasyRdf_Graph
         return $this->_resources[$uri];
     }
 
+    /** Get or create a resource stored in a graph
+     *
+     * If the resource did not previously exist, then a new resource will
+     * be created. If you provide an RDF type and that type is registered
+     * with the EasyRdf_TypeMapper, then the resource will be an instance
+     * of the class registered.
+     *
+     * @param  string $baseUri      The base URI
+     * @param  string $referenceUri The URI to resolve
+     * @param  mixed   $types  RDF type of a new resource (e.g. foaf:Person)
+     * @return object The newly resolved URI as an EasyRdf_Resource
+     */
+    public function resolveResource($baseUri, $referenceUri, $types = array())
+    {
+        $uri = EasyRdf_Utils::resolveUriReference($baseUri, $referenceUri);
+        return $this->resource($uri, $types);
+    }
+
     /**
      * Create a new blank node in the graph and return it.
      *
@@ -171,7 +189,7 @@ class EasyRdf_Graph
      * of the class registered.
      *
      * @param  mixed   $types  RDF type of a new blank node (e.g. foaf:Person)
-     * @return object EasyRdf_Resouce The new blank node
+     * @return object EasyRdf_Resource The new blank node
      */
     public function newBNode($types=array())
     {
@@ -235,7 +253,7 @@ class EasyRdf_Graph
 
     /** Get an associative array of all the resources stored in the graph
      *
-     * @return array Array of EasyRdf_Resouces
+     * @return array Array of EasyRdf_Resource
      */
     public function resources()
     {
@@ -250,7 +268,7 @@ class EasyRdf_Graph
      *
      * @param  string  $property   The property to check.
      * @param  mixed   $value      The value of the propery to check for.
-     * @return array Array of EasyRdf_Resouces
+     * @return array Array of EasyRdf_Resource
      */
     public function resourcesMatching($property, $value)
     {
