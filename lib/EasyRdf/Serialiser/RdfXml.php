@@ -63,13 +63,13 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
      * Protected method to serialise an object node into an XML partial
      * @ignore
      */
-    protected function rdfxmlResource($res)
+    protected function rdfxmlResource($res, $type='rdf:Description')
     {
         if ($res->isBNode()) {
-            return "<rdf:Description rdf:nodeID=\"".
+            return "<$type rdf:nodeID=\"".
                    htmlspecialchars($res->getNodeId())."\">";
         } else {
-            return "<rdf:Description rdf:about=\"".
+            return "<$type rdf:about=\"".
                    htmlspecialchars($res->getUri())."\">";
         }
     }
@@ -145,12 +145,18 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             if (count($properties) == 0)
                 continue;
 
-            $xml .= "\n  ".$this->rdfxmlResource($resource)."\n";
+            $type = $resource->type();
+            if (!$type)
+                $type = 'rdf:Description';
+
+            $xml .= "\n  ".$this->rdfxmlResource($resource, $type)."\n";
             foreach ($properties as $property) {
                 $short = EasyRdf_Namespace::shorten($property, true);
                 if ($short) {
                     $this->addPrefix($short);
                     $objects = $resource->all($property);
+                    if ($short == 'rdf:type')
+                        array_shift($objects);
                     foreach ($objects as $object) {
                         $xml .= $this->rdfxmlObject($short, $object);
                     }
@@ -161,7 +167,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                     );
                 }
             }
-            $xml .= "  </rdf:Description>\n";
+            $xml .= "  </$type>\n";
         }
 
         // iterate through namepsaces array prefix and output a string.
