@@ -1,7 +1,6 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../../lib/');
     require_once "EasyRdf.php";
-    require_once "EasyRdf/Parser/Rapper.php";
 
     # Load the manifest
     EasyRdf_Namespace::set('test', 'http://www.w3.org/2000/10/rdf-tests/rdfcore/testSchema#');
