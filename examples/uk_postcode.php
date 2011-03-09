@@ -3,9 +3,6 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    ## FIXME: one day EasyRdf will parse RDF/XML natively
-    require_once "EasyRdf/Parser/Rapper.php";
-
     EasyRdf_Namespace::set('postcode', 'http://www.uk-postcodes.com/postcode/');
     EasyRdf_Namespace::set('sr', 'http://data.ordnancesurvey.co.uk/ontology/spatialrelations/');
     EasyRdf_Namespace::set('eg', 'http://statistics.data.gov.uk/def/electoral-geography/');

@@ -3,9 +3,6 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    ## Load the rapper based parser
-    require_once "EasyRdf/Parser/Rapper.php";
-
     # TODO LIST:
     # - display rdfs:range
     # - make use of rdfs:isDefinedBy?

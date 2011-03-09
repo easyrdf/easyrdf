@@ -1,9 +1,6 @@
 <?php
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf.php";
-
-    ## FIXME: one day EasyRdf will parse RDF/XML natively
-    require_once "EasyRdf/Parser/Rapper.php";
 ?>
 <html>
 <head>

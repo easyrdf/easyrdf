@@ -2,9 +2,6 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
-
-    ## Load the rapper based parser
-    require_once "EasyRdf/Parser/Rapper.php";
 ?>
 <html>
 <head><title>FOAF Info</title></head>

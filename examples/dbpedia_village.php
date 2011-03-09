@@ -3,9 +3,6 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    ## FIXME: one day EasyRdf will parse RDF/XML natively
-    require_once "EasyRdf/Parser/Rapper.php";
-
     $LANG = 'en';
     EasyRdf_Namespace::set('dbowl', 'http://dbpedia.org/ontology/');
     EasyRdf_Namespace::set('dbpprop', 'http://dbpedia.org/property/');

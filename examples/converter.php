@@ -3,9 +3,6 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    ## Load the ARC2 RDF parser
-    require_once "EasyRdf/Parser/Arc.php";
-
     $format_options = array();
     foreach (EasyRdf_Format::getFormats() as $format) {
         if ($format->getSerialiserClass()) {
