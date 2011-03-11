@@ -1,3 +1,12 @@
+EasyRdf 0.5.2
+-------------
+* Added a built-in RDF/XML parser
+* Made the RDF/XML serialiser use the rdf:type to open tags
+* Added support for comments in the N-Triples parser
+* Added new EasyRdf_Utils::resolveUriReference() function
+* Added the application/rdf+json and text/rdf+n3 mime types
+
+
 EasyRdf 0.5.1
 -------------
 * Bug fixes for PHP 5.2
