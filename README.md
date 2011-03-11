@@ -43,14 +43,14 @@ Features
 * API documentation written in phpdoc
 * Unit tests written using phpunit
 * Choice of RDF parser:
-  * Built-in: RDF/JSON, N-Triples
-  * ARC2: RDF/XML, Turtle, RSS, microformats, eRDF, RDFa, ...
-  * Redland Bindings: RDF/XML, N-Triples, Turtle, TriG, RSS Tag Soup, ...
-  * rapper: RDF/XML, N-Triples, Turtle, TriG, RSS Tag Soup, ...
+  * Built-in: RDF/JSON, N-Triples, RDF/XML
+  * [ARC2](http://arc.semsol.org/): RDF/XML, Turtle, RSS, microformats, eRDF, RDFa, ...
+  * [Redland Bindings](http://librdf.org/bindings/): RDF/XML, N-Triples, Turtle, TriG, RSS Tag Soup, ...
+  * [rapper](http://librdf.org/raptor/rapper.html): RDF/XML, N-Triples, Turtle, TriG, RSS Tag Soup, ...
 * Choice of RDF serialiser:
   * Built-in: RDF/JSON, N-Triples, RDF/XML, Turtle
-  * ARC2: RDF/JSON, RDF/XML, N-Triples, Turtle, POSHRDF
-  * rapper: RDF/JSON, N-Triples, RDF/XML, Turtle, RSS, Atom, Dot, ...
+  * [ARC2](http://arc.semsol.org/): RDF/JSON, RDF/XML, N-Triples, Turtle, POSHRDF
+  * [rapper](http://librdf.org/raptor/rapper.html): RDF/JSON, N-Triples, RDF/XML, Turtle, RSS, Atom, Dot, ...
 * Optional support for Zend_Http_Client
 * No required external dependancies upon other libraries (PEAR, Zend, etc...)
 * Complies with Zend Framework coding style.
@@ -65,9 +65,9 @@ More Examples
 * [basic.php](http://github.com/njh/easyrdf/blob/master/examples/basic.php#path) - Basic "Hello World" type example
 * [converter.php](http://github.com/njh/easyrdf/blob/master/examples/converter.php#path) - Convert RDF from one format to another
 * [dump.php](http://github.com/njh/easyrdf/blob/master/examples/dump.php#path) - Display the contents of a graph
-* [easyspec.php](http://github.com/njh/easyrdf/blob/master/examples/easyspec.php#path) - Format an RDF Vocabulary
 * [foafinfo.php](http://github.com/njh/easyrdf/blob/master/examples/foafinfo.php#path) - Display the information in a FOAF file
 * [foafmaker.php](http://github.com/njh/easyrdf/blob/master/examples/foafmaker.php#path) - Construct a FOAF document with a choice of serialisations
 * [httpget.php](http://github.com/njh/easyrdf/blob/master/examples/httpget.php#path) - No RDF, just test EasyRdf_Http_Client
 * [review_extract.php](http://github.com/njh/easyrdf/blob/master/examples/review_extract.php#path) - Extract a review from a page containing Google Review RDFa
 * [serialise.php](http://github.com/njh/easyrdf/blob/master/examples/serialise.php#path) - Basic serialisation example
+* [uk_postcode.php](http://github.com/njh/easyrdf/blob/master/examples/uk_postcode.php#path) - Example of resolving UK postcodes using uk-postcodes.com
