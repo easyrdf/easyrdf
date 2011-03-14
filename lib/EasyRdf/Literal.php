@@ -131,6 +131,19 @@ class EasyRdf_Literal
     {
         return $this->_lang;
     }
+    
+    public function toArray()
+    {
+        $array = array('type' => 'literal', 'value' => $this->_value);
+        
+        if ($this->_datatype)
+            $array['datatype'] = $this->_datatype;
+        
+        if ($this->_lang)
+            $array['lang'] = $this->_lang;
+        
+        return $array;
+    }
 
     /** Magic method to return the value of a literal when casted to string
      *

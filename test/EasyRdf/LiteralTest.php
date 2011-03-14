@@ -177,6 +177,41 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals('Rat', strval($literal));
     }
 
+    public function testToArray()
+    {
+        $literal = new EasyRdf_Literal('Rat');
+        $this->assertEquals(
+            array(
+               'type' => 'literal',
+               'value' => 'Rat'
+            ), $literal->toArray()
+        );
+    }
+
+    public function testToArrayWithLang()
+    {
+        $literal = new EasyRdf_Literal('Chat', 'fr');
+        $this->assertEquals(
+            array(
+               'type' => 'literal',
+               'value' => 'Chat',
+               'lang' => 'fr'
+            ), $literal->toArray()
+        );
+    }
+
+    public function testToArrayWithDatatype()
+    {
+        $literal = new EasyRdf_Literal(44);
+        $this->assertEquals(
+            array(
+               'type' => 'literal',
+               'value' => '44',
+               'datatype' => 'http://www.w3.org/2001/XMLSchema#integer'
+            ), $literal->toArray()
+        );
+    }
+
     public function testFoatToString()
     {
         $literal = new EasyRdf_Literal(0.5);
