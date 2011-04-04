@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,6 +40,8 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class EasyRdf_ResourceTest extends EasyRdf_TestCase
 {
+    protected $_graph = null;
+    protected $_type = null;
     protected $_resource = null;
 
     /**
@@ -47,31 +49,30 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
      */
     public function setUp()
     {
-        // NOTE: this is not the right way to create resources
-        // but this is just for testing...
-        $this->_type = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/Person');
-        $this->_resource = new EasyRdf_Resource('http://example.com/#me');
+        $this->_graph = new EasyRdf_Graph();
+        $this->_type = $this->_graph->resource('http://xmlns.com/foaf/0.1/Person');
+        $this->_resource = $this->_graph->resource('http://example.com/#me');
         $this->_resource->set('rdf:type', $this->_type);
         $this->_resource->add('rdf:test', 'Test A');
         $this->_resource->add('rdf:test', new EasyRdf_Literal('Test B', 'en'));
     }
 
-    public function testConstructNull()
+    public function testConstructNullUri()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $res = new EasyRdf_Resource(null);
+        $res = new EasyRdf_Resource($this->_graph, null);
     }
 
-    public function testConstructEmpty()
+    public function testConstructEmptyUri()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $res = new EasyRdf_Resource('');
+        $res = new EasyRdf_Resource($this->_graph, '');
     }
 
-    public function testConstructNonString()
+    public function testConstructNonStringUri()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $res = new EasyRdf_Resource(array());
+        $res = new EasyRdf_Resource($this->_graph, array());
     }
 
     public function testGetUri()
@@ -104,13 +105,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->assertStringEquals(
             'Test B',
-            $this->_resource->get('rdf:test', 'en')
+            $this->_resource->get('rdf:test', 'literal', 'en')
         );
     }
 
     public function testGetInverse()
     {
-        $homepage = new EasyRdf_Resource('http://example.com/');
+        $homepage = new EasyRdf_Resource($this->_graph, 'http://example.com/');
         $this->_resource->add('foaf:homepage', $homepage);
         $this->assertEquals($this->_resource, $homepage->get('-foaf:homepage'));
     }
@@ -131,13 +132,14 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
-    public function testGetArrayWithLang()
-    {
-        $this->assertStringEquals(
-            'Test B',
-            $this->_resource->get(array('rdf:foobar', 'rdf:test'), 'en')
-        );
-    }
+// FIXME: deprecated
+//     public function testGetArrayWithLang()
+//     {
+//         $this->assertStringEquals(
+//             'Test B',
+//             $this->_resource->get(array('rdf:foobar', 'rdf:test'), 'en')
+//         );
+//     }
 
     public function testGetEmptyArray()
     {
@@ -190,7 +192,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testAllWithLang()
     {
-        $all = $this->_resource->all('rdf:test', 'en');
+        $all = $this->_resource->all('rdf:test', 'literal', 'en');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('Test B', $all[0]);
     }
@@ -228,6 +230,146 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_resource->all(array());
     }
 
+
+    public function testAdd()
+    {
+        $this->_resource->add('rdf:test', 'Test C');
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(3, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+        $this->assertStringEquals('Test C', $all[2]);
+    }
+
+    public function testAddWithUri()
+    {
+        $this->_resource->add(
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test',
+            'Test C'
+        );
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(3, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+        $this->assertStringEquals('Test C', $all[2]);
+    }
+
+    public function testAddMultipleLiterals()
+    {
+        $this->_resource->addLiteral('rdf:test', array('Test C', 'Test D'));
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(4, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+        $this->assertStringEquals('Test C', $all[2]);
+        $this->assertStringEquals('Test D', $all[3]);
+    }
+
+# FIXME: deprecated functionality
+//     public function testAddAssociateProperties()
+//     {
+//         $this->_resource->add(array('rdf:test' => 'Test C'));
+//         $all = $this->_resource->all('rdf:test');
+//         $this->assertEquals(3, count($all));
+//         $this->assertStringEquals('Test A', $all[0]);
+//         $this->assertStringEquals('Test B', $all[1]);
+//         $this->assertStringEquals('Test C', $all[2]);
+//     }
+
+    public function testAddLiteralMultipleTimes()
+    {
+        $this->_resource->add('rdf:test2', 'foobar');
+        $this->_resource->add('rdf:test2', 'foobar');
+        $all = $this->_resource->all('rdf:test2');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('foobar', $all[0]);
+    }
+
+    public function testAddLiteralDifferentLanguages()
+    {
+        $this->_resource->set('rdf:test', new EasyRdf_Literal('foobar', 'en'));
+        $this->_resource->add('rdf:test', new EasyRdf_Literal('foobar', 'fr'));
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('foobar', $all[0]);
+        $this->assertStringEquals('foobar', $all[1]);
+    }
+
+    public function testAddNull()
+    {
+        $this->_resource->add('rdf:test', null);
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+    }
+
+    public function testAddNullKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_resource->add(null, 'Test C');
+    }
+
+    public function testAddEmptyKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_resource->add('', 'Test C');
+    }
+
+    public function testAddNonStringKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_resource->add(array(), 'Test C');
+    }
+
+    function testAddInvalidObject()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_resource->add('rdf:foo', $this);
+    }
+
+    public function testDelete()
+    {
+        $this->assertStringEquals('Test A', $this->_resource->get('rdf:test'));
+        $this->_resource->delete('rdf:test');
+        $this->assertEquals(array(), $this->_resource->all('rdf:test'));
+    }
+
+    public function testDeleteWithUri()
+    {
+        $this->assertStringEquals('Test A', $this->_resource->get('rdf:test'));
+        $this->_resource->delete(
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+        );
+        $this->assertEquals(array(), $this->_resource->all('rdf:test'));
+    }
+
+    public function testDeleteNullKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_resource->delete(null);
+    }
+
+    public function testDeleteEmptyKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_resource->delete('');
+    }
+
+    public function testDeleteNonStringKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_resource->delete(array());
+    }
+
+    public function testDeleteValue()
+    {
+        $testa = $this->_resource->get('rdf:test');
+        $this->_resource->delete('rdf:test', $testa);
+        $all = $this->_resource->all('rdf:test');
+        $this->assertEquals(1, count($all));
+    }
+
     public function testSet()
     {
         $this->_resource->set('rdf:test', 'Test C');
@@ -249,8 +391,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testSetInverse()
     {
-        $homepage1 = new EasyRdf_Resource('http://example.com/1');
-        $homepage2 = new EasyRdf_Resource('http://example.com/2');
+        $homepage1 = new EasyRdf_Resource($this->_graph, 'http://example.com/1');
+        $homepage2 = new EasyRdf_Resource($this->_graph, 'http://example.com/2');
         $this->_resource->set('foaf:homepage', $homepage1);
         $this->assertEquals(
             $this->_resource,
@@ -297,151 +439,6 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             array(),
             $this->_resource->all('rdf:test')
         );
-    }
-
-    public function testAdd()
-    {
-        $this->_resource->add('rdf:test', 'Test C');
-        $all = $this->_resource->all('rdf:test');
-        $this->assertEquals(3, count($all));
-        $this->assertStringEquals('Test A', $all[0]);
-        $this->assertStringEquals('Test B', $all[1]);
-        $this->assertStringEquals('Test C', $all[2]);
-    }
-
-    public function testAddWithUri()
-    {
-        $this->_resource->add(
-            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test',
-            'Test C'
-        );
-        $all = $this->_resource->all('rdf:test');
-        $this->assertEquals(3, count($all));
-        $this->assertStringEquals('Test A', $all[0]);
-        $this->assertStringEquals('Test B', $all[1]);
-        $this->assertStringEquals('Test C', $all[2]);
-    }
-
-    public function testAddMultipleValues()
-    {
-        $this->_resource->add('rdf:test', array('Test C', 'Test D'));
-        $all = $this->_resource->all('rdf:test');
-        $this->assertEquals(4, count($all));
-        $this->assertStringEquals('Test A', $all[0]);
-        $this->assertStringEquals('Test B', $all[1]);
-        $this->assertStringEquals('Test C', $all[2]);
-        $this->assertStringEquals('Test D', $all[3]);
-    }
-
-    public function testAddMultipleProperties()
-    {
-        $this->_resource->add(array('rdf:test1', 'rdf:test2'), 'Test');
-
-        $all = $this->_resource->all('rdf:test1');
-        $this->assertEquals(1, count($all));
-        $this->assertStringEquals('Test', $all[0]);
-
-        $all = $this->_resource->all('rdf:test2');
-        $this->assertEquals(1, count($all));
-        $this->assertStringEquals('Test', $all[0]);
-    }
-
-    public function testAddAssociateProperties()
-    {
-        $this->_resource->add(array('rdf:test' => 'Test C'));
-        $all = $this->_resource->all('rdf:test');
-        $this->assertEquals(3, count($all));
-        $this->assertStringEquals('Test A', $all[0]);
-        $this->assertStringEquals('Test B', $all[1]);
-        $this->assertStringEquals('Test C', $all[2]);
-    }
-
-    public function testAddLiteralMultipleTimes()
-    {
-        $this->_resource->set('rdf:test', 'foobar');
-        $this->_resource->add('rdf:test', 'foobar');
-        $all = $this->_resource->all('rdf:test');
-        $this->assertEquals(1, count($all));
-        $this->assertStringEquals('foobar', $all[0]);
-    }
-
-    public function testAddLiteralDifferentLanguages()
-    {
-        $this->_resource->set('rdf:test', new EasyRdf_Literal('foobar', 'en'));
-        $this->_resource->add('rdf:test', new EasyRdf_Literal('foobar', 'fr'));
-        $all = $this->_resource->all('rdf:test');
-        $this->assertEquals(2, count($all));
-        $this->assertStringEquals('foobar', $all[0]);
-        $this->assertStringEquals('foobar', $all[1]);
-    }
-
-    public function testAddNull()
-    {
-        $this->_resource->add('rdf:test', null);
-        $all = $this->_resource->all('rdf:test');
-        $this->assertEquals(2, count($all));
-        $this->assertStringEquals('Test A', $all[0]);
-        $this->assertStringEquals('Test B', $all[1]);
-    }
-
-    public function testAddNullKey()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_resource->add(null, 'Test C');
-    }
-
-    public function testAddEmptyKey()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_resource->add('', 'Test C');
-    }
-
-    public function testAddNonStringKey()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_resource->add(array(), 'Test C');
-    }
-
-    public function testDelete()
-    {
-        $this->assertStringEquals('Test A', $this->_resource->get('rdf:test'));
-        $this->_resource->delete('rdf:test');
-        $this->assertEquals(array(), $this->_resource->all('rdf:test'));
-    }
-
-    public function testDeleteWithUri()
-    {
-        $this->assertStringEquals('Test A', $this->_resource->get('rdf:test'));
-        $this->_resource->delete(
-            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
-        );
-        $this->assertEquals(array(), $this->_resource->all('rdf:test'));
-    }
-
-    public function testDeleteNullKey()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_resource->delete(null);
-    }
-
-    public function testDeleteEmptyKey()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_resource->delete('');
-    }
-
-    public function testDeleteNonStringKey()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_resource->delete(array());
-    }
-
-    public function testDeleteValue()
-    {
-        $testa = $this->_resource->get('rdf:test');
-        $this->_resource->delete('rdf:test', $testa);
-        $all = $this->_resource->all('rdf:test');
-        $this->assertEquals(1, count($all));
     }
 
     public function testJoinDefaultGlue()
@@ -503,7 +500,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testIsBnode()
     {
-        $bnode = new EasyRdf_Resource('_:foobar');
+        $bnode = new EasyRdf_Resource($this->_graph, '_:foobar');
         $this->assertEquals(true, $bnode->isBnode());
     }
 
@@ -514,7 +511,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testGetNodeId()
     {
-        $bnode = new EasyRdf_Resource('_:foobar');
+        $bnode = new EasyRdf_Resource($this->_graph, '_:foobar');
         $this->assertEquals('foobar', $bnode->getNodeId());
     }
 
@@ -542,84 +539,6 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
-    public function testMatchesLiteralValue()
-    {
-        $this->_resource->set('rdf:test', 'foobar');
-        $this->assertTrue(
-            $this->_resource->matches('rdf:test', 'foobar')
-        );
-    }
-
-    public function testMatchesDifferentLiteralObjects()
-    {
-        $lit1 = new EasyRdf_Literal('foobar');
-        $lit2 = new EasyRdf_Literal('foobar');
-        $this->_resource->set('rdf:test', $lit1);
-        $this->assertTrue(
-            $this->_resource->matches('rdf:test', $lit2)
-        );
-    }
-
-    public function testNotMatchesDifferentLanguages()
-    {
-        $lit1 = new EasyRdf_Literal('foobar', 'en');
-        $lit2 = new EasyRdf_Literal('foobar', 'fr');
-        $this->_resource->set('rdf:test', $lit1);
-        $this->assertFalse(
-            $this->_resource->matches('rdf:test', $lit2)
-        );
-    }
-
-    public function testNotMatchesDifferentDatatypes()
-    {
-        $lit1 = new EasyRdf_Literal('1');
-        $lit2 = new EasyRdf_Literal(1);
-        $this->_resource->set('rdf:test', $lit1);
-        $this->assertFalse(
-            $this->_resource->matches('rdf:test', $lit2)
-        );
-    }
-    
-    public function testMatchesSameResourceObject()
-    {
-        $res = new EasyRdf_Resource('http://example.co/foo');
-        $this->_resource->set('rdf:test', $res);
-        $this->assertTrue(
-            $this->_resource->matches('rdf:test', $res)
-        );
-    }
-    
-    public function testNotMatchesDifferentResourceObjects()
-    {
-        $res1 = new EasyRdf_Resource('http://example.co/foo');
-        $res2 = new EasyRdf_Resource('http://example.co/foo');
-        $this->_resource->set('rdf:test', $res1);
-        $this->assertFalse(
-            $this->_resource->matches('rdf:test', $res2)
-        );
-    }
-
-    public function testNotMatches()
-    {
-        $this->assertFalse(
-            $this->_resource->matches('rdf:test', 'Test C')
-        );
-    }
-
-    public function testHas()
-    {
-        $this->assertTrue(
-            $this->_resource->has('rdf:test')
-        );
-    }
-
-    public function testNDoesNotHave()
-    {
-        $this->assertFalse(
-            $this->_resource->has('test:noprop')
-        );
-    }
-
     public function testTypes()
     {
         $types = $this->_resource->types();
@@ -632,11 +551,11 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertStringEquals('foaf:Person', $this->_resource->type());
     }
 
-    public function testTypeResource()
+    public function testTypeAsResource()
     {
         $this->assertEquals(
             $this->_type,
-            $this->_resource->typeResource()
+            $this->_resource->typeAsResource()
         );
     }
 
@@ -659,8 +578,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testPrimaryTopic()
     {
-        $doc = new EasyRdf_Resource('http://example.com/foaf.rdf');
-        $person = new EasyRdf_Resource('http://example.com/foaf.rdf#me');
+        $doc = new EasyRdf_Resource($this->_graph, 'http://example.com/foaf.rdf');
+        $person = new EasyRdf_Resource($this->_graph, 'http://example.com/foaf.rdf#me');
         $doc->add('foaf:primaryTopic', $person);
         $this->assertEquals(
             'http://example.com/foaf.rdf#me',
@@ -670,8 +589,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testIsPrimaryTopicOf()
     {
-        $doc = new EasyRdf_Resource('http://example.com/foaf.rdf');
-        $person = new EasyRdf_Resource('http://example.com/foaf.rdf#me');
+        $doc = new EasyRdf_Resource($this->_graph, 'http://example.com/foaf.rdf');
+        $person = new EasyRdf_Resource($this->_graph, 'http://example.com/foaf.rdf#me');
         $person->add('foaf:isPrimaryTopicOf', $doc);
         $this->assertEquals(
             'http://example.com/foaf.rdf#me',
@@ -681,25 +600,25 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testPrefix()
     {
-        $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $foafName = new EasyRdf_Resource($this->_graph, 'http://xmlns.com/foaf/0.1/name');
         $this->assertStringEquals('foaf', $foafName->prefix());
     }
 
     public function testUnknownPrefix()
     {
-        $unknown = new EasyRdf_Resource('http://example.com/foo');
+        $unknown = new EasyRdf_Resource($this->_graph, 'http://example.com/foo');
         $this->assertNull($unknown->prefix());
     }
 
     public function testShorten()
     {
-        $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $foafName = new EasyRdf_Resource($this->_graph, 'http://xmlns.com/foaf/0.1/name');
         $this->assertEquals('foaf:name', $foafName->shorten());
     }
 
     public function testShortenUnknown()
     {
-        $unknown = new EasyRdf_Resource('http://example.com/foo');
+        $unknown = new EasyRdf_Resource($this->_graph, 'http://example.com/foo');
         $this->assertEquals(null, $unknown->shorten());
     }
 
@@ -739,31 +658,32 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertStringEquals('Dc Title', $this->_resource->label('en'));
     }
 
-    public function testDumpValue()
-    {
-        $this->assertEquals(
-            'http://example.com/#me',
-            $this->_resource->dumpValue(false)
-        );
+# FIXME: no-longer used
+//     public function testDumpValue()
+//     {
+//         $this->assertEquals(
+//             'http://example.com/#me',
+//             $this->_resource->dumpValue(false)
+//         );
+// 
+//         $html = $this->_resource->dumpValue(true);
+//         $this->assertContains("<a href='http://example.com/#me'", $html);
+//         $this->assertContains("http://example.com/#me</a>", $html);
+//     }
 
-        $html = $this->_resource->dumpValue(true);
-        $this->assertContains("<a href='http://example.com/#me'", $html);
-        $this->assertContains("http://example.com/#me</a>", $html);
-    }
-
-    public function testDumpShortenableValue()
-    {
-        $this->assertEquals(
-            'foaf:Person',
-            $this->_type->dumpValue(false)
-        );
-
-        $html = $this->_type->dumpValue(true);
-        $this->assertContains(
-            "<a href='http://xmlns.com/foaf/0.1/Person'", $html
-        );
-        $this->assertContains("foaf:Person</a>", $html);
-    }
+//     public function testDumpShortenableValue()
+//     {
+//         $this->assertEquals(
+//             'foaf:Person',
+//             $this->_type->dumpValue(false)
+//         );
+// 
+//         $html = $this->_type->dumpValue(true);
+//         $this->assertContains(
+//             "<a href='http://xmlns.com/foaf/0.1/Person'", $html
+//         );
+//         $this->assertContains("foaf:Person</a>", $html);
+//     }
 
     public function testDump()
     {
@@ -808,38 +728,9 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testDumpWithNoProperties()
     {
-        $resource = new EasyRdf_Resource("http://example.com/empty");
+        $resource = new EasyRdf_Resource($this->_graph, "http://example.com/empty");
         $this->assertEquals('', $resource->dump(false));
         $this->assertEquals('', $resource->dump(true));
-    }
-
-    public function testMagicGet()
-    {
-        $this->assertStringEquals('Test A', $this->_resource->getRdf_test());
-    }
-
-    public function testMagicGetNonExistantProperty()
-    {
-        $this->assertStringEquals('', $this->_resource->getFoo_bar());
-    }
-
-    public function testMagicAll()
-    {
-        $all = $this->_resource->allRdf_test();
-        $this->assertEquals(2, count($all));
-        $this->assertStringEquals('Test A', $all[0]);
-        $this->assertStringEquals('Test B', $all[1]);
-    }
-
-    public function testMagicAllNonExistantProperty()
-    {
-        $this->assertEquals(array(), $this->_resource->allFoo_bar());
-    }
-
-    public function testMagicBadMethodCall()
-    {
-        $this->setExpectedException('BadMethodCallException');
-        $this->_resource->fooBar();
     }
 
     public function testToString()

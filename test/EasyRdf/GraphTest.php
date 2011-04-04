@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -208,7 +208,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->load('http://www.example.com/foaf.mock', 'data', 'mock');
         $this->assertStringEquals(
             'Joseph Bloggs',
-            $graph->resource('http://www.example.com/joe#me')->get('foaf:name')
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
         );
     }
 
@@ -218,30 +218,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph = new EasyRdf_Graph('http://www.example.com/');
         $this->assertStringEquals(
             'Joe Bloggs',
-            $graph->resource('http://www.example.com/joe#me')->get('foaf:name')
-        );
-    }
-
-    public function testLoadDuplicateBNodes()
-    {
-        $foafName = 'http://xmlns.com/foaf/0.1/name';
-        $bnodeA = array( '_:genid1' => array(
-            $foafName => array(array( 'type' => 'literal', 'value' => 'A' ))
-        ));
-        $bnodeB = array( '_:genid1' => array(
-            $foafName => array(array( 'type' => 'literal', 'value' => 'B' ))
-        ));
-
-        $graph = new EasyRdf_Graph();
-        $graph->load('file://bnodeA', $bnodeA);
-        $graph->load('file://bnodeB', $bnodeB);
-        $this->assertStringEquals(
-            'A',
-            $graph->resource('_:eid1')->get('foaf:name')
-        );
-        $this->assertStringEquals(
-            'B',
-            $graph->resource('_:eid2')->get('foaf:name')
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
         );
     }
 
@@ -251,7 +228,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
         $this->assertStringEquals(
             'Joe Bloggs',
-            $graph->resource('http://www.example.com/joe#me')->get('foaf:name')
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
         );
     }
 
@@ -295,27 +272,29 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->resource(array());
     }
 
-    public function testSetType()
+    public function testResourceWithType()
     {
         $graph = new EasyRdf_Graph();
         $resource = $graph->resource(
             'http://www.foo.com/bar',
             'foaf:Person'
         );
-        $this->assertStringEquals('foaf:Person', $resource->type());
+        $type = $graph->type('http://www.foo.com/bar');
+        $this->assertStringEquals('foaf:Person', $type);
     }
 
-    public function testSetTypeWithUri()
+    public function testResourceWithTypeUri()
     {
         $graph = new EasyRdf_Graph();
         $resource = $graph->resource(
             'http://www.foo.com/bar',
             'http://xmlns.com/foaf/0.1/Person'
         );
-        $this->assertStringEquals('foaf:Person', $resource->type());
+        $type = $graph->type('http://www.foo.com/bar');
+        $this->assertStringEquals('foaf:Person', $type);
     }
 
-    public function testSetMultipleTypes()
+    public function testResourceWithMultipleTypes()
     {
         $graph = new EasyRdf_Graph();
         $resource = $graph->resource(
@@ -394,104 +373,104 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph();
         $graph->add('http://www.example.com/joe#me', 'foaf:name', 'Joe');
-        $resource = $graph->resource('http://www.example.com/joe#me');
-        $this->assertStringEquals('Joe', $resource->get('foaf:name'));
+        $this->assertStringEquals('Joe', $graph->get('http://www.example.com/joe#me','foaf:name'));
     }
 
     public function testAddSingleValueToResource()
     {
         $graph = new EasyRdf_Graph();
-        $resource = $graph->resource('http://www.example.com/joe#me');
-        $graph->add($resource, 'foaf:name', 'Joe');
-        $this->assertStringEquals('Joe', $resource->get('foaf:name'));
+        $graph->add('http://www.example.com/joe#me', 'foaf:name', 'Joe');
+        $this->assertStringEquals('Joe', $graph->get('http://www.example.com/joe#me', 'foaf:name'));
     }
 
-    public function testAddMultipleValuesToString()
-    {
-        $graph = new EasyRdf_Graph();
-        $resource = $graph->resource('http://www.example.com/joe#me');
-        $graph->add(
-            'http://www.example.com/joe#me',
-            'foaf:name',
-            array('Joe','Joseph')
-        );
+# FIXME: should this be allowed?
+//     public function testAddMultipleValuesToString()
+//     {
+//         $graph = new EasyRdf_Graph();
+//         $graph->add(
+//             'http://www.example.com/joe#me',
+//             'foaf:name',
+//             array('Joe','Joseph')
+//         );
+// 
+//         $all = $graph->all('http://www.example.com/joe#me', 'foaf:name');
+//         $this->assertStringEquals('Joe', $all[0]);
+//         $this->assertStringEquals('Joseph', $all[1]);
+//     }
+// 
+//     public function testAddMultipleValuesToResource()
+//     {
+//         $graph = new EasyRdf_Graph();
+//         $graph->add('http://www.example.com/joe#me', 'foaf:name', array('Joe','Joseph'));
+// 
+//         $all = $resource->all('http://www.example.com/joe#me', 'foaf:name');
+//         $this->assertStringEquals('Joe', $all[0]);
+//         $this->assertStringEquals('Joseph', $all[1]);
+//     }
 
-        $all = $resource->all('foaf:name');
-        $this->assertStringEquals('Joe', $all[0]);
-        $this->assertStringEquals('Joseph', $all[1]);
-    }
+# FIXME: move to ResourceTest.php?
+//     public function testAddMultiplePropertiesToResource()
+//     {
+//         $graph = new EasyRdf_Graph();
+//         $resource = $graph->resource('http://www.example.com/joe#me');
+//         $graph->add(
+//             $resource,
+//             array(
+//                 'foaf:givenname' => 'Joe',
+//                 'foaf:surname' => 'Bloggs'
+//             )
+//         );
+//         $this->assertStringEquals('Joe', $resource->get('foaf:givenname'));
+//         $this->assertStringEquals('Bloggs', $resource->get('foaf:surname'));
+//     }
 
-    public function testAddMultipleValuesToResource()
-    {
-        $graph = new EasyRdf_Graph();
-        $resource = $graph->resource('http://www.example.com/joe#me');
-        $graph->add($resource, 'foaf:name', array('Joe','Joseph'));
+# FIXME: probably will have to scrap this
+//     public function testAddAnonymousBNodeToResource()
+//     {
+//         $graph = new EasyRdf_Graph();
+//         $resource = $graph->resource('http://www.example.com/joe#me');
+//         $graph->add(
+//             $resource, 'foaf:knows', array('foaf:name' => 'Yves')
+//         );
+//         $yves = $resource->get('foaf:knows');
+//         $this->assertTrue($yves->isBNode());
+//         $this->assertStringEquals('Yves', $yves->get('foaf:name'));
+//     }
+// 
+//     public function testAddTypedBNodeToResource()
+//     {
+//         $graph = new EasyRdf_Graph();
+//         $resource = $graph->resource('http://www.example.com/joe#me');
+//         $graph->add(
+//             $resource, 'foaf:knows', array('rdf:type' => 'foaf:Person')
+//         );
+//         $person = $resource->get('foaf:knows');
+//         $this->assertTrue($person->isBNode());
+//         $this->assertStringEquals('foaf:Person', $person->type());
+//     }
+// 
+//     public function testAddBNodeViaPropertiesToResource()
+//     {
+//         $graph = new EasyRdf_Graph();
+//         $resource = $graph->resource('http://www.example.com/joe#me');
+//         $graph->add(
+//             $resource, array('foaf:knows' => array('foaf:name' => 'Yves'))
+//         );
+//         $yves = $resource->get('foaf:knows');
+//         $this->assertTrue($yves->isBNode());
+//         $this->assertStringEquals('Yves', $yves->get('foaf:name'));
+//     }
 
-        $all = $resource->all('foaf:name');
-        $this->assertStringEquals('Joe', $all[0]);
-        $this->assertStringEquals('Joseph', $all[1]);
-    }
+# FIXME: should this be a valid test?
+//     public function testAddPropertriesInvalidResourceClass()
+//     {
+//         $this->setExpectedException('InvalidArgumentException');
+//         $graph = new EasyRdf_Graph();
+//         $invalidResource = new EasyRdf_Utils();
+//         $graph->add($invalidResource, 'foaf:name', 'value');
+//     }
 
-    public function testAddMultiplePropertiesToResource()
-    {
-        $graph = new EasyRdf_Graph();
-        $resource = $graph->resource('http://www.example.com/joe#me');
-        $graph->add(
-            $resource,
-            array(
-                'foaf:givenname' => 'Joe',
-                'foaf:surname' => 'Bloggs'
-            )
-        );
-        $this->assertStringEquals('Joe', $resource->get('foaf:givenname'));
-        $this->assertStringEquals('Bloggs', $resource->get('foaf:surname'));
-    }
-
-    public function testAddAnonymousBNodeToResource()
-    {
-        $graph = new EasyRdf_Graph();
-        $resource = $graph->resource('http://www.example.com/joe#me');
-        $graph->add(
-            $resource, 'foaf:knows', array('foaf:name' => 'Yves')
-        );
-        $yves = $resource->get('foaf:knows');
-        $this->assertTrue($yves->isBNode());
-        $this->assertStringEquals('Yves', $yves->get('foaf:name'));
-    }
-
-    public function testAddTypedBNodeToResource()
-    {
-        $graph = new EasyRdf_Graph();
-        $resource = $graph->resource('http://www.example.com/joe#me');
-        $graph->add(
-            $resource, 'foaf:knows', array('rdf:type' => 'foaf:Person')
-        );
-        $person = $resource->get('foaf:knows');
-        $this->assertTrue($person->isBNode());
-        $this->assertStringEquals('foaf:Person', $person->type());
-    }
-
-    public function testAddBNodeViaPropertiesToResource()
-    {
-        $graph = new EasyRdf_Graph();
-        $resource = $graph->resource('http://www.example.com/joe#me');
-        $graph->add(
-            $resource, array('foaf:knows' => array('foaf:name' => 'Yves'))
-        );
-        $yves = $resource->get('foaf:knows');
-        $this->assertTrue($yves->isBNode());
-        $this->assertStringEquals('Yves', $yves->get('foaf:name'));
-    }
-
-    public function testAddPropertriesInvalidResourceClass()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        $graph = new EasyRdf_Graph();
-        $invalidResource = new EasyRdf_Utils();
-        $graph->add($invalidResource, 'foaf:name', 'value');
-    }
-
-    public function testType()
+    public function testGetType()
     {
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph(
@@ -558,28 +537,6 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertContains('http://example.com/joe#me', $html);
         $this->assertContains('>foaf:name</span>', $html);
         $this->assertContains('>&quot;Joe&quot;</span>', $html);
-    }
-
-    public function testMagicGet()
-    {
-        $data = readFixture('foaf.json');
-        $graph = new EasyRdf_Graph(
-            'http://www.example.com/joe/foaf.rdf', $data
-        );
-        $this->assertStringEquals(
-            "Joe Bloggs' FOAF File",
-            $graph->label()
-        );
-        $this->assertStringEquals(
-            "Joe Bloggs' FOAF File",
-            $graph->getRdfs_label()
-        );
-    }
-
-    public function testMagicGetUnknown()
-    {
-        $graph = new EasyRdf_Graph();
-        $this->assertNull($graph->getRdfs_label());
     }
 
     public function testToString()
