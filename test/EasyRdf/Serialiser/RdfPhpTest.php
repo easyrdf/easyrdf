@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -63,20 +63,20 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         );
 
         $php = $this->_serialiser->serialise($this->_graph, 'php');
-        $this->assertInternalType('array', $php);
+        $this->assertType('array', $php);
         $subject = $php['http://www.example.com/joe#me'];
-        $this->assertInternalType('array', $subject);
+        $this->assertType('array', $subject);
         $type = $subject['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0];
         $this->assertEquals('uri', $type['type']);
         $this->assertEquals('http://xmlns.com/foaf/0.1/Person', $type['value']);
         $name = $subject['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertInternalType('array', $name);
+        $this->assertType('array', $name);
         $this->assertEquals('literal', $name['type']);
         $this->assertEquals('Joe Bloggs', $name['value']);
         $this->assertFalse(isset($name['datatype']));
         $this->assertEquals('en', $name['lang']);
         $age = $subject['http://xmlns.com/foaf/0.1/age'][0];
-        $this->assertInternalType('array', $age);
+        $this->assertType('array', $age);
         $this->assertEquals('literal', $age['type']);
         $this->assertEquals('59', $age['value']);
         $this->assertEquals(
@@ -86,7 +86,7 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $this->assertFalse(isset($age['lang']));
 
         $nodeid = $subject['http://xmlns.com/foaf/0.1/project'][0]['value'];
-        $this->assertInternalType('array', $php[$nodeid]);
+        $this->assertType('array', $php[$nodeid]);
         $projectName = $php[$nodeid]['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertEquals('Project Name', $projectName['value']);
         $this->assertFalse(isset($projectName['lang']));
