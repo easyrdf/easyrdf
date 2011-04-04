@@ -40,6 +40,12 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 {
+    public function setUp()
+    {
+        $this->_graph = new EasyRdf_Graph();
+        $this->_resource = $this->_graph->resource('http://xmlns.com/foaf/0.1/name');
+    }
+
     public function tearDown()
     {
         EasyRdf_Namespace::delete('po');
@@ -221,8 +227,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testShortenResource()
     {
-        $resource = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
-        $this->assertEquals('foaf:name', EasyRdf_Namespace::shorten($resource));
+        $this->assertEquals('foaf:name', EasyRdf_Namespace::shorten($this->_resource));
     }
 
     public function testShortenUnknown()
@@ -289,10 +294,9 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testrefixOfUriForResource()
     {
-        $resource = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
         $this->assertEquals(
             'foaf',
-            EasyRdf_Namespace::prefixOfUri($resource)
+            EasyRdf_Namespace::prefixOfUri($this->_resource)
         );
     }
 
