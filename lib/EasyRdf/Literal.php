@@ -132,7 +132,7 @@ class EasyRdf_Literal
         return $this->_lang;
     }
     
-    public function toArray()
+    public function toRdfPhp()
     {
         $array = array('type' => 'literal', 'value' => $this->_value);
         
