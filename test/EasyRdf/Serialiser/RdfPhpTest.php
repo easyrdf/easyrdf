@@ -57,26 +57,25 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         );
         $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
         $joe->set('foaf:age', 59);
-        $this->_graph->add(
-            $joe, 'foaf:project',
-            array('foaf:name' => 'Project Name')
-        );
+        $project = $this->_graph->newBNode();
+        $project->add('foaf:name', 'Project Name');
+        $joe->add('foaf:project', $project);
 
         $php = $this->_serialiser->serialise($this->_graph, 'php');
-        $this->assertInternalType('array', $php);
+        $this->assertType('array', $php);
         $subject = $php['http://www.example.com/joe#me'];
-        $this->assertInternalType('array', $subject);
+        $this->assertType('array', $subject);
         $type = $subject['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0];
         $this->assertEquals('uri', $type['type']);
         $this->assertEquals('http://xmlns.com/foaf/0.1/Person', $type['value']);
         $name = $subject['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertInternalType('array', $name);
+        $this->assertType('array', $name);
         $this->assertEquals('literal', $name['type']);
         $this->assertEquals('Joe Bloggs', $name['value']);
         $this->assertFalse(isset($name['datatype']));
         $this->assertEquals('en', $name['lang']);
         $age = $subject['http://xmlns.com/foaf/0.1/age'][0];
-        $this->assertInternalType('array', $age);
+        $this->assertType('array', $age);
         $this->assertEquals('literal', $age['type']);
         $this->assertEquals('59', $age['value']);
         $this->assertEquals(
@@ -86,19 +85,11 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $this->assertFalse(isset($age['lang']));
 
         $nodeid = $subject['http://xmlns.com/foaf/0.1/project'][0]['value'];
-        $this->assertInternalType('array', $php[$nodeid]);
+        $this->assertType('array', $php[$nodeid]);
         $projectName = $php[$nodeid]['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertEquals('Project Name', $projectName['value']);
         $this->assertFalse(isset($projectName['lang']));
         $this->assertFalse(isset($projectName['datatype']));
-    }
-
-    function testSerialiseInvalidObject()
-    {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $joe->set('rdf:foo', $this);
-        $this->setExpectedException('EasyRdf_Exception');
-        $this->_serialiser->serialise($this->_graph, 'php');
     }
 
     function testSerialiseUnsupportedFormat()

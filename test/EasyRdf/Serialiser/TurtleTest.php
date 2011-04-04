@@ -93,10 +93,9 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     function testSerialiseBnode()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
-        $this->_graph->add(
-            $joe,
-            array('foaf:knows' => array('foaf:name' => 'Amy'))
-        );
+        $amy =  $this->_graph->newBnode();
+        $amy->addLiteral('foaf:name', 'Amy');
+        $joe->add('foaf:knows', $amy);
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertContains(
@@ -247,14 +246,6 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
             "\"bar\" .",
             $turtle
         );
-    }
-
-    function testSerialiseInvalidObject()
-    {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $joe->set('rdf:foo', $this);
-        $this->setExpectedException('EasyRdf_Exception');
-        $this->_serialiser->serialise($this->_graph, 'turtle');
     }
 
     function testSerialiseUnsupportedFormat()

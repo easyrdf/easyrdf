@@ -122,8 +122,8 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
     {
         $this->_graph->add(
             'http://www.example.com/joe#me',
-            array('foaf:name' =>
-            new EasyRdf_Literal('Joe', 'en'))
+            'foaf:name',
+            new EasyRdf_Literal('Joe', 'en')
         );
 
         $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
@@ -136,8 +136,8 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
     {
         $this->_graph->add(
             'http://www.example.com/joe#me',
-            array('foaf:age' =>
-            new EasyRdf_Literal(59, null, 'xsd:int'))
+            'foaf:age',
+            new EasyRdf_Literal(59, null, 'xsd:int')
         );
 
         $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
@@ -176,22 +176,14 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
     {
         $this->_graph->add(
             'http://www.example.com/joe#me',
-            array('foaf:bio' =>
-            new EasyRdf_Literal("<b>html</b>", null, 'rdf:XMLLiteral'))
+            'foaf:bio',
+            new EasyRdf_Literal("<b>html</b>", null, 'rdf:XMLLiteral')
         );
 
         $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
         $this->assertContains(
             "<foaf:bio rdf:parseType=\"Literal\"><b>html</b></foaf:bio>", $xml
         );
-    }
-
-    function testSerialiseInvalidObject()
-    {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $joe->set('rdf:foo', $this);
-        $this->setExpectedException('EasyRdf_Exception');
-        $this->_serialiser->serialise($this->_graph, 'rdfxml');
     }
 
     function testSerialiseUnsupportedFormat()

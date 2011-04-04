@@ -60,10 +60,9 @@ class EasyRdf_Serialiser_ArcTest extends EasyRdf_TestCase
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:name', 'Joe Bloggs');
-        $this->_graph->add(
-            $joe, 'foaf:project',
-            array('foaf:name' => 'Project Name')
-        );
+        $project = $this->_graph->newBNode();
+        $project->add('foaf:name', 'Project Name');
+        $joe->add('foaf:project', $project);
 
         $rdfxml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
         $this->assertNotNull($rdfxml);

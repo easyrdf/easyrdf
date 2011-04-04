@@ -57,10 +57,9 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
         );
         $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
         $joe->set('foaf:age', 59);
-        $this->_graph->add(
-            $joe, 'foaf:project',
-            array('foaf:name' => 'Project Name')
-        );
+        $project = $this->_graph->newBNode();
+        $project->add('foaf:name', 'Project Name');
+        $joe->add('foaf:project', $project);
 
         $this->assertEquals(
             '{"http:\/\/www.example.com\/joe#me":{'.
