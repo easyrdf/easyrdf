@@ -56,6 +56,7 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
     public function setUp()
     {
         $this->_graph = new EasyRdf_Graph();
+        $this->_resource = $this->_graph->resource('http://www.example.com/');
         $this->_parser = new MockParser();
         $this->_data = readFixture('foaf.json');
     }
@@ -99,9 +100,8 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
 
     public function testParseNonGraph()
     {
-        $nongraph = new EasyRdf_Resource('http://www.example.com/');
         $this->setExpectedException('InvalidArgumentException');
-        $this->_parser->parse($nongraph, $this->_data, 'json', null);
+        $this->_parser->parse($this->_resource, $this->_data, 'json', null);
     }
 
     public function testParseNullData()

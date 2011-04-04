@@ -56,6 +56,7 @@ class EasyRdf_SerialiserTest extends EasyRdf_TestCase
     public function setUp()
     {
         $this->_graph = new EasyRdf_Graph();
+        $this->_resource = $this->_graph->resource('http://www.example.com/');
         $this->_serialiser = new MockSerialiser();
     }
 
@@ -88,9 +89,8 @@ class EasyRdf_SerialiserTest extends EasyRdf_TestCase
 
     public function testSerialiseNonGraph()
     {
-        $nongraph = new EasyRdf_Resource('http://www.example.com/');
         $this->setExpectedException('InvalidArgumentException');
-        $this->_serialiser->serialise($nongraph, 'php');
+        $this->_serialiser->serialise($this->_resource, 'php');
     }
 
     public function testSerialiseNullFormat()
