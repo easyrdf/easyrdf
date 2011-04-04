@@ -82,7 +82,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testGetFormats()
     {
         $formats = EasyRdf_Format::getFormats();
-        $this->assertInternalType('array', $formats);
+        $this->assertType('array', $formats);
         $this->assertGreaterThan(0, count($formats));
         foreach ($formats as $format) {
             $this->assertEquals('EasyRdf_Format', get_class($format));
@@ -329,7 +329,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     {
         $this->_format->setParserClass('MockParserClass');
         $parser = $this->_format->newParser();
-        $this->assertInternalType('object', $parser);
+        $this->assertType('object', $parser);
         $this->assertEquals('MockParserClass', get_class($parser));
     }
 
@@ -371,7 +371,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     {
         $this->_format->setSerialiserClass('MockSerialiserClass');
         $serialiser = $this->_format->newSerialiser();
-        $this->assertInternalType('object', $serialiser);
+        $this->assertType('object', $serialiser);
         $this->assertEquals('MockSerialiserClass', get_class($serialiser));
     }
 
