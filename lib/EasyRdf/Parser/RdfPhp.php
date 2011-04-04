@@ -61,60 +61,12 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
     {
     }
 
-    /**
-     * Get the type of a resource from some RDF/PHP
-     * @ignore
-     */
-    protected function getResourceType($data, $uri)
+    protected function remapBnode($graph, $name)
     {
-        if (array_key_exists($uri, $data)) {
-            $subj = $data[$uri];
-            if (array_key_exists(self::RDF_TYPE_URI, $subj)) {
-                $types = array();
-                foreach ($subj[self::RDF_TYPE_URI] as $type) {
-                    if ($type['type'] == 'uri') {
-                        array_push($types, $type['value']);
-                    }
-                }
-                if (count($types) > 0) {
-                    return $types;
-                }
-            }
+        if (!isset($this->_bnodeMap[$name])) {
+            $this->_bnodeMap[$name] = $graph->newBNodeId();
         }
-        return null;
-    }
-
-    /**
-     * @ignore
-     */
-    protected function addProperty($graph, $data, $res, $property, $objects)
-    {
-        foreach ($objects as $object) {
-            if ($property == self::RDF_TYPE_URI) {
-                # Type has already been set
-            } else if ($object['type'] == 'literal') {
-                $res->add($property, new EasyRdf_Literal($object));
-            } else if ($object['type'] == 'uri') {
-                $type = $this->getResourceType(
-                    $data, $object['value']
-                );
-                $objres = $graph->resource($object['value'], $type);
-                $res->add($property, $objres);
-            } else if ($object['type'] == 'bnode') {
-                $objuri = $object['value'];
-                if (!isset($this->_bnodeMap[$objuri])) {
-                    $type = $this->getResourceType(
-                        $data, $object['value']
-                    );
-                    $this->_bnodeMap[$objuri] = $graph->newBNode($type);
-                }
-                $res->add($property, $this->_bnodeMap[$objuri]);
-            } else {
-                throw new EasyRdf_Exception(
-                    "Document contains unsupported type: " . $object['type']
-                );
-            }
-        }
+        return $this->_bnodeMap[$name];
     }
 
     /**
@@ -139,21 +91,19 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
         // Reset the bnode mapping
         $this->_bnodeMap = array();
 
-        foreach ($data as $subject => $touple) {
-            $type = $this->getResourceType($data, $subject);
+        # FIXME: validate the data (?)
 
-            # Is this a bnode?
-            if (substr($subject, 0, 2) == '_:') {
-                if (!isset($this->_bnodeMap[$subject])) {
-                    $this->_bnodeMap[$subject] = $graph->newBNode($type);
-                }
-                $res = $this->_bnodeMap[$subject];
-            } else {
-                $res = $graph->resource($subject, $type);
+        foreach ($data as $subject => $properties) {
+            if (substr($subject, 0, 2) === '_:') {
+                $subject = $this->remapBnode($graph, $subject);
             }
-
-            foreach ($touple as $property => $objects) {
-                $this->addProperty($graph, $data, $res, $property, $objects);
+            foreach ($properties as $property => $objects) {
+                foreach ($objects as $object) {
+                    if ($object['type'] === 'bnode') {
+                        $object['value'] = $this->remapBnode($graph, $object['value']);
+                    }
+                    $graph->add($subject, $property, $object);
+                }
             }
         }
 
