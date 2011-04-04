@@ -80,6 +80,30 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
         $this->assertEquals(null, $name->getDatatype());
     }
 
+
+    public function testParseDuplicateBNodes()
+    {
+        $foafName = 'http://xmlns.com/foaf/0.1/name';
+        $bnodeA = array( '_:genid1' => array(
+            $foafName => array(array( 'type' => 'literal', 'value' => 'A' ))
+        ));
+        $bnodeB = array( '_:genid1' => array(
+            $foafName => array(array( 'type' => 'literal', 'value' => 'B' ))
+        ));
+
+        $this->_parser->parse($this->_graph, $bnodeA, 'php', null);
+        $this->_parser->parse($this->_graph, $bnodeB, 'php', null);
+
+        $this->assertStringEquals(
+            'A',
+            $this->_graph->get('_:eid1', 'foaf:name')
+        );
+        $this->assertStringEquals(
+            'B',
+            $this->_graph->get('_:eid2', 'foaf:name')
+        );
+    }
+
     function testParseUnsupportedFormat()
     {
         $this->setExpectedException('EasyRdf_Exception');
