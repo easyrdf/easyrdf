@@ -383,6 +383,71 @@ class EasyRdf_Graph
         }
     }
 
+    public function get($resource, $property, $type=null, $lang=null)
+    {
+        if (is_array($property)) {
+            foreach ($property as $p) {
+                $value = $this->get($resource, $p, $type, $lang);
+                if ($value)
+                    return $value;
+            }
+            return null;
+        }
+
+        $this->checkAccessorParams($resource, $property);
+
+        # FIXME: duplicated code
+        // Is an inverse property being requested?
+        if (substr($property, 0, 1) == '-') {
+            $property = substr($property, 1);
+            if (isset($this->_revIndex[$resource]))
+                $properties = $this->_revIndex[$resource];
+        } else {
+            if (isset($this->_index[$resource]))
+                $properties = $this->_index[$resource];
+        }
+
+        if (!isset($properties)) {
+            return null;
+        }
+
+        # FIXME: better variable name
+        $data = null;
+        $property = EasyRdf_Namespace::expand($property);
+        if (isset($properties[$property])) {
+            if ($type) {
+                foreach ($properties[$property] as $value) {
+                    if ($value['type'] == $type and ($lang == null or (isset($value['lang']) and $value['lang'] == $lang))) {
+                        $data = $value;
+                        break;
+                    }
+                }
+            } else if (count($properties[$property]) > 0) {
+                $data = $properties[$property][0];
+            }
+        }
+
+        return $this->arrayToObject($data);
+    }
+
+    public function getLiteral($resource, $property, $lang=null)
+    {
+        return $this->get($resource, $property, 'literal', $lang);
+    }
+
+    # FIXME: better function name?
+    protected function arrayToObject($data)
+    {
+        if ($data) {
+            if ($data['type'] == 'uri' or $data['type'] == 'bnode') {
+                return $this->resource($data['value']);
+            } else {
+                return new EasyRdf_Literal($data);
+            }
+        } else {
+            return null;
+        }
+    }
 
     /** Add data to the graph
      *
@@ -495,72 +560,6 @@ class EasyRdf_Graph
 
         // Add the new values
         return $this->add($resource, $property, $value);
-    }
-
-    public function get($resource, $property, $type=null, $lang=null)
-    {
-        if (is_array($property)) {
-            foreach ($property as $p) {
-                $value = $this->get($resource, $p, $type, $lang);
-                if ($value)
-                    return $value;
-            }
-            return null;
-        }
-
-        $this->checkAccessorParams($resource, $property);
-
-        # FIXME: duplicated code
-        // Is an inverse property being requested?
-        if (substr($property, 0, 1) == '-') {
-            $property = substr($property, 1);
-            if (isset($this->_revIndex[$resource]))
-                $properties = $this->_revIndex[$resource];
-        } else {
-            if (isset($this->_index[$resource]))
-                $properties = $this->_index[$resource];
-        }
-
-        if (!isset($properties)) {
-            return null;
-        }
-
-        # FIXME: better variable name
-        $data = null;
-        $property = EasyRdf_Namespace::expand($property);
-        if (isset($properties[$property])) {
-            if ($type) {
-                foreach ($properties[$property] as $value) {
-                    if ($value['type'] == $type and ($lang == null or (isset($value['lang']) and $value['lang'] == $lang))) {
-                        $data = $value;
-                        break;
-                    }
-                }
-            } else if (count($properties[$property]) > 0) {
-                $data = $properties[$property][0];
-            }
-        }
-
-        return $this->arrayToObject($data);
-    }
-
-    # FIXME: better function name?
-    protected function arrayToObject($data)
-    {
-        if ($data) {
-            if ($data['type'] == 'uri' or $data['type'] == 'bnode') {
-                return $this->resource($data['value']);
-            } else {
-                return new EasyRdf_Literal($data);
-            }
-        } else {
-            return null;
-        }
-    }
-
-    public function getLiteral($resource, $property, $lang=null)
-    {
-        return $this->get($resource, $property, 'literal', $lang);
     }
 
     /** Delete a property (or optionally just a specific value)
