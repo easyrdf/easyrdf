@@ -389,7 +389,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://example.com/');
         $this->assertStringEquals(
             $this->_uri,
-            $this->_graph->get('http://example.com/', '-foaf:homepage')
+            $this->_graph->get('http://example.com/', '^foaf:homepage')
         );
     }
 

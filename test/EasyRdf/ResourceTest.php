@@ -109,7 +109,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $homepage = new EasyRdf_Resource($this->_graph, 'http://example.com/');
         $this->_resource->add('foaf:homepage', $homepage);
-        $this->assertEquals($this->_resource, $homepage->get('-foaf:homepage'));
+        $this->assertEquals($this->_resource, $homepage->get('^foaf:homepage'));
     }
 
     public function testGetArray()
@@ -186,7 +186,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testAllInverse()
     {
-        $all = $this->_type->all('-rdf:type');
+        $all = $this->_type->all('^rdf:type');
         $this->assertEquals(1, count($all));
         $this->assertEquals($this->_resource, $all[0]);
     }
@@ -383,21 +383,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_resource->set('foaf:homepage', $homepage1);
         $this->assertEquals(
             $this->_resource,
-            $homepage1->get('-foaf:homepage')
+            $homepage1->get('^foaf:homepage')
         );
         $this->assertEquals(
             null,
-            $homepage2->get('-foaf:homepage')
+            $homepage2->get('^foaf:homepage')
         );
 
         $this->_resource->set('foaf:homepage', $homepage2);
         $this->assertEquals(
             null,
-            $homepage1->get('-foaf:homepage')
+            $homepage1->get('^foaf:homepage')
         );
         $this->assertEquals(
             $this->_resource,
-            $homepage2->get('-foaf:homepage')
+            $homepage2->get('^foaf:homepage')
         );
     }
 

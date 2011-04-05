@@ -325,7 +325,7 @@ class EasyRdf_Graph
     public function allOfType($type)
     {
         $uri = EasyRdf_Namespace::expand($type);
-        return $this->all($uri, '-rdf:type');
+        return $this->all($uri, '^rdf:type');
     }
 
     /** Get the URI of the graph
@@ -398,7 +398,7 @@ class EasyRdf_Graph
 
         # FIXME: duplicated code
         // Is an inverse property being requested?
-        if (substr($property, 0, 1) == '-') {
+        if (substr($property, 0, 1) == '^') {
             $property = substr($property, 1);
             if (isset($this->_revIndex[$resource]))
                 $properties = $this->_revIndex[$resource];
@@ -630,7 +630,7 @@ class EasyRdf_Graph
 
         # FIXME: duplicated code
         // Is an inverse property being requested?
-        if (substr($property, 0, 1) == '-') {
+        if (substr($property, 0, 1) == '^') {
             $property = substr($property, 1);
             if (isset($this->_revIndex[$resource]))
                 $properties = $this->_revIndex[$resource];
@@ -973,7 +973,7 @@ class EasyRdf_Graph
 
         if ($resource) {
             return $this->get(
-                $resource, array('foaf:primaryTopic', '-foaf:isPrimaryTopicOf')
+                $resource, array('foaf:primaryTopic', '^foaf:isPrimaryTopicOf')
             );
         } else {
             return null;
