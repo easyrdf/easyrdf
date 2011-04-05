@@ -440,6 +440,65 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->get($this->_uri, $this);
     }
 
+    public function testAll()
+    {
+        $all = $this->_graph->all($this->_uri, 'rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+    }
+
+    public function testAllWithPropertyUri()
+    {
+        $all = $this->_graph->all(
+            $this->_uri,
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+        );
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+    }
+
+    public function testAllWithLang()
+    {
+        $all = $this->_graph->all($this->_uri, 'rdf:test', 'literal', 'en');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('Test B', $all[0]);
+    }
+
+    public function testAllInverse()
+    {
+        $all = $this->_graph->all('foaf:Person', '^rdf:type');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals($this->_uri, $all[0]);
+    }
+
+    public function testAllNonExistantProperty()
+    {
+        $this->assertEquals(
+            array(),
+            $this->_graph->all($this->_uri, 'foo:bar')
+        );
+    }
+
+    public function testAllNullKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->all($this->_uri, null);
+    }
+
+    public function testAllEmptyKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->all($this->_uri, '');
+    }
+
+    public function testAllNonStringKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->all($this->_uri, array());
+    }
+
     public function testAllOfType()
     {
         $data = readFixture('foaf.json');
