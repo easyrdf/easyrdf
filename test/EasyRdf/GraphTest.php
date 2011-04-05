@@ -894,6 +894,42 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertContains('>&quot;Joe&quot;</span>', $html);
     }
 
+    public function testLabelWithSkosPrefLabel()
+    {
+        $this->_graph->addLiteral($this->_uri, 'skos:prefLabel', 'Preferred Label');
+        $this->_graph->addLiteral($this->_uri, 'rdfs:label', 'Label Text');
+        $this->_graph->addLiteral($this->_uri, 'foaf:name', 'Foaf Name');
+        $this->_graph->addLiteral($this->_uri, 'dc:title', 'Dc Title');
+        $this->assertStringEquals('Preferred Label', $this->_graph->label($this->_uri));
+    }
+
+    public function testLabelWithRdfsLabel()
+    {
+        $this->_graph->addLiteral($this->_uri, 'rdfs:label', 'Label Text');
+        $this->_graph->addLiteral($this->_uri, 'foaf:name', 'Foaf Name');
+        $this->_graph->addLiteral($this->_uri, 'dc:title', 'Dc Title');
+        $this->assertStringEquals('Label Text', $this->_graph->label($this->_uri));
+    }
+
+    public function testLabelWithFoafName()
+    {
+        $this->_graph->addLiteral($this->_uri, 'foaf:name', 'Foaf Name');
+        $this->_graph->addLiteral($this->_uri, 'dc:title', 'Dc Title');
+        $this->assertStringEquals('Foaf Name', $this->_graph->label($this->_uri));
+    }
+
+    public function testLabelWithDc11Title()
+    {
+        $this->_graph->addLiteral($this->_uri, 'dc11:title', 'Dc11 Title');
+        $this->assertStringEquals('Dc11 Title', $this->_graph->label($this->_uri));
+    }
+
+    public function testLabelNoRdfsLabel()
+    {
+        $this->assertNull($this->_graph->label($this->_uri));
+    }
+
+
     public function testToString()
     {
         $data = readFixture('foaf.json');

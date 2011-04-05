@@ -947,7 +947,10 @@ class EasyRdf_Graph
             $resource = $this->_uri;
 
         return $this->get(
-            $resource, array('rdfs:label', 'foaf:name', 'dc:title', 'dc11:title'), 'literal', $lang
+            $resource,
+            array('skos:prefLabel', 'rdfs:label', 'foaf:name', 'dc:title', 'dc11:title'),
+            'literal',
+            $lang
         );
     }
 
