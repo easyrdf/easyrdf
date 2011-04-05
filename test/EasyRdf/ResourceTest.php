@@ -40,17 +40,13 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class EasyRdf_ResourceTest extends EasyRdf_TestCase
 {
-    protected $_graph = null;
-    protected $_type = null;
-    protected $_resource = null;
-
     /**
      * Set up the test suite before each test
      */
     public function setUp()
     {
         $this->_graph = new EasyRdf_Graph();
-        $this->_type = $this->_graph->resource('http://xmlns.com/foaf/0.1/Person');
+        $this->_type = $this->_graph->resource('foaf:Person');
         $this->_resource = $this->_graph->resource('http://example.com/#me');
         $this->_resource->set('rdf:type', $this->_type);
         $this->_resource->add('rdf:test', 'Test A');
@@ -131,15 +127,6 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             $this->_resource->get(array('rdf:foobar', 'rdf:test'))
         );
     }
-
-// FIXME: deprecated
-//     public function testGetArrayWithLang()
-//     {
-//         $this->assertStringEquals(
-//             'Test B',
-//             $this->_resource->get(array('rdf:foobar', 'rdf:test'), 'en')
-//         );
-//     }
 
     public function testGetEmptyArray()
     {
