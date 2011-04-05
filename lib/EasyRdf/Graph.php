@@ -314,20 +314,6 @@ class EasyRdf_Graph
         return $matched;
     }
 
-    /** Get all the resources in the graph of a certain type
-     *
-     * If no resources of the type are available and empty
-     * array is returned.
-     *
-     * @param  string  $type   The type of the resource (e.g. foaf:Person)
-     * @return array The array of resources
-     */
-    public function allOfType($type)
-    {
-        $uri = EasyRdf_Namespace::expand($type);
-        return $this->all($uri, '^rdf:type');
-    }
-
     /** Get the URI of the graph
      *
      * @return string The URI of the graph
@@ -345,6 +331,8 @@ class EasyRdf_Graph
     {
         if (is_object($resource) and $resource instanceof EasyRdf_Resource) {
             $resource = strval($resource);
+        } else if (is_string($resource)) {
+            $resource = EasyRdf_Namespace::expand($resource);
         }
 
         if (!is_string($resource) or $resource == null or $resource == '') {
@@ -355,6 +343,8 @@ class EasyRdf_Graph
 
         if (is_object($property) and $property instanceof EasyRdf_Resource) {
             $property = strval($property);
+        } else if (is_string($property)) {
+            $property = EasyRdf_Namespace::expand($property);
         }
 
         if (!is_string($property) or $property == null or $property == '') {
@@ -363,8 +353,6 @@ class EasyRdf_Graph
             );
         }
 
-        // Expand the property qname to full URI
-        $property = EasyRdf_Namespace::expand($property);
 
         // Convert literal value into RDF/PHP notation
         if ($value) {
@@ -612,21 +600,7 @@ class EasyRdf_Graph
 
     public function all($resource, $property, $type=null, $lang=null)
     {
-        if (is_object($resource)) {
-            $resource = strval($resource);
-        }
-
-        if (!is_string($property) or $property == null or $property == '') {
-            throw new InvalidArgumentException(
-                "\$property should be a string and cannot be null or empty"
-            );
-        }
-
-        if (!is_string($resource) or $property == null or $property == '') {
-            throw new InvalidArgumentException(
-                "\$property should be a string and cannot be null or empty"
-            );
-        }
+        $this->checkAccessorParams($resource, $property, $value);
 
         # FIXME: duplicated code
         // Is an inverse property being requested?
@@ -666,6 +640,19 @@ class EasyRdf_Graph
     public function allLiterals($resource, $property, $lang=null)
     {
         return $this->all($resource, $property, 'literal', $lang);
+    }
+
+    /** Get all the resources in the graph of a certain type
+     *
+     * If no resources of the type are available and empty
+     * array is returned.
+     *
+     * @param  string  $type   The type of the resource (e.g. foaf:Person)
+     * @return array The array of resources
+     */
+    public function allOfType($type)
+    {
+        return $this->all($type, '^rdf:type');
     }
 
     public function join($resource, $property, $glue=' ', $lang=null)
