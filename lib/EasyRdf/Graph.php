@@ -395,6 +395,7 @@ class EasyRdf_Graph
                 $properties = $this->_index[$resource];
         }
 
+        // Does the property exist?
         if (!isset($properties)) {
             return null;
         }
@@ -581,7 +582,7 @@ class EasyRdf_Graph
         # FIXME: set type correctly for bnodes
         if (is_string($object)) {
             $object = array('type' => 'uri', 'value' => $object);
-        } else if (is_array($value)) {
+        } else if (is_array($object)) {
             foreach ($object as $o) {
                 $this->addResource($resource, $property, $o);
             }
