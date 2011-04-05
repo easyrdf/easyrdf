@@ -520,6 +520,150 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertEquals(0, count($resources));
     }
 
+    public function testJoinDefaultGlue()
+    {
+        $this->assertEquals(
+            'Test A Test B',
+            $this->_graph->join($this->_uri, 'rdf:test')
+        );
+    }
+
+    public function testJoinWithUri()
+    {
+        $this->assertEquals(
+            'Test A Test B',
+            $this->_graph->join(
+                $this->_uri,
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+            )
+        );
+    }
+
+    public function testJoinWithLang()
+    {
+        $this->assertEquals(
+            'Test B',
+            $this->_graph->join($this->_uri, 'rdf:test', ' ', 'en')
+        );
+    }
+
+    public function testJoinNonExistantProperty()
+    {
+        $this->assertEquals('', $this->_graph->join($this->_uri, 'foo:bar'));
+    }
+
+    public function testJoinCustomGlue()
+    {
+        $this->assertEquals(
+            'Test A:Test B',
+            $this->_graph->join($this->_uri, 'rdf:test', ':')
+        );
+    }
+
+    public function testJoinNullKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->join($this->_uri, null, 'Test C');
+    }
+
+    public function testJoinEmptyKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->join($this->_uri, '', 'Test C');
+    }
+
+    public function testJoinNonStringKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->join($this->_uri, array(), 'Test C');
+    }
+
+    public function testAdd()
+    {
+        $this->_graph->add($this->_uri, 'rdf:test', 'Test C');
+        $all = $this->_graph->all($this->_uri, 'rdf:test');
+        $this->assertEquals(3, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+        $this->assertStringEquals('Test C', $all[2]);
+    }
+
+    public function testAddWithUri()
+    {
+        $this->_graph->add($this->_uri,
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test',
+            'Test C'
+        );
+        $all = $this->_graph->all($this->_uri, 'rdf:test');
+        $this->assertEquals(3, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+        $this->assertStringEquals('Test C', $all[2]);
+    }
+
+    public function testAddMultipleLiterals()
+    {
+        $this->_graph->addLiteral($this->_uri, 'rdf:test', array('Test C', 'Test D'));
+        $all = $this->_graph->all($this->_uri, 'rdf:test');
+        $this->assertEquals(4, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+        $this->assertStringEquals('Test C', $all[2]);
+        $this->assertStringEquals('Test D', $all[3]);
+    }
+
+    public function testAddLiteralMultipleTimes()
+    {
+        $this->_graph->add($this->_uri, 'rdf:test2', 'foobar');
+        $this->_graph->add($this->_uri, 'rdf:test2', 'foobar');
+        $all = $this->_graph->all($this->_uri, 'rdf:test2');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('foobar', $all[0]);
+    }
+
+    public function testAddLiteralDifferentLanguages()
+    {
+        $this->_graph->set($this->_uri, 'rdf:test', new EasyRdf_Literal('foobar', 'en'));
+        $this->_graph->add($this->_uri, 'rdf:test', new EasyRdf_Literal('foobar', 'fr'));
+        $all = $this->_graph->all($this->_uri, 'rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('foobar', $all[0]);
+        $this->assertStringEquals('foobar', $all[1]);
+    }
+
+    public function testAddNull()
+    {
+        $this->_graph->add($this->_uri, 'rdf:test', null);
+        $all = $this->_graph->all($this->_uri, 'rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+    }
+
+    public function testAddNullKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->add($this->_uri, null, 'Test C');
+    }
+
+    public function testAddEmptyKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->add($this->_uri, '', 'Test C');
+    }
+
+    public function testAddNonStringKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->add($this->_uri, array(), 'Test C');
+    }
+
+    function testAddInvalidObject()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->add($this->_uri, 'rdf:foo', $this);
+    }
+
     public function testAddSingleValueToString()
     {
         $graph = new EasyRdf_Graph();
@@ -620,6 +764,48 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->add($invalidResource, 'foaf:name', 'value');
     }
 
+    public function testDelete()
+    {
+        $this->assertStringEquals('Test A', $this->_graph->get($this->_uri, 'rdf:test'));
+        $this->_graph->delete($this->_uri, 'rdf:test');
+        $this->assertEquals(array(), $this->_graph->all($this->_uri, 'rdf:test'));
+    }
+
+    public function testDeleteWithUri()
+    {
+        $this->assertStringEquals('Test A', $this->_graph->get($this->_uri, 'rdf:test'));
+        $this->_graph->delete($this->_uri,
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+        );
+        $this->assertEquals(array(), $this->_graph->all($this->_uri, 'rdf:test'));
+    }
+
+    public function testDeleteNullKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->delete($this->_uri, null);
+    }
+
+    public function testDeleteEmptyKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->delete($this->_uri, '');
+    }
+
+    public function testDeleteNonStringKey()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->delete($this->_uri, array());
+    }
+
+    public function testDeleteValue()
+    {
+        $testa = $this->_graph->get($this->_uri, 'rdf:test');
+        $this->_graph->delete($this->_uri, 'rdf:test', $testa);
+        $all = $this->_graph->all($this->_uri, 'rdf:test');
+        $this->assertEquals(1, count($all));
+    }
+
     public function testGetType()
     {
         $data = readFixture('foaf.json');
@@ -671,6 +857,25 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertEquals(
             "<rdf></rdf>",
             $graph->serialise('mock/mime')
+        );
+    }
+
+    public function testProperties()
+    {
+        $this->assertEquals(
+            array('rdf:type', 'rdf:test'),
+            $this->_graph->properties($this->_uri)
+        );
+    }
+
+    public function testPropertyUris()
+    {
+        $this->assertEquals(
+            array(
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+            ),
+            $this->_graph->propertyUris($this->_uri)
         );
     }
 
