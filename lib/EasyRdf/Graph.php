@@ -437,6 +437,69 @@ class EasyRdf_Graph
         }
     }
 
+
+    public function all($resource, $property, $type=null, $lang=null)
+    {
+        $this->checkAccessorParams($resource, $property, $value);
+
+        # FIXME: duplicated code
+        // Is an inverse property being requested?
+        if (substr($property, 0, 1) == '^') {
+            $property = substr($property, 1);
+            if (isset($this->_revIndex[$resource]))
+                $properties = $this->_revIndex[$resource];
+        } else {
+            if (isset($this->_index[$resource]))
+                $properties = $this->_index[$resource];
+        }
+
+        if (!isset($properties)) {
+            return array();
+        }
+
+        $values = array();
+        $property = EasyRdf_Namespace::expand($property);
+        if (isset($properties[$property])) {
+            if ($type) {
+                foreach ($properties[$property] as $value) {
+                    if ($value['type'] == $type and ($lang == null or (isset($value['lang']) and $value['lang'] == $lang)))
+                        $values[] = $value;
+                }
+            } else {
+                $values = $properties[$property];
+            }
+        }
+
+        $objects = array();
+        foreach($values as $value) {
+            $objects[] = $this->arrayToObject($value);
+        }
+        return $objects;
+    }
+
+    public function allLiterals($resource, $property, $lang=null)
+    {
+        return $this->all($resource, $property, 'literal', $lang);
+    }
+
+    /** Get all the resources in the graph of a certain type
+     *
+     * If no resources of the type are available and empty
+     * array is returned.
+     *
+     * @param  string  $type   The type of the resource (e.g. foaf:Person)
+     * @return array The array of resources
+     */
+    public function allOfType($type)
+    {
+        return $this->all($type, '^rdf:type');
+    }
+
+    public function join($resource, $property, $glue=' ', $lang=null)
+    {
+        return join($glue, $this->all($resource, $property, 'literal', $lang));
+    }
+
     /** Add data to the graph
      *
      * The resource can either be a resource or the URI of a resource.
@@ -596,68 +659,6 @@ class EasyRdf_Graph
                 unset($this->_revIndex[$resource][$property]);
             }
         }
-    }
-
-    public function all($resource, $property, $type=null, $lang=null)
-    {
-        $this->checkAccessorParams($resource, $property, $value);
-
-        # FIXME: duplicated code
-        // Is an inverse property being requested?
-        if (substr($property, 0, 1) == '^') {
-            $property = substr($property, 1);
-            if (isset($this->_revIndex[$resource]))
-                $properties = $this->_revIndex[$resource];
-        } else {
-            if (isset($this->_index[$resource]))
-                $properties = $this->_index[$resource];
-        }
-
-        if (!isset($properties)) {
-            return array();
-        }
-
-        $values = array();
-        $property = EasyRdf_Namespace::expand($property);
-        if (isset($properties[$property])) {
-            if ($type) {
-                foreach ($properties[$property] as $value) {
-                    if ($value['type'] == $type and ($lang == null or (isset($value['lang']) and $value['lang'] == $lang)))
-                        $values[] = $value;
-                }
-            } else {
-                $values = $properties[$property];
-            }
-        }
-
-        $objects = array();
-        foreach($values as $value) {
-            $objects[] = $this->arrayToObject($value);
-        }
-        return $objects;
-    }
-
-    public function allLiterals($resource, $property, $lang=null)
-    {
-        return $this->all($resource, $property, 'literal', $lang);
-    }
-
-    /** Get all the resources in the graph of a certain type
-     *
-     * If no resources of the type are available and empty
-     * array is returned.
-     *
-     * @param  string  $type   The type of the resource (e.g. foaf:Person)
-     * @return array The array of resources
-     */
-    public function allOfType($type)
-    {
-        return $this->all($type, '^rdf:type');
-    }
-
-    public function join($resource, $property, $glue=' ', $lang=null)
-    {
-        return join($glue, $this->allLiterals($resource, $property, $lang));
     }
 
     public function isEmpty()
