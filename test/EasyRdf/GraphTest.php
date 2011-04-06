@@ -426,6 +426,13 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetNonExistantResource()
+    {
+        $this->assertNull(
+            $this->_graph->get('foo:bar', 'foo:bar')
+        );
+    }
+
     public function testGetNonExistantProperty()
     {
         $this->assertNull($this->_graph->get($this->_uri, 'foo:bar'));
@@ -480,6 +487,14 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $all = $this->_graph->all('foaf:Person', '^rdf:type');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals($this->_uri, $all[0]);
+    }
+
+    public function testAllNonExistantResource()
+    {
+        $this->assertEquals(
+            array(),
+            $this->_graph->all('foo:bar', 'foo:bar')
+        );
     }
 
     public function testAllNonExistantProperty()
