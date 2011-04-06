@@ -282,6 +282,15 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->resource(array());
     }
 
+    public function testResolveResource()
+    {
+        $resource = $this->_graph->resolveResource(
+            'http://www.example.com/foo', '/bar'
+        );
+        $this->assertType('EasyRdf_Resource', $resource);
+        $this->assertStringEquals('http://www.example.com/bar', $resource);
+    }
+
     public function testResourceWithType()
     {
         $graph = new EasyRdf_Graph();
