@@ -884,6 +884,19 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testIsEmpty()
+    {
+        $graph = new EasyRdf_Graph();
+        $this->assertTrue($graph->isEmpty());
+    }
+
+    public function testIsNotEmpty()
+    {
+        $graph = new EasyRdf_Graph();
+        $graph->add('http://example.com/', 'rdfs:label', 'Example');
+        $this->assertFalse($graph->isEmpty());
+    }
+
     public function testProperties()
     {
         $this->assertEquals(
