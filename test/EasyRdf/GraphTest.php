@@ -931,6 +931,79 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertContains('>&quot;Joe&quot;</span>', $html);
     }
 
+    public function testTypes()
+    {
+        $types = $this->_graph->types($this->_uri);
+        $this->assertEquals(1, count($types));
+        $this->assertStringEquals('foaf:Person', $types[0]);
+    }
+
+    public function testType()
+    {
+        $this->assertStringEquals('foaf:Person', $this->_graph->type($this->_uri));
+    }
+
+    public function testTypeForResourceWithNoType()
+    {
+        $resource = $this->_graph->resource('http://example.com/notype');
+        $this->assertNull($resource->type());
+    }
+
+    public function testTypeForUnamedGraph()
+    {
+        $graph = new EasyRdf_Graph();
+        $this->assertNull($graph->type());
+    }
+
+    public function testTypeAsResource()
+    {
+        $type = $this->_graph->typeAsResource($this->_uri);
+        $this->assertType('EasyRdf_Resource', $type);
+        $this->assertStringEquals('http://xmlns.com/foaf/0.1/Person', $type);
+    }
+
+    public function testTypeAsResourceForUnamedGraph()
+    {
+        $graph = new EasyRdf_Graph();
+        $this->assertNull($graph->typeAsResource());
+    }
+
+    public function testIsA()
+    {
+        $this->assertTrue($this->_graph->is_a($this->_uri, 'foaf:Person'));
+    }
+
+    public function testIsAFullUri()
+    {
+        $this->assertTrue(
+            $this->_graph->is_a($this->_uri, 'http://xmlns.com/foaf/0.1/Person')
+        );
+    }
+
+    public function testIsntA()
+    {
+        $this->assertFalse($this->_graph->is_a($this->_uri, 'foaf:Rat'));
+    }
+
+    public function testAddType()
+    {
+        $this->_graph->addType($this->_uri, 'rdf:newType');
+        $this->assertTrue(
+            $this->_graph->is_a($this->_uri, 'rdf:newType')
+        );
+    }
+
+    public function testSetType()
+    {
+        $this->_graph->setType($this->_uri, 'foaf:Rat');
+        $this->assertTrue(
+            $this->_graph->is_a($this->_uri, 'foaf:Rat')
+        );
+        $this->assertFalse(
+            $this->_graph->is_a($this->_uri, 'http://xmlns.com/foaf/0.1/Person')
+        );
+    }
+
     public function testLabelWithSkosPrefLabel()
     {
         $this->_graph->addLiteral($this->_uri, 'skos:prefLabel', 'Preferred Label');

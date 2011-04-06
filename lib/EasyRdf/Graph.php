@@ -427,7 +427,7 @@ class EasyRdf_Graph
             if (isset($this->_index[$resource]))
                 $properties = $this->_index[$resource];
         }
-        
+
         if (isset($properties[$property])) {
             return $properties[$property];
         } else {
@@ -894,30 +894,6 @@ class EasyRdf_Graph
         return $types;
     }
 
-    public function setType($resource, $type)
-    {
-        if ($resource == null)
-            $resource = $this->_uri;
-
-        # FIXME: add support for multiple types
-        $type = EasyRdf_Namespace::expand($type);
-        return $this->set($resource, 'rdf:type', array('type' => 'uri', 'value' => $type));
-    }
-
-    public function addType($resource, $types)
-    {
-        if ($resource == null)
-            $resource = $this->_uri;
-
-        if (!is_array($types))
-            $types = array($types);
-
-        foreach($types as $type) {
-            $type = EasyRdf_Namespace::expand($type);
-            $this->add($resource, 'rdf:type', array('type' => 'uri', 'value' => $type));
-        }
-    }
-
     /** Check if a resource is of the specified type
      *
      * @param  string  $type The type to check (e.g. foaf:Person)
@@ -935,6 +911,29 @@ class EasyRdf_Graph
             }
         }
         return false;
+    }
+
+    public function addType($resource, $types)
+    {
+        if ($resource == null)
+            $resource = $this->_uri;
+
+        if (!is_array($types))
+            $types = array($types);
+
+        foreach($types as $type) {
+            $type = EasyRdf_Namespace::expand($type);
+            $this->add($resource, 'rdf:type', array('type' => 'uri', 'value' => $type));
+        }
+    }
+
+    public function setType($resource, $type)
+    {
+        if ($resource == null)
+            $resource = $this->_uri;
+
+        $this->delete($resource, 'rdf:type');
+        return $this->addType($resource, $type);
     }
 
     public function label($resource=null, $lang=null)
