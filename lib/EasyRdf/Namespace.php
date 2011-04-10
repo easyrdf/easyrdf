@@ -89,7 +89,7 @@ class EasyRdf_Namespace
       */
     public static function get($prefix)
     {
-        if (!is_string($prefix) or $prefix == null or $prefix == '') {
+        if (!is_string($prefix) or $prefix === null or $prefix === '') {
             throw new InvalidArgumentException(
                 "\$prefix should be a string and cannot be null or empty"
             );
@@ -117,7 +117,7 @@ class EasyRdf_Namespace
       */
     public static function set($prefix, $long)
     {
-        if (!is_string($prefix) or $prefix == null or $prefix == '') {
+        if (!is_string($prefix) or $prefix === null or $prefix === '') {
             throw new InvalidArgumentException(
                 "\$prefix should be a string and cannot be null or empty"
             );
@@ -129,7 +129,7 @@ class EasyRdf_Namespace
             );
         }
 
-        if (!is_string($long) or $long == null or $long == '') {
+        if (!is_string($long) or $long === null or $long === '') {
             throw new InvalidArgumentException(
                 "\$long should be a string and cannot be null or empty"
             );
@@ -146,7 +146,7 @@ class EasyRdf_Namespace
       */
     public static function delete($prefix)
     {
-        if (!is_string($prefix) or $prefix == null or $prefix == '') {
+        if (!is_string($prefix) or $prefix === null or $prefix === '') {
             throw new InvalidArgumentException(
                 "\$prefix should be a string and cannot be null or empty"
             );
@@ -178,7 +178,7 @@ class EasyRdf_Namespace
     public static function prefixOfUri($uri)
     {
         # FIXME: sort out code duplication with shorten()
-        if ($uri == null or $uri == '') {
+        if ($uri === null or $uri === '') {
             throw new InvalidArgumentException(
                 "\$uri cannot be null or empty"
             );
@@ -216,7 +216,7 @@ class EasyRdf_Namespace
       */
     public static function shorten($uri, $createNamespace=false)
     {
-        if ($uri == null or $uri == '') {
+        if ($uri === null or $uri === '') {
             throw new InvalidArgumentException(
                 "\$uri cannot be null or empty"
             );
@@ -260,7 +260,7 @@ class EasyRdf_Namespace
       */
     public static function expand($shortUri)
     {
-        if (!is_string($shortUri) or $shortUri == null or $shortUri == '') {
+        if (!is_string($shortUri) or $shortUri === null or $shortUri === '') {
             throw new InvalidArgumentException(
                 "\$shortUri should be a string and cannot be null or empty"
             );
