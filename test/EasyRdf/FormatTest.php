@@ -440,6 +440,14 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->assertEquals('rdfa', EasyRdf_Format::guessFormat($data));
     }
 
+    public function testGuessFormatXml()
+    {
+        $format = EasyRdf_Format::guessFormat(
+            '<?xml version="1.0" encoding="UTF-8"?><!-- long comment '
+        );
+        $this->assertEquals('rdfxml', $format);
+    }
+
     public function testGuessFormatUnknown()
     {
         $this->assertNull(
