@@ -323,11 +323,7 @@ class EasyRdf_Graph
         return $this->_uri;
     }
 
-    /**
-     * Check and cleanup parameters passed to get(), add(), set() and delete() methods
-     * @ignore
-     */
-    protected function checkAccessorParams(&$resource, &$property, &$inverse, &$value=null)
+    protected function checkResourceParam(&$resource)
     {
         if (is_object($resource) and $resource instanceof EasyRdf_Resource) {
             $resource = strval($resource);
@@ -337,10 +333,13 @@ class EasyRdf_Graph
 
         if (!is_string($resource) or $resource == null or $resource == '') {
             throw new InvalidArgumentException(
-                "\$property should a string or EasyRdf_Resource and cannot be null or empty"
+                "\$resource should a string or EasyRdf_Resource and cannot be null or empty"
             );
         }
+    }
 
+    protected function checkPropertyParam(&$property, &$inverse)
+    {
         if (is_object($property) and $property instanceof EasyRdf_Resource) {
             $property = strval($property);
         } else if (is_string($property)) {
@@ -358,11 +357,11 @@ class EasyRdf_Graph
                 "\$property should a string or EasyRdf_Resource and cannot be null or empty"
             );
         }
+    }
 
-
-        // Convert literal value into RDF/PHP notation
+    protected function checkValueParam(&$value)
+    {
         if ($value) {
-            # FIXME: support data types
             if (is_object($value)) {
                 if (method_exists($value, 'toRdfPhp')) {
                     $value = $value->toRdfPhp();
@@ -388,7 +387,8 @@ class EasyRdf_Graph
             return null;
         }
 
-        $this->checkAccessorParams($resource, $property, $inverse);
+        $this->checkResourceParam($resource);
+        $this->checkPropertyParam($property, $inverse);
 
         // Get an array of values for the property
         $values = $this->propertyValuesArray($resource, $property, $inverse);
@@ -452,7 +452,9 @@ class EasyRdf_Graph
 
     public function all($resource, $property, $type=null, $lang=null)
     {
-        $this->checkAccessorParams($resource, $property, $inverse, $value);
+        $this->checkResourceParam($resource);
+        $this->checkPropertyParam($property, $inverse);
+        $this->checkValueParam($value);
 
         // Get an array of values for the property
         $values = $this->propertyValuesArray($resource, $property, $inverse);
@@ -515,7 +517,9 @@ class EasyRdf_Graph
      */
     public function add($resource, $property, $value)
     {
-        $this->checkAccessorParams($resource, $property, $inverse, $value);
+        $this->checkResourceParam($resource);
+        $this->checkPropertyParam($property, $inverse);
+        $this->checkValueParam($value);
 
         // No value given?
         if ($value === null)
@@ -601,7 +605,9 @@ class EasyRdf_Graph
      */
     public function set($resource, $property, $value)
     {
-        $this->checkAccessorParams($resource, $property, $inverse, $value);
+        $this->checkResourceParam($resource);
+        $this->checkPropertyParam($property, $inverse);
+        $this->checkValueParam($value);
 
         // Delete the old values
         $this->delete($resource, $property);
@@ -618,7 +624,9 @@ class EasyRdf_Graph
      */
     public function delete($resource, $property, $value=null)
     {
-        $this->checkAccessorParams($resource, $property, $inverse, $value);
+        $this->checkResourceParam($resource);
+        $this->checkPropertyParam($property, $inverse);
+        $this->checkValueParam($value);
 
         $property = EasyRdf_Namespace::expand($property);
         if (isset($this->_index[$resource][$property])) {
