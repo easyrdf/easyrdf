@@ -409,6 +409,15 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             $this->_graph->get($this->_uri, array('rdf:test', 'rdf:foobar'))
         );
     }
+    
+    public function testGetLiteral()
+    {
+        $this->_graph->addResource($this->_uri, 'foaf:name', 'http://example.com/');
+        $this->_graph->addLiteral($this->_uri, 'foaf:name', 'Joe');
+        $this->assertStringEquals(
+            'Joe', $this->_graph->getLiteral($this->_uri, 'foaf:name')
+        );
+    }
 
     public function testGetArray2()
     {
