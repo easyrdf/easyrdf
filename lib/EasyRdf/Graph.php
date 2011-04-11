@@ -417,6 +417,12 @@ class EasyRdf_Graph
         return $this->get($resource, $property, 'literal', $lang);
     }
 
+    # FIXME: implement this
+//     public function getResource($resource, $property)
+//     {
+//         return $this->get($resource, $property, 'resource', $lang);
+//     }
+
     protected function propertyValuesArray($resource, $property, $inverse=false)
     {
         // Is an inverse property being requested?
@@ -558,11 +564,12 @@ class EasyRdf_Graph
         }
 
         $this->_revIndex[$resource][$property][] = array(
-            'type' => substr($value, 0, 2) == '_:' ? 'bnone' : 'uri',
+            'type' => substr($value, 0, 2) == '_:' ? 'bnode' : 'uri',
             'value' => $value
         );
     }
 
+    # FIXME: better name for this method?
     public function addLiteral($resource, $property, $value)
     {
         if (is_string($value)) {
@@ -577,19 +584,17 @@ class EasyRdf_Graph
         return $this->add($resource, $property, $value);
     }
 
-    public function addResource($resource, $property, $object)
+    # FIXME: better name for this method?
+    public function addResource($resource, $property, $resource2)
     {
-        # FIXME: set type correctly for bnodes
-        if (is_string($object)) {
-            $object = array('type' => 'uri', 'value' => $object);
-        } else if (is_array($object)) {
-            foreach ($object as $o) {
-                $this->addResource($resource, $property, $o);
-            }
-            return;
-        }
+        $this->checkResourceParam($resource);
+        $this->checkPropertyParam($property, $inverse);
+        $this->checkResourceParam($resource2);
 
-        return $this->add($resource, $property, $object);
+        return $this->add($resource, $property, array(
+            'type' => substr($resource2, 0, 2) == '_:' ? 'bnode' : 'uri',
+            'value' => $resource2
+        ));
     }
 
     /** Set value(s) for a property
@@ -716,7 +721,9 @@ class EasyRdf_Graph
      */
     public function hasProperty($resource, $property)
     {
-        $property = EasyRdf_Namespace::expand($property);
+        $this->checkResourceParam($resource);
+        $this->checkPropertyParam($property, $inverse);
+
         if (isset($this->_index[$resource][$property])) {
             return true;
         } else {

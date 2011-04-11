@@ -787,6 +787,23 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $invalidResource = new EasyRdf_Utils();
         $graph->add($invalidResource, 'foaf:name', 'value');
     }
+    
+    public function testAddResource()
+    {
+        $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://www.example.com/');
+        $res = $this->_graph->get($this->_uri, 'foaf:homepage');
+        $this->assertType('EasyRdf_Resource', $res);
+        $this->assertStringEquals('http://www.example.com/', $res);
+    }
+    
+    public function testAddBnodeResource()
+    {
+        $this->_graph->addResource($this->_uri, 'foaf:interest', '_:abc');
+        $res = $this->_graph->get($this->_uri, 'foaf:interest');
+        $this->assertType('EasyRdf_Resource', $res);
+        $this->assertTrue($res->isBnode());
+        $this->assertStringEquals('_:abc', $res);
+    }
 
     public function testDelete()
     {
@@ -913,6 +930,20 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
             ),
             $this->_graph->propertyUris($this->_uri)
+        );
+    }
+    
+    public function testHasProperty()
+    {
+        $this->assertTrue(
+            $this->_graph->hasProperty($this->_uri, 'rdf:type')
+        );
+    }
+    
+    public function testDoesntHaveProperty()
+    {
+        $this->assertFalse(
+            $this->_graph->hasProperty($this->_uri, 'rdf:doesntexist')
         );
     }
 
