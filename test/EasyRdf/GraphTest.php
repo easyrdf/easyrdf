@@ -367,6 +367,19 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testResourcesMatchingObject()
+    {
+        $matched = $this->_graph->resourcesMatching(
+            'rdf:test',
+            new EasyRdf_Literal('Test B', 'en')
+        );
+        $this->assertEquals(1, count($matched));
+        $this->assertStringEquals(
+            'http://example.com/#me',
+            $matched[0]
+        );
+    }
+
     public function testGet()
     {
         $this->assertStringEquals(
@@ -931,6 +944,14 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testPropertiesForNonExistantResource()
+    {
+        $this->assertEquals(
+            array(),
+            $this->_graph->properties('http://doesnotexist.com/')
+        );
+    }
+
     public function testPropertyUris()
     {
         $this->assertEquals(
@@ -939,6 +960,14 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
             ),
             $this->_graph->propertyUris($this->_uri)
+        );
+    }
+
+    public function testPropertyUrisForNonExistantResource()
+    {
+        $this->assertEquals(
+            array(),
+            $this->_graph->propertyUris('http://doesnotexist.com/')
         );
     }
     
