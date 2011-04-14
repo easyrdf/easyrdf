@@ -202,7 +202,7 @@ class EasyRdf_Resource
         return $this->_graph->all($this->_uri, $property, $type, $lang);
     }
 
-    public function getLiterals($property, $lang=null)
+    public function allLiterals($property, $lang=null)
     {
         return $this->_graph->all($this->_uri, $property, 'literal', $lang);
     }
