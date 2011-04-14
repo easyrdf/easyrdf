@@ -87,6 +87,14 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetResource()
+    {
+        $this->assertStringEquals(
+            'http://xmlns.com/foaf/0.1/Person',
+            $this->_resource->get('rdf:type')
+        );
+    }
+
     public function testGetWithUri()
     {
         $this->assertStringEquals(
@@ -159,6 +167,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_resource->get($this);
     }
 
+    public function testGetLiteral()
+    {
+        $this->assertStringEquals(
+            'Test A',
+            $this->_resource->getLiteral('rdf:test')
+        );
+    }
+
+    public function testGetLiteralForResource()
+    {
+        $this->assertNull(
+            $this->_resource->getLiteral('rdf:type')
+        );
+    }
+
     public function testAll()
     {
         $all = $this->_resource->all('rdf:test');
@@ -217,6 +240,20 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_resource->all(array());
     }
 
+    public function testAllLiterals()
+    {
+        $all = $this->_resource->allLiterals('rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+    }
+
+    public function testAllLiteralsForResource()
+    {
+        $all = $this->_resource->allLiterals('rdf:type');
+        $this->assertTrue(is_array($all));
+        $this->assertEquals(0, count($all));
+    }
 
     public function testAdd()
     {
@@ -523,6 +560,20 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
             ),
             $this->_resource->propertyUris()
+        );
+    }
+
+    public function testHasProperty()
+    {
+        $this->assertTrue(
+            $this->_resource->hasProperty('rdf:type')
+        );
+    }
+
+    public function testDoesntHaveProperty()
+    {
+        $this->assertFalse(
+            $this->_resource->hasProperty('rdf:doesntexist')
         );
     }
 
