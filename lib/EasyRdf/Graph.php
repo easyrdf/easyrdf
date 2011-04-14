@@ -293,14 +293,8 @@ class EasyRdf_Graph
      */
     public function resourcesMatching($property, $value)
     {
-        # FIXME: check arguments
-        if (is_object($value)) {
-            $value = $value->toRdfPhp();
-        } else if (is_string($value)) {
-            $value = array('type' => 'literal', 'value' => $value);
-        }
-
-        $property = EasyRdf_Namespace::expand($property);
+        $this->checkPropertyParam($property, $inverse);
+        $this->checkValueParam($value);
 
         $matched = array();
         foreach ($this->_index as $subject => $props) {
@@ -323,17 +317,29 @@ class EasyRdf_Graph
         return $this->_uri;
     }
 
-    protected function checkResourceParam(&$resource)
+    protected function checkResourceParam(&$resource, $allowNull=false)
     {
+        if ($allowNull == true) {
+            if ($resource == null) {
+                if ($this->_uri) {
+                    $resource = $this->_uri;
+                } else {
+                    return;
+                }
+            }
+        } else if ($resource == null or $resource == '') {
+            throw new InvalidArgumentException(
+                "\$resource cannot be null or empty"
+            );
+        }
+
         if (is_object($resource) and $resource instanceof EasyRdf_Resource) {
             $resource = strval($resource);
         } else if (is_string($resource)) {
             $resource = EasyRdf_Namespace::expand($resource);
-        }
-
-        if (!is_string($resource) or $resource == null or $resource == '') {
+        } else {
             throw new InvalidArgumentException(
-                "\$resource should a string or EasyRdf_Resource and cannot be null or empty"
+                "\$resource should a string or an EasyRdf_Resource"
             );
         }
     }
@@ -676,12 +682,10 @@ class EasyRdf_Graph
         return count($this->_index) == 0;
     }
 
-    public function properties($resource=null)
+    public function properties($resource)
     {
-        if ($resource == null)
-            $resource = $this->_uri;
+        $this->checkResourceParam($resource);
 
-        # FIXME: expand $resource
         $properties = array();
         if (isset($this->_index[$resource])) {
             foreach ($this->_index[$resource] as $property => $value) {
@@ -699,12 +703,10 @@ class EasyRdf_Graph
      *
      * @return array            Array of full URIs
      */
-    public function propertyUris($resource=null)
+    public function propertyUris($resource)
     {
-        if ($resource == null)
-            $resource = $this->_uri;
+        $this->checkResourceParam($resource);
 
-        # FIXME: expand $resource
         if (isset($this->_index[$resource])) {
             return array_keys($this->_index[$resource]);
         } else {
@@ -870,8 +872,7 @@ class EasyRdf_Graph
      */
     public function type($resource=null)
     {
-        if ($resource == null)
-            $resource = $this->_uri;
+        $this->checkResourceParam($resource, true);
 
         if ($resource) {
             $type = $this->get($resource, 'rdf:type');
@@ -884,8 +885,7 @@ class EasyRdf_Graph
 
     public function typeAsResource($resource=null)
     {
-        if ($resource == null)
-            $resource = $this->_uri;
+        $this->checkResourceParam($resource, true);
 
         if ($resource) {
             return $this->get($resource, 'rdf:type');
@@ -896,8 +896,7 @@ class EasyRdf_Graph
 
     public function types($resource=null)
     {
-        if ($resource == null)
-            $resource = $this->_uri;
+        $this->checkResourceParam($resource, true);
 
         $types = array();
         if ($resource) {
@@ -916,8 +915,7 @@ class EasyRdf_Graph
      */
     public function is_a($resource, $type)
     {
-        if ($resource == null)
-            $resource = $this->_uri;
+        $this->checkResourceParam($resource, true);
 
         $type = EasyRdf_Namespace::expand($type);
         foreach ($this->all($resource, 'rdf:type') as $t) {
@@ -930,8 +928,7 @@ class EasyRdf_Graph
 
     public function addType($resource, $types)
     {
-        if ($resource == null)
-            $resource = $this->_uri;
+        $this->checkResourceParam($resource, true);
 
         if (!is_array($types))
             $types = array($types);
@@ -944,8 +941,7 @@ class EasyRdf_Graph
 
     public function setType($resource, $type)
     {
-        if ($resource == null)
-            $resource = $this->_uri;
+        $this->checkResourceParam($resource, true);
 
         $this->delete($resource, 'rdf:type');
         return $this->addType($resource, $type);
@@ -953,15 +949,18 @@ class EasyRdf_Graph
 
     public function label($resource=null, $lang=null)
     {
-        if ($resource == null)
-            $resource = $this->_uri;
+        $this->checkResourceParam($resource, true);
 
-        return $this->get(
-            $resource,
-            array('skos:prefLabel', 'rdfs:label', 'foaf:name', 'dc:title', 'dc11:title'),
-            'literal',
-            $lang
-        );
+        if ($resource) {
+            return $this->get(
+                $resource,
+                array('skos:prefLabel', 'rdfs:label', 'foaf:name', 'dc:title', 'dc11:title'),
+                'literal',
+                $lang
+            );
+        } else {
+            return null;
+        }
     }
 
     /** Get the primary topic of the graph
@@ -970,8 +969,7 @@ class EasyRdf_Graph
      */
     public function primaryTopic($resource=null)
     {
-        if (!isset($resource))
-            $resource = $this->_uri;
+        $this->checkResourceParam($resource, true);
 
         if ($resource) {
             return $this->get(
