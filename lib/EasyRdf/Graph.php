@@ -549,30 +549,12 @@ class EasyRdf_Graph
 
         // Add to the reverse index if it is a resource
         if ($value['type'] == 'uri' or $value['type'] == 'bnode') {
-            $this->addInverse($value['value'], $property, $resource);
+            $uri = $value['value'];
+            $this->_revIndex[$uri][$property][] = array(
+                'type' => substr($resource, 0, 2) == '_:' ? 'bnode' : 'uri',
+                'value' => $resource
+            );
         }
-    }
-
-    /** This function is for internal use only.
-     *
-     * Adds an inverse property to a resource.
-     *
-     * @ignore
-     */
-    protected function addInverse($resource, $property, $value)
-    {
-        // Is the object already in the array?
-        if (isset($this->_revIndex[$resource][$property])) {
-            foreach ($this->_revIndex[$resource][$property] as $v) {
-                if ($v['value'] === $value)
-                    return;
-            }
-        }
-
-        $this->_revIndex[$resource][$property][] = array(
-            'type' => substr($value, 0, 2) == '_:' ? 'bnode' : 'uri',
-            'value' => $value
-        );
     }
 
     # FIXME: better name for this method?
