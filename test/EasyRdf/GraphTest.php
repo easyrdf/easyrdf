@@ -1020,10 +1020,24 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testHasInverseProperty()
+    {
+        $this->assertTrue(
+            $this->_graph->hasProperty('foaf:Person', '^rdf:type')
+        );
+    }
+
     public function testDoesntHaveProperty()
     {
         $this->assertFalse(
             $this->_graph->hasProperty($this->_uri, 'rdf:doesntexist')
+        );
+    }
+
+    public function testDoesntHaveInverseProperty()
+    {
+        $this->assertFalse(
+            $this->_graph->hasProperty($this->_uri, '^rdf:doesntexist')
         );
     }
 

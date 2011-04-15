@@ -726,11 +726,15 @@ class EasyRdf_Graph
         $this->checkResourceParam($resource);
         $this->checkPropertyParam($property, $inverse);
 
-        if (isset($this->_index[$resource][$property])) {
-            return true;
+        if (!$inverse) {
+            if (isset($this->_index[$resource][$property]))
+                return true;
         } else {
-            return false;
+            if (isset($this->_revIndex[$resource][$property]))
+                return true;
         }
+
+        return false;
     }
 
     /** Serialise the graph into RDF
