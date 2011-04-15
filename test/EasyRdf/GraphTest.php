@@ -423,12 +423,27 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testPropertyAsResource()
+    {
+        $rdf_test = $this->_graph->resource('rdf:test');
+        $this->assertStringEquals(
+            'Test A', $this->_graph->get($this->_uri, $rdf_test)
+        );
+    }
+
     public function testGetLiteral()
     {
         $this->_graph->addResource($this->_uri, 'foaf:name', 'http://example.com/');
         $this->_graph->addLiteral($this->_uri, 'foaf:name', 'Joe');
         $this->assertStringEquals(
             'Joe', $this->_graph->getLiteral($this->_uri, 'foaf:name')
+        );
+    }
+
+    public function testGetNonExistantLiteral()
+    {
+        $this->assertNull(
+            $this->_graph->getLiteral($this->_uri, 'rdf:type')
         );
     }
 
@@ -460,19 +475,31 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertNull($this->_graph->get($this->_uri, 'foo:bar'));
     }
 
-    public function testGetNullKey()
+    public function testGetNullResource()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->get(null, 'rdf:test');
+    }
+
+    public function testGetEmptyResource()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_graph->get('', 'rdf:test');
+    }
+
+    public function testGetNullProperty()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->_graph->get($this->_uri, null);
     }
 
-    public function testGetEmptyKey()
+    public function testGetEmptyProperty()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->_graph->get($this->_uri, '');
     }
 
-    public function testGetNonStringKey()
+    public function testGetNonStringProperty()
     {
         $this->setExpectedException('InvalidArgumentException');
         $this->_graph->get($this->_uri, $this);
