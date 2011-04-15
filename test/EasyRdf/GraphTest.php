@@ -842,6 +842,22 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertStringEquals('_:abc', $res);
     }
 
+    public function testAddDulicateTriple()
+    {
+        $homepage = $this->_graph->resource('http://example.com/');
+        $this->_graph->add($this->_uri, 'foaf:homepage', $homepage);
+        $this->_graph->addResource($this->_uri, 'foaf:homepage', $homepage);
+        $this->_graph->addResource($this->_uri, 'foaf:homepage', $homepage);
+        $all = $this->_graph->all($this->_uri, 'foaf:homepage');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals($homepage, $all[0]);
+
+        # Check inverse too
+        $all = $this->_graph->all($homepage, '^foaf:homepage');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('http://example.com/#me', $all[0]);
+    }
+
     public function testDelete()
     {
         $this->assertStringEquals('Test A', $this->_graph->get($this->_uri, 'rdf:test'));
@@ -882,6 +898,17 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->delete($this->_uri, 'rdf:test', $testa);
         $all = $this->_graph->all($this->_uri, 'rdf:test');
         $this->assertEquals(1, count($all));
+    }
+
+    public function testDeleteResource()
+    {
+        $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://example.com/');
+        $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://example.com/');
+        $this->assertTrue($this->_graph->hasProperty($this->_uri, 'foaf:homepage'));
+        $this->assertTrue($this->_graph->hasProperty('http://example.com/', '^foaf:homepage'));
+        $this->_graph->delete($this->_uri, 'foaf:homepage');
+        $this->assertFalse($this->_graph->hasProperty($this->_uri, 'foaf:homepage'));
+        $this->assertFalse($this->_graph->hasProperty('http://example.com/', '^foaf:homepage'));
     }
 
     public function testGetType()
