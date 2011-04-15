@@ -566,6 +566,21 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertEquals(0, count($resources));
     }
 
+    public function testAllLiterals()
+    {
+        $all = $this->_graph->allLiterals($this->_uri, 'rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+    }
+
+    public function testAllLiteralsForResource()
+    {
+        $all = $this->_graph->allLiterals($this->_uri, 'rdf:type');
+        $this->assertTrue(is_array($all));
+        $this->assertEquals(0, count($all));
+    }
+
     public function testJoinDefaultGlue()
     {
         $this->assertEquals(
@@ -1071,6 +1086,12 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertFalse(
             $this->_graph->is_a($this->_uri, 'http://xmlns.com/foaf/0.1/Person')
         );
+    }
+
+    public function testLabelForUnnamedGraph()
+    {
+        $graph = new EasyRdf_Graph();
+        $this->assertNull($graph->label());
     }
 
     public function testLabelWithSkosPrefLabel()
