@@ -3,9 +3,6 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    ## Load the ARC2 RDF parser
-    require_once "EasyRdf/Parser/Arc.php";
-
     # Configure the HTTP client to use
     require_once "EasyRdf/Http/Client.php";
     EasyRdf_Graph::setHttpClient( new EasyRdf_Http_Client() );
@@ -62,11 +59,11 @@
 
 <dl>
     <dt>Artist Name:</dt><dd><?= $artist->get('foaf:name') ?></dd>
-    <dt>Type:</dt><dd><?= $artist->join('rdf:type',', ') ?></dd>
+    <dt>Type:</dt><dd><?= join(', ', $artist->types()) ?></dd>
     <dt>Homepage:</dt><dd><?= link_to($artist->get('foaf:homepage')) ?></dd>
     <dt>Wikipedia page:</dt><dd><?= link_to($artist->get('mo:wikipedia')) ?></dd>
     <?php
-        if (in_array('mo:SoloMusicArtist', $artist->types())) {
+        if ($artist->is_a('mo:SoloMusicArtist')) {
             echo "  <dt>Age:</dt>";
             echo "  <dd>".$artist->age()."</dd>\n";
         }
