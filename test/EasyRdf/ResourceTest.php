@@ -696,33 +696,6 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertStringEquals('Dc Title', $this->_resource->label('en'));
     }
 
-# FIXME: no-longer used
-//     public function testDumpValue()
-//     {
-//         $this->assertEquals(
-//             'http://example.com/#me',
-//             $this->_resource->dumpValue(false)
-//         );
-// 
-//         $html = $this->_resource->dumpValue(true);
-//         $this->assertContains("<a href='http://example.com/#me'", $html);
-//         $this->assertContains("http://example.com/#me</a>", $html);
-//     }
-
-//     public function testDumpShortenableValue()
-//     {
-//         $this->assertEquals(
-//             'foaf:Person',
-//             $this->_type->dumpValue(false)
-//         );
-// 
-//         $html = $this->_type->dumpValue(true);
-//         $this->assertContains(
-//             "<a href='http://xmlns.com/foaf/0.1/Person'", $html
-//         );
-//         $this->assertContains("foaf:Person</a>", $html);
-//     }
-
     public function testDump()
     {
         $text = $this->_resource->dump(false);
@@ -762,13 +735,6 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertContains(
             "<span style='color:blue'>&quot;Test B&quot;@en</span>", $html
         );
-    }
-
-    public function testDumpWithNoProperties()
-    {
-        $resource = new EasyRdf_Resource($this->_graph, "http://example.com/empty");
-        $this->assertEquals('', $resource->dump(false));
-        $this->assertEquals('', $resource->dump(true));
     }
 
     public function testToString()
