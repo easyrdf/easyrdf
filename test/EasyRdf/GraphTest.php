@@ -1068,19 +1068,58 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
-    public function testDump()
+    public function testDumpLiteral()
     {
         $graph = new EasyRdf_Graph();
         $graph->add('http://example.com/joe#me', 'foaf:name', 'Joe');
+        $graph->add('http://example.com/joe#me', 'foaf:age', new EasyRdf_Literal(52));
+        $deutschland = new EasyRdf_Literal('Deutschland', 'de');
+        $graph->add('http://example.com/joe#me', 'foaf:birthPlace', $deutschland);
 
         $text = $graph->dump(false);
         $this->assertContains('http://example.com/joe#me', $text);
         $this->assertContains('-> foaf:name -> "Joe"', $text);
+        $this->assertContains('-> foaf:age -> "52"^^xsd:integer', $text);
+        $this->assertContains('-> foaf:birthPlace -> "Deutschland"@de', $text);
 
         $html = $graph->dump(true);
         $this->assertContains('http://example.com/joe#me', $html);
         $this->assertContains('>foaf:name</span>', $html);
         $this->assertContains('>&quot;Joe&quot;</span>', $html);
+        $this->assertContains('>foaf:age</span>', $html);
+        $this->assertContains('>&quot;52&quot;^^xsd:integer</span>', $html);
+        $this->assertContains('>foaf:birthPlace</span>', $html);
+        $this->assertContains('>&quot;Deutschland&quot;@de</span>', $html);
+    }
+
+    public function testDumpResource()
+    {
+        $graph = new EasyRdf_Graph();
+        $graph->addResource('http://example.com/joe#me', 'rdf:type', 'foaf:Person');
+        $graph->addResource('http://example.com/joe#me', 'foaf:homepage', 'http://example.com/');
+        $graph->add('http://example.com/joe#me', 'foaf:knows', $graph->newBnode());
+
+        $text = $graph->dumpResource('http://example.com/joe#me', false);
+        $this->assertContains('http://example.com/joe#me', $text);
+        $this->assertContains('-> rdf:type -> foaf:Person', $text);
+        $this->assertContains('-> foaf:homepage -> http://example.com/', $text);
+        $this->assertContains('-> foaf:knows -> _:eid1', $text);
+
+        $html = $graph->dumpResource('http://example.com/joe#me', true);
+        $this->assertContains('http://example.com/joe#me', $html);
+        $this->assertContains('>rdf:type</span>', $html);
+        $this->assertContains('>foaf:Person</a>', $html);
+        $this->assertContains('>foaf:homepage</span>', $html);
+        $this->assertContains('>http://example.com/</a>', $html);
+        $this->assertContains('>foaf:knows</span>', $html);
+        $this->assertContains('>_:eid1</a>', $html);
+    }
+
+    public function testDumpResourceWithNoProperties()
+    {
+        $graph = new EasyRdf_Graph();
+        $this->assertEquals('', $graph->dumpResource('http://example.com/empty', false));
+        $this->assertEquals('', $graph->dumpResource('http://example.com/empty', true));
     }
 
     public function testTypes()
