@@ -13,8 +13,11 @@
     $me->set('foaf:nick', 'Joe');
     $me->add('foaf:homepage', $graph->resource('http://example.com/joe/'));
 
-    $format = preg_replace("/[^\w\-]+/", '', strtolower($_REQUEST['format']));
-    if (!$format) $format = 'ntriples';
+    if (isset($_REQUEST['format'])) {
+        $format = preg_replace("/[^\w\-]+/", '', strtolower($_REQUEST['format']));
+    } else {
+        $format = 'ntriples';
+    }
 ?>
 <html>
 <head><title>Serialiser</title></head>
