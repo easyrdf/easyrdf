@@ -193,13 +193,13 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
     }
 
     /**
-     * testSerialiseRdfTypeAddsPrefix 
-     * 
-     * A test to assert that serialising a resource with a certain rdf:type 
-     * adds the correct namespace prefix, even if there are no properties tied 
+     * testSerialiseRdfTypeAddsPrefix
+     *
+     * A test to assert that serialising a resource with a certain rdf:type
+     * adds the correct namespace prefix, even if there are no properties tied
      * to that particular namespace.
      */
-    function testSerialiseRdfTypeAddsPrefix( )
+    function testSerialiseRdfTypeAddsPrefix()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('dc:creator', 'Max Bloggs');
