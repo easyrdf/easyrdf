@@ -392,7 +392,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->assertStringEquals(
             'Test A',
-            $this->_graph->get($this->_uri,
+            $this->_graph->get(
+                $this->_uri,
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
             )
         );
@@ -425,9 +426,9 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testPropertyAsResource()
     {
-        $rdf_test = $this->_graph->resource('rdf:test');
+        $rdfTest = $this->_graph->resource('rdf:test');
         $this->assertStringEquals(
-            'Test A', $this->_graph->get($this->_uri, $rdf_test)
+            'Test A', $this->_graph->get($this->_uri, $rdfTest)
         );
     }
 
@@ -678,7 +679,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testAddWithUri()
     {
-        $this->_graph->add($this->_uri,
+        $this->_graph->add(
+            $this->_uri,
             'http://www.w3.org/1999/02/22-rdf-syntax-ns#test',
             'Test C'
         );
@@ -756,7 +758,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph();
         $graph->add('http://www.example.com/joe#me', 'foaf:name', 'Joe');
-        $this->assertStringEquals('Joe', $graph->get('http://www.example.com/joe#me','foaf:name'));
+        $this->assertStringEquals('Joe', $graph->get('http://www.example.com/joe#me', 'foaf:name'));
     }
 
     public function testAddSingleValueToResource()
@@ -895,7 +897,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testDeleteWithUri()
     {
         $this->assertStringEquals('Test A', $this->_graph->get($this->_uri, 'rdf:test'));
-        $this->_graph->delete($this->_uri,
+        $this->_graph->delete(
+            $this->_uri,
             'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
         );
         $this->assertEquals(array(), $this->_graph->all($this->_uri, 'rdf:test'));

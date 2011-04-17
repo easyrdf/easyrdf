@@ -155,8 +155,7 @@ class EasyRdf_Graph
         $resClass = 'EasyRdf_Resource';
         $rdfType = EasyRdf_Namespace::expand('rdf:type');
         if (isset($this->_index[$uri][$rdfType])) {
-            foreach ($this->_index[$uri][$rdfType] as $type)
-            {
+            foreach ($this->_index[$uri][$rdfType] as $type) {
                 if ($type['type'] == 'uri' or $type['type'] == 'bnode') {
                     $class = EasyRdf_TypeMapper::get($type['value']);
                     if ($class != null) {
@@ -270,11 +269,11 @@ class EasyRdf_Graph
     public function resources()
     {
         # FIXME: could this be more efficient?
-        foreach($this->_index as $subject => $properties) {
+        foreach ($this->_index as $subject => $properties) {
             $this->resource($subject);
         }
 
-        foreach($this->_revIndex as $object => $properties) {
+        foreach ($this->_revIndex as $object => $properties) {
             $this->resource($object);
         }
 
@@ -299,7 +298,7 @@ class EasyRdf_Graph
         $matched = array();
         foreach ($this->_index as $subject => $props) {
             if (isset($this->_index[$subject][$property])) {
-                foreach($this->_index[$subject][$property] as $v) {
+                foreach ($this->_index[$subject][$property] as $v) {
                     if ($v['type'] == $value['type'] and $v['value'] == $value['value'])
                         $matched[] = $this->resource($subject);
                 }
@@ -406,9 +405,11 @@ class EasyRdf_Graph
         $data = null;
         if ($type) {
             foreach ($values as $value) {
-                if ($value['type'] == $type and ($lang == null or (isset($value['lang']) and $value['lang'] == $lang))) {
-                    $data = $value;
-                    break;
+                if ($value['type'] == $type) {
+                    if ($lang == null or (isset($value['lang']) and $value['lang'] == $lang)) {
+                        $data = $value;
+                        break;
+                    }
                 }
             }
         } else {
@@ -481,7 +482,7 @@ class EasyRdf_Graph
                     $objects[] = $this->arrayToObject($value);
             }
         } else {
-            foreach($values as $value) {
+            foreach ($values as $value) {
                 $objects[] = $this->arrayToObject($value);
             }
         }
@@ -540,7 +541,7 @@ class EasyRdf_Graph
         # FIXME: re-factor this back into a $this->matches() function?
         // Check that the value doesn't already exist
         if (isset($this->_index[$resource][$property])) {
-            foreach($this->_index[$resource][$property] as $v) {
+            foreach ($this->_index[$resource][$property] as $v) {
                 if ($v == $value)
                     return;
             }
@@ -579,10 +580,12 @@ class EasyRdf_Graph
         $this->checkPropertyParam($property, $inverse);
         $this->checkResourceParam($resource2);
 
-        return $this->add($resource, $property, array(
-            'type' => substr($resource2, 0, 2) == '_:' ? 'bnode' : 'uri',
-            'value' => $resource2
-        ));
+        return $this->add(
+            $resource, $property, array(
+                'type' => substr($resource2, 0, 2) == '_:' ? 'bnode' : 'uri',
+                'value' => $resource2
+            )
+        );
     }
 
     /** Set value(s) for a property
@@ -882,7 +885,7 @@ class EasyRdf_Graph
 
         $types = array();
         if ($resource) {
-            foreach($this->all($resource, 'rdf:type') as $type) {
+            foreach ($this->all($resource, 'rdf:type') as $type) {
                 $types[] = EasyRdf_Namespace::shorten($type);
             }
         }
@@ -915,7 +918,7 @@ class EasyRdf_Graph
         if (!is_array($types))
             $types = array($types);
 
-        foreach($types as $type) {
+        foreach ($types as $type) {
             $type = EasyRdf_Namespace::expand($type);
             $this->add($resource, 'rdf:type', array('type' => 'uri', 'value' => $type));
         }
