@@ -65,6 +65,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
      */
     protected function rdfxmlResource($res, $type='rdf:Description')
     {
+        $this->addPrefix($type);
         if ($res->isBNode()) {
             return "<$type rdf:nodeID=\"".
                    htmlspecialchars($res->getNodeId())."\">";

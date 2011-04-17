@@ -191,4 +191,31 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->setExpectedException('EasyRdf_Exception');
         $rdf = $this->_serialiser->serialise($this->_graph, 'unsupportedformat');
     }
+
+    /**
+     * testSerialiseRdfTypeAddsPrefix 
+     * 
+     * A test to assert that serialising a resource with a certain rdf:type 
+     * adds the correct namespace prefix, even if there are no properties tied 
+     * to that particular namespace.
+     */
+    function testSerialiseRdfTypeAddsPrefix( )
+    {
+        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
+        $joe->set('dc:creator', 'Max Bloggs');
+
+        $this->assertEquals(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\"\n".
+            "         xmlns:dc=\"http://purl.org/dc/terms/\">\n" .
+            "\n".
+            "  <foaf:Person rdf:about=\"http://www.example.com/joe#me\">\n".
+            "    <dc:creator>Max Bloggs</dc:creator>\n".
+            "  </foaf:Person>\n".
+            "\n".
+            "</rdf:RDF>\n",
+            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+        );
+    }
 }
