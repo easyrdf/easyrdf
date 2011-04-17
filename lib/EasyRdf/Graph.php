@@ -783,23 +783,19 @@ class EasyRdf_Graph
             }
         }
 
-        if (count($plist)) {
-            if ($html) {
-                return "<div id='".htmlentities($resource)."' " .
-                       "style='font-family:arial; padding:0.5em; ".
-                       "background-color:lightgrey;border:dashed 1px grey;'>\n".
-                       "<div>".$this->dumpResourceValue($resource, true, 'blue')." ".
-                       "<span style='font-size: 0.8em'>(".
-                       $this->classForResource($resource).")</span></div>\n".
-                       "<div style='padding-left: 3em'>\n".
-                       "<div>".join("</div>\n<div>", $plist)."</div>".
-                       "</div></div>\n";
-            } else {
-                return $resource." (".$this->classForResource($resource).")\n" .
-                       join("\n", $plist) . "\n\n";
-            }
+        if ($html) {
+            return "<div id='".htmlentities($resource)."' " .
+                   "style='font-family:arial; padding:0.5em; ".
+                   "background-color:lightgrey;border:dashed 1px grey;'>\n".
+                   "<div>".$this->dumpResourceValue($resource, true, 'blue')." ".
+                   "<span style='font-size: 0.8em'>(".
+                   $this->classForResource($resource).")</span></div>\n".
+                   "<div style='padding-left: 3em'>\n".
+                   "<div>".join("</div>\n<div>", $plist)."</div>".
+                   "</div></div>\n";
         } else {
-            return '';
+            return $resource." (".$this->classForResource($resource).")\n" .
+                   join("\n", $plist) . "\n\n";
         }
     }
 
