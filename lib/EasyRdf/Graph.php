@@ -262,19 +262,21 @@ class EasyRdf_Graph
         return $parser->parse($this, $data, $format, $uri);
     }
 
-    /** Get an associative array of all the resources stored in the graph
+    /** Get an associative array of all the resources stored in the graph.
+     *  The keys of the array is the URI of the EasyRdf_Resource.
      *
      * @return array Array of EasyRdf_Resource
      */
     public function resources()
     {
-        # FIXME: could this be more efficient?
         foreach ($this->_index as $subject => $properties) {
             $this->resource($subject);
         }
 
         foreach ($this->_revIndex as $object => $properties) {
-            $this->resource($object);
+            if (!isset($this->_resources[$object])) {
+                $this->resource($object);
+            }
         }
 
         return $this->_resources;

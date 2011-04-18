@@ -332,26 +332,24 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
         $resources = $graph->resources();
+        $this->assertTrue(is_array($resources));
+        $this->assertType('EasyRdf_Resource', $resources['_:eid1']);
 
-        $this->assertStringEquals(
-            'http://www.example.com/joe#me',
-            $resources['http://www.example.com/joe#me']
-        );
-        $this->assertStringEquals(
-            '_:eid1',
-            $resources['_:eid1']
-        );
-        $this->assertStringEquals(
-            'http://www.example.com/joe/',
-            $resources['http://www.example.com/joe/']
-        );
-        $this->assertStringEquals(
-            'http://www.example.com/joe/foaf.rdf',
-            $resources['http://www.example.com/joe/foaf.rdf']
-        );
-        $this->assertStringEquals(
-            'http://www.example.com/project',
-            $resources['http://www.example.com/project']
+        $urls = array_keys($resources);
+        sort($urls);
+
+        $this->assertEquals(
+            array(
+                '_:eid1',
+                'http://www.example.com/joe#me',
+                'http://www.example.com/joe/',
+                'http://www.example.com/joe/foaf.rdf',
+                'http://www.example.com/project',
+                'http://xmlns.com/foaf/0.1/Person',
+                'http://xmlns.com/foaf/0.1/PersonalProfileDocument',
+                'http://xmlns.com/foaf/0.1/Project'
+            ),
+            $urls
         );
     }
 
