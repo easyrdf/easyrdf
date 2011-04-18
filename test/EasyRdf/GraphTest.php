@@ -232,14 +232,23 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
-    public function testGetResource()
+    public function testGetResourceSameGraph()
     {
-        $data = readFixture('foaf.json');
-        $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
-        $this->assertStringEquals(
-            'Joe Bloggs',
-            $graph->get('http://www.example.com/joe#me', 'foaf:name')
-        );
+        $graph = new EasyRdf_Graph();
+        $resource1 = $graph->resource('http://example.com/');
+        $this->assertType('EasyRdf_Resource', $resource1);
+        $this->assertStringEquals('http://example.com/', $resource1->getUri());
+        $resource2 = $graph->resource('http://example.com/');
+        $this->assertTrue($resource1 === $resource2);
+    }
+
+    public function testGetResourceDifferentGraph()
+    {
+        $graph1 = new EasyRdf_Graph();
+        $resource1 = $graph1->resource('http://example.com/');
+        $graph2 = new EasyRdf_Graph();
+        $resource2 = $graph2->resource('http://example.com/');
+        $this->assertFalse($resource1 === $resource2);
     }
 
     public function testGetShortenedResource()
