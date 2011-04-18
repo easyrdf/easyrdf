@@ -142,7 +142,7 @@ class EasyRdf_Graph
         $this->addType($uri, $types);
 
         // Create resource object if it doesn't already exist
-        if (!array_key_exists($uri, $this->_resources)) {
+        if (!isset($this->_resources[$uri])) {
             $resClass = $this->classForResource($uri);
             $this->_resources[$uri] = new $resClass($this, $uri);
         }
@@ -755,7 +755,7 @@ class EasyRdf_Graph
 
     public function dumpResource($resource, $html=true)
     {
-        # FIXME: check arguments
+        $this->checkResourceParam($resource, true);
 
         if (isset($this->_index[$resource])) {
             $properties = $this->_index[$resource];
