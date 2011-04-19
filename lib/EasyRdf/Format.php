@@ -74,7 +74,7 @@ class EasyRdf_Format
     {
         $accept = array();
         foreach (self::$_formats as $format) {
-            if ($format->_parserClass and count($format->_mimeTypes) > 1) {
+            if ($format->_parserClass and count($format->_mimeTypes) > 0) {
                 $accept[] = $format->_mimeTypes[0];
             }
         }
@@ -420,7 +420,11 @@ EasyRdf_Format::register(
     'json',
     'RDF/JSON Resource-Centric',
     'http://n2.talis.com/wiki/RDF_JSON_Specification',
-    array('application/json', 'text/json', 'application/rdf+json')
+    array(
+        'application/json',
+        'text/json',
+        'application/rdf+json'
+    )
 );
 
 EasyRdf_Format::register(
@@ -450,7 +454,9 @@ EasyRdf_Format::register(
     'rdfxml',
     'RDF/XML',
     'http://www.w3.org/TR/rdf-syntax-grammar',
-    'application/rdf+xml'
+    array(
+        'application/rdf+xml'
+    )
 );
 
 EasyRdf_Format::register(
@@ -467,5 +473,8 @@ EasyRdf_Format::register(
     'rdfa',
     'RDF/A',
     'http://www.w3.org/TR/rdfa/',
-    array('text/html','application/xhtml+xml')
+    array(
+        'text/html',
+        'application/xhtml+xml'
+    )
 );
