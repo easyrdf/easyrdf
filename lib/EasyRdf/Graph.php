@@ -321,23 +321,29 @@ class EasyRdf_Graph
     protected function checkResourceParam(&$resource, $allowNull=false)
     {
         if ($allowNull == true) {
-            if ($resource == null) {
+            if ($resource === null) {
                 if ($this->_uri) {
                     $resource = $this->_uri;
                 } else {
                     return;
                 }
             }
-        } else if ($resource == null or $resource == '') {
+        } else if ($resource === null) {
             throw new InvalidArgumentException(
-                "\$resource cannot be null or empty"
+                "\$resource cannot be null"
             );
         }
 
         if (is_object($resource) and $resource instanceof EasyRdf_Resource) {
-            $resource = strval($resource);
+            $resource = $resource->getUri();
         } else if (is_string($resource)) {
-            $resource = EasyRdf_Namespace::expand($resource);
+            if ($resource == '') {
+                throw new InvalidArgumentException(
+                    "\$resource cannot be an empty string"
+                );
+            } else {
+                $resource = EasyRdf_Namespace::expand($resource);
+            }
         } else {
             throw new InvalidArgumentException(
                 "\$resource should a string or an EasyRdf_Resource"
@@ -348,7 +354,7 @@ class EasyRdf_Graph
     protected function checkPropertyParam(&$property, &$inverse)
     {
         if (is_object($property) and $property instanceof EasyRdf_Resource) {
-            $property = strval($property);
+            $property = $property->getUri();
         } else if (is_string($property)) {
             if (substr($property, 0, 1) == '^') {
                 $inverse = true;
