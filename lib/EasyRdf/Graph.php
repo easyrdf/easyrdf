@@ -110,9 +110,12 @@ class EasyRdf_Graph
      */
     public function __construct($uri=null, $data=null, $format=null)
     {
+        $this->checkResourceParam($uri, true);
+
         if ($uri) {
             $this->_uri = $uri;
-            $this->load($uri, $data, $format);
+            if ($data)
+                $this->load($uri, $data, $format);
         }
     }
 
@@ -220,13 +223,14 @@ class EasyRdf_Graph
      * @param  string  $data    Data for the graph
      * @param  string  $format  The document type of the data
      */
-    public function load($uri, $data=null, $format=null)
+    public function load($uri=null, $data=null, $format=null)
     {
-        if (!is_string($uri) or $uri == null or $uri == '') {
-            throw new InvalidArgumentException(
-                "\$uri should be a string and cannot be null or empty"
+        $this->checkResourceParam($uri, true);
+
+        if (!$uri)
+            throw new EasyRdf_Exception(
+                "No URI given to load() and the graph does not have a URI."
             );
-        }
 
         if (!$data) {
             # No data was given - try and fetch data from URI
@@ -235,11 +239,11 @@ class EasyRdf_Graph
             $client->setUri($uri);
             $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
             $response = $client->request();
-            if (!$response->isSuccessful()) {
+            if (!$response->isSuccessful())
                 throw new EasyRdf_Exception(
                     "HTTP request for $uri failed: ".$response->getMessage()
                 );
-            }
+
             $data = $response->getBody();
             if (!$format) {
                 $format = $response->getHeader('Content-Type');

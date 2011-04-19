@@ -10,6 +10,7 @@
 
 <?php
   $foaf = new EasyRdf_Graph("http://www.aelius.com/njh/foaf.rdf");
+  $foad->load();
   $me = $foaf->primaryTopic();
 ?>
 

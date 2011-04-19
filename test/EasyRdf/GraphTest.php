@@ -138,8 +138,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testGetUri()
     {
-        $data = readFixture('foaf.json');
-        $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
+        $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf');
         $this->assertEquals(
             'http://example.com/joe/foaf.rdf',
             $graph->getUri()
@@ -184,7 +183,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoadNullUri()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('EasyRdf_Exception');
         $graph = new EasyRdf_Graph();
         $graph->load(null);
     }
@@ -226,6 +225,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         EasyRdf_Graph::setHttpClient(new Mock_Http_Client());
         $graph = new EasyRdf_Graph('http://www.example.com/');
+        $graph->load();
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
