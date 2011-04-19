@@ -82,13 +82,12 @@ class EasyRdf_Http_Client
     private $_redirectCounter = 0;
 
     /**
-     * Contructor method. Will create a new HTTP client. Accepts the target
+     * Constructor method. Will create a new HTTP client. Accepts the target
      * URL and optionally configuration array.
      *
      * @param string $uri
      * @param array $config Configuration key-value pairs.
      */
-
     public function __construct($uri = null, $config = null)
     {
         if ($uri !== null) {
@@ -141,14 +140,15 @@ class EasyRdf_Http_Client
             );
         }
 
-        foreach ($config as $k => $v)
+        foreach ($config as $k => $v) {
             $this->_config[strtolower($k)] = $v;
+        }
 
         return $this;
     }
 
     /**
-     * Set a request headers
+     * Set a request header
      *
      * @param string $name Header name (e.g. 'Accept')
      * @param string $value Header value or null
@@ -237,7 +237,9 @@ class EasyRdf_Http_Client
             }
 
             // Write the request
-            fwrite($socket, "{$method} {$uri['path']} HTTP/1.1\r\n");
+            $path = $uri['path'];
+            if (isset($uri['query'])) $path .= '?' . $uri['query'];
+            fwrite($socket, "{$method} {$path} HTTP/1.1\r\n");
             foreach ($headers as $k => $v) {
                 if (is_string($k)) $v = ucfirst($k) . ": $v";
                 fwrite($socket, "$v\r\n");
