@@ -1249,8 +1249,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testToString()
     {
-        $data = readFixture('foaf.json');
-        $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
+        $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf');
         $this->assertStringEquals('http://example.com/joe/foaf.rdf', $graph);
     }
 }
