@@ -100,7 +100,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
      */
     public function setUp()
     {
-        $this->_graph = new EasyRdf_Graph();
+        $this->_graph = new EasyRdf_Graph('http://example.com/graph');
         $this->_uri = 'http://example.com/#me';
         $this->_graph->setType($this->_uri, 'foaf:Person');
         $this->_graph->add($this->_uri, 'rdf:test', 'Test A');
@@ -1078,7 +1078,32 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
-    public function testDumpLiteral()
+    public function testDumpText()
+    {
+        $text = $this->_graph->dump(false);
+        $this->assertContains('Graph: http://example.com/graph', $text);
+        $this->assertContains('http://example.com/#me (EasyRdf_Resource)', $text);
+        $this->assertContains('  -> rdf:type -> foaf:Person', $text);
+        $this->assertContains('  -> rdf:test -> "Test A"', $text);
+    }
+
+    public function testDumpEmptyGraph()
+    {
+        $graph = new EasyRdf_Graph('http://example.com/graph2');
+        $this->assertEquals("Graph: http://example.com/graph2\n", $graph->dump(false));
+        $this->assertContains('>Graph: http://example.com/graph2</div>', $graph->dump(true));
+    }
+
+    public function testDumpHtml()
+    {
+        $html = $this->_graph->dump(true);
+        $this->assertContains('Graph: http://example.com/graph', $html);
+        $this->assertContains('http://example.com/#me', $html);
+        $this->assertContains('>rdf:test</span>', $html);
+        $this->assertContains('>&quot;Test A&quot;</span>', $html);
+    }
+
+    public function testDumpLiterals()
     {
         $graph = new EasyRdf_Graph();
         $graph->add('http://example.com/joe#me', 'foaf:name', 'Joe');

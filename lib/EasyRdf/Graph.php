@@ -756,11 +756,19 @@ class EasyRdf_Graph
      */
     public function dump($html=true)
     {
-        $r = array();
-        foreach ($this->_index as $resource => $properties) {
-            $r[] = $this->dumpResource($resource, $html);
+        $result = '';
+        if ($html) {
+            $result .= "<div style='font-family:arial; font-weight: bold; padding:0.5em; ".
+                   "color: black; background-color:lightgrey;border:dashed 1px grey;'>".
+                   "Graph: ". $this->_uri . "</div>\n";
+        } else {
+            $result .= "Graph: ". $this->_uri . "\n";
         }
-        return join('', $r);
+
+        foreach ($this->_index as $resource => $properties) {
+            $result .= $this->dumpResource($resource, $html);
+        }
+        return $result;
     }
 
     public function dumpResource($resource, $html=true)
