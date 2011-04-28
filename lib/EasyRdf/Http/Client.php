@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  * Copyright (c) 2005-2009 Zend Technologies USA Inc.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,13 +50,6 @@
 class EasyRdf_Http_Client
 {
     /**
-     * Request URI
-     *
-     * @var string
-     */
-    private $_uri = null;
-
-    /**
      * Configuration array, set using the constructor or using ::setConfig()
      *
      * @var array
@@ -68,11 +61,32 @@ class EasyRdf_Http_Client
     );
 
     /**
+     * Request URI
+     *
+     * @var string
+     */
+    private $_uri = null;
+
+    /**
      * Associative array of request headers
      *
      * @var array
      */
     private $_headers = array();
+
+    /**
+     * HTTP request method
+     *
+     * @var string
+     */
+    protected $_method = 'GET';
+
+    /**
+     * The raw post data to send. Could be set by setRawData($data).
+     *
+     * @var string
+     */
+    private $_raw_post_data = null;
 
     /**
      * Redirection counter
@@ -171,6 +185,36 @@ class EasyRdf_Http_Client
     }
 
     /**
+     * Set the next request's method
+     *
+     * Validated the passed method and sets it.
+     *
+     * @param string $method
+     * @return EasyRdf_Http_Client
+     * @throws InvalidArgumentException
+     */
+    public function setMethod($method)
+    {
+        if (!is_string($method) or !preg_match('/^[A-Z]+$/', $method)) {
+            throw new InvalidArgumentException("'$method' is not a valid HTTP request method.");
+        }
+
+        $this->_method = $method;
+
+        return $this;
+    }
+
+    /**
+     * Get the method for the next request
+     *
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->_method;
+    }
+
+    /**
      * Get the value of a specific header
      *
      * Note that if the header has more than one value, an array
@@ -200,12 +244,31 @@ class EasyRdf_Http_Client
     }
 
     /**
+     * Set the raw (already encoded) POST data.
+     *
+     * This function is here for two reasons:
+     * 1. For advanced user who would like to set their own data, already encoded
+     * 2. For backwards compatibilty: If someone uses the old post($data) method.
+     *    this method will be used to set the encoded data.
+     *
+     * $data can also be stream (such as file) from which the data will be read.
+     *
+     * @param string|resource $data
+     * @return Zend_Http_Client
+     */
+    public function setRawData($data)
+    {
+        $this->_raw_post_data = $data;
+        return $this;
+    }
+
+    /**
      * Send the HTTP request and return an HTTP response object
      *
      * @return EasyRdf_Http_Response
      * @throws EasyRdf_Exception
      */
-    public function request($method = 'GET')
+    public function request($method = null)
     {
         if (!$this->_uri) {
             throw new EasyRdf_Exception(
@@ -213,6 +276,9 @@ class EasyRdf_Http_Client
             );
         }
 
+        if ($method) {
+            $this->setMethod($method);
+        }
         $this->_redirectCounter = 0;
         $response = null;
 
@@ -239,13 +305,17 @@ class EasyRdf_Http_Client
             // Write the request
             $path = $uri['path'];
             if (isset($uri['query'])) $path .= '?' . $uri['query'];
-            fwrite($socket, "{$method} {$path} HTTP/1.1\r\n");
+            fwrite($socket, "{$this->_method} {$path} HTTP/1.1\r\n");
             foreach ($headers as $k => $v) {
                 if (is_string($k)) $v = ucfirst($k) . ": $v";
                 fwrite($socket, "$v\r\n");
             }
             fwrite($socket, "\r\n");
 
+            // Send the request body, if there is one set
+            if (isset($this->_raw_post_data)) {
+                fwrite($socket, $this->_raw_post_data);
+            }
 
             // Read in the response
             $content = '';
@@ -316,6 +386,11 @@ class EasyRdf_Http_Client
         // Set the user agent header
         if (! isset($this->_headers['user-agent'])) {
             $headers[] = "User-Agent: {$this->_config['useragent']}";
+        }
+
+        // If we have _raw_post_data set, set the content-length header
+        if (isset($this->_raw_post_data)) {
+            $headers[] = "Content-Length: ".strlen($this->_raw_post_data);
         }
 
         // Add all other user defined headers
