@@ -3,10 +3,6 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    # Configure the HTTP client to use
-    require_once "EasyRdf/Http/Client.php";
-    EasyRdf_Graph::setHttpClient( new EasyRdf_Http_Client() );
-
 
     class Model_MusicArtist extends EasyRdf_Resource
     {

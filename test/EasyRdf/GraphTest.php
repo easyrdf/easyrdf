@@ -56,17 +56,9 @@ class Mock_Http_Response
     }
 }
 
-class Mock_Http_Client
+class Mock_Http_Client extends EasyRdf_Http_Client
 {
-    public function setUri($uri)
-    {
-    }
-
-    public function setHeaders($headers)
-    {
-    }
-
-    public function request()
+    public function request($method = null)
     {
         return new Mock_Http_Response();
     }
@@ -105,35 +97,6 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->setType($this->_uri, 'foaf:Person');
         $this->_graph->add($this->_uri, 'rdf:test', 'Test A');
         $this->_graph->add($this->_uri, 'rdf:test', new EasyRdf_Literal('Test B', 'en'));
-    }
-
-    public function testGetDefaultHttpClient()
-    {
-        $this->assertEquals(
-            'EasyRdf_Http_Client',
-            get_class(EasyRdf_Graph::getHttpClient())
-        );
-    }
-
-    public function testSetHttpClient()
-    {
-        EasyRdf_Graph::setHttpClient(new Mock_Http_Client());
-        $this->assertEquals(
-            'Mock_Http_Client',
-            get_class(EasyRdf_Graph::getHttpClient())
-        );
-    }
-
-    public function testSetHttpClientNull()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Graph::setHttpClient(null);
-    }
-
-    public function testSetHttpClientString()
-    {
-        $this->setExpectedException('InvalidArgumentException');
-        EasyRdf_Graph::setHttpClient('foobar');
     }
 
     public function testGetUri()
@@ -223,7 +186,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoadMockHttpClient()
     {
-        EasyRdf_Graph::setHttpClient(new Mock_Http_Client());
+        EasyRdf_Http::setDefaultHttpClient(new Mock_Http_Client());
         $graph = new EasyRdf_Graph('http://www.example.com/');
         $graph->load();
         $this->assertStringEquals(

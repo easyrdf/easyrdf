@@ -58,39 +58,6 @@ class EasyRdf_Graph
     /** Counter for the number of bnodes */
     private $_bNodeCount = 0;
 
-    /** An HTTP Client object used by graph to fetch data */
-    private static $_httpClient = null;
-
-
-    /** Set the HTTP Client object used to fetch RDF data
-     *
-     * @param  object mixed $httpClient The new HTTP client object
-     * @return object mixed The new HTTP client object
-     */
-    public static function setHttpClient($httpClient)
-    {
-        if (!is_object($httpClient) or $httpClient == null) {
-            throw new InvalidArgumentException(
-                "\$httpClient should be an object and cannot be null"
-            );
-        }
-        return self::$_httpClient = $httpClient;
-    }
-
-    /** Get the HTTP Client object used to fetch RDF data
-     *
-     * If no HTTP Client has previously been set, then a new
-     * default (EasyRdf_Http_Client) client will be created.
-     *
-     * @return object mixed The HTTP client object
-     */
-    public static function getHttpClient()
-    {
-        if (!self::$_httpClient) {
-            self::$_httpClient = new EasyRdf_Http_Client();
-        }
-        return self::$_httpClient;
-    }
 
     /**
      * Constructor
@@ -235,7 +202,7 @@ class EasyRdf_Graph
         if (!$data) {
             # No data was given - try and fetch data from URI
             # FIXME: prevent loading the same URI multiple times
-            $client = self::getHttpClient();
+            $client = EasyRdf_Http::getDefaultHttpClient();
             $client->setUri($uri);
             $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
             $response = $client->request();
