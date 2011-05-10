@@ -86,7 +86,7 @@ class EasyRdf_Http_Client
      *
      * @var string
      */
-    private $_raw_post_data = null;
+    private $_rawPostData = null;
 
     /**
      * Redirection counter
@@ -258,7 +258,7 @@ class EasyRdf_Http_Client
      */
     public function setRawData($data)
     {
-        $this->_raw_post_data = $data;
+        $this->_rawPostData = $data;
         return $this;
     }
 
@@ -313,8 +313,8 @@ class EasyRdf_Http_Client
             fwrite($socket, "\r\n");
 
             // Send the request body, if there is one set
-            if (isset($this->_raw_post_data)) {
-                fwrite($socket, $this->_raw_post_data);
+            if (isset($this->_rawPostData)) {
+                fwrite($socket, $this->_rawPostData);
             }
 
             // Read in the response
@@ -388,9 +388,9 @@ class EasyRdf_Http_Client
             $headers[] = "User-Agent: {$this->_config['useragent']}";
         }
 
-        // If we have _raw_post_data set, set the content-length header
-        if (isset($this->_raw_post_data)) {
-            $headers[] = "Content-Length: ".strlen($this->_raw_post_data);
+        // If we have _rawPostData set, set the content-length header
+        if (isset($this->_rawPostData)) {
+            $headers[] = "Content-Length: ".strlen($this->_rawPostData);
         }
 
         // Add all other user defined headers
