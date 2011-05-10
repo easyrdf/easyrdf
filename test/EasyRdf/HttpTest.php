@@ -42,7 +42,7 @@ class Mock_Http_Test_Client extends EasyRdf_Http_Client
 {
     public function request($method = null)
     {
-        return new Mock_Http_Response();
+        return null;
     }
 }
 
