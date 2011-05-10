@@ -55,6 +55,11 @@ require_once "EasyRdf/Format.php";
 require_once "EasyRdf/Graph.php";
 
 /**
+ * @see EasyRdf_GraphStore
+ */
+require_once "EasyRdf/GraphStore.php";
+
+/**
  * @see EasyRdf_Http
  */
 require_once "EasyRdf/Http.php";
