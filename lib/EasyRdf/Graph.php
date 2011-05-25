@@ -114,7 +114,7 @@ class EasyRdf_Graph
         // Create resource object if it doesn't already exist
         if (!isset($this->_resources[$uri])) {
             $resClass = $this->classForResource($uri);
-            $this->_resources[$uri] = new $resClass($this, $uri);
+            $this->_resources[$uri] = new $resClass($uri, $this);
         }
 
         return $this->_resources[$uri];
