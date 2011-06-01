@@ -81,7 +81,7 @@ class EasyRdf_Format
         arsort($accept, SORT_NUMERIC);
 
         $acceptStr='';
-        foreach($accept as $type => $q) {
+        foreach ($accept as $type => $q) {
             if ($acceptStr)
                 $acceptStr .= ',';
             if ($q == 1.0) {
