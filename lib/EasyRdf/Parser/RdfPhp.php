@@ -49,9 +49,6 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
 {
     private $_bnodeMap = array();
 
-    /** A constant for the RDF Type property URI */
-    const RDF_TYPE_URI = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
-
     /**
      * Constructor
      *
