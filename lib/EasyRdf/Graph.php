@@ -178,6 +178,31 @@ class EasyRdf_Graph
     }
 
     /**
+     * Parse some RDF data into the graph object.
+     *
+     * @param  string  $data    Data to parse for the graph
+     * @param  string  $format  Optional format of the data
+     * @param  string  $uri     The URI of the data to load
+     */
+    public function parse($data, $format=null, $uri=null)
+    {
+        $this->checkResourceParam($uri, true);
+
+        // Guess the format if it is Unknown
+        if (!$format)
+            $format = EasyRdf_Format::guessFormat($data);
+
+        if (!$format)
+            throw new EasyRdf_Exception(
+                "Unable to parse data of an unknown format."
+            );
+
+        $format = EasyRdf_Format::getFormat($format);
+        $parser = $format->newParser();
+        return $parser->parse($this, $data, $format, $uri);
+    }
+
+    /**
      * Load RDF data into the graph.
      *
      * If a URI is supplied, but no data then the data will
@@ -186,9 +211,9 @@ class EasyRdf_Graph
      * The document type is optional and can be specified if it
      * can't be guessed or got from the HTTP headers.
      *
-     * @param  string  $uri     The URI of the graph
-     * @param  string  $data    Data for the graph
-     * @param  string  $format  The document type of the data
+     * @param  string  $uri     The URI of the data to load
+     * @param  string  $data    Optional data for the graph
+     * @param  string  $format  Optional format of the data
      */
     public function load($uri=null, $data=null, $format=null)
     {
@@ -218,19 +243,8 @@ class EasyRdf_Graph
             }
         }
 
-        # Guess the format if it is Unknown
-        if (!$format)
-            $format = EasyRdf_Format::guessFormat($data);
-
-        if (!$format)
-            throw new EasyRdf_Exception(
-                "Unable to load data of an unknown format."
-            );
-
-        # Parse the data
-        $format = EasyRdf_Format::getFormat($format);
-        $parser = $format->newParser();
-        return $parser->parse($this, $data, $format, $uri);
+        // Parse the data
+        return $this->parse($data, $format, $uri);
     }
 
     /** Get an associative array of all the resources stored in the graph.

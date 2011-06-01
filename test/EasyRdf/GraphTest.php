@@ -125,23 +125,27 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testParseData()
+    {
+        $graph = new EasyRdf_Graph();
+        $data = readFixture('foaf.json');
+        $graph->parse($data, 'json');
+
+        $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
+        $this->assertEquals('EasyRdf_Literal', get_class($name));
+        $this->assertEquals('Joe Bloggs', $name->getValue());
+        $this->assertEquals('en', $name->getLang());
+        $this->assertEquals(null, $name->getDatatype());
+    }
+
     public function testLoadData()
     {
         $graph = new EasyRdf_Graph();
         $data = readFixture('foaf.json');
         $graph->load('http://www.example.com/foaf.json', $data, 'json');
 
-        $joe = $graph->resource('http://www.example.com/joe#me');
-        $this->assertNotNull($joe);
-        $this->assertEquals('EasyRdf_Resource', get_class($joe));
-        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
-
-        $name = $joe->get('foaf:name');
-        $this->assertNotNull($name);
-        $this->assertEquals('EasyRdf_Literal', get_class($name));
-        $this->assertEquals('Joe Bloggs', $name->getValue());
-        $this->assertEquals('en', $name->getLang());
-        $this->assertEquals(null, $name->getDatatype());
+        $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
+        $this->assertStringEquals('Joe Bloggs', $name);
     }
 
     public function testLoadNullUri()
