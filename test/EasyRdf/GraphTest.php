@@ -957,7 +957,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testSerialiseByMime()
     {
         EasyRdf_Format::registerSerialiser('mock', 'Mock_RdfSerialiser');
-        EasyRdf_Format::register('mock', 'Mock', null, 'mock/mime');
+        EasyRdf_Format::register('mock', 'Mock', null, array('mock/mime' => 1.0));
         $graph = new EasyRdf_Graph();
         $this->assertEquals(
             "<rdf></rdf>",

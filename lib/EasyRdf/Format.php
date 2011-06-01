@@ -70,15 +70,27 @@ class EasyRdf_Format
         return self::$_formats;
     }
 
-    public static function getHttpAcceptHeader()
+    public static function getHttpAcceptHeader($extraTypes=array())
     {
-        $accept = array();
+        $accept = $extraTypes;
         foreach (self::$_formats as $format) {
             if ($format->_parserClass and count($format->_mimeTypes) > 0) {
-                $accept[] = $format->_mimeTypes[0];
+                $accept = array_merge($accept, $format->_mimeTypes);
             }
         }
-        return join(',', $accept);
+        arsort($accept, SORT_NUMERIC);
+
+        $acceptStr='';
+        foreach($accept as $type => $q) {
+            if ($acceptStr)
+                $acceptStr .= ',';
+            if ($q == 1.0) {
+                $acceptStr .= $type;
+            } else {
+                $acceptStr .= sprintf("%s;q=%1.1f", $type, $q);
+            }
+        }
+        return $acceptStr;
     }
 
     /** Check if a named graph exists
@@ -108,7 +120,7 @@ class EasyRdf_Format
         foreach (self::$_formats as $format) {
            if ($query == $format->_name or
                $query == $format->_uri or
-               in_array($query, $format->_mimeTypes)) {
+               array_key_exists($query, $format->_mimeTypes)) {
                return $format;
            }
         }
@@ -144,6 +156,15 @@ class EasyRdf_Format
         self::$_formats[$name]->setUri($uri);
         self::$_formats[$name]->setMimeTypes($mimeTypes);
         return self::$_formats[$name];
+    }
+
+    /** Remove a format from the registry
+     *
+     * @param  string  $name      The name of the format (e.g. ntriples)
+     */
+    public static function unregister($name)
+    {
+        unset(self::$_formats[$name]);
     }
 
     /** Class method to register a parser class to a format name
@@ -285,9 +306,20 @@ class EasyRdf_Format
         }
     }
 
-    /** Get the registered mime types for a format object
+    /** Get the default registered mime type for a format object
      *
-     * @return array One or more MIME types in an array
+     * @return string The default mime type as a string.
+     */
+    public function getDefaultMimeType()
+    {
+        $types = array_keys($this->_mimeTypes);
+        return $types[0];
+    }
+
+    /** Get all the registered mime types for a format object
+     *
+     * @return array One or more MIME types in an array with
+     *               the mime type as the key and q value as the value
      */
     public function getMimeTypes()
     {
@@ -421,9 +453,9 @@ EasyRdf_Format::register(
     'RDF/JSON Resource-Centric',
     'http://n2.talis.com/wiki/RDF_JSON_Specification',
     array(
-        'application/json',
-        'text/json',
-        'application/rdf+json'
+        'application/json' => 1.0,
+        'text/json' => 0.9,
+        'application/rdf+json' => 0.9
     )
 );
 
@@ -432,10 +464,10 @@ EasyRdf_Format::register(
     'N-Triples',
     'http://www.w3.org/TR/rdf-testcases/#ntriples',
     array(
-        'text/plain',
-        'text/ntriples',
-        'application/ntriples',
-        'application/x-ntriples'
+        'text/plain' => 1.0,
+        'text/ntriples' => 0.9,
+        'application/ntriples' => 0.9,
+        'application/x-ntriples' => 0.9
     )
 );
 
@@ -444,9 +476,9 @@ EasyRdf_Format::register(
     'Turtle Terse RDF Triple Language',
     'http://www.dajobe.org/2004/01/turtle',
     array(
-        'text/turtle',
-        'application/turtle',
-        'application/x-turtle'
+        'text/turtle' => 0.8,
+        'application/turtle' => 0.7,
+        'application/x-turtle' => 0.7
     )
 );
 
@@ -455,7 +487,7 @@ EasyRdf_Format::register(
     'RDF/XML',
     'http://www.w3.org/TR/rdf-syntax-grammar',
     array(
-        'application/rdf+xml'
+        'application/rdf+xml' => 0.8
     )
 );
 
@@ -464,8 +496,8 @@ EasyRdf_Format::register(
     'Notation3',
     'http://www.w3.org/2000/10/swap/grammar/n3#',
     array(
-        'text/n3',
-        'text/rdf+n3'
+        'text/n3' => 0.5,
+        'text/rdf+n3' => 0.5
     )
 );
 
@@ -474,7 +506,7 @@ EasyRdf_Format::register(
     'RDF/A',
     'http://www.w3.org/TR/rdfa/',
     array(
-        'text/html',
-        'application/xhtml+xml'
+        'text/html' => 0.4,
+        'application/xhtml+xml' => 0.4
     )
 );

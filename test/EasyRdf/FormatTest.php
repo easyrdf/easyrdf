@@ -57,8 +57,13 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
             'my',
             'My Format',
             'http://example.com/myformat',
-            array('my/mime', 'my/x-mime')
+            array('my/mime' => 1.0, 'my/x-mime' => 0.9)
         );
+    }
+
+    public function tearDown()
+    {
+        EasyRdf_Format::unregister('my');
     }
 
     public function testRegisterNameNull()
@@ -93,6 +98,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     {
         $accept = explode(',', EasyRdf_Format::getHttpAcceptHeader());
         $this->assertContains('application/json', $accept);
+        $this->assertContains('application/rdf+xml;q=0.8', $accept);
     }
 
     public function testFormatExistsTrue()
@@ -103,6 +109,12 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testFormatExistsFalse()
     {
         assert(!EasyRdf_Format::formatExists('testFormatExistsFalse'));
+    }
+
+    public function testUnRegister()
+    {
+        EasyRdf_Format::unregister('my');
+        assert(!EasyRdf_Format::formatExists('my'));
     }
 
     public function testGetFormatByName()
@@ -242,10 +254,18 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetDefaultMimeType()
+    {
+        $this->assertEquals(
+            'my/mime',
+            $this->_format->getDefaultMimeType()
+        );
+    }
+
     public function testGetMimeTypes()
     {
         $this->assertEquals(
-            array('my/mime', 'my/x-mime'),
+            array('my/mime' => 1.0, 'my/x-mime' => 0.9),
             $this->_format->getMimeTypes()
         );
     }
