@@ -63,8 +63,9 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
      */
     public function testSetGetUriObject()
     {
-      $uristr = 'http://www.bbc.co.uk:80/';
-        $this->_client->setUri('http://www.bbc.co.uk:80/');
+        $uristr = 'http://www.bbc.co.uk:80/';
+        $obj = new EasyRdf_Resource($uristr);
+        $this->_client->setUri($obj);
 
         $uri = $this->_client->getUri();
         $this->assertEquals($uristr, $uri);
@@ -117,10 +118,50 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSetGetMethod()
+    {
+        $this->_client->setMethod('POST');
+        $method = $this->_client->getMethod();
+        $this->assertEquals('POST', $method);
+    }
+
+    public function testSetNonStringMethod()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_client->setMethod($this);
+    }
+
+    public function testSetNumericMethod()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $this->_client->setMethod('1234');
+    }
+
     public function testRedirectionCounterShouldStartAtZero()
     {
         $this->_client->setHeaders('Accept-Encoding', null);
-        $this->assertEquals($this->_client->getRedirectionsCount(), 0);
+        $this->assertEquals(0, $this->_client->getRedirectionsCount());
+    }
+
+    public function testSetParameterGet()
+    {
+        $this->_client->setParameterGet('key1', 'value1');
+        $this->assertEquals('value1', $this->_client->getParameterGet('key1'));
+    }
+
+    public function testUnSetParameterGet()
+    {
+        $this->_client->setParameterGet('key1', 'value1');
+        $this->_client->setParameterGet('key2', 'value2');
+        $this->_client->setParameterGet('key1', null);
+        $this->assertEquals(null, $this->_client->getParameterGet('key1'));
+        $this->assertEquals('value2', $this->_client->getParameterGet('key2'));
+    }
+
+    public function testSetRawData()
+    {
+        $this->_client->setRawData('Foo Bar');
+        $this->assertEquals('Foo Bar', $this->_client->getRawData());
     }
 
     public function testRequestNoUri()
@@ -128,6 +169,36 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $client = new EasyRdf_Http_Client();
         $this->setExpectedException('EasyRdf_Exception');
         $client->request();
+    }
+
+    public function testResetParameters()
+    {
+        $this->_client->setMethod('POST');
+        $this->_client->setRawData('Foo Bar');
+        $this->_client->setHeaders('Content-Length', 7);
+        $this->_client->setHeaders('Content-Type', 'text/plain');
+        $this->_client->setHeaders('Accept-Language', 'en');
+        $this->_client->resetParameters();
+        $this->assertEquals('GET', $this->_client->getMethod());
+        $this->assertEquals(null, $this->_client->getRawData());
+        $this->assertEquals(null, $this->_client->getHeader('Content-Length'));
+        $this->assertEquals(null, $this->_client->getHeader('Content-Type'));
+        $this->assertEquals('en', $this->_client->getHeader('Accept-Language'));
+    }
+
+    public function testResetParametersClearAll()
+    {
+        $this->_client->setMethod('POST');
+        $this->_client->setRawData('Foo Bar');
+        $this->_client->setHeaders('Content-Length', 7);
+        $this->_client->setHeaders('Content-Type', 'text/plain');
+        $this->_client->setHeaders('Accept-Language', 'en');
+        $this->_client->resetParameters(true);
+        $this->assertEquals('GET', $this->_client->getMethod());
+        $this->assertEquals(null, $this->_client->getRawData());
+        $this->assertEquals(null, $this->_client->getHeader('Content-Length'));
+        $this->assertEquals(null, $this->_client->getHeader('Content-Type'));
+        $this->assertEquals(null, $this->_client->getHeader('Accept-Language'));
     }
 
 }

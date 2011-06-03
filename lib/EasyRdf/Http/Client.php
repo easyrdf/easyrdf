@@ -82,6 +82,13 @@ class EasyRdf_Http_Client
     protected $_method = 'GET';
 
     /**
+     * Associative array of GET parameters
+     *
+     * @var array
+     */
+    protected $_paramsGet = array();
+
+    /**
      * The raw post data to send. Could be set by setRawData($data).
      *
      * @var string
@@ -196,7 +203,7 @@ class EasyRdf_Http_Client
     public function setMethod($method)
     {
         if (!is_string($method) or !preg_match('/^[A-Z]+$/', $method)) {
-            throw new InvalidArgumentException("'$method' is not a valid HTTP request method.");
+            throw new InvalidArgumentException("Invalid HTTP request method.");
         }
 
         $this->_method = $method;
@@ -234,6 +241,40 @@ class EasyRdf_Http_Client
     }
 
     /**
+     * Set a GET parameter for the request.
+     *
+     * @param string $name
+     * @param string $value
+     * @return EasyRdf_Http_Client
+     */
+    public function setParameterGet($name, $value = null)
+    {
+        if ($value === null) {
+            if (isset($this->_paramsGet[$name]))
+                unset($this->_paramsGet[$name]);
+        } else {
+            $this->_paramsGet[$name] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get a GET parameter for the request.
+     *
+     * @param string $name
+     * @return string value
+     */
+    public function getParameterGet($name)
+    {
+        if (isset($this->_paramsGet[$name])) {
+            return $this->_paramsGet[$name];
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Get the number of redirections done on the last request
      *
      * @return int
@@ -259,6 +300,50 @@ class EasyRdf_Http_Client
     public function setRawData($data)
     {
         $this->_rawPostData = $data;
+        return $this;
+    }
+
+    /**
+     * Get the raw (already encoded) POST data.
+     *
+     * @return string
+     */
+    public function getRawData()
+    {
+        return $this->_rawPostData;
+    }
+
+    /**
+     * Clear all GET and POST parameters
+     *
+     * Should be used to reset the request parameters if the client is
+     * used for several concurrent requests.
+     *
+     * clearAll parameter controls if we clean just parameters or also
+     * headers
+     *
+     * @param bool $clearAll Should all data be cleared?
+     * @return EasyRdf_Http_Client
+     */
+    public function resetParameters($clearAll = false)
+    {
+        // Reset parameter data
+        $this->_paramsGet   = array();
+        $this->_rawPostData = null;
+        $this->_method      = 'GET';
+
+        if($clearAll) {
+            $this->_headers = array();
+        } else {
+            // Clear outdated headers
+            if (isset($this->_headers['content-type'])) {
+                unset($this->_headers['content-type']);
+            }
+            if (isset($this->_headers['content-length'])) {
+                unset($this->_headers['content-length']);
+            }
+        }
+
         return $this;
     }
 
@@ -292,6 +377,16 @@ class EasyRdf_Http_Client
             } else {
                 $port = 80;
             }
+
+            if (!empty($this->_paramsGet)) {
+                if (!empty($uri['query'])) {
+                    $uri['query'] .= '&';
+                } else {
+                    $uri['query'] = '';
+                }
+                $uri['query'] .= http_build_query($this->_paramsGet, null, '&');
+            }
+
             $headers = $this->_prepareHeaders($host, $port);
 
             // Open socket to remote server
@@ -335,6 +430,16 @@ class EasyRdf_Http_Client
             if ($response->isRedirect() &&
                    ($location = $response->getHeader('location'))
                ) {
+
+                // Avoid problems with buggy servers that add whitespace at the
+                // end of some headers (See ZF-11283)
+                $location = trim($location);
+
+                // If it is a 303 then drop the parameters and send a GET request
+                if ($response->getStatus() == 303) {
+                    $this->resetParameters();
+                    $this->setMethod('GET');
+                }
 
                 // If we got a well formed absolute URI
                 if (parse_url($location)) {
