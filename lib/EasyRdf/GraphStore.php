@@ -83,7 +83,7 @@ class EasyRdf_GraphStore
         }
         
         $formatObj = EasyRdf_Format::getFormat($format);
-        $mimeTypes = $formatObj->getMimeTypes();
+        $mimeType = $formatObj->getDefautMimeType();
 
         $graphUri = EasyRdf_Utils::resolveUriReference($this->_uri, $uriRef);
         $dataUrl = $this->urlForGraph($graphUri);
@@ -92,7 +92,7 @@ class EasyRdf_GraphStore
         $client->setUri($dataUrl);
         $client->setMethod($method);
         $client->setRawData($data);
-        $client->setHeaders('Content-Type', $mimeTypes[0]);
+        $client->setHeaders('Content-Type', $mimeType);
         $response = $client->request();
         if (!$response->isSuccessful()) {
             throw new EasyRdf_Exception(
