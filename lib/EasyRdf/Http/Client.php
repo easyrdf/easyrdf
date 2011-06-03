@@ -332,7 +332,7 @@ class EasyRdf_Http_Client
         $this->_rawPostData = null;
         $this->_method      = 'GET';
 
-        if($clearAll) {
+        if ($clearAll) {
             $this->_headers = array();
         } else {
             // Clear outdated headers
