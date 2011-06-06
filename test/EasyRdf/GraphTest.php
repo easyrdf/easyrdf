@@ -38,32 +38,6 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Mock_Http_Response
-{
-    public function getBody()
-    {
-        return readFixture('foaf.json');
-    }
-
-    public function getHeader($header)
-    {
-        return 'application/json';
-    }
-
-    public function isSuccessful()
-    {
-        return true;
-    }
-}
-
-class Mock_Http_Client extends EasyRdf_Http_Client
-{
-    public function request($method = null)
-    {
-        return new Mock_Http_Response();
-    }
-}
-
 class Mock_RdfParser
 {
     public function parse($graph, $data, $format, $baseUri)
@@ -92,6 +66,9 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
      */
     public function setUp()
     {
+        EasyRdf_Http::setDefaultHttpClient(
+            $this->_client = new EasyRdf_Http_MockClient()
+        );
         $this->_graph = new EasyRdf_Graph('http://example.com/graph');
         $this->_uri = 'http://example.com/#me';
         $this->_graph->setType($this->_uri, 'foaf:Person');
@@ -190,7 +167,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoadMockHttpClient()
     {
-        EasyRdf_Http::setDefaultHttpClient(new Mock_Http_Client());
+        $this->_client->addMock('GET', 'http://www.example.com/', readFixture('foaf.json'));
         $graph = new EasyRdf_Graph('http://www.example.com/');
         $graph->load();
         $this->assertStringEquals(
