@@ -166,7 +166,7 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function isMockHttp($value)
     {
-        return is_a($value, 'EasyRdf_Http_MockClient');
+        return ($value instanceof EasyRdf_Http_MockClient);
     }
 
     public function testGuessJsonContentType()
