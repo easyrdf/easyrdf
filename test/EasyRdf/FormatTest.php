@@ -434,37 +434,37 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testGuessFormatPhp()
     {
         $data = array('http://www.example.com' => array());
-        $this->assertEquals('php', EasyRdf_Format::guessFormat($data));
+        $this->assertStringEquals('php', EasyRdf_Format::guessFormat($data));
     }
 
     public function testGuessFormatRdfXml()
     {
         $data = readFixture('foaf.rdf');
-        $this->assertEquals('rdfxml', EasyRdf_Format::guessFormat($data));
+        $this->assertStringEquals('rdfxml', EasyRdf_Format::guessFormat($data));
     }
 
     public function testGuessFormatJson()
     {
         $data = readFixture('foaf.json');
-        $this->assertEquals('json', EasyRdf_Format::guessFormat($data));
+        $this->assertStringEquals('json', EasyRdf_Format::guessFormat($data));
     }
 
     public function testGuessFormatTurtle()
     {
         $data = readFixture('foaf.ttl');
-        $this->assertEquals('turtle', EasyRdf_Format::guessFormat($data));
+        $this->assertStringEquals('turtle', EasyRdf_Format::guessFormat($data));
     }
 
     public function testGuessFormatNtriples()
     {
         $data = readFixture('foaf.nt');
-        $this->assertEquals('ntriples', EasyRdf_Format::guessFormat($data));
+        $this->assertStringEquals('ntriples', EasyRdf_Format::guessFormat($data));
     }
 
     public function testGuessFormatRdfa()
     {
         $data = readFixture('foaf.html');
-        $this->assertEquals('rdfa', EasyRdf_Format::guessFormat($data));
+        $this->assertStringEquals('rdfa', EasyRdf_Format::guessFormat($data));
     }
 
     public function testGuessFormatXml()
@@ -472,7 +472,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $format = EasyRdf_Format::guessFormat(
             '<?xml version="1.0" encoding="UTF-8"?><!-- long comment '
         );
-        $this->assertEquals('rdfxml', $format);
+        $this->assertStringEquals('rdfxml', $format);
     }
 
     public function testGuessFormatUnknown()

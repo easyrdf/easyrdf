@@ -196,34 +196,34 @@ class EasyRdf_Format
      * If the document format is not recognised, null is returned.
      *
      * @param  string $data The document data
-     * @return string The format name (e.g. rdfxml)
+     * @return EasyRdf_Format The format object
      */
     public static function guessFormat($data)
     {
         if (is_array($data)) {
             # Data has already been parsed into RDF/PHP
-            return 'php';
+            return self::getFormat('php');
         }
 
         $short = substr(trim($data), 0, 255);
         if (preg_match("/^\{/", $short)) {
-            return 'json';
+            return self::getFormat('json');
         } else if (
             preg_match("/<!DOCTYPE html/", $short) or
             preg_match("/^<html/", $short)
         ) {
             # FIXME: might be erdf or something instead...
-            return 'rdfa';
+            return self::getFormat('rdfa');
         } else if (preg_match("/<rdf/", $short)) {
-            return 'rdfxml';
+            return self::getFormat('rdfxml');
         } else if (preg_match("/^@prefix /", $short)) {
             # FIXME: this could be improved
-            return 'turtle';
+            return self::getFormat('turtle');
         } else if (preg_match("/^<.+> <.+>/", $short)) {
-            return 'ntriples';
+            return self::getFormat('ntriples');
         } else if (preg_match("/^<\?xml /", $short)) {
             # FIXME: this could be improved
-            return 'rdfxml';
+            return self::getFormat('rdfxml');
         } else {
             return null;
         }

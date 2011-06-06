@@ -188,16 +188,18 @@ class EasyRdf_Graph
     {
         $this->checkResourceParam($uri, true);
 
-        // Guess the format if it is Unknown
-        if (!$format)
+        if ($format) {
+            $format = EasyRdf_Format::getFormat($format);
+        } else {
+            // Guess the format if it is Unknown
             $format = EasyRdf_Format::guessFormat($data);
+        }
 
         if (!$format)
             throw new EasyRdf_Exception(
                 "Unable to parse data of an unknown format."
             );
 
-        $format = EasyRdf_Format::getFormat($format);
         $parser = $format->newParser();
         return $parser->parse($this, $data, $format, $uri);
     }
