@@ -100,10 +100,14 @@ class EasyRdf_Http_Response
     )
     {
         $this->_status = $status;
-        $this->_headers = $headers;
         $this->_body = $body;
         $this->_version = $version;
         $this->_message = $message;
+
+        foreach ($headers as $k => $v) {
+            $k = ucwords(strtolower($k));
+            $this->_headers[$k] = $v;
+        }
     }
 
     /**
