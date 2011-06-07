@@ -95,10 +95,10 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
             return true;
         } else {
             $parts = parse_url($uri);
-            if ($match == $parts['path']) {
-                return true;
+            if (isset($parts['query'])) {
+                return ($match == $parts['path'].'?'.$parts['query']);
             } else {
-                return false;
+                return ($match == $parts['path']);
             }
         }
     }

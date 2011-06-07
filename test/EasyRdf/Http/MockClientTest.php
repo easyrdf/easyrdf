@@ -40,6 +40,17 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
         $this->assertEquals('B', $response->getBody());
     }
 
+    public function testPathAndQueryMatch()
+    {
+        $this->_client->addMock('GET', '/testA', '10');
+        $this->_client->addMock('GET', '/testA?foo=bar', '20');
+        $this->_client->addMock('GET', '/testA?bar=foo', '30');
+        $response = $this->get('http://example.com/testA?foo=bar');
+        $this->assertEquals('20', $response->getBody());
+        $response = $this->get('http://example.org/testA');
+        $this->assertEquals('10', $response->getBody());
+    }
+
     public function testUnknownUrl()
     {
         $this->setExpectedException('EasyRdf_Exception');
