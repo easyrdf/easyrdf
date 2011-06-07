@@ -46,7 +46,6 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
         EasyRdf_Http::setDefaultHttpClient(
             $this->_client = new EasyRdf_Http_MockClient()
         );
-        $this->_graph = new EasyRdf_Graph('http://example.com/graph');
         $this->_graphStore = new EasyRdf_GraphStore('http://localhost:8080/data/');
     }
 
@@ -99,6 +98,88 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
         );
+    }
+
+    public function testDeleteDirect()
+    {
+        $this->_client->addMock('DELETE', '/data/foaf.rdf', 'OK');
+        $response = $this->_graphStore->delete('foaf.rdf');
+        $this->assertEquals('200', $response->getStatus());
+    }
+
+    public function testDeleteIndirect()
+    {
+        $this->_client->addMock('DELETE', '/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf', 'OK');
+        $response = $this->_graphStore->delete('http://foo.com/bar.rdf');
+        $this->assertEquals('200', $response->getStatus());
+    }
+    
+    public function checkNtriplesRequest($client)
+    {
+        $this->assertEquals(
+            "<urn:subject> <urn:predicate> \"object\" .\n",
+            $client->getRawData()
+        );
+        $this->assertEquals("text/plain", $client->getHeader('Content-Type'));
+        $this->assertEquals(41, $client->getHeader('Content-Length'));
+        return true;
+    }
+
+    public function testInsertDirect()
+    {
+        $graph = new EasyRdf_Graph('http://localhost:8080/data/new.rdf');
+        $graph->add('urn:subject', 'urn:predicate', 'object');
+        $this->_client->addMock(
+            'POST', 'http://localhost:8080/data/new.rdf', 'OK',
+            array('callback' => array($this, 'checkNtriplesRequest'))
+        );
+        $response = $this->_graphStore->insert($graph);
+        $this->assertEquals('200', $response->getStatus());
+    }
+
+    public function testInsertIndirect()
+    {
+        $data = "<urn:subject> <urn:predicate> \"object\" .\n";
+        $this->_client->addMock(
+            'POST', '/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf', 'OK',
+            array('callback' => array($this, 'checkNtriplesRequest'))
+        );
+        $response = $this->_graphStore->insert($data, "http://foo.com/bar.rdf");
+        $this->assertEquals('200', $response->getStatus());
+    }
+
+    public function testReplaceIndirect()
+    {
+        $data = "<urn:subject> <urn:predicate> \"object\" .\n";
+        $this->_client->addMock(
+            'PUT', '/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf', 'OK',
+            array('callback' => array($this, 'checkNtriplesRequest'))
+        );
+        $response = $this->_graphStore->replace($data, "http://foo.com/bar.rdf");
+        $this->assertEquals('200', $response->getStatus());
+    }
+    
+    public function checkTurtleRequest($client)
+    {
+        $this->assertEquals(
+            '{"urn:subject":{"urn:predicate":[{"type":"literal","value":"object"}]}}',
+            $client->getRawData()
+        );
+        $this->assertEquals("application/json", $client->getHeader('Content-Type'));
+        $this->assertEquals(71, $client->getHeader('Content-Length'));
+        return true;
+    }
+
+    public function testReplaceDirectJson()
+    {
+        $graph = new EasyRdf_Graph('http://localhost:8080/data/new.rdf');
+        $graph->add('urn:subject', 'urn:predicate', 'object');
+        $this->_client->addMock(
+            'PUT', '/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf', 'OK',
+            array('callback' => array($this, 'checkTurtleRequest'))
+        );
+        $response = $this->_graphStore->replace($graph, "http://foo.com/bar.rdf", 'json');
+        $this->assertEquals('200', $response->getStatus());
     }
 
     public function testToString()

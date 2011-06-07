@@ -83,7 +83,7 @@ class EasyRdf_GraphStore
         }
         
         $formatObj = EasyRdf_Format::getFormat($format);
-        $mimeType = $formatObj->getDefautMimeType();
+        $mimeType = $formatObj->getDefaultMimeType();
 
         $graphUri = EasyRdf_Utils::resolveUriReference($this->_uri, $uriRef);
         $dataUrl = $this->urlForGraph($graphUri);
@@ -93,22 +93,24 @@ class EasyRdf_GraphStore
         $client->setMethod($method);
         $client->setRawData($data);
         $client->setHeaders('Content-Type', $mimeType);
+        $client->setHeaders('Content-Length', strlen($data));
         $response = $client->request();
         if (!$response->isSuccessful()) {
             throw new EasyRdf_Exception(
                 "HTTP request for $dataUrl failed: ".$response->getMessage()
             );
         }
+        return $response;
     }
     
     public function replace($graph, $uriRef=null, $format='ntriples')
     {
-        $this->sendGraph('PUT', $graph, $uriRef, $format);
+        return $this->sendGraph('PUT', $graph, $uriRef, $format);
     }
     
     public function insert($graph, $uriRef=null, $format='ntriples')
     {
-        $this->sendGraph('POST', $graph, $uriRef, $format);
+        return $this->sendGraph('POST', $graph, $uriRef, $format);
     }
         
     public function delete($uriRef)
@@ -125,6 +127,7 @@ class EasyRdf_GraphStore
                 "HTTP request for $dataUrl failed: ".$response->getMessage()
             );
         }
+        return $response;
     }
     
     public function urlForGraph($url)
