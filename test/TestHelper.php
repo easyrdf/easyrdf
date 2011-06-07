@@ -80,6 +80,7 @@ unset($easyrdfRoot, $easyrdfLibDir, $easyrdfTestDir, $path);
 require_once 'EasyRdf.php';
 
 require_once 'EasyRdf/TestCase.php';
+require_once 'EasyRdf/Http/MockClient.php';
 
 
 /**
