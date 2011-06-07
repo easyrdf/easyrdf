@@ -38,14 +38,6 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Mock_Http_Test_Client extends EasyRdf_Http_Client
-{
-    public function request($method = null)
-    {
-        return null;
-    }
-}
-
 class EasyRdf_HttpTest extends EasyRdf_TestCase
 {
 // FIXME: this test needs to run before the first call to setDefaultHttpClient()
@@ -59,9 +51,9 @@ class EasyRdf_HttpTest extends EasyRdf_TestCase
 
     public function testSetDefaultHttpClient()
     {
-        EasyRdf_Http::setDefaultHttpClient(new Mock_Http_Test_Client());
+        EasyRdf_Http::setDefaultHttpClient(new EasyRdf_Http_MockClient());
         $this->assertEquals(
-            'Mock_Http_Test_Client',
+            'EasyRdf_Http_MockClient',
             get_class(EasyRdf_Http::getDefaultHttpClient())
         );
     }
