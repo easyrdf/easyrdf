@@ -82,7 +82,7 @@ class EasyRdf_Graph
         if ($uri) {
             $this->_uri = $uri;
             if ($data)
-                $this->load($uri, $data, $format);
+                $this->parse($data, $uri, $data, $format);
         }
     }
 
