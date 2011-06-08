@@ -10,13 +10,23 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
             $this->setMethod($method);
         }
 
+        $uri = parse_url($this->getUri());
+        if (!empty($this->_paramsGet)) {
+            if (!empty($uri['query'])) {
+                $uri['query'] .= '&';
+            } else {
+                $uri['query'] = '';
+            }
+            $uri['query'] .= http_build_query($this->_paramsGet, null, '&');
+        }
+
         # Try and find a matching response
         $n = sizeof($this->_mocks);
         for ($i = 0; $i < $n; $i++) {
             list($m, $response, $once) = $this->_mocks[$i];
-            if ($m['uri'] && !$this->_matchUri($m['uri'], $this->getUri())) {
+            if (isset($m['uri']) && !$this->_matchUri($m['uri'], $uri)) {
                 continue;
-            } else if ($m['method'] && $m['method'] !== $this->getMethod()) {
+            } else if (isset($m['method']) && $m['method'] !== $this->getMethod()) {
                 continue;
             } else if (isset($m['callback'])) {
                 $args = array_merge($m['callbackArgs'], array($this));
@@ -89,12 +99,28 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
         return $this->addMock($method, $uri, $body, $options);
     }
 
-    private function _matchUri($match, $uri)
+    protected function _buildUrl($parts)
     {
-        if ($match == $uri) {
+        $url = $parts['scheme'] . '://';
+        $url .= $parts['host'];
+        if (isset($parts['port']))
+            $url .= ':' . $parts['port'];
+        if (isset($parts['path']))
+            $url .= $parts['path'];
+        else
+            $url .= '/';
+        if (isset($parts['query']))
+            $url .= '?' . $parts['query'];
+        return $url;
+    }
+
+    private function _matchUri($match, $parts)
+    {
+        # FIXME: Ugh, this is nasty
+        $url = $this->_buildUrl($parts);
+        if ($match == $url) {
             return true;
         } else {
-            $parts = parse_url($uri);
             if (isset($parts['query'])) {
                 return ($match == $parts['path'].'?'.$parts['query']);
             } else {

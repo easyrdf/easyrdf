@@ -18,12 +18,12 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
         $this->_client->setUri($uri);
         return $this->_client->request('GET');
     }
-    
+
     public function testUrlMatch()
     {
         $this->_client->addMock('GET', 'http://foo.com/test', 'A');
         $this->_client->addMock('GET', 'http://www.bar.com/test', 'B');
-        
+
         $response = $this->get('http://foo.com/test');
         $this->assertEquals('A', $response->getBody());
         $response = $this->get('http://www.bar.com/test');
@@ -49,6 +49,23 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
         $this->assertEquals('20', $response->getBody());
         $response = $this->get('http://example.org/testA');
         $this->assertEquals('10', $response->getBody());
+    }
+
+    public function testSettingGetParameter()
+    {
+        $this->_client->addMock('GET', '/testA', '10');
+        $this->_client->addMock('GET', '/testA?a=1', '20');
+        $this->_client->addMock('GET', '/testA?a=1&b=2', '30');
+
+        $this->_client->setParameterGet('a', '1');
+        $this->_client->setParameterGet('b', '2');
+        $response = $this->get('http://example.org/testA');
+        $this->assertEquals('30', $response->getBody());
+
+        $this->_client->resetParameters();
+        $this->_client->setParameterGet('b', '2');
+        $response = $this->get('http://example.com/testA?a=1');
+        $this->assertEquals('30', $response->getBody());
     }
 
     public function testUnknownUrl()
