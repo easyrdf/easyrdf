@@ -124,7 +124,7 @@ class EasyRdf_GraphStore
         $response = $client->request();
         if (!$response->isSuccessful()) {
             throw new EasyRdf_Exception(
-                "HTTP request for $dataUrl failed: ".$response->getMessage()
+                "HTTP request to delete $dataUrl failed: ".$response->getMessage()
             );
         }
         return $response;
