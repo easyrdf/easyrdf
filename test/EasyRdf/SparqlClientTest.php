@@ -64,9 +64,9 @@ class EasyRdf_SparqlClientTest extends EasyRdf_TestCase
             'GET', '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
             readFixture('sparql_select_all.xml'),
             array(
-                'headers' => array('Content-Type' => 'application/sparql-results+xml'
+                'headers' => array('Content-Type' => 'application/sparql-results+xml')
             )
-        ));
+        );
         $result = $this->_sparql->query("SELECT * WHERE {?s ?p ?o}");
         $this->assertEquals(14, count($result));
         $this->assertEquals(
@@ -86,9 +86,9 @@ class EasyRdf_SparqlClientTest extends EasyRdf_TestCase
             'GET', '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
             readFixture('sparql_select_all.json'),
             array(
-                'headers' => array('Content-Type' => 'application/sparql-results+json'
+                'headers' => array('Content-Type' => 'application/sparql-results+json')
             )
-        ));
+        );
         $result = $this->_sparql->query("SELECT * WHERE {?s ?p ?o}");
         $this->assertEquals(14, count($result));
         $this->assertEquals(
@@ -108,9 +108,9 @@ class EasyRdf_SparqlClientTest extends EasyRdf_TestCase
             'GET', '/sparql?query=ASK+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
             readFixture('sparql_ask_true.json'),
             array(
-                'headers' => array('Content-Type' => 'application/sparql-results+json'
+                'headers' => array('Content-Type' => 'application/sparql-results+json')
             )
-        ));
+        );
         $result = $this->_sparql->query("ASK WHERE {?s ?p ?o}");
         $this->assertEquals(true, $result);
     }
@@ -121,9 +121,9 @@ class EasyRdf_SparqlClientTest extends EasyRdf_TestCase
             'GET', '/sparql?query=ASK+WHERE+%7B%3Fs+%3Fp+%3Cfalse%3E%7D',
             readFixture('sparql_ask_false.json'),
             array(
-                'headers' => array('Content-Type' => 'application/sparql-results+json'
+                'headers' => array('Content-Type' => 'application/sparql-results+json')
             )
-        ));
+        );
         $result = $this->_sparql->query("ASK WHERE {?s ?p <false>}");
         $this->assertEquals(false, $result);
     }
@@ -134,9 +134,9 @@ class EasyRdf_SparqlClientTest extends EasyRdf_TestCase
             'GET', '/sparql?query=ASK+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
             readFixture('sparql_ask_true.xml'),
             array(
-                'headers' => array('Content-Type' => 'application/sparql-results+xml'
+                'headers' => array('Content-Type' => 'application/sparql-results+xml')
             )
-        ));
+        );
         $result = $this->_sparql->query("ASK WHERE {?s ?p ?o}");
         $this->assertEquals(true, $result);
     }
@@ -147,9 +147,9 @@ class EasyRdf_SparqlClientTest extends EasyRdf_TestCase
             'GET', '/sparql?query=ASK+WHERE+%7B%3Fs+%3Fp+%3Cfalse%3E%7D',
             readFixture('sparql_ask_false.xml'),
             array(
-                'headers' => array('Content-Type' => 'application/sparql-results+xml'
+                'headers' => array('Content-Type' => 'application/sparql-results+xml')
             )
-        ));
+        );
         $result = $this->_sparql->query("ASK WHERE {?s ?p <false>}");
         $this->assertEquals(false, $result);
     }
