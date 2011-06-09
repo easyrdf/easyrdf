@@ -1,0 +1,82 @@
+{
+  "head": {
+    "vars": [ "s", "p", "o" ]
+  },
+  "results": {
+    "ordered" : false,
+    "distinct" : false,
+    "bindings" : [
+      {
+        "s" : { "type": "bnode", "value": "genid1" },
+        "p" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/name" },
+        "o" : { "type": "literal", "value": "Joe's Current Project" }
+      },
+      {
+        "s" : { "type": "bnode", "value": "genid1" },
+        "p" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/homepage" },
+        "o" : { "type": "uri", "value": "http://www.example.com/project" }
+      },
+      {
+        "s" : { "type": "bnode", "value": "genid1" },
+        "p" : { "type": "uri", "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" },
+        "o" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/Project" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe/foaf.rdf" },
+        "p" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/primaryTopic" },
+        "o" : { "type": "uri", "value": "http://www.example.com/joe#me" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe/foaf.rdf" },
+        "p" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/maker" },
+        "o" : { "type": "uri", "value": "http://www.example.com/joe#me" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe/foaf.rdf" },
+        "p" : { "type": "uri", "value": "http://www.w3.org/2000/01/rdf-schema#label" },
+        "o" : { "type": "literal", "value": "Joe Bloggs' FOAF File" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe/foaf.rdf" },
+        "p" : { "type": "uri", "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" },
+        "o" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/PersonalProfileDocument" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe#me" },
+        "p" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/title" },
+        "o" : { "type": "literal", "value": "Mr" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe#me" },
+        "p" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/name" },
+        "o" : { "type": "literal", "value": "Joe Bloggs",
+      "xml:lang" : "en" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe#me" },
+        "p" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/homepage" },
+        "o" : { "type": "uri", "value": "http://www.example.com/joe/" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe#me" },
+        "p" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/firstName" },
+        "o" : { "type": "literal", "value": "Joe" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe#me" },
+        "p" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/family_name" },
+        "o" : { "type": "literal", "value": "Bloggs" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe#me" },
+        "p" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/currentProject" },
+        "o" : { "type": "bnode", "value": "genid1" }
+      },
+      {
+        "s" : { "type": "uri", "value": "http://www.example.com/joe#me" },
+        "p" : { "type": "uri", "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" },
+        "o" : { "type": "uri", "value": "http://xmlns.com/foaf/0.1/Person" }
+      }
+    ]
+  }
+}
