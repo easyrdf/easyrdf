@@ -222,6 +222,12 @@ class EasyRdf_Resource
         return $this->_graph->addLiteral($this->_uri, $property, $values);
     }
 
+    public function addResource($property, $values)
+    {
+        $this->checkHasGraph();
+        return $this->_graph->addResource($this->_uri, $property, $values);
+    }
+
     /** Get a single value for a property
      *
      * If multiple values are set for a property then the value returned
