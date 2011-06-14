@@ -677,7 +677,7 @@ class EasyRdf_Graph
         return $properties;
     }
 
-    /** Get a list of the full URIs for the properties of this resource.
+    /** Get a list of the full URIs for the properties of a resource.
      *
      * This method will return an empty array if the resource has no properties.
      *
@@ -694,7 +694,7 @@ class EasyRdf_Graph
         }
     }
 
-    /** Check to see if a property exists for this resource.
+    /** Check to see if a property exists for a resource.
      *
      * This method will return true if the property exists.
      *
