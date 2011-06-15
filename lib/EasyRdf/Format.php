@@ -221,6 +221,8 @@ class EasyRdf_Format
             return self::getFormat('turtle');
         } else if (preg_match("/^<.+> <.+>/", $short)) {
             return self::getFormat('ntriples');
+        } else if (preg_match("|http://www.w3.org/2005/sparql-results|", $short)) {
+            return self::getFormat('sparql-xml');
         } else if (preg_match("/^<\?xml /", $short)) {
             # FIXME: this could be improved
             return self::getFormat('rdfxml');
@@ -508,5 +510,23 @@ EasyRdf_Format::register(
     array(
         'text/html' => 0.4,
         'application/xhtml+xml' => 0.4
+    )
+);
+
+EasyRdf_Format::register(
+    'sparql-xml',
+    'SPARQL XML Query Results',
+    'http://www.w3.org/TR/rdf-sparql-XMLres/',
+    array(
+        'application/sparql-results+xml' => 1.0
+    )
+);
+
+EasyRdf_Format::register(
+    'sparql-json',
+    'SPARQL JSON Query Results',
+    'http://www.w3.org/TR/rdf-sparql-json-res/',
+    array(
+        'application/sparql-results+json' => 1.0
     )
 );

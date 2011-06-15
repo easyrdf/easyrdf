@@ -461,6 +461,12 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->assertStringEquals('ntriples', EasyRdf_Format::guessFormat($data));
     }
 
+    public function testGuessFormatSparqlXml()
+    {
+        $data = readFixture('sparql_select_all.xml');
+        $this->assertStringEquals('sparql-xml', EasyRdf_Format::guessFormat($data));
+    }
+
     public function testGuessFormatRdfa()
     {
         $data = readFixture('foaf.html');
