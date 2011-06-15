@@ -158,23 +158,8 @@ class EasyRdf_Literal
      *
      * @param  bool  $html  Set to true to format the dump using HTML
      */
-    public function dumpValue($html=true)
+    public function dumpValue($html=true, $color='black')
     {
-        $text = '"'.$this->_value.'"';
-        if ($this->_lang) {
-            $text .= '@' . $this->_lang;
-        }
-        if ($this->_datatype) {
-            $datatype = EasyRdf_Namespace::shorten($this->_datatype);
-            $text .= "^^$datatype";
-        }
-
-        if ($html) {
-            return "<span style='color:blue'>".
-                   htmlentities($text, ENT_COMPAT, "UTF-8").
-                   "</span>";
-        } else {
-            return $text;
-        }
+        return EasyRdf_Utils::dumpLiteralValue($this, $html, $color);
     }
 }

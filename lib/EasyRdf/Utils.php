@@ -149,4 +149,60 @@ class EasyRdf_Utils
         return $baseUri . $referenceUri;
     }
 
+    public static function dumpResourceValue($resource, $html=true, $color='blue')
+    {
+        if (is_object($resource)) {
+            $resource = strval($resource);
+        } else if (is_array($resource)) {
+            $resource = $resource['value'];
+        }
+
+        $short = EasyRdf_Namespace::shorten($resource);
+        if ($html) {
+            $escaped = htmlentities($resource);
+            if (substr($resource, 0, 2) == '_:') {
+                $href = '#' . $escaped;
+            } else {
+                $href = $escaped;
+            }
+            if ($short) {
+                return "<a href='$href' style='text-decoration:none;color:$color'>$short</a>";
+            } else {
+                return "<a href='$href' style='text-decoration:none;color:$color'>$escaped</a>";
+            }
+        } else {
+            if ($short) {
+                return $short;
+            } else {
+                return $resource;
+            }
+        }
+    }
+
+    public static function dumpLiteralValue($literal, $html=true, $color='black')
+    {
+        if (is_object($literal)) {
+            $literal = $literal->toRdfPhp();
+        } else if (!is_array($literal)) {
+            $literal = array('value' => $literal);
+        }
+
+        $text = '"'.$literal['value'].'"';
+        if (isset($literal['lang'])) {
+            $text .= '@' . $literal['lang'];
+        }
+        if (isset($literal['datatype'])) {
+            $datatype = EasyRdf_Namespace::shorten($literal['datatype']);
+            $text .= "^^$datatype";
+        }
+
+        if ($html) {
+            return "<span style='color:$color'>".
+                   htmlentities($text, ENT_COMPAT, "UTF-8").
+                   "</span>";
+        } else {
+            return $text;
+        }
+    }
+
 }

@@ -143,6 +143,15 @@ class EasyRdf_Resource
             return array('type' => 'uri', 'value' => $this->_uri);
     }
 
+    /** Return pretty-print view of the resource
+     *
+     * @param  bool  $html  Set to true to format the dump using HTML
+     */
+    public function dumpValue($html=true, $color='blue')
+    {
+        return EasyRdf_Utils::dumpResourceValue($this, $html, $color);
+    }
+
     /** Magic method to return URI of resource when casted to string
      *
      * @return string The URI of the resource

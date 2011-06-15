@@ -226,7 +226,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
             $literal->dumpValue(false)
         );
         $this->assertEquals(
-            "<span style='color:blue'>&quot;hello &amp; world&quot;</span>",
+            "<span style='color:black'>&quot;hello &amp; world&quot;</span>",
             $literal->dumpValue(true)
         );
     }
@@ -239,7 +239,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
             $literal->dumpValue(false)
         );
         $this->assertEquals(
-            "<span style='color:blue'>&quot;Nick&quot;@en</span>",
+            "<span style='color:black'>&quot;Nick&quot;@en</span>",
             $literal->dumpValue(true)
         );
     }
@@ -252,7 +252,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
             $literal->dumpValue(false)
         );
         $this->assertEquals(
-            "<span style='color:blue'>&quot;1&quot;^^xsd:integer</span>",
+            "<span style='color:black'>&quot;1&quot;^^xsd:integer</span>",
             $literal->dumpValue(true)
         );
     }

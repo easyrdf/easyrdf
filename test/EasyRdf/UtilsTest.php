@@ -540,4 +540,103 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         );
     }
 
+    public function testDumpResourceValue()
+    {
+        $res = new EasyRdf_Resource('http://www.example.com/');
+        $this->assertEquals(
+            "http://www.example.com/",
+            EasyRdf_Utils::dumpResourceValue($res, false)
+        );
+        $this->assertEquals(
+            "<a href='http://www.example.com/' ".
+            "style='text-decoration:none;color:blue'>".
+            "http://www.example.com/</a>",
+            EasyRdf_Utils::dumpResourceValue($res, true)
+        );
+    }
+
+    public function testDumpResourceValueFromArray()
+    {
+        $res = array('type' => 'uri', 'value' => 'http://www.example.com/');
+        $this->assertEquals(
+            "http://www.example.com/",
+            EasyRdf_Utils::dumpResourceValue($res, false)
+        );
+        $this->assertEquals(
+            "<a href='http://www.example.com/' ".
+            "style='text-decoration:none;color:blue'>".
+            "http://www.example.com/</a>",
+            EasyRdf_Utils::dumpResourceValue($res, true)
+        );
+    }
+
+    public function testDumpLiteralValue()
+    {
+        $literal = new EasyRdf_Literal("hello & world");
+        $this->assertEquals(
+            '"hello & world"',
+            EasyRdf_Utils::dumpLiteralValue($literal, false)
+        );
+        $this->assertEquals(
+            "<span style='color:black'>&quot;hello &amp; world&quot;</span>",
+            EasyRdf_Utils::dumpLiteralValue($literal, true)
+        );
+    }
+
+    public function testDumpLiteralValueFromArray()
+    {
+        $literal = array('type' => 'literal', 'value' => 'Hot Sauce');
+        $this->assertEquals(
+            '"Hot Sauce"',
+            EasyRdf_Utils::dumpLiteralValue($literal, false)
+        );
+        $this->assertEquals(
+            "<span style='color:black'>&quot;Hot Sauce&quot;</span>",
+            EasyRdf_Utils::dumpLiteralValue($literal, true)
+        );
+    }
+
+    public function testDumpLiteralValueFromString()
+    {
+        $literal = 'a string';
+        $this->assertEquals(
+            '"a string"',
+            EasyRdf_Utils::dumpLiteralValue($literal, false)
+        );
+        $this->assertEquals(
+            "<span style='color:black'>&quot;a string&quot;</span>",
+            EasyRdf_Utils::dumpLiteralValue($literal, true)
+        );
+    }
+
+    public function testDumpLiteralValueWithLanguage()
+    {
+        $literal = array('type' => 'literal', 'value' => 'Nick', 'lang' => 'en');
+        $this->assertEquals(
+            '"Nick"@en',
+            EasyRdf_Utils::dumpLiteralValue($literal, false)
+        );
+        $this->assertEquals(
+            "<span style='color:black'>&quot;Nick&quot;@en</span>",
+            EasyRdf_Utils::dumpLiteralValue($literal, true)
+        );
+    }
+
+    public function testDumpLiteralValueWithDatatype()
+    {
+        $literal = array(
+            'type' => 'literal',
+            'value' => '1',
+            'datatype' => 'http://www.w3.org/2001/XMLSchema#integer'
+        );
+        $this->assertEquals(
+            '"1"^^xsd:integer',
+            EasyRdf_Utils::dumpLiteralValue($literal, false)
+        );
+        $this->assertEquals(
+            "<span style='color:black'>&quot;1&quot;^^xsd:integer</span>",
+            EasyRdf_Utils::dumpLiteralValue($literal, true)
+        );
+    }
+
 }

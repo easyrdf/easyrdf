@@ -769,9 +769,9 @@ class EasyRdf_Graph
             $olist = array();
             foreach ($values as $value) {
                 if ($value['type'] == 'literal') {
-                  $olist []= $this->dumpLiteralValue($value, $html);
+                  $olist []= EasyRdf_Utils::dumpLiteralValue($value, $html, 'black');
                 } else {
-                  $olist []= $this->dumpResourceValue($value['value'], $html, 'red');
+                  $olist []= EasyRdf_Utils::dumpResourceValue($value['value'], $html, 'blue');
                 }
             }
 
@@ -793,7 +793,7 @@ class EasyRdf_Graph
             return "<div id='".htmlentities($resource)."' " .
                    "style='font-family:arial; padding:0.5em; ".
                    "background-color:lightgrey;border:dashed 1px grey;'>\n".
-                   "<div>".$this->dumpResourceValue($resource, true, 'blue')." ".
+                   "<div>".EasyRdf_Utils::dumpResourceValue($resource, true, 'blue')." ".
                    "<span style='font-size: 0.8em'>(".
                    $this->classForResource($resource).")</span></div>\n".
                    "<div style='padding-left: 3em'>\n".
@@ -802,50 +802,6 @@ class EasyRdf_Graph
         } else {
             return $resource." (".$this->classForResource($resource).")\n" .
                    join("\n", $plist) . "\n\n";
-        }
-    }
-
-    protected function dumpResourceValue($resource, $html=true, $color='blue')
-    {
-        $short = EasyRdf_Namespace::shorten($resource);
-        if ($html) {
-            $escaped = htmlentities($resource);
-            if (substr($resource, 0, 2) == '_:') {
-                $href = '#' . $escaped;
-            } else {
-                $href = $escaped;
-            }
-            if ($short) {
-                return "<a href='$href' style='text-decoration:none;color:$color'>$short</a>";
-            } else {
-                return "<a href='$href' style='text-decoration:none;color:$color'>$escaped</a>";
-            }
-        } else {
-            if ($short) {
-                return $short;
-            } else {
-                return $resource;
-            }
-        }
-    }
-
-    protected function dumpLiteralValue($value, $html=true, $color='blue')
-    {
-        $text = '"'.$value['value'].'"';
-        if (isset($value['lang'])) {
-            $text .= '@' . $value['lang'];
-        }
-        if (isset($value['datatype'])) {
-            $datatype = EasyRdf_Namespace::shorten($value['datatype']);
-            $text .= "^^$datatype";
-        }
-
-        if ($html) {
-            return "<span style='color:$color'>".
-                       htmlentities($text, ENT_COMPAT, "UTF-8").
-                       "</span>";
-        } else {
-            return $text;
         }
     }
 

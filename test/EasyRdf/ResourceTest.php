@@ -118,9 +118,9 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testToRdfPhpForUri()
     {
-        $uri = new EasyRdf_Resource('http://www.exaple.com/');
+        $uri = new EasyRdf_Resource('http://www.example.com/');
         $this->assertEquals(
-            array('type' => 'uri', 'value' => 'http://www.exaple.com/'),
+            array('type' => 'uri', 'value' => 'http://www.example.com/'),
             $uri->toRdfPhp()
         );
     }
@@ -131,6 +131,32 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals(
             array('type' => 'bnode', 'value' => '_:foobar'),
             $bnode->toRdfPhp()
+        );
+    }
+
+    public function testDumpValue()
+    {
+        $res = new EasyRdf_Resource('http://www.example.com/');
+        $this->assertEquals(
+            "http://www.example.com/",
+            $res->dumpValue(false)
+        );
+        $this->assertEquals(
+            "<a href='http://www.example.com/' ".
+            "style='text-decoration:none;color:blue'>".
+            "http://www.example.com/</a>",
+            $res->dumpValue(true)
+        );
+    }
+
+    public function testDumpValueWithColor()
+    {
+        $res = new EasyRdf_Resource('http://www.example.com/');
+        $this->assertEquals(
+            "<a href='http://www.example.com/' ".
+            "style='text-decoration:none;color:red'>".
+            "http://www.example.com/</a>",
+            $res->dumpValue(true, 'red')
         );
     }
 
@@ -852,7 +878,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
         $this->assertContains(
             "<a href='http://xmlns.com/foaf/0.1/Person' ".
-            "style='text-decoration:none;color:red'>foaf:Person</a>",
+            "style='text-decoration:none;color:blue'>foaf:Person</a>",
             $html
         );
         $this->assertContains(
@@ -860,10 +886,10 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             $html
         );
         $this->assertContains(
-            "<span style='color:blue'>&quot;Test A&quot;</span>", $html
+            "<span style='color:black'>&quot;Test A&quot;</span>", $html
         );
         $this->assertContains(
-            "<span style='color:blue'>&quot;Test B&quot;@en</span>", $html
+            "<span style='color:black'>&quot;Test B&quot;@en</span>", $html
         );
     }
 }
