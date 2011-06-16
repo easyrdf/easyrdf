@@ -68,7 +68,10 @@ More Examples
 * [foafinfo.php](http://github.com/njh/easyrdf/blob/master/examples/foafinfo.php#path) - Display the information in a FOAF file
 * [foafmaker.php](http://github.com/njh/easyrdf/blob/master/examples/foafmaker.php#path) - Construct a FOAF document with a choice of serialisations
 * [graph_direct.php](http://github.com/njh/easyrdf/blob/master/examples/graph_direct.php#path) - Example of using EasyRdf_Graph directly without EasyRdf_Resource
+* [graphstore.php](http://github.com/njh/easyrdf/blob/master/examples/graphstore.php#path) - Store and retrieve data from a SPARQL Graph Store
 * [httpget.php](http://github.com/njh/easyrdf/blob/master/examples/httpget.php#path) - No RDF, just test EasyRdf_Http_Client
 * [review_extract.php](http://github.com/njh/easyrdf/blob/master/examples/review_extract.php#path) - Extract a review from a page containing Google Review RDFa
 * [serialise.php](http://github.com/njh/easyrdf/blob/master/examples/serialise.php#path) - Basic serialisation example
+* [sparql_query_form.php](http://github.com/njh/easyrdf/blob/master/examples/sparql_query_form.php#path) - Form to submit SPARQL queries and display the result
 * [uk_postcode.php](http://github.com/njh/easyrdf/blob/master/examples/uk_postcode.php#path) - Example of resolving UK postcodes using uk-postcodes.com
+* [zend_framework.php](http://github.com/njh/easyrdf/blob/master/examples/zend_framework.php#path) - Example of using Zend_Http_Client and Zend_Loader_Autoloader with EasyRdf
