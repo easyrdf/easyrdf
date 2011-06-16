@@ -113,6 +113,19 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
         $response = $this->_graphStore->delete('http://foo.com/bar.rdf');
         $this->assertEquals('200', $response->getStatus());
     }
+
+    public function testDeleteHttpError()
+    {
+        $this->_client->addMock(
+            'DELETE', '/data/filenotfound', 'Graph not found.',
+            array('status' => 404)
+        );
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'HTTP request to delete http://localhost:8080/data/filenotfound failed'
+        );
+        $response = $this->_graphStore->delete('filenotfound');
+    }
     
     public function checkNtriplesRequest($client)
     {
@@ -148,6 +161,20 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
         $this->assertEquals('200', $response->getStatus());
     }
 
+    public function testInsertHttpError()
+    {
+        $data = "<urn:subject> <urn:predicate> \"object\" .\n";
+        $this->_client->addMock(
+            'POST', '/data/new.rdf', 'Internal Server Error',
+            array('status' => 500)
+        );
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'HTTP request for http://localhost:8080/data/new.rdf failed'
+        );
+        $response = $this->_graphStore->insert($data, 'new.rdf');
+    }
+
     public function testReplaceIndirect()
     {
         $data = "<urn:subject> <urn:predicate> \"object\" .\n";
@@ -180,6 +207,20 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
         );
         $response = $this->_graphStore->replace($graph, "http://foo.com/bar.rdf", 'json');
         $this->assertEquals('200', $response->getStatus());
+    }
+
+    public function testReplaceHttpError()
+    {
+        $data = "<urn:subject> <urn:predicate> \"object\" .\n";
+        $this->_client->addMock(
+            'PUT', '/data/existing.rdf', 'Internal Server Error',
+            array('status' => 500)
+        );
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'HTTP request for http://localhost:8080/data/existing.rdf failed'
+        );
+        $response = $this->_graphStore->replace($data, 'existing.rdf');
     }
 
     public function testToString()
