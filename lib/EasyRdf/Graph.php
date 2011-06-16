@@ -371,8 +371,16 @@ class EasyRdf_Graph
                     );
                 }
             } else if (!is_array($value)) {
-                $value = array('type' => 'literal', 'value' => $value);
+                $value = array(
+                    'type' => 'literal',
+                    'value' => $value,
+                    'datatype' => EasyRdf_Literal::guessDatatype($value)
+                );
             }
+            if (empty($value['datatype']))
+                unset($value['datatype']);
+            if (empty($value['lang']))
+                unset($value['lang']);
         }
     }
 
@@ -553,22 +561,29 @@ class EasyRdf_Graph
         }
     }
 
-    # FIXME: better name for this method?
     public function addLiteral($resource, $property, $value)
     {
-        if (is_string($value)) {
-            $value = array('type' => 'literal', 'value' => $value);
-        } else if (is_array($value)) {
+        $this->checkResourceParam($resource);
+        $this->checkPropertyParam($property, $inverse);
+
+        if (is_array($value)) {
             foreach ($value as $v) {
                 $this->addLiteral($resource, $property, $v);
             }
             return;
+        } else {
+            $value = array(
+                'type' => 'literal',
+                'value' => $value,
+                'datatype' => EasyRdf_Literal::guessDatatype($value)
+            );
+            if (empty($value['datatype']))
+                unset($value['datatype']);
         }
 
         return $this->add($resource, $property, $value);
     }
 
-    # FIXME: better name for this method?
     public function addResource($resource, $property, $resource2)
     {
         $this->checkResourceParam($resource);
