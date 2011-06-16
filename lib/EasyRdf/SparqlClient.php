@@ -4,6 +4,9 @@ class EasyRdf_SparqlClient
 {
     /** The address of the SPARQL Endpoint */
     private $_uri = null;
+    
+    protected $_config = array();
+    
 
     public function __construct($uri)
     {
@@ -19,84 +22,17 @@ class EasyRdf_SparqlClient
         return $this->_uri;
     }
 
-    protected function _newTerm($data)
-    {
-        switch($data['type']) {
-          case 'bnode':
-            return new EasyRdf_Resource('_:'.$data['value']);
-          case 'uri':
-            return new EasyRdf_Resource($data['value']);
-          case 'literal':
-            return new EasyRdf_Literal($data);
-          default:
-            throw new EasyRdf_Exception(
-                "Unknown type: ".$data['type']
-            );
-        }
-    }
-
-    protected function _parseXmlResponse($response)
-    {
-        $doc = new DOMDocument();
-        $doc->loadXML($response->getBody());
-
-        # Is it the result of an ASK query?
-        $boolean = $doc->getElementsByTagName('boolean');
-        if ($boolean->length) {
-            $value = $boolean->item(0)->nodeValue;
-            return $value == 'true' ? true : false;
-        }
-        
-        # Is it the result of a SELECT query?
-        $results = $doc->getElementsByTagName('result');
-        if ($results->length) {
-            $r = array();
-            foreach ($results as $result) {
-                $bindings = $result->getElementsByTagName('binding');
-                $t = array();
-                foreach ($bindings as $binding) {
-                    $key = $binding->getAttribute('name');
-                    $term = $binding->firstChild;
-                    $data = array(
-                        'type' => $term->nodeName,
-                        'lang' => $term->getAttribute('lang'),
-                        'datatype' => $term->getAttribute('datatype'),
-                        'value' => $term->nodeValue
-                    );
-                    $t[$key] = $this->_newTerm($data);
-                }
-                $r[] = $t;
-            }
-            return $r;
-        }
-        
-        # FIXME: throw exception?
-    }
-
-    protected function _parseJsonResponse($response)
-    {
-        // Decode JSON to an array
-        $data = json_decode($response->getBody(), true);
-        
-        if (isset($data['boolean'])) {
-            return $data['boolean'];
-        } else if (isset($data['results'])) {
-            $r = array();
-            foreach ($data['results']['bindings'] as $row) {
-              $t = array();
-              foreach ($row as $key => $value) {
-                  $t[$key] = $this->_newTerm($value);
-              }
-              $r[] = $t;
-            }
-            return $r;
-        } else {
-            # FIXME: throw exception?
-        }
-    }
-
     public function query($query)
     {
+        # Add namespaces to the queryString
+        $prefixes = '';
+        foreach (EasyRdf_Namespace::namespaces() as $prefix => $uri) {
+            if (strpos($query, "$prefix:") !== false and
+                strpos($query, "PREFIX $prefix:") === false) {
+                $prefixes .=  "PREFIX $prefix: <$uri>\n";
+            }
+        }
+
         $client = EasyRdf_Http::getDefaultHttpClient();
         $client->resetParameters();
         $client->setUri($this->_uri);
@@ -109,27 +45,22 @@ class EasyRdf_SparqlClient
             )
         );
         $client->setHeaders('Accept', $accept);
-        $client->setParameterGet('query', $query);
+        $client->setParameterGet('query', $prefixes . $query);
 
         $response = $client->request();
         if ($response->isSuccessful()) {
             $type = $response->getHeader('Content-Type');
-            if ($type == 'application/sparql-results+xml') {
-                return $this->_parseXmlResponse($response);
-            } else if ($type == 'application/sparql-results+json') {
-                return $this->_parseJsonResponse($response);
+            if (strpos($type, 'application/sparql-results') === 0) {
+                return new EasyRdf_SparqlResult($response->getBody(), $type);
             } else {
-                $graph = new EasyRdf_Graph();
-                $graph->parse($response->getBody(), $type, $this->_uri);
-                return $graph;
+                return new EasyRdf_Graph($this->_uri, $response->getBody(), $type);
             }
         } else {
             throw new EasyRdf_Exception(
-                "HTTP request for SPARQL query failed: ".$response->getMessage()
+                "HTTP request for SPARQL query failed: ".$response->getBody()
             );
         }
     }
-
 
     /** Magic method to return URI of the SPARQL endpoint when casted to string
      *

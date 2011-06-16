@@ -150,6 +150,11 @@ require_once "EasyRdf/Serialiser/Turtle.php";
 require_once "EasyRdf/SparqlClient.php";
 
 /**
+ * @see EasyRdf_SparqlResult
+ */
+require_once "EasyRdf/SparqlResult.php";
+
+/**
  * @see EasyRdf_TypeMapper
  */
 require_once "EasyRdf/TypeMapper.php";
