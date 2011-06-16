@@ -153,6 +153,20 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->load('http://www.example.com/foaf.unknown', 'data');
     }
 
+    public function testLoadHttpError()
+    {
+        $this->_client->addMock(
+            'GET', 'http://www.example.com/404', 'Not Found',
+            array('status' => 404)
+        );
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'HTTP request for http://www.example.com/404 failed'
+        );
+        $graph = new EasyRdf_Graph('http://www.example.com/404');
+        $graph->load();
+    }
+
     public function testLoadMockParser()
     {
         EasyRdf_Format::registerParser('mock', 'Mock_RdfParser');
