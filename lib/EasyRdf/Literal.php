@@ -72,23 +72,30 @@ class EasyRdf_Literal
             $this->_datatype = $datatype ? $datatype : null;
         }
 
-        // Automatic datatype selection
-        if ($this->_datatype == null && $this->_lang == null) {
-            if (is_float($this->_value)) {
-                $this->_datatype = 'xsd:decimal';
-            } else if (is_int($this->_value)) {
-                $this->_datatype = 'xsd:integer';
-            } else if (is_bool($this->_value)) {
-                $this->_datatype = 'xsd:boolean';
+        if ($this->_datatype == null) {
+            if ($this->_lang == null) {
+                // Automatic datatype selection
+                $this->_datatype = self::guessDatatype($this->_value);
             }
-        }
-
-        if ($this->_datatype) {
+        } else {
             // Expand shortened URIs (qnames)
             $this->_datatype = EasyRdf_Namespace::expand($this->_datatype);
 
             // Literals can not have both a language and a datatype
             $this->_lang = null;
+        }
+    }
+    
+    public static function guessDatatype($value)
+    {
+        if (is_float($value)) {
+            return 'http://www.w3.org/2001/XMLSchema#decimal';
+        } else if (is_int($value)) {
+            return 'http://www.w3.org/2001/XMLSchema#integer';
+        } else if (is_bool($value)) {
+            return 'http://www.w3.org/2001/XMLSchema#boolean';
+        } else {
+            return null;
         }
     }
 
