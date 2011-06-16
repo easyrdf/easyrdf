@@ -14,6 +14,7 @@ Construct or Describe SPARQL query from a triplestore.
 ### Example ###
 
     $foaf = new EasyRdf_Graph("http://www.aelius.com/njh/foaf.rdf");
+    $foaf->load();
     $me = $foaf->primaryTopic();
     echo "My name is: ".$me->get('foaf:name')."\n";
 

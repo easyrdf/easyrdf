@@ -26,6 +26,7 @@
 <?php
     if (isset($_REQUEST['uri'])) {
         $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
+        $graph->load();
         $data = $graph->serialise($_REQUEST['format']);
         if (!is_scalar($data)) {
             $data = var_export($data, true);

@@ -16,12 +16,11 @@
 <?php
     if (isset($_REQUEST['uri'])) {
         $graph = new EasyRdf_Graph($_REQUEST['uri']);
-        if ($graph) {
-            if ($graph->type() == 'foaf:PersonalProfileDocument') {
-                $person = $graph->primaryTopic();
-            } else if ($graph->type() == 'foaf:Person') {
-                $person = $graph->resource( $graph->getUri() );
-            }
+        $graph->load();
+        if ($graph->type() == 'foaf:PersonalProfileDocument') {
+            $person = $graph->primaryTopic();
+        } else if ($graph->type() == 'foaf:Person') {
+            $person = $graph->resource( $graph->getUri() );
         }
     }
 

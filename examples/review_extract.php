@@ -22,10 +22,9 @@
 <?php
     if (isset($_REQUEST['uri'])) {
         $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
-        if ($graph) {
-            $reviews = $graph->allOfType('gv:Review');
-            $review = $reviews[0];
-        }
+        $graph->load();
+        $reviews = $graph->allOfType('gv:Review');
+        $review = $reviews[0];
     }
 
     if (isset($review)) {

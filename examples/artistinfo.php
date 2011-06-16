@@ -47,7 +47,8 @@
 <?php
     if (isset($_REQUEST['uri'])) {
         $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
-        if ($graph) $artist = $graph->primaryTopic();
+        $graph->load();
+        $artist = $graph->primaryTopic();
     }
 
     if (isset($artist)) {
