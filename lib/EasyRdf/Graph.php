@@ -939,6 +939,11 @@ class EasyRdf_Graph
         }
     }
 
+    public function toRdfPhp()
+    {
+        return $this->_index;
+    }
+
     /** Magic method to return URI of resource when casted to string
      *
      * @return string The URI of the resource
