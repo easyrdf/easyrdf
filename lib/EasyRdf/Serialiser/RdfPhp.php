@@ -73,50 +73,8 @@ class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
             );
         }
 
-        $rdfphp = array();
-        foreach ($graph->resources() as $resource) {
-            $properties = $resource->propertyUris();
-            if (count($properties) == 0) continue;
-
-            $subj = $resource->getUri();
-            if (!isset($rdfphp[$subj])) {
-                $rdfphp[$subj] = array();
-            }
-
-            foreach ($properties as $property) {
-                if (!isset($rdfphp[$subj][$property])) {
-                    $rdfphp[$subj][$property] = array();
-                }
-                $objects = $resource->all($property);
-                foreach ($objects as $obj) {
-                    if (is_object($obj) and
-                       ($obj instanceof EasyRdf_Resource)) {
-                        if ($obj->isBNode()) {
-                            $object = array('type' => 'bnode',
-                                            'value' => $obj->getUri());
-                        } else {
-                            $object = array('type' => 'uri',
-                                            'value' => $obj->getUri());
-                        }
-                    } else if (is_object($obj) and
-                       ($obj instanceof EasyRdf_Literal)) {
-                        $object = array('type' => 'literal',
-                                        'value' => $obj->getValue());
-                        if ($obj->getLang())
-                            $object['lang'] = $obj->getLang();
-                        if ($obj->getDatatype())
-                            $object['datatype'] = $obj->getDatatypeUri();
-                    } else {
-                        throw new EasyRdf_Exception(
-                            "Unsupported to serialise: ".gettype($obj)
-                        );
-                    }
-
-                    array_push($rdfphp[$subj][$property], $object);
-                }
-            }
-        }
-        return $rdfphp;
+        // Graph is already stored as RDF/PHP internally within the EasyRdf_Graph object
+        return $graph->toRdfPhp();
     }
 }
 
