@@ -20,11 +20,12 @@
   <?
     print "<pre>\n";
     foreach(EasyRdf_Namespace::namespaces() as $prefix => $uri) {
-      print "PREFIX $prefix: &lt;$uri&gt;\n";
+      print "PREFIX $prefix: &lt;".htmlspecialchars($uri)."&gt;\n";
     }
     print "</pre>\n";
   ?>
   <?= text_area_tag('query', $queries['Select All']) ?><br />
+  <?= check_box_tag('text') . label_tag('text', 'Plain text results') ?><br />
   <?= reset_tag() ?>
   <?= submit_tag() ?>
   <?= form_end_tag() ?>
@@ -34,7 +35,11 @@
   if (isset($_REQUEST['query'])) {
       $client = new EasyRdf_SparqlClient("http://localhost:8080/sparql");
       $results = $client->query($_REQUEST['query']);
-      print $results->dump();
+      if (isset($_REQUEST['text'])) {
+          print "<pre>".$results->dump(false)."</pre>";
+      } else {
+          print $results->dump(true);
+      }
   }
 ?>
 
