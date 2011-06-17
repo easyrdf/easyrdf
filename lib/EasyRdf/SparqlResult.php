@@ -21,37 +21,37 @@ class EasyRdf_SparqlResult extends ArrayIterator
             );
         }
     }
-    
+
     public function getType()
     {
         return $this->_type;
     }
-    
+
     public function getBoolean()
     {
         return $this->_boolean;
     }
-    
+
     public function isTrue()
     {
         return $this->_boolean == true;
     }
-    
+
     public function isFalse()
     {
         return $this->_boolean == false;
     }
-    
+
     public function numFields()
     {
-        return count($this->_fields);    
+        return count($this->_fields);
     }
-    
+
     public function numRows()
     {
         return count($this);
     }
-    
+
     public function getFields()
     {
         return $this->_fields;
@@ -80,6 +80,49 @@ class EasyRdf_SparqlResult extends ArrayIterator
                     $result .= "</tr>";
                 }
                 $result .= "</table>";
+            } else {
+                // First calculate the width of each comment
+                $colWidths = array();
+                foreach ($this->_fields as $field) {
+                    $colWidths[$field] = strlen($field);
+                }
+
+                $textData = array();
+                foreach ($this as $row) {
+                    $textRow = array();
+                    foreach ($row as $k => $v) {
+                        $textRow[$k] = $v->dumpValue(false);
+                        $width = strlen($textRow[$k]);
+                        if ($colWidths[$k] < $width) {
+                            $colWidths[$k] = $width;
+                        }
+                    }
+                    $textData[] = $textRow;
+                }
+
+                // Create a horizontal rule
+                $hr = "+";
+                foreach ($colWidths as $k => $v) {
+                    $hr .= "-".str_repeat('-', $v).'-+';
+                }
+
+                // Output the field names
+                $result .= "$hr\n|";
+                foreach ($this->_fields as $field) {
+                    $result .= ' '.str_pad("?$field", $colWidths[$field]).' |';
+                }
+
+                // Output each of the rows
+                $result .= "\n$hr\n";
+                foreach ($textData as $textRow) {
+                    $result .= '|';
+                    foreach ($textRow as $k => $v) {
+                        $result .= ' '.str_pad($v, $colWidths[$k]).' |';
+                    }
+                    $result .= "\n";
+                }
+                $result .= "$hr\n";
+
             }
             return $result;
         } else if ($this->_type == 'boolean') {
@@ -90,7 +133,9 @@ class EasyRdf_SparqlResult extends ArrayIterator
                 return "Result: $str";
             }
         } else {
-            return strval($this);
+            throw new EasyRdf_Exception(
+                "Failed to dump SPARQL Query Results format, unknown type: ". $this->_type
+            );
         }
     }
 
@@ -116,7 +161,7 @@ class EasyRdf_SparqlResult extends ArrayIterator
         $doc = new DOMDocument();
         $doc->loadXML($data);
         # FIXME: check for SPARQL top-level element
-        
+
         # Is it the result of an ASK query?
         $boolean = $doc->getElementsByTagName('boolean');
         if ($boolean->length) {
@@ -125,7 +170,7 @@ class EasyRdf_SparqlResult extends ArrayIterator
             $this->_boolean = $value == 'true' ? true : false;
             return;
         }
-        
+
         # Get a list of variables from the header
         $head = $doc->getElementsByTagName('head');
         if ($head->length) {
@@ -157,7 +202,7 @@ class EasyRdf_SparqlResult extends ArrayIterator
             }
             return $this;
         }
-        
+
         throw new EasyRdf_Exception(
             "Failed to parse SPARQL XML Query Results format"
         );
@@ -167,7 +212,7 @@ class EasyRdf_SparqlResult extends ArrayIterator
     {
         // Decode JSON to an array
         $data = json_decode($data, true);
-        
+
         if (isset($data['boolean'])) {
             $this->_type = 'boolean';
             $this->_boolean = $data['boolean'];
@@ -190,15 +235,13 @@ class EasyRdf_SparqlResult extends ArrayIterator
             );
         }
     }
-    
+
     public function __toString()
     {
         if ($this->_type == 'boolean') {
             return $this->_boolean ? 'true' : 'false';
-        } else if ($this->_type == 'bindings') {
-            # FIXME: implement this
         } else {
-            # FIXME: throw exception?
+            return $this->dump(false);
         }
     }
 }

@@ -208,6 +208,25 @@ class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
         $this->assertContains("</table>", $html);
     }
 
+    public function testDumpSelectAllText()
+    {
+        $result = new EasyRdf_SparqlResult(
+            readFixture('sparql_select_all.xml'),
+            'application/sparql-results+xml'
+        );
+
+        $text = $result->dump(false);
+        $this->assertContains('+-------------------------------------+', $text);
+        $this->assertContains('| ?s                                  |', $text);
+        $this->assertContains('| http://www.example.com/joe#me       |', $text);
+        $this->assertContains('+---------------------+', $text);
+        $this->assertContains('| ?p                  |', $text);
+        $this->assertContains('| foaf:name           |', $text);
+        $this->assertContains('+--------------------------------+', $text);
+        $this->assertContains('| ?o                             |', $text);
+        $this->assertContains('| "Joe Bloggs"                   |', $text);
+    }
+
     public function testDumpAskFalseHtml()
     {
         $result = new EasyRdf_SparqlResult(
