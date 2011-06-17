@@ -17,7 +17,7 @@ class EasyRdf_SparqlResult extends ArrayIterator
             return $this->_parseJson($data);
         } else {
             throw new EasyRdf_Exception(
-                "Unable to parse SPARQL results in format: $mimeType"
+                "Unsupported SPARQL Query Results format: $mimeType"
             );
         }
     }
@@ -59,7 +59,7 @@ class EasyRdf_SparqlResult extends ArrayIterator
 
     public function dump($html=true)
     {
-        if ($this->getType() == 'bindings') {
+        if ($this->_type == 'bindings') {
             $result = '';
             if ($html) {
                 $result .= "<table class='sparql-results' style='border-collapse:collapse'>";
@@ -80,23 +80,20 @@ class EasyRdf_SparqlResult extends ArrayIterator
                     $result .= "</tr>";
                 }
                 $result .= "</table>";
-            } else {
-                # FIXME: add text/plain code
             }
             return $result;
-        } else if ($this->getType() == 'boolean') {
+        } else if ($this->_type == 'boolean') {
             $str = ($this->_boolean ? 'true' : 'false');
             if ($html) {
                 return "<p>Result: <span style='font-weight:bold'>$str</span></p>";
             } else {
-                return $str;
+                return "Result: $str";
             }
         } else {
-            # throw exception
+            return strval($this);
         }
     }
 
-    # FIXME: move this to EasyRdf_Term::create() ?
     protected function _newTerm($data)
     {
         switch($data['type']) {
@@ -108,7 +105,8 @@ class EasyRdf_SparqlResult extends ArrayIterator
             return new EasyRdf_Literal($data);
           default:
             throw new EasyRdf_Exception(
-                "Unknown term type: ".$data['type']
+                "Failed to parse SPARQL Query Results format, unknown term type: ".
+                $data['type']
             );
         }
     }
@@ -160,7 +158,9 @@ class EasyRdf_SparqlResult extends ArrayIterator
             return $this;
         }
         
-        # FIXME: throw exception?
+        throw new EasyRdf_Exception(
+            "Failed to parse SPARQL XML Query Results format"
+        );
     }
 
     protected function _parseJson($data)
@@ -184,9 +184,10 @@ class EasyRdf_SparqlResult extends ArrayIterator
               }
               $this[] = $t;
             }
-            return $this;
         } else {
-            # FIXME: throw exception?
+            throw new EasyRdf_Exception(
+                "Failed to parse SPARQL JSON Query Results format"
+            );
         }
     }
     
@@ -200,6 +201,4 @@ class EasyRdf_SparqlResult extends ArrayIterator
             # FIXME: throw exception?
         }
     }
-   
-
 }

@@ -1,0 +1,14 @@
+{
+  "head": {
+    "vars": [ "foo" ]
+  },
+  "results": {
+    "ordered" : false,
+    "distinct" : false,
+    "bindings" : [
+      {
+        "foo" : { "type": "newtype", "value": "foobar" }
+      }
+    ]
+  }
+}

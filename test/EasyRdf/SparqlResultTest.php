@@ -41,7 +41,7 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
 {
-    public function testQuerySelectAllXml()
+    public function testSelectAllXml()
     {
         $result = new EasyRdf_SparqlResult(
             readFixture('sparql_select_all.xml'),
@@ -64,7 +64,7 @@ class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
         );
     }
 
-    public function testQuerySelectAllJson()
+    public function testSelectAllJson()
     {
         $result = new EasyRdf_SparqlResult(
             readFixture('sparql_select_all.json'),
@@ -87,7 +87,7 @@ class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
         );
     }
 
-    public function testQueryAskTrueJson()
+    public function testAskTrueJson()
     {
         $result = new EasyRdf_SparqlResult(
             readFixture('sparql_ask_true.json'),
@@ -104,7 +104,7 @@ class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
         $this->assertEquals(0, $result->numRows());
     }
 
-    public function testQueryAskFalseJson()
+    public function testAskFalseJson()
     {
         $result = new EasyRdf_SparqlResult(
             readFixture('sparql_ask_false.json'),
@@ -121,7 +121,7 @@ class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
         $this->assertEquals(0, $result->numRows());
     }
 
-    public function testQueryAskTrueXml()
+    public function testAskTrueXml()
     {
         $result = new EasyRdf_SparqlResult(
             readFixture('sparql_ask_true.xml'),
@@ -137,7 +137,7 @@ class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
         $this->assertEquals(0, $result->numRows());
     }
 
-    public function testQueryAskFalseXml()
+    public function testAskFalseXml()
     {
         $result = new EasyRdf_SparqlResult(
             readFixture('sparql_ask_false.xml'),
@@ -151,6 +151,92 @@ class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
 
         $this->assertEquals(0, $result->numFields());
         $this->assertEquals(0, $result->numRows());
+    }
+
+    public function testInvalidXml()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Failed to parse SPARQL XML Query Results format'
+        );
+        $result = new EasyRdf_SparqlResult(
+            readFixture('sparql_invalid.xml'),
+            'application/sparql-results+xml'
+        );
+    }
+
+    public function testInvalidJson()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Failed to parse SPARQL JSON Query Results format'
+        );
+        $result = new EasyRdf_SparqlResult(
+            readFixture('sparql_invalid.json'),
+            'application/sparql-results+json'
+        );
+    }
+
+    public function testInvalidJsonTerm()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Failed to parse SPARQL Query Results format, unknown term type: newtype'
+        );
+        $result = new EasyRdf_SparqlResult(
+            readFixture('sparql_invalid_term.json'),
+            'application/sparql-results+json'
+        );
+    }
+
+    public function testDumpSelectAllHtml()
+    {
+        $result = new EasyRdf_SparqlResult(
+            readFixture('sparql_select_all.xml'),
+            'application/sparql-results+xml'
+        );
+
+        $html = $result->dump(true);
+        $this->assertContains("<table class='sparql-results'", $html);
+        $this->assertContains(">?s</th>", $html);
+        $this->assertContains(">?p</th>", $html);
+        $this->assertContains(">?o</th></tr>", $html);
+
+        $this->assertContains(">http://www.example.com/joe#me</a></td>", $html);
+        $this->assertContains(">foaf:name</a></td>", $html);
+        $this->assertContains(">&quot;Joe Bloggs&quot;</span></td>", $html);
+        $this->assertContains("</table>", $html);
+    }
+
+    public function testDumpAskFalseHtml()
+    {
+        $result = new EasyRdf_SparqlResult(
+            readFixture('sparql_ask_false.xml'),
+            'application/sparql-results+xml'
+        );
+
+        $html = $result->dump(true);
+        $this->assertContains(">false</span>", $html);
+    }
+
+    public function testDumpAskFalseText()
+    {
+        $result = new EasyRdf_SparqlResult(
+            readFixture('sparql_ask_false.xml'),
+            'application/sparql-results+xml'
+        );
+
+        $text = $result->dump(false);
+        $this->assertEquals("Result: false", $text);
+    }
+
+    public function testUnsupportedFormat()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Unsupported SPARQL Query Results format: foo/bar'
+        );
+        $result = new EasyRdf_SparqlResult('foobar', 'foo/bar');
     }
 
 }
