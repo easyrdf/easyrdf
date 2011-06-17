@@ -36,7 +36,7 @@
       $client = new EasyRdf_SparqlClient("http://localhost:8080/sparql");
       $results = $client->query($_REQUEST['query']);
       if (isset($_REQUEST['text'])) {
-          print "<pre>".$results->dump(false)."</pre>";
+          print "<pre>".htmlspecialchars($results->dump(false))."</pre>";
       } else {
           print $results->dump(true);
       }
