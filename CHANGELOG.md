@@ -1,3 +1,20 @@
+EasyRdf 0.6.0
+-------------
+* Major re-factor of the way data is stored internally in EasyRdf_Graph.
+* Parsing and serialising is now much faster and will enable further optimisations.
+* API is mostly backwards-compatible apart from:
+  - Changed inverse property operator from - to ^ to match Sparql 1.1 property paths.
+  - New EasyRdf_Graphs will not automatically be loaded on creation
+    You must now call $graph->load();
+  - Setting the default HTTP client is now part of a new EasyRdf_Http class
+* Added methods to EasyRdf_Graph for direct manipulation of triples.
+* Added new EasyRdf_GraphStore - class for fetching, saving and deleting graphs to a Graph Store over HTTP.
+* Added new EasyRdf_SparqlClient and EasyRdf_SparqlResult - class for querying a SPARQL endpoint over HTTP.
+* Added q values for each Mime-Type associated with an EasyRdf_Format.
+* New example demonstrating integration with the Zend Framework.
+* New EasyRdf_HTTP_MockClient class makes testing easier.
+
+
 EasyRdf 0.5.2
 -------------
 * Added a built-in RDF/XML parser
