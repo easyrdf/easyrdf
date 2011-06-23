@@ -17,8 +17,9 @@
     if (isset($_REQUEST['term'])) {
         $uri = "http://dbpedia.org/resource/".$_REQUEST['term'];
         $graph = new EasyRdf_Graph( $uri );
-        $village = $graph->resource($uri);
+        $graph->load();
 
+        $village = $graph->resource($uri);
         print content_tag('h2',$village->label($LANG));
 
         if ($village->get('foaf:depiction')) {
@@ -38,6 +39,7 @@
     } else {
         $uri = "http://dbpedia.org/resource/Category:Villages_in_Fife";
         $graph = new EasyRdf_Graph( $uri );
+        $graph->load();
         $category = $graph->resource($uri);
 
         print "<ul>\n";

@@ -35,8 +35,9 @@
         $postcode = str_replace(' ', '', strtoupper($_REQUEST['postcode']));
         $docuri = "http://www.uk-postcodes.com/postcode/$postcode.rdf";
         $graph = new EasyRdf_Graph($docuri);
-        $res = $graph->resource("postcode:$postcode");
+        $graph->load();
 
+        $res = $graph->resource("postcode:$postcode");
         $ll = $res->get('geo:lat').','.$res->get('geo:long');
         print "<iframe id='map' width='500' height='250' frameborder='0' scrolling='no' src='http://maps.google.com/maps?f=q&amp;sll=$ll&amp;output=embed'></iframe>";
         print "<table id='facts'>\n";
