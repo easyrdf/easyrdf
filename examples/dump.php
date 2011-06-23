@@ -11,7 +11,7 @@
 
 <div style="margin: 10px">
   <?= form_tag() ?>
-  URI: <?= text_field_tag('uri', 'http://metade.org/foaf.rdf', array('size'=>80)) ?><br />
+  URI: <?= text_field_tag('uri', 'http://mmt.me.uk/foaf.rdf', array('size'=>80)) ?><br />
   Format: <?= label_tag('format_html', 'HTML').' '.radio_button_tag('format', 'html', true) ?>
           <?= label_tag('format_text', 'Text').' '.radio_button_tag('format', 'text') ?><br />
 
