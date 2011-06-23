@@ -96,6 +96,7 @@ class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
 
         $this->assertEquals(3, $result->numFields());
         $this->assertEquals(array('s','p','o'), $result->getFields());
+        $this->assertEquals(0, count($result));
     }
 
     public function testSelectEmptyJson()
