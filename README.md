@@ -60,7 +60,7 @@ Features
   * Built-in: RDF/JSON, N-Triples, RDF/XML, Turtle
   * [ARC2]: RDF/JSON, RDF/XML, N-Triples, Turtle, POSHRDF
   * [rapper]: RDF/JSON, N-Triples, RDF/XML, Turtle, RSS, Atom, Dot, ...
-* Optional support for Zend_Http_Client
+* Optional support for [Zend_Http_Client]
 * No required external dependancies upon other libraries (PEAR, Zend, etc...)
 * Complies with Zend Framework coding style.
 * Type mapper - resources of type foaf:Person can be mapped into PHP object of class Foaf_Person
@@ -72,6 +72,7 @@ More Examples
 
 * [artistinfo.php](http://github.com/njh/easyrdf/blob/master/examples/artistinfo.php#path) - Example of mapping an RDF type to a PHP Class
 * [basic.php](http://github.com/njh/easyrdf/blob/master/examples/basic.php#path) - Basic "Hello World" type example
+* [basic_sparql.php](http://github.com/njh/easyrdf/blob/master/examples/basic_sparql.php#path) - Basic example of making a SPARQL SELECT query
 * [converter.php](http://github.com/njh/easyrdf/blob/master/examples/converter.php#path) - Convert RDF from one format to another
 * [dump.php](http://github.com/njh/easyrdf/blob/master/examples/dump.php#path) - Display the contents of a graph
 * [foafinfo.php](http://github.com/njh/easyrdf/blob/master/examples/foafinfo.php#path) - Display the information in a FOAF file
@@ -94,3 +95,4 @@ More Examples
 [ARC2]:http://github.com/semsol/arc2/
 [Redland Bindings]:http://librdf.org/bindings/
 [rapper]:http://librdf.org/raptor/rapper.html
+[Zend_Http_Client]:http://framework.zend.com/manual/en/zend.http.client.html
