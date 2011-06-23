@@ -67,12 +67,10 @@ Enable Rapper? <?= check_box_tag('enable_rapper') ?><br />
         }
 
         # 2nd Technique
-        $graph->add( $_REQUEST['uri'], array(
-            'foaf:title' => $_REQUEST['title'],
-            'foaf:givenname' => $_REQUEST['given_name'],
-            'foaf:family_name' => $_REQUEST['family_name'],
-            'foaf:nick' => $_REQUEST['nickname']
-        ));
+        $graph->addLiteral($_REQUEST['uri'], 'foaf:title', $_REQUEST['title']);
+        $graph->addLiteral($_REQUEST['uri'], 'foaf:givenname', $_REQUEST['given_name']);
+        $graph->addLiteral($_REQUEST['uri'], 'foaf:family_name', $_REQUEST['family_name']);
+        $graph->addLiteral($_REQUEST['uri'], 'foaf:nick', $_REQUEST['nickname']);
 
         # Add friends
         for($i=1; $i<=4; $i++) {
