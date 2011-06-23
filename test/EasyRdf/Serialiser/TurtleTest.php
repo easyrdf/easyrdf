@@ -53,6 +53,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function tearDown()
     {
         EasyRdf_Namespace::reset();
+        EasyRdf_Namespace::delete('example');
     }
 
     function testSerialise()
@@ -129,6 +130,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $joe->set('foaf:truth', new EasyRdf_Literal(true, null, 'xsd:boolean'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertContains('@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .', $turtle);
         $this->assertContains(
             "<http://example.com/joe#me> foaf:truth true^^xsd:boolean .",
             $turtle
@@ -141,6 +143,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $joe->set('foaf:age', new EasyRdf_Literal(1.5, null, 'xsd:decimal'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertContains('@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .', $turtle);
         $this->assertContains(
             "<http://example.com/joe#me> foaf:age 1.5^^xsd:decimal .",
             $turtle
@@ -153,6 +156,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $joe->set('foaf:age', new EasyRdf_Literal(1.5, null, 'xsd:double'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertContains('@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .', $turtle);
         $this->assertContains(
             "<http://example.com/joe#me> foaf:age 1.500000e+0^^xsd:double .",
             $turtle
@@ -165,6 +169,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $joe->set('foaf:age', new EasyRdf_Literal(49, null, 'xsd:integer'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertContains('@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .', $turtle);
         $this->assertContains(
             "<http://example.com/joe#me> foaf:age 49^^xsd:integer .",
             $turtle
@@ -177,6 +182,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $joe->set('foaf:foo', new EasyRdf_Literal('foobar', null, 'xsd:other'));
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertContains('@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .', $turtle);
         $this->assertContains(
             "<http://example.com/joe#me> foaf:foo \"foobar\"^^xsd:other .",
             $turtle
@@ -198,6 +204,17 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
             "\"foobar\"^^ns0:type .",
             $turtle
         );
+    }
+
+    function testSerialiseShortenableResource()
+    {
+        EasyRdf_Namespace::set("example", 'http://example.com/');
+        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe->add('rdf:type', 'foaf:Person');
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertContains('@prefix example: <http://example.com/> .', $turtle);
+        $this->assertContains('example:joe#me a "foaf:Person" .', $turtle);
     }
 
     function testSerialiseUnshortenableDatatype()

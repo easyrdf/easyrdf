@@ -70,6 +70,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         } else {
             $short = EasyRdf_Namespace::shorten($uri);
             if ($short) {
+                $this->addPrefix($short);
                 return $short;
             } else {
                 $uri = str_replace('>', '\\>', $uri);
@@ -97,6 +98,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
             if ($datatypeUri) {
                 $short = EasyRdf_Namespace::shorten($datatypeUri, true);
                 if ($short) {
+                    $this->addPrefix($short);
                     if ($short == 'xsd:integer') {
                         return sprintf('%d^^%s', $value, $short);
                     } else if ($short == 'xsd:decimal') {
