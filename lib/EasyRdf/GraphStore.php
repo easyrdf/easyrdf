@@ -38,6 +38,7 @@
 
 /**
  * A class for fetching, saving and deleting graphs to a Graph Store.
+ * Implementation of the SPARQL 1.1 Graph Store HTTP Protocol.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
