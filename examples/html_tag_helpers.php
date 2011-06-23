@@ -3,39 +3,10 @@
 /**
  * Rails Style html tag helpers to make the EasyRdf examples simplier
  *
- * LICENSE
- *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- * 3. The name of the author 'Nicholas J Humfrey" may be used to endorse or
- *    promote products derived from this software without specific prior
- *    written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
+ * @package    EasyRdf
+ * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @license    http://unlicense.org/
  */
-
-
 
 /* Examples:
 
@@ -76,8 +47,10 @@ function tag_options($options)
 {
     $html = "";
     foreach ($options as $key => $value) {
-        $html .= " ".htmlspecialchars($key)."=\"".
-                     htmlspecialchars($value)."\"";
+        if ($key and $value) {
+            $html .= " ".htmlspecialchars($key)."=\"".
+                         htmlspecialchars($value)."\"";
+        }
     }
     return $html;
 }
@@ -179,9 +152,14 @@ function check_box_tag($name, $value='1', $default=false, $options=array())
     return input_tag('checkbox', $name, $value, $options);
 }
 
-function submit_tag($name='submit', $value='Submit', $options=array())
+function submit_tag($name='', $value='Submit', $options=array())
 {
     return input_tag('submit', $name, $value, $options);
+}
+
+function reset_tag($name='', $value='Reset', $options=array())
+{
+    return input_tag('reset', $name, $value, $options);
 }
 
 function label_tag($name, $text=null, $options=array())
