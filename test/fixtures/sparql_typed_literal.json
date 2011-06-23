@@ -1,0 +1,74 @@
+{
+  "head": {
+    "vars": [ "episode" , "pos" , "label" ]
+  } ,
+  "results": {
+    "bindings": [
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dlv#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "1" } ,
+        "label": { "type": "literal" , "value": "Rose" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dmp#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "2" } ,
+        "label": { "type": "literal" , "value": "The End of the World" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dng#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "3" } ,
+        "label": { "type": "literal" , "value": "The Unquiet Dead" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dp9#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "4" } ,
+        "label": { "type": "literal" , "value": "Aliens of London" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dpv#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "5" } ,
+        "label": { "type": "literal" , "value": "World War Three" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dq8#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "6" } ,
+        "label": { "type": "literal" , "value": "Dalek" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dr5#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "7" } ,
+        "label": { "type": "literal" , "value": "The Long Game" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074drw#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "8" } ,
+        "label": { "type": "literal" , "value": "Father's Day" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074ds9#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "9" } ,
+        "label": { "type": "literal" , "value": "The Empty Child" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dsp#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "10" } ,
+        "label": { "type": "literal" , "value": "The Doctor Dances" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dt5#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "11" } ,
+        "label": { "type": "literal" , "value": "Boom Town" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dth#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "12" } ,
+        "label": { "type": "literal" , "value": "Bad Wolf" }
+      } ,
+      {
+        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dv1#programme" } ,
+        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "typed-literal" , "value": "13" } ,
+        "label": { "type": "literal" , "value": "The Parting of the Ways" }
+      }
+    ]
+  }
+}

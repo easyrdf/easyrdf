@@ -87,6 +87,19 @@ class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSelectTypedLiteralJson()
+    {
+        $result = new EasyRdf_SparqlResult(
+            readFixture('sparql_typed_literal.json'),
+            'application/sparql-results+json'
+        );
+
+        $first = $result[0];
+        $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dlv#programme', $first->episode);
+        $this->assertStringEquals(1, $first->pos);
+        $this->assertStringEquals('Rose', $first->label);
+    }
+
     public function testAskTrueJson()
     {
         $result = new EasyRdf_SparqlResult(

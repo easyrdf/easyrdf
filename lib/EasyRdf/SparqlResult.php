@@ -147,6 +147,7 @@ class EasyRdf_SparqlResult extends ArrayIterator
           case 'uri':
             return new EasyRdf_Resource($data['value']);
           case 'literal':
+          case 'typed-literal':
             return new EasyRdf_Literal($data);
           default:
             throw new EasyRdf_Exception(
