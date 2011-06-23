@@ -70,21 +70,21 @@ Features
 More Examples
 -------------
 
-* [artistinfo.php](http://github.com/njh/easyrdf/blob/master/examples/artistinfo.php#path) - Example of mapping an RDF type to a PHP Class
-* [basic.php](http://github.com/njh/easyrdf/blob/master/examples/basic.php#path) - Basic "Hello World" type example
-* [basic_sparql.php](http://github.com/njh/easyrdf/blob/master/examples/basic_sparql.php#path) - Basic example of making a SPARQL SELECT query
-* [converter.php](http://github.com/njh/easyrdf/blob/master/examples/converter.php#path) - Convert RDF from one format to another
-* [dump.php](http://github.com/njh/easyrdf/blob/master/examples/dump.php#path) - Display the contents of a graph
-* [foafinfo.php](http://github.com/njh/easyrdf/blob/master/examples/foafinfo.php#path) - Display the information in a FOAF file
-* [foafmaker.php](http://github.com/njh/easyrdf/blob/master/examples/foafmaker.php#path) - Construct a FOAF document with a choice of serialisations
-* [graph_direct.php](http://github.com/njh/easyrdf/blob/master/examples/graph_direct.php#path) - Example of using EasyRdf_Graph directly without EasyRdf_Resource
-* [graphstore.php](http://github.com/njh/easyrdf/blob/master/examples/graphstore.php#path) - Store and retrieve data from a SPARQL Graph Store
-* [httpget.php](http://github.com/njh/easyrdf/blob/master/examples/httpget.php#path) - No RDF, just test EasyRdf_Http_Client
-* [review_extract.php](http://github.com/njh/easyrdf/blob/master/examples/review_extract.php#path) - Extract a review from a page containing Google Review RDFa
-* [serialise.php](http://github.com/njh/easyrdf/blob/master/examples/serialise.php#path) - Basic serialisation example
-* [sparql_queryform.php](http://github.com/njh/easyrdf/blob/master/examples/sparql_queryform.php#path) - Form to submit SPARQL queries and display the result
-* [uk_postcode.php](http://github.com/njh/easyrdf/blob/master/examples/uk_postcode.php#path) - Example of resolving UK postcodes using uk-postcodes.com
-* [zend_framework.php](http://github.com/njh/easyrdf/blob/master/examples/zend_framework.php#path) - Example of using Zend_Http_Client and Zend_Loader_Autoloader with EasyRdf
+* [artistinfo.php](https://github.com/njh/easyrdf/blob/master/examples/artistinfo.php#slider) - Example of mapping an RDF type to a PHP Class
+* [basic.php](https://github.com/njh/easyrdf/blob/master/examples/basic.php#slider) - Basic "Hello World" type example
+* [basic_sparql.php](https://github.com/njh/easyrdf/blob/master/examples/basic_sparql.php#slider) - Basic example of making a SPARQL SELECT query
+* [converter.php](https://github.com/njh/easyrdf/blob/master/examples/converter.php#slider) - Convert RDF from one format to another
+* [dump.php](https://github.com/njh/easyrdf/blob/master/examples/dump.php#slider) - Display the contents of a graph
+* [foafinfo.php](https://github.com/njh/easyrdf/blob/master/examples/foafinfo.php#slider) - Display the information in a FOAF file
+* [foafmaker.php](https://github.com/njh/easyrdf/blob/master/examples/foafmaker.php#slider) - Construct a FOAF document with a choice of serialisations
+* [graph_direct.php](https://github.com/njh/easyrdf/blob/master/examples/graph_direct.php#slider) - Example of using EasyRdf_Graph directly without EasyRdf_Resource
+* [graphstore.php](https://github.com/njh/easyrdf/blob/master/examples/graphstore.php#slider) - Store and retrieve data from a SPARQL Graph Store
+* [httpget.php](https://github.com/njh/easyrdf/blob/master/examples/httpget.php#slider) - No RDF, just test EasyRdf_Http_Client
+* [review_extract.php](https://github.com/njh/easyrdf/blob/master/examples/review_extract.php#slider) - Extract a review from a page containing Google Review RDFa
+* [serialise.php](https://github.com/njh/easyrdf/blob/master/examples/serialise.php#slider) - Basic serialisation example
+* [sparql_queryform.php](https://github.com/njh/easyrdf/blob/master/examples/sparql_queryform.php#slider) - Form to submit SPARQL queries and display the result
+* [uk_postcode.php](https://github.com/njh/easyrdf/blob/master/examples/uk_postcode.php#slider) - Example of resolving UK postcodes using uk-postcodes.com
+* [zend_framework.php](https://github.com/njh/easyrdf/blob/master/examples/zend_framework.php#slider) - Example of using Zend_Http_Client and Zend_Loader_Autoloader with EasyRdf
 
 
 [EasyRdf_Graph]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Graph.html
