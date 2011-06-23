@@ -182,9 +182,10 @@ class EasyRdf_SparqlResult extends ArrayIterator
         }
 
         # Is it the result of a SELECT query?
-        $results = $doc->getElementsByTagName('result');
-        if ($results->length) {
+        $resultstag = $doc->getElementsByTagName('results');
+        if ($resultstag->length) {
             $this->_type = 'bindings';
+            $results = $resultstag->item(0)->getElementsByTagName('result');
             foreach ($results as $result) {
                 $bindings = $result->getElementsByTagName('binding');
                 $t = new stdClass();

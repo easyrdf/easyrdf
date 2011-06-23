@@ -87,6 +87,29 @@ class EasyRdf_SparqlResultTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSelectEmptyXml()
+    {
+        $result = new EasyRdf_SparqlResult(
+            readFixture('sparql_select_empty.xml'),
+            'application/sparql-results+xml'
+        );
+
+        $this->assertEquals(3, $result->numFields());
+        $this->assertEquals(array('s','p','o'), $result->getFields());
+    }
+
+    public function testSelectEmptyJson()
+    {
+        $result = new EasyRdf_SparqlResult(
+            readFixture('sparql_select_empty.json'),
+            'application/sparql-results+json'
+        );
+
+        $this->assertEquals(3, $result->numFields());
+        $this->assertEquals(array('s','p','o'), $result->getFields());
+        $this->assertEquals(0, count($result));
+    }
+
     public function testSelectTypedLiteralJson()
     {
         $result = new EasyRdf_SparqlResult(
