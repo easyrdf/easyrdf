@@ -42,7 +42,7 @@
 
     # Now make a query to the graphstore
     $sparql = new EasyRdf_SparqlClient('http://localhost:8080/sparql/');
-    $result = $sparql->describe('http://example.com/joe#me');
+    $result = $sparql->query('SELECT * WHERE {<http://example.com/joe#me> ?p ?o}');
     echo $result->dump();
 ?>
 
