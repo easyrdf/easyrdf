@@ -7,6 +7,7 @@ EasyRdf 0.6.0
   - New EasyRdf_Graphs will not automatically be loaded on creation
     You must now call $graph->load();
   - Setting the default HTTP client is now part of a new EasyRdf_Http class
+  - It is no-longer possible to add multiple properties at once using an associative array.
 * Added methods to EasyRdf_Graph for direct manipulation of triples.
 * Added new EasyRdf_GraphStore - class for fetching, saving and deleting graphs to a Graph Store over HTTP.
 * Added new EasyRdf_SparqlClient and EasyRdf_SparqlResult - class for querying a SPARQL endpoint over HTTP.
