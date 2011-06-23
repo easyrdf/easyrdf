@@ -1,15 +1,22 @@
 EasyRdf
 =======
-EasyRdf is a PHP library designed to make it easy to consume and produce RDF. It
-was designed for use in mixed teams of experienced and inexperienced RDF
-developers. It is written in Object Oriented PHP.
+EasyRdf is a PHP library designed to make it easy to consume and produce RDF.
+It was designed for use in mixed teams of experienced and inexperienced RDF
+developers. It is written in Object Oriented PHP and has been tested
+extensively using PHPUnit.
 
-During parsing EasyRdf builds up a graph of PHP objects that can then be walked
-around to get the data to be placed on the page.
+After parsing EasyRdf builds up a graph of PHP objects that can then be walked
+around to get the data to be placed on the page. Dump methods are available to
+inspect what data is available during development.
 
-Data is typically loaded into a EasyRdf_Graph object from source RDF documents.
-The source document could either be an RDF file on the web or the output of a
-Construct or Describe SPARQL query from a triplestore.
+Data is typically loaded into a [EasyRdf_Graph] object from source RDF
+documents, loaded from the web via HTTP. The [EasyRdf_GraphStore] class
+simplifies loading and saving data to a SPARQL 1.1 Graph Store.
+
+SPARQL queries can be made over HTTP to a Triplestore using the
+[EasyRdf_SparqlClient] class. SELECT and ASK queries will return an
+[EasyRdf_SparqlResult] object and CONSTRUCT and DESCRIBE queries will return
+an [EasyRdf_Graph] object.
 
 ### Example ###
 
@@ -17,6 +24,7 @@ Construct or Describe SPARQL query from a triplestore.
     $foaf->load();
     $me = $foaf->primaryTopic();
     echo "My name is: ".$me->get('foaf:name')."\n";
+
 
 Downloads
 ---------
@@ -45,13 +53,13 @@ Features
 * Unit tests written using phpunit
 * Choice of RDF parser:
   * Built-in: RDF/JSON, N-Triples, RDF/XML
-  * [ARC2](http://arc.semsol.org/): RDF/XML, Turtle, RSS, microformats, eRDF, RDFa, ...
-  * [Redland Bindings](http://librdf.org/bindings/): RDF/XML, N-Triples, Turtle, TriG, RSS Tag Soup, ...
-  * [rapper](http://librdf.org/raptor/rapper.html): RDF/XML, N-Triples, Turtle, TriG, RSS Tag Soup, ...
+  * [ARC2]: RDF/XML, Turtle, RSS, microformats, eRDF, RDFa, ...
+  * [Redland Bindings]: RDF/XML, N-Triples, Turtle, TriG, RSS Tag Soup, ...
+  * [rapper]: RDF/XML, N-Triples, Turtle, TriG, RSS Tag Soup, ...
 * Choice of RDF serialiser:
   * Built-in: RDF/JSON, N-Triples, RDF/XML, Turtle
-  * [ARC2](http://arc.semsol.org/): RDF/JSON, RDF/XML, N-Triples, Turtle, POSHRDF
-  * [rapper](http://librdf.org/raptor/rapper.html): RDF/JSON, N-Triples, RDF/XML, Turtle, RSS, Atom, Dot, ...
+  * [ARC2]: RDF/JSON, RDF/XML, N-Triples, Turtle, POSHRDF
+  * [rapper]: RDF/JSON, N-Triples, RDF/XML, Turtle, RSS, Atom, Dot, ...
 * Optional support for Zend_Http_Client
 * No required external dependancies upon other libraries (PEAR, Zend, etc...)
 * Complies with Zend Framework coding style.
@@ -76,3 +84,13 @@ More Examples
 * [sparql_query_form.php](http://github.com/njh/easyrdf/blob/master/examples/sparql_query_form.php#path) - Form to submit SPARQL queries and display the result
 * [uk_postcode.php](http://github.com/njh/easyrdf/blob/master/examples/uk_postcode.php#path) - Example of resolving UK postcodes using uk-postcodes.com
 * [zend_framework.php](http://github.com/njh/easyrdf/blob/master/examples/zend_framework.php#path) - Example of using Zend_Http_Client and Zend_Loader_Autoloader with EasyRdf
+
+
+[EasyRdf_Graph]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Graph.html
+[EasyRdf_GraphStore]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_GraphStore.html
+[EasyRdf_SparqlClient]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_SparqlClient.html
+[EasyRdf_SparqlResult]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_SparqlResult.html
+
+[ARC2]:http://github.com/semsol/arc2/
+[Redland Bindings]:http://librdf.org/bindings/
+[rapper]:http://librdf.org/raptor/rapper.html
