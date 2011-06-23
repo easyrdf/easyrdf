@@ -29,8 +29,8 @@
 
 <?php
   if (isset($_REQUEST['endpoint']) and isset($_REQUEST['query'])) {
-      $client = new EasyRdf_SparqlClient($_REQUEST['endpoint']);
-      $results = $client->query($_REQUEST['query']);
+      $sparql = new EasyRdf_SparqlClient($_REQUEST['endpoint']);
+      $results = $sparql->query($_REQUEST['query']);
       if (isset($_REQUEST['text'])) {
           print "<pre>".htmlspecialchars($results->dump(false))."</pre>";
       } else {

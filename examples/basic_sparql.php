@@ -5,7 +5,7 @@
 
     EasyRdf_Namespace::set('po', 'http://purl.org/ontology/po/');
 
-    $client = new EasyRdf_SparqlClient('http://api.talis.com/stores/bbc-backstage/services/sparql');
+    $sparql = new EasyRdf_SparqlClient('http://api.talis.com/stores/bbc-backstage/services/sparql');
 ?>
 <html>
 <head><title>Basic Sparql</title></head>
@@ -16,7 +16,7 @@
 <ul>
 <?
     $series1 = 'http://www.bbc.co.uk/programmes/b007vvcq#programme';
-    $result = $client->query(
+    $result = $sparql->query(
       "SELECT * WHERE {".
       "  <$series1> po:episode ?episode .".
       "  ?episode po:position ?pos .".
