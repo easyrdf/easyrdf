@@ -47,6 +47,9 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             $this->_client = new EasyRdf_Http_MockClient()
         );
         $this->_graphStore = new EasyRdf_GraphStore('http://localhost:8080/data/');
+
+        // Ensure that the built-in n-triples parser is used
+        EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Ntriples');
     }
 
     public function testGetUri()
