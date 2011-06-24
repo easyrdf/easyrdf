@@ -203,10 +203,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 
     public function testResolveReferenceUriNormal7()
     {
-//         $this->assertEquals(
-//             "http://example.org/bpath/cpath/?y"
-//             EasyRdf_Utils::resolveUriReference($this->baseUri, "?y"),
-//         );
+        $this->markTestSkipped('FIXME');
+        $this->assertEquals(
+            "http://example.org/bpath/cpath/?y",
+            EasyRdf_Utils::resolveUriReference($this->baseUri, "?y")
+        );
     }
 
     public function testResolveReferenceUriNormal8()
