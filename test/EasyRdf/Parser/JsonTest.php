@@ -49,12 +49,12 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
     {
         $this->_graph = new EasyRdf_Graph();
         $this->_parser = new EasyRdf_Parser_Json();
-        $this->_data = readFixture('foaf.json');
     }
 
     public function testParse()
     {
-        $this->_parser->parse($this->_graph, $this->_data, 'json', null);
+        $data = readFixture('foaf.json');
+        $this->_parser->parse($this->_graph, $data, 'json', null);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
@@ -67,12 +67,41 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
         $this->assertEquals('Joe Bloggs', $name->getValue());
         $this->assertEquals('en', $name->getLang());
         $this->assertEquals(null, $name->getDatatype());
+
+        $project = $joe->get('foaf:currentProject');
+        $this->assertNotNull($project);
+        $this->assertEquals('EasyRdf_Resource', get_class($project));
+        $this->assertEquals('_:eid1', $project->getUri());
+    }
+
+    public function testParseJsonTriples()
+    {
+        $data = readFixture('foaf.json-triples');
+        $this->_parser->parse($this->_graph, $data, 'json', null);
+
+        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $this->assertNotNull($joe);
+        $this->assertEquals('EasyRdf_Resource', get_class($joe));
+        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
+
+        $name = $joe->get('foaf:name');
+        $this->assertNotNull($name);
+        $this->assertEquals('EasyRdf_Literal', get_class($name));
+        $this->assertEquals('Joe Bloggs', $name->getValue());
+        $this->assertEquals('en', $name->getLang());
+        $this->assertEquals(null, $name->getDatatype());
+
+        $project = $joe->get('foaf:currentProject');
+        $this->assertNotNull($project);
+        $this->assertEquals('EasyRdf_Resource', get_class($project));
+        $this->assertEquals('_:eid1', $project->getUri());
     }
 
     public function testParseWithFormatObject()
     {
+        $data = readFixture('foaf.json');
         $format = EasyRdf_Format::getFormat('json');
-        $this->_parser->parse($this->_graph, $this->_data, $format, null);
+        $this->_parser->parse($this->_graph, $data, $format, null);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertStringEquals('Joe Bloggs', $joe->get('foaf:name'));

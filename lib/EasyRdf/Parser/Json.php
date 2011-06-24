@@ -47,6 +47,32 @@
  */
 class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
 {
+    protected function _parseJsonTriples($graph, $data, $baseUri)
+    {
+        foreach ($data['triples'] as $triple) {
+            if ($triple['subject']['type'] == 'bnode') {
+                $subject = $this->remapBnode($graph, $triple['subject']['value']);
+            } else {
+                $subject = $triple['subject']['value'];
+            }
+
+            $predicate = $triple['predicate']['value'];
+
+            if ($triple['object']['type'] == 'bnode') {
+                $object = array(
+                    'type' => 'bnode',
+                    'value' => $this->remapBnode($graph, $triple['object']['value'])
+                );
+            } else {
+                $object = $triple['object'];
+            }
+
+            $graph->add($subject, $predicate, $object);
+        }
+
+        return true;
+    }
+
     /**
       * Parse a RDF/JSON into an EasyRdf_Graph
       *
@@ -66,8 +92,22 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
             );
         }
 
-        $rdfphp = json_decode(strval($data), true);
-        return parent::parse($graph, $rdfphp, 'php', $baseUri);
+        // Reset the bnode mapping
+        $this->resetBnodeMap();
+
+        $decoded = @json_decode(strval($data), true);
+        if (!$decoded) {
+            # FIXME: can we get an error message for json_decode?
+            throw new EasyRdf_Exception(
+                "Failed to parse RDF/JSON"
+            );
+        }
+
+        if (array_key_exists('triples', $decoded)) {
+            return $this->_parseJsonTriples($graph, $decoded, $baseUri);
+        } else {
+            return parent::parse($graph, $decoded, 'php', $baseUri);
+        }
     }
 }
 

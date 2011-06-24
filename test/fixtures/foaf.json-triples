@@ -1,0 +1,207 @@
+{
+  "triples" : [
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "http://xmlns.com/foaf/0.1/Person",
+        "type" : "uri"
+        }
+      },
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://xmlns.com/foaf/0.1/currentProject",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "_:genid1",
+        "type" : "bnode"
+        }
+      },
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://xmlns.com/foaf/0.1/family_name",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "Bloggs",
+        "type" : "literal"
+        }
+      
+      },
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://xmlns.com/foaf/0.1/firstName",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "Joe",
+        "type" : "literal"
+        }
+      
+      },
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://xmlns.com/foaf/0.1/homepage",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "http://www.example.com/joe/",
+        "type" : "uri"
+        }
+      },
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://xmlns.com/foaf/0.1/name",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "Joe Bloggs",
+        "lang" : "en",
+        "type" : "literal"
+        }
+      
+      },
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://xmlns.com/foaf/0.1/title",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "Mr",
+        "type" : "literal"
+        }
+      
+      },
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe/foaf.rdf",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "http://xmlns.com/foaf/0.1/PersonalProfileDocument",
+        "type" : "uri"
+        }
+      },
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe/foaf.rdf",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://www.w3.org/2000/01/rdf-schema#label",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "Joe Bloggs' FOAF File",
+        "type" : "literal"
+        }
+      
+      },
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe/foaf.rdf",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://xmlns.com/foaf/0.1/maker",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        }
+      },
+    {
+      "subject" : {
+        "value" : "http://www.example.com/joe/foaf.rdf",
+        "type" : "uri"
+        },
+      "predicate" : {
+        "value" : "http://xmlns.com/foaf/0.1/primaryTopic",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        }
+      },
+    {
+      "subject" : {
+        "value" : "_:genid1",
+        "type" : "bnode"
+        },
+      "predicate" : {
+        "value" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "http://xmlns.com/foaf/0.1/Project",
+        "type" : "uri"
+        }
+      },
+    {
+      "subject" : {
+        "value" : "_:genid1",
+        "type" : "bnode"
+        },
+      "predicate" : {
+        "value" : "http://xmlns.com/foaf/0.1/homepage",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "http://www.example.com/project",
+        "type" : "uri"
+        }
+      },
+    {
+      "subject" : {
+        "value" : "_:genid1",
+        "type" : "bnode"
+        },
+      "predicate" : {
+        "value" : "http://xmlns.com/foaf/0.1/name",
+        "type" : "uri"
+        },
+      "object" : {
+        "value" : "Joe's Current Project",
+        "type" : "literal"
+        }
+      
+      }
+    ]
+  }
