@@ -57,7 +57,6 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected $_nsp;
     protected $_sStack;
     protected $_sCount;
-    protected $_bnodeMap;
 
     /**
      * Constructor
@@ -80,7 +79,6 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->_nsp = array($this->_xml => 'xml', $this->_rdf => 'rdf');
         $this->_sStack = array();
         $this->_sCount = 0;
-        $this->_bnodeMap = array();
     }
 
     protected function initXMLParser()
@@ -95,15 +93,6 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             xml_set_object($parser, $this);
             $this->_xmlParser = $parser;
         }
-    }
-
-    # FIXME: duplicated code
-    protected function remapBnode($name)
-    {
-        if (!isset($this->_bnodeMap[$name])) {
-            $this->_bnodeMap[$name] = $this->_graph->newBNodeId();
-        }
-        return $this->_bnodeMap[$name];
     }
 
     protected function pushS(&$s)
@@ -284,7 +273,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             $s['type'] = 'bnode';
             if (isset($a[$this->_rdf.'nodeID'])) {
                 $s['value'] = $this->remapBnode(
-                    $a[$this->_rdf.'nodeID']
+                    $this->_graph, $a[$this->_rdf.'nodeID']
                 );
             } else {
                 $s['value'] = $this->_graph->newBNodeId();
@@ -411,7 +400,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             $this->_state = 3;
         /* named bnode */
         } elseif (isset($a[$this->_rdf.'nodeID'])) {
-            $o['value'] = $this->remapBnode($a[$this->_rdf.'nodeID']);
+            $o['value'] = $this->remapBnode($this->_graph, $a[$this->_rdf.'nodeID']);
             $o['type'] = 'bnode';
             $this->addTriple($s['value'], $s['p'], $o['value'], $s['type'], $o['type']);
             $this->_state = 3;
@@ -730,6 +719,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
 
         $this->init($graph, $baseUri);
+        $this->resetBnodeMap();
 
         /* xml parser */
         $this->initXMLParser();

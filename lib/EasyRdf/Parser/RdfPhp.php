@@ -47,8 +47,6 @@
  */
 class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
 {
-    private $_bnodeMap = array();
-
     /**
      * Constructor
      *
@@ -56,14 +54,6 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
      */
     public function __construct()
     {
-    }
-
-    protected function remapBnode($graph, $name)
-    {
-        if (!isset($this->_bnodeMap[$name])) {
-            $this->_bnodeMap[$name] = $graph->newBNodeId();
-        }
-        return $this->_bnodeMap[$name];
     }
 
     /**
@@ -86,7 +76,7 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
         }
 
         // Reset the bnode mapping
-        $this->_bnodeMap = array();
+        $this->resetBnodeMap();
 
         # FIXME: validate the data (?)
 

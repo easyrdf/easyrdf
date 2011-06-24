@@ -45,6 +45,32 @@
  */
 class EasyRdf_Parser
 {
+    /** Mapping from source to graph bnode identifiers */
+    private $_bnodeMap = array();
+
+    /**
+     * Create a new, unique bnode identifier from a source identifier.
+     * If the source identifier has previously been seen, the
+     * same new bnode identifier is returned.
+     * @ignore
+     */
+    protected function remapBnode($graph, $name)
+    {
+        if (!isset($this->_bnodeMap[$name])) {
+            $this->_bnodeMap[$name] = $graph->newBNodeId();
+        }
+        return $this->_bnodeMap[$name];
+    }
+
+    /**
+     * Delete the bnode mapping - to be called at the start of a new parse
+     * @ignore
+     */
+    protected function resetBnodeMap()
+    {
+        $this->_bnodeMap = array();
+    }
+
     /**
      * Check and cleanup parameters passed to parse() method
      * @ignore
