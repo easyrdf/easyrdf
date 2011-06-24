@@ -24,6 +24,7 @@
   <fileset id="test-support" dir="${project.basedir}">
     <include name="test/TestHelper.php" />
     <include name="test/EasyRdf/TestCase.php" />
+    <include name="test/EasyRdf/Http/MockClient.php" />
     <include name="test/fixtures/*" />
   </fileset>
 
