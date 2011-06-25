@@ -188,11 +188,11 @@ class EasyRdf_Graph
     {
         $this->checkResourceParam($uri, true);
 
-        if ($format) {
-            $format = EasyRdf_Format::getFormat($format);
-        } else {
+        if (!isset($format) or $format == 'guess') {
             // Guess the format if it is Unknown
             $format = EasyRdf_Format::guessFormat($data);
+        } else {
+            $format = EasyRdf_Format::getFormat($format);
         }
 
         if (!$format)
