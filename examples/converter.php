@@ -3,10 +3,14 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    $format_options = array();
+    $input_format_options = array('Guess' => 'guess');
+    $output_format_options = array();
     foreach (EasyRdf_Format::getFormats() as $format) {
         if ($format->getSerialiserClass()) {
-            $format_options[$format->getLabel()] = $format->getName();
+            $output_format_options[$format->getLabel()] = $format->getName();
+        }
+        if ($format->getParserClass()) {
+            $input_format_options[$format->getLabel()] = $format->getName();
         }
     }
 ?>
@@ -17,21 +21,28 @@
 
 <div style="margin: 10px">
   <?= form_tag() ?>
-  <?= label_tag('uri').text_field_tag('uri', 'http://www.dajobe.org/foaf.rdf', array('size'=>80)) ?><br />
-  <?= label_tag('format').select_tag('format', $format_options, 'rdfxml') ?>
-  <?= submit_tag() ?>
+  <?= label_tag('data', 'Input Data: ').'<br />'.text_area_tag('data', '', array('cols'=>80, 'rows'=>10)) ?><br />
+  <?= label_tag('uri', 'or Uri: ').text_field_tag('uri', 'http://www.dajobe.org/foaf.rdf', array('size'=>80)) ?><br />
+  <?= label_tag('input_format', 'Input Format: ').select_tag('input_format', $input_format_options, 'guess') ?><br />
+  <?= label_tag('output_format', 'Output Format: ').select_tag('output_format', $output_format_options, 'turtle') ?><br />
+  <?= reset_tag() ?> <?= submit_tag() ?>
   <?= form_end_tag() ?>
 </div>
 
 <?php
-    if (isset($_REQUEST['uri'])) {
-        $graph = new EasyRdf_Graph( $_REQUEST['uri'] );
-        $graph->load();
-        $data = $graph->serialise($_REQUEST['format']);
-        if (!is_scalar($data)) {
-            $data = var_export($data, true);
+    if (isset($_REQUEST['uri']) or isset($_REQUEST['data'])) {
+        $graph = new EasyRdf_Graph($_REQUEST['uri']);
+        if (empty($_REQUEST['data'])) {
+            $graph->load();
+        } else {
+            $graph->parse($_REQUEST['data'], $_REQUEST['input_format'], $_REQUEST['uri']);
         }
-        print "<pre>".htmlspecialchars($data)."</pre>";
+
+        $output = $graph->serialise($_REQUEST['output_format']);
+        if (!is_scalar($output)) {
+            $output = var_export($output, true);
+        }
+        print "<pre>".htmlspecialchars($output)."</pre>";
     }
 ?>
 </body>
