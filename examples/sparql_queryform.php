@@ -1,4 +1,12 @@
 <?php
+    /**
+     * Form to submit SPARQL queries and display the result
+     *
+     * @package    EasyRdf
+     * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+     * @license    http://unlicense.org/
+     */
+
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";

@@ -1,4 +1,12 @@
 <?php
+    /**
+     * Basic serialisation example
+     *
+     * @package    EasyRdf
+     * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+     * @license    http://unlicense.org/
+     */
+
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf.php";
 

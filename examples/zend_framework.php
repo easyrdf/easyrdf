@@ -1,4 +1,12 @@
 <?php
+    /**
+     * Example of using Zend_Http_Client and Zend_Loader_Autoloader with EasyRdf
+     *
+     * @package    EasyRdf
+     * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+     * @license    http://unlicense.org/
+     */
+
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
 
     // require the Zend Autoloader
