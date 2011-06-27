@@ -93,20 +93,20 @@ class EasyRdf_Graph
      * with the EasyRdf_TypeMapper, then the resource will be an instance
      * of the class registered.
      *
+     * If URI is null, then the URI of the graph is used.
+     *
      * @param  string  $uri    The URI of the resource
      * @param  mixed   $types  RDF type of a new resource (e.g. foaf:Person)
      * @return object EasyRdf_Resource
      */
-    public function resource($uri, $types=array())
+    public function resource($uri=null, $types=array())
     {
-        if (!is_string($uri) or $uri == null or $uri == '') {
+        $this->checkResourceParam($uri, true);
+        if (!$uri) {
             throw new InvalidArgumentException(
-                "\$uri should be a string and cannot be null or empty"
+                '$uri is null and EasyRdf_Graph object has no URI either.'
             );
-        }
-
-        // Expand the URI if it is shortened
-        $uri = EasyRdf_Namespace::expand($uri);
+        }        
 
         // Add the types
         $this->addType($uri, $types);

@@ -226,9 +226,20 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph();
         $person = $graph->resource('foaf:Person');
-        $this->assertStringEquals(
+        $this->assertEquals(
             'http://xmlns.com/foaf/0.1/Person',
             $person->getUri()
+        );
+    }
+    
+    public function testGetResourceForGraphUri()
+    {
+        $graph = new EasyRdf_Graph('http://testGetResourceForGraphUri/');
+        $resource = $graph->resource();
+        $this->assertType('EasyRdf_Resource', $resource);
+        $this->assertEquals(
+            'http://testGetResourceForGraphUri/',
+            $resource->getUri()
         );
     }
 
@@ -241,9 +252,12 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
-    public function testGetResourceNullUri()
+    public function testGetNullResourceForNullGraphUri()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri is null and EasyRdf_Graph object has no URI either.'
+        );
         $graph = new EasyRdf_Graph();
         $graph->resource(null);
     }
