@@ -31,6 +31,7 @@ Downloads
 
 The latest version of EasyRdf can be downloaded from GitHub.
 
+
 Links
 -----
 
@@ -67,6 +68,13 @@ Features
 * Comes with a number of examples
 
 
+Licensing
+---------
+
+The EasyRdf library and tests are licensed under a [BSD-3-Clause] license.
+The examples are in the public domain, for more information see [UNLICENSE].
+
+
 More Examples
 -------------
 
@@ -93,6 +101,8 @@ More Examples
 [EasyRdf_SparqlResult]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_SparqlResult.html
 
 [ARC2]:http://github.com/semsol/arc2/
+[BSD-3-Clause]:http://www.opensource.org/licenses/BSD-3-Clause
 [Redland Bindings]:http://librdf.org/bindings/
 [rapper]:http://librdf.org/raptor/rapper.html
+[UNLICENSE]:http://unlicense.org/
 [Zend_Http_Client]:http://framework.zend.com/manual/en/zend.http.client.html
