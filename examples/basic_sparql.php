@@ -2,6 +2,13 @@
     /**
      * Example of making a SPARQL SELECT query
      *
+     * The example creates a new SPARQL client, pointing at the
+     * Talis hosted BBC Backstage store. It then makes a SELECT
+     * query that returns all of the episodes, along with their
+     * episode number and title.
+     *
+     * Note how the PO prefix declaration is automatically added to the query.
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/
@@ -13,7 +20,9 @@
 
     EasyRdf_Namespace::set('po', 'http://purl.org/ontology/po/');
 
-    $sparql = new EasyRdf_SparqlClient('http://api.talis.com/stores/bbc-backstage/services/sparql');
+    $sparql = new EasyRdf_SparqlClient(
+      'http://api.talis.com/stores/bbc-backstage/services/sparql'
+    );
 ?>
 <html>
 <head><title>Basic Sparql</title></head>
@@ -28,11 +37,11 @@
       "SELECT * WHERE {".
       "  <$series1> po:episode ?episode .".
       "  ?episode po:position ?pos .".
-      "  ?episode rdfs:label ?label .".
+      "  ?episode rdfs:label ?title .".
       "} ORDER BY ?pos"
     );
     foreach ($result as $row) {
-        echo "<li>$row->pos. ".link_to($row->label, $row->episode)."</li>\n";
+        echo "<li>$row->pos. ".link_to($row->title, $row->episode)."</li>\n";
     }
 ?>
 </ul>

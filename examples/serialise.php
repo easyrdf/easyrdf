@@ -2,6 +2,9 @@
     /**
      * Basic serialisation example
      *
+     * This example create a simple FOAF graph in memory and then
+     * serialises it to the page in the format of choice.
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/

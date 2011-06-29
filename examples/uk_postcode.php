@@ -2,6 +2,10 @@
     /**
      * Example of resolving UK postcodes using uk-postcodes.com
      *
+     * Another basic example that demonstrates registering namespaces,
+     * loading RDF data from the web and then directly displaying
+     * literals from the graph on the page.
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/
@@ -56,7 +60,7 @@
         print "<tr><th>Local Authority:</th><td>" . $res->get('ag:localAuthority')->label() . "</td></tr>\n";
         print "<tr><th>Electoral Ward:</th><td>" . $res->get('eg:ward')->label() . "</td></tr>\n";
         print "</table>\n";
-        
+
         print "<div style='clear: both'></div>\n";
 
         print $graph->dump();

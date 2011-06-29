@@ -2,6 +2,13 @@
     /**
      * Display the contents of a graph
      *
+     * Data from the chosen URI is loaded into an EasyRdf_Graph object.
+     * Then the graph is dumped and printed to the page using the
+     * $graph->dump() method.
+     *
+     * The call to preg_replace() replaces links in the page with
+     * links back to this dump script.
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/

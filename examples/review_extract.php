@@ -2,6 +2,10 @@
     /**
      * Extract a review from a page containing Google Review RDFa
      *
+     * This example uses ARC2's RDFa parser to extract the Google
+     * rich snippets review vocabulary from an HTML page.
+     *
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/

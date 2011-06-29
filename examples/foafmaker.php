@@ -2,6 +2,10 @@
     /**
      * Construct a FOAF document with a choice of serialisations
      *
+     * This example is similar in concept to Leigh Dodds' FOAF-a-Matic.
+     * The fields in the HTML form are inserted into an empty
+     * EasyRdf_Graph and then serialised to the chosen format.
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/
@@ -29,7 +33,7 @@
 <body>
 <h1>FOAF Maker</h1>
 
-<?= form_tag(null,array('method' => 'POST')) ?>
+<?= form_tag(null, array('method' => 'POST')) ?>
 
 <h2>Your Identifier</h2>
 <?= labeled_text_field_tag('uri', 'http://www.example.com/joe#me', array('size'=>40)) ?><br />

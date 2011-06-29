@@ -1,6 +1,6 @@
 <?php
     /**
-     * Example of making a SPARQL SELECT query
+     * Fetch and information about villages in Fife from dbpedia.org
      *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey

@@ -2,6 +2,16 @@
     /**
      * Convert RDF from one format to another
      *
+     * The source RDF data can either be fetched from the web
+     * or typed into the Input box.
+     *
+     * The first thing that this script does is make a list the names of the
+     * supported input and output formats. These options are then
+     * displayed on the HTML form.
+     *
+     * The input data is loaded or parsed into an EasyRdf_Graph.
+     * That graph is than outputted again in the desired output format.
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/

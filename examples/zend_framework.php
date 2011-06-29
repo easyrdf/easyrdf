@@ -2,6 +2,10 @@
     /**
      * Example of using Zend_Http_Client and Zend_Loader_Autoloader with EasyRdf
      *
+     * This example creates a simple graph in memory, saves it to a local
+     * graphstore and then fetches the data back using a SPARQL SELECT query.
+     * Zend's curl HTTP client adaptor is used to perform the HTTP requests.
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/
@@ -13,7 +17,7 @@
     require_once 'Zend/Loader/Autoloader.php';
     $autoloader = Zend_Loader_Autoloader::getInstance();
     $autoloader->setFallbackAutoloader(true);
-    
+
     // use the CURL based HTTP client adaptor
     $client = new Zend_Http_Client(
         null, array(
@@ -23,10 +27,10 @@
         )
     );
     EasyRdf_Http::setDefaultHttpClient($client);
-    
+
     // Load the parsers and serialisers that we are going to use
     # FIXME: better way to do this?
-    $autoloader->autoload('EasyRdf_Serialiser_Ntriples');   
+    $autoloader->autoload('EasyRdf_Serialiser_Ntriples');
     $autoloader->autoload('EasyRdf_Parser_Ntriples');
 ?>
 
@@ -43,7 +47,7 @@
     $joe = $graph->resource('http://example.com/joe#me', 'foaf:Person');
     $joe->add('foaf:name', 'Joe Bloggs');
     $joe->addResource('foaf:homepage', 'http://example.com/joe/');
-    
+
     # Store it in a local graphstore
     $store = new EasyRdf_GraphStore('http://localhost:8080/data/');
     $store->replace($graph);

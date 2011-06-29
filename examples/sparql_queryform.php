@@ -2,6 +2,16 @@
     /**
      * Form to submit SPARQL queries and display the result
      *
+     * This example presents a form that you can enter the URI
+     * of a a SPARQL endpoint and a SPARQL query into. The
+     * results are displayed using a call to dump() on what will be
+     * either a EasyRdf_SparqlResult or EasyRdf_Graph object.
+     *
+     * A list of registered namespaces is displayed above the query
+     * box - any of these namespaces can be used in the query and PREFIX
+     * statements will automatically be added to the start of the query
+     * string.
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/

@@ -1,6 +1,6 @@
 <?php
     /**
-     * Store and retrieve data from a SPARQL Graph Store
+     * Store and retrieve data from a SPARQL 1.1 Graph Store
      *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey

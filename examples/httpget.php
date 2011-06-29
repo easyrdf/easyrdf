@@ -2,6 +2,10 @@
     /**
      * No RDF, just test EasyRdf_Http_Client
      *
+     * This example does nothing but test EasyRdf's build in HTTP client.
+     * It demonstrates setting Accept headers and displays the response
+     * headers and body.
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/

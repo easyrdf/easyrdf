@@ -2,6 +2,9 @@
     /**
      * Example of using EasyRdf_Graph directly without EasyRdf_Resource
      *
+     * Triple data is inserted and retrieved directly from a graph object,
+     * where it is stored internally as an RDF/PHP array.
+     *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
      * @license    http://unlicense.org/
@@ -40,7 +43,9 @@
   <b>Unknown:</b> <?= $graph->get("http://example.com/joe", "unknown:property") ?> <br />
 </p>
 
-<?= $graph->dump() ?>
+<pre>
+  <?= print_r($graph->toRdfPhp()) ?>
+</pre>
 
 </body>
 </html>
