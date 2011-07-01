@@ -388,6 +388,18 @@ class EasyRdf_Resource
         return $this->_graph->is_a($this->_uri, $type);
     }
 
+    public function addType($types)
+    {
+        $this->checkHasGraph();
+        return $this->_graph->addType($this->_uri, $types);
+    }
+
+    public function setType($type)
+    {
+        $this->checkHasGraph();
+        return $this->_graph->setType($this->_uri, $type);
+    }
+
     /** Get the primary topic of this resource.
      *
      * Returns null if no primary topic is available.

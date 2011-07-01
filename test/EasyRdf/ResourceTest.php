@@ -786,6 +786,30 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertFalse($this->_resource->is_a('foaf:Rat'));
     }
 
+    public function testAddType()
+    {
+        $this->_setupTestGraph();
+        $this->_resource->addType('rdf:newType');
+        $this->assertTrue(
+            $this->_resource->is_a('rdf:newType')
+        );
+    }
+
+    public function testSetType()
+    {
+        $this->_setupTestGraph();
+        $this->assertTrue(
+            $this->_resource->is_a('foaf:Person')
+        );
+        $this->_resource->setType('foaf:Rat');
+        $this->assertTrue(
+            $this->_resource->is_a('foaf:Rat')
+        );
+        $this->assertFalse(
+            $this->_resource->is_a('foaf:Person')
+        );
+    }
+
     public function testPrimaryTopic()
     {
         $this->_setupTestGraph();
