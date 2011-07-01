@@ -24,6 +24,10 @@
     $me->set('foaf:nick', 'Joe');
     $me->add('foaf:homepage', $graph->resource('http://example.com/joe/'));
 
+    $project = $graph->newBnode('foaf:Project');
+    $project->set('foaf:name', "Joe's current project");
+    $me->set('foaf:currentProject', $project);
+
     if (isset($_REQUEST['format'])) {
         $format = preg_replace("/[^\w\-]+/", '', strtolower($_REQUEST['format']));
     } else {
