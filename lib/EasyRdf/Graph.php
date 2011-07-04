@@ -709,6 +709,17 @@ class EasyRdf_Graph
         }
     }
 
+    public function reversePropertyUris($resource)
+    {
+        $this->checkResourceParam($resource);
+
+        if (isset($this->_revIndex[$resource])) {
+            return array_keys($this->_revIndex[$resource]);
+        } else {
+            return array();
+        }
+    }
+
     /** Check to see if a property exists for a resource.
      *
      * This method will return true if the property exists.

@@ -319,7 +319,14 @@ class EasyRdf_Resource
      */
     public function properties()
     {
+        $this->checkHasGraph();
         return $this->_graph->properties($this->_uri);
+    }
+
+    public function reversePropertyUris()
+    {
+        $this->checkHasGraph();
+        return $this->_graph->reversePropertyUris($this->_uri);
     }
 
     /** Check to see if a property exists for this resource.
