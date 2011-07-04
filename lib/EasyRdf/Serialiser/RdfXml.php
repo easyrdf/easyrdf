@@ -46,11 +46,13 @@
 class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
 {
     private $_prefixes = array();
+    private $_outputtedResources = array();
 
     /** A constant for the RDF Type property URI */
     const RDF_XML_LITERAL = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral';
 
     /**
+     * Keep track of the prefixes that we have used in the serialisation
      * @ignore
      */
     protected function addPrefix($qname)
@@ -60,18 +62,21 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
     }
 
     /**
-     * Protected method to serialise an object node into an XML partial
+     * Protected method to get the number of reverse properties for a resource
+     * If a resource only has a single property, the number of values for that
+     * property is returned instead.
      * @ignore
      */
-    protected function rdfxmlResource($res, $type='rdf:Description')
+    protected function reversePropertyCount($resource)
     {
-        $this->addPrefix($type);
-        if ($res->isBNode()) {
-            return "<$type rdf:nodeID=\"".
-                   htmlspecialchars($res->getNodeId())."\">";
+        $properties = $resource->reversePropertyUris();
+        $count = count($properties);
+        if ($count == 1) {
+            $property = $properties[0];
+            $values = $resource->all("^$property");
+            return count($values);
         } else {
-            return "<$type rdf:about=\"".
-                   htmlspecialchars($res->getUri())."\">";
+            return $count;
         }
     }
 
@@ -79,18 +84,35 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
      * Protected method to serialise an object node into an XML object
      * @ignore
      */
-    protected function rdfxmlObject($property, $obj)
+    protected function rdfxmlObject($property, $obj, $depth)
     {
+        $indent = str_repeat('  ', $depth);
         if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
+            $pcount = count($obj->propertyUris());
+            $rpcount = $this->reversePropertyCount($obj);
+
+            $tag = "$indent<$property";
             if ($obj->isBNode()) {
-                return "    <".$property.
-                       " rdf:nodeID=\"".htmlspecialchars($obj->getNodeId()).
-                       "\"/>\n";
+                if ($rpcount > 1 or $pcount == 0) {
+                    $tag .= " rdf:nodeID=\"".htmlspecialchars($obj->getNodeId()).'"';
+                }
             } else {
-                return "    <".$property.
-                       " rdf:resource=\"".htmlspecialchars($obj->getURI()).
-                       "\"/>\n";
+                if ($rpcount != 1 or $pcount == 0) {
+                    $tag .= " rdf:resource=\"".htmlspecialchars($obj->getURI()).'"';
+                }
             }
+
+            if ($rpcount == 1 and $pcount > 0) {
+                $xml = $this->rdfxmlResource($obj, false, $depth+1);
+                if ($xml) {
+                    return "$tag>$xml$indent</$property>\n\n";
+                } else {
+                    return '';
+                }
+            } else {
+                return $tag."/>\n";
+            }
+
         } else if (is_object($obj) and $obj instanceof EasyRdf_Literal) {
             $atrributes = "";
             $datatype = $obj->getDatatypeUri();
@@ -107,18 +129,73 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                                htmlspecialchars($obj->getLang()).'"';
             }
 
-            // Escape value
+            // Escape the value
             if (!isset($value)) {
                 $value = htmlspecialchars($obj->getValue());
             }
 
-            return "    <$property$atrributes>$value</$property>\n";
+            return "$indent<$property$atrributes>$value</$property>\n";
         } else {
             throw new EasyRdf_Exception(
                 "Unable to serialise object to xml: ".getType($obj)
             );
         }
     }
+
+    protected function rdfxmlResource($res, $showNodeId, $depth=1)
+    {
+        // Keep track of the resources we have already serialised
+        if (in_array($res, $this->_outputtedResources)) {
+            return '';
+        } else {
+            array_push($this->_outputtedResources, $res);
+        }
+
+        // If the resource has no properties - don't serialise it
+        $properties = $res->propertyUris();
+        if (count($properties) == 0)
+            return '';
+
+        $type = $res->type();
+        if ($type) {
+            $this->addPrefix($type);
+        } else {
+            $type = 'rdf:Description';
+        }
+
+        $indent = str_repeat('  ', $depth);
+        $xml = "\n$indent<$type";
+        if ($res->isBNode()) {
+            if ($showNodeId) {
+                $xml .= ' rdf:nodeID="'.htmlspecialchars($res->getNodeId()).'"';
+            }
+        } else {
+            $xml .= ' rdf:about="'.htmlspecialchars($res->getUri()).'"';
+        }
+        $xml .= ">\n";
+
+        foreach ($properties as $property) {
+            $short = EasyRdf_Namespace::shorten($property, true);
+            if ($short) {
+                $this->addPrefix($short);
+                $objects = $res->all($property);
+                if ($short == 'rdf:type')
+                    array_shift($objects);
+                foreach ($objects as $object) {
+                    $xml .= $this->rdfxmlObject($short, $object, $depth+1);
+                }
+            } else {
+                throw new EasyRdf_Exception(
+                    "It is not possible to serialse the property ".
+                    "'$property' to RDF/XML."
+                );
+            }
+        }
+        $xml .= "$indent</$type>\n";
+
+        return $xml;
+    }
+
 
     /**
      * Method to serialise an EasyRdf_Graph to RDF/XML
@@ -140,35 +217,12 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         // store of namespaces to be appended to the rdf:RDF tag
         $this->_prefixes = array('rdf' => true);
 
+        // store of the resource URIs we have serialised
+        $this->_outputtedResources = array();
+
         $xml = '';
         foreach ($graph->resources() as $resource) {
-            $properties = $resource->propertyUris();
-            if (count($properties) == 0)
-                continue;
-
-            $type = $resource->type();
-            if (!$type)
-                $type = 'rdf:Description';
-
-            $xml .= "\n  ".$this->rdfxmlResource($resource, $type)."\n";
-            foreach ($properties as $property) {
-                $short = EasyRdf_Namespace::shorten($property, true);
-                if ($short) {
-                    $this->addPrefix($short);
-                    $objects = $resource->all($property);
-                    if ($short == 'rdf:type')
-                        array_shift($objects);
-                    foreach ($objects as $object) {
-                        $xml .= $this->rdfxmlObject($short, $object);
-                    }
-                } else {
-                    throw new EasyRdf_Exception(
-                        "It is not possible to serialse the property ".
-                        "'$property' to RDF/XML."
-                    );
-                }
-            }
-            $xml .= "  </$type>\n";
+            $xml .= $this->rdfxmlResource($resource, true, 1);
         }
 
         // iterate through namepsaces array prefix and output a string.

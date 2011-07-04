@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -59,18 +59,122 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');
-        $joe->set('foaf:homepage', $this->_graph->resource('http://www.example.com/joe/'));
+        $joe->addResource('foaf:homepage', 'http://www.example.com/joe/');
 
         $this->assertEquals(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
-            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n".
-            "\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
             "  <foaf:Person rdf:about=\"http://www.example.com/joe#me\">\n".
             "    <foaf:name>Joe Bloggs</foaf:name>\n".
             "    <foaf:homepage rdf:resource=\"http://www.example.com/joe/\"/>\n".
-            "  </foaf:Person>\n".
-            "\n".
+            "  </foaf:Person>\n\n".
+            "</rdf:RDF>\n",
+            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+        );
+    }
+
+    function testSerialiseRdfXmlWithInline()
+    {
+        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
+        $joe->set('foaf:name', 'Joe Bloggs');
+        $homepage = $this->_graph->resource('http://www.example.com/joe/');
+        $homepage->add('foaf:name', "Joe's Homepage");
+        $joe->set('foaf:homepage', $homepage);
+
+        $this->assertEquals(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
+            "  <foaf:Person rdf:about=\"http://www.example.com/joe#me\">\n".
+            "    <foaf:name>Joe Bloggs</foaf:name>\n".
+            "    <foaf:homepage>\n".
+            "      <rdf:Description rdf:about=\"http://www.example.com/joe/\">\n".
+            "        <foaf:name>Joe's Homepage</foaf:name>\n".
+            "      </rdf:Description>\n".
+            "    </foaf:homepage>\n\n".
+            "  </foaf:Person>\n\n".
+            "</rdf:RDF>\n",
+            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+        );
+    }
+
+    function testSerialiseRdfXmlDoubleRefernce()
+    {
+        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
+        $joe->set('foaf:name', 'Joe Bloggs');
+        $homepage = $this->_graph->resource('http://www.example.com/joe/');
+        $homepage->add('foaf:name', "Joe's Homepage");
+        $joe->set('foaf:homepage', $homepage);
+        $joe->set('foaf:made', $homepage);
+
+        $this->assertEquals(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
+            "  <foaf:Person rdf:about=\"http://www.example.com/joe#me\">\n".
+            "    <foaf:name>Joe Bloggs</foaf:name>\n".
+            "    <foaf:homepage rdf:resource=\"http://www.example.com/joe/\"/>\n".
+            "    <foaf:made rdf:resource=\"http://www.example.com/joe/\"/>\n".
+            "  </foaf:Person>\n\n".
+            "  <rdf:Description rdf:about=\"http://www.example.com/joe/\">\n".
+            "    <foaf:name>Joe's Homepage</foaf:name>\n".
+            "  </rdf:Description>\n\n".
+            "</rdf:RDF>\n",
+            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+        );
+    }
+
+    function testSerialiseRdfXmlWithInlineBnode()
+    {
+        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
+        $joe->set('foaf:name', 'Joe Bloggs');
+        $project = $this->_graph->newBNode('foaf:Project');
+        $project->set('foaf:name', "Joe's Project");
+        $joe->set('foaf:currentProject', $project);
+
+        $this->assertEquals(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
+            "  <foaf:Person rdf:about=\"http://www.example.com/joe#me\">\n".
+            "    <foaf:name>Joe Bloggs</foaf:name>\n".
+            "    <foaf:currentProject>\n".
+            "      <foaf:Project>\n".
+            "        <foaf:name>Joe's Project</foaf:name>\n".
+            "      </foaf:Project>\n".
+            "    </foaf:currentProject>\n\n".
+            "  </foaf:Person>\n\n".
+            "</rdf:RDF>\n",
+            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+        );
+    }
+
+    function testSerialiseRdfXmlBnodeMentionedTwice()
+    {
+        $bob = $this->_graph->newBnode('foaf:Person');
+        $alice = $this->_graph->newBnode('foaf:Person');
+        $carol = $this->_graph->newBnode('foaf:Person');
+
+        $bob->add('foaf:knows', $alice);
+        $bob->add('foaf:knows', $carol);
+        $alice->add('foaf:knows', $bob);
+        $alice->add('foaf:knows', $carol);
+
+        $this->assertEquals(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
+            "  <foaf:Person rdf:nodeID=\"eid1\">\n".
+            "    <foaf:knows>\n".
+            "      <foaf:Person>\n".
+            "        <foaf:knows rdf:nodeID=\"eid3\"/>\n".
+            "      </foaf:Person>\n".
+            "    </foaf:knows>\n\n".
+            "    <foaf:knows rdf:nodeID=\"eid3\"/>\n".
+            "  </foaf:Person>\n\n".
+            "  <foaf:Person rdf:nodeID=\"eid3\">\n".
+            "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
             $this->_serialiser->serialise($this->_graph, 'rdfxml')
         );
@@ -87,19 +191,17 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->assertEquals(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
-            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n".
-            "\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
             "  <foaf:Person rdf:about=\"http://www.example.com/joe#me\">\n".
             "    <rdf:type rdf:resource=\"http://xmlns.com/foaf/0.1/Mammal\"/>\n".
             "    <foaf:name>Joe Bloggs</foaf:name>\n".
-            "  </foaf:Person>\n".
-            "\n".
+            "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
             $this->_serialiser->serialise($this->_graph, 'rdfxml')
         );
     }
 
-    function testSerialiseRdfXmlWithBNodes()
+    function testSerialiseRdfXmlWithTwoBNodes()
     {
         $nodeA = $this->_graph->newBNode();
         $nodeB = $this->_graph->newBNode();
@@ -107,12 +209,10 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
         $this->assertEquals(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
-            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n".
-            "\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n\n".
             "  <rdf:Description rdf:nodeID=\"eid1\">\n".
             "    <rdf:foobar rdf:nodeID=\"eid2\"/>\n".
-            "  </rdf:Description>\n".
-            "\n".
+            "  </rdf:Description>\n\n".
             "</rdf:RDF>\n",
             $this->_serialiser->serialise($this->_graph, 'rdfxml')
         );
@@ -208,12 +308,10 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\"\n".
-            "         xmlns:dc=\"http://purl.org/dc/terms/\">\n" .
-            "\n".
+            "         xmlns:dc=\"http://purl.org/dc/terms/\">\n\n" .
             "  <foaf:Person rdf:about=\"http://www.example.com/joe#me\">\n".
             "    <dc:creator>Max Bloggs</dc:creator>\n".
-            "  </foaf:Person>\n".
-            "\n".
+            "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
             $this->_serialiser->serialise($this->_graph, 'rdfxml')
         );
