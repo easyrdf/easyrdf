@@ -95,8 +95,8 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
 
         $this->assertEquals(
             "<http://www.example.com/joe#me> ".
-            "<http://xmlns.com/foaf/0.1/project> _:eid1 .\n".
-            "_:eid1 <http://xmlns.com/foaf/0.1/name> \"Project Name\" .\n",
+            "<http://xmlns.com/foaf/0.1/project> _:genid1 .\n".
+            "_:genid1 <http://xmlns.com/foaf/0.1/name> \"Project Name\" .\n",
             $this->_serialiser->serialise($this->_graph, 'ntriples')
         );
     }

@@ -165,15 +165,15 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
-            "  <foaf:Person rdf:nodeID=\"eid1\">\n".
+            "  <foaf:Person rdf:nodeID=\"genid1\">\n".
             "    <foaf:knows>\n".
             "      <foaf:Person>\n".
-            "        <foaf:knows rdf:nodeID=\"eid3\"/>\n".
+            "        <foaf:knows rdf:nodeID=\"genid3\"/>\n".
             "      </foaf:Person>\n".
             "    </foaf:knows>\n\n".
-            "    <foaf:knows rdf:nodeID=\"eid3\"/>\n".
+            "    <foaf:knows rdf:nodeID=\"genid3\"/>\n".
             "  </foaf:Person>\n\n".
-            "  <foaf:Person rdf:nodeID=\"eid3\">\n".
+            "  <foaf:Person rdf:nodeID=\"genid3\">\n".
             "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
             $this->_serialiser->serialise($this->_graph, 'rdfxml')
@@ -210,8 +210,8 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->assertEquals(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n\n".
-            "  <rdf:Description rdf:nodeID=\"eid1\">\n".
-            "    <rdf:foobar rdf:nodeID=\"eid2\"/>\n".
+            "  <rdf:Description rdf:nodeID=\"genid1\">\n".
+            "    <rdf:foobar rdf:nodeID=\"genid2\"/>\n".
             "  </rdf:Description>\n\n".
             "</rdf:RDF>\n",
             $this->_serialiser->serialise($this->_graph, 'rdfxml')

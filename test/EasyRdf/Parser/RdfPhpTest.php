@@ -96,11 +96,11 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
 
         $this->assertStringEquals(
             'A',
-            $this->_graph->get('_:eid1', 'foaf:name')
+            $this->_graph->get('_:genid1', 'foaf:name')
         );
         $this->assertStringEquals(
             'B',
-            $this->_graph->get('_:eid2', 'foaf:name')
+            $this->_graph->get('_:genid2', 'foaf:name')
         );
     }
 

@@ -174,7 +174,7 @@ class EasyRdf_Graph
 
     public function newBNodeId()
     {
-        return "_:eid".(++$this->_bNodeCount);
+        return "_:genid".(++$this->_bNodeCount);
     }
 
     /**

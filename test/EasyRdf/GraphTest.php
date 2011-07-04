@@ -91,13 +91,13 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
         $bnodeOne = $graph->newBNode();
         $this->assertEquals(
-            '_:eid1',
+            '_:genid1',
             $bnodeOne->getUri()
         );
 
         $bnodeTwo = $graph->newBNode();
         $this->assertEquals(
-            '_:eid2',
+            '_:genid2',
             $bnodeTwo->getUri()
         );
     }
@@ -327,14 +327,14 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
         $resources = $graph->resources();
         $this->assertTrue(is_array($resources));
-        $this->assertType('EasyRdf_Resource', $resources['_:eid1']);
+        $this->assertType('EasyRdf_Resource', $resources['_:genid1']);
 
         $urls = array_keys($resources);
         sort($urls);
 
         $this->assertEquals(
             array(
-                '_:eid1',
+                '_:genid1',
                 'http://www.example.com/joe#me',
                 'http://www.example.com/joe/',
                 'http://www.example.com/joe/foaf.rdf',
@@ -1045,7 +1045,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertContains('http://example.com/joe#me', $text);
         $this->assertContains('-> rdf:type -> foaf:Person', $text);
         $this->assertContains('-> foaf:homepage -> http://example.com/', $text);
-        $this->assertContains('-> foaf:knows -> _:eid1', $text);
+        $this->assertContains('-> foaf:knows -> _:genid1', $text);
 
         $html = $graph->dumpResource('http://example.com/joe#me', true);
         $this->assertContains('http://example.com/joe#me', $html);
@@ -1054,7 +1054,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertContains('>foaf:homepage</span>', $html);
         $this->assertContains('>http://example.com/</a>', $html);
         $this->assertContains('>foaf:knows</span>', $html);
-        $this->assertContains('>_:eid1</a>', $html);
+        $this->assertContains('>_:genid1</a>', $html);
     }
 
     public function testDumpResourceWithNoProperties()

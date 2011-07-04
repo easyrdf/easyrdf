@@ -71,7 +71,7 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
             '{"type":"literal","value":59,"datatype":'.
             '"http:\/\/www.w3.org\/2001\/XMLSchema#integer"}],'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/project":['.
-            '{"type":"bnode","value":"_:eid1"}]},"_:eid1":{'.
+            '{"type":"bnode","value":"_:genid1"}]},"_:genid1":{'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/name":['.
             '{"type":"literal","value":"Project Name"}]}}',
             $this->_serialiser->serialise($this->_graph, 'json')

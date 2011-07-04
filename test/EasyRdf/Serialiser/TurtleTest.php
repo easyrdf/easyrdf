@@ -100,10 +100,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertContains(
-            "<http://example.com/joe#me> foaf:knows _:eid1 .",
+            "<http://example.com/joe#me> foaf:knows _:genid1 .",
             $turtle
         );
-        $this->assertContains("_:eid1 foaf:name \"Amy\" .", $turtle);
+        $this->assertContains("_:genid1 foaf:name \"Amy\" .", $turtle);
 
         // FIXME: should really output this instead:
         // <http://example.com/joe#me>

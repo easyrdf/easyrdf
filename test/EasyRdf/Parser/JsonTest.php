@@ -71,7 +71,7 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);
         $this->assertEquals('EasyRdf_Resource', get_class($project));
-        $this->assertEquals('_:eid1', $project->getUri());
+        $this->assertEquals('_:genid1', $project->getUri());
     }
 
     public function testParseJsonTriples()
@@ -94,7 +94,7 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);
         $this->assertEquals('EasyRdf_Resource', get_class($project));
-        $this->assertEquals('_:eid1', $project->getUri());
+        $this->assertEquals('_:genid1', $project->getUri());
     }
 
     public function testParseWithFormatObject()
