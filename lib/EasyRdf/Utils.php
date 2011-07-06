@@ -149,6 +149,16 @@ class EasyRdf_Utils
         return $baseUri . $referenceUri;
     }
 
+    /** Return pretty-print view of a resource URI
+     *
+     * This method is mainly intended for internal use and is used by
+     * EasyRdf_Graph and EasyRdf_SparqlResult to format a resource
+     * for display.
+     *
+     * @param  mixed $resource An EasyRdf_Resource object or a RDF/PHP fragment
+     * @param  bool  $html     Set to true to format the dump using HTML
+     * @param  string $color   The colour of the text
+     */
     public static function dumpResourceValue($resource, $html=true, $color='blue')
     {
         if (is_object($resource)) {
@@ -179,6 +189,16 @@ class EasyRdf_Utils
         }
     }
 
+    /** Return pretty-print view of a literal
+     *
+     * This method is mainly intended for internal use and is used by
+     * EasyRdf_Graph and EasyRdf_SparqlResult to format a literal
+     * for display.
+     *
+     * @param  mixed $resource An EasyRdf_Literal object or a RDF/PHP fragment
+     * @param  bool  $html     Set to true to format the dump using HTML
+     * @param  string $color   The colour of the text
+     */
     public static function dumpLiteralValue($literal, $html=true, $color='black')
     {
         if (is_object($literal)) {
