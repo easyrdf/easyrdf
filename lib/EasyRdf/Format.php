@@ -70,6 +70,19 @@ class EasyRdf_Format
         return self::$_formats;
     }
 
+    /** Generates an HTTP Accept header string
+     *  
+     * The string will contain all of the MIME Types that we
+     * are able to parse. 
+     *
+     * It is also possible to specify additional MIME types 
+     * in the form array('text/plain' => 0.5) where 0.5 is the 
+     * q value for that type. The types are sorted by q value 
+     * before constructing the string.
+     *
+     * @param array $extraTypes    extra MIME types to add
+     * @return string              list of supported MIME types
+     */
     public static function getHttpAcceptHeader($extraTypes=array())
     {
         $accept = $extraTypes;
