@@ -67,6 +67,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     {
     }
 
+    /** @ignore */
     protected function init($graph, $base)
     {
         $this->_graph = $graph;
@@ -81,6 +82,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->_sCount = 0;
     }
 
+    /** @ignore */
     protected function initXMLParser()
     {
         if (!isset($this->_xmlParser)) {
@@ -95,6 +97,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function pushS(&$s)
     {
         $s['pos'] = $this->_sCount;
@@ -102,6 +105,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->_sCount++;
     }
 
+    /** @ignore */
     protected function popS()
     {
         $r = array();
@@ -112,11 +116,13 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->_sStack = $r;
     }
 
+    /** @ignore */
     protected function updateS($s)
     {
         $this->_sStack[$s['pos']] = $s;
     }
 
+    /** @ignore */
     protected function getParentS()
     {
         if ($this->_sCount && isset($this->_sStack[$this->_sCount - 1])) {
@@ -126,6 +132,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function getParentXBase()
     {
         if ($p = $this->getParentS()) {
@@ -141,6 +148,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function getParentXLang()
     {
         if ($p = $this->getParentS()) {
@@ -156,6 +164,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function splitURI($v)
     {
         /* auto-splitting on / or # */
@@ -165,6 +174,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         return array($v, '');
     }
 
+    /** @ignore */
     protected function addTriple($s, $p, $o, $sType, $oType, $oDatatype = null, $oLang = null)
     {
         $this->_graph->add(
@@ -178,6 +188,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         );
     }
 
+    /** @ignore */
     protected function reify($t, $s, $p, $o, $sType, $oType, $oDatatype=null, $oLang=null)
     {
         $this->addTriple($t, $this->_rdf.'type', $this->_rdf.'Statement', 'uri', 'uri');
@@ -186,6 +197,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->addTriple($t, $this->_rdf.'object', $o, 'uri', $oType, $oDatatype, $oLang);
     }
 
+    /** @ignore */
     protected function startElementHandler($p, $t, $a)
     {
         switch($this->_state) {
@@ -201,6 +213,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function endElementHandler($p, $t)
     {
         switch($this->_state){
@@ -216,6 +229,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function cdataHandler($p, $d)
     {
         switch($this->_state){
@@ -225,11 +239,13 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function newNamespaceHandler($p, $prf, $uri)
     {
         $this->_nsp[$uri] = isset($this->_nsp[$uri]) ? $this->_nsp[$uri] : $prf;
     }
 
+    /** @ignore */
     protected function startState0($t, $a)
     {
         $this->_state = 1;
@@ -238,6 +254,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function startState1($t, $a)
     {
         $s = array(
@@ -341,6 +358,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->_state = 2;
     }
 
+    /** @ignore */
     protected function startState2($t, $a)
     {
         $s = $this->getParentS();
@@ -476,17 +494,20 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->updateS($s);
     }
 
+    /** @ignore */
     protected function startState4($t, $a)
     {
         return $this->startState1($t, $a);
     }
 
+    /** @ignore */
     protected function startState5($t, $a)
     {
         $this->_state = 4;
         return $this->startState4($t, $a);
     }
 
+    /** @ignore */
     protected function startState6($t, $a)
     {
         $s = $this->getParentS();
@@ -537,12 +558,14 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->updateS($s);
     }
 
+    /** @ignore */
     protected function endState1($t)
     {
         /* end of doc */
         $this->_state = 0;
     }
 
+    /** @ignore */
     protected function endState2($t)
     {
         /* expecting a prop, getting a close */
@@ -565,12 +588,14 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function endState3($t)
     {
         /* p close */
         $this->_state = 2;
     }
 
+    /** @ignore */
     protected function endState4($t)
     {
         /* empty p | pClose after cdata | pClose after collection */
@@ -623,6 +648,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function endState5($t)
     {
         /* p close */
@@ -633,6 +659,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function endState6($t)
     {
         if ($s = $this->getParentS()) {
@@ -680,6 +707,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function cdataState4($d)
     {
         if ($s = $this->getParentS()) {
@@ -688,6 +716,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
     }
 
+    /** @ignore */
     protected function cdataState6($d)
     {
         if ($s = $this->getParentS()) {

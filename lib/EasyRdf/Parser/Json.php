@@ -47,6 +47,12 @@
  */
 class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
 {
+    /** Parse the triple-centric JSON format, as output by libraptor
+     *
+     * http://librdf.org/raptor/api/serializer-json.html
+     *
+     * @ignore
+     */
     protected function _parseJsonTriples($graph, $data, $baseUri)
     {
         foreach ($data['triples'] as $triple) {
@@ -74,7 +80,7 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
     }
 
     /**
-      * Parse a RDF/JSON into an EasyRdf_Graph
+      * Parse RDF/JSON into an EasyRdf_Graph
       *
       * @param string $graph    the graph to load the data into
       * @param string $data     the RDF document data
