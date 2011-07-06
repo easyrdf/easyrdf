@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -86,6 +86,15 @@ class EasyRdf_Literal
         }
     }
     
+    /** Get datatype URI for a PHP value.
+     *
+     * This static function is intended for internal use.
+     * Given a PHP value, it will return an XSD datatype 
+     * URI for that value, for example:
+     * http://www.w3.org/2001/XMLSchema#integer
+     *
+     * @return string  A URI for the datatype of $value.
+     */
     public static function guessDatatype($value)
     {
         if (is_float($value)) {
@@ -139,6 +148,13 @@ class EasyRdf_Literal
         return $this->_lang;
     }
     
+    /** Returns a fragment of RDF/PHP for the literal.
+     * 
+     * For example:
+     * array('type' => 'literal', 'value' => 'string value')
+     *
+     * @return array  RDF/PHP array for the value.
+     */
     public function toRdfPhp()
     {
         $array = array('type' => 'literal', 'value' => $this->_value);
