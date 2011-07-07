@@ -79,14 +79,14 @@ class EasyRdf_Http_Client
      *
      * @var string
      */
-    protected $_method = 'GET';
+    private $_method = 'GET';
 
     /**
      * Associative array of GET parameters
      *
      * @var array
      */
-    protected $_paramsGet = array();
+    private $_paramsGet = array();
 
     /**
      * The raw post data to send. Could be set by setRawData($data).

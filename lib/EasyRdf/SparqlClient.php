@@ -45,11 +45,11 @@
  */
 class EasyRdf_SparqlClient
 {
-    /** @ignore The address of the SPARQL Endpoint */
-    protected $_uri = null;
+    /** The address of the SPARQL Endpoint */
+    private $_uri = null;
     
-    /** @ignore Configuration settings */
-    protected $_config = array();
+    /** Configuration settings */
+    private $_config = array();
     
 
     /** Create a new SPARQL endpoint client

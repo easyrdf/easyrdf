@@ -45,12 +45,12 @@
  */
 class EasyRdf_SparqlResult extends ArrayIterator
 {
-    protected $_type = null;
-    protected $_boolean = null;
+    private $_type = null;
+    private $_boolean = null;
 
-    protected $_ordered = null;
-    protected $_distinct = null;
-    protected $_fields = array();
+    private $_ordered = null;
+    private $_distinct = null;
+    private $_fields = array();
 
     public function __construct($data, $mimeType)
     {

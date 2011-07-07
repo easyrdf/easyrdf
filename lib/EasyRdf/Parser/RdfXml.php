@@ -47,16 +47,16 @@
  */
 class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 {
-    protected $_graph = null;
-    protected $_base;
-    protected $_state;
-    protected $_xLang;
-    protected $_xBase;
-    protected $_xml;
-    protected $_rdf;
-    protected $_nsp;
-    protected $_sStack;
-    protected $_sCount;
+    private $_graph = null;
+    private $_base;
+    private $_state;
+    private $_xLang;
+    private $_xBase;
+    private $_xml;
+    private $_rdf;
+    private $_nsp;
+    private $_sStack;
+    private $_sCount;
 
     /**
      * Constructor
