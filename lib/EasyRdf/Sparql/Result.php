@@ -43,7 +43,7 @@
  * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_SparqlResult extends ArrayIterator
+class EasyRdf_Sparql_Result extends ArrayIterator
 {
     private $_type = null;
     private $_boolean = null;
@@ -52,6 +52,14 @@ class EasyRdf_SparqlResult extends ArrayIterator
     private $_distinct = null;
     private $_fields = array();
 
+    /** Create a new SPARQL Result object
+     *
+     * You should not normally need to create a SPARQL result
+     * object directly - it will be constructed automatically
+     * for you by EasyRdf_Sparql_Client.
+     *
+     * @param string $uri The address of the SPARQL Endpoint
+     */
     public function __construct($data, $mimeType)
     {
         if ($mimeType == 'application/sparql-results+xml') {

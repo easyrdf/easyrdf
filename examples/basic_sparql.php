@@ -20,7 +20,7 @@
 
     EasyRdf_Namespace::set('po', 'http://purl.org/ontology/po/');
 
-    $sparql = new EasyRdf_SparqlClient(
+    $sparql = new EasyRdf_Sparql_Client(
       'http://api.talis.com/stores/bbc-backstage/services/sparql'
     );
 ?>

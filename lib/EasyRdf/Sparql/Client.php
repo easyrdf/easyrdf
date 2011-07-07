@@ -43,7 +43,7 @@
  * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_SparqlClient
+class EasyRdf_Sparql_Client
 {
     /** The address of the SPARQL Endpoint */
     private $_uri = null;
@@ -73,13 +73,13 @@ class EasyRdf_SparqlClient
     /** Make a query to the SPARQL endpoint
      *
      * SELECT and ASK queries will return an object of type 
-     * EasyRdf_SparqlResult.
+     * EasyRdf_Sparql_Result.
      *
      * CONSTRUCT and DESCRIBE queries will return an object 
      * of type EasyRdf_Graph.
      *
      * @param string $query The query string to be executed
-     * @return object EasyRdf_SparqlResult|EasyRdf_Graph Result of the query.
+     * @return object EasyRdf_Sparql_Result|EasyRdf_Graph Result of the query.
      */
     public function query($query)
     {
@@ -110,7 +110,7 @@ class EasyRdf_SparqlClient
         if ($response->isSuccessful()) {
             $type = $response->getHeader('Content-Type');
             if (strpos($type, 'application/sparql-results') === 0) {
-                return new EasyRdf_SparqlResult($response->getBody(), $type);
+                return new EasyRdf_Sparql_Result($response->getBody(), $type);
             } else {
                 return new EasyRdf_Graph($this->_uri, $response->getBody(), $type);
             }

@@ -53,7 +53,7 @@
     $store->replace($graph);
 
     # Now make a query to the graphstore
-    $sparql = new EasyRdf_SparqlClient('http://localhost:8080/sparql/');
+    $sparql = new EasyRdf_Sparql_Client('http://localhost:8080/sparql/');
     $result = $sparql->query('SELECT * WHERE {<http://example.com/joe#me> ?p ?o}');
     echo $result->dump();
 ?>

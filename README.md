@@ -14,8 +14,8 @@ documents, loaded from the web via HTTP. The [EasyRdf_GraphStore] class
 simplifies loading and saving data to a SPARQL 1.1 Graph Store.
 
 SPARQL queries can be made over HTTP to a Triplestore using the
-[EasyRdf_SparqlClient] class. SELECT and ASK queries will return an
-[EasyRdf_SparqlResult] object and CONSTRUCT and DESCRIBE queries will return
+[EasyRdf_Sparql_Client] class. SELECT and ASK queries will return an
+[EasyRdf_Sparql_Result] object and CONSTRUCT and DESCRIBE queries will return
 an [EasyRdf_Graph] object.
 
 ### Example ###
@@ -97,8 +97,8 @@ More Examples
 
 [EasyRdf_Graph]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Graph.html
 [EasyRdf_GraphStore]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_GraphStore.html
-[EasyRdf_SparqlClient]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_SparqlClient.html
-[EasyRdf_SparqlResult]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_SparqlResult.html
+[EasyRdf_Sparql_Client]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Sparql_Client.html
+[EasyRdf_Sparql_Result]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Sparql_Result.html
 
 [ARC2]:http://github.com/semsol/arc2/
 [BSD-3-Clause]:http://www.opensource.org/licenses/BSD-3-Clause

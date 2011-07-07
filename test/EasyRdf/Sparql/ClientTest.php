@@ -36,17 +36,17 @@
  * @version    $Id$
  */
 
-require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
+require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
 
 
-class EasyRdf_SparqlClientTest extends EasyRdf_TestCase
+class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
 {
     public function setUp()
     {
         EasyRdf_Http::setDefaultHttpClient(
             $this->_client = new EasyRdf_Http_MockClient()
         );
-        $this->_sparql = new EasyRdf_SparqlClient('http://localhost:8080/sparql');
+        $this->_sparql = new EasyRdf_Sparql_Client('http://localhost:8080/sparql');
     }
 
     public function testGetUri()
