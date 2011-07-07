@@ -73,41 +73,83 @@ class EasyRdf_Sparql_Result extends ArrayIterator
         }
     }
 
+    /** Get the query result type (boolean/bindings)
+     *
+     * ASK queries return a result of type 'boolean'.
+     * SELECT query return a result of type 'bindings'.
+     *
+     * @return string The query result type.
+     */
     public function getType()
     {
         return $this->_type;
     }
 
+    /** Return the boolean value of the query result
+     * 
+     * If the query was of type boolean then this method will
+     * return either true or false. If the query was of some other
+     * type then this method will return null.
+     *
+     * @return boolean The result of the query.
+     */
     public function getBoolean()
     {
         return $this->_boolean;
     }
 
+    /** Return true if the result of the query was true.
+     *
+     * @return boolean True if the query result was true.
+     */
     public function isTrue()
     {
         return $this->_boolean == true;
     }
 
+    /** Return false if the result of the query was false.
+     *
+     * @return boolean True if the query result was false.
+     */
     public function isFalse()
     {
         return $this->_boolean == false;
     }
 
+    /** Return the number of fields in a query result of type bindings.
+     *
+     * @return integer The number of fields.
+     */
     public function numFields()
     {
         return count($this->_fields);
     }
 
+    /** Return the number of rows in a query result of type bindings.
+     *
+     * @return integer The number of rows.
+     */
     public function numRows()
     {
         return count($this);
     }
 
+    /** Get the field names in a query result of type bindings.
+     *
+     * @return array The names of the fields in the result.
+     */
     public function getFields()
     {
         return $this->_fields;
     }
 
+    /** Return a human readable view of the query result.
+     *
+     * This method is intended to be a debugging aid and will
+     * return a pretty-print view of the query result.
+     *
+     * @param  bool  $html  Set to true to format the dump using HTML
+     */
     public function dump($html=true)
     {
         if ($this->_type == 'bindings') {
@@ -190,6 +232,11 @@ class EasyRdf_Sparql_Result extends ArrayIterator
         }
     }
 
+    /** Create a new EasyRdf_Resource or EasyRdf_Literal depending
+     *  on the type of data passed in.
+     *
+     * @ignore
+     */
     protected function _newTerm($data)
     {
         switch($data['type']) {
@@ -208,6 +255,10 @@ class EasyRdf_Sparql_Result extends ArrayIterator
         }
     }
 
+    /** Parse a SPARQL result in the XML format into the object.
+     *
+     * @ignore
+     */
     protected function _parseXml($data)
     {
         $doc = new DOMDocument();
@@ -261,6 +312,10 @@ class EasyRdf_Sparql_Result extends ArrayIterator
         );
     }
 
+    /** Parse a SPARQL result in the JSON format into the object.
+     *
+     * @ignore
+     */
     protected function _parseJson($data)
     {
         // Decode JSON to an array
@@ -289,6 +344,13 @@ class EasyRdf_Sparql_Result extends ArrayIterator
         }
     }
 
+    /** Magic method to return value of the result to string
+     * 
+     * If this is a boolean result then it will return 'true' or 'false'.
+     * If it is a bindings type, then it will dump as a text based table.
+     *
+     * @return string A string representation of the result.
+     */
     public function __toString()
     {
         if ($this->_type == 'boolean') {
