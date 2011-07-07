@@ -2,7 +2,7 @@
 
 class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
 {
-    protected $_mocks = array();
+    private $_mocks = array();
 
     public function request($method = null)
     {
@@ -11,13 +11,14 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
         }
 
         $uri = parse_url($this->getUri());
-        if (!empty($this->_paramsGet)) {
+        $params = $this->getParametersGet();
+        if (!empty($params)) {
             if (!empty($uri['query'])) {
                 $uri['query'] .= '&';
             } else {
                 $uri['query'] = '';
             }
-            $uri['query'] .= http_build_query($this->_paramsGet, null, '&');
+            $uri['query'] .= http_build_query($params, null, '&');
         }
 
         # Try and find a matching response

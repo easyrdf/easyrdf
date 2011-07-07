@@ -275,6 +275,16 @@ class EasyRdf_Http_Client
     }
 
     /**
+     * Get all the GET parameters
+     *
+     * @return array
+     */
+    public function getParametersGet()
+    {
+        return $this->_paramsGet;
+    }
+
+    /**
      * Get the number of redirections done on the last request
      *
      * @return int
