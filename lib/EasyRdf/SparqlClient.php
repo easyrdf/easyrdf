@@ -45,12 +45,17 @@
  */
 class EasyRdf_SparqlClient
 {
-    /** The address of the SPARQL Endpoint */
-    private $_uri = null;
+    /** @ignore The address of the SPARQL Endpoint */
+    protected $_uri = null;
     
+    /** @ignore Configuration settings */
     protected $_config = array();
     
 
+    /** Create a new SPARQL endpoint client
+     *
+     * @param string $uri The address of the SPARQL Endpoint
+     */
     public function __construct($uri)
     {
         $this->_uri = $uri;
@@ -65,6 +70,17 @@ class EasyRdf_SparqlClient
         return $this->_uri;
     }
 
+    /** Make a query to the SPARQL endpoint
+     *
+     * SELECT and ASK queries will return an object of type 
+     * EasyRdf_SparqlResult.
+     *
+     * CONSTRUCT and DESCRIBE queries will return an object 
+     * of type EasyRdf_Graph.
+     *
+     * @param string $query The query string to be executed
+     * @return object EasyRdf_SparqlResult|EasyRdf_Graph Result of the query.
+     */
     public function query($query)
     {
         # Add namespaces to the queryString
