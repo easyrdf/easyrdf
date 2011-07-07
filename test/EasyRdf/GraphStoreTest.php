@@ -60,25 +60,12 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
         );
     }
 
-    public function testUriForGraphDirect()
-    {
-        $this->assertEquals(
-            'http://localhost:8080/data/foobar.rdf',
-            $this->_graphStore->urlForGraph('http://localhost:8080/data/foobar.rdf')
-        );
-    }
-
-    public function testUriForGraphIndirect()
-    {
-        $this->assertEquals(
-            'http://localhost:8080/data/?graph=http%3A%2F%2Fexample.com%2Ffoobar.rdf',
-            $this->_graphStore->urlForGraph('http://example.com/foobar.rdf')
-        );
-    }
-
     public function testGetDirect()
     {
-        $this->_client->addMock('GET', '/data/foaf.rdf', readFixture('foaf.json'));
+        $this->_client->addMock(
+            'GET', 'http://localhost:8080/data/foaf.rdf',
+            readFixture('foaf.json')
+        );
         $graph = $this->_graphStore->get('foaf.rdf');
         $this->assertType('EasyRdf_Graph', $graph);
         $this->assertEquals('http://localhost:8080/data/foaf.rdf', $graph->getUri());
@@ -91,7 +78,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
     public function testGetIndirect()
     {
         $this->_client->addMock(
-            'GET', '/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf',
+            'GET', 'http://localhost:8080/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf',
             readFixture('foaf.json')
         );
         $graph = $this->_graphStore->get('http://foo.com/bar.rdf');
@@ -105,14 +92,18 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
 
     public function testDeleteDirect()
     {
-        $this->_client->addMock('DELETE', '/data/foaf.rdf', 'OK');
+        $this->_client->addMock(
+            'DELETE', 'http://localhost:8080/data/foaf.rdf', 'OK'
+        );
         $response = $this->_graphStore->delete('foaf.rdf');
         $this->assertEquals('200', $response->getStatus());
     }
 
     public function testDeleteIndirect()
     {
-        $this->_client->addMock('DELETE', '/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf', 'OK');
+        $this->_client->addMock(
+            'DELETE', 'http://localhost:8080/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf', 'OK'
+        );
         $response = $this->_graphStore->delete('http://foo.com/bar.rdf');
         $this->assertEquals('200', $response->getStatus());
     }
@@ -120,7 +111,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
     public function testDeleteHttpError()
     {
         $this->_client->addMock(
-            'DELETE', '/data/filenotfound', 'Graph not found.',
+            'DELETE', 'http://localhost:8080/data/filenotfound', 'Graph not found.',
             array('status' => 404)
         );
         $this->setExpectedException(

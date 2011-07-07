@@ -46,10 +46,14 @@
  */
 class EasyRdf_GraphStore
 {
-    /** The address of the GraphStore Endpoint */
+    /** The address of the GraphStore endpoint */
     private $_uri = null;
 
 
+    /** Create a new SPARQL Graph Store client
+     *
+     * @param string $uri The address of the graph store endpoint
+     */
     public function __construct($uri)
     {
         $this->_uri = $uri;
@@ -64,6 +68,14 @@ class EasyRdf_GraphStore
         return $this->_uri;
     }
     
+    /** Fetch a named graph from the graph store
+     * 
+     * The URI can either be a full absolute URI or 
+     * a URI relative to the URI of the graph store.
+     *
+     * @param string $uriRef The URI of graph desired
+     * @return object EasyRdf_Graph The graph requested
+     */
     public function get($uriRef)
     {
         $graphUri = EasyRdf_Utils::resolveUriReference($this->_uri, $uriRef);
@@ -73,6 +85,12 @@ class EasyRdf_GraphStore
         return $graph;
     }
     
+    /** Send some graph data to the graph store
+     *
+     * This method is used by insert() and replace()
+     *
+     * @ignore
+     */
     protected function sendGraph($method, $graph, $uriRef, $format)
     {
         if (is_object($graph) and $graph instanceof EasyRdf_Graph) {
@@ -104,16 +122,56 @@ class EasyRdf_GraphStore
         return $response;
     }
     
+    /** Replace the contents of a graph in the graph store with new data
+     *
+     * The $graph parameter is the EasyRdf_Graph object to be sent to the
+     * graph store. Alternatively it can be a string, already serialised.
+     * 
+     * The URI can either be a full absolute URI or 
+     * a URI relative to the URI of the graph store.
+     *
+     * The $format parameter can be given to specify the serialisation
+     * used to send the graph data to the graph store.
+     *
+     * @param object EasyRdfGraph $graph The URI of graph desired
+     * @param string $uriRef The URI of graph to be replaced
+     * @param string $format The format of the data to send to the graph store
+     * @return object EasyRdf_Http_Response The response from the graph store
+     */
     public function replace($graph, $uriRef=null, $format='ntriples')
     {
         return $this->sendGraph('PUT', $graph, $uriRef, $format);
     }
     
+    /** Add data to a graph in the graph store
+     *
+     * The $graph parameter is the EasyRdf_Graph object to be sent to the
+     * graph store. Alternatively it can be a string, already serialised.
+     * 
+     * The URI can either be a full absolute URI or 
+     * a URI relative to the URI of the graph store.
+     *
+     * The $format parameter can be given to specify the serialisation
+     * used to send the graph data to the graph store.
+     *
+     * @param object EasyRdfGraph $graph The URI of graph desired
+     * @param string $uriRef The URI of graph to be added to
+     * @param string $format The format of the data to send to the graph store
+     * @return object EasyRdf_Http_Response The response from the graph store
+     */
     public function insert($graph, $uriRef=null, $format='ntriples')
     {
         return $this->sendGraph('POST', $graph, $uriRef, $format);
     }
         
+    /** Delete a graph from the graph store
+     *
+     * The URI can either be a full absolute URI or 
+     * a URI relative to the URI of the graph store.
+     *
+     * @param string $uriRef The URI of graph to be added to
+     * @return object EasyRdf_Http_Response The response from the graph store
+     */
     public function delete($uriRef)
     {
         $graphUri = EasyRdf_Utils::resolveUriReference($this->_uri, $uriRef);
@@ -131,7 +189,11 @@ class EasyRdf_GraphStore
         return $response;
     }
     
-    public function urlForGraph($url)
+    /** Work out the full URL for a graph store request.
+     *  by checking if if it is a direct or indirect request. 
+     *  @ignore
+     */
+    protected function urlForGraph($url)
     {
         if (strpos($url, $this->_uri) === false) {
             $url = $this->_uri."?graph=".urlencode($url);

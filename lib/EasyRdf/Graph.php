@@ -755,10 +755,10 @@ class EasyRdf_Graph
         return $serialiser->serialise($this, $format->getName());
     }
 
-    /** Return view of all the resources in the graph
+    /** Return a human readable view of all the resources in the graph
      *
      * This method is intended to be a debugging aid and will
-     * return a pretty-print view of  all the resources and their
+     * return a pretty-print view of all the resources and their
      * properties.
      *
      * @param  bool  $html  Set to true to format the dump using HTML
