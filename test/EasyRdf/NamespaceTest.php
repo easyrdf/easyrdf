@@ -334,6 +334,14 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testExpandFoafDoapProgrammingLanguage()
+    {
+        $this->assertEquals(
+            'http://usefulinc.com/ns/doap#programming-language',
+            EasyRdf_Namespace::expand('doap:programming-language')
+        );
+    }
+
     public function testExpandMissingColon()
     {
         $this->assertEquals(
