@@ -106,7 +106,7 @@ class EasyRdf_Graph
             throw new InvalidArgumentException(
                 '$uri is null and EasyRdf_Graph object has no URI either.'
             );
-        }        
+        }
 
         // Add the types
         $this->addType($uri, $types);
@@ -120,6 +120,9 @@ class EasyRdf_Graph
         return $this->_resources[$uri];
     }
 
+    /** Work out the class to instantiate a resource as
+     *  @ignore
+     */
     protected function classForResource($uri)
     {
         $resClass = 'EasyRdf_Resource';
@@ -164,7 +167,7 @@ class EasyRdf_Graph
      * with the EasyRdf_TypeMapper, then the resource will be an instance
      * of the class registered.
      *
-     * @param  mixed   $types  RDF type of a new blank node (e.g. foaf:Person)
+     * @param  mixed  $types  RDF type of a new blank node (e.g. foaf:Person)
      * @return object EasyRdf_Resource The new blank node
      */
     public function newBNode($types=array())
@@ -172,6 +175,11 @@ class EasyRdf_Graph
         return $this->resource($this->newBNodeId(), $types);
     }
 
+    /**
+     * Create a new unique blank node identifier and return it.
+     *
+     * @return string The new blank node identifier (e.g. _:genid1)
+     */
     public function newBNodeId()
     {
         return "_:genid".(++$this->_bNodeCount);
@@ -305,6 +313,9 @@ class EasyRdf_Graph
         return $this->_uri;
     }
 
+    /** Check that a URI/resource parameter is valid, and convert it to a string
+     *  @ignore
+     */
     protected function checkResourceParam(&$resource, $allowNull=false)
     {
         if ($allowNull == true) {
@@ -338,6 +349,10 @@ class EasyRdf_Graph
         }
     }
 
+
+    /** Check that a URI/property parameter is valid, and expand it if required
+     *  @ignore
+     */
     protected function checkPropertyParam(&$property, &$inverse)
     {
         if (is_object($property) and $property instanceof EasyRdf_Resource) {
@@ -359,6 +374,9 @@ class EasyRdf_Graph
         }
     }
 
+    /** Check that a value parameter is valid, and convert it to an RDF/PHP array if needed
+     *  @ignore
+     */
     protected function checkValueParam(&$value)
     {
         if ($value) {
@@ -384,6 +402,22 @@ class EasyRdf_Graph
         }
     }
 
+    /** Get a single value for a property of a resource
+     *
+     * If multiple values are set for a property then the value returned
+     * may be arbitrary.
+     *
+     * If $property is an array, then the first item in the array that matches
+     * a property that exists is returned.
+     *
+     * This method will return null if the property does not exist.
+     *
+     * @param  string       $resource The URI of the resource (e.g. http://example.com/joe#me)
+     * @param  string|array $property The name of the property (e.g. foaf:name)
+     * @param  string       $type     The type of value to filter by (e.g. literal)
+     * @param  string       $lang     The language to filter by (e.g. en)
+     * @return mixed                  A value associated with the property
+     */
     public function get($resource, $property, $type=null, $lang=null)
     {
         if (is_array($property)) {
@@ -422,6 +456,19 @@ class EasyRdf_Graph
         return $this->arrayToObject($data);
     }
 
+    /** Get a single literal value for a property of a resource
+     *
+     * If multiple values are set for a property then the value returned
+     * may be arbitrary.
+     *
+     * This method will return null if there is not literal value for the
+     * property.
+     *
+     * @param  string       $resource The URI of the resource (e.g. http://example.com/joe#me)
+     * @param  string|array $property The name of the property (e.g. foaf:name)
+     * @param  string       $lang     The language to filter by (e.g. en)
+     * @return object EasyRdf_Literal Literal value associated with the property
+     */
     public function getLiteral($resource, $property, $lang=null)
     {
         return $this->get($resource, $property, 'literal', $lang);
@@ -433,6 +480,9 @@ class EasyRdf_Graph
 //         return $this->get($resource, $property, 'resource', $lang);
 //     }
 
+    /** Return all the values for a particular property of a resource
+     *  @ignore
+     */
     protected function propertyValuesArray($resource, $property, $inverse=false)
     {
         // Is an inverse property being requested?
@@ -451,7 +501,9 @@ class EasyRdf_Graph
         }
     }
 
-    # FIXME: better function name?
+    /** Get an EasyRdf_Resource or EasyRdf_Literal object for a object RDF/PHP fragment.
+     *  @ignore
+     */
     protected function arrayToObject($data)
     {
         if ($data) {
@@ -466,6 +518,16 @@ class EasyRdf_Graph
     }
 
 
+    /** Get all values for a property of a resource
+     *
+     * This method will return an empty array if the property does not exist.
+     *
+     * @param  string  $resource The URI of the resource (e.g. http://example.com/joe#me)
+     * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  string  $type     The type of value to filter by (e.g. literal)
+     * @param  string  $lang     The language to filter by (e.g. en)
+     * @return array             An array of values associated with the property
+     */
     public function all($resource, $property, $type=null, $lang=null)
     {
         $this->checkResourceParam($resource);
@@ -492,6 +554,16 @@ class EasyRdf_Graph
         return $objects;
     }
 
+    /** Get all literal values for a property of a resource
+     *
+     * This method will return an empty array if the resource does not
+     * has any literal values for that property.
+     *
+     * @param  string  $resource The URI of the resource (e.g. http://example.com/joe#me)
+     * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  string  $lang     The language to filter by (e.g. en)
+     * @return array             An array of values associated with the property
+     */
     public function allLiterals($resource, $property, $lang=null)
     {
         return $this->all($resource, $property, 'literal', $lang);
@@ -510,6 +582,16 @@ class EasyRdf_Graph
         return $this->all($type, '^rdf:type');
     }
 
+    /** Concatenate all values for a property of a resource into a string.
+     *
+     * The default is to join the values together with a space character.
+     * This method will return an empty string if the property does not exist.
+     *
+     * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  string  $glue     The string to glue the values together with.
+     * @param  string  $lang     The language to filter by (e.g. en)
+     * @return string            Concatenation of all the values.
+     */
     public function join($resource, $property, $glue=' ', $lang=null)
     {
         return join($glue, $this->all($resource, $property, 'literal', $lang));
@@ -519,16 +601,11 @@ class EasyRdf_Graph
      *
      * The resource can either be a resource or the URI of a resource.
      *
-     * The properties can either be a single property name or an
-     * associate array of property names and values.
-     *
-     * The value can either be a single value or an array of values.
-     *
      * Example:
      *   $graph->add("http://www.example.com", 'dc:title', 'Title of Page');
      *
      * @param  mixed $resource   The resource to add data to
-     * @param  mixed $properties The properties or property names
+     * @param  mixed $property   The property name
      * @param  mixed $value      The new value for the property
      */
     public function add($resource, $property, $value)
@@ -561,6 +638,18 @@ class EasyRdf_Graph
         }
     }
 
+    /** Add a literal value as a property of a resource
+     *
+     * The resource can either be a resource or the URI of a resource.
+     * The value can either be a single value or an array of values.
+     *
+     * Example:
+     *   $graph->add("http://www.example.com", 'dc:title', 'Title of Page');
+     *
+     * @param  mixed $resource   The resource to add data to
+     * @param  mixed $property   The property name
+     * @param  mixed $value      The value or values for the property
+     */
     public function addLiteral($resource, $property, $value)
     {
         $this->checkResourceParam($resource);
@@ -584,6 +673,17 @@ class EasyRdf_Graph
         return $this->add($resource, $property, $value);
     }
 
+    /** Add a resource as a property of another resource
+     *
+     * The resource can either be a resource or the URI of a resource.
+     *
+     * Example:
+     *   $graph->add("http://example.com/bob", 'foaf:knows', 'http://example.com/alice');
+     *
+     * @param  mixed $resource   The resource to add data to
+     * @param  mixed $property   The property name
+     * @param  mixed $resource2  The resource to be value of the property
+     */
     public function addResource($resource, $property, $resource2)
     {
         $this->checkResourceParam($resource);
@@ -672,11 +772,21 @@ class EasyRdf_Graph
         }
     }
 
+    /** Check if the graph contains any statements
+     *
+     * @return boolean True if the graph contains no statements
+     */
     public function isEmpty()
     {
         return count($this->_index) == 0;
     }
 
+    /** Get a list of all the shortened property names (qnames) for a resource.
+     *
+     * This method will return an empty array if the resource has no properties.
+     *
+     * @return array            Array of shortened URIs
+     */
     public function properties($resource)
     {
         $this->checkResourceParam($resource);
@@ -709,6 +819,10 @@ class EasyRdf_Graph
         }
     }
 
+    /** Get a list of the full URIs for the properties that point to a resource.
+     *
+     * @return array   Array of full property URIs
+     */
     public function reversePropertyUris($resource)
     {
         $this->checkResourceParam($resource);
@@ -762,6 +876,7 @@ class EasyRdf_Graph
      * properties.
      *
      * @param  bool  $html  Set to true to format the dump using HTML
+     * @return string
      */
     public function dump($html=true)
     {
@@ -780,6 +895,14 @@ class EasyRdf_Graph
         return $result;
     }
 
+    /** Return a human readable view of the resource and its properties
+     *
+     * This method is intended to be a debugging aid and will
+     * print a resource and its properties.
+     *
+     * @param  bool  $html  Set to true to format the dump using HTML
+     * @return string
+     */
     public function dumpResource($resource, $html=true)
     {
         $this->checkResourceParam($resource, true);
@@ -853,6 +976,14 @@ class EasyRdf_Graph
         return null;
     }
 
+    /** Get the resource type of the graph as a EasyRdf_Resource
+     *
+     * If the graph has multiple types then the type returned
+     * may be arbitrary.
+     * This method will return null if the resource has no type.
+     *
+     * @return object EasyRdf_Resource  A type assocated with the resource
+     */
     public function typeAsResource($resource=null)
     {
         $this->checkResourceParam($resource, true);
@@ -864,6 +995,15 @@ class EasyRdf_Graph
         return null;
     }
 
+    /** Get a list of types for a resource.
+     *
+     * The types will each be a shortened URI as a string.
+     * This method will return an empty array if the resource has no types.
+     *
+     * If $resource is null, then it will get the types for the URI of the graph.
+     *
+     * @return array All types assocated with the resource (e.g. foaf:Person)
+     */
     public function types($resource=null)
     {
         $this->checkResourceParam($resource, true);
@@ -896,6 +1036,11 @@ class EasyRdf_Graph
         return false;
     }
 
+    /** Add one or more rdf:type properties to a resource
+     *
+     * @param  string  $resource The resource to add the type to
+     * @param  string  $type     The new type (e.g. foaf:Person)
+     */
     public function addType($resource, $types)
     {
         $this->checkResourceParam($resource, true);
@@ -909,6 +1054,14 @@ class EasyRdf_Graph
         }
     }
 
+    /** Change the rdf:type property for a resource
+     *
+     * Note that if the resource object has already previously
+     * been created, then the PHP class of the resource will not change.
+     *
+     * @param  string  $resource The resource to change the type of
+     * @param  string  $type     The new type (e.g. foaf:Person)
+     */
     public function setType($resource, $type)
     {
         $this->checkResourceParam($resource, true);
@@ -917,6 +1070,15 @@ class EasyRdf_Graph
         return $this->addType($resource, $type);
     }
 
+    /** Get a human readable label for a resource
+     *
+     * This method will check a number of properties for a resource
+     * (in the order: skos:prefLabel, rdfs:label, foaf:name, dc:title)
+     * and return an approriate first that is available. If no label
+     * is available then it will return null.
+     *
+     * @return string A label for the resource.
+     */
     public function label($resource=null, $lang=null)
     {
         $this->checkResourceParam($resource, true);
@@ -950,6 +1112,10 @@ class EasyRdf_Graph
         }
     }
 
+    /** Returns the graph as a RDF/PHP associative array
+     *
+     * @return array The contents of the graph as an array.
+     */
     public function toRdfPhp()
     {
         return $this->_index;

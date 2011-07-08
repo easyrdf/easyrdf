@@ -85,11 +85,11 @@ class EasyRdf_Literal
             $this->_lang = null;
         }
     }
-    
+
     /** Get datatype URI for a PHP value.
      *
      * This static function is intended for internal use.
-     * Given a PHP value, it will return an XSD datatype 
+     * Given a PHP value, it will return an XSD datatype
      * URI for that value, for example:
      * http://www.w3.org/2001/XMLSchema#integer
      *
@@ -147,9 +147,9 @@ class EasyRdf_Literal
     {
         return $this->_lang;
     }
-    
+
     /** Returns a fragment of RDF/PHP for the literal.
-     * 
+     *
      * For example:
      * array('type' => 'literal', 'value' => 'string value')
      *
@@ -158,13 +158,13 @@ class EasyRdf_Literal
     public function toRdfPhp()
     {
         $array = array('type' => 'literal', 'value' => $this->_value);
-        
+
         if ($this->_datatype)
             $array['datatype'] = $this->_datatype;
-        
+
         if ($this->_lang)
             $array['lang'] = $this->_lang;
-        
+
         return $array;
     }
 
@@ -179,7 +179,9 @@ class EasyRdf_Literal
 
     /** Return pretty-print view of the literal
      *
-     * @param  bool  $html  Set to true to format the dump using HTML
+     * @param  bool   $html  Set to true to format the dump using HTML
+     * @param  string $color The colour of the text
+     * @return string
      */
     public function dumpValue($html=true, $color='black')
     {

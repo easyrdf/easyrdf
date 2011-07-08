@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -158,6 +158,7 @@ class EasyRdf_Utils
      * @param  mixed $resource An EasyRdf_Resource object or a RDF/PHP fragment
      * @param  bool  $html     Set to true to format the dump using HTML
      * @param  string $color   The colour of the text
+     * @return string
      */
     public static function dumpResourceValue($resource, $html=true, $color='blue')
     {
@@ -198,6 +199,7 @@ class EasyRdf_Utils
      * @param  mixed $resource An EasyRdf_Literal object or a RDF/PHP fragment
      * @param  bool  $html     Set to true to format the dump using HTML
      * @param  string $color   The colour of the text
+     * @return string
      */
     public static function dumpLiteralValue($literal, $html=true, $color='black')
     {
