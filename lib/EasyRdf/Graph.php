@@ -744,9 +744,10 @@ class EasyRdf_Graph
                     }
                 }
             }
-            if (count($this->_index[$resource][$property]) == 0) {
+            if (count($this->_index[$resource][$property]) == 0)
                 unset($this->_index[$resource][$property]);
-            }
+            if (count($this->_index[$resource]) == 0)
+                unset($this->_index[$resource]);
         }
 
         return null;
@@ -766,9 +767,10 @@ class EasyRdf_Graph
                     unset($this->_revIndex[$resource][$property][$k]);
                 }
             }
-            if (count($this->_revIndex[$resource][$property]) == 0) {
+            if (count($this->_revIndex[$resource][$property]) == 0)
                 unset($this->_revIndex[$resource][$property]);
-            }
+            if (count($this->_revIndex[$resource]) == 0)
+                unset($this->_revIndex[$resource]);
         }
     }
 

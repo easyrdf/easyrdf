@@ -921,6 +921,14 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->add('http://example.com/', 'rdfs:label', 'Example');
         $this->assertFalse($graph->isEmpty());
     }
+    
+    public function testIsEmptyAfterDelete()
+    {
+        $graph = new EasyRdf_Graph();
+        $graph->add('http://example.com/', 'rdfs:label', 'Example');
+        $graph->delete('http://example.com/', 'rdfs:label');
+        $this->assertTrue($graph->isEmpty());
+    }
 
     public function testProperties()
     {
