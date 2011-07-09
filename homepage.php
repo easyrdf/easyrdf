@@ -5,6 +5,7 @@
 	<title>EasyRdf</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="author" content="Nicholas J Humfrey" />
+	<link rel="meta" type="application/rdf+xml" title="DOAP" href="doap.rdf" /> 
 	<link rel="stylesheet" href="/njh/pagestyle.css" type="text/css" />
 </head>
 
