@@ -238,13 +238,14 @@ class EasyRdf_Resource
      * Example:
      *   $resource->add('dc:title', 'Title of Page');
      *
-     * @param  mixed $property   The property name
-     * @param  mixed $value      The value or values for the property
+     * @param  mixed  $property  The property name
+     * @param  mixed  $value     The value or values for the property
+     * @param  string $lang      The language of the literal
      */
-    public function addLiteral($property, $values)
+    public function addLiteral($property, $values, $lang=null)
     {
         $this->checkHasGraph();
-        return $this->_graph->addLiteral($this->_uri, $property, $values);
+        return $this->_graph->addLiteral($this->_uri, $property, $values, $lang);
     }
 
     /** Add a resource as a property of the resource

@@ -231,6 +231,16 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             $person->getUri()
         );
     }
+
+    public function testGetRelativeResource()
+    {
+        $graph = new EasyRdf_Graph('http://example.com/foo');
+        $res = $graph->resource('#bar');
+        $this->assertEquals(
+            'http://example.com/foo#bar',
+            $res->getUri()
+        );
+    }
     
     public function testGetResourceForGraphUri()
     {
@@ -681,6 +691,15 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
         $this->assertStringEquals('Test C', $all[2]);
+    }
+
+    public function testAddLiteralWithLanguage()
+    {
+        $this->_graph->addLiteral($this->_uri, 'dc:title', 'English Title', 'en');
+        $title = $this->_graph->get($this->_uri, 'dc:title');
+        $this->assertEquals('English Title', $title->getValue());
+        $this->assertEquals('en', $title->getLang());
+        $this->assertEquals(null, $title->getDataType());
     }
 
     public function testAddMultipleLiterals()

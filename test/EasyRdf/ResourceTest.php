@@ -436,6 +436,16 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertStringEquals('testAddLiteral', $this->_resource->get('rdf:foobar'));
     }
 
+    public function testAddLiteralWithLanguage()
+    {
+        $this->_setupTestGraph();
+        $this->_resource->addLiteral('dc:title', 'English Title', 'en');
+        $title = $this->_resource->get('dc:title');
+        $this->assertEquals('English Title', $title->getValue());
+        $this->assertEquals('en', $title->getLang());
+        $this->assertEquals(null, $title->getDataType());
+    }
+
     public function testAddResource()
     {
         $this->_setupTestGraph();

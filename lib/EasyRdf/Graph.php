@@ -108,6 +108,11 @@ class EasyRdf_Graph
             );
         }
 
+        // Resolve relative URIs
+        if ($this->_uri) {
+            $uri = EasyRdf_Utils::resolveUriReference($this->_uri, $uri);
+        }
+
         // Add the types
         $this->addType($uri, $types);
 
@@ -646,28 +651,37 @@ class EasyRdf_Graph
      * Example:
      *   $graph->add("http://www.example.com", 'dc:title', 'Title of Page');
      *
-     * @param  mixed $resource   The resource to add data to
-     * @param  mixed $property   The property name
-     * @param  mixed $value      The value or values for the property
+     * @param  mixed  $resource  The resource to add data to
+     * @param  mixed  $property  The property name
+     * @param  mixed  $value     The value or values for the property
+     * @param  string $lang      The language of the literal
      */
-    public function addLiteral($resource, $property, $value)
+    public function addLiteral($resource, $property, $value, $lang=null)
     {
         $this->checkResourceParam($resource);
         $this->checkPropertyParam($property, $inverse);
 
         if (is_array($value)) {
             foreach ($value as $v) {
-                $this->addLiteral($resource, $property, $v);
+                $this->addLiteral($resource, $property, $v, $lang);
             }
             return;
         } else {
-            $value = array(
-                'type' => 'literal',
-                'value' => $value,
-                'datatype' => EasyRdf_Literal::guessDatatype($value)
-            );
-            if (empty($value['datatype']))
-                unset($value['datatype']);
+            if ($lang) {
+                $value = array(
+                    'type' => 'literal',
+                    'value' => $value,
+                    'lang' => $lang
+                );
+            } else {
+                $value = array(
+                    'type' => 'literal',
+                    'value' => $value,
+                    'datatype' => EasyRdf_Literal::guessDatatype($value)
+                );
+                if (empty($value['datatype']))
+                    unset($value['datatype']);
+            }
         }
 
         return $this->add($resource, $property, $value);
