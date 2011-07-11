@@ -152,7 +152,10 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
                 'headers' => array('Content-Type' => 'text/plain')
             )
         );
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'HTTP request for SPARQL query failed: There was an error while executing the query.'
+        );
         $response = $this->_sparql->query("FOOBAR");
     }
 

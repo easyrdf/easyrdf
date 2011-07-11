@@ -268,7 +268,10 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             'bar'
         );
 
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'foo'
+        );
         $this->_serialiser->serialise($this->_graph, 'rdfxml');
     }
 
@@ -288,7 +291,10 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
     function testSerialiseUnsupportedFormat()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'EasyRdf_Serialiser_RdfXml does not support: unsupportedformat'
+        );
         $rdf = $this->_serialiser->serialise($this->_graph, 'unsupportedformat');
     }
 

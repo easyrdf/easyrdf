@@ -88,19 +88,28 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
 
     public function testParseNullGraph()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$graph should be an EasyRdf_Graph object and cannot be null'
+        );
         $this->_parser->parse(null, $this->_data, 'json', null);
     }
 
     public function testParseNonObjectGraph()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$graph should be an EasyRdf_Graph object and cannot be null'
+        );
         $this->_parser->parse('string', $this->_data, 'json', null);
     }
 
     public function testParseNonGraph()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$graph should be an EasyRdf_Graph object and cannot be null'
+        );
         $this->_parser->parse($this->_resource, $this->_data, 'json', null);
     }
 
@@ -120,31 +129,46 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
 
     public function testParseNullFormat()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$format cannot be null or empty'
+        );
         $this->_parser->parse($this->_graph, $this->_data, null, null);
     }
 
     public function testParseEmptyFormat()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$format cannot be null or empty'
+        );
         $this->_parser->parse($this->_graph, $this->_data, '', null);
     }
 
     public function testParseBadObjectFormat()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$format should be a string or an EasyRdf_Format object'
+        );
         $this->_parser->parse($this->_graph, $this->_data, $this, null);
     }
 
     public function testParseIntegerFormat()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$format should be a string or an EasyRdf_Format object'
+        );
         $this->_parser->parse($this->_graph, $this->_data, 1, null);
     }
 
     public function testParseNonStringBaseUri()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$baseUri should be a string'
+        );
         $this->_parser->parse($this->_graph, $this->_data, 'json', 1);
     }
 }

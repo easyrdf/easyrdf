@@ -59,7 +59,10 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
 
     function testRapperNotFound()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "The command 'random_command_that_doesnt_exist' is not available on this system."
+        );
         new EasyRdf_Serialiser_Rapper('random_command_that_doesnt_exist');
     }
 
@@ -82,7 +85,10 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
 
     function testSerialiseUnsupportedFormat()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Failed to convert RDF'
+        );
         $rdf = $this->_serialiser->serialise(
             $this->_graph, 'unsupportedformat'
         );

@@ -79,13 +79,19 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
 
     public function testSetConfigNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$config should be an array and cannot be null'
+        );
         $result = $this->_client->setConfig(null);
     }
 
     public function testSetConfigNonArray()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$config should be an array and cannot be null'
+        );
         $result = $this->_client->setConfig('foo');
     }
 
@@ -127,14 +133,20 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
 
     public function testSetNonStringMethod()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Invalid HTTP request method.'
+        );
         $this->_client->setMethod($this);
     }
 
     public function testSetNumericMethod()
     {
-        $this->setExpectedException('InvalidArgumentException');
-        $this->_client->setMethod('1234');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Invalid HTTP request method.'
+        );
+        $this->_client->setMethod(1234);
     }
 
     public function testRedirectionCounterShouldStartAtZero()
@@ -167,7 +179,10 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
     public function testRequestNoUri()
     {
         $client = new EasyRdf_Http_Client();
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Set URI before calling EasyRdf_Http_Client->request()'
+        );
         $client->request();
     }
 

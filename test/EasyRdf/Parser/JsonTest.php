@@ -109,7 +109,10 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
 
     function testParseUnsupportedFormat()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'EasyRdf_Parser_Json does not support: unsupportedformat'
+        );
         $rdf = $this->_parser->parse(
             $this->_graph, $this->_data, 'unsupportedformat', null
         );

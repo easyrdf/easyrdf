@@ -109,25 +109,37 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testGetNullNamespace()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::get(null);
     }
 
     public function testGetEmptyNamespace()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::get('');
     }
 
     public function testGetNonStringNamespace()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::get(array());
     }
 
     public function testGetNonAlphanumeric()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should only contain alpha-numeric characters'
+        );
         EasyRdf_Namespace::get('/K.O/');
     }
 
@@ -151,43 +163,64 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testAddNamespaceShortNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::set(null, 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceShortEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::set('', 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceShortNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::set(array(), 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceShortNonAlphanumeric()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should only contain alpha-numeric characters'
+        );
         EasyRdf_Namespace::set('/K.O/', 'http://purl.org/ontology/ko/');
     }
 
     public function testAddNamespaceLongNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$long should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::set('ko', null);
     }
 
     public function testAddNamespaceLongEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$long should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::set('ko', '');
     }
 
     public function testAddNamespaceLongNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$long should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::set('ko', array());
     }
 
@@ -201,19 +234,28 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testDeleteEmptyNamespace()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::delete('');
     }
 
     public function testDeleteNullNamespace()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::delete(null);
     }
 
     public function testDeleteNonStringNamespace()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$prefix should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::delete($this);
     }
 
@@ -268,19 +310,28 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testShortenNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri cannot be null or empty'
+        );
         EasyRdf_Namespace::shorten(null);
     }
 
     public function testShortenEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri cannot be null or empty'
+        );
         EasyRdf_Namespace::shorten('');
     }
 
     public function testShortenNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri should be a string or EasyRdf_Resource'
+        );
         EasyRdf_Namespace::shorten($this);
     }
 
@@ -310,19 +361,28 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testPrefixOfUriNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri cannot be null or empty'
+        );
         EasyRdf_Namespace::prefixOfUri(null);
     }
 
     public function testPrefixOfUriEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri cannot be null or empty'
+        );
         EasyRdf_Namespace::prefixOfUri('');
     }
 
     public function testPrefixOfUriNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri should be a string or EasyRdf_Resource'
+        );
         EasyRdf_Namespace::prefixOfUri(array());
     }
 
@@ -368,19 +428,28 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testExpandNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$shortUri should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::expand(null);
     }
 
     public function testExpandEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$shortUri should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::expand('');
     }
 
     public function testExpandNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$shortUri should be a string and cannot be null or empty'
+        );
         EasyRdf_Namespace::expand($this);
     }
 }

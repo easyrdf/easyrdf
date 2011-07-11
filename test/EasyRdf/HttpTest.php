@@ -60,13 +60,19 @@ class EasyRdf_HttpTest extends EasyRdf_TestCase
 
     public function testSetDefaultHttpClientNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$httpClient should be an object of class Zend_Http_Client or EasyRdf_Http_Client'
+        );
         EasyRdf_Http::setDefaultHttpClient(null);
     }
 
     public function testSetDefaultHttpClientString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$httpClient should be an object of class Zend_Http_Client or EasyRdf_Http_Client'
+        );
         EasyRdf_Http::setDefaultHttpClient('foobar');
     }
 }

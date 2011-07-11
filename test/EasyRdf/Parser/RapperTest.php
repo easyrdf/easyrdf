@@ -65,7 +65,10 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
     function testRapperNotFound()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "The command 'random_command_that_doesnt_exist' is not available on this system."
+        );
         new EasyRdf_Parser_Rapper('random_command_that_doesnt_exist');
     }
 
@@ -97,7 +100,10 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
     function testParseUnsupportedFormat()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Failed to parse RDF'
+        );
         $rdf = $this->_parser->parse(
             $this->_graph, $this->_data, 'unsupportedformat', null
         );

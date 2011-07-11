@@ -49,13 +49,19 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
 
     public function testInvalidResponse()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Failed to parse HTTP response.'
+        );
         $response = EasyRdf_Http_Response::fromString('foobar');
     }
 
     public function testInvalidStatusLine()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Failed to parse HTTP response status line.'
+        );
         $response = EasyRdf_Http_Response::fromString(
             "HTTP1.0 200 OK\r\nConnection: close\r\n\r\nBody"
         );
@@ -74,7 +80,10 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
 
     public function testInvalidChunkedBody()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Failed to decode chunked body in HTTP response.'
+        );
         $response = EasyRdf_Http_Response::fromString(
             "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\nINVALID"
         );

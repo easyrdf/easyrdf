@@ -81,19 +81,28 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 
     public function testGetNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$type should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::get(null);
     }
 
     public function testGetEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$type should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::get('');
     }
 
     public function testGetNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$type should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::get(array());
     }
 
@@ -117,37 +126,55 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 
     public function testSetTypeNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$type should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::set(null, 'MyType_Class');
     }
 
     public function testSetTypeEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$type should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::set('', 'MyType_Class');
     }
 
     public function testSetTypeNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$type should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::set(array(), 'MyType_Class');
     }
 
     public function testSetClassNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::set('rdf:mytype', null);
     }
 
     public function testSetClassEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::set('rdf:mytype', '');
     }
 
     public function testSetClassNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::set('rdf:mytype', array());
     }
 
@@ -160,19 +187,28 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 
     public function testDeleteTypeNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$type should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::delete(null);
     }
 
     public function testDeleteTypeEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$type should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::delete('');
     }
 
     public function testDeleteTypeNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$type should be a string and cannot be null or empty'
+        );
         EasyRdf_TypeMapper::delete(array());
     }
 

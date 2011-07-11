@@ -42,7 +42,10 @@ class EasyRdf_ExceptionTest extends EasyRdf_TestCase
 {
     public function testException()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Test'
+        );
         throw new EasyRdf_Exception('Test');
     }
 }

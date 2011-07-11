@@ -77,43 +77,64 @@ class EasyRdf_SerialiserTest extends EasyRdf_TestCase
 
     public function testSerialiseNullGraph()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$graph should be an EasyRdf_Graph object and cannot be null'
+        );
         $this->_serialiser->serialise(null, 'php');
     }
 
     public function testSerialiseNonObjectGraph()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$graph should be an EasyRdf_Graph object and cannot be null'
+        );
         $this->_serialiser->serialise('string', 'php');
     }
 
     public function testSerialiseNonGraph()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$graph should be an EasyRdf_Graph object and cannot be null'
+        );
         $this->_serialiser->serialise($this->_resource, 'php');
     }
 
     public function testSerialiseNullFormat()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$format cannot be null or empty'
+        );
         $this->_serialiser->serialise($this->_graph, null);
     }
 
     public function testSerialiseEmptyFormat()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$format cannot be null or empty'
+        );
         $this->_serialiser->serialise($this->_graph, '');
     }
 
     public function testSerialiseBadObjectFormat()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$format should be a string or an EasyRdf_Format object'
+        );
         $this->_serialiser->serialise($this->_graph, $this);
     }
 
     public function testSerialiseIntegerFormat()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$format should be a string or an EasyRdf_Format object'
+        );
         $this->_serialiser->serialise($this->_graph, 1);
     }
 }

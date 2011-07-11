@@ -68,19 +68,28 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testRegisterNameNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$name should be a string and cannot be null or empty'
+        );
         EasyRdf_Format::register(null);
     }
 
     public function testRegisterNameEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$name should be a string and cannot be null or empty'
+        );
         EasyRdf_Format::register('');
     }
 
     public function testRegisterNameNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$name should be a string and cannot be null or empty'
+        );
         EasyRdf_Format::register(array());
     }
 
@@ -166,25 +175,37 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testGetFormatNull()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$query should be a string and cannot be null or empty'
+        );
         EasyRdf_Format::getFormat(null);
     }
 
     public function testGetFormatEmpty()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$query should be a string and cannot be null or empty'
+        );
         EasyRdf_Format::getFormat('');
     }
 
     public function testGetFormatNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$query should be a string and cannot be null or empty'
+        );
         EasyRdf_Format::getFormat(array());
     }
 
     public function testGetFormatUnknown()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Format is not recognised: unknown'
+        );
         $this->assertEquals(null, EasyRdf_Format::getFormat('unknown'));
     }
 
@@ -225,7 +246,10 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testSetLabelNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$label should be a string'
+        );
         $this->_format->setLabel($this);
     }
 
@@ -249,7 +273,10 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testSetUriNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri should be a string'
+        );
         $this->_format->setUri($this);
     }
 
@@ -331,7 +358,10 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testSetParserClassNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string'
+        );
         $this->_format->setParserClass($this);
     }
 
@@ -362,7 +392,10 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testNewParserNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'No parser class available for format: my'
+        );
         $this->_format->setParserClass(null);
         $parser = $this->_format->newParser();
     }
@@ -390,7 +423,10 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testSetSerialiserClassNonString()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string'
+        );
         $this->_format->setSerialiserClass($this);
     }
 
@@ -404,7 +440,10 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testNewSerialiserNull()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'No serialiser class available for format: my'
+        );
         $this->_format->setSerialiserClass(null);
         $serialiser = $this->_format->newSerialiser();
     }

@@ -43,19 +43,28 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testConstructNullUri()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri should be a string and cannot be null or empty'
+        );
         $res = new EasyRdf_Resource(null);
     }
 
     public function testConstructEmptyUri()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri should be a string and cannot be null or empty'
+        );
         $res = new EasyRdf_Resource('');
     }
 
     public function testConstructNonStringUri()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri should be a string and cannot be null or empty'
+        );
         $res = new EasyRdf_Resource(array());
     }
 
@@ -207,7 +216,10 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testGetWithoutGraph()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'EasyRdf_Resource is not part of a graph.'
+        );
         $res = new EasyRdf_Resource('http://example.com/');
         $res->get('rdf:test');
     }
@@ -285,21 +297,30 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testGetNullKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->get(null);
     }
 
     public function testGetEmptyKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property cannot be an empty string'
+        );
         $this->_resource->get('');
     }
 
     public function testGetNonStringKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->get($this);
     }
 
@@ -368,21 +389,30 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testAllNullKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->all(null);
     }
 
     public function testAllEmptyKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property cannot be an empty string'
+        );
         $this->_resource->all('');
     }
 
     public function testAllNonStringKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->all(array());
     }
 
@@ -500,28 +530,40 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testAddNullKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->add(null, 'Test C');
     }
 
     public function testAddEmptyKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property cannot be an empty string'
+        );
         $this->_resource->add('', 'Test C');
     }
 
     public function testAddNonStringKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->add(array(), 'Test C');
     }
 
     function testAddInvalidObject()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$value should respond to the method toRdfPhp()'
+        );
         $this->_resource->add('rdf:foo', $this);
     }
 
@@ -546,21 +588,30 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testDeleteNullKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->delete(null);
     }
 
     public function testDeleteEmptyKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property cannot be an empty string'
+        );
         $this->_resource->delete('');
     }
 
     public function testDeleteNonStringKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->delete(array());
     }
 
@@ -623,21 +674,30 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testSetNullKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->set(null, 'Test C');
     }
 
     public function testSetEmptyKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property cannot be an empty string'
+        );
         $this->_resource->set('', 'Test C');
     }
 
     public function testSetNonStringKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->set(array(), 'Test C');
     }
 
@@ -698,21 +758,30 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testJoinNullKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->join(null, 'Test C');
     }
 
     public function testJoinEmptyKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property cannot be an empty string'
+        );
         $this->_resource->join('', 'Test C');
     }
 
     public function testJoinNonStringKey()
     {
         $this->_setupTestGraph();
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property should a string and cannot be null'
+        );
         $this->_resource->join(array(), 'Test C');
     }
 

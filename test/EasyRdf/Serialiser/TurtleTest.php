@@ -267,7 +267,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     function testSerialiseUnsupportedFormat()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'EasyRdf_Serialiser_Turtle does not support: unsupportedformat'
+        );
         $rdf = $this->_serialiser->serialise(
             $this->_graph, 'unsupportedformat'
         );

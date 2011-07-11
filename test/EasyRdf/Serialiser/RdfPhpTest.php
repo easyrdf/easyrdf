@@ -94,7 +94,10 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
 
     function testSerialiseUnsupportedFormat()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'EasyRdf_Serialiser_RdfPhp does not support: unsupportedformat'
+        );
         $rdf = $this->_serialiser->serialise(
             $this->_graph, 'unsupportedformat'
         );

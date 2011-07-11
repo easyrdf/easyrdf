@@ -70,13 +70,19 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function testUnknownUrl()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Unexpected request: GET http://example.com/test'
+        );
         $this->get('http://example.com/test');
     }
 
     public function testMethodUnknownMatch()
     {
-        $this->setExpectedException('EasyRdf_Exception');
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Unexpected request: GET http://example.com/test'
+        );
         $this->_client->addMock('PUT', '/test', '10');
         $this->get('http://example.com/test');
     }
