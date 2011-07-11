@@ -365,7 +365,11 @@ class EasyRdf_Graph
         if (is_object($property) and $property instanceof EasyRdf_Resource) {
             $property = $property->getUri();
         } else if (is_string($property)) {
-            if (substr($property, 0, 1) == '^') {
+            if ($property == '') {
+                throw new InvalidArgumentException(
+                    "\$property cannot be an empty string"
+                );
+            } else if (substr($property, 0, 1) == '^') {
                 $inverse = true;
                 $property = EasyRdf_Namespace::expand(substr($property, 1));
             } else {
@@ -374,9 +378,9 @@ class EasyRdf_Graph
             }
         }
 
-        if (!is_string($property) or $property == null or $property == '') {
+        if ($property === null or !is_string($property)) {
             throw new InvalidArgumentException(
-                "\$property should a string or EasyRdf_Resource and cannot be null or empty"
+                "\$property should a string and cannot be null"
             );
         }
     }
@@ -392,7 +396,7 @@ class EasyRdf_Graph
                     $value = $value->toRdfPhp();
                 } else {
                     throw new InvalidArgumentException(
-                        "\$value should response to toRdfPhp()"
+                        "\$value should respond to the method toRdfPhp()"
                     );
                 }
             } else if (!is_array($value)) {
