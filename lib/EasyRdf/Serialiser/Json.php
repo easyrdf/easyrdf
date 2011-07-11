@@ -55,7 +55,7 @@ class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser_RdfPhp
      * @param string  $format               The name of the format to convert to.
      * @return string                       The RDF in the new desired format.
      */
-    public function serialise($graph, $format='json')
+    public function serialise($graph, $format)
     {
         parent::checkSerialiseParams($graph, $format);
 

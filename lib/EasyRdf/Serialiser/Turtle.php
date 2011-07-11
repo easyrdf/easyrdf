@@ -151,7 +151,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
      * @param string  $format               The name of the format to convert to.
      * @return string                       The RDF in the new desired format.
      */
-    public function serialise($graph, $format='turtle')
+    public function serialise($graph, $format)
     {
         parent::checkSerialiseParams($graph, $format);
 
