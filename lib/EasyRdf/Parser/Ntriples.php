@@ -127,11 +127,11 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
     /**
       * Parse an N-Triples document into an EasyRdf_Graph
       *
-      * @param string $graph    the graph to load the data into
-      * @param string $data     the RDF document data
-      * @param string $format   the format of the input data
-      * @param string $baseUri  the base URI of the data being parsed
-      * @return boolean         true if parsing was successful
+      * @param object EasyRdf_Graph $graph   the graph to load the data into
+      * @param string               $data    the RDF document data
+      * @param string               $format  the format of the input data
+      * @param string               $baseUri the base URI of the data being parsed
+      * @return boolean             true if parsing was successful
       */
     public function parse($graph, $data, $format, $baseUri)
     {

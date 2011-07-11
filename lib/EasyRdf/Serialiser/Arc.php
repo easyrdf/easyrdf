@@ -65,9 +65,9 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
     /**
      * Serialise an EasyRdf_Graph into RDF format of choice.
      *
-     * @param string  $graph   An EasyRdf_Graph object.
-     * @param string  $format  The name of the format to convert to.
-     * @return string          The RDF in the new desired format.
+     * @param object EasyRdf_Graph $graph   An EasyRdf_Graph object.
+     * @param string               $format  The name of the format to convert to.
+     * @return string              The RDF in the new desired format.
      */
     public function serialise($graph, $format)
     {
@@ -77,8 +77,7 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
             $className = self::$_supportedTypes[$format];
         } else {
             throw new EasyRdf_Exception(
-                "Serialising documents to $format ".
-                "is not supported by EasyRdf_Serialiser_Arc."
+                "EasyRdf_Serialiser_Arc does not support: $format"
             );
         }
 

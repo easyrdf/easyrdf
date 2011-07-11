@@ -59,11 +59,11 @@ class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
      *
      * http://n2.talis.com/wiki/RDF_PHP_Specification
      *
-     * @param string  $graph   An EasyRdf_Graph object.
-     * @param string  $format  The name of the format to convert to.
-     * @return string          The RDF in the new desired format.
+     * @param object EasyRdf_Graph $graph   An EasyRdf_Graph object.
+     * @param string  $format               The name of the format to convert to.
+     * @return string                       The RDF in the new desired format.
      */
-    public function serialise($graph, $format)
+    public function serialise($graph, $format='php')
     {
         parent::checkSerialiseParams($graph, $format);
 
