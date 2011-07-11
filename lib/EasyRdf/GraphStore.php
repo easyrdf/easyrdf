@@ -108,6 +108,7 @@ class EasyRdf_GraphStore
         $dataUrl = $this->urlForGraph($graphUri);
 
         $client = EasyRdf_Http::getDefaultHttpClient();
+        $client->resetParameters(true);
         $client->setUri($dataUrl);
         $client->setMethod($method);
         $client->setRawData($data);
@@ -178,6 +179,7 @@ class EasyRdf_GraphStore
         $dataUrl = $this->urlForGraph($graphUri);
 
         $client = EasyRdf_Http::getDefaultHttpClient();
+        $client->resetParameters(true);
         $client->setUri($dataUrl);
         $client->setMethod('DELETE');
         $response = $client->request();

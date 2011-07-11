@@ -243,7 +243,9 @@ class EasyRdf_Graph
             # No data was given - try and fetch data from URI
             # FIXME: prevent loading the same URI multiple times
             $client = EasyRdf_Http::getDefaultHttpClient();
+            $client->resetParameters(true);
             $client->setUri($uri);
+            $client->setMethod('GET');
             $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
             $response = $client->request();
             if (!$response->isSuccessful())
