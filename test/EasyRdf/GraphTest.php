@@ -461,6 +461,25 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetUriResource()
+    {
+        $this->_graph->addLiteral($this->_uri, 'foaf:homepage', 'Joe');
+        $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://example.com/');
+        $this->assertStringEquals(
+            'http://example.com/', $this->_graph->getResource($this->_uri, 'foaf:homepage')
+        );
+    }
+
+    public function testGetBnodeResource()
+    {
+        $bnode = $this->_graph->newBnode('foaf:Project');
+        $this->_graph->addLiteral($this->_uri, 'foaf:homepage', 'A Rubbish Project');
+        $this->_graph->addResource($this->_uri, 'foaf:currentProject', $bnode);
+        $this->assertEquals(
+            $bnode, $this->_graph->getResource($this->_uri, 'foaf:currentProject')
+        );
+    }
+
     public function testGetNonExistantLiteral()
     {
         $this->assertNull(
@@ -646,11 +665,23 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertStringEquals('Test B', $all[1]);
     }
 
-    public function testAllLiteralsForResource()
+    public function testAllLiteralsEmpty()
     {
         $all = $this->_graph->allLiterals($this->_uri, 'rdf:type');
         $this->assertTrue(is_array($all));
         $this->assertEquals(0, count($all));
+    }
+
+    public function testAllResources()
+    {
+        $this->_graph->addResource($this->_uri, 'rdf:test', 'http://example.com/thing');
+        $this->_graph->addResource($this->_uri, 'rdf:test', '_:bnode1');
+        $all = $this->_graph->allResources($this->_uri, 'rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('http://example.com/thing', $all[0]);
+        $this->assertFalse($all[0]->isBnode());
+        $this->assertStringEquals('_:bnode1', $all[1]);
+        $this->assertTrue($all[1]->isBnode());
     }
 
     public function testJoinDefaultGlue()
@@ -1171,6 +1202,16 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $types = $this->_graph->types($this->_uri);
         $this->assertEquals(1, count($types));
         $this->assertStringEquals('foaf:Person', $types[0]);
+    }
+
+    public function testTypesNotLiteral()
+    {
+        $this->_graph->addResource($this->_uri, 'rdf:type', "foaf:Rat");
+        $this->_graph->addLiteral($this->_uri, 'rdf:type', "Literal");
+        $types = $this->_graph->types($this->_uri);
+        $this->assertEquals(2, count($types));
+        $this->assertStringEquals('foaf:Person', $types[0]);
+        $this->assertStringEquals('foaf:Rat', $types[1]);
     }
 
     public function testType()
