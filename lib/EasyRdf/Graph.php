@@ -351,7 +351,7 @@ class EasyRdf_Graph
             }
         } else {
             throw new InvalidArgumentException(
-                "\$resource should a string or an EasyRdf_Resource"
+                "\$resource should be a string or an EasyRdf_Resource"
             );
         }
     }
@@ -380,7 +380,7 @@ class EasyRdf_Graph
 
         if ($property === null or !is_string($property)) {
             throw new InvalidArgumentException(
-                "\$property should a string and cannot be null"
+                "\$property should be a string or EasyRdf_Resource and cannot be null"
             );
         }
     }
