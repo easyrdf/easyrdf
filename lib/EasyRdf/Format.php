@@ -399,7 +399,7 @@ class EasyRdf_Format
         $parserClass = $this->_parserClass;
         if (!$parserClass) {
             throw new EasyRdf_Exception(
-                "No parser class available for: ".$this->getName()
+                "No parser class available for format: ".$this->getName()
             );
         }
         return (new $parserClass());
@@ -441,7 +441,7 @@ class EasyRdf_Format
         $serialiserClass = $this->_serialiserClass;
         if (!$serialiserClass) {
             throw new EasyRdf_Exception(
-                "No serialiser class available for: ".$this->getName()
+                "No serialiser class available for format: ".$this->getName()
             );
         }
         return (new $serialiserClass());
