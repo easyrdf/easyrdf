@@ -1,3 +1,22 @@
+EasyRdf 0.6.1
+-------------
+* Updated API documentation for new classes and methods added in 0.6.0
+* Added a description to the top of the source code for each example.
+* Changed the generated bnode identifier names from eidXXX to genidXXX.
+* Implemented inlining of resources in the RDF/XML serialiser.
+* Added new reversePropertyUris() method to EasyRdf_Graph and EasyRdf_Resource.
+* Added addType() and setType() to EasyRdf_Resource.
+* Added a textarea to the converter example.
+* Added support for parsing the json-triples format.
+* Renamed EasyRdf_SparqlClient to EasyRdf_Sparql_Client
+* Renamed EasyRdf_SparqlResult to EasyRdf_Sparql_Result
+* Fix for $graph->isEmpty() failing after adding and deleting some triples
+* Added new EasyRdf_DatatypeMapper class that allows you to map RDF datatypes to PHP classes.
+* Renamed EasyRdf_Literal::guessDatatype() to EasyRdf_Literal::getDatatypeForValue()
+* Added getResource() and allResources() to EasyRdf_Graph and EasyRdf_Resource
+* Implemented value casting in literals based on the datatype.
+
+
 EasyRdf 0.6.0
 -------------
 * Major re-factor of the way data is stored internally in EasyRdf_Graph.
