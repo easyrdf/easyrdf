@@ -75,7 +75,7 @@ class EasyRdf_Literal
         if ($this->_datatype == null) {
             if ($this->_lang == null) {
                 // Automatic datatype selection
-                $this->_datatype = self::guessDatatype($this->_value);
+                $this->_datatype = self::getDatatypeForValue($this->_value);
             }
         } else {
             // Expand shortened URIs (qnames)
@@ -84,7 +84,7 @@ class EasyRdf_Literal
             // Literals can not have both a language and a datatype
             $this->_lang = null;
         }
-        
+
         // Change the type of the PHP value based on the datatype
         if ($this->_datatype)
             $this->castValueType();
@@ -99,7 +99,7 @@ class EasyRdf_Literal
      *
      * @return string  A URI for the datatype of $value.
      */
-    public static function guessDatatype($value)
+    public static function getDatatypeForValue($value)
     {
         if (is_float($value)) {
             return 'http://www.w3.org/2001/XMLSchema#decimal';
@@ -107,11 +107,15 @@ class EasyRdf_Literal
             return 'http://www.w3.org/2001/XMLSchema#integer';
         } else if (is_bool($value)) {
             return 'http://www.w3.org/2001/XMLSchema#boolean';
+        } else if (is_object($value)) {
+            return EasyRdf_DatatypeMapper::datatypeForClass(
+                get_class($value)
+            );
         } else {
             return null;
         }
     }
-    
+
     /** Cast PHP value to a different type, based on the datatype
      *
      * @ignore
@@ -127,6 +131,11 @@ class EasyRdf_Literal
                 return settype($this->_value, 'boolean');
             case 'http://www.w3.org/2001/XMLSchema#string':
                 return settype($this->_value, 'string');
+        }
+
+        $class = EasyRdf_DatatypeMapper::classForDatatype($this->_datatype);
+        if ($class and !is_object($this->_value)) {
+            $this->_value = new $class($this->_value);
         }
     }
 

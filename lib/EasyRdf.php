@@ -40,6 +40,11 @@
  */
 
 /**
+ * @see EasyRdf_DatatypeMapper
+ */
+require_once "EasyRdf/DatatypeMapper.php";
+
+/**
  * @see EasyRdf_Exception
  */
 require_once "EasyRdf/Exception.php";

@@ -403,7 +403,7 @@ class EasyRdf_Graph
                 $value = array(
                     'type' => 'literal',
                     'value' => $value,
-                    'datatype' => EasyRdf_Literal::guessDatatype($value)
+                    'datatype' => EasyRdf_Literal::getDatatypeForValue($value)
                 );
             }
             if (empty($value['datatype']))
@@ -717,7 +717,7 @@ class EasyRdf_Graph
                 $value = array(
                     'type' => 'literal',
                     'value' => $value,
-                    'datatype' => EasyRdf_Literal::guessDatatype($value)
+                    'datatype' => EasyRdf_Literal::getDatatypeForValue($value)
                 );
                 if (empty($value['datatype']))
                     unset($value['datatype']);
