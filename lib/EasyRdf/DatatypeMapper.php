@@ -54,10 +54,10 @@ class EasyRdf_DatatypeMapper
 
     /** Get the registered class for an RDF datatype
      *
-     * If a type is not registered, then this method will return null.
+     * If a datatype is not registered, then this method will return null.
      *
-     * @param  string  $type   The RDF type (e.g. xsd:DateTime)
-     * @return string          The class name (e.g. DateTime)
+     * @param  string  $class   The PHP class name (e.g. DateTime)
+     * @return string           The RDF datatype (e.g. xsd:DateTime)
      */
     public static function datatypeForClass($class)
     {
@@ -74,6 +74,13 @@ class EasyRdf_DatatypeMapper
         }
     }
 
+    /** Get the registered RDF datatype for a PHP class
+     *
+     * If a datatype is not registered, then this method will return null.
+     *
+     * @param  string  $datatype The RDF datatype (e.g. xsd:DateTime)
+     * @return string            The PHP class name (e.g. DateTime)
+     */
     public static function classForDatatype($datatype)
     {
         if (!is_string($datatype) or $datatype == null or $datatype == '') {
@@ -90,11 +97,10 @@ class EasyRdf_DatatypeMapper
         }
     }
 
-    /** Register an RDF type with a PHP Class name
+    /** Register an RDF datatype with a PHP Class name
      *
-     * @param  string  $datatype   The RDF type (e.g. xsd:DateTime)
-     * @param  string  $class  The PHP class name (e.g. DateTime)
-     * @return string          The PHP class name
+     * @param  string  $datatype   The RDF datatype (e.g. xsd:DateTime)
+     * @param  string  $class      The PHP class name (e.g. DateTime)
      */
     public static function set($datatype, $class)
     {
@@ -116,9 +122,9 @@ class EasyRdf_DatatypeMapper
     }
 
     /**
-      * Delete an existing RDF type mapping.
+      * Delete an existing RDF datatype mapping.
       *
-      * @param  string  $datatype   The RDF type (e.g. xsd:DateTime)
+      * @param  string  $datatype   The RDF datatype (e.g. xsd:DateTime)
       */
     public static function delete($datatype)
     {
