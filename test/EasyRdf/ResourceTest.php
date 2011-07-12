@@ -829,6 +829,17 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testReversePropertyUris()
+    {
+        $this->_setupTestGraph();
+        $this->assertEquals(
+            array(
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+            ),
+            $this->_type->reversePropertyUris()
+        );
+    }
+
     public function testHasProperty()
     {
         $this->_setupTestGraph();

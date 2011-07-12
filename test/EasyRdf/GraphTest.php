@@ -1082,6 +1082,23 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testNoReversePropertyUris()
+    {
+        $this->assertEquals(
+            array(), $this->_graph->reversePropertyUris('foaf:Document')
+        );
+    }
+
+    public function testReversePropertyUris()
+    {
+        $this->assertEquals(
+            array(
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'
+            ),
+            $this->_graph->reversePropertyUris('foaf:Person')
+        );
+    }
+
     public function testPropertyUrisForNonExistantResource()
     {
         $this->assertEquals(
