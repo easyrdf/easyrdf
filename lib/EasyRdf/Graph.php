@@ -1177,6 +1177,21 @@ class EasyRdf_Graph
         return $this->_index;
     }
 
+    /** Calculates the number of triples in the graph
+     *
+     * @return integer The number of triples in the graph.
+     */
+    public function countTriples()
+    {
+        $count = 0;
+        foreach ($this->_index as $resource) {
+            foreach ($resource as $property => $values) {
+                $count += count($values);
+            }
+        }
+        return $count;
+    }
+
     /** Magic method to return URI of resource when casted to string
      *
      * @return string The URI of the resource

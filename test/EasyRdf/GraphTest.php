@@ -1338,6 +1338,12 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertNull($this->_graph->label($this->_uri));
     }
 
+    public function testCountTriples()
+    {
+        $this->assertEquals(3, $this->_graph->countTriples());
+        $this->_graph->add($this->_uri, 'foaf:nick', 'Nick');
+        $this->assertEquals(4, $this->_graph->countTriples());
+    }
 
     public function testToString()
     {
