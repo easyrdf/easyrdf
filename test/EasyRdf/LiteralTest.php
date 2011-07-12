@@ -110,10 +110,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testConstructWithAssociativeArrayWithLang()
     {
-        $literal = new EasyRdf_Literal(array(
-            'value' => 'Rat',
-            'lang' => 'en'
-        ));
+        $literal = new EasyRdf_Literal(array( 'value' => 'Rat', 'lang' => 'en'));
         $this->assertEquals('Rat', $literal->getValue());
         $this->assertEquals(null, $literal->getDatatype());
         $this->assertEquals('en', $literal->getLang());
@@ -121,10 +118,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testConstructWithAssociativeArrayWithDatatype()
     {
-        $literal = new EasyRdf_Literal(array(
-            'value' => 'Rat',
-            'datatype' => 'xsd:string'
-        ));
+        $literal = new EasyRdf_Literal(array('value' => 'Rat','datatype' => 'xsd:string'));
         $this->assertEquals('Rat', $literal->getValue());
         $this->assertEquals('xsd:string', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
