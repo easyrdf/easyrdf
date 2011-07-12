@@ -90,19 +90,20 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
             $pcount = count($obj->propertyUris());
             $rpcount = $this->reversePropertyCount($obj);
+            $alreadyOutput = isset($this->_outputtedResources[$obj->getUri()]);
 
             $tag = "$indent<$property";
             if ($obj->isBNode()) {
-                if ($rpcount > 1 or $pcount == 0) {
+                if ($alreadyOutput or $rpcount > 1 or $pcount == 0) {
                     $tag .= " rdf:nodeID=\"".htmlspecialchars($obj->getNodeId()).'"';
                 }
             } else {
-                if ($rpcount != 1 or $pcount == 0) {
+                if ($alreadyOutput or $rpcount != 1 or $pcount == 0) {
                     $tag .= " rdf:resource=\"".htmlspecialchars($obj->getURI()).'"';
                 }
             }
 
-            if ($rpcount == 1 and $pcount > 0) {
+            if ($alreadyOutput == false and $rpcount == 1 and $pcount > 0) {
                 $xml = $this->rdfxmlResource($obj, false, $depth+1);
                 if ($xml) {
                     return "$tag>$xml$indent</$property>\n\n";

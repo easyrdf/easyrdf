@@ -168,6 +168,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "  <foaf:Person rdf:nodeID=\"genid1\">\n".
             "    <foaf:knows>\n".
             "      <foaf:Person>\n".
+            "        <foaf:knows rdf:nodeID=\"genid1\"/>\n".
             "        <foaf:knows rdf:nodeID=\"genid3\"/>\n".
             "      </foaf:Person>\n".
             "    </foaf:knows>\n\n".
@@ -320,6 +321,34 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
             $this->_serialiser->serialise($this->_graph, 'rdfxml')
+        );
+    }
+
+    /**
+     * testSerialiseReferenceAlreadyOutput
+     *
+     * Test referencing a resource with a single property that
+     * has already been output.
+     */
+    function testSerialiseReferenceAlreadyOutput()
+    {
+        $graph = new EasyRdf_Graph();
+
+        $graph->addLiteral('http://example.com/2', 'rdf:label', 'label');
+        $graph->addResource('http://example.com/1', 'foaf:homepage', 'http://example.com/2');
+
+        $this->assertEquals(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n" .
+            "  <rdf:Description rdf:about=\"http://example.com/2\">\n".
+            "    <rdf:label>label</rdf:label>\n".
+            "  </rdf:Description>\n\n".
+            "  <rdf:Description rdf:about=\"http://example.com/1\">\n".
+            "    <foaf:homepage rdf:resource=\"http://example.com/2\"/>\n".
+            "  </rdf:Description>\n\n".
+            "</rdf:RDF>\n",
+            $this->_serialiser->serialise($graph, 'rdfxml')
         );
     }
 }
