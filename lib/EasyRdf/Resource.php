@@ -301,6 +301,23 @@ class EasyRdf_Resource
         return $this->_graph->get($this->_uri, $property, 'literal', $lang);
     }
 
+    /** Get a single resource value for a property of the resource
+     *
+     * If multiple values are set for a property then the value returned
+     * may be arbitrary.
+     *
+     * This method will return null if there is not resource for the
+     * property.
+     *
+     * @param  string|array $property The name of the property (e.g. foaf:name)
+     * @return object EasyRdf_Resource Resource associated with the property
+     */
+    public function getResource($property)
+    {
+        $this->checkHasGraph();
+        return $this->_graph->get($this->_uri, $property, 'resource');
+    }
+
     /** Get all values for a property
      *
      * This method will return an empty array if the property does not exist.
@@ -329,6 +346,20 @@ class EasyRdf_Resource
     {
         $this->checkHasGraph();
         return $this->_graph->all($this->_uri, $property, 'literal', $lang);
+    }
+
+    /** Get all resources for a property of the resource
+     *
+     * This method will return an empty array if the resource does not
+     * has any resources for that property.
+     *
+     * @param  string  $property The name of the property (e.g. foaf:name)
+     * @return array             An array of values associated with the property
+     */
+    public function allResources($property)
+    {
+        $this->checkHasGraph();
+        return $this->_graph->all($this->_uri, $property, 'resource');
     }
 
     /** Concatenate all values for a property into a string.

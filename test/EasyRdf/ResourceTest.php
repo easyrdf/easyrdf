@@ -224,7 +224,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $res->get('rdf:test');
     }
 
-    public function testGetResource()
+    public function testGetAResource()
     {
         $this->_setupTestGraph();
         $this->assertStringEquals(
@@ -341,6 +341,16 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetResource()
+    {
+        $this->_setupTestGraph();
+        $this->_resource->addLiteral('foaf:homepage', 'Joe');
+        $this->_resource->addResource('foaf:homepage', 'http://example.com/');
+        $this->assertStringEquals(
+            'http://example.com/', $this->_resource->getResource('foaf:homepage')
+        );
+    }
+
     public function testAll()
     {
         $this->_setupTestGraph();
@@ -431,6 +441,19 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $all = $this->_resource->allLiterals('rdf:type');
         $this->assertTrue(is_array($all));
         $this->assertEquals(0, count($all));
+    }
+
+    public function testAllResources()
+    {
+        $this->_setupTestGraph();
+        $this->_resource->addResource('rdf:test', 'http://example.com/thing');
+        $this->_resource->addResource('rdf:test', '_:bnode1');
+        $all = $this->_resource->allResources('rdf:test');
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('http://example.com/thing', $all[0]);
+        $this->assertFalse($all[0]->isBnode());
+        $this->assertStringEquals('_:bnode1', $all[1]);
+        $this->assertTrue($all[1]->isBnode());
     }
 
     public function testAdd()
