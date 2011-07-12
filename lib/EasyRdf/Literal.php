@@ -84,6 +84,10 @@ class EasyRdf_Literal
             // Literals can not have both a language and a datatype
             $this->_lang = null;
         }
+        
+        // Change the type of the PHP value based on the datatype
+        if ($this->_datatype)
+            $this->castValueType();
     }
 
     /** Get datatype URI for a PHP value.
@@ -105,6 +109,24 @@ class EasyRdf_Literal
             return 'http://www.w3.org/2001/XMLSchema#boolean';
         } else {
             return null;
+        }
+    }
+    
+    /** Cast PHP value to a different type, based on the datatype
+     *
+     * @ignore
+     */
+    protected function castValueType()
+    {
+        switch($this->_datatype) {
+            case 'http://www.w3.org/2001/XMLSchema#decimal':
+                return settype($this->_value, 'float');
+            case 'http://www.w3.org/2001/XMLSchema#integer':
+                return settype($this->_value, 'integer');
+            case 'http://www.w3.org/2001/XMLSchema#boolean':
+                return settype($this->_value, 'boolean');
+            case 'http://www.w3.org/2001/XMLSchema#string':
+                return settype($this->_value, 'string');
         }
     }
 
@@ -157,7 +179,10 @@ class EasyRdf_Literal
      */
     public function toRdfPhp()
     {
-        $array = array('type' => 'literal', 'value' => $this->_value);
+        $array = array(
+            'type' => 'literal',
+            'value' => strval($this->_value)
+        );
 
         if ($this->_datatype)
             $array['datatype'] = $this->_datatype;

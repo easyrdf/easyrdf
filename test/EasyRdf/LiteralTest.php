@@ -123,10 +123,10 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = new EasyRdf_Literal(array(
             'value' => 'Rat',
-            'datatype' => 'xsd:integer'
+            'datatype' => 'xsd:string'
         ));
         $this->assertEquals('Rat', $literal->getValue());
-        $this->assertEquals('xsd:integer', $literal->getDatatype());
+        $this->assertEquals('xsd:string', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
     }
 
@@ -159,6 +159,52 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $literal = new EasyRdf_Literal(false);
         $this->assertEquals(false, $literal->getValue());
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
+        $this->assertEquals(null, $literal->getLang());
+    }
+    
+    public function testDatatypeConvertionBooleanTrue()
+    {
+        $literal = new EasyRdf_Literal(1, null, 'xsd:boolean');
+        $this->assertType('bool', $literal->getValue());
+        $this->assertEquals(true, $literal->getValue());
+        $this->assertEquals('xsd:boolean', $literal->getDatatype());
+        $this->assertEquals(null, $literal->getLang());
+    }
+    
+    public function testDatatypeConvertionBooleanFalse()
+    {
+        $literal = new EasyRdf_Literal(0, null, 'xsd:boolean');
+        $this->assertType('bool', $literal->getValue());
+        $this->assertEquals(false, $literal->getValue());
+        $this->assertEquals('xsd:boolean', $literal->getDatatype());
+        $this->assertEquals(null, $literal->getLang());
+    }
+    
+    public function testDatatypeConvertionInteger()
+    {
+        $literal = new EasyRdf_Literal('100.00', null, 'xsd:integer');
+        $this->assertType('integer', $literal->getValue());
+        $this->assertEquals(100, $literal->getValue());
+        $this->assertEquals('xsd:integer', $literal->getDatatype());
+        $this->assertEquals(null, $literal->getLang());
+    }
+    
+    public function testDatatypeConvertionFloat()
+    {
+        $literal = new EasyRdf_Literal('1', null, 'xsd:decimal');
+        $this->assertType('float', $literal->getValue());
+        $this->assertEquals(1.0, $literal->getValue());
+        $this->assertEquals('xsd:decimal', $literal->getDatatype());
+        $this->assertEquals(null, $literal->getLang());
+    }
+    
+    public function testDatatypeConvertionString()
+    {
+        $literal = new EasyRdf_Literal(true, null, 'xsd:string');
+        $this->assertType('string', $literal->getValue());
+        # Hmm, not sure about this, but PHP does the conversion not me:
+        $this->assertEquals('1', $literal->getValue());
+        $this->assertEquals('xsd:string', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
     }
 
