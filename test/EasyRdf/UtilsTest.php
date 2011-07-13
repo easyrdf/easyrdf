@@ -44,7 +44,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     {
       $this->baseUri = "http://example.org/bpath/cpath/d;p?querystr#frag";
     }
-    
+
     public function testCameliseSimple()
     {
         $this->assertEquals(

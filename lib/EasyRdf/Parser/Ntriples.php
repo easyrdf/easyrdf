@@ -45,7 +45,7 @@
  */
 class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
 {
-    
+
     /**
      * @ignore
      */
@@ -53,7 +53,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
     {
         if (strpos($str, '\\') === false)
             return $str;
-            
+
         $mappings = array(
             't' => "\t",
             'n' => "\n",
@@ -91,7 +91,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
         }
         return $str;
     }
-    
+
     /**
      * @ignore
      */

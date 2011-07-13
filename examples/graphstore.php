@@ -32,7 +32,7 @@
   $graph1->add('http://example.com/test', 'rdfs:label', 'Test');
   $graph1->add('http://example.com/test', 'dc:date', time());
   $gs->insert($graph1, 'time.rdf');
-  
+
   // Get the graph back out of the graph store and display it
   $graph2 = $gs->get('time.rdf');
   print $graph2->dump();

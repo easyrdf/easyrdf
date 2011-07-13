@@ -38,7 +38,7 @@ foreach ($documents as $filename => $type) {
         print "Error: File does not exist.\n";
         continue;
     }
-    
+
     $url = "http://www.example.com/$filename";
     $data = file_get_contents($filepath);
     print "File size: ".strlen($data)." bytes\n";

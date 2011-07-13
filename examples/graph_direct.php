@@ -35,7 +35,7 @@
 <p>
   <b>Name:</b> <?= $graph->get("http://example.com/joe", "foaf:name") ?> <br />
   <b>Names:</b> <?= $graph->join("http://example.com/joe", "foaf:name") ?> <br />
-  
+
   <b>Label:</b> <?= $graph->label("http://aelius.com/njh#me") ?> <br />
   <b>Properties:</b> <?= join(', ', $graph->properties("http://example.com/joe")) ?> <br />
   <b>PropertyUris:</b> <?= join(', ', $graph->propertyUris("http://example.com/joe")) ?> <br />

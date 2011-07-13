@@ -56,8 +56,8 @@ class EasyRdf_Http
      */
     public static function setDefaultHttpClient($httpClient)
     {
-        if (!is_object($httpClient) or 
-            !($httpClient instanceof Zend_Http_Client or 
+        if (!is_object($httpClient) or
+            !($httpClient instanceof Zend_Http_Client or
               $httpClient instanceof EasyRdf_Http_Client)) {
             throw new InvalidArgumentException(
                 "\$httpClient should be an object of class Zend_Http_Client or EasyRdf_Http_Client"

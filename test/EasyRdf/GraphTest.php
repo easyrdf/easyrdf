@@ -253,7 +253,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             $res->getUri()
         );
     }
-    
+
     public function testGetResourceForGraphUri()
     {
         $graph = new EasyRdf_Graph('http://testGetResourceForGraphUri/');
@@ -1046,7 +1046,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->add('http://example.com/', 'rdfs:label', 'Example');
         $this->assertFalse($graph->isEmpty());
     }
-    
+
     public function testIsEmptyAfterDelete()
     {
         $graph = new EasyRdf_Graph();

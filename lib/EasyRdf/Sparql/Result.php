@@ -86,7 +86,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
     }
 
     /** Return the boolean value of the query result
-     * 
+     *
      * If the query was of type boolean then this method will
      * return either true or false. If the query was of some other
      * type then this method will return null.
@@ -345,7 +345,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
     }
 
     /** Magic method to return value of the result to string
-     * 
+     *
      * If this is a boolean result then it will return 'true' or 'false'.
      * If it is a bindings type, then it will dump as a text based table.
      *

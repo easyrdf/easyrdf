@@ -120,7 +120,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
         );
         $response = $this->_graphStore->delete('filenotfound');
     }
-    
+
     public function checkNtriplesRequest($client)
     {
         $this->assertEquals(
@@ -179,7 +179,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
         $response = $this->_graphStore->replace($data, "http://foo.com/bar.rdf");
         $this->assertEquals('200', $response->getStatus());
     }
-    
+
     public function checkTurtleRequest($client)
     {
         $this->assertEquals(

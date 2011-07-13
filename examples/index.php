@@ -2,15 +2,15 @@
     /**
      * Script to test that each of the examples still work.
      */
-    
+
     $data = array();
-    
+
     $dir = dirname(__FILE__);
     $dh = opendir($dir);
     if (!$dh) {
       die("Failed to open directory: $dir\n");
     }
-    
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -29,13 +29,13 @@
         if ($filename == '.' || $filename == '..' || $filename == 'index.php') {
             continue;
         }
-        
+
         print "<h2><a href='$filename'>$filename</a></h2>\n";
         $lines = file(
             $dir . DIRECTORY_SEPARATOR . $filename,
             FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
         );
-        
+
         $startDoc = false;
         $tags = array();
         $text = array();
@@ -57,21 +57,21 @@
               $para .= $m[1];
             }
         }
-        
+
         foreach($text as $paragraph) {
             print "<p>$paragraph</p>\n";
         }
-        
+
         $examples[$filename] = $text[0];
     }
     closedir($dh);
-    
+
     print "<!--\n";
     foreach($examples as $filename => $desc) {
         print "* [$filename](https://github.com/njh/easyrdf/blob/master/examples/$filename#slider) - $desc\n";
     }
     print "-->\n";
-    
+
 ?>
 
 </body>

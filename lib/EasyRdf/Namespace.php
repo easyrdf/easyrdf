@@ -203,7 +203,7 @@ class EasyRdf_Namespace
     /**
       * Shorten a URI by substituting in the namespace prefix.
       *
-      * If $createNamespace is true, and the URI isn't part of an existing 
+      * If $createNamespace is true, and the URI isn't part of an existing
       * namespace, then EasyRdf will attempt to create a new namespace and
       * use that namespace to shorten the URI (for example ns0:term).
       *

@@ -155,7 +155,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
     }
-    
+
     public function testDatatypeConvertionBooleanTrue()
     {
         $literal = new EasyRdf_Literal(1, null, 'xsd:boolean');
@@ -164,7 +164,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
     }
-    
+
     public function testDatatypeConvertionBooleanFalse()
     {
         $literal = new EasyRdf_Literal(0, null, 'xsd:boolean');
@@ -173,7 +173,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
     }
-    
+
     public function testDatatypeConvertionInteger()
     {
         $literal = new EasyRdf_Literal('100.00', null, 'xsd:integer');
@@ -182,7 +182,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals('xsd:integer', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
     }
-    
+
     public function testDatatypeConvertionFloat()
     {
         $literal = new EasyRdf_Literal('1', null, 'xsd:decimal');
@@ -191,7 +191,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals('xsd:decimal', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
     }
-    
+
     public function testDatatypeConvertionString()
     {
         $literal = new EasyRdf_Literal(true, null, 'xsd:string');

@@ -41,7 +41,7 @@
         "value" : "Bloggs",
         "type" : "literal"
         }
-      
+
       },
     {
       "subject" : {
@@ -56,7 +56,7 @@
         "value" : "Joe",
         "type" : "literal"
         }
-      
+
       },
     {
       "subject" : {
@@ -86,7 +86,7 @@
         "lang" : "en",
         "type" : "literal"
         }
-      
+
       },
     {
       "subject" : {
@@ -101,7 +101,7 @@
         "value" : "Mr",
         "type" : "literal"
         }
-      
+
       },
     {
       "subject" : {
@@ -130,7 +130,7 @@
         "value" : "Joe Bloggs' FOAF File",
         "type" : "literal"
         }
-      
+
       },
     {
       "subject" : {
@@ -201,7 +201,7 @@
         "value" : "Joe's Current Project",
         "type" : "literal"
         }
-      
+
       }
     ]
   }

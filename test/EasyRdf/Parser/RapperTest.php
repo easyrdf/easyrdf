@@ -92,7 +92,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         $this->assertStringEquals('Joe Bloggs', $name);
         $this->assertEquals('en', $name->getLang());
         $this->assertEquals(null, $name->getDatatype());
-        
+
         $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());

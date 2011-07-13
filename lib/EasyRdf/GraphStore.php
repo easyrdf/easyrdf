@@ -67,10 +67,10 @@ class EasyRdf_GraphStore
     {
         return $this->_uri;
     }
-    
+
     /** Fetch a named graph from the graph store
-     * 
-     * The URI can either be a full absolute URI or 
+     *
+     * The URI can either be a full absolute URI or
      * a URI relative to the URI of the graph store.
      *
      * @param string $uriRef The URI of graph desired
@@ -84,7 +84,7 @@ class EasyRdf_GraphStore
         $graph->load($dataUrl);
         return $graph;
     }
-    
+
     /** Send some graph data to the graph store
      *
      * This method is used by insert() and replace()
@@ -100,7 +100,7 @@ class EasyRdf_GraphStore
         } else {
             $data = $graph;
         }
-        
+
         $formatObj = EasyRdf_Format::getFormat($format);
         $mimeType = $formatObj->getDefaultMimeType();
 
@@ -122,13 +122,13 @@ class EasyRdf_GraphStore
         }
         return $response;
     }
-    
+
     /** Replace the contents of a graph in the graph store with new data
      *
      * The $graph parameter is the EasyRdf_Graph object to be sent to the
      * graph store. Alternatively it can be a string, already serialised.
-     * 
-     * The URI can either be a full absolute URI or 
+     *
+     * The URI can either be a full absolute URI or
      * a URI relative to the URI of the graph store.
      *
      * The $format parameter can be given to specify the serialisation
@@ -143,13 +143,13 @@ class EasyRdf_GraphStore
     {
         return $this->sendGraph('PUT', $graph, $uriRef, $format);
     }
-    
+
     /** Add data to a graph in the graph store
      *
      * The $graph parameter is the EasyRdf_Graph object to be sent to the
      * graph store. Alternatively it can be a string, already serialised.
-     * 
-     * The URI can either be a full absolute URI or 
+     *
+     * The URI can either be a full absolute URI or
      * a URI relative to the URI of the graph store.
      *
      * The $format parameter can be given to specify the serialisation
@@ -164,10 +164,10 @@ class EasyRdf_GraphStore
     {
         return $this->sendGraph('POST', $graph, $uriRef, $format);
     }
-        
+
     /** Delete a graph from the graph store
      *
-     * The URI can either be a full absolute URI or 
+     * The URI can either be a full absolute URI or
      * a URI relative to the URI of the graph store.
      *
      * @param string $uriRef The URI of graph to be added to
@@ -190,9 +190,9 @@ class EasyRdf_GraphStore
         }
         return $response;
     }
-    
+
     /** Work out the full URL for a graph store request.
-     *  by checking if if it is a direct or indirect request. 
+     *  by checking if if it is a direct or indirect request.
      *  @ignore
      */
     protected function urlForGraph($url)
