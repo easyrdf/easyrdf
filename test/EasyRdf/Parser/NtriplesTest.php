@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -65,10 +65,38 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->assertNotNull($name);
         $this->assertEquals('EasyRdf_Literal', get_class($name));
         $this->assertEquals('Joe Bloggs', $name->getValue());
+        $this->assertEquals('en', $name->getLang());
+        $this->assertEquals(null, $name->getDatatype());
+    }
 
-        # FIXME: implement this
-        #$this->assertEquals('en', $name->getLang());
-        #$this->assertEquals(null, $name->getDatatype());
+    public function testParseLang()
+    {
+        $this->_parser->parse(
+            $this->_graph,
+            '<http://example.com/a> <http://example.com/b> "English"@en-gb .',
+            'ntriples', null
+        );
+
+        $int = $this->_graph->get('http://example.com/a', 'http://example.com/b');
+        $this->assertNotNull($int);
+        $this->assertEquals('English', $int->getValue());
+        $this->assertEquals('en-gb', $int->getLang());
+        $this->assertEquals(null, $int->getDatatype());
+    }
+
+    public function testParseDatatype()
+    {
+        $this->_parser->parse(
+            $this->_graph,
+            '<http://example.com/a> <http://example.com/b> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .',
+            'ntriples', null
+        );
+
+        $int = $this->_graph->get('http://example.com/a', 'http://example.com/b');
+        $this->assertNotNull($int);
+        $this->assertEquals(1, $int->getValue());
+        $this->assertEquals(null, $int->getLang());
+        $this->assertEquals('xsd:integer', $int->getDatatype());
     }
 
     public function testParseEscaped()
@@ -93,6 +121,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             $this->_graph,
             "<http://example.com/a> <http://example.com/a> \"Test 1\" .\n".
             "# <http://example.com/b> <http://example.com/b> \"a comment\" .\n".
+            "  # another comment .\n".
             "<http://example.com/c> <http://example.com/c> \"Test 2\" .\n",
             'ntriples', null
         );

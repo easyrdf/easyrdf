@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -40,12 +40,11 @@
  * A pure-php class to parse N-Triples with no dependancies.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
+class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
 {
-
     /**
      * @ignore
      */
@@ -111,17 +110,27 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
      */
     protected function parseNtriplesObject($obj)
     {
-         if (preg_match('/"(.+)"/', $obj, $matches)) {
-             # FIXME: implement datatypes
-             # FIXME: implement languages
-             return array('type' => 'literal', 'value' => $this->unescape($matches[1]));
-         } else if (preg_match('/<([^<>]+)>/', $obj, $matches)) {
-             return array('type' => 'uri', 'value' => $matches[1]);
-         } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $obj, $matches)) {
-             return array('type' => 'bnode', 'value' => $this->unescape($matches[1]));
-         } else {
-              echo "Failed to parse object: $obj\n";
-         }
+        if (preg_match('/"(.+)"\^\^<([^<>]+)>/', $obj, $matches)) {
+            return array(
+                'type' => 'literal',
+                'value' => $this->unescape($matches[1]),
+                'datatype' => $this->unescape($matches[2])
+            );
+        } else if (preg_match('/"(.+)"@([\w\-]+)/', $obj, $matches)) {
+            return array(
+                'type' => 'literal',
+                'value' => $this->unescape($matches[1]),
+                'lang' => $this->unescape($matches[2])
+            );
+        } else if (preg_match('/"(.+)"/', $obj, $matches)) {
+            return array('type' => 'literal', 'value' => $this->unescape($matches[1]));
+        } else if (preg_match('/<([^<>]+)>/', $obj, $matches)) {
+            return array('type' => 'uri', 'value' => $matches[1]);
+        } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $obj, $matches)) {
+            return array('type' => 'bnode', 'value' => $this->unescape($matches[1]));
+        } else {
+            echo "Failed to parse object: $obj\n";
+        }
     }
 
     /**
@@ -143,33 +152,21 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser_RdfPhp
             );
         }
 
-        $rdfphp = array();
         $lines = preg_split("/[\r\n]+/", strval($data));
         foreach ($lines as $line) {
             if (preg_match("/^\s*#/", $line)) {
                 continue;
-            } else if (preg_match(
-                "/(.+)\s+<([^<>]+)>\s+(.+)\s*\./",
-                $line, $matches
-            )) {
-                $subject = $this->parseNtriplesSubject($matches[1]);
-                $predicate = $this->unescape($matches[2]);
-                $object = $this->parseNtriplesObject($matches[3]);
-
-                if (!isset($rdfphp[$subject])) {
-                    $rdfphp[$subject] = array();
-                }
-
-                if (!isset($rdfphp[$subject][$predicate])) {
-                    $rdfphp[$subject][$predicate] = array();
-                }
-
-                array_push($rdfphp[$subject][$predicate], $object);
+            } else if (preg_match("/(.+)\s+<([^<>]+)>\s+(.+)\s*\./", $line, $matches)) {
+                $graph->add(
+                    $this->parseNtriplesSubject($matches[1]),
+                    $this->unescape($matches[2]),
+                    $this->parseNtriplesObject($matches[3])
+                );
             }
         }
 
-        # FIXME: generate objects directly, instead of this second stage
-        return parent::parse($graph, $rdfphp, 'php', $baseUri);
+        // Success
+        return true;
     }
 }
 
