@@ -78,15 +78,17 @@ The examples are in the public domain, for more information see [UNLICENSE].
 More Examples
 -------------
 
-* [artistinfo.php](https://github.com/njh/easyrdf/blob/master/examples/artistinfo.php#slider) - Example of mapping an RDF type to a PHP Class
+* [artistinfo.php](https://github.com/njh/easyrdf/blob/master/examples/artistinfo.php#slider) - Example of mapping an RDF class type to a PHP Class
 * [basic.php](https://github.com/njh/easyrdf/blob/master/examples/basic.php#slider) - Basic "Hello World" type example
-* [basic_sparql.php](https://github.com/njh/easyrdf/blob/master/examples/basic_sparql.php#slider) - Basic example of making a SPARQL SELECT query
+* [basic_sparql.php](https://github.com/njh/easyrdf/blob/master/examples/basic_sparql.php#slider) - Example of making a SPARQL SELECT query
 * [converter.php](https://github.com/njh/easyrdf/blob/master/examples/converter.php#slider) - Convert RDF from one format to another
+* [dbpedia_village.php](https://github.com/njh/easyrdf/blob/master/examples/dbpedia_village.php#slider) - Fetch and information about villages in Fife from dbpedia.org
 * [dump.php](https://github.com/njh/easyrdf/blob/master/examples/dump.php#slider) - Display the contents of a graph
-* [foafinfo.php](https://github.com/njh/easyrdf/blob/master/examples/foafinfo.php#slider) - Display the information in a FOAF file
+* [foafinfo.php](https://github.com/njh/easyrdf/blob/master/examples/foafinfo.php#slider) - Display the basic information in a FOAF document
 * [foafmaker.php](https://github.com/njh/easyrdf/blob/master/examples/foafmaker.php#slider) - Construct a FOAF document with a choice of serialisations
 * [graph_direct.php](https://github.com/njh/easyrdf/blob/master/examples/graph_direct.php#slider) - Example of using EasyRdf_Graph directly without EasyRdf_Resource
-* [graphstore.php](https://github.com/njh/easyrdf/blob/master/examples/graphstore.php#slider) - Store and retrieve data from a SPARQL Graph Store
+* [graphstore.php](https://github.com/njh/easyrdf/blob/master/examples/graphstore.php#slider) - Store and retrieve data from a SPARQL 1.1 Graph Store
+* [html_tag_helpers.php](https://github.com/njh/easyrdf/blob/master/examples/html_tag_helpers.php#slider) - Rails Style html tag helpers to make the EasyRdf examples simplier
 * [httpget.php](https://github.com/njh/easyrdf/blob/master/examples/httpget.php#slider) - No RDF, just test EasyRdf_Http_Client
 * [review_extract.php](https://github.com/njh/easyrdf/blob/master/examples/review_extract.php#slider) - Extract a review from a page containing Google Review RDFa
 * [serialise.php](https://github.com/njh/easyrdf/blob/master/examples/serialise.php#slider) - Basic serialisation example
