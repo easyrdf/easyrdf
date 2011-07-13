@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -40,10 +40,10 @@
  * Class to parse RDF using Redland (librdf) C library.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Parser_Redland extends EasyRdf_Parser_RdfPhp
+class EasyRdf_Parser_Redland extends EasyRdf_Parser
 {
     /** Variable set to the librdf world */
     private $_world = null;
@@ -216,7 +216,6 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser_RdfPhp
             );
         }
 
-        $rdfphp = array();
         do {
             $statement = librdf_stream_get_object($stream);
             if ($statement) {
@@ -230,15 +229,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser_RdfPhp
                     librdf_statement_get_object($statement)
                 );
 
-                if (!isset($rdfphp[$subject])) {
-                    $rdfphp[$subject] = array();
-                }
-
-                if (!isset($rdfphp[$subject][$predicate])) {
-                    $rdfphp[$subject][$predicate] = array();
-                }
-
-                array_push($rdfphp[$subject][$predicate], $object);
+                $graph->add($subject, $predicate, $object);
             }
         } while (!librdf_stream_next($stream));
 
@@ -251,8 +242,8 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser_RdfPhp
         librdf_free_stream($stream);
         librdf_free_parser($parser);
 
-        // FIXME: remove this second parse step
-        return parent::parse($graph, $rdfphp, 'php', $baseUri);
+        // Success
+        return true;
     }
 }
 
