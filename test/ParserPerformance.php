@@ -33,7 +33,7 @@ $documents = array(
 foreach ($documents as $filename => $type) {
 
     print "Input file: $filename\n";
-    $filepath = dirname(__FILE__) . "/fixtures/$filename";
+    $filepath = dirname(__FILE__) . "/performance/$filename";
     if (!file_exists($filepath)) {
         print "Error: File does not exist.\n";
         continue;
@@ -56,7 +56,7 @@ foreach ($documents as $filename => $type) {
             $parser->parse($graph, $data, $type, $url);
             $duration = microtime(true) - $start;
             print "  Parse time: $duration seconds\n";
-            print "  Resource count: ".count($graph->resources())."\n";
+            print "  Triple count: ".$graph->countTriples()."\n";
         } catch (Exception $e) {
             print 'Parsing failed: '.$e->getMessage()."\n";
         }
