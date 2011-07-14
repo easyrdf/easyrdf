@@ -854,7 +854,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$value should respond to the method toRdfPhp()'
+            '$value should respond to the method toArray()'
         );
         $this->_graph->add($this->_uri, 'rdf:foo', $this);
     }

@@ -3,7 +3,7 @@
      * Example of using EasyRdf_Graph directly without EasyRdf_Resource
      *
      * Triple data is inserted and retrieved directly from a graph object,
-     * where it is stored internally as an RDF/PHP array.
+     * where it is stored internally as an associative array.
      *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
@@ -44,7 +44,7 @@
 </p>
 
 <pre>
-  <?= print_r($graph->toRdfPhp()) ?>
+  <?= print_r($graph->toArray()) ?>
 </pre>
 
 </body>

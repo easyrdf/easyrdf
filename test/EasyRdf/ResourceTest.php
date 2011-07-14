@@ -125,21 +125,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals(null, $unknown->shorten());
     }
 
-    public function testToRdfPhpForUri()
+    public function testToArrayForUri()
     {
         $uri = new EasyRdf_Resource('http://www.example.com/');
         $this->assertEquals(
             array('type' => 'uri', 'value' => 'http://www.example.com/'),
-            $uri->toRdfPhp()
+            $uri->toArray()
         );
     }
 
-    public function testToRdfPhpForBnode()
+    public function testToArrayForBnode()
     {
         $bnode = new EasyRdf_Resource('_:foobar');
         $this->assertEquals(
             array('type' => 'bnode', 'value' => '_:foobar'),
-            $bnode->toRdfPhp()
+            $bnode->toArray()
         );
     }
 
@@ -585,7 +585,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$value should respond to the method toRdfPhp()'
+            '$value should respond to the method toArray()'
         );
         $this->_resource->add('rdf:foo', $this);
     }

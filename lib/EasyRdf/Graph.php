@@ -385,18 +385,18 @@ class EasyRdf_Graph
         }
     }
 
-    /** Check that a value parameter is valid, and convert it to an RDF/PHP array if needed
+    /** Check that a value parameter is valid, and convert it to an associative array if needed
      *  @ignore
      */
     protected function checkValueParam(&$value)
     {
         if ($value) {
             if (is_object($value)) {
-                if (method_exists($value, 'toRdfPhp')) {
-                    $value = $value->toRdfPhp();
+                if (method_exists($value, 'toArray')) {
+                    $value = $value->toArray();
                 } else {
                     throw new InvalidArgumentException(
-                        "\$value should respond to the method toRdfPhp()"
+                        "\$value should respond to the method toArray()"
                     );
                 }
             } else if (!is_array($value)) {
@@ -527,7 +527,7 @@ class EasyRdf_Graph
         }
     }
 
-    /** Get an EasyRdf_Resource or EasyRdf_Literal object for a object RDF/PHP fragment.
+    /** Get an EasyRdf_Resource or EasyRdf_Literal object from an associative array.
      *  @ignore
      */
     protected function arrayToObject($data)
@@ -1172,7 +1172,7 @@ class EasyRdf_Graph
      *
      * @return array The contents of the graph as an array.
      */
-    public function toRdfPhp()
+    public function toArray()
     {
         return $this->_index;
     }

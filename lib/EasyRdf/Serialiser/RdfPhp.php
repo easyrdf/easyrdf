@@ -73,8 +73,8 @@ class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
             );
         }
 
-        // Graph is already stored as RDF/PHP internally within the EasyRdf_Graph object
-        return $graph->toRdfPhp();
+        // Graph is already stored an RDF/PHP resource-centric array internally within the EasyRdf_Graph object
+        return $graph->toArray();
     }
 }
 

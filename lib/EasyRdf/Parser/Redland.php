@@ -117,10 +117,10 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
     }
 
     /**
-     * Convert a node into an RDF/PHP object
+     * Convert a node into an associate array
      * @ignore
      */
-    protected static function rdfPhpObject($node)
+    protected static function nodeToArray($node)
     {
         $object = array();
         $object['type'] = EasyRdf_Parser_Redland::nodeTypeString($node);
@@ -225,7 +225,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
                 $predicate = EasyRdf_Parser_Redland::nodeUriString(
                     librdf_statement_get_predicate($statement)
                 );
-                $object = EasyRdf_Parser_Redland::rdfPhpObject(
+                $object = EasyRdf_Parser_Redland::nodeToArray(
                     librdf_statement_get_object($statement)
                 );
 

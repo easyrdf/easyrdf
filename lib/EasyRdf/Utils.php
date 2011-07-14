@@ -155,7 +155,7 @@ class EasyRdf_Utils
      * EasyRdf_Graph and EasyRdf_Sparql_Result to format a resource
      * for display.
      *
-     * @param  mixed $resource An EasyRdf_Resource object or a RDF/PHP fragment
+     * @param  mixed $resource An EasyRdf_Resource object or an associative array
      * @param  bool  $html     Set to true to format the dump using HTML
      * @param  string $color   The colour of the text
      * @return string
@@ -196,7 +196,7 @@ class EasyRdf_Utils
      * EasyRdf_Graph and EasyRdf_Sparql_Result to format a literal
      * for display.
      *
-     * @param  mixed $resource An EasyRdf_Literal object or a RDF/PHP fragment
+     * @param  mixed $resource An EasyRdf_Literal object or an associative array
      * @param  bool  $html     Set to true to format the dump using HTML
      * @param  string $color   The colour of the text
      * @return string
@@ -204,7 +204,7 @@ class EasyRdf_Utils
     public static function dumpLiteralValue($literal, $html=true, $color='black')
     {
         if (is_object($literal)) {
-            $literal = $literal->toRdfPhp();
+            $literal = $literal->toArray();
         } else if (!is_array($literal)) {
             $literal = array('value' => $literal);
         }

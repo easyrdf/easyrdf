@@ -179,14 +179,14 @@ class EasyRdf_Literal
         return $this->_lang;
     }
 
-    /** Returns a fragment of RDF/PHP for the literal.
+    /** Returns the properties of the literal as an associative array
      *
      * For example:
      * array('type' => 'literal', 'value' => 'string value')
      *
-     * @return array  RDF/PHP array for the value.
+     * @return array  The properties of the literal
      */
-    public function toRdfPhp()
+    public function toArray()
     {
         $array = array(
             'type' => 'literal',

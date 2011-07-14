@@ -135,14 +135,14 @@ class EasyRdf_Resource
         return EasyRdf_Namespace::shorten($this->_uri);
     }
 
-    /** Convert resource to a RDF/PHP associative array
+    /** Returns the properties of the resource as an associative array
      *
      * For example:
-     *   array('type' => 'bnode', 'value' => '_:genid1')
+     * array('type' => 'uri', 'value' => 'http://www.example.com/')
      *
-     * @return array The resource converted to an associative array.
+     * @return array  The properties of the resource
      */
-    public function toRdfPhp()
+    public function toArray()
     {
         if ($this->isBnode())
             return array('type' => 'bnode', 'value' => $this->_uri);
