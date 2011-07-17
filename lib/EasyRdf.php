@@ -8,7 +8,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -34,15 +34,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
-
-/**
- * @see EasyRdf_DatatypeMapper
- */
-require_once "EasyRdf/DatatypeMapper.php";
 
 /**
  * @see EasyRdf_Exception
@@ -80,14 +75,29 @@ require_once "EasyRdf/Http/Client.php";
 require_once "EasyRdf/Http/Response.php";
 
 /**
+ * @see EasyRdf_Namespace
+ */
+require_once "EasyRdf/Namespace.php";
+
+/**
  * @see EasyRdf_Literal
  */
 require_once "EasyRdf/Literal.php";
 
 /**
- * @see EasyRdf_Namespace
+ * @see EasyRdf_Literal_Boolean
  */
-require_once "EasyRdf/Namespace.php";
+require_once "EasyRdf/Literal/Boolean.php";
+
+/**
+ * @see EasyRdf_Literal_Decimal
+ */
+require_once "EasyRdf/Literal/Decimal.php";
+
+/**
+ * @see EasyRdf_Literal_Integer
+ */
+require_once "EasyRdf/Literal/Integer.php";
 
 /**
  * @see EasyRdf_Parser

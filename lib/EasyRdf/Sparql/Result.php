@@ -246,7 +246,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
             return new EasyRdf_Resource($data['value']);
           case 'literal':
           case 'typed-literal':
-            return new EasyRdf_Literal($data);
+            return EasyRdf_Literal::create($data);
           default:
             throw new EasyRdf_Exception(
                 "Failed to parse SPARQL Query Results format, unknown term type: ".

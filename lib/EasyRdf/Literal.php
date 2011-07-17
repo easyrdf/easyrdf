@@ -45,49 +45,97 @@
  */
 class EasyRdf_Literal
 {
+    private static $_datatypeMap = array();
+    private static $_classMap = array();
+
     /** The value for this literal */
-    private $_value = null;
+    protected $_value = null;
 
     /** The language of the literal */
-    private $_lang = null;
+    protected $_lang = null;
 
     /** The datatype of the literal */
-    private $_datatype = null;
+    protected $_datatype = null;
 
-    /** Constructor
-     *
-     */
-    public function __construct($value, $lang=null, $datatype=null)
+
+    public static function create($value, $lang=null, $datatype=null)
     {
         if (EasyRdf_Utils::is_associative_array($value)) {
-            $this->_value = isset($value['value']) ?
-                            $value['value'] : null;
-            $this->_lang = isset($value['lang']) ?
-                           $value['lang'] : null;
-            $this->_datatype = isset($value['datatype']) ?
-                               $value['datatype'] : null;
-        } else {
-            $this->_value = $value;
-            $this->_lang = $lang ? $lang : null;
-            $this->_datatype = $datatype ? $datatype : null;
+            $lang = isset($value['lang']) ? $value['lang'] : null;
+            $datatype = isset($value['datatype']) ? $value['datatype'] : null;
+            $value = isset($value['value']) ? $value['value'] : null;
         }
 
-        if ($this->_datatype == null) {
-            if ($this->_lang == null) {
+        if ($datatype == null) {
+            if ($lang == null) {
                 // Automatic datatype selection
-                $this->_datatype = self::getDatatypeForValue($this->_value);
+                $datatype = self::getDatatypeForValue($value);
             }
         } else {
             // Expand shortened URIs (qnames)
-            $this->_datatype = EasyRdf_Namespace::expand($this->_datatype);
-
-            // Literals can not have both a language and a datatype
-            $this->_lang = null;
+            $datatype = EasyRdf_Namespace::expand($datatype);
         }
 
-        // Change the type of the PHP value based on the datatype
-        if ($this->_datatype)
-            $this->castValueType();
+        // Work out what class to use for this datatype
+        if (isset(self::$_datatypeMap[$datatype])) {
+            $class = self::$_datatypeMap[$datatype];
+        } else {
+            $class = 'EasyRdf_Literal';
+        }
+        return new $class($value, $lang, $datatype);
+    }
+
+    /** Register an RDF datatype with a PHP class name
+     *
+     * When parsing registered class will be used whenever the datatype
+     * is seen.
+     *
+     * When serialising a registered class, the mapping will be used to
+     * set the datatype in the RDF.
+     *
+     * Example:
+     * EasyRdf_Literal::registerDatatype('xsd:dateTime', 'My_DateTime_Class');
+     *
+     * @param  string  $datatype   The RDF datatype (e.g. xsd:dateTime)
+     * @param  string  $class      The PHP class name (e.g. My_DateTime_Class)
+     */
+    public static function setDatatypeMapping($datatype, $class)
+    {
+        if (!is_string($datatype) or $datatype == null or $datatype == '') {
+            throw new InvalidArgumentException(
+                "\$datatype should be a string and cannot be null or empty"
+            );
+        }
+
+        if (!is_string($class) or $class == null or $class == '') {
+            throw new InvalidArgumentException(
+                "\$class should be a string and cannot be null or empty"
+            );
+        }
+
+        $datatype = EasyRdf_Namespace::expand($datatype);
+        self::$_datatypeMap[$datatype] = $class;
+        self::$_classMap[$class] = $datatype;
+    }
+
+    /** Remove the mapping between an RDF datatype and a PHP class name
+     *
+     * @param  string  $datatype   The RDF datatype (e.g. xsd:dateTime)
+     */
+    public static function deleteDatatypeMapping($datatype)
+    {
+        if (!is_string($datatype) or $datatype == null or $datatype == '') {
+            throw new InvalidArgumentException(
+                "\$datatype should be a string and cannot be null or empty"
+            );
+        }
+
+        $datatype = EasyRdf_Namespace::expand($datatype);
+        if (isset(self::$_datatypeMap[$datatype])) {
+            $class = self::$_datatypeMap[$datatype];
+            unset(self::$_datatypeMap[$datatype]);
+            unset(self::$_classMap[$class]);
+        }
     }
 
     /** Get datatype URI for a PHP value.
@@ -107,35 +155,40 @@ class EasyRdf_Literal
             return 'http://www.w3.org/2001/XMLSchema#integer';
         } else if (is_bool($value)) {
             return 'http://www.w3.org/2001/XMLSchema#boolean';
-        } else if (is_object($value)) {
-            return EasyRdf_DatatypeMapper::datatypeForClass(
-                get_class($value)
-            );
         } else {
             return null;
         }
     }
 
-    /** Cast PHP value to a different type, based on the datatype
+
+
+    /** Constructor
      *
-     * @ignore
      */
-    protected function castValueType()
+    public function __construct($value, $lang=null, $datatype=null)
     {
-        switch($this->_datatype) {
-            case 'http://www.w3.org/2001/XMLSchema#decimal':
-                return settype($this->_value, 'float');
-            case 'http://www.w3.org/2001/XMLSchema#integer':
-                return settype($this->_value, 'integer');
-            case 'http://www.w3.org/2001/XMLSchema#boolean':
-                return settype($this->_value, 'boolean');
-            case 'http://www.w3.org/2001/XMLSchema#string':
-                return settype($this->_value, 'string');
+        $this->_value = $value;
+        $this->_lang = $lang ? $lang : null;
+        $this->_datatype = $datatype ? $datatype : null;
+
+        if ($this->_datatype) {
+            // Expand shortened URIs (qnames)
+            $this->_datatype = EasyRdf_Namespace::expand($this->_datatype);
+
+            // Literals can not have both a language and a datatype
+            $this->_lang = null;
+        } else {
+            // Set the datatype based on the subclass
+            $class = get_class($this);
+            if (isset(self::$_classMap[$class])) {
+                $this->_datatype = self::$_classMap[$class];
+                $this->_lang = null;
+            }
         }
 
-        $class = EasyRdf_DatatypeMapper::classForDatatype($this->_datatype);
-        if ($class and !is_object($this->_value)) {
-            $this->_value = new $class($this->_value);
+        // Cast to string if it is a string
+        if ($this->_lang or !$this->_datatype or $this->_datatype == 'http://www.w3.org/2001/XMLSchema#string') {
+            settype($this->_value, 'string');
         }
     }
 

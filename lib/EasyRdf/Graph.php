@@ -536,7 +536,7 @@ class EasyRdf_Graph
             if ($data['type'] == 'uri' or $data['type'] == 'bnode') {
                 return $this->resource($data['value']);
             } else {
-                return new EasyRdf_Literal($data);
+                return EasyRdf_Literal::create($data);
             }
         } else {
             return null;
