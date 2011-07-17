@@ -37,35 +37,50 @@
  */
 
 /**
- * Class that represents an RDF Literal of datatype xsd:Boolean
+ * Class that represents an RDF Literal of datatype xsd:boolean
  *
  * @package    EasyRdf
+ * @link       http://www.w3.org/TR/xmlschema-2/#boolean
  * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Literal_Boolean extends EasyRdf_Literal
 {
-    /** Constructor
+    /** Constructor for creating a new boolean literal
      *
+     * Non-boolean values will be cast to boolean.
+     *
+     * @param  mixed  $value     The value of the literal or an associative array
+     * @param  string $lang      Should be null (literals with a datatype can't have a language)
+     * @param  string $datatype  Optional datatype (default 'xsd:boolean')
+     * @return object EasyRdf_Literal_Boolean
      */
     public function __construct($value, $lang=null, $datatype=null)
     {
         parent::__construct((bool)$value, null, $datatype);
     }
 
+    /** Return true if the value of the literal is true
+     *
+     * @return bool
+     */
     public function isTrue()
     {
         return $this->_value == true;
     }
 
+    /** Return true if the value of the literal is false
+     *
+     * @return bool
+     */
     public function isFalse()
     {
         return $this->_value == false;
     }
 
-    /** Magic method to return the value of a literal when casted to string
+    /** Magic method to return the value of a boolean when casted to string
      *
-     * @return string The value of the literal
+     * @return string The value of the boolean literal ('true' or 'false')
      */
     public function __toString()
     {

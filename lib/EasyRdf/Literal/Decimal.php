@@ -37,16 +37,23 @@
  */
 
 /**
- * Class that represents an RDF Literal of datatype xsd:Boolean
+ * Class that represents an RDF Literal of datatype xsd:decimal
  *
  * @package    EasyRdf
+ * @link       http://www.w3.org/TR/xmlschema-2/#decimal
  * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Literal_Decimal extends EasyRdf_Literal
 {
-    /** Constructor
+    /** Constructor for creating a new decimal literal
      *
+     * Non-decimal values will be cast to a decimal.
+     *
+     * @param  mixed  $value     The value of the literal or an associative array
+     * @param  string $lang      Should be null (literals with a datatype can't have a language)
+     * @param  string $datatype  Optional datatype (default 'xsd:decimal')
+     * @return object EasyRdf_Literal_Decimal
      */
     public function __construct($value, $lang=null, $datatype=null)
     {

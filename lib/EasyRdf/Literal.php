@@ -45,19 +45,38 @@
  */
 class EasyRdf_Literal
 {
+    /** @ignore a mapping from datatype uri to class name */
     private static $_datatypeMap = array();
+
+    /** @ignore A mapping from class name to datatype URI */
     private static $_classMap = array();
 
-    /** The value for this literal */
+    /** @ignore The value for this literal */
     protected $_value = null;
 
-    /** The language of the literal */
+    /** @ignore The language of the literal (e.g. 'en') */
     protected $_lang = null;
 
-    /** The datatype of the literal */
+    /** @ignore The datatype URI of the literal */
     protected $_datatype = null;
 
 
+    /** Create a new literal object
+     *
+     * PHP values of type bool, int or float, will automatically be converted
+     * to the corresponding datatype and PHP sub-class.
+     *
+     * If a registered datatype is given, then the registered subclass of EasyRdf_Literal
+     * will instantiated.
+     *
+     * Note that literals are not required to have a language or datatype.
+     * Literals cannot have both a language and a datatype.
+     *
+     * @param  mixed  $value     The value of the literal or an associative array
+     * @param  string $lang      The natural language of the literal or null (e.g. 'en')
+     * @param  string $datatype  The datatype of the literal or null (e.g. 'xsd:integer')
+     * @return object EasyRdf_Literal (or subclass of EasyRdf_Literal)
+     */
     public static function create($value, $lang=null, $datatype=null)
     {
         if (EasyRdf_Utils::is_associative_array($value)) {
@@ -162,8 +181,12 @@ class EasyRdf_Literal
 
 
 
-    /** Constructor
+    /** Constructor for creating a new literal
      *
+     * @param  mixed  $value     The value of the literal or an associative array
+     * @param  string $lang      The natural language of the literal or null (e.g. 'en')
+     * @param  string $datatype  The datatype of the literal or null (e.g. 'xsd:string')
+     * @return object EasyRdf_Literal
      */
     public function __construct($value, $lang=null, $datatype=null)
     {
