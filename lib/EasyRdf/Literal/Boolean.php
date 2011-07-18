@@ -50,7 +50,7 @@ class EasyRdf_Literal_Boolean extends EasyRdf_Literal
      *
      * Non-boolean values will be cast to boolean.
      *
-     * @param  mixed  $value     The value of the literal or an associative array
+     * @param  mixed  $value     The value of the literal
      * @param  string $lang      Should be null (literals with a datatype can't have a language)
      * @param  string $datatype  Optional datatype (default 'xsd:boolean')
      * @return object EasyRdf_Literal_Boolean
