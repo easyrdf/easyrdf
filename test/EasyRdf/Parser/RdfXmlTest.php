@@ -79,6 +79,30 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
+    
+    public function testParseSeq()
+    {
+        $data = "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>\n";
+        $data .= "  <rdf:Seq rdf:about='http://example.org/favourite-fruit'>\n";
+        $data .= "    <rdf:li rdf:resource='http://example.org/banana'/>\n";
+        $data .= "    <rdf:li rdf:resource='http://example.org/apple'/>\n";
+        $data .= "    <rdf:li rdf:resource='http://example.org/pear'/>\n";
+        $data .= "    <rdf:li rdf:resource='http://example.org/pear'/>\n";
+        $data .= "  </rdf:Seq>\n";
+        $data .= "</rdf:RDF>\n";
+  
+        $this->_parser->parse(
+            $this->_graph, $data, 'rdfxml',
+            'http://www.w3.org/TR/REC-rdf-syntax/'
+        );
+
+        $favourites = $this->_graph->resource('http://example.org/favourite-fruit');
+        $this->assertEquals('rdf:Seq', $favourites->type());
+        $this->assertStringEquals('http://example.org/banana', $favourites->get('rdf:_1'));
+        $this->assertStringEquals('http://example.org/apple', $favourites->get('rdf:_2'));
+        $this->assertStringEquals('http://example.org/pear', $favourites->get('rdf:_3'));
+        $this->assertStringEquals('http://example.org/pear', $favourites->get('rdf:_4'));
+    }
 
     function testParseUnsupportedFormat()
     {
