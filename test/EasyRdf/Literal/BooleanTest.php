@@ -13,8 +13,6 @@ class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
         $this->assertEquals(true, $literal->getValue());
         $this->assertEquals(null, $literal->getLang());
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
-        $this->assertEquals(true, $literal->isTrue());
-        $this->assertEquals(false, $literal->isFalse());
     }
 
     public function testConstructFalse()
@@ -25,8 +23,6 @@ class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
         $this->assertEquals(false, $literal->getValue());
         $this->assertEquals(null, $literal->getLang());
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
-        $this->assertEquals(false, $literal->isTrue());
-        $this->assertEquals(true, $literal->isFalse());
     }
 
     public function testConstructCast1()
@@ -37,8 +33,6 @@ class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
         $this->assertEquals(true, $literal->getValue());
         $this->assertEquals(null, $literal->getLang());
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
-        $this->assertEquals(true, $literal->isTrue());
-        $this->assertEquals(false, $literal->isFalse());
     }
 
     public function testConstructCast0()
@@ -49,7 +43,23 @@ class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
         $this->assertEquals(false, $literal->getValue());
         $this->assertEquals(null, $literal->getLang());
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
-        $this->assertEquals(false, $literal->isTrue());
-        $this->assertEquals(true, $literal->isFalse());
+    }
+
+    public function testIsTrue()
+    {
+        $true = new EasyRdf_Literal_Boolean(true);
+        $this->assertEquals(true, $true->isTrue());
+
+        $false = new EasyRdf_Literal_Boolean(false);
+        $this->assertEquals(false, $false->isTrue());
+    }
+
+    public function testIsFalse()
+    {
+        $false = new EasyRdf_Literal_Boolean(false);
+        $this->assertEquals(true, $false->isFalse());
+
+        $true = new EasyRdf_Literal_Boolean(true);
+        $this->assertEquals(false, $true->isFalse());
     }
 }
