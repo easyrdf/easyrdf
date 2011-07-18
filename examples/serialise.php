@@ -24,6 +24,10 @@
     $me->set('foaf:nick', 'Joe');
     $me->add('foaf:homepage', $graph->resource('http://example.com/joe/'));
 
+    // I made these up; they are not officially part of FOAF
+    $me->set('foaf:dateOfBirth', new EasyRdf_Literal_Date('1980-09-08'));
+    $me->set('foaf:height', 1.82);
+
     $project = $graph->newBnode('foaf:Project');
     $project->set('foaf:name', "Joe's current project");
     $me->set('foaf:currentProject', $project);

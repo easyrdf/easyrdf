@@ -90,6 +90,16 @@ require_once "EasyRdf/Literal.php";
 require_once "EasyRdf/Literal/Boolean.php";
 
 /**
+ * @see EasyRdf_Literal_Date
+ */
+require_once "EasyRdf/Literal/Date.php";
+
+/**
+ * @see EasyRdf_Literal_DateTime
+ */
+require_once "EasyRdf/Literal/DateTime.php";
+
+/**
  * @see EasyRdf_Literal_Decimal
  */
 require_once "EasyRdf/Literal/Decimal.php";
