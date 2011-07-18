@@ -266,7 +266,7 @@ class EasyRdf_Literal
     {
         $array = array(
             'type' => 'literal',
-            'value' => strval($this->_value)
+            'value' => strval($this)
         );
 
         if ($this->_datatype)

@@ -87,7 +87,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         if ($object instanceof EasyRdf_Resource) {
             return $this->serialiseResource($object);
         } else if ($object instanceof EasyRdf_Literal) {
-            $value = $object->getValue();
+            $value = strval($object);
             $value = str_replace('\\', '\\\\', $value);
             $value = str_replace('\n', '\\n', $value);
             $value = str_replace('\r', '\\r', $value);
