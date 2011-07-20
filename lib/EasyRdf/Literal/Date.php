@@ -62,10 +62,10 @@ class EasyRdf_Literal_Date extends EasyRdf_Literal
         if (!$value instanceof DateTime) {
             $value = new DateTime(strval($value));
         }
-        
+
         parent::__construct($value, null, $datatype);
     }
-    
+
     /** Returns date formatted according to given format
      *
      * @param string $format

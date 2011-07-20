@@ -79,7 +79,7 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
-    
+
     public function testParseSeq()
     {
         $data = "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>\n";
@@ -90,7 +90,7 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         $data .= "    <rdf:li rdf:resource='http://example.org/pear'/>\n";
         $data .= "  </rdf:Seq>\n";
         $data .= "</rdf:RDF>\n";
-  
+
         $this->_parser->parse(
             $this->_graph, $data, 'rdfxml',
             'http://www.w3.org/TR/REC-rdf-syntax/'

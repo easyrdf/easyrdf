@@ -62,10 +62,10 @@ class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
         if (!$value instanceof DateTime) {
             $value = new DateTime(strval($value));
         }
-        
+
         parent::__construct($value, null, $datatype);
     }
-    
+
     /** 24-hour format of the hour as an integer
      *
      * @return integer
