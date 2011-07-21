@@ -70,4 +70,11 @@ class EasyRdf_Literal_DateTimeTest extends EasyRdf_TestCase
         $this->assertEquals(5, $this->_dt->sec());
     }
 
+    public function testToString()
+    {
+        $this->assertStringEquals(
+            '2010-09-08T07:06:05Z', $this->_dt
+        );
+    }
+
 }

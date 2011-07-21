@@ -99,7 +99,8 @@ class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
      */
     public function __toString()
     {
-        return $this->_value->format(DateTime::ISO8601);
+        $iso = $this->_value->format(DateTime::ISO8601);
+        return preg_replace('/[\+\-]00(\:?)00$/', 'Z', $iso);
     }
 }
 
