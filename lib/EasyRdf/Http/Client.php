@@ -131,6 +131,12 @@ class EasyRdf_Http_Client
             $uri = strval($uri);
         }
 
+        if (!preg_match('/^http:/', $uri)) {
+            throw new InvalidArgumentException(
+                "EasyRdf_Http_Client only supports the 'http' scheme."
+            );
+        }
+
         $this->_uri = $uri;
 
         return $this;

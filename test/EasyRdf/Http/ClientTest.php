@@ -57,6 +57,16 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSetGopherUri()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            "EasyRdf_Http_Client only supports the 'http' scheme."
+        );
+        $uristr = 'gopher://g.example.com/';
+        $this->_client->setUri($uristr);
+    }
+
     /**
      * Test we can SET and GET a URI as object
      *
