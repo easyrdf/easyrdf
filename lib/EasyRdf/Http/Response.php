@@ -184,6 +184,19 @@ class EasyRdf_Http_Response
     }
 
     /**
+     * Get the raw response body (as transfered "on wire") as string
+     *
+     * If the body is encoded (with Transfer-Encoding, not content-encoding -
+     * IE "chunked" body), gzip compressed, etc. it will not be decoded.
+     *
+     * @return string
+     */
+    public function getRawBody()
+    {
+        return $this->_body;
+    }
+
+    /**
      * Get the HTTP version of the response
      *
      * @return string
@@ -217,6 +230,37 @@ class EasyRdf_Http_Response
         } else {
             return null;
         }
+    }
+
+    /**
+     * Get all headers as string
+     *
+     * @param boolean $status_line Whether to return the first status line (IE "HTTP 200 OK")
+     * @param string $br Line breaks (eg. "\n", "\r\n", "<br />")
+     * @return string
+     */
+    public function getHeadersAsString($status_line = true, $br = "\n")
+    {
+        $str = '';
+
+        if ($status_line) {
+            $str = "HTTP/{$this->_version} {$this->_status} {$this->_message}{$br}";
+        }
+
+        // Iterate over the headers and stringify them
+        foreach ($this->_headers as $name => $value)
+        {
+            if (is_string($value))
+                $str .= "{$name}: {$value}{$br}";
+
+            elseif (is_array($value)) {
+                foreach ($value as $subval) {
+                    $str .= "{$name}: {$subval}{$br}";
+                }
+            }
+        }
+
+        return $str;
     }
 
     /**
@@ -299,4 +343,27 @@ class EasyRdf_Http_Response
 
         return $decBody;
     }
+
+
+    /**
+     * Get the entire response as string
+     *
+     * @param string $br Line breaks (eg. "\n", "\r\n", "<br />")
+     * @return string
+     */
+    public function asString($br = "\n")
+    {
+        return $this->getHeadersAsString(true, $br) . $br . $this->getRawBody();
+    }
+
+    /**
+     * Implements magic __toString()
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->asString();
+    }
+
 }

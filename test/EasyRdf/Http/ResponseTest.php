@@ -222,4 +222,22 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
         );
     }
 
+
+    public function testAsString()
+    {
+        $response_str = readFixture('http_response_404');
+        $response = EasyRdf_Http_Response::fromString($response_str);
+
+        $this->assertEquals(
+            strtolower($response_str),
+            strtolower($response->asString()),
+            'Response convertion to string does not match original string'
+        );
+        $this->assertEquals(
+            strtolower($response_str),
+            strtolower((string)$response),
+            'Response convertion to string does not match original string'
+        );
+    }
+
 }
