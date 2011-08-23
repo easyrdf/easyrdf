@@ -120,7 +120,7 @@
     </phplint>
   </target>
 
-  <target name="dist" depends="clean,docs">
+  <target name="dist" depends="docs">
     <echo msg="Creating archive..." />
     <mkdir dir="${dist.dir}/easyrdf-${version}" />
     <copy todir="${dist.dir}/easyrdf-${version}" >
