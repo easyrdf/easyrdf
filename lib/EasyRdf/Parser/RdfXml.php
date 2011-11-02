@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2010-1011 Nicholas J Humfrey
+ * Copyright (c) 2010-2011 Nicholas J Humfrey
  * Copyright (c) 2004-2010 Benjamin Nowack (based on ARC2_RDFXMLParser.php)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,6 +43,7 @@
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ *             Copyright (c) 2004-2010 Benjamin Nowack (based on ARC2_RDFXMLParser.php)
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
