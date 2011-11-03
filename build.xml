@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="EasyRdf" default="default">
-  <property name="version" value="0.6.2" />
+  <property name="version" value="0.6.3" />
   <property name="shortname" value="easyrdf" />
   <property name="shortdesc" value="PHP library for working with RDF as objects." />
   <property name="homepage" value="http://www.aelius.com/njh/easyrdf/" />
