@@ -129,6 +129,32 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->assertEquals(2, count($this->_graph->resources()));
     }
 
+    public function testParseInvalidSubject()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Failed to parse subject: foobar'
+        );
+        $this->_parser->parse(
+            $this->_graph,
+            "foobar <http://example.com/a> \"Test 1\" .\n",
+            'ntriples', null
+        );
+    }
+
+    public function testParseInvalidObject()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Failed to parse object: foobar'
+        );
+        $this->_parser->parse(
+            $this->_graph,
+            "<http://example.com/b> <http://example.com/a> foobar .\n",
+            'ntriples', null
+        );
+    }
+
     function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
