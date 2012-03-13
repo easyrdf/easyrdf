@@ -1,0 +1,96 @@
+
+{
+  "node16d2rluonx90" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+        "value" : "http://xmlns.com/foaf/0.1/Project",
+        "type" : "uri"
+        }
+
+      ],
+    "http://xmlns.com/foaf/0.1/homepage" : [ {
+        "value" : "http://www.example.com/project",
+        "type" : "uri"
+        }
+
+      ],
+    "http://xmlns.com/foaf/0.1/name" : [ {
+        "value" : "Joe's Current Project",
+        "type" : "literal"
+        }
+
+      ]
+    }
+  ,
+  "http://www.example.com/joe#me" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+        "value" : "http://xmlns.com/foaf/0.1/Person",
+        "type" : "uri"
+        }
+
+      ],
+    "http://xmlns.com/foaf/0.1/currentProject" : [ {
+        "value" : "node16d2rluonx90",
+        "type" : "bnode"
+        }
+
+      ],
+    "http://xmlns.com/foaf/0.1/family_name" : [ {
+        "value" : "Bloggs",
+        "type" : "literal"
+        }
+
+      ],
+    "http://xmlns.com/foaf/0.1/firstName" : [ {
+        "value" : "Joe",
+        "type" : "literal"
+        }
+
+      ],
+    "http://xmlns.com/foaf/0.1/homepage" : [ {
+        "value" : "http://www.example.com/joe/",
+        "type" : "uri"
+        }
+
+      ],
+    "http://xmlns.com/foaf/0.1/name" : [ {
+        "value" : "Joe Bloggs",
+        "lang" : "en",
+        "type" : "literal"
+        }
+
+      ],
+    "http://xmlns.com/foaf/0.1/title" : [ {
+        "value" : "Mr",
+        "type" : "literal"
+        }
+
+      ]
+    }
+  ,
+  "http://www.example.com/joe/foaf.rdf" : {
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type" : [ {
+        "value" : "http://xmlns.com/foaf/0.1/PersonalProfileDocument",
+        "type" : "uri"
+        }
+
+      ],
+    "http://www.w3.org/2000/01/rdf-schema#label" : [ {
+        "value" : "Joe Bloggs' FOAF File",
+        "type" : "literal"
+        }
+
+      ],
+    "http://xmlns.com/foaf/0.1/maker" : [ {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        }
+
+      ],
+    "http://xmlns.com/foaf/0.1/primaryTopic" : [ {
+        "value" : "http://www.example.com/joe#me",
+        "type" : "uri"
+        }
+
+      ]
+    }
+  }

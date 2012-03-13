@@ -96,13 +96,15 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
      */
     protected function parseNtriplesSubject($sub)
     {
-         if (preg_match('/<([^<>]+)>/', $sub, $matches)) {
-             return $this->unescape($matches[1]);
-         } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $sub, $matches)) {
-             return $this->unescape($matches[1]);
-         } else {
-              echo "Failed to parse subject: $sub\n";
-         }
+        if (preg_match('/<([^<>]+)>/', $sub, $matches)) {
+            return $this->unescape($matches[1]);
+        } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $sub, $matches)) {
+            return $this->unescape($matches[1]);
+        } else {
+            throw new EasyRdf_Exception(
+                "Failed to parse subject: $sub"
+            );
+        }
     }
 
     /**
@@ -129,7 +131,9 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
         } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $obj, $matches)) {
             return array('type' => 'bnode', 'value' => $this->unescape($matches[1]));
         } else {
-            echo "Failed to parse object: $obj\n";
+            throw new EasyRdf_Exception(
+                "Failed to parse object: $obj"
+            );
         }
     }
 

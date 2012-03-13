@@ -120,7 +120,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             if ($datatype) {
                 if ($datatype == self::RDF_XML_LITERAL) {
                     $atrributes .= " rdf:parseType=\"Literal\"";
-                    $value = $obj->getValue();
+                    $value = strval($obj);
                 } else {
                     $datatype = htmlspecialchars($datatype);
                     $atrributes .= " rdf:datatype=\"$datatype\"";
@@ -132,7 +132,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
 
             // Escape the value
             if (!isset($value)) {
-                $value = htmlspecialchars($obj->getValue());
+                $value = htmlspecialchars(strval($obj));
             }
 
             return "$indent<$property$atrributes>$value</$property>\n";

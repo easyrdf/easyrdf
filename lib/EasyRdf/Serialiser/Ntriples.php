@@ -69,7 +69,7 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
         if ($obj instanceof EasyRdf_Resource) {
             return $this->ntriplesResource($obj);
         } else if ($obj instanceof EasyRdf_Literal) {
-            $value = $this->escape($obj->getValue());
+            $value = $this->escape(strval($obj));
             if ($obj->getLang()) {
                 $lang = $this->escape($obj->getLang());
                 return '"' . $value . '"' . '@' . $lang;

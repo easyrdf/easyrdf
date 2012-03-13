@@ -1,3 +1,19 @@
+EasyRdf 0.6.2
+-------------
+* Bug fix for missing triples in the RDF/XML serialiser.
+* Added EasyRdf_Graph::countTriples() method.
+* Re-factored the mechanism for mapping RDF datatypes to PHP classes.
+* Added subclasses of EasyRdf_Literal for various XSD datatypes:
+  - EasyRdf_Literal_Boolean
+  - EasyRdf_Literal_Date
+  - EasyRdf_Literal_DateTime
+  - EasyRdf_Literal_Decimal
+  - EasyRdf_Literal_Integer
+* Made the Redland based parser write triples directly to EasyRdf_Graph
+* Added support for datatypes and languages in the EasyRdf_Parser_Ntriples parser.
+* Fix for parsing XML Literals in RDF/XML
+
+
 EasyRdf 0.6.1
 -------------
 * Updated API documentation for new classes and methods added in 0.6.0

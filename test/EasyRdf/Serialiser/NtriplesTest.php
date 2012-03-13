@@ -117,7 +117,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
     function testSerialiseDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:foo', new EasyRdf_Literal(1, null, 'xsd:integer'));
+        $joe->set('foaf:foo', EasyRdf_Literal::create(1, null, 'xsd:integer'));
 
         $ntriples = $this->_serialiser->serialise($this->_graph, 'ntriples');
         $this->assertStringEquals(

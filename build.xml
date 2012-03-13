@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="EasyRdf" default="default">
-  <property name="version" value="0.6.1" />
+  <property name="version" value="0.6.3" />
   <property name="shortname" value="easyrdf" />
   <property name="shortdesc" value="PHP library for working with RDF as objects." />
   <property name="homepage" value="http://www.aelius.com/njh/easyrdf/" />
@@ -43,7 +43,6 @@
     <include name="CHANGELOG.md" />
   </fileset>
 
-
   <target name="test" depends="dir_setup" description="Run all unit tests.">
     <phpunit haltonfailure="true" printsummary="true">
       <batchtest>
@@ -74,10 +73,14 @@
 
   <target name="coverage" depends="dir_setup">
     <mkdir dir="${reports.dir}/coverage" />
-    <exec command="phpunit --coverage-html ${reports.dir}/coverage test" dir="${project.basedir}" passthru="true" />
+    <exec command="phpunit --coverage-html ${reports.dir}/coverage --log-junit ${reports.dir}/test-results.xml test" dir="${project.basedir}" passthru="true" />
   </target>
 
   <target name="docs" description="Create API documentation">
+    <echo msg="Creating index.html..." />
+    <exec command="php homepage.php > index.html" dir="${project.basedir}" passthru="true" />
+    <echo msg="Creating doap.rdf..." />
+    <exec command="php doap.php > doap.rdf" dir="${project.basedir}" passthru="true" />
     <phpdoc title="EasyRdf ${version} API Documentation"
       destdir="${docs.dir}"
       sourcecode="no"
@@ -102,10 +105,6 @@
   </target>
 -->
 
-  <target name="upload_docs" depends="docs">
-    <exec command="scp -rpBC docs www.aelius.com:~njh/public_html/easyrdf/" dir="${project.basedir}" passthru="true" />
-  </target>
-
   <target name="cs">
     <phpcodesniffer standard="Zend" showWarnings="false" haltonerror="true">
       <fileset refid="source" />
@@ -121,7 +120,7 @@
     </phplint>
   </target>
 
-  <target name="dist" depends="clean,docs">
+  <target name="dist" depends="docs">
     <echo msg="Creating archive..." />
     <mkdir dir="${dist.dir}/easyrdf-${version}" />
     <copy todir="${dist.dir}/easyrdf-${version}" >
@@ -132,6 +131,7 @@
       <fileset refid="docs" />
       <fileset dir="${project.basedir}">
         <include name="build.xml" />
+        <include name="doap.rdf" />
       </fileset>
     </copy>
     <delete file="easyrdf-${version}.tar.gz" />
@@ -150,6 +150,7 @@
     <delete dir="${reports.dir}" includeemptydirs="true" verbose="true" />
     <delete dir="${docs.dir}" includeemptydirs="true" verbose="true" />
     <delete dir="${dist.dir}" includeemptydirs="true" verbose="true" />
+    <delete file="doap.rdf" verbose="true" />
     <delete file="index.html" verbose="true" />
   </target>
 
@@ -162,11 +163,6 @@
     <exec command="git grep -n -E '[ 	]+$'" dir="${project.basedir}" passthru="true" />
   </target>
 
-  <target name="homepage">
-    <exec command="php homepage.php > index.html" dir="${project.basedir}" passthru="true" />
-    <exec command="scp index.html www.aelius.com:~njh/public_html/easyrdf/" dir="${project.basedir}" passthru="true" />
-  </target>
-
-  <target name="default" description="Default target" depends="lint,test,cs" />
+  <target name="default" description="Default target" depends="clean,lint,test,cs,docs" />
 
 </project>

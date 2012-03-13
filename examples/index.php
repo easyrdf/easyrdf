@@ -1,9 +1,12 @@
 <?php
     /**
-     * Script to test that each of the examples still work.
+     * Display a list of examples and extract the documentation
+     * block from the top of each one.
+     *
+     * @package    EasyRdf
+     * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+     * @license    http://unlicense.org/
      */
-
-    $data = array();
 
     $dir = dirname(__FILE__);
     $dh = opendir($dir);
@@ -66,6 +69,7 @@
     }
     closedir($dh);
 
+    // Create some Markdown that can be pasted into README.md
     print "<!--\n";
     foreach($examples as $filename => $desc) {
         print "* [$filename](https://github.com/njh/easyrdf/blob/master/examples/$filename#slider) - $desc\n";

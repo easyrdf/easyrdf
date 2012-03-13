@@ -87,6 +87,20 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSelectAllJsonWithCharset()
+    {
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('sparql_select_all.json'),
+            'application/sparql-results+json; charset=utf-8'
+        );
+
+        $this->assertEquals(3, $result->numFields());
+        $this->assertEquals(array('s','p','o'), $result->getFields());
+        $this->assertEquals(
+            new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
+        );
+    }
+
     public function testSelectEmptyXml()
     {
         $result = new EasyRdf_Sparql_Result(
@@ -284,6 +298,15 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $text = $result->dump(false);
         $this->assertEquals("Result: false", $text);
+    }
+
+    public function testInvalidMimeType()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Invalid MIME type: foobar'
+        );
+        $result = new EasyRdf_Sparql_Result('foobar', 'foobar');
     }
 
     public function testUnsupportedFormat()

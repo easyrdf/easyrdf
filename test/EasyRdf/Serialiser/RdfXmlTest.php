@@ -238,7 +238,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->_graph->add(
             'http://www.example.com/joe#me',
             'foaf:age',
-            new EasyRdf_Literal(59, null, 'xsd:int')
+            EasyRdf_Literal::create(59, null, 'xsd:int')
         );
 
         $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
@@ -281,7 +281,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->_graph->add(
             'http://www.example.com/joe#me',
             'foaf:bio',
-            new EasyRdf_Literal("<b>html</b>", null, 'rdf:XMLLiteral')
+            EasyRdf_Literal::create("<b>html</b>", null, 'rdf:XMLLiteral')
         );
 
         $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');

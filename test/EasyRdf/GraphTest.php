@@ -1164,7 +1164,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph();
         $graph->add('http://example.com/joe#me', 'foaf:name', 'Joe');
-        $graph->add('http://example.com/joe#me', 'foaf:age', new EasyRdf_Literal(52));
+        $graph->add('http://example.com/joe#me', 'foaf:age', EasyRdf_Literal::create(52));
         $deutschland = new EasyRdf_Literal('Deutschland', 'de');
         $graph->add('http://example.com/joe#me', 'foaf:birthPlace', $deutschland);
 
