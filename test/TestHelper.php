@@ -39,7 +39,6 @@
 /*
  * Include PHPUnit dependencies
  */
-require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Framework/IncompleteTestError.php';
 require_once 'PHPUnit/Framework/TestCase.php';
 require_once 'PHPUnit/Framework/TestSuite.php';
