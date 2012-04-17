@@ -193,7 +193,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = EasyRdf_Literal::create(1, null, 'xsd:boolean');
         $this->assertClass('EasyRdf_Literal_Boolean', $literal);
-        $this->assertType('bool', $literal->getValue());
+        $this->assertInternalType('bool', $literal->getValue());
         $this->assertEquals(true, $literal->getValue());
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
@@ -203,7 +203,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = EasyRdf_Literal::create(0, null, 'xsd:boolean');
         $this->assertClass('EasyRdf_Literal_Boolean', $literal);
-        $this->assertType('bool', $literal->getValue());
+        $this->assertInternalType('bool', $literal->getValue());
         $this->assertEquals(false, $literal->getValue());
         $this->assertEquals('xsd:boolean', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
@@ -213,7 +213,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = EasyRdf_Literal::create('100.00', null, 'xsd:integer');
         $this->assertClass('EasyRdf_Literal_Integer', $literal);
-        $this->assertType('integer', $literal->getValue());
+        $this->assertInternalType('integer', $literal->getValue());
         $this->assertEquals(100, $literal->getValue());
         $this->assertEquals('xsd:integer', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
@@ -223,7 +223,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = EasyRdf_Literal::create('1', null, 'xsd:decimal');
         $this->assertClass('EasyRdf_Literal_Decimal', $literal);
-        $this->assertType('float', $literal->getValue());
+        $this->assertInternalType('float', $literal->getValue());
         $this->assertEquals(1.0, $literal->getValue());
         $this->assertEquals('xsd:decimal', $literal->getDatatype());
         $this->assertEquals(null, $literal->getLang());
@@ -233,7 +233,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = EasyRdf_Literal::create(true, null, 'xsd:string');
         $this->assertClass('EasyRdf_Literal', $literal);
-        $this->assertType('string', $literal->getValue());
+        $this->assertInternalType('string', $literal->getValue());
         # Hmm, not sure about this, but PHP does the conversion not me:
         $this->assertEquals('1', $literal->getValue());
         $this->assertEquals('xsd:string', $literal->getDatatype());

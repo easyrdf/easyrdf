@@ -219,7 +219,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph();
         $resource1 = $graph->resource('http://example.com/');
-        $this->assertType('EasyRdf_Resource', $resource1);
+        $this->assertInstanceOf('EasyRdf_Resource', $resource1);
         $this->assertStringEquals('http://example.com/', $resource1->getUri());
         $resource2 = $graph->resource('http://example.com/');
         $this->assertTrue($resource1 === $resource2);
@@ -258,7 +258,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph('http://testGetResourceForGraphUri/');
         $resource = $graph->resource();
-        $this->assertType('EasyRdf_Resource', $resource);
+        $this->assertInstanceOf('EasyRdf_Resource', $resource);
         $this->assertEquals(
             'http://testGetResourceForGraphUri/',
             $resource->getUri()
@@ -309,7 +309,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $resource = $this->_graph->resolveResource(
             'http://www.example.com/foo', '/bar'
         );
-        $this->assertType('EasyRdf_Resource', $resource);
+        $this->assertInstanceOf('EasyRdf_Resource', $resource);
         $this->assertStringEquals('http://www.example.com/bar', $resource);
     }
 
@@ -355,7 +355,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
         $resources = $graph->resources();
         $this->assertTrue(is_array($resources));
-        $this->assertType('EasyRdf_Resource', $resources['_:genid1']);
+        $this->assertInstanceOf('EasyRdf_Resource', $resources['_:genid1']);
 
         $urls = array_keys($resources);
         sort($urls);
@@ -888,7 +888,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://www.example.com/');
         $res = $this->_graph->get($this->_uri, 'foaf:homepage');
-        $this->assertType('EasyRdf_Resource', $res);
+        $this->assertInstanceOf('EasyRdf_Resource', $res);
         $this->assertStringEquals('http://www.example.com/', $res);
     }
 
@@ -896,7 +896,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->_graph->addResource($this->_uri, 'foaf:interest', '_:abc');
         $res = $this->_graph->get($this->_uri, 'foaf:interest');
-        $this->assertType('EasyRdf_Resource', $res);
+        $this->assertInstanceOf('EasyRdf_Resource', $res);
         $this->assertTrue($res->isBnode());
         $this->assertStringEquals('_:abc', $res);
     }
@@ -1251,7 +1251,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testTypeAsResource()
     {
         $type = $this->_graph->typeAsResource($this->_uri);
-        $this->assertType('EasyRdf_Resource', $type);
+        $this->assertInstanceOf('EasyRdf_Resource', $type);
         $this->assertStringEquals('http://xmlns.com/foaf/0.1/Person', $type);
     }
 
