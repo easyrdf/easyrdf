@@ -1,3 +1,8 @@
+EasyRdf 0.6.3
+-------------
+* Added support for SSL (https) to the built-in HTTP client
+
+
 EasyRdf 0.6.2
 -------------
 * Bug fix for missing triples in the RDF/XML serialiser.

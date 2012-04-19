@@ -381,11 +381,24 @@ class EasyRdf_Http_Client
         do {
             // Clone the URI and add the additional GET parameters to it
             $uri = parse_url($this->_uri);
-            $host = $uri['host'];
             if (isset($uri['port'])) {
                 $port = $uri['port'];
             } else {
-                $port = 80;
+                if ($uri['scheme'] === 'https') {
+                    $port = 443;
+                } else {
+                    $port = 80;
+                }
+            }
+
+            if ($uri['scheme'] === 'http') {
+                $host = $uri['host'];
+            } else if ($uri['scheme'] === 'https') {
+                $host = 'ssl://'.$uri['host'];
+            } else {
+                throw new EasyRdf_Exception(
+                    "Unsupported URI scheme: ".$uri['scheme']
+                );
             }
 
             if (!empty($this->_paramsGet)) {
@@ -397,7 +410,7 @@ class EasyRdf_Http_Client
                 $uri['query'] .= http_build_query($this->_paramsGet, null, '&');
             }
 
-            $headers = $this->_prepareHeaders($host, $port);
+            $headers = $this->_prepareHeaders($uri['host'], $port);
 
             // Open socket to remote server
             $socket = fsockopen(
@@ -487,7 +500,7 @@ class EasyRdf_Http_Client
         // Set the host header
         if (! isset($this->_headers['host'])) {
             // If the port is not default, add it
-            if ($port != 80) {
+            if ($port !== 80 and $port !== 443) {
                 $host .= ':' . $port;
             }
             $headers[] = "Host: {$host}";
