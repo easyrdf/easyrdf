@@ -1,6 +1,7 @@
 EasyRdf 0.6.3
 -------------
 * Added support for SSL (https) to the built-in HTTP client
+* Added connivence class for xsd:hexBinary literals
 
 
 EasyRdf 0.6.2
