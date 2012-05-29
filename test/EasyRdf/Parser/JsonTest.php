@@ -130,7 +130,7 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
         $joe2 = $project2->get('^foaf:currentProject');
         $this->assertNotNull($joe2);
         $this->assertStringEquals('Joe Bloggs', $joe2->get('foaf:name'));
-   }
+    }
 
     function testParseUnsupportedFormat()
     {
