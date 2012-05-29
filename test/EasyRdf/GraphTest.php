@@ -133,7 +133,6 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph = new EasyRdf_Graph();
         $graph->parseFile( fixturePath('foaf.json') );
 
-        echo $graph->dump(false);
         $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
         $this->assertEquals('EasyRdf_Literal', get_class($name));
         $this->assertEquals('Joe Bloggs', $name->getValue());
