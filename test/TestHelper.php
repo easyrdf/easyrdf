@@ -84,6 +84,17 @@ require_once 'EasyRdf/Http/MockClient.php';
 
 
 /**
+ * Helper function: get path to a fixture file
+ *
+ * @param string $name fixture file name
+ * @return string Path to the fixture file
+ */
+function fixturePath($name)
+{
+    return dirname(__FILE__) . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $name;
+}
+
+/**
  * Helper function: read fixture data from file
  *
  * @param string $name fixture file name
@@ -91,7 +102,9 @@ require_once 'EasyRdf/Http/MockClient.php';
  */
 function readFixture($name)
 {
-    return file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $name);
+    return file_get_contents(
+        fixturePath($name)
+    );
 }
 
 /**

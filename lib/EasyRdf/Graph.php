@@ -218,6 +218,26 @@ class EasyRdf_Graph
     }
 
     /**
+     * Parse a file containing RDF data into the graph object.
+     *
+     * @param  string  $filename The path of the file to load
+     * @param  string  $format   Optional format of the file
+     * @param  string  $uri      The URI of the file to load
+     */
+    public function parseFile($filename, $format=null, $uri=null)
+    {
+        if ($uri === null) {
+            $uri = "file://$filename";
+        }
+
+        return $this->parse(
+            file_get_contents($filename),
+            $format,
+            $uri
+        );
+    }
+
+    /**
      * Load RDF data into the graph.
      *
      * If a URI is supplied, but no data then the data will

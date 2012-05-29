@@ -128,6 +128,29 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertEquals(null, $name->getDatatype());
     }
 
+    public function testParseFile()
+    {
+        $graph = new EasyRdf_Graph();
+        $graph->parseFile( fixturePath('foaf.json') );
+
+        echo $graph->dump(false);
+        $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
+        $this->assertEquals('EasyRdf_Literal', get_class($name));
+        $this->assertEquals('Joe Bloggs', $name->getValue());
+        $this->assertEquals('en', $name->getLang());
+        $this->assertEquals(null, $name->getDatatype());
+    }
+
+    public function testParseFileRelativeUri()
+    {
+        $graph = new EasyRdf_Graph();
+        $graph->parseFile( fixturePath('foaf.rdf') );
+
+        $doc = $graph->get('foaf:PersonalProfileDocument', '^rdf:type');
+        $this->assertStringEquals('EasyRdf_Literal', get_class($doc));
+        $this->assertStringEquals('Joe Bloggs', $doc);
+    }
+
     public function testLoadData()
     {
         $graph = new EasyRdf_Graph();
