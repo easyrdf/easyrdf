@@ -138,6 +138,35 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertStringEquals('Rose', $first->label);
     }
 
+    public function testSelectLangLiteralJson()
+    {
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('sparql_select_lang.json'),
+            'application/sparql-results+json'
+        );
+
+        # 1st: Example using "lang": "en"
+        $first = $result[0];
+        $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dlv#programme', $first->episode);
+        $this->assertEquals(1, $first->pos->getValue());
+        $this->assertEquals('Rose', $first->label->getValue());
+        $this->assertEquals('en', $first->label->getLang());
+
+        # 2nd: Example using "xml:lang": "en"
+        $second = $result[1];
+        $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dmp#programme', $second->episode);
+        $this->assertEquals(2, $second->pos->getValue());
+        $this->assertEquals('The End of the World', $second->label->getValue());
+        $this->assertEquals('en', $second->label->getLang());
+
+        # 3rd: no lang
+        $second = $result[2];
+        $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dng#programme', $second->episode);
+        $this->assertEquals(3, $second->pos->getValue());
+        $this->assertEquals('The Unquiet Dead', $second->label->getValue());
+        $this->assertEquals(null, $second->label->getLang());
+    }
+
     public function testAskTrueJson()
     {
         $result = new EasyRdf_Sparql_Result(

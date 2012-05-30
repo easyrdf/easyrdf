@@ -144,6 +144,15 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertEquals('en', $literal->getLang());
     }
 
+    public function testCreateWithAssociativeArrayWithXmlLang()
+    {
+        $literal = EasyRdf_Literal::create(array( 'value' => 'Rattus', 'xml:lang' => 'fr'));
+        $this->assertClass('EasyRdf_Literal', $literal);
+        $this->assertEquals('Rattus', $literal->getValue());
+        $this->assertEquals(null, $literal->getDatatype());
+        $this->assertEquals('fr', $literal->getLang());
+    }
+
     public function testCreateWithAssociativeArrayWithDatatype()
     {
         $literal = EasyRdf_Literal::create(array('value' => 'Rat','datatype' => 'xsd:string'));
