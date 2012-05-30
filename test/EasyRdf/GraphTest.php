@@ -146,8 +146,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->parseFile(fixturePath('foaf.rdf'));
 
         $doc = $graph->get('foaf:PersonalProfileDocument', '^rdf:type');
-        $this->assertStringEquals('EasyRdf_Literal', get_class($doc));
-        $this->assertStringEquals('Joe Bloggs', $doc);
+        $this->assertStringEquals('EasyRdf_Resource', get_class($doc));
+        $this->assertRegExp('|^file://.+/fixtures/foaf\.rdf$|', $doc->getUri());
     }
 
     public function testLoadData()
