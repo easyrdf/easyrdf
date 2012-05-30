@@ -76,7 +76,7 @@ class EasyRdf_Utils
      * @param mixed $param The variable to check
      * @return bool true if the variable is an associative array
      */
-    public static function is_associative_array($param)
+    public static function isAssociativeArray($param)
     {
         if (is_array($param)) {
             $keys = array_keys($param);

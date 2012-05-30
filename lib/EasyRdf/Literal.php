@@ -79,7 +79,7 @@ class EasyRdf_Literal
      */
     public static function create($value, $lang=null, $datatype=null)
     {
-        if (EasyRdf_Utils::is_associative_array($value)) {
+        if (EasyRdf_Utils::isAssociativeArray($value)) {
             if (isset($value['xml:lang'])) {
                $lang = $value['xml:lang'];
             } else if (isset($value['lang'])) {
