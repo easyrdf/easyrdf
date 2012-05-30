@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -77,6 +77,40 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $this->assertEquals(
             new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
         );
+    }
+
+    public function testQuerySelectAllJsonWithCharset()
+    {
+        $this->_client->addMock(
+            'GET', '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            readFixture('sparql_select_all.json'),
+            array(
+                'headers' => array('Content-Type' => 'application/sparql-results+json; charset=utf-8')
+            )
+        );
+        $result = $this->_sparql->query("SELECT * WHERE {?s ?p ?o}");
+        $this->assertEquals(14, count($result));
+        $this->assertEquals(3, $result->numFields());
+        $this->assertEquals(array('s','p','o'), $result->getFields());
+        $this->assertEquals(
+            new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
+        );
+    }
+
+    public function testQuerySelectAllUnsupportedFormat()
+    {
+        $this->_client->addMock(
+            'GET', '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            readFixture('sparql_select_all.json'),
+            array(
+                'headers' => array('Content-Type' => 'unsupported/format')
+            )
+        );
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Format is not recognised: unsupported/format'
+        );
+        $result = $this->_sparql->query("SELECT * WHERE {?s ?p ?o}");
     }
 
     public function testQueryAddPrefix()
@@ -134,7 +168,25 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
     {
         $this->_client->addMock(
             'GET', '/sparql?query=CONSTRUCT+%7B%3Fs+%3Fp+%3Fo%7D+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
-            readFixture('foaf.json')
+            readFixture('foaf.json'),
+            array(
+                'headers' => array('Content-Type' => 'application/json')
+            )
+        );
+        $graph = $this->_sparql->query("CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
+        $this->assertType('EasyRdf_Graph', $graph);
+        $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
+        $this->assertStringEquals('Joe Bloggs', $name);
+    }
+
+    public function testQueryConstructJsonWithCharset()
+    {
+        $this->_client->addMock(
+            'GET', '/sparql?query=CONSTRUCT+%7B%3Fs+%3Fp+%3Fo%7D+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            readFixture('foaf.json'),
+            array(
+                'headers' => array('Content-Type' => 'application/json; charset=utf-8')
+            )
         );
         $graph = $this->_sparql->query("CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
         $this->assertType('EasyRdf_Graph', $graph);

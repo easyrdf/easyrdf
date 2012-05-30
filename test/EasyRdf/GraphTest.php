@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -229,6 +229,36 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testLoadMockHttpClient()
     {
         $this->_client->addMock('GET', 'http://www.example.com/', readFixture('foaf.json'));
+        $graph = new EasyRdf_Graph('http://www.example.com/');
+        $graph->load();
+        $this->assertStringEquals(
+            'Joe Bloggs',
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
+        );
+    }
+
+    public function testLoadMockHttpClientWithContentType()
+    {
+        $this->_client->addMock(
+            'GET', 'http://www.example.com/',
+            readFixture('foaf.json'),
+            array('headers' => array('Content-Type' => 'application/json'))
+        );
+        $graph = new EasyRdf_Graph('http://www.example.com/');
+        $graph->load();
+        $this->assertStringEquals(
+            'Joe Bloggs',
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
+        );
+    }
+
+    public function testLoadMockHttpClientWithContentTypeWithCharset()
+    {
+        $this->_client->addMock(
+            'GET', 'http://www.example.com/',
+            readFixture('foaf.nt'),
+            array('headers' => array('Content-Type' => 'text/plain; charset=utf8'))
+        );
         $graph = new EasyRdf_Graph('http://www.example.com/');
         $graph->load();
         $this->assertStringEquals(

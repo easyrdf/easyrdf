@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -82,20 +82,6 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertEquals(
             new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'), $result[0]->p
         );
-        $this->assertEquals(
-            new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
-        );
-    }
-
-    public function testSelectAllJsonWithCharset()
-    {
-        $result = new EasyRdf_Sparql_Result(
-            readFixture('sparql_select_all.json'),
-            'application/sparql-results+json; charset=utf-8'
-        );
-
-        $this->assertEquals(3, $result->numFields());
-        $this->assertEquals(array('s','p','o'), $result->getFields());
         $this->assertEquals(
             new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
         );
@@ -327,15 +313,6 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $text = $result->dump(false);
         $this->assertEquals("Result: false", $text);
-    }
-
-    public function testInvalidMimeType()
-    {
-        $this->setExpectedException(
-            'EasyRdf_Exception',
-            'Invalid MIME type: foobar'
-        );
-        $result = new EasyRdf_Sparql_Result('foobar', 'foobar');
     }
 
     public function testUnsupportedFormat()

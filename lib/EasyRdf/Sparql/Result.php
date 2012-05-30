@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -40,7 +40,7 @@
  * Class for returned for SPARQL SELECT and ASK query responses.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Sparql_Result extends ArrayIterator
@@ -58,21 +58,14 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      * object directly - it will be constructed automatically
      * for you by EasyRdf_Sparql_Client.
      *
-     * @param string $uri The address of the SPARQL Endpoint
+     * @param string $data      The SPARQL result body
+     * @param string $mimeType  The MIME type of the result
      */
     public function __construct($data, $mimeType)
     {
-        if (preg_match('|^(\w+)/([\w\-\+]+)\s*;?\s*(.*)$|', $mimeType, $matches)) {
-            list(, $type, $subtype, $params) = $matches;
-        } else {
-            throw new EasyRdf_Exception(
-                "Invalid MIME type: $mimeType"
-            );
-        }
-
-        if ("$type/$subtype" == 'application/sparql-results+xml') {
+        if ($mimeType == 'application/sparql-results+xml') {
             return $this->_parseXml($data);
-        } else if ("$type/$subtype" == 'application/sparql-results+json') {
+        } else if ($mimeType == 'application/sparql-results+json') {
             return $this->_parseJson($data);
         } else {
             throw new EasyRdf_Exception(
