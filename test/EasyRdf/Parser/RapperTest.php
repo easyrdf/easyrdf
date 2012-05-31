@@ -49,8 +49,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
     public function setUp()
     {
-        // FIXME: check for rapper version 1.4.17
-        exec('which rapper 2>/dev/null', $output, $retval);
+        exec('rapper --version 2>/dev/null', $output, $retval);
         if ($retval == 0) {
             $this->_parser = new EasyRdf_Parser_Rapper();
             $this->_graph = new EasyRdf_Graph();
@@ -66,7 +65,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
-            "The command 'random_command_that_doesnt_exist' is not available on this system."
+            "Failed to execute the command 'random_command_that_doesnt_exist'"
         );
         new EasyRdf_Parser_Rapper('random_command_that_doesnt_exist');
     }
