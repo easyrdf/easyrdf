@@ -112,24 +112,50 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
         # Test parsing JSON with 'bad' bnode identifiers
         $data = readFixture('foaf.bad-json');
         $this->_parser->parse($this->_graph, $data, 'json', 'http://www.bbc.co.uk/');
-        
+
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertStringEquals('Joe Bloggs', $joe->get('foaf:name'));
- 
+
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);
         $this->assertTrue($project->isBnode());
         $this->assertStringEquals("Joe's Current Project", $project->label());
-      
+
         # Test going the other way
         $project2 = $this->_graph->resource('foaf:Project')->get('^rdf:type');
         $this->assertNotNull($project2);
         $this->assertTrue($project2->isBnode());
         $this->assertStringEquals("Joe's Current Project", $project2->label());
-        
+
         $joe2 = $project2->get('^foaf:currentProject');
         $this->assertNotNull($joe2);
         $this->assertStringEquals('Joe Bloggs', $joe2->get('foaf:name'));
+    }
+
+    public function testParseJsonSyntaxError()
+    {
+        if (version_compare(PHP_VERSION, "5.3.0") >= 0) {
+            $this->setExpectedException(
+                'EasyRdf_Exception',
+                'JSON Parse syntax error'
+            );
+        } else {
+            $this->setExpectedException(
+                'EasyRdf_Exception',
+                'JSON Parse error'
+            );
+        }
+        $this->_parser->parse(
+            $this->_graph, '{ "foo":"bar"', 'json', 'http://www.example.com/'
+        );
+    }
+
+    public function testParseEmpty()
+    {
+        $this->_parser->parse($this->_graph, '{}', 'json', null);
+
+        // Should be empty but no exception thrown
+        $this->assertEquals(0, $this->_graph->countTriples());
     }
 
     function testParseUnsupportedFormat()
