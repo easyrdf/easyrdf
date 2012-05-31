@@ -49,9 +49,8 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
     public function setUp()
     {
-        // FIXME: suppress stderr
         // FIXME: check for rapper version 1.4.17
-        exec('which rapper', $output, $retval);
+        exec('which rapper 2>/dev/null', $output, $retval);
         if ($retval == 0) {
             $this->_parser = new EasyRdf_Parser_Rapper();
             $this->_graph = new EasyRdf_Graph();
