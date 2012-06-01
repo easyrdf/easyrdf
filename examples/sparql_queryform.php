@@ -64,7 +64,7 @@
           } else {
               print $results->dump(true);
           }
-      } catch (EasyRdf_Exception $e) {
+      } catch (Exception $e) {
           print "<div class='error'>".$e->getMessage()."</div>\n";
       }
   }
