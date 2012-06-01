@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  * Copyright (c) 2005-2009 Zend Technologies USA Inc.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  *             Copyright (c) 2005-2009 Zend Technologies USA Inc.
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
@@ -44,7 +44,7 @@
  * implementation try Zend_Http_Client.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Http_Client
@@ -413,11 +413,11 @@ class EasyRdf_Http_Client
             $headers = $this->_prepareHeaders($uri['host'], $port);
 
             // Open socket to remote server
-            $socket = fsockopen(
+            $socket = @fsockopen(
                 $host, $port, $errno, $errstr, $this->_config['timeout']
             );
             if (!$socket) {
-                throw new EasyRdf_Exception($errstr);
+                throw new EasyRdf_Exception("Unable to connect to $host:$port ($errstr)");
             }
 
             // Write the request
@@ -444,7 +444,7 @@ class EasyRdf_Http_Client
             // FIXME: support HTTP/1.1 100 Continue
 
             // Close the socket
-            fclose($socket);
+            @fclose($socket);
 
             // Parse the response string
             $response = EasyRdf_Http_Response::fromString($content);
