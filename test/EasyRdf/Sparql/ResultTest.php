@@ -231,6 +231,18 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         );
     }
 
+    public function testNotSparqlXml()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Incorrect root node in SPARQL XML Query Results format'
+        );
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('not_sparql_result.xml'),
+            'application/sparql-results+xml'
+        );
+    }
+
     public function testInvalidJson()
     {
         $this->setExpectedException(

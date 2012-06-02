@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notsparql xmlns="http://www.example.com/notsparql">
+  <head>
+  </head>
+  <boolean>true</boolean>
+</notsparql>

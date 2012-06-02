@@ -51,6 +51,9 @@ class EasyRdf_Sparql_Result extends ArrayIterator
     private $_ordered = null;
     private $_distinct = null;
     private $_fields = array();
+    
+    /** A constant for the SPARQL Query Results XML Format namespace */
+    const SPARQL_XML_RESULTS_NS = 'http://www.w3.org/2005/sparql-results#';
 
     /** Create a new SPARQL Result object
      *
@@ -264,7 +267,16 @@ class EasyRdf_Sparql_Result extends ArrayIterator
     {
         $doc = new DOMDocument();
         $doc->loadXML($data);
-        # FIXME: check for SPARQL top-level element
+
+        # Check for valid root node.
+        if ($doc->hasChildNodes() == false or
+            $doc->childNodes->length != 1 or
+            $doc->firstChild->nodeName != 'sparql' or
+            $doc->firstChild->namespaceURI != self::SPARQL_XML_RESULTS_NS) {
+            throw new EasyRdf_Exception(
+                "Incorrect root node in SPARQL XML Query Results format"
+            );
+        }
 
         # Is it the result of an ASK query?
         $boolean = $doc->getElementsByTagName('boolean');
