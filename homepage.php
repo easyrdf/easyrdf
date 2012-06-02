@@ -25,7 +25,7 @@
   }
   $downloads .= "</ul>\n";
 
-  $readme = str_replace('The latest version of EasyRdf can be downloaded from GitHub.', $downloads, $readme);
+  $readme = str_replace('The latest version of EasyRdf can be [downloaded from GitHub].', $downloads, $readme);
 
   $html = Markdown($readme);
   $html = str_replace('<em>', '_', $html);

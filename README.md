@@ -29,7 +29,7 @@ an [EasyRdf_Graph] object.
 Downloads
 ---------
 
-The latest version of EasyRdf can be downloaded from GitHub.
+The latest version of EasyRdf can be [downloaded from GitHub].
 
 
 Links
@@ -44,14 +44,15 @@ Links
 Requirements
 ------------
 
-* PHP 5.2.1
+* PHP 5.2.1 or higher
 
 
 Features
 --------
 
 * API documentation written in phpdoc
-* Unit tests written using phpunit
+* Extensive unit tests written using phpunit
+  * Automated testing against PHP 5.2, 5.3 and 5.4
 * Choice of RDF parser:
   * Built-in: RDF/JSON, N-Triples, RDF/XML
   * [ARC2]: RDF/XML, Turtle, RSS, microformats, eRDF, RDFa, ...
@@ -108,3 +109,4 @@ More Examples
 [rapper]:http://librdf.org/raptor/rapper.html
 [UNLICENSE]:http://unlicense.org/
 [Zend_Http_Client]:http://framework.zend.com/manual/en/zend.http.client.html
+[downloaded from github]:https://github.com/njh/easyrdf/downloads
