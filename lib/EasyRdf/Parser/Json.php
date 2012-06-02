@@ -59,7 +59,13 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
         $this->_jsonLastErrorExists = function_exists('json_last_error');
     }
 
-    public function _jsonLastErrorString()
+    /** Return the last JSON parser error as a string
+     *
+     * If json_last_error() is not available a generic message will be returned.
+     *
+     * @ignore
+     */
+    protected function _jsonLastErrorString()
     {
         if ($this->_jsonLastErrorExists) {
             switch (json_last_error()) {
