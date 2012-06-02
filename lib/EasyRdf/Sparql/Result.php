@@ -51,7 +51,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
     private $_ordered = null;
     private $_distinct = null;
     private $_fields = array();
-    
+
     /** A constant for the SPARQL Query Results XML Format namespace */
     const SPARQL_XML_RESULTS_NS = 'http://www.w3.org/2005/sparql-results#';
 
