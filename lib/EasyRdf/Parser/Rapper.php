@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -40,12 +40,15 @@
  * Class to parse RDF using the 'rapper' command line tool.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
 {
     private $_rapperCmd = null;
+    private $_tempDir = '/tmp';
+
+    const MINIMUM_RAPPER_VERSION = '1.4.17';
 
     /**
      * Constructor
@@ -55,15 +58,21 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
      */
     public function __construct($rapperCmd='rapper')
     {
-        // FIXME: suppress stderr
-        // FIXME: check for rapper version 1.4.17
-        exec("which ".escapeshellarg($rapperCmd), $output, $retval);
-        if ($retval == 0) {
-            $this->_rapperCmd = $rapperCmd;
-        } else {
+        $result = exec("$rapperCmd --version 2>/dev/null", $output, $status);
+        if ($status != 0) {
             throw new EasyRdf_Exception(
-                "The command '$rapperCmd' is not available on this system."
+                "Failed to execute the command '$rapperCmd': $result"
             );
+        } else if (version_compare($result, self::MINIMUM_RAPPER_VERSION) < 0) {
+            throw new EasyRdf_Exception(
+                "Version ".self::MINIMUM_RAPPER_VERSION." or higher of rapper is required."
+            );
+        } else {
+            $this->_rapperCmd = $rapperCmd;
+        }
+
+        if (function_exists('sys_get_temp_dir')) {
+            $this->_tempDir = sys_get_temp_dir();
         }
     }
 
@@ -96,7 +105,7 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
             " --input-uri " . escapeshellarg($baseUri).
             " --output-uri -".
             " - ",
-            $descriptorspec, $pipes, '/tmp', null
+            $descriptorspec, $pipes, $this->_tempDir, NULL
         );
         if (is_resource($process)) {
             // $pipes now looks like this:

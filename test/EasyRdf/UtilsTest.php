@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -104,33 +104,33 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testIsAssoc()
     {
         $arr = array('foo' => 'bar');
-        $this->assertTrue(EasyRdf_Utils::is_associative_array($arr));
+        $this->assertTrue(EasyRdf_Utils::isAssociativeArray($arr));
 
     }
 
     public function testIsAssocNonArray()
     {
-         $this->assertFalse(EasyRdf_Utils::is_associative_array('foo'));
+         $this->assertFalse(EasyRdf_Utils::isAssociativeArray('foo'));
     }
 
     public function testIsAssocArray()
     {
         $arr = array('foo', 'bar');
-        $this->assertFalse(EasyRdf_Utils::is_associative_array($arr));
+        $this->assertFalse(EasyRdf_Utils::isAssociativeArray($arr));
     }
 
     public function testIsAssocIntAppend()
     {
         $arr = array('foo' => 'bar');
         array_push($arr, 'rat');
-        $this->assertTrue(EasyRdf_Utils::is_associative_array($arr));
+        $this->assertTrue(EasyRdf_Utils::isAssociativeArray($arr));
     }
 
     public function testIsAssocIntPreppend()
     {
         $arr = array('foo' => 'bar');
         array_unshift($arr, 'rat');
-        $this->assertFalse(EasyRdf_Utils::is_associative_array($arr));
+        $this->assertFalse(EasyRdf_Utils::isAssociativeArray($arr));
     }
 
 
@@ -640,4 +640,42 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         );
     }
 
+    public function testParseMimeTypeBasic()
+    {
+        list($type) = EasyRdf_Utils::parseMimeType('text/plain');
+        $this->assertEquals('text/plain', $type);
+    }
+
+    public function testParseMimeTypeMixedCase()
+    {
+        list($type) = EasyRdf_Utils::parseMimeType('TEXT/Plain');
+        $this->assertEquals('text/plain', $type);
+    }
+
+    public function testParseMimeTypeBasicWithWhitespace()
+    {
+        list($type) = EasyRdf_Utils::parseMimeType(' text/plain  ');
+        $this->assertEquals('text/plain', $type);
+    }
+
+    public function testParseMimeTypeBasicWithCharset()
+    {
+        list($type, $params) = EasyRdf_Utils::parseMimeType('text/plain;charset=utf8');
+        $this->assertEquals('text/plain', $type);
+        $this->assertEquals('utf8', $params['charset']);
+    }
+
+    public function testParseMimeTypeBasicWithMixedcaseCharset()
+    {
+        list($type, $params) = EasyRdf_Utils::parseMimeType('text/plain;charset=UTF8');
+        $this->assertEquals('text/plain', $type);
+        $this->assertEquals('utf8', $params['charset']);
+    }
+
+    public function testParseMimeTypeBasicWithCharsetAndWhitespace()
+    {
+        list($type, $params) = EasyRdf_Utils::parseMimeType(' text/plain ; charset = utf8 ');
+        $this->assertEquals('text/plain', $type);
+        $this->assertEquals('utf8', $params['charset']);
+    }
 }

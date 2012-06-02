@@ -1,3 +1,18 @@
+EasyRdf 0.6.3
+-------------
+* Added $graph->parseFile() method.
+* Added support for SSL (https) to the built-in HTTP client
+* Fixes for HTTP responses with a charset parameter in the Content Type.
+* Improved error handling and empty documents in JSON and rapper parsers.
+* Added connivence class for xsd:hexBinary literals:
+  - EasyRdf_Literal_HexBinary
+* Made EasyRdf more tolerant of 'badly serialised bnodes'
+* Fix for SPARQL servers that return charset in the MIME Type.
+* Fix for using xml:lang in SPARQL 1.1 Query Results JSON Format
+* Changed datetime ISO formatting to use 'Z' instead of +0000 for UTC dateTimes
+* Added the namespace for 'The Cert Ontology' to EasyRdf.
+
+
 EasyRdf 0.6.2
 -------------
 * Bug fix for missing triples in the RDF/XML serialiser.

@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -87,20 +87,6 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         );
     }
 
-    public function testSelectAllJsonWithCharset()
-    {
-        $result = new EasyRdf_Sparql_Result(
-            readFixture('sparql_select_all.json'),
-            'application/sparql-results+json; charset=utf-8'
-        );
-
-        $this->assertEquals(3, $result->numFields());
-        $this->assertEquals(array('s','p','o'), $result->getFields());
-        $this->assertEquals(
-            new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
-        );
-    }
-
     public function testSelectEmptyXml()
     {
         $result = new EasyRdf_Sparql_Result(
@@ -136,6 +122,35 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dlv#programme', $first->episode);
         $this->assertStringEquals(1, $first->pos);
         $this->assertStringEquals('Rose', $first->label);
+    }
+
+    public function testSelectLangLiteralJson()
+    {
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('sparql_select_lang.json'),
+            'application/sparql-results+json'
+        );
+
+        # 1st: Example using "lang": "en"
+        $first = $result[0];
+        $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dlv#programme', $first->episode);
+        $this->assertEquals(1, $first->pos->getValue());
+        $this->assertEquals('Rose', $first->label->getValue());
+        $this->assertEquals('en', $first->label->getLang());
+
+        # 2nd: Example using "xml:lang": "en"
+        $second = $result[1];
+        $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dmp#programme', $second->episode);
+        $this->assertEquals(2, $second->pos->getValue());
+        $this->assertEquals('The End of the World', $second->label->getValue());
+        $this->assertEquals('en', $second->label->getLang());
+
+        # 3rd: no lang
+        $second = $result[2];
+        $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dng#programme', $second->episode);
+        $this->assertEquals(3, $second->pos->getValue());
+        $this->assertEquals('The Unquiet Dead', $second->label->getValue());
+        $this->assertEquals(null, $second->label->getLang());
     }
 
     public function testAskTrueJson()
@@ -212,6 +227,18 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         );
         $result = new EasyRdf_Sparql_Result(
             readFixture('sparql_invalid.xml'),
+            'application/sparql-results+xml'
+        );
+    }
+
+    public function testNotSparqlXml()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Incorrect root node in SPARQL XML Query Results format'
+        );
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('not_sparql_result.xml'),
             'application/sparql-results+xml'
         );
     }
@@ -298,15 +325,6 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $text = $result->dump(false);
         $this->assertEquals("Result: false", $text);
-    }
-
-    public function testInvalidMimeType()
-    {
-        $this->setExpectedException(
-            'EasyRdf_Exception',
-            'Invalid MIME type: foobar'
-        );
-        $result = new EasyRdf_Sparql_Result('foobar', 'foobar');
     }
 
     public function testUnsupportedFormat()

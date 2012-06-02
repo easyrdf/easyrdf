@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -49,9 +49,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
     public function setUp()
     {
-        // FIXME: suppress stderr
-        // FIXME: check for rapper version 1.4.17
-        exec('which rapper', $output, $retval);
+        exec('rapper --version 2>/dev/null', $output, $retval);
         if ($retval == 0) {
             $this->_parser = new EasyRdf_Parser_Rapper();
             $this->_graph = new EasyRdf_Graph();
@@ -67,7 +65,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
-            "The command 'random_command_that_doesnt_exist' is not available on this system."
+            "Failed to execute the command 'random_command_that_doesnt_exist'"
         );
         new EasyRdf_Parser_Rapper('random_command_that_doesnt_exist');
     }
@@ -96,6 +94,19 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
+    }
+
+    public function testParseEmpty()
+    {
+        $this->_parser->parse(
+            $this->_graph,
+            readFixture('empty.rdf'),
+            'rdfxml',
+            'http://www.example.com/empty.rdf'
+        );
+
+        // Should be empty but no exception thrown
+        $this->assertEquals(0, $this->_graph->countTriples());
     }
 
     function testParseUnsupportedFormat()

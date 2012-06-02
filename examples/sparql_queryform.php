@@ -13,7 +13,7 @@
      * string.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
@@ -24,20 +24,29 @@
 <html>
 <head>
   <title>SPARQL Query Form</title>
+  <style type="text/css">
+    .error {
+      width: 35em;
+      border: 2px red solid;
+      padding: 1em;
+      margin: 0.5em;
+      background-color: #E6E6E6;
+    }
+  </style>
 </head>
 <body>
 <h1>SPARQL Query Form</h1>
 
-<div style="margin: 10px">
+<div style="margin: 0.5em">
   <?php
     print form_tag();
     print label_tag('endpoint');
     print text_field_tag('endpoint', "http://localhost:8080/sparql", array('size'=>70)).'<br />';
-    print "<pre>";
+    print "<code>";
     foreach(EasyRdf_Namespace::namespaces() as $prefix => $uri) {
-        print "PREFIX $prefix: &lt;".htmlspecialchars($uri)."&gt;\n";
+        print "PREFIX $prefix: &lt;".htmlspecialchars($uri)."&gt;<br />\n";
     }
-    print "</pre>";
+    print "</code>";
     print text_area_tag('query', "SELECT * WHERE {\n  ?s ?p ?o\n}\nLIMIT 10").'<br />';
     print check_box_tag('text') . label_tag('text', 'Plain text results').'<br />';
     print reset_tag() . submit_tag();
@@ -48,11 +57,15 @@
 <?php
   if (isset($_REQUEST['endpoint']) and isset($_REQUEST['query'])) {
       $sparql = new EasyRdf_Sparql_Client($_REQUEST['endpoint']);
-      $results = $sparql->query($_REQUEST['query']);
-      if (isset($_REQUEST['text'])) {
-          print "<pre>".htmlspecialchars($results->dump(false))."</pre>";
-      } else {
-          print $results->dump(true);
+      try {
+          $results = $sparql->query($_REQUEST['query']);
+          if (isset($_REQUEST['text'])) {
+              print "<pre>".htmlspecialchars($results->dump(false))."</pre>";
+          } else {
+              print $results->dump(true);
+          }
+      } catch (Exception $e) {
+          print "<div class='error'>".$e->getMessage()."</div>\n";
       }
   }
 ?>

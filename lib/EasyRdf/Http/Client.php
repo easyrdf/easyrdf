@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  * Copyright (c) 2005-2009 Zend Technologies USA Inc.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  *             Copyright (c) 2005-2009 Zend Technologies USA Inc.
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
@@ -44,7 +44,7 @@
  * implementation try Zend_Http_Client.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Http_Client
@@ -387,11 +387,24 @@ class EasyRdf_Http_Client
         do {
             // Clone the URI and add the additional GET parameters to it
             $uri = parse_url($this->_uri);
-            $host = $uri['host'];
             if (isset($uri['port'])) {
                 $port = $uri['port'];
             } else {
-                $port = 80;
+                if ($uri['scheme'] === 'https') {
+                    $port = 443;
+                } else {
+                    $port = 80;
+                }
+            }
+
+            if ($uri['scheme'] === 'http') {
+                $host = $uri['host'];
+            } else if ($uri['scheme'] === 'https') {
+                $host = 'ssl://'.$uri['host'];
+            } else {
+                throw new EasyRdf_Exception(
+                    "Unsupported URI scheme: ".$uri['scheme']
+                );
             }
 
             if (!empty($this->_paramsGet)) {
@@ -403,14 +416,14 @@ class EasyRdf_Http_Client
                 $uri['query'] .= http_build_query($this->_paramsGet, null, '&');
             }
 
-            $headers = $this->_prepareHeaders($host, $port);
+            $headers = $this->_prepareHeaders($uri['host'], $port);
 
             // Open socket to remote server
-            $socket = fsockopen(
+            $socket = @fsockopen(
                 $host, $port, $errno, $errstr, $this->_config['timeout']
             );
             if (!$socket) {
-                throw new EasyRdf_Exception($errstr);
+                throw new EasyRdf_Exception("Unable to connect to $host:$port ($errstr)");
             }
 
             // Write the request
@@ -437,7 +450,7 @@ class EasyRdf_Http_Client
             // FIXME: support HTTP/1.1 100 Continue
 
             // Close the socket
-            fclose($socket);
+            @fclose($socket);
 
             // Parse the response string
             $response = EasyRdf_Http_Response::fromString($content);
@@ -493,7 +506,7 @@ class EasyRdf_Http_Client
         // Set the host header
         if (! isset($this->_headers['host'])) {
             // If the port is not default, add it
-            if ($port != 80) {
+            if ($port !== 80 and $port !== 443) {
                 $host .= ':' . $port;
             }
             $headers[] = "Host: {$host}";

@@ -79,9 +79,15 @@ class EasyRdf_Literal
      */
     public static function create($value, $lang=null, $datatype=null)
     {
-        if (EasyRdf_Utils::is_associative_array($value)) {
-            $lang = isset($value['lang']) ? $value['lang'] : null;
-            $datatype = isset($value['datatype']) ? $value['datatype'] : null;
+        if (EasyRdf_Utils::isAssociativeArray($value)) {
+            if (isset($value['xml:lang'])) {
+               $lang = $value['xml:lang'];
+            } else if (isset($value['lang'])) {
+               $lang = $value['lang'];
+            }
+            if (isset($value['datatype'])) {
+               $datatype = $value['datatype'];
+            }
             $value = isset($value['value']) ? $value['value'] : null;
         }
 

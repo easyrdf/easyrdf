@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -53,6 +53,14 @@ require_once 'PHPUnit/Util/Filter.php';
 error_reporting( E_ALL | E_STRICT );
 
 /*
+ * Check the version number of PHP Unit.
+ */
+if (!preg_match("/^3\.4\.\d+$/", PHPUnit_Runner_Version::id())) {
+    error_log("PHPUnit version 3.4.x is required.");
+    exit();
+}
+
+/*
  * Determine the root, lib, and test directories
  */
 $easyrdfRoot      = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
@@ -66,7 +74,7 @@ $path = array(
     $easyrdfLibDir,
     $easyrdfTestDir,
     get_include_path()
-    );
+);
 set_include_path(implode(PATH_SEPARATOR, $path));
 
 /*
@@ -84,6 +92,17 @@ require_once 'EasyRdf/Http/MockClient.php';
 
 
 /**
+ * Helper function: get path to a fixture file
+ *
+ * @param string $name fixture file name
+ * @return string Path to the fixture file
+ */
+function fixturePath($name)
+{
+    return dirname(__FILE__) . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $name;
+}
+
+/**
  * Helper function: read fixture data from file
  *
  * @param string $name fixture file name
@@ -91,7 +110,9 @@ require_once 'EasyRdf/Http/MockClient.php';
  */
 function readFixture($name)
 {
-    return file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $name);
+    return file_get_contents(
+        fixturePath($name)
+    );
 }
 
 /**

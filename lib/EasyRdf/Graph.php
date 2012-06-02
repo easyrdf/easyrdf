@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -40,7 +40,7 @@
  * Container for collection of EasyRdf_Resources.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Graph
@@ -218,6 +218,26 @@ class EasyRdf_Graph
     }
 
     /**
+     * Parse a file containing RDF data into the graph object.
+     *
+     * @param  string  $filename The path of the file to load
+     * @param  string  $format   Optional format of the file
+     * @param  string  $uri      The URI of the file to load
+     */
+    public function parseFile($filename, $format=null, $uri=null)
+    {
+        if ($uri === null) {
+            $uri = "file://$filename";
+        }
+
+        return $this->parse(
+            file_get_contents($filename),
+            $format,
+            $uri
+        );
+    }
+
+    /**
      * Load RDF data into the graph.
      *
      * If a URI is supplied, but no data then the data will
@@ -255,8 +275,9 @@ class EasyRdf_Graph
 
             $data = $response->getBody();
             if (!$format) {
-                $format = $response->getHeader('Content-Type');
-                $format = preg_replace('/;(.+)$/', '', $format);
+                list($format, $params) = EasyRdf_Utils::parseMimeType(
+                    $response->getHeader('Content-Type')
+                );
             }
         }
 
