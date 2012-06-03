@@ -1,0 +1,20 @@
+{
+    "name": "njh/easyrdf",
+    "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/njh/easyrdf"
+        }
+    ],
+    "version": "0.6.4",
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Nicholas Humfrey",
+            "email": "njh@aelius.com",
+            "homepage": "http://www.aelius.com/njh/",
+            "role": "Developer"
+        }
+     ]
+}
