@@ -387,16 +387,6 @@ class EasyRdf_Http_Client
         do {
             // Clone the URI and add the additional GET parameters to it
             $uri = parse_url($this->_uri);
-            if (isset($uri['port'])) {
-                $port = $uri['port'];
-            } else {
-                if ($uri['scheme'] === 'https') {
-                    $port = 443;
-                } else {
-                    $port = 80;
-                }
-            }
-
             if ($uri['scheme'] === 'http') {
                 $host = $uri['host'];
             } else if ($uri['scheme'] === 'https') {
@@ -405,6 +395,16 @@ class EasyRdf_Http_Client
                 throw new EasyRdf_Exception(
                     "Unsupported URI scheme: ".$uri['scheme']
                 );
+            }
+
+            if (isset($uri['port'])) {
+                $port = $uri['port'];
+            } else {
+                if ($uri['scheme'] === 'https') {
+                    $port = 443;
+                } else {
+                    $port = 80;
+                }
             }
 
             if (!empty($this->_paramsGet)) {
