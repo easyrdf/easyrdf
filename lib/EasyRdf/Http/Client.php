@@ -131,9 +131,9 @@ class EasyRdf_Http_Client
             $uri = strval($uri);
         }
 
-        if (!preg_match('/^http:/', $uri)) {
+        if (!preg_match('/^http(s?):/', $uri)) {
             throw new InvalidArgumentException(
-                "EasyRdf_Http_Client only supports the 'http' scheme."
+                "EasyRdf_Http_Client only supports the 'http' and 'https' schemes."
             );
         }
 

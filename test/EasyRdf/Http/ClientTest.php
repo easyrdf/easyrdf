@@ -57,11 +57,23 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSetGetUriHttpsString()
+    {
+        $uristr = 'https://example.com/';
+        $this->_client->setUri($uristr);
+
+        $this->assertStringEquals(
+            $uristr,
+            $this->_client->getUri(),
+            'Returned Uri object does not hold the expected URI'
+        );
+    }
+
     public function testSetGopherUri()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            "EasyRdf_Http_Client only supports the 'http' scheme."
+            "EasyRdf_Http_Client only supports the 'http' and 'https' schemes."
         );
         $uristr = 'gopher://g.example.com/';
         $this->_client->setUri($uristr);
