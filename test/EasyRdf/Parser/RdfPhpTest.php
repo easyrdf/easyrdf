@@ -53,8 +53,8 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
             'http://example.com/joe' => array(
                 'http://xmlns.com/foaf/0.1/name' => array(
                     array(
-                        'value' => 'Joseph Bloggs',
                         'type' => 'literal',
+                        'value' => 'Joseph Bloggs',
                         'lang' => 'en'
                     )
                 )

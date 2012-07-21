@@ -309,9 +309,9 @@ class EasyRdf_Sparql_Result extends ArrayIterator
                     $term = $binding->firstChild;
                     $data = array(
                         'type' => $term->nodeName,
+                        'value' => $term->nodeValue,
                         'lang' => $term->getAttribute('lang'),
-                        'datatype' => $term->getAttribute('datatype'),
-                        'value' => $term->nodeValue
+                        'datatype' => $term->getAttribute('datatype')
                     );
                     $t->$key = $this->_newTerm($data);
                 }
