@@ -844,7 +844,7 @@ class EasyRdf_Graph
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  object  $value The value to delete (null to delete all values)
-     * @return null
+     * @return integer The number of values deleted
      */
     public function delete($resource, $property, $value=null)
     {
@@ -852,23 +852,29 @@ class EasyRdf_Graph
         $this->checkPropertyParam($property, $inverse);
         $this->checkValueParam($value);
 
+        $count = 0;
         $property = EasyRdf_Namespace::expand($property);
         if (isset($this->_index[$resource][$property])) {
             foreach ($this->_index[$resource][$property] as $k => $v) {
                 if (!$value or $v == $value) {
                     unset($this->_index[$resource][$property][$k]);
+                    $count++;
                     if ($v['type'] == 'uri' or $v['type'] == 'bnode') {
                         $this->deleteInverse($v['value'], $property, $resource);
                     }
                 }
             }
-            if (count($this->_index[$resource][$property]) == 0)
-                unset($this->_index[$resource][$property]);
-            if (count($this->_index[$resource]) == 0)
-                unset($this->_index[$resource]);
+
+            // Clean up the indexes - remove empty properties and resources
+            if ($count) {
+                if (count($this->_index[$resource][$property]) == 0)
+                    unset($this->_index[$resource][$property]);
+                if (count($this->_index[$resource]) == 0)
+                    unset($this->_index[$resource]);
+            }
         }
 
-        return null;
+        return $count;
     }
 
     /** Delete a resource from a property of another resource

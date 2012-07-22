@@ -1045,18 +1045,25 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testDelete()
     {
         $this->assertStringEquals('Test A', $this->_graph->get($this->_uri, 'rdf:test'));
-        $this->_graph->delete($this->_uri, 'rdf:test');
+        $this->assertEquals(2, $this->_graph->delete($this->_uri, 'rdf:test'));
         $this->assertEquals(array(), $this->_graph->all($this->_uri, 'rdf:test'));
     }
 
     public function testDeleteWithUri()
     {
         $this->assertStringEquals('Test A', $this->_graph->get($this->_uri, 'rdf:test'));
-        $this->_graph->delete(
-            $this->_uri,
-            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+        $this->assertEquals(2, 
+            $this->_graph->delete(
+                $this->_uri,
+                'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+            )
         );
         $this->assertEquals(array(), $this->_graph->all($this->_uri, 'rdf:test'));
+    }
+
+    public function testDeleteNonExistantProperty()
+    {
+        $this->assertEquals(0, $this->_graph->delete($this->_uri, 'foo:bar'));
     }
 
     public function testDeleteNullKey()
@@ -1092,7 +1099,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://example.com/');
         $this->assertTrue($this->_graph->hasProperty($this->_uri, 'foaf:homepage'));
         $this->assertTrue($this->_graph->hasProperty('http://example.com/', '^foaf:homepage'));
-        $this->_graph->delete($this->_uri, 'foaf:homepage');
+        $this->assertEquals(1, $this->_graph->delete($this->_uri, 'foaf:homepage'));
         $this->assertFalse($this->_graph->hasProperty($this->_uri, 'foaf:homepage'));
         $this->assertFalse($this->_graph->hasProperty('http://example.com/', '^foaf:homepage'));
     }
@@ -1100,10 +1107,12 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testDeleteLiteralValue()
     {
         $this->assertEquals(2, $this->_graph->count($this->_uri, 'rdf:test'));
-        $this->_graph->delete($this->_uri, 'rdf:test', 'Test A');
+        $this->assertEquals(1, $this->_graph->delete($this->_uri, 'rdf:test', 'Test A'));
         $this->assertEquals(1, $this->_graph->count($this->_uri, 'rdf:test'));
-        $this->_graph->delete(
-          $this->_uri, 'rdf:test', new EasyRdf_Literal('Test B', 'en')
+        $this->assertEquals(1,
+            $this->_graph->delete(
+                $this->_uri, 'rdf:test', new EasyRdf_Literal('Test B', 'en')
+            )
         );
         $this->assertEquals(0, $this->_graph->count($this->_uri, 'rdf:test'));
     }
@@ -1113,7 +1122,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $res = $this->_graph->resource('http://www.example.com/');
         $this->_graph->add($this->_uri, 'foaf:homepage', $res);
         $this->assertEquals(1, $this->_graph->count($this->_uri, 'foaf:homepage'));
-        $this->_graph->delete($this->_uri, 'foaf:homepage', $res);
+        $this->assertEquals(1, $this->_graph->delete($this->_uri, 'foaf:homepage', $res));
         $this->assertEquals(0, $this->_graph->count($this->_uri, 'foaf:homepage'));
     }
 
@@ -1122,7 +1131,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         // Keys are deliberately in the wrong order
         $testa = array('value' => 'Test A', 'type' => 'literal');
         $this->assertEquals(2, $this->_graph->count($this->_uri, 'rdf:test'));
-        $this->_graph->delete($this->_uri, 'rdf:test', $testa);
+        $this->assertEquals(1, $this->_graph->delete($this->_uri, 'rdf:test', $testa));
         $this->assertEquals(1, $this->_graph->count($this->_uri, 'rdf:test'));
     }
 
@@ -1132,7 +1141,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $res = array('value' => 'http://www.example.com/', 'type' => 'uri');
         $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://www.example.com/');
         $this->assertEquals(1, $this->_graph->count($this->_uri, 'foaf:homepage'));
-        $this->_graph->delete($this->_uri, 'foaf:homepage', $res);
+        $this->assertEquals(1, $this->_graph->delete($this->_uri, 'foaf:homepage', $res));
         $this->assertEquals(0, $this->_graph->count($this->_uri, 'foaf:homepage'));
     }
 
@@ -1141,7 +1150,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $res = $this->_graph->resource('http://www.example.com/');
         $this->_graph->addResource($this->_uri, 'foaf:homepage', $res);
         $this->assertEquals(1, $this->_graph->count($this->_uri, 'foaf:homepage'));
-        $this->_graph->deleteResource($this->_uri, 'foaf:homepage', $res);
+        $this->assertEquals(1, $this->_graph->deleteResource($this->_uri, 'foaf:homepage', $res));
         $this->assertEquals(0, $this->_graph->count($this->_uri, 'foaf:homepage'));
     }
 
@@ -1150,21 +1159,21 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $res = 'http://www.example.com/';
         $this->_graph->addResource($this->_uri, 'foaf:homepage', $res);
         $this->assertEquals(1, $this->_graph->count($this->_uri, 'foaf:homepage'));
-        $this->_graph->deleteResource($this->_uri, 'foaf:homepage', $res);
+        $this->assertEquals(1, $this->_graph->deleteResource($this->_uri, 'foaf:homepage', $res));
         $this->assertEquals(0, $this->_graph->count($this->_uri, 'foaf:homepage'));
     }
 
     public function testDeleteLiteral()
     {
         $this->assertEquals(2, $this->_graph->count($this->_uri, 'rdf:test'));
-        $this->_graph->deleteLiteral($this->_uri, 'rdf:test', 'Test A');
+        $this->assertEquals(1, $this->_graph->deleteLiteral($this->_uri, 'rdf:test', 'Test A'));
         $this->assertEquals(1, $this->_graph->count($this->_uri, 'rdf:test'));
     }
 
     public function testDeleteLiteralWithLang()
     {
         $this->assertEquals(2, $this->_graph->count($this->_uri, 'rdf:test'));
-        $this->_graph->deleteLiteral($this->_uri, 'rdf:test', 'Test B', 'en');
+        $this->assertEquals(1, $this->_graph->deleteLiteral($this->_uri, 'rdf:test', 'Test B', 'en'));
         $this->assertEquals(1, $this->_graph->count($this->_uri, 'rdf:test'));
     }
 
