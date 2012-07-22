@@ -678,6 +678,19 @@ class EasyRdf_Graph
         return $this->all($type, '^rdf:type');
     }
 
+    /** Count all values for a property of a resource
+     *
+     * @param  string  $resource The URI of the resource (e.g. http://example.com/joe#me)
+     * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  string  $type     The type of value to filter by (e.g. literal)
+     * @param  string  $lang     The language to filter by (e.g. en)
+     * @return integer           The number of values for this property
+     */
+    public function count($resource, $property, $type=null, $lang=null)
+    {
+        return count($this->all($resource, $property, $type, $lang));
+    }
+
     /** Concatenate all values for a property of a resource into a string.
      *
      * The default is to join the values together with a space character.
