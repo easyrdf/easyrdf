@@ -68,7 +68,7 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
             '"http:\/\/xmlns.com\/foaf\/0.1\/name":['.
             '{"type":"literal","value":"Joe Bloggs","lang":"en"}],'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/age":['.
-            '{"type":"literal","value":59,"datatype":'.
+            '{"type":"literal","value":"59","datatype":'.
             '"http:\/\/www.w3.org\/2001\/XMLSchema#integer"}],'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/project":['.
             '{"type":"bnode","value":"_:genid1"}]},"_:genid1":{'.

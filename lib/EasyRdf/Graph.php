@@ -420,17 +420,47 @@ class EasyRdf_Graph
                         "\$value should respond to the method toArray()"
                     );
                 }
-            } else if (!is_array($value)) {
+            } else if (is_array($value)) {
+                if (empty($value['type'])) {
+                    throw new InvalidArgumentException(
+                        "\$value is missing a 'type' key"
+                    );
+                }
+
+                if (empty($value['value'])) {
+                    throw new InvalidArgumentException(
+                        "\$value is missing a 'value' key"
+                    );
+                }
+
+                // Fix ordering and remove unknown keys
+                $value = array(
+                    'type' => strval($value['type']),
+                    'value' => strval($value['value']),
+                    'lang' => isset($value['lang']) ? strval($value['lang']) : null,
+                    'datatype' => isset($value['datatype']) ? strval($value['datatype']) : null
+                );
+            } else {
                 $value = array(
                     'type' => 'literal',
-                    'value' => $value,
+                    'value' => strval($value),
                     'datatype' => EasyRdf_Literal::getDatatypeForValue($value)
+                );
+            }
+            if (!in_array($value['type'], array('uri', 'bnode', 'literal'), true)) {
+                throw new InvalidArgumentException(
+                    "\$value does not have a valid type (".$value['type'].")"
                 );
             }
             if (empty($value['datatype']))
                 unset($value['datatype']);
             if (empty($value['lang']))
                 unset($value['lang']);
+            if (isset($value['lang']) and isset($value['datatype'])) {
+                throw new InvalidArgumentException(
+                    "\$value cannot have both and language and a datatype"
+                );
+            }
         }
     }
 

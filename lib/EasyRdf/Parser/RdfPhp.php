@@ -78,8 +78,6 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
         // Reset the bnode mapping
         $this->resetBnodeMap();
 
-        # FIXME: validate the data (?)
-
         foreach ($data as $subject => $properties) {
             if (substr($subject, 0, 2) === '_:') {
                 $subject = $this->remapBnode($graph, $subject);
