@@ -88,7 +88,6 @@ class EasyRdf_Utils
         } else {
             return false;
         }
-
     }
 
     /**
