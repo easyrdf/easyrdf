@@ -1086,7 +1086,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->delete($this->_uri, array());
     }
 
-    public function testDeleteResource()
+    public function testDeletePropertyResource()
     {
         $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://example.com/');
         $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://example.com/');
@@ -1134,6 +1134,38 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertEquals(1, $this->_graph->count($this->_uri, 'foaf:homepage'));
         $this->_graph->delete($this->_uri, 'foaf:homepage', $res);
         $this->assertEquals(0, $this->_graph->count($this->_uri, 'foaf:homepage'));
+    }
+
+    public function testDeleteResource()
+    {
+        $res = $this->_graph->resource('http://www.example.com/');
+        $this->_graph->addResource($this->_uri, 'foaf:homepage', $res);
+        $this->assertEquals(1, $this->_graph->count($this->_uri, 'foaf:homepage'));
+        $this->_graph->deleteResource($this->_uri, 'foaf:homepage', $res);
+        $this->assertEquals(0, $this->_graph->count($this->_uri, 'foaf:homepage'));
+    }
+
+    public function testDeleteResourceString()
+    {
+        $res = 'http://www.example.com/';
+        $this->_graph->addResource($this->_uri, 'foaf:homepage', $res);
+        $this->assertEquals(1, $this->_graph->count($this->_uri, 'foaf:homepage'));
+        $this->_graph->deleteResource($this->_uri, 'foaf:homepage', $res);
+        $this->assertEquals(0, $this->_graph->count($this->_uri, 'foaf:homepage'));
+    }
+
+    public function testDeleteLiteral()
+    {
+        $this->assertEquals(2, $this->_graph->count($this->_uri, 'rdf:test'));
+        $this->_graph->deleteLiteral($this->_uri, 'rdf:test', 'Test A');
+        $this->assertEquals(1, $this->_graph->count($this->_uri, 'rdf:test'));
+    }
+
+    public function testDeleteLiteralWithLang()
+    {
+        $this->assertEquals(2, $this->_graph->count($this->_uri, 'rdf:test'));
+        $this->_graph->deleteLiteral($this->_uri, 'rdf:test', 'Test B', 'en');
+        $this->assertEquals(1, $this->_graph->count($this->_uri, 'rdf:test'));
     }
 
     public function testGetType()

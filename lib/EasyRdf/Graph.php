@@ -871,6 +871,54 @@ class EasyRdf_Graph
         return null;
     }
 
+    /** Delete a resource from a property of another resource
+     *
+     * The resource can either be a resource or the URI of a resource.
+     *
+     * Example:
+     *   $graph->delete("http://example.com/bob", 'foaf:knows', 'http://example.com/alice');
+     *
+     * @param  mixed $resource   The resource to delete data from
+     * @param  mixed $property   The property name
+     * @param  mixed $resource2  The resource value of the property to be deleted
+     */
+    public function deleteResource($resource, $property, $resource2)
+    {
+        $this->checkResourceParam($resource);
+        $this->checkPropertyParam($property, $inverse);
+        $this->checkResourceParam($resource2);
+
+        return $this->delete(
+            $resource, $property, array(
+                'type' => substr($resource2, 0, 2) == '_:' ? 'bnode' : 'uri',
+                'value' => $resource2
+            )
+        );
+    }
+
+    /** Delete a literal value from a property of a resource
+     *
+     * Example:
+     *   $graph->delete("http://www.example.com", 'dc:title', 'Title of Page');
+     *
+     * @param  mixed  $resource  The resource to add data to
+     * @param  mixed  $property  The property name
+     * @param  mixed  $value     The value of the property
+     * @param  string $lang      The language of the literal
+     */
+    public function deleteLiteral($resource, $property, $value, $lang=null)
+    {
+        $this->checkResourceParam($resource);
+        $this->checkPropertyParam($property, $inverse);
+        $this->checkValueParam($value);
+
+        if ($lang) {
+            $value['lang'] = $lang;
+        }
+
+        return $this->delete($resource, $property, $value);
+    }
+
     /** This function is for internal use only.
      *
      * Deletes an inverse property from a resource.
