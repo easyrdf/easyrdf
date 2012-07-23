@@ -411,7 +411,7 @@ class EasyRdf_Graph
      */
     protected function checkValueParam(&$value)
     {
-        if ($value) {
+        if (isset($value)) {
             if (is_object($value)) {
                 if (method_exists($value, 'toArray')) {
                     $value = $value->toArray();
@@ -421,13 +421,13 @@ class EasyRdf_Graph
                     );
                 }
             } else if (is_array($value)) {
-                if (empty($value['type'])) {
+                if (!isset($value['type'])) {
                     throw new InvalidArgumentException(
                         "\$value is missing a 'type' key"
                     );
                 }
 
-                if (empty($value['value'])) {
+                if (!isset($value['value'])) {
                     throw new InvalidArgumentException(
                         "\$value is missing a 'value' key"
                     );

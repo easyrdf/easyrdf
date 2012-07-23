@@ -1009,6 +1009,20 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->add($invalidResource, 'foaf:name', 'value');
     }
 
+    public function testAddZero()
+    {
+        $this->assertNull($this->_graph->get($this->_uri, 'rdf:test2'));
+        $this->_graph->add($this->_uri, 'rdf:test2', 0);
+        $this->assertStringEquals('0', $this->_graph->get($this->_uri, 'rdf:test2'));
+    }
+
+    public function testAddLiteralZero()
+    {
+        $this->assertNull($this->_graph->get($this->_uri, 'rdf:test2'));
+        $this->_graph->addLiteral($this->_uri, 'rdf:test2', 0);
+        $this->assertStringEquals('0', $this->_graph->get($this->_uri, 'rdf:test2'));
+    }
+
     public function testAddResource()
     {
         $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://www.example.com/');
