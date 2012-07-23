@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="EasyRdf" default="default">
-  <property name="version" value="0.6.4" />
+  <property name="version" value="0.7.0" />
   <property name="shortname" value="easyrdf" />
   <property name="shortdesc" value="PHP library for working with RDF as objects." />
   <property name="homepage" value="http://www.aelius.com/njh/easyrdf/" />
@@ -25,6 +25,7 @@
   </fileset>
 
   <fileset id="test-support" dir="${project.basedir}">
+    <include name="test/cli_example_wrapper.php" />
     <include name="test/TestHelper.php" />
     <include name="test/EasyRdf/TestCase.php" />
     <include name="test/EasyRdf/Http/MockClient.php" />
@@ -33,6 +34,10 @@
 
   <fileset id="examples" dir="${project.basedir}">
     <include name="examples/*.php" />
+  </fileset>
+
+  <fileset id="examples-tests" dir="${project.basedir}">
+    <include name="test/examples/*Test.php" />
   </fileset>
 
   <fileset id="docs" dir="${project.basedir}">
@@ -52,6 +57,15 @@
       <formatter type="xml" usefile="true" todir="${reports.dir}" outfile="test-results.xml" />
     </phpunit>
     <phpunitreport format="noframes" todir="${reports.dir}/html" infile="${reports.dir}/test-results.xml" />
+  </target>
+
+  <target name="test-examples" depends="dir_setup" description="Run all unit tests.">
+    <phpunit haltonfailure="true" printsummary="true">
+      <batchtest>
+        <fileset refid="examples-tests" />
+      </batchtest>
+      <formatter type="plain" usefile="false" />
+    </phpunit>
   </target>
 
 <!-- Can't get this to work on my laptop
@@ -128,6 +142,7 @@
       <fileset refid="tests" />
       <fileset refid="test-support" />
       <fileset refid="examples" />
+      <fileset refid="examples-tests" />
       <fileset refid="docs" />
       <fileset dir="${project.basedir}">
         <include name="build.xml" />
