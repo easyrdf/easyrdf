@@ -137,3 +137,69 @@ function requireExists($filename)
 
     return false;
 }
+
+/**
+ * Helper function: execute an example script in a new process
+ *
+ * Process isolation helps ensure that one script isn't tainting
+ * the environment for another script, making it a fairer test.
+ *
+ * If you want to use a non-default PHP CLI executable, then set
+ * the PHP_BIN environment variable to the path of executable.
+ *
+ * @param string $name   the name of the example to run
+ * @param string $params query string parameters to pass to the script
+ * @return string The resulting webpage (everything printed to STDOUT)
+ */
+function executeExample($name, $params=array())
+{
+    $phpBin = getenv('PHP_BIN');
+    if (!$phpBin) {
+        $phpBin = 'php';
+    }
+
+    // We use a wrapper to setup the environment
+    $wrapper = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cli_example_wrapper.php';
+
+    // Open a pipe to the new PHP process
+    $descriptorspec = array(
+        0 => array("pipe", "r"),
+        1 => array("pipe", "w"),
+        2 => array("pipe", "w")
+    );
+
+    $process = proc_open(
+        escapeshellcmd($phpBin)." ".
+        escapeshellcmd($wrapper)." ".
+        escapeshellcmd($name)." ".
+        escapeshellcmd(http_build_query($params)),
+        $descriptorspec, $pipes
+    );
+    if (is_resource($process)) {
+        // $pipes now looks like this:
+        // 0 => writeable handle connected to child stdin
+        // 1 => readable handle connected to child stdout
+        // 2 => readable handle connected to child stderr
+
+        fclose($pipes[0]);
+        $stdout = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+
+        // It is important that you close any pipes before calling
+        // proc_close in order to avoid a deadlock
+        $returnValue = proc_close($process);
+        if ($returnValue or $stderr) {
+            throw new Exception(
+                "Failed to run script ($returnValue): ".$stderr.$stdout
+            );
+        }
+    } else {
+        throw new Exception(
+            "Failed to execute new php process: $phpBin"
+        );
+    }
+
+    return $stdout;
+}
