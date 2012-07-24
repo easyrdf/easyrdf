@@ -312,7 +312,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser
         if ($c == ')') {
             // Empty list
             $this->read();
-            return NULL;
+            return array(
+                'type' => 'uri',
+                'value' => EasyRdf_Namespace::get('rdf') . 'nil'
+            );
         } else {
             $listRoot = array(
                 'type' => 'bnode',
@@ -325,10 +328,12 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser
 
             // generated bNode becomes subject, predicate becomes rdf:first
             $this->_subject = $listRoot;
-            $this->_predicate = EasyRdf_Namespace::get('rdf') . 'first';
+            $this->_predicate = array(
+                'type' => 'uri',
+                'value' => EasyRdf_Namespace::get('rdf') . 'first'
+            );
 
             $this->parseObject();
-
             $bNode = $listRoot;
 
             while ($this->skipWSC() != ')') {
@@ -357,7 +362,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser
             $this->_graph->add(
                 $bNode['value'],
                 EasyRdf_Namespace::get('rdf') . 'rest',
-                EasyRdf_Namespace::get('rdf') . 'nil'
+                array(
+                    'type' => 'uri',
+                    'value' => EasyRdf_Namespace::get('rdf') . 'nil'
+                )
             );
 
             // Restore previous subject and predicate
