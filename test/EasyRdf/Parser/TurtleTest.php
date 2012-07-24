@@ -195,4 +195,9 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         $this->turtleTestCase('test-13');
     }
+
+    public function testRdfSchema()
+    {
+        $this->turtleTestCase('rdf-schema');
+    }
 }
