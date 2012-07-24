@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -40,30 +40,27 @@ require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
 require_once 'EasyRdf/Parser/Turtle.php';
+require_once 'EasyRdf/Serialiser/NtriplesArray.php';
 
 class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
 {
     protected $_parser = null;
-    protected $_graph = null;
-    protected $_data = null;
 
     public function setUp()
     {
-        $this->_graph = new EasyRdf_Graph();
-        $this->_parser = new EasyRdf_Parser_Turtle();
-        $this->_data = readFixture('foaf.ttl');
+        $this->_turtleParser = new EasyRdf_Parser_Turtle();
+        $this->_baseUri = 'http://www.w3.org/2001/sw/DataAccess/df1/tests/';
     }
 
-    public function testParseTurtle()
+    public function testParseFoaf()
     {
-        $this->_parser->parse(
-            $this->_graph,
-            $this->_data,
-            'turtle',
-            'http://www.example.com/joe/foaf.ttl'
+        $graph = new EasyRdf_Graph();
+        $this->_turtleParser->parse(
+            $graph, readFixture('foaf.ttl'),
+            'turtle', $this->_baseUri
         );
 
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
         $this->assertEquals('EasyRdf_Resource', get_class($joe));
         $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
@@ -75,7 +72,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
         $this->assertEquals('en', $name->getLang());
         $this->assertEquals(null, $name->getDatatype());
 
-        $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
+        $foaf = $graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
@@ -86,8 +83,114 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'EasyRdf_Parser_Turtle does not support: unsupportedformat'
         );
-        $rdf = $this->_parser->parse(
-            $this->_graph, $this->_data, 'unsupportedformat', null
+        $this->_turtleParser->parse(
+            new EasyRdf_Graph(), "data", 'unsupportedformat', null
         );
+    }
+
+    /* The rest of this script is runs the Turtle Test Suite
+       from the files here:
+       http://www.w3.org/TeamSubmission/turtle/tests/
+     */
+
+    protected function parseTurtle($filename)
+    {
+        $graph = new EasyRdf_Graph();
+        $this->_turtleParser->parse(
+            $graph,
+            readFixture($filename),
+            'turtle',
+            $this->_baseUri . basename($filename)
+        );
+        return $graph->serialise('ntriples-array');
+    }
+
+    protected function parseNtriples($filename)
+    {
+        $graph = new EasyRdf_Graph();
+        $graph->parse(
+            readFixture($filename),
+            'ntriples',
+            $this->_baseUri . basename($filename)
+        );
+        return $graph->serialise('ntriples-array');
+    }
+
+    protected function turtleTestCase($name)
+    {
+        $this->assertEquals(
+            $this->parseNtriples("turtle/$name.out"),
+            $this->parseTurtle("turtle/$name.ttl")
+        );
+    }
+
+    public function testCase00()
+    {
+        $this->turtleTestCase('test-00');
+    }
+
+    public function testCase01()
+    {
+        $this->turtleTestCase('test-01');
+    }
+
+    public function testCase02()
+    {
+        $this->turtleTestCase('test-02');
+    }
+
+    public function testCase03()
+    {
+        $this->turtleTestCase('test-03');
+    }
+
+    public function testCase04()
+    {
+        $this->turtleTestCase('test-04');
+    }
+
+    public function testCase05()
+    {
+        $this->turtleTestCase('test-05');
+    }
+
+    public function testCase06()
+    {
+        $this->turtleTestCase('test-06');
+    }
+
+    public function testCase07()
+    {
+        $this->turtleTestCase('test-07');
+    }
+
+    public function testCase08()
+    {
+        $this->turtleTestCase('test-08');
+    }
+
+    public function testCase09()
+    {
+        $this->turtleTestCase('test-09');
+    }
+
+    public function testCase10()
+    {
+        $this->turtleTestCase('test-10');
+    }
+
+    public function testCase11()
+    {
+        $this->turtleTestCase('test-11');
+    }
+
+    public function testCase12()
+    {
+        $this->turtleTestCase('test-12');
+    }
+
+    public function testCase13()
+    {
+        $this->turtleTestCase('test-13');
     }
 }
