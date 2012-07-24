@@ -49,6 +49,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     public function setUp()
     {
         $this->_turtleParser = new EasyRdf_Parser_Turtle();
+        $this->_ntriplesParser = new EasyRdf_Parser_Ntriples();
         $this->_baseUri = 'http://www.w3.org/2001/sw/DataAccess/df1/tests/';
     }
 
@@ -108,7 +109,8 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     protected function parseNtriples($filename)
     {
         $graph = new EasyRdf_Graph();
-        $graph->parse(
+        $this->_ntriplesParser->parse(
+            $graph,
             readFixture($filename),
             'ntriples',
             $this->_baseUri . basename($filename)
