@@ -694,8 +694,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser
         $uri = '';
 
         // First character should be '<'
-        $c = $this->read();
-        $this->verifyCharacter($c, "<");
+        $this->verifyCharacter($this->read(), "<");
 
         // Read up to the next '>' character
         while (true) {
@@ -727,8 +726,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser
         //  $this->reportError(e.getMessage());
         //}
 
-        // FIXME: resolve the URI
-        return array('type' => 'uri', 'value' => $uri);
+        return array(
+            'type' => 'uri',
+            'value' => EasyRdf_Utils::resolveUriReference($this->_baseUri, $uri)
+        );
     }
 
     /**
