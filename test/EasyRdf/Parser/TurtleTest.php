@@ -128,72 +128,154 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
 
     public function testCase00()
     {
+        # Blank subject
         $this->turtleTestCase('test-00');
     }
 
     public function testCase01()
     {
+        # @prefix and qnames
         $this->turtleTestCase('test-01');
     }
 
     public function testCase02()
     {
+        # , operator
         $this->turtleTestCase('test-02');
     }
 
     public function testCase03()
     {
+        # ; operator
         $this->turtleTestCase('test-03');
     }
 
     public function testCase04()
     {
+        # empty [] as subject and object
         $this->turtleTestCase('test-04');
     }
 
     public function testCase05()
     {
+        # non-empty [] as subject and object
         $this->turtleTestCase('test-05');
     }
 
     public function testCase06()
     {
+        # 'a' as predicate
         $this->turtleTestCase('test-06');
     }
 
     public function testCase07()
     {
+        # simple collection
         $this->turtleTestCase('test-07');
     }
 
     public function testCase08()
     {
+        # empty collection
         $this->turtleTestCase('test-08');
     }
 
     public function testCase09()
     {
+        # integer datatyped literal
         $this->turtleTestCase('test-09');
     }
 
     public function testCase10()
     {
+        # decimal integer canonicalization
         $this->turtleTestCase('test-10');
     }
 
     public function testCase11()
     {
+        # - and _ in names and qnames
         $this->turtleTestCase('test-11');
     }
 
     public function testCase12()
     {
+        # tests for rdf:_<numbers> and other qnames starting with _
         $this->turtleTestCase('test-12');
     }
 
     public function testCase13()
     {
+        # bare : allowed
         $this->turtleTestCase('test-13');
+    }
+
+    // Removed tests 14-16 because they take a long time to run
+
+    public function testCase17()
+    {
+        # simple long literal
+        $this->turtleTestCase('test-17');
+    }
+
+    public function testCase18()
+    {
+        # long literals with escapes
+        $this->turtleTestCase('test-18');
+    }
+
+    public function testCase19()
+    {
+        # floating point number
+        $this->turtleTestCase('test-19');
+    }
+
+    public function testCase20()
+    {
+        # empty literals, normal and long variant
+        $this->turtleTestCase('test-20');
+    }
+
+    public function testCase21()
+    {
+        # positive integer, decimal and doubles
+        $this->turtleTestCase('test-21');
+    }
+
+    public function testCase22()
+    {
+        # negative integer, decimal and doubles
+        $this->turtleTestCase('test-22');
+    }
+
+    public function testCase23()
+    {
+        # long literal ending in double quote
+        $this->turtleTestCase('test-23');
+    }
+
+    public function testCase24()
+    {
+        # boolean literals
+        $this->turtleTestCase('test-24');
+    }
+
+    public function testCase25()
+    {
+        # comments
+        $this->turtleTestCase('test-25');
+    }
+
+    public function testCase26()
+    {
+        # no final newline
+        $this->turtleTestCase('test-26');
+    }
+
+    public function testCase27()
+    {
+        # duplicate prefix
+        $this->turtleTestCase('test-27');
     }
 
     public function testRdfSchema()

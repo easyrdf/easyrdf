@@ -46,25 +46,31 @@
 class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
 {
     /**
-     * @ignore
-     */
-    protected function unescape($str)
+     * Decodes an encoded N-Triples string. Any \-escape sequences are substituted
+     * with their decoded value.
+     *
+     * @param  string $str An encoded N-Triples string.
+     * @return The unencoded string.
+     **/
+    protected function unescapeString($str)
     {
-        if (strpos($str, '\\') === false)
+        if (strpos($str, '\\') === FALSE)
             return $str;
 
         $mappings = array(
-            't' => "\t",
-            'n' => "\n",
-            'r' => "\r",
-            '\"' => '"',
-            '\'' => "'"
+            't' => chr(0x09),
+            'b' => chr(0x08),
+            'n' => chr(0x0A),
+            'r' => chr(0x0D),
+            'f' => chr(0x0C),
+            '\"' => chr(0x22),
+            '\'' => chr(0x27)
         );
         foreach ($mappings as $in => $out) {
             $str = preg_replace('/\x5c([' . $in . '])/', $out, $str);
         }
 
-        if (strpos(strtolower($str), '\u') === false)
+        if (stripos($str, '\u') === FALSE)
             return $str;
 
         while (preg_match('/\\\(U)([0-9A-F]{8})/', $str, $matches) ||
@@ -97,9 +103,9 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
     protected function parseNtriplesSubject($sub)
     {
         if (preg_match('/<([^<>]+)>/', $sub, $matches)) {
-            return $this->unescape($matches[1]);
+            return $this->unescapeString($matches[1]);
         } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $sub, $matches)) {
-            return $this->unescape($matches[1]);
+            return $this->unescapeString($matches[1]);
         } else {
             throw new EasyRdf_Exception(
                 "Failed to parse subject: $sub"
@@ -115,21 +121,21 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
         if (preg_match('/"(.+)"\^\^<([^<>]+)>/', $obj, $matches)) {
             return array(
                 'type' => 'literal',
-                'value' => $this->unescape($matches[1]),
-                'datatype' => $this->unescape($matches[2])
+                'value' => $this->unescapeString($matches[1]),
+                'datatype' => $this->unescapeString($matches[2])
             );
         } else if (preg_match('/"(.+)"@([\w\-]+)/', $obj, $matches)) {
             return array(
                 'type' => 'literal',
-                'value' => $this->unescape($matches[1]),
-                'lang' => $this->unescape($matches[2])
+                'value' => $this->unescapeString($matches[1]),
+                'lang' => $this->unescapeString($matches[2])
             );
-        } else if (preg_match('/"(.+)"/', $obj, $matches)) {
-            return array('type' => 'literal', 'value' => $this->unescape($matches[1]));
+        } else if (preg_match('/"(.*)"/', $obj, $matches)) {
+            return array('type' => 'literal', 'value' => $this->unescapeString($matches[1]));
         } else if (preg_match('/<([^<>]+)>/', $obj, $matches)) {
             return array('type' => 'uri', 'value' => $matches[1]);
         } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $obj, $matches)) {
-            return array('type' => 'bnode', 'value' => $this->unescape($matches[1]));
+            return array('type' => 'bnode', 'value' => $this->unescapeString($matches[1]));
         } else {
             throw new EasyRdf_Exception(
                 "Failed to parse object: $obj"
@@ -163,7 +169,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
             } else if (preg_match("/(.+)\s+<([^<>]+)>\s+(.+)\s*\./", $line, $matches)) {
                 $graph->add(
                     $this->parseNtriplesSubject($matches[1]),
-                    $this->unescape($matches[2]),
+                    $this->unescapeString($matches[2]),
                     $this->parseNtriplesObject($matches[3])
                 );
             }

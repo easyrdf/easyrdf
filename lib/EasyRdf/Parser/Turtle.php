@@ -49,7 +49,7 @@
  *             Copyright (c) 1997-2006 Aduna (http://www.aduna-software.com/)
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Parser_Turtle extends EasyRdf_Parser
+class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 {
     /**
      * Constructor
@@ -540,15 +540,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser
             $result = $this->parseString();
         }
 
-        // FIXME: Unescape any escape sequences
-        //     try {
-        //       result = TurtleUtil.decodeString(result);
-        //     }
-        //     catch (IllegalArgumentException e) {
-        //       reportError(e.getMessage());
-        //     }
-
-        return $result;
+        // Unescape any escape sequences
+        return $this->unescapeString($result);
     }
 
     /**
@@ -627,7 +620,6 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser
 
         // read optional sign character
         if ($c == '+' || $c == '-') {
-            $value .= $c;
             $value .= $c;
             $c = $this->read();
         }
@@ -726,13 +718,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser
             }
         }
 
-        // FIXME: Unescape any escape sequences
-        //try {
-        //  $uri = self::decodeString($uri);
-        //}
-        //catch (IllegalArgumentException e) {
-        //  $this->reportError(e.getMessage());
-        //}
+        // Unescape any escape sequences
+        $uri = $this->unescapeString($uri);
 
         return array(
             'type' => 'uri',
