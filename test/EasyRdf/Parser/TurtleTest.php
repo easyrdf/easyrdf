@@ -282,4 +282,154 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         $this->turtleTestCase('rdf-schema');
     }
+
+    public function testBad00()
+    {
+        # prefix name must end in a :
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: expected ':', found '<'"
+        );
+        $this->parseTurtle("turtle/bad-00.ttl");
+    }
+
+    public function testBad01()
+    {
+        # Forbidden by RDF - predicate cannot be blank
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: expected an RDF value here, found '['"
+        );
+        $this->parseTurtle("turtle/bad-01.ttl");
+    }
+
+    public function testBad02()
+    {
+        # Forbidden by RDF - predicate cannot be blank
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: expected an RDF value here, found '['"
+        );
+        $this->parseTurtle("turtle/bad-02.ttl");
+    }
+
+    public function testBad03()
+    {
+        # 'a' only allowed as a predicate
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: expected ':', found ' '"
+        );
+        $this->parseTurtle("turtle/bad-03.ttl");
+    }
+
+    public function testBad04()
+    {
+        # No comma is allowed in collections
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: expected an RDF value here, found ','"
+        );
+        $this->parseTurtle("turtle/bad-04.ttl");
+    }
+
+    public function testBad05()
+    {
+        # N3 {}s are not in Turtle
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: expected an RDF value here, found '{'"
+        );
+        $this->parseTurtle("turtle/bad-05.ttl");
+    }
+
+    public function testBad06()
+    {
+        # is and of are not in turtle
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: expected ':', found ' '"
+        );
+        $this->parseTurtle("turtle/bad-06.ttl");
+    }
+
+    public function testBad07()
+    {
+        # paths are not in turtle
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: object for statement missing"
+        );
+        $this->parseTurtle("turtle/bad-07.ttl");
+    }
+
+    public function testBad08()
+    {
+        # @keywords is not in turtle
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Turtle Parse Error: unknown directive "@keywords"'
+        );
+        $this->parseTurtle("turtle/bad-08.ttl");
+    }
+
+    public function testBad09()
+    {
+        # implies is not in turtle
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: expected an RDF value here, found '='"
+        );
+        $this->parseTurtle("turtle/bad-09.ttl");
+    }
+
+    public function testBad10()
+    {
+        # equivalence is not in turtle
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: expected an RDF value here, found '='"
+        );
+        $this->parseTurtle("turtle/bad-10.ttl");
+    }
+
+    public function testBad11()
+    {
+        # @forAll is not in turtle
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: unknown directive \"@forAll\""
+        );
+        $this->parseTurtle("turtle/bad-11.ttl");
+    }
+
+    public function testBad12()
+    {
+        # @forSome is not in turtle
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: unknown directive \"@forSome\""
+        );
+        $this->parseTurtle("turtle/bad-12.ttl");
+    }
+
+    public function testBad13()
+    {
+        # <= is not in turtle
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Turtle Parse Error: unexpected end of file while reading URI"
+        );
+        $this->parseTurtle("turtle/bad-13.ttl");
+    }
+
+    public function testBad14()
+    {
+        # Test long literals with missing end
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+             "Turtle Parse Error: unexpected end of file while reading long string"
+        );
+        $this->parseTurtle("turtle/bad-14.ttl");
+    }
 }
