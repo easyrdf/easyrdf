@@ -46,7 +46,7 @@
  * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
+class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
 {
     private $_prefixes = array();
 
@@ -87,12 +87,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         if ($object instanceof EasyRdf_Resource) {
             return $this->serialiseResource($object);
         } else if ($object instanceof EasyRdf_Literal) {
-            $value = strval($object);
-            $value = str_replace('\\', '\\\\', $value);
-            $value = str_replace('\n', '\\n', $value);
-            $value = str_replace('\r', '\\r', $value);
-            $value = str_replace('\t', '\\t', $value);
-            $value = str_replace('"', '\\"', $value);
+            $value = $this->escapeString(strval($object));
 
             $datatypeUri = $object->getDatatypeUri();
             if ($datatypeUri) {

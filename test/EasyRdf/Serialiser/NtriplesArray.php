@@ -64,7 +64,7 @@ class EasyRdf_Serialiser_NtriplesArray extends EasyRdf_Serialiser_Ntriples
                 foreach ($values as $value) {
                     array_push( $triples, array(
                         's' => $this->ntriplesResource($resource),
-                        'p' => "<" . $this->escape($property) . ">",
+                        'p' => "<" . $this->escapeString($property) . ">",
                         'o' => $this->ntriplesValue($value)
                     ));
                 }
