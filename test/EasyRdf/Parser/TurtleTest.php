@@ -278,6 +278,12 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
         $this->turtleTestCase('test-27');
     }
 
+    public function testBase1()
+    {
+        # Resolution of a relative URI against an absolute base.
+        $this->turtleTestCase('base1');
+    }
+
     public function testRdfSchema()
     {
         $this->turtleTestCase('rdf-schema');

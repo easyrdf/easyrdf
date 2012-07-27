@@ -61,14 +61,14 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /**
-      * Parse Turtle into an EasyRdf_Graph
-      *
-      * @param object EasyRdf_Graph $graph   the graph to load the data into
-      * @param string               $data    the RDF document data
-      * @param string               $format  the format of the input data
-      * @param string               $baseUri the base URI of the data being parsed
-      * @return boolean             true if parsing was successful
-      */
+     * Parse Turtle into an EasyRdf_Graph
+     *
+     * @param object EasyRdf_Graph $graph   the graph to load the data into
+     * @param string               $data    the RDF document data
+     * @param string               $format  the format of the input data
+     * @param string               $baseUri the base URI of the data being parsed
+     * @return boolean             true if parsing was successful
+     */
     public function parse($graph, $data, $format, $baseUri)
     {
         parent::checkParseParams($graph, $data, $format, $baseUri);
@@ -104,6 +104,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
 
+    /**
+     * Parse a statement [2]
+     * @ignore
+     */
     protected function parseStatement()
     {
         $c = $this->peek();
@@ -118,6 +122,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+    /**
+     * Parse a directive [3]
+     * @ignore
+     */
     protected function parseDirective()
     {
         // Verify that the first characters form the string "prefix"
@@ -146,6 +154,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+    /**
+     * Parse a prefixID [4]
+     * @ignore
+     */
     protected function parsePrefixID()
     {
         $this->skipWSC();
@@ -180,6 +192,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $this->_namespaces[$prefixID] = $namespace['value'];
     }
 
+    /**
+     * Parse base [5]
+     * @ignore
+     */
     protected function parseBase()
     {
         $this->skipWSC();
@@ -188,6 +204,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $this->_baseUri = $baseUri['value'];
     }
 
+    /**
+     * Parse triples [6]
+     * @ignore
+     */
     protected function parseTriples()
     {
         $this->parseSubject();
@@ -199,6 +219,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $this->_object = NULL;
     }
 
+    /**
+     * Parse a predicateObjectList [7]
+     * @ignore
+     */
     protected function parsePredicateObjectList()
     {
         $this->_predicate = $this->parsePredicate();
@@ -225,6 +249,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+    /**
+     * Parse a objectList [8]
+     * @ignore
+     */
     protected function parseObjectList()
     {
         $this->parseObject();
@@ -236,6 +264,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+    /**
+     * Parse a subject [10]
+     * @ignore
+     */
     protected function parseSubject()
     {
         $c = $this->peek();
@@ -256,6 +288,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+    /**
+     * Parse a predicate [11]
+     * @ignore
+     */
     protected function parsePredicate()
     {
         // Check if the short-cut 'a' is used
@@ -288,6 +324,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+    /**
+     * Parse a object [12]
+     * @ignore
+     */
     protected function parseObject()
     {
         $c = $this->peek();
@@ -308,8 +348,55 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /**
-    * Parses a collection, e.g. <tt>( item1 item2 item3 )</tt>.
-    */
+     * Parses a blankNodePropertyList [15]
+     *
+     * This method parses the token []
+     * and predicateObjectLists that are surrounded by square brackets.
+     *
+     * @ignore
+     */
+    protected function parseImplicitBlank()
+    {
+        $this->verifyCharacter($this->read(), "[");
+
+        $bnode = array(
+            'type' => 'bnode',
+            'value' => $this->_graph->newBNodeId()
+        );
+
+        $c = $this->read();
+        if ($c != ']') {
+            $this->unread($c);
+
+            // Remember current subject and predicate
+            $oldSubject = $this->_subject;
+            $oldPredicate = $this->_predicate;
+
+            // generated bNode becomes subject
+            $this->_subject = $bnode;
+
+            // Enter recursion with nested predicate-object list
+            $this->skipWSC();
+
+            $this->parsePredicateObjectList();
+
+            $this->skipWSC();
+
+            // Read closing bracket
+            $this->verifyCharacter($this->read(), "]");
+
+            // Restore previous subject and predicate
+            $this->_subject = $oldSubject;
+            $this->_predicate = $oldPredicate;
+        }
+
+        return $bnode;
+    }
+
+    /**
+     * Parses a collection [16], e.g: ( item1 item2 item3 )
+     * @ignore
+     */
     protected function parseCollection()
     {
         $this->verifyCharacter($this->read(), "(");
@@ -383,51 +470,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /**
-     * Parses an implicit blank node. This method parses the token <tt>[]</tt>
-     * and predicateObjectLists that are surrounded by square brackets.
+     * Parses an RDF value. This method parses uriref, qname, node ID, quoted
+     * literal, integer, double and boolean.
+     * @ignore
      */
-    protected function parseImplicitBlank()
-    {
-        $this->verifyCharacter($this->read(), "[");
-
-        $bnode = array(
-            'type' => 'bnode',
-            'value' => $this->_graph->newBNodeId()
-        );
-
-        $c = $this->read();
-        if ($c != ']') {
-            $this->unread($c);
-
-            // Remember current subject and predicate
-            $oldSubject = $this->_subject;
-            $oldPredicate = $this->_predicate;
-
-            // generated bNode becomes subject
-            $this->_subject = $bnode;
-
-            // Enter recursion with nested predicate-object list
-            $this->skipWSC();
-
-            $this->parsePredicateObjectList();
-
-            $this->skipWSC();
-
-            // Read closing bracket
-            $this->verifyCharacter($this->read(), "]");
-
-            // Restore previous subject and predicate
-            $this->_subject = $oldSubject;
-            $this->_predicate = $oldPredicate;
-        }
-
-        return $bnode;
-    }
-
-    /**
-    * Parses an RDF value. This method parses uriref, qname, node ID, quoted
-    * literal, integer, double and boolean.
-    */
     protected function parseValue()
     {
         $c = $this->peek();
@@ -460,6 +506,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
     /**
      * Parses a quoted string, optionally followed by a language tag or datatype.
+     * @ignore
      */
     protected function parseQuotedLiteral()
     {
@@ -527,9 +574,9 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /**
-    * Parses a quoted string, which is either a "normal string" or a """long
-    * string""".
-    */
+     * Parses a quoted string, which is either a "normal string" or a """long string""".
+     * @ignore
+     */
     protected function parseQuotedString()
     {
         $result = NULL;
@@ -557,9 +604,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /**
-    * Parses a "normal string". This method assumes that the first double quote
-    * has already been parsed.
-    */
+     * Parses a "normal string". This method assumes that the first double quote
+     * has already been parsed.
+     * @ignore
+     */
     protected function parseString()
     {
         $str = '';
@@ -595,6 +643,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     /**
      * Parses a """long string""". This method assumes that the first three
      * double quotes have already been parsed.
+     * @ignore
      */
     protected function parseLongString()
     {
@@ -631,6 +680,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         return substr($str, 0, -3);
     }
 
+    /**
+     * Parses a numeric value, either of type integer, decimal or double
+     * @ignore
+     */
     protected function parseNumber()
     {
         $value = '';
@@ -715,6 +768,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         );
      }
 
+    /**
+     * Parses a URI / IRI
+     * @ignore
+     */
     protected function parseURI()
     {
         $uri = '';
@@ -758,9 +815,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /**
-    * Parses qnames and boolean values, which have equivalent starting
-    * characters.
-    */
+     * Parses qnames and boolean values, which have equivalent starting
+     * characters.
+     * @ignore
+     */
     protected function parseQNameOrBoolean()
     {
         // First character should be a ':' or a letter
@@ -844,7 +902,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /**
-     * Parses a blank node ID, e.g. <tt>_:node1</tt>.
+     * Parses a blank node ID, e.g: _:node1
+     * @ignore
      */
     protected function parseNodeID()
     {
@@ -882,9 +941,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
 
     /**
-     * Verifies that the supplied character <tt>c</tt> is one of the expected
-     * characters specified in <tt>expected</tt>. This method will throw a
-     * <tt>ParseException</tt> if this is not the case.
+     * Verifies that the supplied character $c is one of the expected
+     * characters specified in $expected. This method will throw a
+     * exception if this is not the case.
+     * @ignore
      */
     protected function verifyCharacter($c, $expected)
     {
@@ -906,6 +966,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+    /**
+     * Skip through whitespace and comments
+     * @ignore
+     */
     protected function skipWSC()
     {
         $c = $this->read();
@@ -923,6 +987,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
     /**
      * Consumes characters from reader until the first EOL has been read.
+     * @ignore
      */
     protected function skipLine()
     {
@@ -941,6 +1006,11 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+    /**
+     * Read a single character from the input buffer.
+     * Returns -1 when the end of the file is reached.
+     * @ignore
+     */
     protected function read()
     {
         if ($this->_pos < $this->_len) {
@@ -952,6 +1022,11 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+    /**
+     * Gets the next character to be returned by read()
+     * without removing it from the input buffer.
+     * @ignore
+     */
     protected function peek()
     {
         if ($this->_pos < $this->_len) {
@@ -961,6 +1036,11 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+
+    /**
+     * Steps back, restoring the previous character read() to the input buffer
+     * @ignore
+     */
     protected function unread()
     {
         if ($this->_pos > 0) {
@@ -970,12 +1050,17 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
     }
 
+    /**
+     * Returns true if $c is a whitespace character
+     * @ignore
+     */
     public static function isWhitespace($c)
     {
         // Whitespace character are space, tab, newline and carriage return:
         return $c == " " || $c == "\t" || $c == "\r" || $c == "\n";
     }
 
+    /** @ignore */
     public static function isPrefixStartChar($c) {
         $o = ord($c);
         return
@@ -995,10 +1080,12 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $o >= 0x10000 && $o <= 0xEFFFF;
     }
 
+    /** @ignore */
     public static function isNameStartChar($c) {
         return $c == '_' || self::isPrefixStartChar($c);
     }
 
+    /** @ignore */
     public static function isNameChar($c) {
         $o = ord($c);
         return
@@ -1010,10 +1097,12 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $o >= 0x203F && $o <= 0x2040;
     }
 
+    /** @ignore */
     public static function isPrefixChar($c) {
         return self::isNameChar($c);
     }
 
+    /** @ignore */
     public static function isLanguageStartChar($c) {
         $o = ord($c);
         return
@@ -1021,6 +1110,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $o >= 0x61   && $o <= 0x7a;
     }
 
+    /** @ignore */
     public static function isLanguageChar($c) {
         $o = ord($c);
         return
