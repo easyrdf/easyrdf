@@ -46,45 +46,46 @@
  */
 class EasyRdf_Literal_HexBinary extends EasyRdf_Literal
 {
-    /** Constructor for creating a new hexadecimal encoded binary blob
+    /** Constructor for creating a new xsd:hexBinary literal
      *
-     * @param  mixed  $value     The value of the literal
+     * @param  mixed  $value     The value of the literal (already encoded as hexadecimal)
      * @param  string $lang      Should be null (literals with a datatype can't have a language)
      * @param  string $datatype  Optional datatype (default 'xsd:hexBinary')
      * @return object EasyRdf_Literal_HexBinary
      */
     public function __construct($value, $lang=null, $datatype=null)
     {
-        parent::__construct($value, null, 'xsd:hexBinary');
+        // Normalise the canonical representation, as specified here:
+        // http://www.w3.org/TR/xmlschema-2/#hexBinary-canonical-repr
+        $value = strtoupper($value);
+
+        // Validate the data
+        if (preg_match ("/[^A-F0-9]/", $value)) {
+            throw new InvalidArgumentException(
+                "Literal of type xsd:hexBinary contains non-hexadecimal characters"
+            );
+        }
+
+        parent::__construct(strtoupper($value), null, 'xsd:hexBinary');
     }
 
-    /** Constructor for creating a new object from a hexadecimal string
+    /** Constructor for creating a new literal object from a binary blob
      *
-     * @param  string $value     Hexadecimal string value
+     * @param  string $value     The binary data
      * @return object EasyRdf_Literal_HexBinary
      */
-    public static function fromHex($value)
+    public static function fromBinary($binary)
     {
-        $binary = pack("H*", $value);
-        return new self($binary);
+        return new self( bin2hex($binary) );
     }
 
-    /** Return the literal value as a hexadecimal string
+    /** Decode the hexadecimal string into a binary blob
      *
-     * @return string The value as a hexadecimal string
+     * @return string The binary blob
      */
-    public function toHex()
+    public function toBinary()
     {
-        return strtoupper(bin2hex($this->_value));
-    }
-
-    /** Magic method to return the value as a hexadecimal string
-     *
-     * @return string The value as a hexadecimal string
-     */
-    public function __toString()
-    {
-        return $this->toHex();
+        return pack("H*", $this->_value);
     }
 }
 
