@@ -1,0 +1,15 @@
+# WebID example from: http://www.w3.org/wiki/WebID
+
+@prefix cert:  <http://www.w3.org/ns/auth/cert#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.example.com/myfoaf#me>
+  a foaf:Person ;
+  foaf:name "My name" ;
+  foaf:homepage <http://www.example.com/> ;
+  cert:key [ 
+    a cert:RSAPublicKey;
+    cert:exponent 65537;
+    cert:modulus "cb24ed85d64d794b69c701c186acc059501e856000f661c93204d8380e07191c5c8b368d2ac32a428acb970398664368dc2a867320220f755e99ca2eecdae62e8d15fb58e1b76ae59cb7ace8838394d59e7250b449176e51a494951a1c366c6217d8768d682dde78dd4d55e613f8839cf275d4c8403743e7862601f3c49a6366e12bb8f498262c3c77de19bce40b32f89ae62c3780f5b6275be337e2b3153ae2ba72a9975ae71ab724649497066b660fcf774b7543d980952d2e8586200eda4158b014e75465d91ecf93efc7ac170c11fc7246fc6ded79c37780000ac4e079f671fd4f207ad770809e0e2d7b0ef5493befe73544d8e1be3dddb52455c61391a1"^^xsd:hexBinary;
+  ] .
