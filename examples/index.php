@@ -19,7 +19,7 @@
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>EasyRdf - Examples</title>
+	<title>EasyRdf Examples</title>
 </head>
 <body>
 
@@ -29,7 +29,7 @@
 
     $examples = array();
     while (($filename = readdir($dh)) !== false) {
-        if ($filename == '.' || $filename == '..' || $filename == 'index.php') {
+        if (substr($filename, 0, 1) == '.' or $filename == 'index.php') {
             continue;
         }
 
