@@ -64,6 +64,29 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSelectAllXmlWithWhitespace()
+    {
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('sparql_select_all_ws.xml'),
+            'application/sparql-results+xml'
+        );
+
+        $this->assertEquals(3, $result->numFields());
+        $this->assertEquals(array('s','p','o'), $result->getFields());
+
+        $this->assertEquals(14, count($result));
+        $this->assertEquals(14, $result->numRows());
+        $this->assertEquals(
+            new EasyRdf_Resource('_:genid1'), $result[0]->s
+        );
+        $this->assertEquals(
+            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'), $result[0]->p
+        );
+        $this->assertEquals(
+            new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
+        );
+    }
+
     public function testSelectAllJson()
     {
         $result = new EasyRdf_Sparql_Result(

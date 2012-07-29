@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="s"/>
+    <variable name="p"/>
+    <variable name="o"/>
+  </head>
+  <results>
+    <result>
+      <binding name="s">
+        <bnode>genid1</bnode>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/name</uri>
+      </binding>
+      <binding name="o">
+        <literal>Joe's Current Project</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <bnode>genid1</bnode>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/homepage</uri>
+      </binding>
+      <binding name="o">
+        <uri>http://www.example.com/project</uri>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <bnode>genid1</bnode>
+      </binding>
+      <binding name="p">
+        <uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</uri>
+      </binding>
+      <binding name="o">
+        <uri>http://xmlns.com/foaf/0.1/Project</uri>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe/foaf.rdf</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/primaryTopic</uri>
+      </binding>
+      <binding name="o">
+        <uri>http://www.example.com/joe#me</uri>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe/foaf.rdf</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/maker</uri>
+      </binding>
+      <binding name="o">
+        <uri>http://www.example.com/joe#me</uri>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe/foaf.rdf</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://www.w3.org/2000/01/rdf-schema#label</uri>
+      </binding>
+      <binding name="o">
+        <literal>Joe Bloggs' FOAF File</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe/foaf.rdf</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</uri>
+      </binding>
+      <binding name="o">
+        <uri>http://xmlns.com/foaf/0.1/PersonalProfileDocument</uri>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe#me</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/title</uri>
+      </binding>
+      <binding name="o">
+        <literal>Mr</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe#me</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/name</uri>
+      </binding>
+      <binding name="o">
+        <literal xml:lang="en">Joe Bloggs</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe#me</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/homepage</uri>
+      </binding>
+      <binding name="o">
+        <uri>http://www.example.com/joe/</uri>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe#me</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/firstName</uri>
+      </binding>
+      <binding name="o">
+        <literal>Joe</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe#me</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/family_name</uri>
+      </binding>
+      <binding name="o">
+        <literal>Bloggs</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe#me</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://xmlns.com/foaf/0.1/currentProject</uri>
+      </binding>
+      <binding name="o">
+        <bnode>genid1</bnode>
+      </binding>
+    </result>
+    <result>
+      <binding name="s">
+        <uri>http://www.example.com/joe#me</uri>
+      </binding>
+      <binding name="p">
+        <uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</uri>
+      </binding>
+      <binding name="o">
+        <uri>http://xmlns.com/foaf/0.1/Person</uri>
+      </binding>
+    </result>
+  </results>
+</sparql>

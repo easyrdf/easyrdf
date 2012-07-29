@@ -306,14 +306,17 @@ class EasyRdf_Sparql_Result extends ArrayIterator
                 $t = new stdClass();
                 foreach ($bindings as $binding) {
                     $key = $binding->getAttribute('name');
-                    $term = $binding->firstChild;
-                    $data = array(
-                        'type' => $term->nodeName,
-                        'value' => $term->nodeValue,
-                        'lang' => $term->getAttribute('lang'),
-                        'datatype' => $term->getAttribute('datatype')
-                    );
-                    $t->$key = $this->_newTerm($data);
+                    foreach($binding->childNodes as $node) {
+                        if ($node->nodeType != XML_ELEMENT_NODE)
+                            continue;
+                        $t->$key = $this->_newTerm(array(
+                            'type' => $node->nodeName,
+                            'value' => $node->nodeValue,
+                            'lang' => $node->getAttribute('lang'),
+                            'datatype' => $node->getAttribute('datatype')
+                        ));
+                        break;
+                    }
                 }
                 $this[] = $t;
             }
