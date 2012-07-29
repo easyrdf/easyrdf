@@ -38,12 +38,20 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_BasicTest extends EasyRdf_TestCase
+class Examples_GraphdirectTest extends EasyRdf_TestCase
 {
-    public function testPageRendersCorrectly()
+    public function test()
     {
-        $output = executeExample('basic.php');
-        $this->assertContains('<title>Basic FOAF example</title>', $output);
-        $this->assertContains('My name is: Nicholas J Humfrey', $output);
+        $output = executeExample('graph_direct.php');
+        $this->assertContains('<title>Example of using EasyRdf_Graph directly</title>', $output);
+ 
+        $this->assertContains('<b>Name:</b> Joe Bloggs <br />', $output);
+        $this->assertContains('<b>Names:</b> Joe Bloggs Joseph Bloggs <br />', $output);
+
+        $this->assertContains('<b>Label:</b> Nick <br />', $output);
+        $this->assertContains('<b>Properties:</b> rdf:type, foaf:name, rdfs:label <br />', $output);
+        $this->assertContains('<b>PropertyUris:</b> http://www.w3.org/1999/02/22-rdf-syntax-ns#type, http://xmlns.com/foaf/0.1/name, http://www.w3.org/2000/01/rdf-schema#label <br />', $output);
+        $this->assertContains('<b>People:</b> http://example.com/joe, http://aelius.com/njh#me <br />', $output);
+        $this->assertContains('<b>Unknown:</b>  <br />', $output);
     }
 }

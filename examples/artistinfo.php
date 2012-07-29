@@ -50,9 +50,9 @@
     EasyRdf_TypeMapper::set('mo:MusicArtist', 'Model_MusicArtist');
 ?>
 <html>
-<head><title>Artist Info</title></head>
+<head><title>EasyRdf Artist Info Example</title></head>
 <body>
-<h1>Artist Info</h1>
+<h1>EasyRdf Artist Info Example</h1>
 
 <?= form_tag() ?>
 <?= text_field_tag('uri', 'http://www.bbc.co.uk/music/artists/70248960-cb53-4ea4-943a-edb18f7d336f.rdf', array('size'=>50)) ?>

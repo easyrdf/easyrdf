@@ -38,12 +38,33 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_BasicTest extends EasyRdf_TestCase
+class Examples_SerialiseTest extends EasyRdf_TestCase
 {
-    public function testPageRendersCorrectly()
+    public function testNtriples()
     {
-        $output = executeExample('basic.php');
-        $this->assertContains('<title>Basic FOAF example</title>', $output);
-        $this->assertContains('My name is: Nicholas J Humfrey', $output);
+        $output = executeExample('serialise.php', array(
+            'format' => 'ntriples'
+        ));
+        $this->assertContains('<title>EasyRdf Serialiser Example</title>', $output);
+        $this->assertContains('&lt;http://www.example.com/joe#me&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://xmlns.com/foaf/0.1/Person&gt; .', $output);
     }
+
+    public function testRdfXml()
+    {
+        $output = executeExample('serialise.php', array(
+            'format' => 'rdfxml'
+        ));
+        $this->assertContains('<title>EasyRdf Serialiser Example</title>', $output);
+        $this->assertContains('&lt;foaf:Person rdf:about=&quot;http://www.example.com/joe#me&quot;&gt;', $output);
+    }
+
+    public function testPhp()
+    {
+        $output = executeExample('serialise.php', array(
+            'format' => 'php'
+        ));
+        $this->assertContains('<title>EasyRdf Serialiser Example</title>', $output);
+        $this->assertContains("'value' =&gt; 'http://xmlns.com/foaf/0.1/Person',", $output);
+    }
+
 }

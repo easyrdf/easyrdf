@@ -39,9 +39,9 @@
     }
 ?>
 <html>
-<head><title>Serialiser</title></head>
+<head><title>EasyRdf Serialiser Example</title></head>
 <body>
-<h1>Serialisation example</h1>
+<h1>EasyRdf Serialiser Example</h1>
 
 <ul>
 <?php

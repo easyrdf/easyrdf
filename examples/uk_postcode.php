@@ -22,7 +22,7 @@
 ?>
 <html>
 <head>
-  <title>UK Postcode Resolver</title>
+  <title>EasyRdf UK Postcode Resolver</title>
   <style type="text/css" media="all">
     #map
     {
@@ -35,7 +35,7 @@
   </style>
 </head>
 <body>
-<h1>UK Postcode Resolver</h1>
+<h1>EasyRdf UK Postcode Resolver</h1>
 
 <?= form_tag() ?>
   <?= text_field_tag('postcode', 'W1A 1AA', array('size'=>10)) ?>
@@ -51,7 +51,7 @@
 
         $res = $graph->resource("postcode:$postcode");
         $ll = $res->get('geo:lat').','.$res->get('geo:long');
-        print "<iframe id='map' width='500' height='250' frameborder='0' scrolling='no' src='http://maps.google.com/maps?f=q&amp;sll=$ll&amp;output=embed'></iframe>";
+        print "<iframe id='map' width='500' height='250' frameborder='0' scrolling='no' src='http://maps.google.com/maps?f=q&amp;ll=$ll&amp;output=embed'></iframe>";
         print "<table id='facts'>\n";
         print "<tr><th>Easting:</th><td>" . $res->get('sr:easting') . "</td></tr>\n";
         print "<tr><th>Northing:</th><td>" . $res->get('sr:northing') . "</td></tr>\n";

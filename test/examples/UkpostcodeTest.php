@@ -38,12 +38,25 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_BasicTest extends EasyRdf_TestCase
+class Examples_UkpostcodeTest extends EasyRdf_TestCase
 {
-    public function testPageRendersCorrectly()
+    public function testNoParams()
     {
-        $output = executeExample('basic.php');
-        $this->assertContains('<title>Basic FOAF example</title>', $output);
-        $this->assertContains('My name is: Nicholas J Humfrey', $output);
+        $output = executeExample('uk_postcode.php');
+        $this->assertContains('<title>EasyRdf UK Postcode Resolver</title>', $output);
+        $this->assertContains('<h1>EasyRdf UK Postcode Resolver</h1>', $output);
+    }
+
+    public function testW1A1AA()
+    {
+        $output = executeExample('uk_postcode.php', array(
+            'postcode' => 'W1A 1AA'
+        ));
+        $this->assertContains('<tr><th>Easting:</th><td>528887</td></tr>', $output);
+        $this->assertContains('<tr><th>Northing:</th><td>181593</td></tr>', $output);
+        $this->assertContains('<tr><th>Longitude:</th><td>-0.143785</td></tr>', $output);
+        $this->assertContains('<tr><th>Latitude:</th><td>51.518562</td></tr>', $output);
+        $this->assertContains('<tr><th>Electoral Ward:</th><td>West End</td></tr>', $output);
+        $this->assertContains("src='http://maps.google.com/maps?f=q&amp;ll=51.518562,-0.143785&amp;output=embed'", $output);
     }
 }

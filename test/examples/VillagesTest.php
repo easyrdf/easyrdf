@@ -38,12 +38,24 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_BasicTest extends EasyRdf_TestCase
+class Examples_VillagesTest extends EasyRdf_TestCase
 {
-    public function testPageRendersCorrectly()
+    public function testIndex()
     {
-        $output = executeExample('basic.php');
-        $this->assertContains('<title>Basic FOAF example</title>', $output);
-        $this->assertContains('My name is: Nicholas J Humfrey', $output);
+        $output = executeExample('villages.php');
+        $this->assertContains('<title>EasyRdf Village Info Example</title>', $output);
+        $this->assertContains('<h1>EasyRdf Village Info Example</h1>', $output);
+        $this->assertContains('?id=934787">Ceres, Fife</a></li>', $output);
+        $this->assertContains('?id=13953312">Strathkinness</a></li>', $output);
+    }
+
+    public function testCeres()
+    {
+        $output = executeExample('villages.php', array(
+            'id' => '934787'
+        ));
+        $this->assertContains('<h2>Ceres, Fife</h2>', $output);
+        $this->assertContains('<p>Ceres is a village in Fife, Scotland', $output);
+        $this->assertContains("src='http://maps.google.com/maps?f=q&amp;ll=56.29205,-2.971445&amp;output=embed'>", $output);
     }
 }

@@ -25,9 +25,9 @@
     );
 ?>
 <html>
-<head><title>Basic Sparql</title></head>
+<head><title>EasyRdf Basic Sparql Example</title></head>
 <body>
-<h1>Basic Sparql</h1>
+<h1>EasyRdf Basic Sparql Example</h1>
 
 <h2>Doctor Who - Series 1</h2>
 <ul>

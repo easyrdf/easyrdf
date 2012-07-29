@@ -29,9 +29,9 @@
     }
 ?>
 <html>
-<head><title>FOAF Maker</title></head>
+<head><title>EasyRdf FOAF Maker Example</title></head>
 <body>
-<h1>FOAF Maker</h1>
+<h1>EasyRdf FOAF Maker Example</h1>
 
 <?= form_tag(null, array('method' => 'POST')) ?>
 

@@ -38,12 +38,39 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_BasicTest extends EasyRdf_TestCase
+class Examples_HttpgetTest extends EasyRdf_TestCase
 {
-    public function testPageRendersCorrectly()
+    public function testNoParams()
     {
-        $output = executeExample('basic.php');
-        $this->assertContains('<title>Basic FOAF example</title>', $output);
-        $this->assertContains('My name is: Nicholas J Humfrey', $output);
+        $output = executeExample('httpget.php');
+        $this->assertContains('<title>Test EasyRdf_HTTP_Client Get</title>', $output);
+        $this->assertContains('<h1>Test EasyRdf_HTTP_Client Get</h1>', $output);
+        $this->assertContains('<input type="text" name="uri" id="uri" value="http://tomheath.com/id/me" size="50" />', $output);
+        $this->assertContains('<option value="application/rdf+xml">application/rdf+xml</option>', $output);
+        $this->assertContains('<option value="text/html">text/html</option>', $output);
+    }
+
+    public function testHtml()
+    {
+        $output = executeExample('httpget.php', array(
+            'uri' => 'http://tomheath.com/id/me',
+            'accept' => 'text/html'
+        ));
+        $this->assertContains('<title>Test EasyRdf_HTTP_Client Get</title>', $output);
+        $this->assertContains('<h1>Test EasyRdf_HTTP_Client Get</h1>', $output);
+        $this->assertContains('<b>Content-type</b>: text/html<br />', $output);
+        $this->assertContains('&lt;h1&gt;Home - Tom Heath&lt;/h1&gt;', $output);
+    }
+
+    public function testRdfXml()
+    {
+        $output = executeExample('httpget.php', array(
+            'uri' => 'http://tomheath.com/id/me',
+            'accept' => 'application/rdf+xml'
+        ));
+        $this->assertContains('<title>Test EasyRdf_HTTP_Client Get</title>', $output);
+        $this->assertContains('<h1>Test EasyRdf_HTTP_Client Get</h1>', $output);
+        $this->assertContains('<b>Content-type</b>: application/rdf+xml<br />', $output);
+        $this->assertContains('&lt;foaf:Person rdf:about=&quot;http://tomheath.com/id/me&quot;&gt;<br />', $output);
     }
 }

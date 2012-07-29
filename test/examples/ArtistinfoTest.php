@@ -38,12 +38,27 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_BasicTest extends EasyRdf_TestCase
+class Examples_ArtistinfoTest extends EasyRdf_TestCase
 {
-    public function testPageRendersCorrectly()
+    public function testNoParams()
     {
-        $output = executeExample('basic.php');
-        $this->assertContains('<title>Basic FOAF example</title>', $output);
-        $this->assertContains('My name is: Nicholas J Humfrey', $output);
+        $output = executeExample('artistinfo.php');
+        $this->assertContains('<title>EasyRdf Artist Info Example</title>', $output);
+        $this->assertContains('<h1>EasyRdf Artist Info Example</h1>', $output);
+    }
+
+    public function testBruce()
+    {
+        $output = executeExample('artistinfo.php', array(
+          'uri' => 'http://www.bbc.co.uk/music/artists/70248960-cb53-4ea4-943a-edb18f7d336f.rdf',
+        ));
+        
+        $this->assertContains('<title>EasyRdf Artist Info Example</title>', $output);
+        $this->assertContains('<h1>EasyRdf Artist Info Example</h1>', $output);
+        $this->assertContains('<dt>Artist Name:</dt><dd>Bruce Springsteen</dd>', $output);
+        $this->assertContains("<dt>Type:</dt><dd>mo:MusicArtist, mo:SoloMusicArtist</dd>", $output);
+        $this->assertContains("<dt>Homepage:</dt><dd><a href=\"http://www.brucespringsteen.net/\">http://www.brucespringsteen.net/</a></dd>", $output);
+        $this->assertContains("<dt>Wikipedia page:</dt><dd><a href=\"http://en.wikipedia.org/wiki/Bruce_Springsteen\">http://en.wikipedia.org/wiki/Bruce_Springsteen</a></dd>", $output);
+        $this->assertContains("<dt>Age:</dt>  <dd>".(date('Y') - 1949)."</dd>", $output);
     }
 }

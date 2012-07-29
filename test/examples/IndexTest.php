@@ -38,12 +38,15 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_BasicTest extends EasyRdf_TestCase
+class Examples_IndexTest extends EasyRdf_TestCase
 {
-    public function testPageRendersCorrectly()
+    public function test()
     {
-        $output = executeExample('basic.php');
-        $this->assertContains('<title>Basic FOAF example</title>', $output);
-        $this->assertContains('My name is: Nicholas J Humfrey', $output);
+        $output = executeExample('index.php');
+        $this->assertContains('<title>EasyRdf Examples</title>', $output);
+        $this->assertContains('<h1>EasyRdf Examples</h1>', $output);
+        $this->assertContains("<h2><a href='basic.php'>basic.php</a></h2>", $output);
+        $this->assertContains('<p>Basic "Hello World" type example</p>', $output);
+        $this->assertContains('<p>A new EasyRdf_Graph object is created and then the contents', $output);
     }
 }

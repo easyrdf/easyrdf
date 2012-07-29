@@ -23,7 +23,7 @@
 ?>
 <html>
 <head>
-  <title>SPARQL Query Form</title>
+  <title>EasyRdf SPARQL Query Form</title>
   <style type="text/css">
     .error {
       width: 35em;
@@ -35,7 +35,7 @@
   </style>
 </head>
 <body>
-<h1>SPARQL Query Form</h1>
+<h1>EasyRdf SPARQL Query Form</h1>
 
 <div style="margin: 0.5em">
   <?php

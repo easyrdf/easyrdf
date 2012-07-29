@@ -20,9 +20,9 @@
     require_once "html_tag_helpers.php";
 ?>
 <html>
-<head><title>FOAF Info</title></head>
+<head><title>EasyRdf FOAF Info Example</title></head>
 <body>
-<h1>FOAF Info</h1>
+<h1>EasyRdf FOAF Info Example</h1>
 
 <?= form_tag() ?>
 <?= text_field_tag('uri', 'http://www.aelius.com/njh/foaf.rdf', array('size'=>50)) ?>
