@@ -59,6 +59,8 @@ class Examples_FoafmakerTest extends EasyRdf_TestCase
             'homepage' => 'http://www.example.com/joe/',
             'person_1' => 'http://www.example.com/fred#me',
             'person_2' => 'http://www.example.com/alice#me',
+            'person_3' => '',
+            'person_4' => '',
             'format' => 'turtle'
         ));
         
