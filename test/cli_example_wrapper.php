@@ -18,6 +18,9 @@ if (count($argv) <= 1) {
 // Catch more errors
 error_reporting( E_ALL | E_STRICT );
 
+// Set time zone to UTC for running tests
+date_default_timezone_set('UTC');
+
 // Change to the examples directory
 chdir($EXAMPLES_DIR);
 
