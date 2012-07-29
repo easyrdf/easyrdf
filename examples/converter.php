@@ -31,6 +31,11 @@
             $input_format_options[$format->getLabel()] = $format->getName();
         }
     }
+
+    // Stupid PHP :(
+    if (get_magic_quotes_gpc() and isset($_REQUEST['data'])) {
+        $_REQUEST['data'] = stripslashes($_REQUEST['data']);
+    }
 ?>
 <html>
 <head><title>EasyRdf Converter</title></head>
@@ -51,7 +56,7 @@
     if (isset($_REQUEST['uri']) or isset($_REQUEST['data'])) {
         $graph = new EasyRdf_Graph($_REQUEST['uri']);
         if (empty($_REQUEST['data'])) {
-            $graph->load();
+            $graph->load($_REQUEST['uri'], NULL, $_REQUEST['input_format']);
         } else {
             $graph->parse($_REQUEST['data'], $_REQUEST['input_format'], $_REQUEST['uri']);
         }
