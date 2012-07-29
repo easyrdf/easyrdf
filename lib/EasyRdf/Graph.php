@@ -274,7 +274,7 @@ class EasyRdf_Graph
                 );
 
             $data = $response->getBody();
-            if (!$format) {
+            if (!$format or $format == 'guess') {
                 list($format, $params) = EasyRdf_Utils::parseMimeType(
                     $response->getHeader('Content-Type')
                 );
