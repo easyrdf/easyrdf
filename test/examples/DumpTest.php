@@ -53,7 +53,7 @@ class Examples_DumpTest extends EasyRdf_TestCase
           'uri' => 'http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf',
           'format' => 'html'
         ));
-        
+
         $this->assertContains('<title>EasyRdf Graph Dumper</title>', $output);
         $this->assertContains('<h1>EasyRdf Graph Dumper</h1>', $output);
         $this->assertContains('Graph: http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf', $output);

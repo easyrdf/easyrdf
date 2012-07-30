@@ -63,7 +63,7 @@ class Examples_FoafmakerTest extends EasyRdf_TestCase
             'person_4' => '',
             'format' => 'turtle'
         ));
-        
+
         $this->assertContains('<title>EasyRdf FOAF Maker Example</title>', $output);
         $this->assertContains('<h1>EasyRdf FOAF Maker Example</h1>', $output);
         $this->assertContains(

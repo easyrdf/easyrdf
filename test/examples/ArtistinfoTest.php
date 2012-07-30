@@ -52,7 +52,7 @@ class Examples_ArtistinfoTest extends EasyRdf_TestCase
         $output = executeExample('artistinfo.php', array(
           'uri' => 'http://www.bbc.co.uk/music/artists/70248960-cb53-4ea4-943a-edb18f7d336f.rdf',
         ));
-        
+
         $this->assertContains('<title>EasyRdf Artist Info Example</title>', $output);
         $this->assertContains('<h1>EasyRdf Artist Info Example</h1>', $output);
         $this->assertContains('<dt>Artist Name:</dt><dd>Bruce Springsteen</dd>', $output);

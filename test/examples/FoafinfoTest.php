@@ -53,7 +53,7 @@ class Examples_FoafinfoTest extends EasyRdf_TestCase
         $output = executeExample('foafinfo.php', array(
             'uri' => 'http://www.aelius.com/njh/foaf.rdf'
         ));
-        
+
         $this->assertContains('<title>EasyRdf FOAF Info Example</title>', $output);
         $this->assertContains('<h1>EasyRdf FOAF Info Example</h1>', $output);
         $this->assertContains("<dt>Name:</dt><dd>Nicholas J Humfrey</dd>", $output);

@@ -64,7 +64,7 @@ class Examples_ConverterTest extends EasyRdf_TestCase
           'input_format' => 'guess',
           'output_format' => 'ntriples'
         ));
-        
+
         $this->assertContains('<title>EasyRdf Converter</title>', $output);
         $this->assertContains('<h1>EasyRdf Converter</h1>', $output);
         $this->assertContains('&lt;http://www.w3.org/&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; &quot;World Wide Web Consortium&quot; .', $output);
@@ -77,7 +77,7 @@ class Examples_ConverterTest extends EasyRdf_TestCase
           'input_format' => 'turtle',
           'output_format' => 'ntriples'
         ));
-        
+
         $this->assertContains('<title>EasyRdf Converter</title>', $output);
         $this->assertContains('<h1>EasyRdf Converter</h1>', $output);
         $this->assertContains('&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; &quot;RDF/XML Syntax Specification (Revised)&quot; .', $output);
