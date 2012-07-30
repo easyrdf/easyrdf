@@ -74,7 +74,7 @@ class Examples_ConverterTest extends EasyRdf_TestCase
     {
         $output = executeExample('converter.php', array(
           'uri' => 'http://www.w3.org/TR/turtle/examples/example1.ttl',
-          'input_format' => 'turtle',
+          'input_format' => 'guess',
           'output_format' => 'ntriples'
         ));
 
