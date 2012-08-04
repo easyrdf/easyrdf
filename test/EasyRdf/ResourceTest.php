@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -123,6 +123,30 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $unknown = new EasyRdf_Resource('http://example.com/foo');
         $this->assertEquals(null, $unknown->shorten());
+    }
+
+    public function testLocalnameWithSlash()
+    {
+        $res = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $this->assertEquals('name', $res->localName());
+    }
+
+    public function testLocalnameWithHash()
+    {
+        $res = new EasyRdf_Resource('http://purl.org/vocab/aiiso/schema#College');
+        $this->assertEquals('College', $res->localName());
+    }
+
+    public function testLocalnameWithUrn()
+    {
+        $res = new EasyRdf_Resource('urn:isbn:978-0300067156');
+        $this->assertEquals('978-0300067156', $res->localName());
+    }
+
+    public function testLocalnameWithNoPath()
+    {
+        $res = new EasyRdf_Resource('http://example.com/');
+        $this->assertEquals(NULL, $res->localName());
     }
 
     public function testToArrayForUri()

@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -40,7 +40,7 @@
  * Class that represents an RDF resource
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Resource
@@ -133,6 +133,20 @@ class EasyRdf_Resource
     public function shorten()
     {
         return EasyRdf_Namespace::shorten($this->_uri);
+    }
+
+    /** Gets the local name of this URI
+     *
+     * The local name is defined as the part of the URI string
+     * after the last occurrence of the '#', ':' or '/' character.
+     *
+     * @return string The local name
+     */
+    public function localName()
+    {
+        if (preg_match("|([^#:/]+)$|", $this->_uri, $matches)) {
+            return $matches[1];
+        }
     }
 
     /** Returns the properties of the resource as an associative array
