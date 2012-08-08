@@ -149,6 +149,30 @@ class EasyRdf_Resource
         }
     }
 
+    /** Generates an HTML anchor tag, linking to this resource.
+     *
+     * If no text is given, then the URI also uses as the link text.
+     *
+     * @param  string  $text    Text for the link.
+     * @param  array   $options Associative array of attributes for the anchor tag
+     * @return string  The HTML link string
+     */
+    public function htmlLink($text=NULL, $options=array())
+    {
+        $options = array_merge(array('href' => $this->_uri), $options);
+        if ($text === NULL)
+            $text = $this->_uri;
+
+        $html = "<a";
+        foreach ($options as $key => $value) {
+            $html .= " ".htmlspecialchars($key)."=\"".
+                         htmlspecialchars($value)."\"";
+        }
+        $html .= ">".htmlspecialchars($text)."</a>";
+
+        return $html;
+    }
+
     /** Returns the properties of the resource as an associative array
      *
      * For example:

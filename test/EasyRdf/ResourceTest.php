@@ -149,6 +149,39 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals(NULL, $res->localName());
     }
 
+    public function testHtmlLinkNoText()
+    {
+        $res = new EasyRdf_Resource('http://example.com/');
+        $this->assertEquals('<a href="http://example.com/">http://example.com/</a>', $res->htmlLink());
+    }
+
+    public function testHtmlLinkWithText()
+    {
+        $res = new EasyRdf_Resource('http://example.com/');
+        $this->assertEquals(
+          '<a href="http://example.com/">Click Here</a>',
+          $res->htmlLink('Click Here')
+        );
+    }
+
+    public function testHtmlLinkWithOptions()
+    {
+        $res = new EasyRdf_Resource('http://example.com/');
+        $this->assertEquals(
+          '<a href="http://example.com/" style="font-weight: bold">Click Here</a>',
+          $res->htmlLink('Click Here', array('style' => 'font-weight: bold'))
+        );
+    }
+
+    public function testHtmlLinkWithEscaping()
+    {
+        $res = new EasyRdf_Resource('http://example.com/');
+        $this->assertEquals(
+          '<a href="http://example.com/">=&gt; Click Here &lt;=</a>',
+          $res->htmlLink('=> Click Here <=')
+        );
+    }
+
     public function testToArrayForUri()
     {
         $uri = new EasyRdf_Resource('http://www.example.com/');
