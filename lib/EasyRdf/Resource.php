@@ -376,6 +376,21 @@ class EasyRdf_Resource
         return $this->_graph->all($this->_uri, $property, 'resource');
     }
 
+    /** Count the number of values for a property of a resource
+     *
+     * This method will return 0 if the property does not exist.
+     *
+     * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  string  $type     The type of value to filter by (e.g. literal)
+     * @param  string  $lang     The language to filter by (e.g. en)
+     * @return integer           The number of values associated with the property
+     */
+    public function count($property, $type=null, $lang=null)
+    {
+        $this->checkHasGraph();
+        return $this->_graph->count($this->_uri, $property, $type, $lang);
+    }
+
     /** Concatenate all values for a property into a string.
      *
      * The default is to join the values together with a space character.

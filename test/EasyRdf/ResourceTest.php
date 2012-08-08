@@ -758,6 +758,18 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testCount()
+    {
+        $this->_setupTestGraph();
+        $this->assertEquals(2, $this->_resource->count('rdf:test'));
+    }
+
+    public function testCountNonExistantProperty()
+    {
+        $this->_setupTestGraph();
+        $this->assertEquals(0, $this->_resource->count('foo:bar'));
+    }
+
     public function testJoinDefaultGlue()
     {
         $this->_setupTestGraph();
