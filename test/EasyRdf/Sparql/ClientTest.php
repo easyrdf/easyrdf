@@ -189,7 +189,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $graph = $this->_sparql->query("CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
-        $this->assertType('EasyRdf_Graph', $graph);
+        $this->assertInstanceOf('EasyRdf_Graph', $graph);
         $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
         $this->assertStringEquals('Joe Bloggs', $name);
     }

@@ -533,7 +533,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->_setupTestGraph();
         $this->_resource->addLiteral('rdf:foobar', 'testAddLiteral');
-        $this->assertType('EasyRdf_Literal', $this->_resource->get('rdf:foobar'));
+        $this->assertInstanceOf('EasyRdf_Literal', $this->_resource->get('rdf:foobar'));
         $this->assertStringEquals('testAddLiteral', $this->_resource->get('rdf:foobar'));
     }
 
@@ -551,7 +551,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->_setupTestGraph();
         $this->_resource->addResource('rdf:foobar', 'http://testAddResource/');
-        $this->assertType('EasyRdf_Resource', $this->_resource->get('rdf:foobar'));
+        $this->assertInstanceOf('EasyRdf_Resource', $this->_resource->get('rdf:foobar'));
         $this->assertStringEquals('http://testAddResource/', $this->_resource->get('rdf:foobar'));
     }
 

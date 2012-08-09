@@ -67,7 +67,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             readFixture('foaf.json')
         );
         $graph = $this->_graphStore->get('foaf.rdf');
-        $this->assertType('EasyRdf_Graph', $graph);
+        $this->assertInstanceOf('EasyRdf_Graph', $graph);
         $this->assertEquals('http://localhost:8080/data/foaf.rdf', $graph->getUri());
         $this->assertStringEquals(
             'Joe Bloggs',
@@ -82,7 +82,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             readFixture('foaf.json')
         );
         $graph = $this->_graphStore->get('http://foo.com/bar.rdf');
-        $this->assertType('EasyRdf_Graph', $graph);
+        $this->assertInstanceOf('EasyRdf_Graph', $graph);
         $this->assertEquals('http://foo.com/bar.rdf', $graph->getUri());
         $this->assertStringEquals(
             'Joe Bloggs',
