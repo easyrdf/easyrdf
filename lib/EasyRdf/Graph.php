@@ -377,7 +377,6 @@ class EasyRdf_Graph
         }
     }
 
-
     /** Check that a URI/property parameter is valid, and expand it if required
      *  @ignore
      */
@@ -402,6 +401,26 @@ class EasyRdf_Graph
         if ($property === null or !is_string($property)) {
             throw new InvalidArgumentException(
                 "\$property should be a string or EasyRdf_Resource and cannot be null"
+            );
+        }
+    }
+
+    /** Check that a property path parameter is valid
+     *  @ignore
+     */
+    protected function checkPropertyPathParam(&$propertyPath)
+    {
+        if (is_object($propertyPath) and $propertyPath instanceof EasyRdf_Resource) {
+            $propertyPath = $propertyPath->getUri();
+        } else if ($propertyPath === '') {
+            throw new InvalidArgumentException(
+                "\$propertyPath cannot be an empty string"
+            );
+        }
+
+        if ($propertyPath === null or !is_string($propertyPath)) {
+            throw new InvalidArgumentException(
+                "\$propertyPath should be a string or EasyRdf_Resource and cannot be null"
             );
         }
     }
@@ -474,24 +493,39 @@ class EasyRdf_Graph
      *
      * This method will return null if the property does not exist.
      *
-     * @param  string       $resource The URI of the resource (e.g. http://example.com/joe#me)
-     * @param  string|array $property The name of the property (e.g. foaf:name)
-     * @param  string       $type     The type of value to filter by (e.g. literal or resource)
-     * @param  string       $lang     The language to filter by (e.g. en)
-     * @return mixed                  A value associated with the property
+     * @param  string    $resource       The URI of the resource (e.g. http://example.com/joe#me)
+     * @param  string    $propertyPath   A valid property path
+     * @param  string    $type           The type of value to filter by (e.g. literal or resource)
+     * @param  string    $lang           The language to filter by (e.g. en)
+     * @return mixed                     A value associated with the property
      */
-    public function get($resource, $property, $type=null, $lang=null)
+    public function get($resource, $propertyPath, $type=null, $lang=null)
     {
-        if (is_array($property)) {
-            foreach ($property as $p) {
-                $value = $this->get($resource, $p, $type, $lang);
-                if ($value)
-                    return $value;
-            }
-            return null;
+        $this->checkResourceParam($resource);
+        $this->checkPropertyPathParam($propertyPath);
+
+        $properties = explode('|', $propertyPath);
+        foreach ($properties as $p) {
+            $value = $this->getSingleProperty($resource, $p, $type, $lang);
+            if ($value)
+                return $value;
         }
 
-        $this->checkResourceParam($resource);
+        return NULL;
+    }
+
+    /** Get a single value for a property of a resource
+     *
+     * @param  string    $resource The URI of the resource (e.g. http://example.com/joe#me)
+     * @param  string    $property The name of the property (e.g. foaf:name)
+     * @param  string    $type     The type of value to filter by (e.g. literal or resource)
+     * @param  string    $lang     The language to filter by (e.g. en)
+     * @return mixed               A value associated with the property
+     *
+     * @ignore
+     */
+    protected function getSingleProperty($resource, $property, $type=null, $lang=null)
+    {
         $this->checkPropertyParam($property, $inverse);
 
         // Get an array of values for the property
@@ -500,6 +534,7 @@ class EasyRdf_Graph
             return null;
         }
 
+        // Filter the results
         $result = null;
         if ($type) {
             foreach ($values as $value) {
@@ -519,6 +554,7 @@ class EasyRdf_Graph
             $result = $values[0];
         }
 
+        // Convert the internal data structure into a PHP object
         return $this->arrayToObject($result);
     }
 
@@ -594,22 +630,46 @@ class EasyRdf_Graph
         }
     }
 
-
-    /** Get all values for a property of a resource
+    /** Get all values for a property path
      *
      * This method will return an empty array if the property does not exist.
+     *
+     * @param  string  $resource      The URI of the resource (e.g. http://example.com/joe#me)
+     * @param  string  $propertyPath  A valid property path
+     * @param  string  $type          The type of value to filter by (e.g. literal)
+     * @param  string  $lang          The language to filter by (e.g. en)
+     * @return array                  An array of values associated with the property
+     */
+    public function all($resource, $propertyPath, $type=null, $lang=null)
+    {
+        $this->checkResourceParam($resource);
+        $this->checkPropertyPathParam($propertyPath);
+
+        $objects = array();
+        $properties = explode('|', $propertyPath);
+        foreach ($properties as $p) {
+            $objects = array_merge(
+                $objects,
+                $this->allForSingleProperty($resource, $p, $type, $lang)
+            );
+        }
+
+        return $objects;
+    }
+
+    /** Get all values for a single property of a resource
      *
      * @param  string  $resource The URI of the resource (e.g. http://example.com/joe#me)
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $type     The type of value to filter by (e.g. literal)
      * @param  string  $lang     The language to filter by (e.g. en)
      * @return array             An array of values associated with the property
+     *
+     * @ignore
      */
-    public function all($resource, $property, $type=null, $lang=null)
+    protected function allForSingleProperty($resource, $property, $type=null, $lang=null)
     {
-        $this->checkResourceParam($resource);
         $this->checkPropertyParam($property, $inverse);
-        $this->checkValueParam($value);
 
         // Get an array of values for the property
         $values = $this->propertyValuesArray($resource, $property, $inverse);
@@ -1260,7 +1320,7 @@ class EasyRdf_Graph
         if ($resource) {
             return $this->get(
                 $resource,
-                array('skos:prefLabel', 'rdfs:label', 'foaf:name', 'dc:title', 'dc11:title'),
+                'skos:prefLabel|rdfs:label|foaf:name|dc:title|dc11:title',
                 'literal',
                 $lang
             );
@@ -1279,7 +1339,7 @@ class EasyRdf_Graph
 
         if ($resource) {
             return $this->get(
-                $resource, array('foaf:primaryTopic', '^foaf:isPrimaryTopicOf'), 'resource'
+                $resource, 'foaf:primaryTopic|^foaf:isPrimaryTopicOf', 'resource'
             );
         } else {
             return null;

@@ -488,11 +488,19 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
-    public function testGetArray()
+    public function testGetMultipleProperties()
     {
         $this->assertStringEquals(
             'Test A',
-            $this->_graph->get($this->_uri, array('rdf:test', 'rdf:foobar'))
+            $this->_graph->get($this->_uri, 'rdf:test|rdf:foobar')
+        );
+    }
+
+    public function testGetMultipleProperties2()
+    {
+        $this->assertStringEquals(
+            'Test A',
+            $this->_graph->get($this->_uri, 'rdf:foobar|rdf:test')
         );
     }
 
@@ -539,22 +547,6 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
-    public function testGetArray2()
-    {
-        $this->assertStringEquals(
-            'Test A',
-            $this->_graph->get($this->_uri, array('rdf:foobar', 'rdf:test'))
-        );
-    }
-
-    public function testGetEmptyArray()
-    {
-        $this->assertEquals(
-            null,
-            $this->_graph->get($this->_uri, array())
-        );
-    }
-
     public function testGetNonExistantResource()
     {
         $this->assertNull(
@@ -589,7 +581,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_graph->get($this->_uri, null);
     }
@@ -598,7 +590,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property cannot be an empty string'
+            '$propertyPath cannot be an empty string'
         );
         $this->_graph->get($this->_uri, '');
     }
@@ -607,7 +599,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_graph->get($this->_uri, $this);
     }
@@ -645,6 +637,19 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertStringEquals($this->_uri, $all[0]);
     }
 
+    public function testAllMultipleProperties()
+    {
+        $this->_graph->addLiteral($this->_uri, 'rdf:foobar', 'Test C');
+        $all = $this->_graph->all($this->_uri, 'rdf:test|rdf:foobar');
+        $this->assertEquals(3, count($all));
+
+        $strings = array_map("strval", $all);
+        $this->assertEquals(
+            array('Test A', 'Test B', 'Test C'),
+            $strings
+        );
+    }
+
     public function testAllNonExistantResource()
     {
         $this->assertEquals(
@@ -665,7 +670,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_graph->all($this->_uri, null);
     }
@@ -674,7 +679,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property cannot be an empty string'
+            '$propertyPath cannot be an empty string'
         );
         $this->_graph->all($this->_uri, '');
     }
@@ -683,7 +688,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_graph->all($this->_uri, array());
     }
@@ -808,11 +813,18 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testJoinMultipleProperties()
+    {
+        $this->_graph->addLiteral($this->_uri, 'rdf:foobar', 'Test C');
+        $str = $this->_graph->join($this->_uri, 'rdf:test|rdf:foobar', ', ');
+        $this->assertEquals('Test A, Test B, Test C', $str);
+    }
+
     public function testJoinNullKey()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_graph->join($this->_uri, null, 'Test C');
     }
@@ -821,7 +833,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property cannot be an empty string'
+            '$propertyPath cannot be an empty string'
         );
         $this->_graph->join($this->_uri, '', 'Test C');
     }
@@ -830,7 +842,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_graph->join($this->_uri, array(), 'Test C');
     }
@@ -979,7 +991,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->add($this->_uri, 'rdf:foo', array(
           'type' => 'literal',
           'value' => 'Rat',
-          'lang' => 'en', 
+          'lang' => 'en',
           'datatype' => 'http://www.w3.org/2001/XMLSchema#string'
         ));
     }
@@ -1066,7 +1078,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testDeleteWithUri()
     {
         $this->assertStringEquals('Test A', $this->_graph->get($this->_uri, 'rdf:test'));
-        $this->assertEquals(2, 
+        $this->assertEquals(2,
             $this->_graph->delete(
                 $this->_uri,
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'

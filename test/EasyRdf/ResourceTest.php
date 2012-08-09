@@ -318,30 +318,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals($this->_resource, $homepage->get('^foaf:homepage'));
     }
 
-    public function testGetArray()
+    public function testGetMultipleProperties()
     {
         $this->_setupTestGraph();
         $this->assertStringEquals(
             'Test A',
-            $this->_resource->get(array('rdf:test', 'rdf:foobar'))
+            $this->_resource->get('rdf:test|rdf:foobar')
         );
     }
 
-    public function testGetArray2()
+    public function testGetMultipleProperties2()
     {
         $this->_setupTestGraph();
         $this->assertStringEquals(
             'Test A',
-            $this->_resource->get(array('rdf:foobar', 'rdf:test'))
-        );
-    }
-
-    public function testGetEmptyArray()
-    {
-        $this->_setupTestGraph();
-        $this->assertEquals(
-            null,
-            $this->_resource->get(array())
+            $this->_resource->get('rdf:foobar|rdf:test')
         );
     }
 
@@ -356,7 +347,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_resource->get(null);
     }
@@ -366,7 +357,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property cannot be an empty string'
+            '$propertyPath cannot be an empty string'
         );
         $this->_resource->get('');
     }
@@ -376,7 +367,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_resource->get($this);
     }
@@ -458,7 +449,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_resource->all(null);
     }
@@ -468,7 +459,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property cannot be an empty string'
+            '$propertyPath cannot be an empty string'
         );
         $this->_resource->all('');
     }
@@ -478,7 +469,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_resource->all(array());
     }
@@ -852,7 +843,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_resource->join(null, 'Test C');
     }
@@ -862,7 +853,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property cannot be an empty string'
+            '$propertyPath cannot be an empty string'
         );
         $this->_resource->join('', 'Test C');
     }
@@ -872,7 +863,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
         );
         $this->_resource->join(array(), 'Test C');
     }
