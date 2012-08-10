@@ -44,7 +44,7 @@ Links
 Requirements
 ------------
 
-* PHP 5.2.1 or higher
+* PHP 5.2.7 or higher
 
 
 Features
