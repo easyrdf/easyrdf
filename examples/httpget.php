@@ -66,7 +66,14 @@
     </p>
 
     <p class="body">
-      <?= nl2br(htmlentities($response->getBody())) ?>
+      <?
+        if (defined('ENT_SUBSTITUTE')) {
+            // This is needed for PHP 5.4+
+            print nl2br(htmlentities($response->getBody(), ENT_SUBSTITUTE | ENT_QUOTES));
+        } else {
+            print nl2br(htmlentities($response->getBody()));
+        }
+      ?>
     </p>
 
 <?php
