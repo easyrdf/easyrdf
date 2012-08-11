@@ -1,6 +1,9 @@
 {
     "name": "njh/easyrdf",
     "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
+    "require": {
+        "php": ">=5.2.8"
+    },
     "repositories": [
         {
             "type": "vcs",
