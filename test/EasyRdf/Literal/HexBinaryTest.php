@@ -5,6 +5,14 @@ require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
 
 class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
 {
+    public function setup()
+    {
+        // Reset to built-in parsers
+        EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Ntriples');
+        EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_RdfXml');
+        EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Turtle');
+    }
+
     public function testConstruct()
     {
         $literal = new EasyRdf_Literal_HexBinary('48656C6C6F');

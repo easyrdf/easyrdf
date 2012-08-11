@@ -66,6 +66,11 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
      */
     public function setUp()
     {
+        // Reset to built-in parsers
+        EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Ntriples');
+        EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_RdfXml');
+        EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Turtle');
+
         EasyRdf_Http::setDefaultHttpClient(
             $this->_client = new EasyRdf_Http_MockClient()
         );
