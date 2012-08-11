@@ -1,16 +1,10 @@
 {
     "name": "njh/easyrdf",
     "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
-    "require": {
-        "php": ">=5.2.8"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/njh/easyrdf"
-        }
-    ],
     "version": "0.7.0",
+    "type": "library",
+    "keywords": ["RDF", "Semantic Web", "Turtle"],
+    "homepage": "http://www.aelius.com/njh/easyrdf/",
     "license": "BSD-3-Clause",
     "authors": [
         {
@@ -19,5 +13,20 @@
             "homepage": "http://www.aelius.com/njh/",
             "role": "Developer"
         }
-     ]
+    ],
+    "support": [
+        {
+            "forum": "http://groups.google.com/group/easyrdf/",
+            "issues": "http://github.com/njh/easyrdf/issues"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.8"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/njh/easyrdf"
+        }
+    ]
 }
