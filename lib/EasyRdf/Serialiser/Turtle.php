@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -43,7 +43,7 @@
  * http://www.dajobe.org/2004/01/turtle
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
@@ -64,17 +64,16 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
      */
     protected function serialiseResource($resource)
     {
-        $uri = $resource->getUri();
-        if ($resource->isBNode()) {
-            return $uri;
+        if (substr($resource, 0, 2) == '_:') {
+            return $resource;
         } else {
-            $short = EasyRdf_Namespace::shorten($uri);
+            $short = EasyRdf_Namespace::shorten($resource);
             if ($short) {
                 $this->addPrefix($short);
                 return $short;
             } else {
-                $uri = str_replace('>', '\\>', $uri);
-                return "<$uri>";
+                $uri = str_replace('>', '\\>', $resource);
+                return "<$resource>";
             }
         }
     }
@@ -84,14 +83,13 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
      */
     protected function serialiseObject($object)
     {
-        if ($object instanceof EasyRdf_Resource) {
-            return $this->serialiseResource($object);
-        } else if ($object instanceof EasyRdf_Literal) {
-            $value = $this->escapeString(strval($object));
+        if ($object['type'] == 'uri' or $object['type'] == 'bnode') {
+            return $this->serialiseResource($object['value']);
+        } else if ($object['type'] == 'literal') {
+            $value = $this->escapeString($object['value']);
 
-            $datatypeUri = $object->getDatatypeUri();
-            if ($datatypeUri) {
-                $short = EasyRdf_Namespace::shorten($datatypeUri, true);
+            if (isset($object['datatype'])) {
+                $short = EasyRdf_Namespace::shorten($object['datatype'], true);
                 if ($short) {
                     $this->addPrefix($short);
                     if ($short == 'xsd:integer') {
@@ -110,19 +108,14 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
                         return sprintf('"%s"^^%s', $value, $short);
                     }
                 } else {
-                    $datatypeUri = $object->getDatatypeUri();
-                    $datatypeUri = str_replace('>', '\\>', $datatypeUri);
+                    $datatypeUri = str_replace('>', '\\>', $object['datatype']);
                     return sprintf('"%s"^^<%s>', $value, $datatypeUri);
                 }
-            } else if ($object->getLang()) {
-                return '"' . $value . '"' . '@' . $object->getLang();
+            } else if (isset($object['lang'])) {
+                return '"' . $value . '"@' . $object['lang'];
             } else {
-                return sprintf('"%s"', $value);
+                return '"' . $value . '"';
             }
-        } else {
-            throw new EasyRdf_Exception(
-                "Unable to serialise object to turtle: ".gettype($object)
-            );
         }
     }
 
@@ -159,8 +152,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
         $this->_prefixes = array('rdf' => true);
 
         $turtle = '';
-        foreach ($graph->resources() as $subject) {
-            $properties = $subject->propertyUris();
+        foreach ($graph->toArray() as $subject => $properties) {
             if (count($properties) == 0)
                 continue;
 
@@ -171,7 +163,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
             }
 
             $pCount = 0;
-            foreach ($properties as $property) {
+            foreach ($properties as $property => $objects) {
                 $short = EasyRdf_Namespace::shorten($property, true);
                 if ($short) {
                     $this->addPrefix($short);
@@ -185,7 +177,6 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
                 }
 
                 $turtle .= " " . $pStr;
-                $objects = $subject->all($property);
 
                 $oCount = 0;
                 foreach ($objects as $object) {
