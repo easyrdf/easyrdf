@@ -13,6 +13,7 @@ $parsers = array(
     'RdfXml',
     'Rapper',
     'Redland',
+    'Turtle',
 );
 
 $documents = array(
