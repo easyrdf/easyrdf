@@ -77,7 +77,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             'ntriples', null
         );
 
-        $int = $this->_graph->get('http://example.com/a', 'http://example.com/b');
+        $int = $this->_graph->get('http://example.com/a', '<http://example.com/b>');
         $this->assertNotNull($int);
         $this->assertEquals('English', $int->getValue());
         $this->assertEquals('en-gb', $int->getLang());
@@ -92,7 +92,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             'ntriples', null
         );
 
-        $int = $this->_graph->get('http://example.com/a', 'http://example.com/b');
+        $int = $this->_graph->get('http://example.com/a', '<http://example.com/b>');
         $this->assertNotNull($int);
         $this->assertEquals(1, $int->getValue());
         $this->assertEquals(null, $int->getLang());
@@ -110,7 +110,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $a = $this->_graph->resource('http://example.com/a');
         $this->assertNotNull($a);
 
-        $b = $a->get('http://example.com/b');
+        $b = $a->get('<http://example.com/b>');
         $this->assertNotNull($b);
         $this->assertEquals("\t", $b->getValue());
     }

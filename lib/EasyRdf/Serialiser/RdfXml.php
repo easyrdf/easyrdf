@@ -73,8 +73,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         $count = count($properties);
         if ($count == 1) {
             $property = $properties[0];
-            $values = $resource->all("^$property");
-            return count($values);
+            return $resource->count("^<$property>");
         } else {
             return $count;
         }
@@ -183,7 +182,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             $short = EasyRdf_Namespace::shorten($property, true);
             if ($short) {
                 $this->addPrefix($short);
-                $objects = $res->all($property);
+                $objects = $res->all("<$property>");
                 if ($short == 'rdf:type')
                     array_shift($objects);
                 foreach ($objects as $object) {

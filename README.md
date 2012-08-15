@@ -1,6 +1,6 @@
 EasyRdf
 =======
-EasyRdf is a PHP library designed to make it easy to consume and produce RDF.
+EasyRdf is a PHP library designed to make it easy to consume and produce [RDF].
 It was designed for use in mixed teams of experienced and inexperienced RDF
 developers. It is written in Object Oriented PHP and has been tested
 extensively using PHPUnit.
@@ -63,11 +63,29 @@ Features
 * Comes with a number of examples
 
 
-Licensing
----------
+Property Paths
+--------------
 
-The EasyRdf library and tests are licensed under a [BSD-3-Clause] license.
-The examples are in the public domain, for more information see [UNLICENSE].
+EasyRdf supports querying the data in a graph using basic property paths.
+This is a small subset of the property paths described in [SPARQL 1.1 query language].
+
+
+You may use the caret character (^) to get an inverse property, for example:
+
+    $person = $homepage->get('^foaf:homepage');
+
+You can use the pipe character (|) to get alternate properties, for example:
+
+    $title = $document->get('dc:title|dc11:title');
+    
+You can use a forward slash (/) to follow a property sequence, for example to get 
+the names of all my friends:
+
+    $name = $me->all('foaf:knows/foaf:name');
+
+Finally, in order to use a full property URI, enclose it in angle brackets:
+
+    $name = $me->get('<http://xmlns.com/foaf/0.1/name>');
 
 
 More Examples
@@ -91,6 +109,13 @@ More Examples
 * [zend_framework.php](https://github.com/njh/easyrdf/blob/master/examples/zend_framework.php#slider) - Example of using Zend_Http_Client and Zend_Loader_Autoloader with EasyRdf
 
 
+Licensing
+---------
+
+The EasyRdf library and tests are licensed under the [BSD-3-Clause] license.
+The examples are in the public domain, for more information see [UNLICENSE].
+
+
 [EasyRdf_Graph]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Graph.html
 [EasyRdf_GraphStore]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_GraphStore.html
 [EasyRdf_Sparql_Client]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Sparql_Client.html
@@ -103,3 +128,4 @@ More Examples
 [UNLICENSE]:http://unlicense.org/
 [Zend_Http_Client]:http://framework.zend.com/manual/en/zend.http.client.html
 [downloaded from github]:https://github.com/njh/easyrdf/downloads
+[SPARQL 1.1 query language]:http://www.w3.org/TR/sparql11-query/

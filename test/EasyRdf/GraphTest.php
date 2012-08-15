@@ -471,7 +471,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             'Test A',
             $this->_graph->get(
                 $this->_uri,
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+                '<http://www.w3.org/1999/02/22-rdf-syntax-ns#test>'
             )
         );
     }
@@ -493,6 +493,50 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetPropertyPath()
+    {
+        $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://example.com/');
+        $this->_graph->addLiteral('http://example.com/', 'dc:title', 'My Homepage');
+        $this->assertStringEquals(
+            'My Homepage',
+            $this->_graph->get($this->_uri, 'foaf:homepage/dc11:title|dc:title')
+        );
+    }
+
+    public function testGetPropertyPath2()
+    {
+        $this->_graph->addResource('http://example.com/person1', 'foaf:knows', 'http://example.com/person2');
+        $this->_graph->addResource('http://example.com/person2', 'foaf:knows', 'http://example.com/person3');
+        $this->_graph->addLiteral('http://example.com/person3', 'foaf:name', 'Person 3');
+        $this->assertStringEquals(
+            'Person 3',
+            $this->_graph->get('http://example.com/person1', 'foaf:knows/foaf:knows/foaf:name')
+        );
+    }
+
+    public function testGetPropertyPath3()
+    {
+        $this->_graph->addResource('http://example.com/person1', 'foaf:knows', 'http://example.com/person2');
+        $this->_graph->addResource('http://example.com/person2', 'foaf:knows', 'http://example.com/person3');
+        $this->_graph->addResource('http://example.com/person3', 'foaf:knows', 'http://example.com/person4');
+        $this->assertEquals(
+            $this->_graph->resource('http://example.com/person4'),
+            $this->_graph->get('http://example.com/person1', 'foaf:knows/foaf:knows/foaf:knows')
+        );
+    }
+
+    public function testGetPropertyPath4()
+    {
+        $this->_graph->addResource('http://example.com/person1', 'foaf:homepage', 'http://example.com/');
+        $this->_graph->addResource('http://example.com/person1', 'foaf:knows', 'http://example.com/person2');
+        $this->_graph->addResource('http://example.com/person2', 'foaf:knows', 'http://example.com/person3');
+        $this->_graph->addLiteral('http://example.com/person3', 'foaf:name', 'Person 3');
+        $this->assertStringEquals(
+            'Person 3',
+            $this->_graph->get('http://example.com/', '^foaf:homepage/foaf:knows/foaf:knows/rdfs:label|foaf:name')
+        );
+    }
+
     public function testGetMultipleProperties()
     {
         $this->assertStringEquals(
@@ -506,6 +550,15 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertStringEquals(
             'Test A',
             $this->_graph->get($this->_uri, 'rdf:foobar|rdf:test')
+        );
+    }
+
+    public function testGetPropertyWithBadLiteral()
+    {
+        $this->_graph->addLiteral($this->_uri, 'foaf:homepage', 'http://example.com/');
+        $this->_graph->addLiteral('http://example.com/', 'dc:title', 'My Homepage');
+        $this->assertNull(
+            $this->_graph->get($this->_uri, 'foaf:homepage/dc:title')
         );
     }
 
@@ -621,8 +674,17 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $all = $this->_graph->all(
             $this->_uri,
-            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+            '<http://www.w3.org/1999/02/22-rdf-syntax-ns#test>'
         );
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+    }
+
+    public function testAllWithPropertyResource()
+    {
+        $prop = $this->_graph->resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#test');
+        $all = $this->_graph->all($this->_uri, $prop);
         $this->assertEquals(2, count($all));
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
@@ -640,6 +702,18 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $all = $this->_graph->all('foaf:Person', '^rdf:type');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals($this->_uri, $all[0]);
+    }
+
+    public function testAllPropertyPath()
+    {
+        $this->_graph->addResource($this->_uri, 'foaf:knows', 'http://example.com/bob');
+        $this->_graph->addLiteral('http://example.com/bob', 'foaf:name', 'Bob');
+        $this->_graph->addResource($this->_uri, 'foaf:knows', 'http://example.com/alice');
+        $this->_graph->addLiteral('http://example.com/alice', 'foaf:name', 'Alice');
+        $this->assertEquals(
+            array('Bob', 'Alice'),
+            $this->_graph->all($this->_uri, 'foaf:knows/foaf:name')
+        );
     }
 
     public function testAllMultipleProperties()
@@ -757,8 +831,17 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             2,
             $this->_graph->count(
                 $this->_uri,
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+                '<http://www.w3.org/1999/02/22-rdf-syntax-ns#test>'
             )
+        );
+    }
+
+    public function testCountWithResource()
+    {
+        $prop = $this->_graph->resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#test');
+        $this->assertEquals(
+            2,
+            $this->_graph->count($this->_uri, $prop)
         );
     }
 
@@ -792,8 +875,17 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             'Test A Test B',
             $this->_graph->join(
                 $this->_uri,
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+                '<http://www.w3.org/1999/02/22-rdf-syntax-ns#test>'
             )
+        );
+    }
+
+    public function testJoinWithResource()
+    {
+        $prop = $this->_graph->resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#test');
+        $this->assertEquals(
+            'Test A Test B',
+            $this->_graph->join($this->_uri, $prop)
         );
     }
 

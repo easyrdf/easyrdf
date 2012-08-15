@@ -296,8 +296,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertStringEquals(
             'Test A',
             $this->_resource->get(
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+                '<http://www.w3.org/1999/02/22-rdf-syntax-ns#test>'
             )
+        );
+    }
+
+    public function testGetWithPropertyResource()
+    {
+        $this->_setupTestGraph();
+        $test = new EasyRdf_Resource(
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test',
+            $this->_graph
+        );
+        $this->assertStringEquals(
+            'Test A',
+            $this->_resource->get($test)
         );
     }
 
@@ -412,8 +425,18 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->_setupTestGraph();
         $all = $this->_resource->all(
-            'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+            '<http://www.w3.org/1999/02/22-rdf-syntax-ns#test>'
         );
+        $this->assertEquals(2, count($all));
+        $this->assertStringEquals('Test A', $all[0]);
+        $this->assertStringEquals('Test B', $all[1]);
+    }
+
+    public function testAllWithResource()
+    {
+        $this->_setupTestGraph();
+        $prop = $this->_graph->resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#test');
+        $all = $this->_resource->all($prop);
         $this->assertEquals(2, count($all));
         $this->assertStringEquals('Test A', $all[0]);
         $this->assertStringEquals('Test B', $all[1]);
@@ -809,8 +832,18 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals(
             'Test A Test B',
             $this->_resource->join(
-                'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
+                '<http://www.w3.org/1999/02/22-rdf-syntax-ns#test>'
             )
+        );
+    }
+
+    public function testJoinWithResource()
+    {
+        $this->_setupTestGraph();
+        $prop = $this->_graph->resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#test');
+        $this->assertEquals(
+            'Test A Test B',
+            $this->_resource->join($prop)
         );
     }
 

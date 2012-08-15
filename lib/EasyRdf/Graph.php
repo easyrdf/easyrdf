@@ -367,6 +367,8 @@ class EasyRdf_Graph
                 throw new InvalidArgumentException(
                     "\$resource cannot be an empty string"
                 );
+            } elseif (preg_match("|^<(.+)>$|", $resource, $matches)) {
+                $resource = $matches[0];
             } else {
                 $resource = EasyRdf_Namespace::expand($resource);
             }
@@ -401,26 +403,6 @@ class EasyRdf_Graph
         if ($property === null or !is_string($property)) {
             throw new InvalidArgumentException(
                 "\$property should be a string or EasyRdf_Resource and cannot be null"
-            );
-        }
-    }
-
-    /** Check that a property path parameter is valid
-     *  @ignore
-     */
-    protected function checkPropertyPathParam(&$propertyPath)
-    {
-        if (is_object($propertyPath) and $propertyPath instanceof EasyRdf_Resource) {
-            $propertyPath = $propertyPath->getUri();
-        } else if ($propertyPath === '') {
-            throw new InvalidArgumentException(
-                "\$propertyPath cannot be an empty string"
-            );
-        }
-
-        if ($propertyPath === null or !is_string($propertyPath)) {
-            throw new InvalidArgumentException(
-                "\$propertyPath should be a string or EasyRdf_Resource and cannot be null"
             );
         }
     }
@@ -502,16 +484,40 @@ class EasyRdf_Graph
     public function get($resource, $propertyPath, $type=null, $lang=null)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyPathParam($propertyPath);
 
-        $properties = explode('|', $propertyPath);
-        foreach ($properties as $p) {
-            $value = $this->getSingleProperty($resource, $p, $type, $lang);
-            if ($value)
-                return $value;
+        if (is_object($propertyPath) and $propertyPath instanceof EasyRdf_Resource) {
+            return $this->getSingleProperty($resource, $propertyPath->getUri(), $type, $lang);
+        } else if (is_string($propertyPath) and preg_match('|^(\^?)<(.+)>|', $propertyPath, $matches)) {
+            return $this->getSingleProperty($resource, "$matches[1]$matches[2]", $type, $lang);
+        } else if ($propertyPath === null or !is_string($propertyPath)) {
+            throw new InvalidArgumentException(
+                "\$propertyPath should be a string or EasyRdf_Resource and cannot be null"
+            );
+        } else if ($propertyPath === '') {
+            throw new InvalidArgumentException(
+                "\$propertyPath cannot be an empty string"
+            );
         }
 
-        return NULL;
+        // Loop through each component in the path
+        foreach (explode('/', $propertyPath) as $part) {
+            // Stop if we come to a literal
+            if ($resource instanceof EasyRdf_Literal)
+                return NULL;
+
+            // Try each of the alternative paths
+            foreach (explode('|', $part) as $p) {
+                $res = $this->getSingleProperty($resource, $p, $type, $lang);
+                if ($res) break;
+            }
+
+            // Stop if nothing was found
+            $resource = $res;
+            if (!$resource)
+                break;
+        }
+
+        return $resource;
     }
 
     /** Get a single value for a property of a resource
@@ -526,6 +532,7 @@ class EasyRdf_Graph
      */
     protected function getSingleProperty($resource, $property, $type=null, $lang=null)
     {
+        $this->checkResourceParam($resource);
         $this->checkPropertyParam($property, $inverse);
 
         // Get an array of values for the property
@@ -643,15 +650,45 @@ class EasyRdf_Graph
     public function all($resource, $propertyPath, $type=null, $lang=null)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyPathParam($propertyPath);
 
-        $objects = array();
-        $properties = explode('|', $propertyPath);
-        foreach ($properties as $p) {
-            $objects = array_merge(
-                $objects,
-                $this->allForSingleProperty($resource, $p, $type, $lang)
+        if (is_object($propertyPath) and $propertyPath instanceof EasyRdf_Resource) {
+            return $this->allForSingleProperty($resource, $propertyPath->getUri(), $type, $lang);
+        } else if (is_string($propertyPath) and preg_match('|^(\^?)<(.+)>|', $propertyPath, $matches)) {
+            return $this->allForSingleProperty($resource, "$matches[1]$matches[2]", $type, $lang);
+        } else if ($propertyPath === null or !is_string($propertyPath)) {
+            throw new InvalidArgumentException(
+                "\$propertyPath should be a string or EasyRdf_Resource and cannot be null"
             );
+        } else if ($propertyPath === '') {
+            throw new InvalidArgumentException(
+                "\$propertyPath cannot be an empty string"
+            );
+        }
+
+        $objects = array($resource);
+
+        // Loop through each component in the path
+        foreach (explode('/', $propertyPath) as $part) {
+
+            $results = array();
+            foreach (explode('|', $part) as $p) {
+                foreach($objects as $o) {
+                    // Ignore literals found earlier in path
+                    if ($o instanceof EasyRdf_Literal)
+                        continue;
+
+                    $results = array_merge(
+                        $results, $this->allForSingleProperty($o, $p, $type, $lang)
+                    );
+                }
+            }
+
+            // Stop if we don't have anything
+            if (empty($objects))
+                break;
+
+            // Use the results as the input to the next iteration
+            $objects = $results;
         }
 
         return $objects;
@@ -669,6 +706,7 @@ class EasyRdf_Graph
      */
     protected function allForSingleProperty($resource, $property, $type=null, $lang=null)
     {
+        $this->checkResourceParam($resource);
         $this->checkPropertyParam($property, $inverse);
 
         // Get an array of values for the property
