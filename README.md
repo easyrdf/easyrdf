@@ -41,6 +41,7 @@ Links
 * Source Code: <http://github.com/njh/easyrdf>
 * Issue Tracker: <http://github.com/njh/easyrdf/issues>
 
+
 Requirements
 ------------
 
@@ -53,15 +54,8 @@ Features
 * API documentation written in phpdoc
 * Extensive unit tests written using phpunit
   * Automated testing against PHP 5.2, 5.3 and 5.4
-* Choice of RDF parser:
-  * Built-in: RDF/JSON, N-Triples, RDF/XML
-  * [ARC2]: RDF/XML, Turtle, RSS, microformats, eRDF, RDFa, ...
-  * [Redland Bindings]: RDF/XML, N-Triples, Turtle, TriG, RSS Tag Soup, ...
-  * [rapper]: RDF/XML, N-Triples, Turtle, TriG, RSS Tag Soup, ...
-* Choice of RDF serialiser:
-  * Built-in: RDF/JSON, N-Triples, RDF/XML, Turtle
-  * [ARC2]: RDF/JSON, RDF/XML, N-Triples, Turtle, POSHRDF
-  * [rapper]: RDF/JSON, N-Triples, RDF/XML, Turtle, RSS, Atom, Dot, ...
+* Built-in parsers and serialisers: RDF/JSON, N-Triples, RDF/XML, Turtle
+* Optional parsing support for: [ARC2], [Redland Bindings], [rapper]
 * Optional support for [Zend_Http_Client]
 * No required external dependancies upon other libraries (PEAR, Zend, etc...)
 * Complies with Zend Framework coding style.
