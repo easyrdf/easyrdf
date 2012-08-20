@@ -28,5 +28,8 @@
             "type": "vcs",
             "url": "https://github.com/njh/easyrdf"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-0": { "EasyRdf": "lib/" }
+    }
 }
