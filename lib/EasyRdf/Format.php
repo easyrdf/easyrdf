@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -44,7 +44,7 @@
  * format.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Format
@@ -55,6 +55,7 @@ class EasyRdf_Format
     private $_label = null;
     private $_uri = null;
     private $_mimeTypes = array();
+    private $_extensions = array();
     private $_parserClass = null;
     private $_serialiserClass = null;
 
@@ -139,7 +140,8 @@ class EasyRdf_Format
         foreach (self::$_formats as $format) {
            if ($query == $format->_name or
                $query == $format->_uri or
-               array_key_exists($query, $format->_mimeTypes)) {
+               array_key_exists($query, $format->_mimeTypes) or
+               in_array($query, $format->_extensions)) {
                return $format;
            }
         }
@@ -152,14 +154,15 @@ class EasyRdf_Format
 
     /** Register a new format
      *
-     * @param  string  $name      The name of the format (e.g. ntriples)
-     * @param  string  $label     The label for the format (e.g. N-Triples)
-     * @param  string  $uri       The URI for the format
-     * @param  string  $mimeTypes One or more mime types for the format
-     * @return object             The new EasyRdf_Format object
+     * @param  string  $name       The name of the format (e.g. ntriples)
+     * @param  string  $label      The label for the format (e.g. N-Triples)
+     * @param  string  $uri        The URI for the format
+     * @param  string  $mimeTypes  One or more mime types for the format
+     * @param  string  $extensions One or more extensions (file suffix)
+     * @return object              The new EasyRdf_Format object
      */
     public static function register($name, $label=null, $uri=null,
-                                    $mimeTypes=array())
+                                    $mimeTypes=array(), $extensions=array())
     {
         if (!is_string($name) or $name == null or $name == '') {
             throw new InvalidArgumentException(
@@ -174,6 +177,7 @@ class EasyRdf_Format
         self::$_formats[$name]->setLabel($label);
         self::$_formats[$name]->setUri($uri);
         self::$_formats[$name]->setMimeTypes($mimeTypes);
+        self::$_formats[$name]->setExtensions($extensions);
         return self::$_formats[$name];
     }
 
@@ -363,6 +367,40 @@ class EasyRdf_Format
         }
     }
 
+    /** Get the default registered file extension (filename suffix) for a format object
+     *
+     * @return string The default extension as a string.
+     */
+    public function getDefaultExtension()
+    {
+        return $this->_extensions[0];
+    }
+
+    /** Get all the registered file extensions (filename suffix) for a format object
+     *
+     * @return array One or more extensions as an array
+     */
+    public function getExtensions()
+    {
+        return $this->_extensions;
+    }
+
+    /** Set the file format extensions (filename suffix) for a format object
+     *
+     * @param array $mimeTypes  One or more file extensions
+     */
+    public function setExtensions($extensions)
+    {
+        if ($extensions) {
+            if (!is_array($extensions)) {
+                $extensions = array($extensions);
+            }
+            $this->_extensions = $extensions;
+        } else {
+            $this->_extensions = array();
+        }
+    }
+
     /** Set the parser to use for a format
      *
      * @param string $class  The name of the class
@@ -477,7 +515,8 @@ EasyRdf_Format::register(
         'application/json' => 1.0,
         'text/json' => 0.9,
         'application/rdf+json' => 0.9
-    )
+    ),
+    array('json')
 );
 
 EasyRdf_Format::register(
@@ -489,7 +528,8 @@ EasyRdf_Format::register(
         'text/ntriples' => 0.9,
         'application/ntriples' => 0.9,
         'application/x-ntriples' => 0.9
-    )
+    ),
+    array('nt')
 );
 
 EasyRdf_Format::register(
@@ -500,7 +540,8 @@ EasyRdf_Format::register(
         'text/turtle' => 0.8,
         'application/turtle' => 0.7,
         'application/x-turtle' => 0.7
-    )
+    ),
+    array('ttl')
 );
 
 EasyRdf_Format::register(
@@ -509,7 +550,8 @@ EasyRdf_Format::register(
     'http://www.w3.org/TR/rdf-syntax-grammar',
     array(
         'application/rdf+xml' => 0.8
-    )
+    ),
+    array('rdf')
 );
 
 EasyRdf_Format::register(
@@ -519,7 +561,8 @@ EasyRdf_Format::register(
     array(
         'text/n3' => 0.5,
         'text/rdf+n3' => 0.5
-    )
+    ),
+    array('n3')
 );
 
 EasyRdf_Format::register(
@@ -529,7 +572,8 @@ EasyRdf_Format::register(
     array(
         'text/html' => 0.4,
         'application/xhtml+xml' => 0.4
-    )
+    ),
+    array('html')
 );
 
 EasyRdf_Format::register(

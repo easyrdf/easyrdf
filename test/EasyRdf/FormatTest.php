@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -57,7 +57,8 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
             'my',
             'My Format',
             'http://example.com/myformat',
-            array('my/mime' => 1.0, 'my/x-mime' => 0.9)
+            array('my/mime' => 1.0, 'my/x-mime' => 0.9),
+            array('mext')
         );
     }
 
@@ -166,6 +167,16 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testGetFormatByMime2()
     {
         $format = EasyRdf_Format::getFormat('my/x-mime');
+        $this->assertNotNull($format);
+        $this->assertEquals('EasyRdf_Format', get_class($format));
+        $this->assertEquals('my', $format->getName());
+        $this->assertEquals('My Format', $format->getLabel());
+        $this->assertEquals('http://example.com/myformat', $format->getUri());
+    }
+
+    public function testGetFormatByExtension()
+    {
+        $format = EasyRdf_Format::getFormat('mext');
         $this->assertNotNull($format);
         $this->assertEquals('EasyRdf_Format', get_class($format));
         $this->assertEquals('my', $format->getName());
@@ -328,6 +339,48 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     {
         $this->_format->setMimeTypes(null);
         $this->assertEquals(array(), $this->_format->getMimeTypes());
+    }
+
+    public function testGetDefaultExtension()
+    {
+        $this->assertEquals(
+            'mext',
+            $this->_format->getDefaultExtension()
+        );
+    }
+
+    public function testGetExtensions()
+    {
+        $this->assertEquals(
+            array('mext'),
+            $this->_format->getExtensions()
+        );
+    }
+
+    public function testSetExtension()
+    {
+        $this->_format->setExtensions('testSetExtension');
+        $this->assertEquals(
+            array('testSetExtension'),
+            $this->_format->getExtensions()
+        );
+    }
+
+    public function testSetExtensions()
+    {
+        $this->_format->setExtensions(
+            array('ext1', 'ext2')
+        );
+        $this->assertEquals(
+            array('ext1', 'ext2'),
+            $this->_format->getExtensions()
+        );
+    }
+
+    public function testSetExtensionsNull()
+    {
+        $this->_format->setExtensions(null);
+        $this->assertEquals(array(), $this->_format->getExtensions());
     }
 
     public function testToString()
