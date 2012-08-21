@@ -217,7 +217,7 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
         EasyRdf_TypeMapper::set('foaf:Person', 'MyType_Class');
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph(
-            'http://www.example.com/joe/foaf.rdf', $data
+            'http://www.example.com/joe/foaf.rdf', $data, 'json'
         );
         $joe = $graph->resource('http://www.example.com/joe#me');
         $this->assertEquals('MyType_Class', get_class($joe));

@@ -573,6 +573,33 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->assertStringEquals('rdfxml', $format);
     }
 
+    public function testGuessFormatByFilenameTtl()
+    {
+        $format = EasyRdf_Format::guessFormat(
+            '# This is a comment',
+            'http://example.com/filename.ttl'
+        );
+        $this->assertStringEquals('turtle', $format);
+    }
+
+    public function testGuessFormatByFilenameRdf()
+    {
+        $format = EasyRdf_Format::guessFormat(
+            '                    <!-- lots of whitespace ',
+            'file://../data/foaf.rdf'
+        );
+        $this->assertStringEquals('rdfxml', $format);
+    }
+
+    public function testGuessFormatByFilenameUnknown()
+    {
+        $format = EasyRdf_Format::guessFormat(
+            '<http://example.com> <http://example.com> <http://example.com> .',
+            'http://example.com/foaf.foobar'
+        );
+        $this->assertStringEquals('ntriples', $format);
+    }
+
     public function testGuessFormatUnknown()
     {
         $this->assertNull(

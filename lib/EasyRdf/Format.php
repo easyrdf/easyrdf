@@ -221,13 +221,23 @@ class EasyRdf_Format
      * @param  string $data The document data
      * @return EasyRdf_Format The format object
      */
-    public static function guessFormat($data)
+    public static function guessFormat($data, $filename=NULL)
     {
         if (is_array($data)) {
             # Data has already been parsed into RDF/PHP
             return self::getFormat('php');
         }
 
+        // First try and identify by the filename
+        if ($filename and preg_match("/\.(\w+)$/", $filename, $matches)) {
+            foreach (self::$_formats as $format) {
+               if (in_array($matches[1], $format->_extensions)) {
+                   return $format;
+               }
+            }
+        }
+
+        // Then try and guess by the first 255 bytes of content
         $short = substr(trim($data), 0, 255);
         if (preg_match("/^\{/", $short)) {
             return self::getFormat('json');
@@ -250,7 +260,7 @@ class EasyRdf_Format
             # FIXME: this could be improved
             return self::getFormat('rdfxml');
         } else {
-            return null;
+            return NULL;
         }
     }
 
@@ -551,7 +561,7 @@ EasyRdf_Format::register(
     array(
         'application/rdf+xml' => 0.8
     ),
-    array('rdf')
+    array('rdf', 'xrdf')
 );
 
 EasyRdf_Format::register(

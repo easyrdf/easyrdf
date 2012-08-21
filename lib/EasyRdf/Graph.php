@@ -203,7 +203,7 @@ class EasyRdf_Graph
 
         if (!isset($format) or $format == 'guess') {
             // Guess the format if it is Unknown
-            $format = EasyRdf_Format::guessFormat($data);
+            $format = EasyRdf_Format::guessFormat($data, $uri);
         } else {
             $format = EasyRdf_Format::getFormat($format);
         }

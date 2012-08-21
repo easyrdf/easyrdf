@@ -409,7 +409,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testResources()
     {
         $data = readFixture('foaf.json');
-        $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
+        $graph = new EasyRdf_Graph('http://example.com/joe/foaf', $data);
         $resources = $graph->resources();
         $this->assertTrue(is_array($resources));
         $this->assertInstanceOf('EasyRdf_Resource', $resources['_:genid1']);
@@ -435,7 +435,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testResourcesMatching()
     {
         $data = readFixture('foaf.json');
-        $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
+        $graph = new EasyRdf_Graph('http://example.com/joe/foaf', $data);
         $matched = $graph->resourcesMatching('foaf:name', 'Joe Bloggs');
         $this->assertEquals(1, count($matched));
         $this->assertEquals(
@@ -775,7 +775,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testAllOfType()
     {
         $data = readFixture('foaf.json');
-        $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf', $data);
+        $graph = new EasyRdf_Graph('http://example.com/joe/foaf', $data);
         $resources = $graph->allOfType('foaf:Person');
         $this->assertTrue(is_array($resources));
         $this->assertEquals(1, count($resources));
@@ -1303,9 +1303,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testGetType()
     {
         $data = readFixture('foaf.json');
-        $graph = new EasyRdf_Graph(
-            'http://www.example.com/joe/foaf.rdf', $data
-        );
+        $graph = new EasyRdf_Graph('http://www.example.com/joe/foaf.rdf', $data, 'json');
         $this->assertStringEquals(
             'foaf:PersonalProfileDocument',
             $graph->type()
@@ -1322,11 +1320,11 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph(
-            'http://www.example.com/joe/foaf.rdf', $data
+            'http://www.example.com/joe/foaf.rdf', $data, 'json'
         );
-        $this->assertEquals(
+        $this->assertStringEquals(
             'http://www.example.com/joe#me',
-            $graph->primaryTopic()->getUri()
+            $graph->primaryTopic()
         );
     }
 
