@@ -179,5 +179,3 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
         return true;
     }
 }
-
-EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Ntriples');

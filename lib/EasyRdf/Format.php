@@ -603,3 +603,21 @@ EasyRdf_Format::register(
         'application/sparql-results+json' => 1.0
     )
 );
+
+
+/*
+   Register default set of parsers and serialisers
+*/
+
+EasyRdf_Format::registerParser('json', 'EasyRdf_Parser_Json');
+EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Ntriples');
+EasyRdf_Format::registerParser('php', 'EasyRdf_Parser_RdfPhp');
+EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_RdfXml');
+EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Turtle');
+
+EasyRdf_Format::registerSerialiser('json', 'EasyRdf_Serialiser_Json');
+EasyRdf_Format::registerSerialiser('n3', 'EasyRdf_Serialiser_Turtle');
+EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Ntriples');
+EasyRdf_Format::registerSerialiser('php', 'EasyRdf_Serialiser_RdfPhp');
+EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_RdfXml');
+EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Turtle');

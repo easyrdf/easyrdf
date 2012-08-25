@@ -77,5 +77,3 @@ class EasyRdf_Serialiser_RdfPhp extends EasyRdf_Serialiser
         return $graph->toArray();
     }
 }
-
-EasyRdf_Format::registerSerialiser('php', 'EasyRdf_Serialiser_RdfPhp');

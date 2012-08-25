@@ -244,5 +244,3 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
     }
 
 }
-
-EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_RdfXml');

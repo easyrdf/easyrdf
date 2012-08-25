@@ -768,5 +768,3 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         return true;
     }
 }
-
-EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_RdfXml');

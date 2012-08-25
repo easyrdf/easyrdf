@@ -157,5 +157,3 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
         }
     }
 }
-
-EasyRdf_Format::registerParser('json', 'EasyRdf_Parser_Json');

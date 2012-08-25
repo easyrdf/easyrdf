@@ -101,5 +101,3 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
         return true;
     }
 }
-
-EasyRdf_Format::registerParser('php', 'EasyRdf_Parser_RdfPhp');

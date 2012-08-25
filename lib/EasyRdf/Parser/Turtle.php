@@ -1120,5 +1120,3 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $c == '-';
     }
 }
-
-EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Turtle');

@@ -68,5 +68,3 @@ class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser_RdfPhp
         return json_encode(parent::serialise($graph, 'php'));
     }
 }
-
-EasyRdf_Format::registerSerialiser('json', 'EasyRdf_Serialiser_Json');

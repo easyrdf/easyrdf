@@ -194,6 +194,3 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
         return $this->serialisePrefixes() . "\n" . $turtle;
     }
 }
-
-EasyRdf_Format::registerSerialiser('n3', 'EasyRdf_Serialiser_Turtle');
-EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Turtle');
