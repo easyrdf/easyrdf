@@ -8,7 +8,7 @@
      * and then used to display my name.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
@@ -22,7 +22,7 @@
 <body>
 
 <?php
-  $foaf = new EasyRdf_Graph("http://www.aelius.com/njh/foaf.rdf");
+  $foaf = new EasyRdf_Graph('http://njh.me/foaf.rdf');
   $foaf->load();
   $me = $foaf->primaryTopic();
 ?>

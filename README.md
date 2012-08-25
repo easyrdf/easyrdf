@@ -20,7 +20,7 @@ an [EasyRdf_Graph] object.
 
 ### Example ###
 
-    $foaf = new EasyRdf_Graph("http://www.aelius.com/njh/foaf.rdf");
+    $foaf = new EasyRdf_Graph("http://njh.me/foaf.rdf");
     $foaf->load();
     $me = $foaf->primaryTopic();
     echo "My name is: ".$me->get('foaf:name')."\n";
