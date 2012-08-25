@@ -11,7 +11,7 @@
      * person's friends.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
@@ -25,7 +25,7 @@
 <h1>EasyRdf FOAF Info Example</h1>
 
 <?= form_tag() ?>
-<?= text_field_tag('uri', 'http://www.aelius.com/njh/foaf.rdf', array('size'=>50)) ?>
+<?= text_field_tag('uri', 'http://njh.me/foaf.rdf', array('size'=>50)) ?>
 <?= submit_tag() ?>
 <?= form_end_tag() ?>
 
@@ -46,7 +46,6 @@
 <dl>
   <dt>Name:</dt><dd><?= $person->get('foaf:name') ?></dd>
   <dt>Homepage:</dt><dd><?= link_to( $person->get('foaf:homepage') ) ?></dd>
-  <dt>Description:</dt><dd><?= $person->get('dc:description|dc11:description') ?></dd>
 </dl>
 
 <?php
@@ -62,6 +61,20 @@
                 echo "<li>$label</li>";
             } else {
                 echo "<li>".link_to_self( $label, 'uri='.urlencode($friend) )."</li>";
+            }
+        }
+        echo "</ul>\n";
+
+        echo "<h2>Interests</h2>\n";
+        echo "<ul>\n";
+        foreach ($person->all('foaf:interest') as $interest) {
+            $label = $interest->label();
+            if ($label) {
+                if ($interest->isBnode()) {
+                    echo "<li>$label</li>";
+                } else {
+                    echo "<li>".$interest->htmlLink($label)."</li>";
+                }
             }
         }
         echo "</ul>\n";
