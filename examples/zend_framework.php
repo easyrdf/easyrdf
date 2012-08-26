@@ -7,7 +7,7 @@
      * Zend's curl HTTP client adaptor is used to perform the HTTP requests.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
@@ -27,11 +27,6 @@
         )
     );
     EasyRdf_Http::setDefaultHttpClient($client);
-
-    // Load the parsers and serialisers that we are going to use
-    # FIXME: better way to do this?
-    $autoloader->autoload('EasyRdf_Serialiser_Ntriples');
-    $autoloader->autoload('EasyRdf_Parser_Ntriples');
 ?>
 
 <html>
