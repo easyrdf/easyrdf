@@ -14,12 +14,10 @@
             "role": "Developer"
         }
     ],
-    "support": [
-        {
-            "forum": "http://groups.google.com/group/easyrdf/",
-            "issues": "http://github.com/njh/easyrdf/issues"
-        }
-    ],
+    "support": {
+        "forum": "http://groups.google.com/group/easyrdf/",
+        "issues": "http://github.com/njh/easyrdf/issues"
+    },
     "require": {
         "php": ">=5.2.8"
     },
