@@ -155,14 +155,37 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertRegExp('|^file://.+/fixtures/foaf\.rdf$|', $doc->getUri());
     }
 
-    public function testLoadData()
+    public function testParseUnknownFormat()
     {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Unable to parse data of an unknown format.'
+        );
         $graph = new EasyRdf_Graph();
-        $data = readFixture('foaf.json');
-        $graph->load('http://www.example.com/foaf.json', $data, 'json');
+        $graph->parse('unknown');
+    }
 
-        $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
-        $this->assertStringEquals('Joe Bloggs', $name);
+    public function testMockParser()
+    {
+        EasyRdf_Format::registerParser('mock', 'Mock_RdfParser');
+
+        $graph = new EasyRdf_Graph();
+        $graph->parse('data', 'mock');
+        $this->assertStringEquals(
+            'Joseph Bloggs',
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
+        );
+    }
+
+    public function testLoad()
+    {
+        $this->_client->addMock('GET', 'http://www.example.com/', readFixture('foaf.json'));
+        $graph = new EasyRdf_Graph();
+        $graph->load('http://www.example.com/', 'json');
+        $this->assertStringEquals(
+            'Joe Bloggs',
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
+        );
     }
 
     public function testLoadNullUri()
@@ -197,12 +220,13 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoadUnknownFormat()
     {
+        $this->_client->addMock('GET', 'http://www.example.com/foaf.unknown', 'unknown');
         $this->setExpectedException(
             'EasyRdf_Exception',
             'Unable to parse data of an unknown format.'
         );
         $graph = new EasyRdf_Graph();
-        $graph->load('http://www.example.com/foaf.unknown', 'data');
+        $graph->load('http://www.example.com/foaf.unknown');
     }
 
     public function testLoadHttpError()
@@ -219,19 +243,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->load();
     }
 
-    public function testLoadMockParser()
-    {
-        EasyRdf_Format::registerParser('mock', 'Mock_RdfParser');
-
-        $graph = new EasyRdf_Graph();
-        $graph->load('http://www.example.com/foaf.mock', 'data', 'mock');
-        $this->assertStringEquals(
-            'Joseph Bloggs',
-            $graph->get('http://www.example.com/joe#me', 'foaf:name')
-        );
-    }
-
-    public function testLoadMockHttpClient()
+    public function testLoadGraphUri()
     {
         $this->_client->addMock('GET', 'http://www.example.com/', readFixture('foaf.json'));
         $graph = new EasyRdf_Graph('http://www.example.com/');
@@ -242,7 +254,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
-    public function testLoadMockHttpClientWithContentType()
+    public function testLoadWithContentType()
     {
         $this->_client->addMock(
             'GET', 'http://www.example.com/',
@@ -257,7 +269,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
-    public function testLoadMockHttpClientWithContentTypeWithCharset()
+    public function testLoadWithContentTypeAndCharset()
     {
         $this->_client->addMock(
             'GET', 'http://www.example.com/',

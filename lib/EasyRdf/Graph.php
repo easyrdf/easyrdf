@@ -201,7 +201,7 @@ class EasyRdf_Graph
     {
         $this->checkResourceParam($uri, true);
 
-        if (!isset($format) or $format == 'guess') {
+        if (empty($format) or $format == 'guess') {
             // Guess the format if it is Unknown
             $format = EasyRdf_Format::guessFormat($data, $uri);
         } else {
@@ -238,19 +238,17 @@ class EasyRdf_Graph
     }
 
     /**
-     * Load RDF data into the graph.
+     * Load RDF data into the graph from a URI.
      *
-     * If a URI is supplied, but no data then the data will
-     * be fetched from the URI.
+     * If no URI is given, then the URI of the graph will be used.
      *
-     * The document type is optional and can be specified if it
+     * The document type is optional but should be specified if it
      * can't be guessed or got from the HTTP headers.
      *
      * @param  string  $uri     The URI of the data to load
-     * @param  string  $data    Optional data for the graph
-     * @param  string  $format  Optional format of the data
+     * @param  string  $format  Optional format of the data (eg. rdfxml)
      */
-    public function load($uri=null, $data=null, $format=null)
+    public function load($uri=null, $format=null)
     {
         $this->checkResourceParam($uri, true);
 
@@ -259,30 +257,26 @@ class EasyRdf_Graph
                 "No URI given to load() and the graph does not have a URI."
             );
 
-        if (!$data) {
-            # No data was given - try and fetch data from URI
-            # FIXME: prevent loading the same URI multiple times
-            $client = EasyRdf_Http::getDefaultHttpClient();
-            $client->resetParameters(true);
-            $client->setUri($uri);
-            $client->setMethod('GET');
-            $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
-            $response = $client->request();
-            if (!$response->isSuccessful())
-                throw new EasyRdf_Exception(
-                    "HTTP request for $uri failed: ".$response->getMessage()
-                );
+        # FIXME: prevent loading the same URI multiple times
+        $client = EasyRdf_Http::getDefaultHttpClient();
+        $client->resetParameters(true);
+        $client->setUri($uri);
+        $client->setMethod('GET');
+        $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
+        $response = $client->request();
+        if (!$response->isSuccessful())
+            throw new EasyRdf_Exception(
+                "HTTP request for $uri failed: ".$response->getMessage()
+            );
 
-            $data = $response->getBody();
-            if (!$format or $format == 'guess') {
-                list($format, $params) = EasyRdf_Utils::parseMimeType(
-                    $response->getHeader('Content-Type')
-                );
-            }
+        if (!$format or $format == 'guess') {
+            list($format, $params) = EasyRdf_Utils::parseMimeType(
+                $response->getHeader('Content-Type')
+            );
         }
 
         // Parse the data
-        return $this->parse($data, $format, $uri);
+        return $this->parse($response->getBody(), $format, $uri);
     }
 
     /** Get an associative array of all the resources stored in the graph.
