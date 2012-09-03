@@ -448,6 +448,22 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $data = readFixture('foaf.json');
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf', $data);
+        $matched = $graph->resourcesMatching('foaf:name');
+        $this->assertEquals(2, count($matched));
+        $this->assertEquals(
+            'http://www.example.com/joe#me',
+            $matched[0]->getUri()
+        );
+        $this->assertEquals(
+            '_:genid1',
+            $matched[1]->getUri()
+        );
+    }
+
+    public function testResourcesMatchingValue()
+    {
+        $data = readFixture('foaf.json');
+        $graph = new EasyRdf_Graph('http://example.com/joe/foaf', $data);
         $matched = $graph->resourcesMatching('foaf:name', 'Joe Bloggs');
         $this->assertEquals(1, count($matched));
         $this->assertEquals(
@@ -466,6 +482,22 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertStringEquals(
             'http://example.com/#me',
             $matched[0]
+        );
+    }
+
+    public function testResourcesMatchingInverse()
+    {
+        $data = readFixture('foaf.json');
+        $graph = new EasyRdf_Graph('http://example.com/joe/foaf', $data);
+        $matched = $graph->resourcesMatching('^foaf:homepage');
+        $this->assertEquals(2, count($matched));
+        $this->assertEquals(
+            'http://www.example.com/joe/',
+            $matched[0]->getUri()
+        );
+        $this->assertEquals(
+            'http://www.example.com/project',
+            $matched[1]->getUri()
         );
     }
 

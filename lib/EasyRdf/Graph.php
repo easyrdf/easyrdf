@@ -299,27 +299,46 @@ class EasyRdf_Graph
         return $this->_resources;
     }
 
-    /** Get an arry of resources matching a certain property and value.
+    /** Get an arry of resources matching a certain property and optional value.
      *
      * For example this routine could be used as a way of getting
-     * everyone who is male:
+     * everyone who has name:
+     * $people = $graph->resourcesMatching('foaf:name')
+     *
+     * Or everyone who is male:
      * $people = $graph->resourcesMatching('foaf:gender', 'male');
      *
+     * Or all homepages:
+     * $people = $graph->resourcesMatching('^foaf:homepage');
+     *
      * @param  string  $property   The property to check.
-     * @param  mixed   $value      The value of the propery to check for.
-     * @return array Array of EasyRdf_Resource
+     * @param  mixed   $value      Optional, the value of the propery to check for.
+     * @return array   Array of EasyRdf_Resource
      */
-    public function resourcesMatching($property, $value)
+    public function resourcesMatching($property, $value=null)
     {
         $this->checkPropertyParam($property, $inverse);
         $this->checkValueParam($value);
 
+        if ($inverse) {
+            $index = $this->_revIndex;
+        } else {
+            $index = $this->_index;
+        }
+
         $matched = array();
-        foreach ($this->_index as $subject => $props) {
-            if (isset($this->_index[$subject][$property])) {
-                foreach ($this->_index[$subject][$property] as $v) {
-                    if ($v['type'] == $value['type'] and $v['value'] == $value['value'])
-                        $matched[] = $this->resource($subject);
+        foreach ($index as $subject => $props) {
+            if (isset($index[$subject][$property])) {
+                if (isset($value)) {
+                    foreach ($this->_index[$subject][$property] as $v) {
+                        if ($v['type'] == $value['type'] and
+                            $v['value'] == $value['value']) {
+                            $matched[] = $this->resource($subject);
+                            break;
+                        }
+                    }
+                } else {
+                    $matched[] = $this->resource($subject);
                 }
             }
         }
