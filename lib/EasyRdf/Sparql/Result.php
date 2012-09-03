@@ -312,7 +312,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
                         $t->$key = $this->_newTerm(array(
                             'type' => $node->nodeName,
                             'value' => $node->nodeValue,
-                            'lang' => $node->getAttribute('lang'),
+                            'lang' => $node->getAttribute('xml:lang'),
                             'datatype' => $node->getAttribute('datatype')
                         ));
                         break;

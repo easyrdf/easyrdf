@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  <head>
+    <variable name="episode"/>
+    <variable name="pos"/>
+    <variable name="label"/>
+  </head>
+  <results>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dlv#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">1</literal>
+      </binding>
+      <binding name="label">
+        <literal>Rose</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dmp#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">2</literal>
+      </binding>
+      <binding name="label">
+        <literal>The End of the World</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dng#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">3</literal>
+      </binding>
+      <binding name="label">
+        <literal>The Unquiet Dead</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dp9#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">4</literal>
+      </binding>
+      <binding name="label">
+        <literal>Aliens of London</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dpv#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">5</literal>
+      </binding>
+      <binding name="label">
+        <literal>World War Three</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dq8#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">6</literal>
+      </binding>
+      <binding name="label">
+        <literal>Dalek</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dr5#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">7</literal>
+      </binding>
+      <binding name="label">
+        <literal>The Long Game</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074drw#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">8</literal>
+      </binding>
+      <binding name="label">
+        <literal>Father's Day</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074ds9#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">9</literal>
+      </binding>
+      <binding name="label">
+        <literal>The Empty Child</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dsp#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">10</literal>
+      </binding>
+      <binding name="label">
+        <literal>The Doctor Dances</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dt5#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">11</literal>
+      </binding>
+      <binding name="label">
+        <literal>Boom Town</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dth#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">12</literal>
+      </binding>
+      <binding name="label">
+        <literal>Bad Wolf</literal>
+      </binding>
+    </result>
+    <result>
+      <binding name="episode">
+        <uri>http://www.bbc.co.uk/programmes/b0074dv1#programme</uri>
+      </binding>
+      <binding name="pos">
+        <literal datatype="http://www.w3.org/2001/XMLSchema#integer">13</literal>
+      </binding>
+      <binding name="label">
+        <literal>The Parting of the Ways</literal>
+      </binding>
+    </result>
+  </results>
+</sparql>

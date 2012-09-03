@@ -134,6 +134,58 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertEquals(0, count($result));
     }
 
+    public function testSelectLangLiteralXml()
+    {
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('sparql_select_lang.xml'),
+            'application/sparql-results+xml'
+        );
+
+        # 1st: Example using xml:lang="en"
+        $first = $result[0];
+        $this->assertEquals('London', $first->label->getValue());
+        $this->assertEquals('en', $first->label->getLang());
+        $this->assertEquals(null, $first->label->getDatatype());
+
+        # 2nd: Example using xml:lang="es"
+        $second = $result[1];
+        $this->assertEquals('Londres', $second->label->getValue());
+        $this->assertEquals('es', $second->label->getLang());
+        $this->assertEquals(null, $second->label->getDatatype());
+
+        # 3rd: no lang
+        $third = $result[2];
+        $this->assertEquals('London', $third->label->getValue());
+        $this->assertEquals(null, $third->label->getLang());
+        $this->assertEquals(null, $third->label->getDatatype());
+    }
+
+    public function testSelectLangLiteralJson()
+    {
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('sparql_select_lang.json'),
+            'application/sparql-results+json'
+        );
+
+        # 1st: Example using xml:lang="en"
+        $first = $result[0];
+        $this->assertEquals('London', $first->label->getValue());
+        $this->assertEquals('en', $first->label->getLang());
+        $this->assertEquals(null, $first->label->getDatatype());
+
+        # 2nd: Example using lang="es"
+        $second = $result[1];
+        $this->assertEquals('Londres', $second->label->getValue());
+        $this->assertEquals('es', $second->label->getLang());
+        $this->assertEquals(null, $second->label->getDatatype());
+
+        # 3rd: no lang
+        $third = $result[2];
+        $this->assertEquals('London', $third->label->getValue());
+        $this->assertEquals(null, $third->label->getLang());
+        $this->assertEquals(null, $third->label->getDatatype());
+    }
+
     public function testSelectTypedLiteralJson()
     {
         $result = new EasyRdf_Sparql_Result(
@@ -147,33 +199,17 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertStringEquals('Rose', $first->label);
     }
 
-    public function testSelectLangLiteralJson()
+    public function testSelectTypedLiteralXml()
     {
         $result = new EasyRdf_Sparql_Result(
-            readFixture('sparql_select_lang.json'),
-            'application/sparql-results+json'
+            readFixture('sparql_typed_literal.xml'),
+            'application/sparql-results+xml'
         );
 
-        # 1st: Example using "lang": "en"
         $first = $result[0];
         $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dlv#programme', $first->episode);
-        $this->assertEquals(1, $first->pos->getValue());
-        $this->assertEquals('Rose', $first->label->getValue());
-        $this->assertEquals('en', $first->label->getLang());
-
-        # 2nd: Example using "xml:lang": "en"
-        $second = $result[1];
-        $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dmp#programme', $second->episode);
-        $this->assertEquals(2, $second->pos->getValue());
-        $this->assertEquals('The End of the World', $second->label->getValue());
-        $this->assertEquals('en', $second->label->getLang());
-
-        # 3rd: no lang
-        $second = $result[2];
-        $this->assertStringEquals('http://www.bbc.co.uk/programmes/b0074dng#programme', $second->episode);
-        $this->assertEquals(3, $second->pos->getValue());
-        $this->assertEquals('The Unquiet Dead', $second->label->getValue());
-        $this->assertEquals(null, $second->label->getLang());
+        $this->assertStringEquals(1, $first->pos);
+        $this->assertStringEquals('Rose', $first->label);
     }
 
     public function testAskTrueJson()
@@ -305,7 +341,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $this->assertContains(">http://www.example.com/joe#me</a></td>", $html);
         $this->assertContains(">foaf:name</a></td>", $html);
-        $this->assertContains(">&quot;Joe Bloggs&quot;</span></td>", $html);
+        $this->assertContains(">&quot;Joe Bloggs&quot;@en</span></td>", $html);
         $this->assertContains("</table>", $html);
     }
 
@@ -325,7 +361,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertContains('| foaf:name           |', $text);
         $this->assertContains('+--------------------------------+', $text);
         $this->assertContains('| ?o                             |', $text);
-        $this->assertContains('| "Joe Bloggs"                   |', $text);
+        $this->assertContains('| "Joe Bloggs"@en                |', $text);
     }
 
     public function testDumpAskFalseHtml()

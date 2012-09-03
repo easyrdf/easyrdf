@@ -1,24 +1,6 @@
-{
-  "head": {
-    "vars": [ "episode" , "pos" , "label" ]
-  } ,
-  "results": {
-    "bindings": [
-      {
-        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dlv#programme" } ,
-        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "literal" , "value": "1" } ,
-        "label": { "type": "literal" , "value": "Rose", "lang": "en" }
-      } ,
-      {
-        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dmp#programme" } ,
-        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "literal" , "value": "2" } ,
-        "label": { "type": "literal" , "value": "The End of the World", "xml:lang": "en" }
-      } ,
-      {
-        "episode": { "type": "uri" , "value": "http://www.bbc.co.uk/programmes/b0074dng#programme" } ,
-        "pos": { "datatype": "http://www.w3.org/2001/XMLSchema#integer" , "type": "literal" , "value": "3" } ,
-        "label": { "type": "literal" , "value": "The Unquiet Dead" }
-      }
-    ]
-  }
-}
+
+{ "head": { "link": [], "vars": ["label"] },
+  "results": { "distinct": false, "ordered": true, "bindings": [
+    { "label": { "type": "literal", "xml:lang": "en", "value": "London" }},
+    { "label": { "type": "literal", "xml:lang": "es", "value": "Londres" }},
+    { "label": { "type": "literal", "value": "London" }} ] } }
