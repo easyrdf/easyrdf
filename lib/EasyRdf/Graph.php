@@ -62,17 +62,17 @@ class EasyRdf_Graph
     /**
      * Constructor
      *
-     * If no URI is given then an empty graph is created.
+     * If no URI is given then an unnamed graph is created.
      *
-     * If a URI is supplied, but no data then the data will
-     * be fetched from the URI.
+     * The $data parameter is optional and will be parsed into
+     * the graph if given.
      *
-     * The document type is optional and can be specified if it
-     * can't be guessed or got from the HTTP headers.
+     * The data format is optional and should be specified if it
+     * can't be guessed by EasyRdf.
      *
      * @param  string  $uri     The URI of the graph
      * @param  string  $data    Data for the graph
-     * @param  string  $format  The document type of the data
+     * @param  string  $format  The document type of the data (e.g. rdfxml)
      * @return object EasyRdf_Graph
      */
     public function __construct($uri=null, $data=null, $format=null)
