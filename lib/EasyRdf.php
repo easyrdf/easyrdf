@@ -115,6 +115,11 @@ require_once "EasyRdf/Literal/HexBinary.php";
 require_once "EasyRdf/Literal/Integer.php";
 
 /**
+ * @see EasyRdf_ParsedUri
+ */
+require_once "EasyRdf/ParsedUri.php";
+
+/**
  * @see EasyRdf_Parser
  */
 require_once "EasyRdf/Parser.php";
