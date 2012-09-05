@@ -109,6 +109,25 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         $this->assertEquals(0, $this->_graph->countTriples());
     }
 
+    function testParseXMLLiteral()
+    {
+        $this->_parser->parse(
+            $this->_graph,
+            readFixture('xml_literal.rdf'),
+            'rdfxml',
+            'http://www.example.com/'
+        );
+
+        $doc = $this->_graph->resource('http://www.example.com/');
+        $this->assertEquals('foaf:Document', $doc->type());
+        $description = $doc->get('dc:description');
+        $this->assertEquals('rdf:XMLLiteral', $description->getDataType());
+        $this->assertEquals(
+            "\n      <p>Here is a block of <em>HTML text</em></p>\n    ",
+            $description->getValue()
+        );
+    }
+
     function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
