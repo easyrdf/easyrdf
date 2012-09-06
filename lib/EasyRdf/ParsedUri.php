@@ -50,7 +50,7 @@ class EasyRdf_ParsedUri
     // For all URIs:
     private $_scheme;
     private $_fragment;
-    
+
     // For hierarchical URIs:
     private $_authority;
     private $_path;
@@ -63,19 +63,25 @@ class EasyRdf_ParsedUri
      * @param  string $uristr    The URI as a string
      * @return object EasyRdf_ParsedUri
      */
-    public function __construct($uristr)
+    public function __construct($uri=null)
     {
-        if (preg_match(self::URI_REGEX, $uristr, $matches)) {
-            $this->_scheme = isset($matches[2]) ? $matches[2] : null;
-            $this->_authority = isset($matches[4]) ? $matches[4] : null;
-            $this->_path = isset($matches[5]) ? $matches[5] : null;
-            $this->_query = isset($matches[7]) ? $matches[7] : null;
-            $this->_fragment = isset($matches[9]) ? $matches[9] : null;
-            
-            // FIXME: parse the authority
+        if (is_string($uri)) {
+            if (preg_match(self::URI_REGEX, $uri, $matches)) {
+                $this->_scheme = isset($matches[2]) ? $matches[2] : null;
+                $this->_authority = isset($matches[4]) ? $matches[4] : null;
+                $this->_path = isset($matches[5]) ? $matches[5] : null;
+                $this->_query = isset($matches[7]) ? $matches[7] : null;
+                $this->_fragment = isset($matches[9]) ? $matches[9] : null;
+            } else {
+               // FIXME: throw exception?
+            }
+         } else if (is_array($uri)) {
+            $this->_scheme = isset($uri['scheme']) ? $uri['scheme'] : null;
+            $this->_authority = isset($uri['authority']) ? $uri['authority'] : null;
+            $this->_path = isset($uri['path']) ? $uri['path'] : null;
+            $this->_query = isset($uri['query']) ? $uri['query'] : null;
+            $this->_fragment = isset($uri['fragment']) ? $uri['fragment'] : null;
         }
-        
-        // FIXME: throw exception if failed to parse?
     }
 
 
@@ -85,7 +91,7 @@ class EasyRdf_ParsedUri
     public function isAbsolute() {
         return $this->_scheme != null;
     }
-    
+
     /** Returns true if this is an relative (partial) URI
      * @return boolean
      */
@@ -99,28 +105,28 @@ class EasyRdf_ParsedUri
     public function getScheme() {
         return $this->_scheme;
     }
-    
+
     /** Returns the authority of the URI (e.g. www.example.com:8080)
      * @return string
      */
     public function getAuthority() {
         return $this->_authority;
     }
-    
+
     /** Returns the path of the URI (e.g. /foo/bar)
      * @return string
      */
     public function getPath() {
         return $this->_path;
     }
-    
+
     /** Returns the query string part of the URI (e.g. foo=bar)
      * @return string
      */
     public function getQuery() {
         return $this->_query;
     }
-    
+
     /** Returns the fragment part of the URI (i.e. after the #)
      * @return string
      */
@@ -153,10 +159,14 @@ class EasyRdf_ParsedUri
             $this->_path = substr($this->_path, 0, -1);
         }
 
+        if (substr($this->_path, -3) == '/..') {
+            $this->_path .= '/';
+        }
+
         // Split the path into its segments
         $segments = explode('/', $this->_path);
         $newSegments = array();
-        
+
         // Remove all unnecessary '.' and '..' segments
         foreach($segments as $segment) {
             if ($segment == '..') {
@@ -171,16 +181,73 @@ class EasyRdf_ParsedUri
                 array_push($newSegments, $segment);
             }
         }
-        
+
         // Construct the new normalised path
         $this->_path = implode($newSegments, '/');
 
         // Allow easy chaining of methods
         return $this;
     }
-    
 
-    /** Magic method to convert the URI, when casted, back to a string 
+    /**
+     * Resolves a relative URI using this URI as the base URI.
+     */
+    public function resolve($relUri) {
+        // If it is a string, then convert it to a parsed object
+        if (is_string($relUri)) {
+            $relUri = new EasyRdf_ParsedUri($relUri);
+        }
+
+        // This code is based on the pseudocode in section 5.2.2 of RFC3986
+        $target = new EasyRdf_ParsedUri();
+        if ($relUri->_scheme) {
+            $target->_scheme = $relUri->_scheme;
+            $target->_authority = $relUri->_authority;
+            $target->_path = $relUri->_path;
+            $target->_query = $relUri->_query;
+        } else {
+            if ($relUri->_authority) {
+                $target->_authority = $relUri->_authority;
+                $target->_path = $relUri->_path;
+                $target->_query = $relUri->_query;
+            } else {
+                if (empty($relUri->_path)) {
+                    $target->_path = $this->_path;
+                    if ($relUri->_query) {
+                        $target->_query = $relUri->_query;
+                    } else {
+                        $target->_query = $this->_query;
+                    }
+                } else {
+                    if (substr($relUri->_path, 0, 1) == '/') {
+                        $target->_path = $relUri->_path;
+                    } else {
+                        $path = $this->_path;
+                        $lastSlash = strrpos($path, '/');
+                        if ($lastSlash !== false) {
+                            $path = substr($path, 0, $lastSlash + 1);
+                        } else {
+                            $path = '/';
+                        }
+
+                        $target->_path .= $path . $relUri->_path;
+                    }
+                    $target->_query = $relUri->_query;
+                }
+                $target->_authority = $this->_authority;
+            }
+            $target->_scheme = $this->_scheme;
+        }
+
+        $target->_fragment = $relUri->_fragment;
+
+        $target->normalise();
+
+        return $target;
+    }
+
+
+    /** Magic method to convert the URI, when casted, back to a string
      *
      * @return string The URI as a string
      */

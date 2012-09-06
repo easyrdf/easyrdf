@@ -43,8 +43,20 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
     public function setup()
     {
         $this->baseUri = new EasyRdf_ParsedUri(
-            'http://example.org/bpath/cpath/d;p?querystr#frag'
+            'http://a/b/c/d;p?q'
         );
+    }
+    
+    public function testConstruct()
+    {
+        $uri = new EasyRdf_ParsedUri(array(
+          'scheme' => 'http',
+          'authority' => 'example.com',
+          'path' => '/foo/bar',
+          'query' => 'k=v',
+          'fragment' => 'frag'
+        ));
+        $this->assertStringEquals('http://example.com/foo/bar?k=v#frag', $uri);
     }
 
     public function testParseHttp()
@@ -195,6 +207,366 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
         $uri = new EasyRdf_ParsedUri('http://example.com/a/b/../c/./d/.');
         $uri->normalise();
         $this->assertStringEquals('http://example.com/a/c/d/', $uri);
+    }
+
+    public function testResolve()
+    {
+        $base = new EasyRdf_ParsedUri('http://example.com');
+        $this->assertStringEquals(
+            "http://example.com/filename",
+            $base->resolve("filename")
+        );
+    }
+
+    /**
+     * Tests from RFC3986 Section 5
+     */
+
+    /*  RFC3986 5.4.1 Normal Examples */
+    public function testResolveReferenceUriNormal1()
+    {
+        $this->assertStringEquals(
+            "g:h",
+            $this->baseUri->resolve("g:h")
+        );
+    }
+
+    public function testResolveReferenceUriNormal2()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g",
+            $this->baseUri->resolve("g")
+        );
+    }
+
+    public function testResolveReferenceUriNormal3()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g",
+            $this->baseUri->resolve("./g")
+        );
+    }
+
+    public function testResolveReferenceUriNormal4()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g/",
+            $this->baseUri->resolve("g/")
+        );
+    }
+
+    public function testResolveReferenceUriNormal5()
+    {
+        $this->assertStringEquals(
+            "http://a/g",
+            $this->baseUri->resolve("/g")
+        );
+    }
+
+    public function testResolveReferenceUriNormal6()
+    {
+        $this->assertStringEquals(
+            "http://g",
+            $this->baseUri->resolve("//g")
+        );
+    }
+
+    public function testResolveReferenceUriNormal7()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/d;p?y",
+            $this->baseUri->resolve("?y")
+        );
+    }
+
+    public function testResolveReferenceUriNormal8()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g?y",
+            $this->baseUri->resolve("g?y")
+        );
+    }
+
+    public function testResolveReferenceUriNormal9()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/d;p?q#s",
+            $this->baseUri->resolve("#s")
+        );
+    }
+
+    public function testResolveReferenceUriNormal10()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g#s",
+            $this->baseUri->resolve("g#s")
+        );
+    }
+
+    public function testResolveReferenceUriNormal11()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g?y#s",
+            $this->baseUri->resolve("g?y#s")
+        );
+    }
+
+    public function testResolveReferenceUriNormal12()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g;x",
+            $this->baseUri->resolve("g;x")
+        );
+    }
+
+    public function testResolveReferenceUriNormal13()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g;x",
+            $this->baseUri->resolve("g;x")
+        );
+    }
+
+    public function testResolveReferenceUriNormal14()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g;x?y#s",
+            $this->baseUri->resolve("g;x?y#s")
+        );
+    }
+
+    public function testResolveReferenceUriNormal15()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/d;p?q",
+            $this->baseUri->resolve("")
+        );
+    }
+
+    public function testResolveReferenceUriNormal16()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/",
+            $this->baseUri->resolve(".")
+        );
+    }
+
+    public function testResolveReferenceUriNormal17()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/",
+            $this->baseUri->resolve("./")
+        );
+    }
+
+    public function testResolveReferenceUriNormal18()
+    {
+        $this->assertStringEquals(
+            "http://a/b/",
+            $this->baseUri->resolve("..")
+        );
+    }
+
+    public function testResolveReferenceUriNormal19()
+    {
+        $this->assertStringEquals(
+            "http://a/b/",
+            $this->baseUri->resolve("../")
+        );
+    }
+
+    public function testResolveReferenceUriNormal20()
+    {
+        $this->assertStringEquals(
+            "http://a/b/g",
+            $this->baseUri->resolve("../g")
+        );
+    }
+
+    public function testResolveReferenceUriNormal21()
+    {
+        $this->assertStringEquals(
+            "http://a/",
+            $this->baseUri->resolve("../..")
+        );
+    }
+
+    public function testResolveReferenceUriNormal22()
+    {
+        $this->assertStringEquals(
+            "http://a/",
+            $this->baseUri->resolve("../../")
+        );
+    }
+
+    public function testResolveReferenceUriNormal23()
+    {
+        $this->assertStringEquals(
+            "http://a/g",
+            $this->baseUri->resolve("../../g")
+        );
+    }
+
+
+    /* RFC3986 5.4.2 Abnormal Examples */
+    public function testResolveReferenceUriAbnormal1()
+    {
+        $this->assertStringEquals(
+            "http://a/g",
+            $this->baseUri->resolve("../../../g")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal2()
+    {
+        $this->assertStringEquals(
+            "http://a/g",
+            $this->baseUri->resolve("../../../../g")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal3()
+    {
+        $this->assertStringEquals(
+            "http://a/g",
+            $this->baseUri->resolve("/./g")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal4()
+    {
+        $this->assertStringEquals(
+            "http://a/g",
+            $this->baseUri->resolve("/../g")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal5()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g.",
+            $this->baseUri->resolve("g.")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal6()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/.g",
+            $this->baseUri->resolve(".g")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal7()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g..",
+            $this->baseUri->resolve("g..")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal8()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/..g",
+            $this->baseUri->resolve("..g")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal9()
+    {
+        $this->assertStringEquals(
+            "http://a/b/g",
+            $this->baseUri->resolve("./../g")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal10()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g/",
+            $this->baseUri->resolve("./g/.")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal11()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g/h",
+            $this->baseUri->resolve("g/./h")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal12()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/h",
+            $this->baseUri->resolve("g/../h")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal13()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g;x=1/y",
+            $this->baseUri->resolve("g;x=1/./y")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal14()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/y",
+            $this->baseUri->resolve("g;x=1/../y")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal15()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/y",
+            $this->baseUri->resolve("g;x=1/../y")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal16()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g?y/./x",
+            $this->baseUri->resolve("g?y/./x")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal17()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g?y/../x",
+            $this->baseUri->resolve("g?y/../x")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal18()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g#s/./x",
+            $this->baseUri->resolve("g#s/./x")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal19()
+    {
+        $this->assertStringEquals(
+            "http://a/b/c/g#s/../x",
+            $this->baseUri->resolve("g#s/../x")
+        );
+    }
+
+    public function testResolveReferenceUriAbnormal20()
+    {
+        $this->assertStringEquals(
+            "http:g",
+            $this->baseUri->resolve("http:g")
+        );
     }
 
 }
