@@ -155,4 +155,46 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
         $this->assertTrue($uri->isRelative());
     }
 
+    public function testNormaliseDotSegments()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.example.com/foo/././bar/.');
+        $uri->normalise();
+        $this->assertEquals('/foo/bar/', $uri->getPath());
+    }
+
+    public function testNormaliseInitalDot()
+    {
+        $uri = new EasyRdf_ParsedUri('./foo/bar');
+        $uri->normalise();
+        $this->assertEquals('foo/bar', $uri->getPath());
+    }
+
+    public function testNormaliseOneParent()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.example.com/foo/bar/../file');
+        $uri->normalise();
+        $this->assertEquals('/foo/file', $uri->getPath());
+    }
+
+    public function testNormaliseTwoParents()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.example.com/foo/bar/../../file');
+        $uri->normalise();
+        $this->assertEquals('/file', $uri->getPath());
+    }
+
+    public function testNormaliseThreeParents()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.example.com/foo/bar/../../../file');
+        $uri->normalise();
+        $this->assertEquals('/file', $uri->getPath());
+    }
+
+    public function testNormaliseMixed()
+    {
+        $uri = new EasyRdf_ParsedUri('http://example.com/a/b/../c/./d/.');
+        $uri->normalise();
+        $this->assertStringEquals('http://example.com/a/c/d/', $uri);
+    }
+
 }

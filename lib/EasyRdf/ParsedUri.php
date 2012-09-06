@@ -127,6 +127,57 @@ class EasyRdf_ParsedUri
     public function getFragment() {
         return $this->_fragment;
     }
+
+
+    /**
+     * Normalises the path of this URI if it has one. Normalising a path means
+     * that any unnecessary '.' and '..' segments are removed. For example, the
+     * URI http://example.com/a/b/../c/./d would be normalised to
+     * http://example.com/a/c/d
+     *
+     * @return object EasyRdf_ParsedUri
+     */
+    public function normalise() {
+        if (empty($this->_path))
+            return $this;
+
+        // Remove ./ from the start
+        if (substr($this->_path, 0, 2) == './') {
+            // Remove both characters
+            $this->_path = substr($this->_path, 2);
+        }
+
+        // Remove /. from the end
+        if (substr($this->_path, -2) == '/.') {
+            // Remove only the last dot, not the slash!
+            $this->_path = substr($this->_path, 0, -1);
+        }
+
+        // Split the path into its segments
+        $segments = explode('/', $this->_path);
+        $newSegments = array();
+        
+        // Remove all unnecessary '.' and '..' segments
+        foreach($segments as $segment) {
+            if ($segment == '..') {
+                // Remove the previous part of the path
+                $count = count($newSegments);
+                if ($count > 0 && $newSegments[$count-1])
+                    array_pop($newSegments);
+            } else if ($segment == '.') {
+                // Ignore
+                continue;
+            } else {
+                array_push($newSegments, $segment);
+            }
+        }
+        
+        // Construct the new normalised path
+        $this->_path = implode($newSegments, '/');
+
+        // Allow easy chaining of methods
+        return $this;
+    }
     
 
     /** Magic method to convert the URI, when casted, back to a string 
