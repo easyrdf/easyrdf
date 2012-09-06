@@ -135,7 +135,7 @@ class EasyRdf_Resource
         return EasyRdf_Namespace::shorten($this->_uri);
     }
 
-    /** Gets the local name of this URI
+    /** Gets the local name of the URI of this resource
      *
      * The local name is defined as the part of the URI string
      * after the last occurrence of the '#', ':' or '/' character.
@@ -147,6 +147,15 @@ class EasyRdf_Resource
         if (preg_match("|([^#:/]+)$|", $this->_uri, $matches)) {
             return $matches[1];
         }
+    }
+
+    /** Parse the URI of the resource and return as a ParsedUri object
+     *
+     * @return EasyRdf_ParsedUri
+     */
+    public function parseUri()
+    {
+        return new EasyRdf_ParsedUri($this->_uri);
     }
 
     /** Generates an HTML anchor tag, linking to this resource.

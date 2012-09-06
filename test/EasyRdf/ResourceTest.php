@@ -149,6 +149,14 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertEquals(NULL, $res->localName());
     }
 
+    public function testParseUri()
+    {
+        $res = new EasyRdf_Resource('http://example.com/foo/bar');
+        $uri = $res->parseUri();
+        $this->assertInstanceOf('EasyRdf_ParsedUri', $uri);
+        $this->assertEquals('/foo/bar', $uri->getPath());
+    }
+
     public function testHtmlLinkNoText()
     {
         $res = new EasyRdf_Resource('http://example.com/');
