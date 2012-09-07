@@ -48,13 +48,13 @@
 class EasyRdf_ParsedUri
 {
     // For all URIs:
-    private $_scheme;
-    private $_fragment;
+    private $_scheme = NULL;
+    private $_fragment = NULL;
 
     // For hierarchical URIs:
-    private $_authority;
-    private $_path;
-    private $_query;
+    private $_authority = NULL;
+    private $_path = NULL;
+    private $_query = NULL;
 
     const URI_REGEX = "|^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?|";
 
@@ -63,24 +63,30 @@ class EasyRdf_ParsedUri
      * @param  string $uristr    The URI as a string
      * @return object EasyRdf_ParsedUri
      */
-    public function __construct($uri=null)
+    public function __construct($uri=NULL)
     {
         if (is_string($uri)) {
             if (preg_match(self::URI_REGEX, $uri, $matches)) {
-                $this->_scheme = isset($matches[2]) ? $matches[2] : null;
-                $this->_authority = isset($matches[4]) ? $matches[4] : null;
-                $this->_path = isset($matches[5]) ? $matches[5] : null;
-                $this->_query = isset($matches[7]) ? $matches[7] : null;
-                $this->_fragment = isset($matches[9]) ? $matches[9] : null;
-            } else {
-               // FIXME: throw exception?
+                if (!empty($matches[1])) {
+                    $this->_scheme = isset($matches[2]) ? $matches[2] : '';
+                }
+                if (!empty($matches[3])) {
+                    $this->_authority = isset($matches[4]) ? $matches[4] : '';
+                }
+                $this->_path = isset($matches[5]) ? $matches[5] : '';
+                if (!empty($matches[6])) {
+                    $this->_query = isset($matches[7]) ? $matches[7] : '';
+                }
+                if (!empty($matches[8])) {
+                    $this->_fragment = isset($matches[9]) ? $matches[9] : '';
+                }
             }
          } else if (is_array($uri)) {
-            $this->_scheme = isset($uri['scheme']) ? $uri['scheme'] : null;
-            $this->_authority = isset($uri['authority']) ? $uri['authority'] : null;
-            $this->_path = isset($uri['path']) ? $uri['path'] : null;
-            $this->_query = isset($uri['query']) ? $uri['query'] : null;
-            $this->_fragment = isset($uri['fragment']) ? $uri['fragment'] : null;
+            $this->_scheme = isset($uri['scheme']) ? $uri['scheme'] : NULL;
+            $this->_authority = isset($uri['authority']) ? $uri['authority'] : NULL;
+            $this->_path = isset($uri['path']) ? $uri['path'] : NULL;
+            $this->_query = isset($uri['query']) ? $uri['query'] : NULL;
+            $this->_fragment = isset($uri['fragment']) ? $uri['fragment'] : NULL;
         }
     }
 
@@ -89,14 +95,14 @@ class EasyRdf_ParsedUri
      * @return boolean
      */
     public function isAbsolute() {
-        return $this->_scheme != null;
+        return $this->_scheme !== NULL;
     }
 
     /** Returns true if this is an relative (partial) URI
      * @return boolean
      */
     public function isRelative() {
-        return $this->_scheme == null;
+        return $this->_scheme === NULL;
     }
 
     /** Returns the scheme of the URI (e.g. http)
@@ -254,14 +260,14 @@ class EasyRdf_ParsedUri
     public function __toString()
     {
         $str = '';
-        if ($this->_scheme != null)
+        if ($this->_scheme !== NULL)
             $str .= $this->_scheme . ':';
-        if ($this->_authority != null)
+        if ($this->_authority !== NULL)
             $str .= '//' . $this->_authority;
         $str .= $this->_path;
-        if ($this->_query != null)
+        if ($this->_query !== NULL)
             $str .= '?' . $this->_query;
-        if ($this->_fragment != null)
+        if ($this->_fragment !== NULL)
             $str .= '#' . $this->_fragment;
         return $str;
     }

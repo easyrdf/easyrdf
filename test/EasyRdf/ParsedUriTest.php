@@ -65,9 +65,21 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
         $this->assertEquals('http', $uri->getScheme());
         $this->assertEquals('www.ietf.org', $uri->getAuthority());
         $this->assertEquals('/rfc/rfc2396.txt', $uri->getPath());
-        $this->assertEquals(null, $uri->getQuery());
-        $this->assertEquals(null, $uri->getFragment());
+        $this->assertEquals(NULL, $uri->getQuery());
+        $this->assertEquals(NULL, $uri->getFragment());
         $this->assertStringEquals('http://www.ietf.org/rfc/rfc2396.txt', $uri);
+        $this->assertTrue($uri->isAbsolute());
+    }
+
+    public function testParseFile()
+    {
+        $uri = new EasyRdf_ParsedUri('file:///etc/hosts');
+        $this->assertEquals('file', $uri->getScheme());
+        $this->assertEquals('', $uri->getAuthority());
+        $this->assertEquals('/etc/hosts', $uri->getPath());
+        $this->assertEquals(NULL, $uri->getQuery());
+        $this->assertEquals(NULL, $uri->getFragment());
+        $this->assertStringEquals('file:///etc/hosts', $uri);
         $this->assertTrue($uri->isAbsolute());
     }
 
@@ -77,8 +89,8 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
         $this->assertEquals('ftp', $uri->getScheme());
         $this->assertEquals('ftp.is.co.za', $uri->getAuthority());
         $this->assertEquals('/rfc/rfc1808.txt', $uri->getPath());
-        $this->assertEquals(null, $uri->getQuery());
-        $this->assertEquals(null, $uri->getFragment());
+        $this->assertEquals(NULL, $uri->getQuery());
+        $this->assertEquals(NULL, $uri->getFragment());
         $this->assertStringEquals('ftp://ftp.is.co.za/rfc/rfc1808.txt', $uri);
         $this->assertTrue($uri->isAbsolute());
     }
@@ -90,7 +102,7 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
         $this->assertEquals('[2001:db8::7]', $uri->getAuthority());
         $this->assertEquals('/c=GB', $uri->getPath());
         $this->assertEquals('objectClass?one', $uri->getQuery());
-        $this->assertEquals(null, $uri->getFragment());
+        $this->assertEquals(NULL, $uri->getFragment());
         $this->assertStringEquals('ldap://[2001:db8::7]/c=GB?objectClass?one', $uri);
         $this->assertTrue($uri->isAbsolute());
     }
@@ -99,10 +111,10 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
     {
         $uri = new EasyRdf_ParsedUri('mailto:John.Doe@example.com');
         $this->assertEquals('mailto', $uri->getScheme());
-        $this->assertEquals(null, $uri->getAuthority());
+        $this->assertEquals(NULL, $uri->getAuthority());
         $this->assertEquals('John.Doe@example.com', $uri->getPath());
-        $this->assertEquals(null, $uri->getQuery());
-        $this->assertEquals(null, $uri->getFragment());
+        $this->assertEquals(NULL, $uri->getQuery());
+        $this->assertEquals(NULL, $uri->getFragment());
         $this->assertStringEquals('mailto:John.Doe@example.com', $uri);
         $this->assertTrue($uri->isAbsolute());
     }
@@ -111,10 +123,10 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
     {
         $uri = new EasyRdf_ParsedUri('news:comp.infosystems.www.servers.unix');
         $this->assertEquals('news', $uri->getScheme());
-        $this->assertEquals(null, $uri->getAuthority());
+        $this->assertEquals(NULL, $uri->getAuthority());
         $this->assertEquals('comp.infosystems.www.servers.unix', $uri->getPath());
-        $this->assertEquals(null, $uri->getQuery());
-        $this->assertEquals(null, $uri->getFragment());
+        $this->assertEquals(NULL, $uri->getQuery());
+        $this->assertEquals(NULL, $uri->getFragment());
         $this->assertStringEquals('news:comp.infosystems.www.servers.unix', $uri);
         $this->assertTrue($uri->isAbsolute());
     }
@@ -123,10 +135,10 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
     {
         $uri = new EasyRdf_ParsedUri('tel:+1-816-555-1212');
         $this->assertEquals('tel', $uri->getScheme());
-        $this->assertEquals(null, $uri->getAuthority());
+        $this->assertEquals(NULL, $uri->getAuthority());
         $this->assertEquals('+1-816-555-1212', $uri->getPath());
-        $this->assertEquals(null, $uri->getQuery());
-        $this->assertEquals(null, $uri->getFragment());
+        $this->assertEquals(NULL, $uri->getQuery());
+        $this->assertEquals(NULL, $uri->getFragment());
         $this->assertStringEquals('tel:+1-816-555-1212', $uri);
         $this->assertTrue($uri->isAbsolute());
     }
@@ -137,8 +149,8 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
         $this->assertEquals('telnet', $uri->getScheme());
         $this->assertEquals('192.0.2.16:80', $uri->getAuthority());
         $this->assertEquals('/', $uri->getPath());
-        $this->assertEquals(null, $uri->getQuery());
-        $this->assertEquals(null, $uri->getFragment());
+        $this->assertEquals(NULL, $uri->getQuery());
+        $this->assertEquals(NULL, $uri->getFragment());
         $this->assertStringEquals('telnet://192.0.2.16:80/', $uri);
         $this->assertTrue($uri->isAbsolute());
     }
@@ -147,10 +159,10 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
     {
         $uri = new EasyRdf_ParsedUri('urn:oasis:names:specification:docbook:dtd:xml:4.1.2');
         $this->assertEquals('urn', $uri->getScheme());
-        $this->assertEquals(null, $uri->getAuthority());
+        $this->assertEquals(NULL, $uri->getAuthority());
         $this->assertEquals('oasis:names:specification:docbook:dtd:xml:4.1.2', $uri->getPath());
-        $this->assertEquals(null, $uri->getQuery());
-        $this->assertEquals(null, $uri->getFragment());
+        $this->assertEquals(NULL, $uri->getQuery());
+        $this->assertEquals(NULL, $uri->getFragment());
         $this->assertStringEquals('urn:oasis:names:specification:docbook:dtd:xml:4.1.2', $uri);
         $this->assertTrue($uri->isAbsolute());
     }
@@ -158,13 +170,37 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
     public function testParseRelative()
     {
         $uri = new EasyRdf_ParsedUri('/foo/bar');
-        $this->assertEquals(null, $uri->getScheme());
-        $this->assertEquals(null, $uri->getAuthority());
+        $this->assertEquals(NULL, $uri->getScheme());
+        $this->assertEquals(NULL, $uri->getAuthority());
         $this->assertEquals('/foo/bar', $uri->getPath());
-        $this->assertEquals(null, $uri->getQuery());
-        $this->assertEquals(null, $uri->getFragment());
+        $this->assertEquals(NULL, $uri->getQuery());
+        $this->assertEquals(NULL, $uri->getFragment());
         $this->assertStringEquals('/foo/bar', $uri);
         $this->assertTrue($uri->isRelative());
+    }
+
+    public function testParseEmptyFragment()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.example.com/foo#');
+        $this->assertEquals('http', $uri->getScheme());
+        $this->assertEquals('www.example.com', $uri->getAuthority());
+        $this->assertEquals('/foo', $uri->getPath());
+        $this->assertEquals(NULL, $uri->getQuery());
+        $this->assertEquals('', $uri->getFragment());
+        $this->assertStringEquals('http://www.example.com/foo#', $uri);
+        $this->assertTrue($uri->isAbsolute());
+    }
+
+    public function testParseEmptyQuery()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.example.com/foo?');
+        $this->assertEquals('http', $uri->getScheme());
+        $this->assertEquals('www.example.com', $uri->getAuthority());
+        $this->assertEquals('/foo', $uri->getPath());
+        $this->assertEquals('', $uri->getQuery());
+        $this->assertEquals(NULL, $uri->getFragment());
+        $this->assertStringEquals('http://www.example.com/foo?', $uri);
+        $this->assertTrue($uri->isAbsolute());
     }
 
     public function testNormaliseDotSegments()
