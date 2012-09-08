@@ -47,6 +47,7 @@ class EasyRdf_Graph
 {
     /** The URI of the graph */
     private $_uri = null;
+    private $_parsedUri = null;
 
     /** Array of resources contained in the graph */
     private $_resources = array();
@@ -81,6 +82,7 @@ class EasyRdf_Graph
 
         if ($uri) {
             $this->_uri = $uri;
+            $this->_parsedUri = new EasyRdf_ParsedUri($uri);
             if ($data)
                 $this->parse($data, $format, $this->_uri);
         }
@@ -109,8 +111,8 @@ class EasyRdf_Graph
         }
 
         // Resolve relative URIs
-        if ($this->_uri) {
-            $uri = EasyRdf_Utils::resolveUriReference($this->_uri, $uri);
+        if ($this->_parsedUri) {
+            $uri = $this->_parsedUri->resolve($uri)->toString();
         }
 
         // Add the types
@@ -145,24 +147,6 @@ class EasyRdf_Graph
             }
         }
         return $resClass;
-    }
-
-    /** Get or create a resource stored in a graph
-     *
-     * If the resource did not previously exist, then a new resource will
-     * be created. If you provide an RDF type and that type is registered
-     * with the EasyRdf_TypeMapper, then the resource will be an instance
-     * of the class registered.
-     *
-     * @param  string $baseUri      The base URI
-     * @param  string $referenceUri The URI to resolve
-     * @param  mixed   $types  RDF type of a new resource (e.g. foaf:Person)
-     * @return object The newly resolved URI as an EasyRdf_Resource
-     */
-    public function resolveResource($baseUri, $referenceUri, $types = array())
-    {
-        $uri = EasyRdf_Utils::resolveUriReference($baseUri, $referenceUri);
-        return $this->resource($uri, $types);
     }
 
     /**
@@ -375,6 +359,8 @@ class EasyRdf_Graph
 
         if (is_object($resource) and $resource instanceof EasyRdf_Resource) {
             $resource = $resource->getUri();
+        } else if (is_object($resource) and $resource instanceof EasyRdf_ParsedUri) {
+            $resource = strval($resource);
         } else if (is_string($resource)) {
             if ($resource == '') {
                 throw new InvalidArgumentException(
@@ -399,6 +385,8 @@ class EasyRdf_Graph
     {
         if (is_object($property) and $property instanceof EasyRdf_Resource) {
             $property = $property->getUri();
+        } else if (is_object($property) and $property instanceof EasyRdf_ParsedUri) {
+            $property = strval($property);
         } else if (is_string($property)) {
             if ($property == '') {
                 throw new InvalidArgumentException(

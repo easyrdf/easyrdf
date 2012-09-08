@@ -47,7 +47,8 @@
 class EasyRdf_GraphStore
 {
     /** The address of the GraphStore endpoint */
-    private $_uri = null;
+    private $_uri = NULL;
+    private $_parsedUri = NULL;
 
 
     /** Create a new SPARQL Graph Store client
@@ -57,6 +58,7 @@ class EasyRdf_GraphStore
     public function __construct($uri)
     {
         $this->_uri = $uri;
+        $this->_parsedUri = new EasyRdf_ParsedUri($uri);
     }
 
     /** Get the URI of the graph store
@@ -78,7 +80,7 @@ class EasyRdf_GraphStore
      */
     public function get($uriRef)
     {
-        $graphUri = EasyRdf_Utils::resolveUriReference($this->_uri, $uriRef);
+        $graphUri = $this->_parsedUri->resolve($uriRef)->toString();
         $dataUrl = $this->urlForGraph($graphUri);
         $graph = new EasyRdf_Graph($graphUri);
         $graph->load($dataUrl);
@@ -104,7 +106,7 @@ class EasyRdf_GraphStore
         $formatObj = EasyRdf_Format::getFormat($format);
         $mimeType = $formatObj->getDefaultMimeType();
 
-        $graphUri = EasyRdf_Utils::resolveUriReference($this->_uri, $uriRef);
+        $graphUri = $this->_parsedUri->resolve($uriRef)->toString();
         $dataUrl = $this->urlForGraph($graphUri);
 
         $client = EasyRdf_Http::getDefaultHttpClient();
@@ -175,7 +177,7 @@ class EasyRdf_GraphStore
      */
     public function delete($uriRef)
     {
-        $graphUri = EasyRdf_Utils::resolveUriReference($this->_uri, $uriRef);
+        $graphUri = $this->_parsedUri->resolve($uriRef)->toString();
         $dataUrl = $this->urlForGraph($graphUri);
 
         $client = EasyRdf_Http::getDefaultHttpClient();
@@ -209,6 +211,6 @@ class EasyRdf_GraphStore
      */
     public function __toString()
     {
-        return $this->_uri == null ? '' : $this->_uri;
+        return empty($this->_uri) ? '' : $this->_uri;
     }
 }

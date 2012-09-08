@@ -57,7 +57,7 @@ class EasyRdf_Utils
      * 'FOO//BAR' becomes FooBar
      *
      * @param string The input string
-     * @return string The input string coverteted to CamelCase
+     * @return string The input string converted to CamelCase
      */
     public static function camelise($str)
     {
@@ -88,64 +88,6 @@ class EasyRdf_Utils
         } else {
             return false;
         }
-    }
-
-    /**
-     * Resolve a URI to a base URI.
-     *
-     * @param  string $baseUri      The base URI
-     * @param  string $referenceUri The URI to resolve
-     * @return string The newly resolved URI as a string.
-     */
-    public static function resolveUriReference($baseUri, $referenceUri)
-    {
-        /* quick check */
-        if (preg_match("/^[a-z0-9\_]+\:/i", $referenceUri)) {/* abs path or bnode */
-            return $referenceUri;
-        }
-        if (preg_match('/^\$\{.*\}/', $referenceUri)) {/* placeholder, assume abs URI */
-           return $referenceUri;
-        }
-        if (preg_match("/^\/\//", $referenceUri)) {/* net path, assume http */
-           return 'http:' . $referenceUri;
-        }
-
-        /* other URIs */
-        $baseUri = preg_replace('/\#.*$/', '', $baseUri);
-        if ($referenceUri === true) {/* empty (but valid) URIref via turtle parser: <> */
-            return $baseUri;
-        }
-        $referenceUri = preg_replace("/^\.\//", '', $referenceUri);
-
-        /* w/o trailing slash */
-        $root = preg_match('/(^[a-z0-9]+\:[\/]{1,3}[^\/]+)[\/|$]/i', $baseUri, $m) ? $m[1] : $baseUri;
-        $baseUri .= ($baseUri == $root) ? '/' : '';
-        if (preg_match('/^\//', $referenceUri)) {
-            /* leading slash */
-            return $root . $referenceUri;
-        }
-        if (!$referenceUri) {
-            return $baseUri;
-        }
-        if (preg_match('/^([\#\?])/', $referenceUri, $m)) {
-            return preg_replace('/\\' .$m[1]. '.*$/', '', $baseUri) . $referenceUri;
-        }
-        if (preg_match('/^(\&)(.*)$/', $referenceUri, $m)) {/* not perfect yet */
-            return preg_match('/\?/', $baseUri) ? $baseUri . $m[1] . $m[2] : $baseUri . '?' . $m[2];
-        }
-        if (preg_match("/^[a-z0-9]+\:/i", $referenceUri)) {/* abs path */
-            return $referenceUri;
-        }
-
-        /* rel path: remove stuff after last slash */
-        $baseUri = substr($baseUri, 0, strrpos($baseUri, '/')+1);
-
-        /* resolve ../ */
-        while (preg_match('/^(\.\.\/)(.*)$/', $referenceUri, $m)) {
-            $referenceUri = $m[2];
-            $baseUri = ($baseUri == $root.'/') ? $baseUri : preg_replace('/^(.*\/)[^\/]+\/$/', '\\1', $baseUri);
-        }
-        return $baseUri . $referenceUri;
     }
 
     /** Return pretty-print view of a resource URI

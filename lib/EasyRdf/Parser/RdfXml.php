@@ -72,10 +72,9 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function init($graph, $base)
     {
         $this->_graph = $graph;
-        $this->_base = $base;
         $this->_state = 0;
         $this->_xLang = null;
-        $this->_xBase = $base;
+        $this->_xBase = new EasyRdf_ParsedUri($base);
         $this->_xml = 'http://www.w3.org/XML/1998/namespace';
         $this->_rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
         $this->_nsp = array($this->_xml => 'xml', $this->_rdf => 'rdf');
@@ -265,10 +264,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         );
 
         if (isset($a[$this->_xml.'base'])) {
-            $s['x_base'] = EasyRdf_Utils::resolveUriReference(
-                $this->_base,
-                $a[$this->_xml.'base']
-            );
+            $s['x_base'] = $this->_xBase->resolve($a[$this->_xml.'base']);
         }
 
         if (isset($a[$this->_xml.'lang'])) {
@@ -278,14 +274,11 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         /* ID */
         if (isset($a[$this->_rdf.'ID'])) {
             $s['type'] = 'uri';
-            $s['value'] = EasyRdf_Utils::resolveUriReference(
-                $s['x_base'],
-                '#'.$a[$this->_rdf.'ID']
-            );
+            $s['value'] = $s['x_base']->resolve('#'.$a[$this->_rdf.'ID']);
             /* about */
         } elseif (isset($a[$this->_rdf.'about'])) {
             $s['type'] = 'uri';
-            $s['value'] = EasyRdf_Utils::resolveUriReference($s['x_base'], $a[$this->_rdf.'about']);
+            $s['value'] = $s['x_base']->resolve($a[$this->_rdf.'about']);
             /* bnode */
         } else {
             $s['type'] = 'bnode';
@@ -368,9 +361,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
         /* base */
         if (isset($a[$this->_xml.'base'])) {
-            $s['p_x_base'] = EasyRdf_Utils::resolveUriReference(
-                $s['x_base'], $a[$this->_xml.'base']
-            );
+            $s['p_x_base'] = $s['x_base']->resolve($a[$this->_xml.'base']);
         }
         $b = isset($s['p_x_base']) && $s['p_x_base'] ? $s['p_x_base'] : $s['x_base'];
         /* lang */
@@ -397,7 +388,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
         if (isset($a[$this->_rdf.'resource'])) {
             $o['type'] = 'uri';
-            $o['value'] = EasyRdf_Utils::resolveUriReference($b, $a[$this->_rdf.'resource']);
+            $o['value'] = $b->resolve($a[$this->_rdf.'resource']);
             $this->addTriple($s['value'], $s['p'], $o['value'], $s['type'], $o['type']);
             /* type */
             if (isset($a[$this->_rdf.'type'])) {
@@ -410,7 +401,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             /* reification */
             if (isset($s['p_id'])) {
                 $this->reify(
-                    EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
+                    $b->resolve('#'.$s['p_id']),
                     $s['value'], $s['p'], $o['value'],
                     $s['type'], $o['type']
                 );
@@ -426,7 +417,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             /* reification */
             if (isset($s['p_id'])) {
                 $this->reify(
-                    EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
+                    $b->resolve('#'.$s['p_id']),
                     $s['value'], $s['p'], $o['value'],
                     $s['type'], $o['type']
                 );
@@ -448,7 +439,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 /* reification */
                 if (isset($s['p_id'])) {
                     $this->reify(
-                        EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
+                        $b->resolve('#'.$s['p_id']),
                         $s['value'], $s['p'], $o['value'],
                         $s['type'], $o['type']
                     );
@@ -481,7 +472,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                     /* reification */
                     if (isset($s['p_id'])) {
                         $this->reify(
-                            EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
+                            $b->resolve('#'.$s['p_id']),
                             $s['value'], $s['p'], $o['value'],
                             $s['type'], $o['type']
                         );
@@ -614,7 +605,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 /* reification */
                 if (isset($s['p_id']) && $s['p_id']) {
                     $this->reify(
-                        EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
+                        $b->resolve('#'.$s['p_id']),
                         $s['value'], $s['p'], $subS['value'],
                         $s['type'], $subS['type']
                     );
@@ -634,7 +625,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 /* reification */
                 if (isset($s['p_id']) && $s['p_id']) {
                     $this->reify(
-                        EasyRdf_Utils::resolveUriReference($b, '#'.$s['p_id']),
+                        $b->resolve('#'.$s['p_id']),
                         $s['value'], $s['p'],
                         $o['value'], $s['type'],
                         $o['type'], $dt, $l

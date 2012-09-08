@@ -81,7 +81,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
         $this->_graph = $graph;
         $this->_data = $data;
-        $this->_baseUri = $baseUri;
+        $this->_baseUri = new EasyRdf_ParsedUri($baseUri);
         $this->_len = strlen($data);
         $this->_pos = 0;
 
@@ -201,7 +201,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $this->skipWSC();
 
         $baseUri = $this->parseURI();
-        $this->_baseUri = $baseUri['value'];
+        $this->_baseUri = new EasyRdf_ParsedUri($baseUri['value']);
     }
 
     /**
@@ -810,7 +810,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
         return array(
             'type' => 'uri',
-            'value' => EasyRdf_Utils::resolveUriReference($this->_baseUri, $uri)
+            'value' => $this->_baseUri->resolve($uri)->toString()
         );
     }
 
