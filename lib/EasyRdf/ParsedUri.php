@@ -252,12 +252,11 @@ class EasyRdf_ParsedUri
         return $target;
     }
 
-
-    /** Magic method to convert the URI, when casted, back to a string
+    /** Convert the parsed URI back into a string
      *
      * @return string The URI as a string
      */
-    public function __toString()
+    public function toString()
     {
         $str = '';
         if ($this->_scheme !== NULL)
@@ -270,6 +269,15 @@ class EasyRdf_ParsedUri
         if ($this->_fragment !== NULL)
             $str .= '#' . $this->_fragment;
         return $str;
+    }
+        
+    /** Magic method to convert the URI, when casted, back to a string
+     *
+     * @return string The URI as a string
+     */
+    public function __toString()
+    {
+        return $this->toString();
     }
 
 }

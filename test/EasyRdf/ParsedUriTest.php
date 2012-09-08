@@ -254,6 +254,16 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
         );
     }
 
+    public function testToString()
+    {
+        $uri = new EasyRdf_ParsedUri('http://example.com/foo/bar?q#f');
+        $this->assertEquals(
+            "http://example.com/foo/bar?q#f",
+            $uri->toString()
+        );
+    }
+
+
     /**
      * Tests from RFC3986 Section 5
      */
