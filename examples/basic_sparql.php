@@ -3,14 +3,15 @@
      * Example of making a SPARQL SELECT query
      *
      * The example creates a new SPARQL client, pointing at the
-     * Talis hosted BBC Backstage store. It then makes a SELECT
-     * query that returns all of the episodes, along with their
-     * episode number and title.
+     * dbpedia.org endpoint. It then makes a SELECT query that
+     * returns all of the countries in DBpedia along with an
+     * english label.
      *
-     * Note how the PO prefix declaration is automatically added to the query.
+     * Note how the namespace prefix declarations are automatically 
+     * added to the query.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
@@ -18,33 +19,39 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    EasyRdf_Namespace::set('po', 'http://purl.org/ontology/po/');
+    // Setup some additional prefixes for DBpedia
+    EasyRdf_Namespace::set('category', 'http://dbpedia.org/resource/Category:');
+    EasyRdf_Namespace::set('dbpedia', 'http://dbpedia.org/resource/');
+    EasyRdf_Namespace::set('dbo', 'http://dbpedia.org/ontology/');
+    EasyRdf_Namespace::set('dbp', 'http://dbpedia.org/property/');
 
-    $sparql = new EasyRdf_Sparql_Client(
-      'http://api.talis.com/stores/bbc-backstage/services/sparql'
-    );
+    $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
 ?>
 <html>
-<head><title>EasyRdf Basic Sparql Example</title></head>
+<head>
+  <title>EasyRdf Basic Sparql Example</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+</head>
 <body>
 <h1>EasyRdf Basic Sparql Example</h1>
 
-<h2>Doctor Who - Series 1</h2>
+<h2>List of countries</h2>
 <ul>
 <?
-    $series1 = 'http://www.bbc.co.uk/programmes/b007vvcq#programme';
     $result = $sparql->query(
-      "SELECT * WHERE {".
-      "  <$series1> po:episode ?episode .".
-      "  ?episode po:position ?pos .".
-      "  ?episode rdfs:label ?title .".
-      "} ORDER BY ?pos"
+      'SELECT * WHERE {'.
+      '  ?country rdf:type dbo:Country .'.
+      '  ?country rdfs:label ?label .'.
+      '  ?country dc:subject category:Member_states_of_the_United_Nations .'.
+      '  FILTER ( lang(?label) = "en" )'.
+      '} ORDER BY ?label'
     );
     foreach ($result as $row) {
-        echo "<li>$row->pos. ".link_to($row->title, $row->episode)."</li>\n";
+        echo "<li>".link_to($row->label, $row->country)."</li>\n";
     }
 ?>
 </ul>
+<p>Total number of countries: <?= $result->numRows() ?></p>
 
 </body>
 </html>

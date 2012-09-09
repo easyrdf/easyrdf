@@ -40,24 +40,17 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class Examples_BasicSparqlTest extends EasyRdf_TestCase
 {
-    public function testDoctorWho()
+    public function testCountries()
     {
         $output = executeExample('basic_sparql.php');
         $this->assertContains('<title>EasyRdf Basic Sparql Example</title>', $output);
         $this->assertContains('<h1>EasyRdf Basic Sparql Example</h1>', $output);
-        $this->assertContains('<h2>Doctor Who - Series 1</h2>', $output);
-        $this->assertContains('<li>1. <a href="http://www.bbc.co.uk/programmes/b0074dlv#programme">Rose</a></li>', $output);
-        $this->assertContains('<li>2. <a href="http://www.bbc.co.uk/programmes/b0074dmp#programme">The End of the World</a></li>', $output);
-        $this->assertContains('<li>3. <a href="http://www.bbc.co.uk/programmes/b0074dng#programme">The Unquiet Dead</a></li>', $output);
-        $this->assertContains('<li>4. <a href="http://www.bbc.co.uk/programmes/b0074dp9#programme">Aliens of London</a></li>', $output);
-        $this->assertContains('<li>5. <a href="http://www.bbc.co.uk/programmes/b0074dpv#programme">World War Three</a></li>', $output);
-        $this->assertContains('<li>6. <a href="http://www.bbc.co.uk/programmes/b0074dq8#programme">Dalek</a></li>', $output);
-        $this->assertContains('<li>7. <a href="http://www.bbc.co.uk/programmes/b0074dr5#programme">The Long Game</a></li>', $output);
-        $this->assertContains('<li>8. <a href="http://www.bbc.co.uk/programmes/b0074drw#programme">Father\'s Day</a></li>', $output);
-        $this->assertContains('<li>9. <a href="http://www.bbc.co.uk/programmes/b0074ds9#programme">The Empty Child</a></li>', $output);
-        $this->assertContains('<li>10. <a href="http://www.bbc.co.uk/programmes/b0074dsp#programme">The Doctor Dances</a></li>', $output);
-        $this->assertContains('<li>11. <a href="http://www.bbc.co.uk/programmes/b0074dt5#programme">Boom Town</a></li>', $output);
-        $this->assertContains('<li>12. <a href="http://www.bbc.co.uk/programmes/b0074dth#programme">Bad Wolf</a></li>', $output);
-        $this->assertContains('<li>13. <a href="http://www.bbc.co.uk/programmes/b0074dv1#programme">The Parting of the Ways</a></li>', $output);
+        $this->assertContains('<h2>List of countries</h2>', $output);
+        $this->assertContains('<li><a href="http://dbpedia.org/resource/China">China</a></li>', $output);
+        $this->assertContains('<li><a href="http://dbpedia.org/resource/India">India</a></li>', $output);
+        $this->assertContains('<li><a href="http://dbpedia.org/resource/United_States">United States</a></li>', $output);
+        $this->assertContains('<li><a href="http://dbpedia.org/resource/United_Kingdom">United Kingdom</a></li>', $output);
+        $this->assertContains('<li><a href="http://dbpedia.org/resource/Zimbabwe">Zimbabwe</a></li>', $output);
+        $this->assertRegExp('|Total number of countries: (\d+)|', $output);
     }
 }
