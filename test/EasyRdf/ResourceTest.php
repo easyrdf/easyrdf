@@ -68,6 +68,15 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $res = new EasyRdf_Resource(array());
     }
 
+    public function testConstructBadGraph()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$graph should be an EasyRdf_Graph object'
+        );
+        $res = new EasyRdf_Resource('http://www.example.com/', $this);
+    }
+
     public function testGetUri()
     {
         $res = new EasyRdf_Resource('http://example.com/testGetUri');

@@ -70,8 +70,14 @@ class EasyRdf_Resource
 
         $this->_uri = $uri;
 
-        # FIXME: check that $graph is an EasyRdf_Graph object
-        $this->_graph = $graph;
+        # Check that $graph is an EasyRdf_Graph object
+        if (is_object($graph) and $graph instanceof EasyRdf_Graph) {
+            $this->_graph = $graph;
+        } else if (!is_null($graph)) {
+            throw new InvalidArgumentException(
+                "\$graph should be an EasyRdf_Graph object"
+            );
+        }
     }
 
     /** Returns the URI for the resource.
