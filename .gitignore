@@ -1,2 +1,6 @@
-reports
+doap.rdf
+docs
+index.html
 lib/arc/
+reports
+*.tar.gz
