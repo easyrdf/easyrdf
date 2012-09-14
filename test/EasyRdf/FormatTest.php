@@ -120,18 +120,18 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testFormatExistsTrue()
     {
-        assert(EasyRdf_Format::formatExists('my'));
+        $this->assertTrue(EasyRdf_Format::formatExists('my'));
     }
 
     public function testFormatExistsFalse()
     {
-        assert(!EasyRdf_Format::formatExists('testFormatExistsFalse'));
+        $this->assertFalse(EasyRdf_Format::formatExists('testFormatExistsFalse'));
     }
 
     public function testUnRegister()
     {
         EasyRdf_Format::unregister('my');
-        assert(!EasyRdf_Format::formatExists('my'));
+        $this->assertFalse(EasyRdf_Format::formatExists('my'));
     }
 
     public function testGetFormatByName()
