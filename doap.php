@@ -2,24 +2,17 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . './lib/');
     require_once "EasyRdf.php";
 
-    // Load properties from the Phing build file
-    $dom = new DOMDocument();
-    $dom->load('build.xml');
-    $project = $dom->getElementsByTagName('project')->item(0);
-    $xmlprops = $project->getElementsByTagName('property');
-    foreach ($xmlprops as $xmlprop) {
-        $properties[$xmlprop->getAttribute('name')] = $xmlprop->getAttribute('value');
-    }
-
-
+    // Start building up a RDF graph
     $doap = new EasyRdf_Graph('http://www.aelius.com/njh/easyrdf/doap.rdf');
     $easyrdf = $doap->resource('#easyrdf', 'doap:Project', 'foaf:Project');
-    $easyrdf->addLiteral('doap:name', $project->getAttribute('name'));
-    $easyrdf->addLiteral('doap:revision', $properties['version']);
-    $easyrdf->addLiteral('doap:shortname', $properties['shortname']);
-    $easyrdf->addLiteral('doap:shortdesc', $properties['shortdesc'], 'en');
-    $easyrdf->addResource('doap:homepage', $properties['homepage']);
+    $easyrdf->addLiteral('doap:name',  'EasyRDF');
+    $easyrdf->addLiteral('doap:shortname', 'easyrdf');
 
+    // Load some properties from the composer file
+    $composer = json_decode(file_get_contents('composer.json'));
+    $easyrdf->addLiteral('doap:revision', $composer->version);
+    $easyrdf->addLiteral('doap:shortdesc', $composer->description, 'en');
+    $easyrdf->addResource('doap:homepage', $composer->homepage);
 
     $easyrdf->addLiteral('doap:programming-language', 'PHP');
     $easyrdf->addLiteral(

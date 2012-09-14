@@ -144,7 +144,7 @@ function requireExists($filename)
  * the environment for another script, making it a fairer test.
  *
  * If you want to use a non-default PHP CLI executable, then set
- * the PHP_BIN environment variable to the path of executable.
+ * the PHP environment variable to the path of executable.
  *
  * @param string $name   the name of the example to run
  * @param string $params query string parameters to pass to the script
@@ -152,7 +152,7 @@ function requireExists($filename)
  */
 function executeExample($name, $params=array())
 {
-    $phpBin = getenv('PHP_BIN');
+    $phpBin = getenv('PHP');
     if (!$phpBin) {
         $phpBin = 'php';
     }
