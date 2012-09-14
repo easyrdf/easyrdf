@@ -673,7 +673,7 @@ class EasyRdf_Graph
 
             $results = array();
             foreach (explode('|', $part) as $p) {
-                foreach($objects as $o) {
+                foreach ($objects as $o) {
                     // Ignore literals found earlier in path
                     if ($o instanceof EasyRdf_Literal)
                         continue;

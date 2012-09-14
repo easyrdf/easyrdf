@@ -46,11 +46,26 @@ class Examples_BasicSparqlTest extends EasyRdf_TestCase
         $this->assertContains('<title>EasyRdf Basic Sparql Example</title>', $output);
         $this->assertContains('<h1>EasyRdf Basic Sparql Example</h1>', $output);
         $this->assertContains('<h2>List of countries</h2>', $output);
-        $this->assertContains('<li><a href="http://dbpedia.org/resource/China">China</a></li>', $output);
-        $this->assertContains('<li><a href="http://dbpedia.org/resource/India">India</a></li>', $output);
-        $this->assertContains('<li><a href="http://dbpedia.org/resource/United_States">United States</a></li>', $output);
-        $this->assertContains('<li><a href="http://dbpedia.org/resource/United_Kingdom">United Kingdom</a></li>', $output);
-        $this->assertContains('<li><a href="http://dbpedia.org/resource/Zimbabwe">Zimbabwe</a></li>', $output);
+        $this->assertContains(
+            '<li><a href="http://dbpedia.org/resource/China">China</a></li>',
+            $output
+        );
+        $this->assertContains(
+            '<li><a href="http://dbpedia.org/resource/India">India</a></li>',
+            $output
+        );
+        $this->assertContains(
+            '<li><a href="http://dbpedia.org/resource/United_States">United States</a></li>',
+            $output
+        );
+        $this->assertContains(
+            '<li><a href="http://dbpedia.org/resource/United_Kingdom">United Kingdom</a></li>',
+            $output
+        );
+        $this->assertContains(
+            '<li><a href="http://dbpedia.org/resource/Zimbabwe">Zimbabwe</a></li>',
+            $output
+        );
         $this->assertRegExp('|Total number of countries: (\d+)|', $output);
     }
 }

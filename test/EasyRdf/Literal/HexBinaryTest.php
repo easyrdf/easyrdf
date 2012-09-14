@@ -78,7 +78,7 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
     public function testParseWebId()
     {
         $graph = new EasyRdf_Graph();
-        $graph->parseFile( fixturePath('webid.ttl'), 'turtle' );
+        $graph->parseFile(fixturePath('webid.ttl'), 'turtle');
         $me = $graph->resource('http://www.example.com/myfoaf#me');
         $modulus = $me->get('cert:key')->get('cert:modulus');
         $this->assertStringEquals(

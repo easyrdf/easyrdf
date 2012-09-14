@@ -52,38 +52,66 @@ class Examples_ConverterTest extends EasyRdf_TestCase
 
     public function testConvertRdfXmlToNtriples()
     {
-        $output = executeExample('converter.php', array(
-          'data' =>
-              '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'.
-              '         xmlns:dc="http://purl.org/dc/elements/1.1/">'.
-              ' <rdf:Description rdf:about="http://www.w3.org/">'.
-              '  <dc:title>World Wide Web Consortium</dc:title>'.
-              ' </rdf:Description>'.
-              '</rdf:RDF>',
-          'uri' => 'http://example.com/',
-          'input_format' => 'guess',
-          'output_format' => 'ntriples'
-        ));
+        $output = executeExample(
+            'converter.php',
+            array(
+                'data' =>
+                    '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"'.
+                    '         xmlns:dc="http://purl.org/dc/elements/1.1/">'.
+                    ' <rdf:Description rdf:about="http://www.w3.org/">'.
+                    '  <dc:title>World Wide Web Consortium</dc:title>'.
+                    ' </rdf:Description>'.
+                    '</rdf:RDF>',
+                'uri' => 'http://example.com/',
+                'input_format' => 'guess',
+                'output_format' => 'ntriples'
+            )
+        );
 
         $this->assertContains('<title>EasyRdf Converter</title>', $output);
         $this->assertContains('<h1>EasyRdf Converter</h1>', $output);
-        $this->assertContains('&lt;http://www.w3.org/&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; &quot;World Wide Web Consortium&quot; .', $output);
+        $this->assertContains(
+            '&lt;http://www.w3.org/&gt; '.
+            '&lt;http://purl.org/dc/elements/1.1/title&gt; '.
+            '&quot;World Wide Web Consortium&quot; .',
+            $output
+        );
     }
 
     public function testConvertTurtle()
     {
-        $output = executeExample('converter.php', array(
-          'uri' => 'http://www.w3.org/TR/turtle/examples/example1.ttl',
-          'input_format' => 'guess',
-          'output_format' => 'ntriples'
-        ));
+        $output = executeExample(
+            'converter.php',
+            array(
+                'uri' => 'http://www.w3.org/TR/turtle/examples/example1.ttl',
+                'input_format' => 'guess',
+                'output_format' => 'ntriples'
+            )
+        );
 
         $this->assertContains('<title>EasyRdf Converter</title>', $output);
         $this->assertContains('<h1>EasyRdf Converter</h1>', $output);
-        $this->assertContains('&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt; &lt;http://purl.org/dc/elements/1.1/title&gt; &quot;RDF/XML Syntax Specification (Revised)&quot; .', $output);
-        $this->assertContains('&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt; &lt;http://example.org/stuff/1.0/editor&gt; _:genid1 .', $output);
-        $this->assertContains('_:genid1 &lt;http://example.org/stuff/1.0/fullname&gt; &quot;Dave Beckett&quot; .', $output);
-        $this->assertContains('_:genid1 &lt;http://example.org/stuff/1.0/homePage&gt; &lt;http://purl.org/net/dajobe/&gt; .', $output);
+        $this->assertContains(
+            '&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt; '.
+            '&lt;http://purl.org/dc/elements/1.1/title&gt; '.
+            '&quot;RDF/XML Syntax Specification (Revised)&quot; .',
+            $output
+        );
+        $this->assertContains(
+            '&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt; '.
+            '&lt;http://example.org/stuff/1.0/editor&gt; _:genid1 .',
+            $output
+        );
+        $this->assertContains(
+            '_:genid1 &lt;http://example.org/stuff/1.0/fullname&gt; '.
+            '&quot;Dave Beckett&quot; .',
+            $output
+        );
+        $this->assertContains(
+            '_:genid1 &lt;http://example.org/stuff/1.0/homePage&gt; '.
+            '&lt;http://purl.org/net/dajobe/&gt; .',
+            $output
+        );
     }
 
 }

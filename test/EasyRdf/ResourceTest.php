@@ -176,8 +176,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $res = new EasyRdf_Resource('http://example.com/');
         $this->assertEquals(
-          '<a href="http://example.com/">Click Here</a>',
-          $res->htmlLink('Click Here')
+            '<a href="http://example.com/">Click Here</a>',
+            $res->htmlLink('Click Here')
         );
     }
 
@@ -185,8 +185,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $res = new EasyRdf_Resource('http://example.com/');
         $this->assertEquals(
-          '<a href="http://example.com/" style="font-weight: bold">Click Here</a>',
-          $res->htmlLink('Click Here', array('style' => 'font-weight: bold'))
+            '<a href="http://example.com/" style="font-weight: bold">Click Here</a>',
+            $res->htmlLink('Click Here', array('style' => 'font-weight: bold'))
         );
     }
 
@@ -194,8 +194,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $res = new EasyRdf_Resource('http://example.com/');
         $this->assertEquals(
-          '<a href="http://example.com/">=&gt; Click Here &lt;=</a>',
-          $res->htmlLink('=> Click Here <=')
+            '<a href="http://example.com/">=&gt; Click Here &lt;=</a>',
+            $res->htmlLink('=> Click Here <=')
         );
     }
 

@@ -434,7 +434,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
         # Test long literals with missing end
         $this->setExpectedException(
             'EasyRdf_Exception',
-             "Turtle Parse Error: unexpected end of file while reading long string"
+            "Turtle Parse Error: unexpected end of file while reading long string"
         );
         $this->parseTurtle("turtle/bad-14.ttl");
     }

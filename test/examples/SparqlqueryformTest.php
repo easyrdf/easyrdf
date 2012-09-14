@@ -50,16 +50,19 @@ class Examples_SparqlqueryformTest extends EasyRdf_TestCase
 
     public function testFactbookGreatestPopulationHtml()
     {
-        $output = executeExample('sparql_queryform.php', array(
-            'endpoint' => 'http://www4.wiwiss.fu-berlin.de/factbook/sparql',
-            'query' =>
-                'PREFIX factbook: <http://www4.wiwiss.fu-berlin.de/factbook/ns#> '.
-                'SELECT * WHERE {'.
-                '  ?country rdf:type factbook:Country . '.
-                '  ?country rdfs:label ?label . '.
-                '  ?country factbook:population_total ?population_total . '.
-                '} ORDER BY DESC(?population_total) LIMIT 10'
-        ));
+        $output = executeExample(
+            'sparql_queryform.php',
+            array(
+                'endpoint' => 'http://www4.wiwiss.fu-berlin.de/factbook/sparql',
+                'query' =>
+                    'PREFIX factbook: <http://www4.wiwiss.fu-berlin.de/factbook/ns#> '.
+                    'SELECT * WHERE {'.
+                    '  ?country rdf:type factbook:Country . '.
+                    '  ?country rdfs:label ?label . '.
+                    '  ?country factbook:population_total ?population_total . '.
+                    '} ORDER BY DESC(?population_total) LIMIT 10'
+            )
+        );
         $this->assertContains('>http://www4.wiwiss.fu-berlin.de/factbook/resource/China</a>', $output);
         $this->assertContains('>&quot;China&quot;</span>', $output);
         $this->assertContains('>&quot;1321851888&quot;^^xsd:long</span>', $output);
@@ -67,17 +70,20 @@ class Examples_SparqlqueryformTest extends EasyRdf_TestCase
 
     public function testFactbookGreatestPopulationText()
     {
-        $output = executeExample('sparql_queryform.php', array(
-            'endpoint' => 'http://www4.wiwiss.fu-berlin.de/factbook/sparql',
-            'query' =>
-                'PREFIX factbook: <http://www4.wiwiss.fu-berlin.de/factbook/ns#> '.
-                'SELECT * WHERE {'.
-                '  ?country rdf:type factbook:Country . '.
-                '  ?country rdfs:label ?label . '.
-                '  ?country factbook:population_total ?population_total . '.
-                '} ORDER BY DESC(?population_total) LIMIT 10',
-            'text' => 1
-        ));
+        $output = executeExample(
+            'sparql_queryform.php',
+            array(
+                'endpoint' => 'http://www4.wiwiss.fu-berlin.de/factbook/sparql',
+                'query' =>
+                    'PREFIX factbook: <http://www4.wiwiss.fu-berlin.de/factbook/ns#> '.
+                    'SELECT * WHERE {'.
+                    '  ?country rdf:type factbook:Country . '.
+                    '  ?country rdfs:label ?label . '.
+                    '  ?country factbook:population_total ?population_total . '.
+                    '} ORDER BY DESC(?population_total) LIMIT 10',
+                'text' => 1
+            )
+        );
 
         $this->assertContains('| http://www4.wiwiss.fu-berlin.de/factbook/resource/China', $output);
         $this->assertContains('| &quot;China&quot;', $output);

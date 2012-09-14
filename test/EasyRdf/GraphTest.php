@@ -1120,12 +1120,15 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$value cannot have both and language and a datatype'
         );
-        $this->_graph->add($this->_uri, 'rdf:foo', array(
-          'type' => 'literal',
-          'value' => 'Rat',
-          'lang' => 'en',
-          'datatype' => 'http://www.w3.org/2001/XMLSchema#string'
-        ));
+        $this->_graph->add(
+            $this->_uri, 'rdf:foo',
+            array(
+                'type' => 'literal',
+                'value' => 'Rat',
+                'lang' => 'en',
+                'datatype' => 'http://www.w3.org/2001/XMLSchema#string'
+            )
+        );
     }
 
     public function testAddSingleValueToString()
@@ -1210,7 +1213,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testDeleteWithUri()
     {
         $this->assertStringEquals('Test A', $this->_graph->get($this->_uri, 'rdf:test'));
-        $this->assertEquals(2,
+        $this->assertEquals(
+            2,
             $this->_graph->delete(
                 $this->_uri,
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#test'
@@ -1267,7 +1271,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertEquals(2, $this->_graph->count($this->_uri, 'rdf:test'));
         $this->assertEquals(1, $this->_graph->delete($this->_uri, 'rdf:test', 'Test A'));
         $this->assertEquals(1, $this->_graph->count($this->_uri, 'rdf:test'));
-        $this->assertEquals(1,
+        $this->assertEquals(
+            1,
             $this->_graph->delete(
                 $this->_uri, 'rdf:test', new EasyRdf_Literal('Test B', 'en')
             )

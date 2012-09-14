@@ -235,9 +235,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
             $c = $this->skipWSC();
 
-            if ($c == '.' || // end of triple
-                $c == ']') // end of predicateObjectList inside blank node
-            {
+            if ($c == '.' || $c == ']') {
                 break;
             }
 
@@ -766,7 +764,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             'value' => $value,
             'datatype' => $datatype
         );
-     }
+    }
 
     /**
      * Parses a URI / IRI
@@ -1061,7 +1059,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /** @ignore */
-    public static function isPrefixStartChar($c) {
+    public static function isPrefixStartChar($c)
+    {
         $o = ord($c);
         return
             $o >= 0x41   && $o <= 0x5a ||     # A-Z
@@ -1081,12 +1080,14 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /** @ignore */
-    public static function isNameStartChar($c) {
+    public static function isNameStartChar($c)
+    {
         return $c == '_' || self::isPrefixStartChar($c);
     }
 
     /** @ignore */
-    public static function isNameChar($c) {
+    public static function isNameChar($c)
+    {
         $o = ord($c);
         return
             self::isNameStartChar($c) ||
@@ -1098,12 +1099,14 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /** @ignore */
-    public static function isPrefixChar($c) {
+    public static function isPrefixChar($c)
+    {
         return self::isNameChar($c);
     }
 
     /** @ignore */
-    public static function isLanguageStartChar($c) {
+    public static function isLanguageStartChar($c)
+    {
         $o = ord($c);
         return
             $o >= 0x41   && $o <= 0x5a ||
@@ -1111,7 +1114,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /** @ignore */
-    public static function isLanguageChar($c) {
+    public static function isLanguageChar($c)
+    {
         $o = ord($c);
         return
             $o >= 0x41   && $o <= 0x5a ||   # A-Z

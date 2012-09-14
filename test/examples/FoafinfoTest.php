@@ -45,19 +45,26 @@ class Examples_FoafinfoTest extends EasyRdf_TestCase
         $output = executeExample('foafinfo.php');
         $this->assertContains('<title>EasyRdf FOAF Info Example</title>', $output);
         $this->assertContains('<h1>EasyRdf FOAF Info Example</h1>', $output);
-        $this->assertContains('<input type="text" name="uri" id="uri" value="http://njh.me/foaf.rdf" size="50" />', $output);
+        $this->assertContains(
+            '<input type="text" name="uri" id="uri" value="http://njh.me/foaf.rdf" size="50" />',
+            $output
+        );
     }
 
     public function testNjh()
     {
-        $output = executeExample('foafinfo.php', array(
-            'uri' => 'http://njh.me/foaf.rdf'
-        ));
+        $output = executeExample(
+            'foafinfo.php',
+            array('uri' => 'http://njh.me/foaf.rdf')
+        );
 
         $this->assertContains('<title>EasyRdf FOAF Info Example</title>', $output);
         $this->assertContains('<h1>EasyRdf FOAF Info Example</h1>', $output);
         $this->assertContains("<dt>Name:</dt><dd>Nicholas J Humfrey</dd>", $output);
-        $this->assertContains("<dt>Homepage:</dt><dd><a href=\"http://www.aelius.com/njh/\">http://www.aelius.com/njh/</a></dd>", $output);
+        $this->assertContains(
+            "<dt>Homepage:</dt><dd><a href=\"http://www.aelius.com/njh/\">http://www.aelius.com/njh/</a></dd>",
+            $output
+        );
 
         $this->assertContains("<h2>Known Persons</h2>", $output);
         $this->assertContains(">Patrick Sinclair</a></li>", $output);

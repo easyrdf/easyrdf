@@ -49,10 +49,13 @@ class Examples_DumpTest extends EasyRdf_TestCase
 
     public function testDumpHTML()
     {
-        $output = executeExample('dump.php', array(
-          'uri' => 'http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf',
-          'format' => 'html'
-        ));
+        $output = executeExample(
+            'dump.php',
+            array(
+                'uri' => 'http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf',
+                'format' => 'html'
+            )
+        );
 
         $this->assertContains('<title>EasyRdf Graph Dumper</title>', $output);
         $this->assertContains('<h1>EasyRdf Graph Dumper</h1>', $output);
@@ -64,10 +67,13 @@ class Examples_DumpTest extends EasyRdf_TestCase
 
     public function testDumpText()
     {
-        $output = executeExample('dump.php', array(
-          'uri' => 'http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf',
-          'format' => 'text'
-        ));
+        $output = executeExample(
+            'dump.php',
+            array(
+                'uri' => 'http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf',
+                'format' => 'text'
+            )
+        );
         $this->assertContains('<title>EasyRdf Graph Dumper</title>', $output);
         $this->assertContains('<h1>EasyRdf Graph Dumper</h1>', $output);
         $this->assertContains('Graph: http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf', $output);

@@ -49,20 +49,23 @@ class Examples_FoafmakerTest extends EasyRdf_TestCase
 
     public function testJoeBloggs()
     {
-        $output = executeExample('foafmaker.php', array(
-            'uri' => 'http://www.example.com/joe#me',
-            'title' => 'Mr',
-            'given_name' => 'Joe',
-            'family_name' => 'Bloggs',
-            'email' => 'joe@example.com',
-            'nickname' => 'Joe',
-            'homepage' => 'http://www.example.com/joe/',
-            'person_1' => 'http://www.example.com/fred#me',
-            'person_2' => 'http://www.example.com/alice#me',
-            'person_3' => '',
-            'person_4' => '',
-            'format' => 'turtle'
-        ));
+        $output = executeExample(
+            'foafmaker.php',
+            array(
+                'uri' => 'http://www.example.com/joe#me',
+                'title' => 'Mr',
+                'given_name' => 'Joe',
+                'family_name' => 'Bloggs',
+                'email' => 'joe@example.com',
+                'nickname' => 'Joe',
+                'homepage' => 'http://www.example.com/joe/',
+                'person_1' => 'http://www.example.com/fred#me',
+                'person_2' => 'http://www.example.com/alice#me',
+                'person_3' => '',
+                'person_4' => '',
+                'format' => 'turtle'
+            )
+        );
 
         $this->assertContains('<title>EasyRdf FOAF Maker Example</title>', $output);
         $this->assertContains('<h1>EasyRdf FOAF Maker Example</h1>', $output);
@@ -80,7 +83,8 @@ class Examples_FoafmakerTest extends EasyRdf_TestCase
             "    foaf:nick &quot;Joe&quot; ;\n".
             "    foaf:knows &lt;http://www.example.com/fred#me&gt;,".
             " &lt;http://www.example.com/alice#me&gt; .\n",
-        $output);
+            $output
+        );
     }
 
 }

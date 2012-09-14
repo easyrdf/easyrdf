@@ -49,13 +49,15 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
 
     public function testConstruct()
     {
-        $uri = new EasyRdf_ParsedUri(array(
-          'scheme' => 'http',
-          'authority' => 'example.com',
-          'path' => '/foo/bar',
-          'query' => 'k=v',
-          'fragment' => 'frag'
-        ));
+        $uri = new EasyRdf_ParsedUri(
+            array(
+                'scheme' => 'http',
+                'authority' => 'example.com',
+                'path' => '/foo/bar',
+                'query' => 'k=v',
+                'fragment' => 'frag'
+            )
+        );
         $this->assertStringEquals('http://example.com/foo/bar?k=v#frag', $uri);
     }
 
