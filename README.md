@@ -77,8 +77,8 @@ You may use the caret character (^) to get an inverse property, for example:
 You can use the pipe character (|) to get alternate properties, for example:
 
     $title = $document->get('dc:title|dc11:title');
-    
-You can use a forward slash (/) to follow a property sequence, for example to get 
+
+You can use a forward slash (/) to follow a property sequence, for example to get
 the names of all my friends:
 
     $name = $me->all('foaf:knows/foaf:name');

@@ -7,7 +7,7 @@
      * returns all of the countries in DBpedia along with an
      * english label.
      *
-     * Note how the namespace prefix declarations are automatically 
+     * Note how the namespace prefix declarations are automatically
      * added to the query.
      *
      * @package    EasyRdf

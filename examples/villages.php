@@ -10,7 +10,7 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
-    
+
     $CATEGORY_ID = 4309010;
 ?>
 <html>

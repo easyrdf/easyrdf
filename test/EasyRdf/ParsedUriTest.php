@@ -46,7 +46,7 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
             'http://a/b/c/d;p?q'
         );
     }
-    
+
     public function testConstruct()
     {
         $uri = new EasyRdf_ParsedUri(array(
