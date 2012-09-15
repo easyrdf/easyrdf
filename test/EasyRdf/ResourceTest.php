@@ -40,7 +40,6 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class EasyRdf_ResourceTest extends EasyRdf_TestCase
 {
-
     public function testConstructNullUri()
     {
         $this->setExpectedException(
@@ -268,6 +267,20 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_graph->add($this->_resource, 'rdf:test', new EasyRdf_Literal('Test B', 'en'));
     }
 
+    public function testLoad()
+    {
+        EasyRdf_Http::setDefaultHttpClient(
+            $client = new EasyRdf_Http_MockClient()
+        );
+        $client->addMock('GET', 'http://example.com/foaf.json', readFixture('foaf.json'));
+        $graph = new EasyRdf_Graph('http://example.com/');
+        $resource = $graph->resource('http://example.com/foaf.json');
+        $resource->load();
+        $this->assertStringEquals(
+            'Joe Bloggs',
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
+        );
+    }
 
     public function testGetUriWithGraph()
     {

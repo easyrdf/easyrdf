@@ -237,6 +237,19 @@ class EasyRdf_Resource
         }
     }
 
+    /** Perform a load (download of remote URI) of the resource into the graph
+     *
+     * The document type is optional but should be specified if it
+     * can't be guessed or got from the HTTP headers.
+     *
+     * @param  string  $format  Optional format of the data (eg. rdfxml)
+     */
+    public function load($format=null)
+    {
+        $this->checkHasGraph();
+        return $this->_graph->load($this->_uri, $format);
+    }
+
     /** Set value(s) for a property
      *
      * The new value(s) will replace the existing values for the property.
