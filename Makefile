@@ -29,17 +29,23 @@ DISTFILES = $(EXAMPLE_FILES) $(SOURCE_FILES) $(TEST_FILES) \
 .DEFAULT: help
 all: help
 
-# TARGET:test                Run PHPUnit tests for the core library
+# TARGET:test                Run all the PHPUnit tests
 .PHONY: test
 test:
 	mkdir -p reports
-	$(PHPUNIT) test/EasyRdf
+	$(PHPUNIT) test
 
 # TARGET:test-examples       Run PHPUnit tests for each of the examples
 .PHONY: test-examples
 test-examples:
 	mkdir -p reports
 	$(PHPUNIT) test/examples
+
+# TARGET:test-lib            Run PHPUnit tests for the library
+.PHONY: test-lib
+test-lib:
+	mkdir -p reports
+	$(PHPUNIT) test/EasyRdf
 
 # TARGET:coverage            Run all the tests and generate a code coverage report
 .PHONY: coverage
