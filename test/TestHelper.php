@@ -59,6 +59,9 @@ if (!preg_match("/^3\.6\.\d+$/", PHPUnit_Runner_Version::id())) {
     exit();
 }
 
+// Set time zone to UTC for running tests
+date_default_timezone_set('UTC');
+
 /*
  * Determine the root, lib, and test directories
  */
