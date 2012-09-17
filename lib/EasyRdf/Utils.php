@@ -89,6 +89,22 @@ class EasyRdf_Utils
             return false;
         }
     }
+    
+    /**
+     * Remove the fragment from a URI (if it has one)
+     *
+     * @param mixed $uri A URI
+     * @return string The same URI with the fragment removed
+     */
+    public static function removeFragmentFromUri($uri)
+    {
+        $pos = strpos($uri, '#');
+        if ($pos === false) {
+            return $uri;
+        } else {
+            return substr($uri, 0, $pos);
+        }
+    }
 
     /** Return pretty-print view of a resource URI
      *

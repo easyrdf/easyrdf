@@ -128,6 +128,30 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         $this->assertFalse(EasyRdf_Utils::isAssociativeArray($arr));
     }
 
+    public function testRemoveFragment()
+    {
+        $this->assertEquals(
+            'http://example.com/',
+            EasyRdf_Utils::removeFragmentFromUri('http://example.com/#foo')
+        );
+    }
+
+    public function testRemoveFragmentNoFragment()
+    {
+        $this->assertEquals(
+            'http://example.com/',
+            EasyRdf_Utils::removeFragmentFromUri('http://example.com/')
+        );
+    }
+
+    public function testRemoveFragmentExtraHash()
+    {
+        $this->assertEquals(
+            'http://example.com/',
+            EasyRdf_Utils::removeFragmentFromUri('http://example.com/#foo#bar')
+        );
+    }
+
     public function testDumpResourceValue()
     {
         $res = new EasyRdf_Resource('http://www.example.com/');
