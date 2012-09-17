@@ -179,7 +179,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoad()
     {
-        $this->_client->addMock('GET', 'http://www.example.com/', readFixture('foaf.json'));
+        $this->_client->addMockOnce('GET', 'http://www.example.com/', readFixture('foaf.json'));
         $graph = new EasyRdf_Graph();
         $graph->load('http://www.example.com/', 'json');
         $this->assertStringEquals(
@@ -220,7 +220,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoadUnknownFormat()
     {
-        $this->_client->addMock('GET', 'http://www.example.com/foaf.unknown', 'unknown');
+        $this->_client->addMockOnce('GET', 'http://www.example.com/foaf.unknown', 'unknown');
         $this->setExpectedException(
             'EasyRdf_Exception',
             'Unable to parse data of an unknown format.'
@@ -231,7 +231,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoadHttpError()
     {
-        $this->_client->addMock(
+        $this->_client->addMockOnce(
             'GET', 'http://www.example.com/404', 'Not Found',
             array('status' => 404)
         );
@@ -245,7 +245,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoadGraphUri()
     {
-        $this->_client->addMock('GET', 'http://www.example.com/', readFixture('foaf.json'));
+        $this->_client->addMockOnce('GET', 'http://www.example.com/', readFixture('foaf.json'));
         $graph = new EasyRdf_Graph('http://www.example.com/');
         $graph->load();
         $this->assertStringEquals(
@@ -256,7 +256,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoadWithContentType()
     {
-        $this->_client->addMock(
+        $this->_client->addMockOnce(
             'GET', 'http://www.example.com/',
             readFixture('foaf.json'),
             array('headers' => array('Content-Type' => 'application/json'))
@@ -271,13 +271,34 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testLoadWithContentTypeAndCharset()
     {
-        $this->_client->addMock(
+        $this->_client->addMockOnce(
             'GET', 'http://www.example.com/',
             readFixture('foaf.nt'),
             array('headers' => array('Content-Type' => 'text/plain; charset=utf8'))
         );
         $graph = new EasyRdf_Graph('http://www.example.com/');
         $graph->load();
+        $this->assertStringEquals(
+            'Joe Bloggs',
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
+        );
+    }
+
+    public function testLoadSameUrl()
+    {
+        // Check that loading the same URL multiple times
+        // doesn't result in multiple HTTP GETs
+        $this->_client->addMockOnce('GET', 'http://www.example.com/', readFixture('foaf.json'));
+        $graph = new EasyRdf_Graph();
+        $this->assertEquals(0, $graph->countTriples());
+        $this->assertEquals(
+            true, $graph->load('http://www.example.com/#foo', 'json')
+        );
+        $this->assertEquals(14, $graph->countTriples());
+        $this->assertEquals(
+            false, $graph->load('http://www.example.com/#bar', 'json')
+        );
+        $this->assertEquals(14, $graph->countTriples());
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')

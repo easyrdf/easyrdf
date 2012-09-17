@@ -55,9 +55,11 @@ class EasyRdf_Graph
     private $_index = array();
     private $_revIndex = array();
 
-
     /** Counter for the number of bnodes */
     private $_bNodeCount = 0;
+
+    /** Array of URLs that have been loaded into the graph */
+    private $_loaded = array();
 
 
     /**
@@ -241,26 +243,36 @@ class EasyRdf_Graph
                 "No URI given to load() and the graph does not have a URI."
             );
 
-        # FIXME: prevent loading the same URI multiple times
-        $client = EasyRdf_Http::getDefaultHttpClient();
-        $client->resetParameters(true);
-        $client->setUri($uri);
-        $client->setMethod('GET');
-        $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
-        $response = $client->request();
-        if (!$response->isSuccessful())
-            throw new EasyRdf_Exception(
-                "HTTP request for $uri failed: ".$response->getMessage()
-            );
+        // Have we already loaded it into the graph?
+        $url = EasyRdf_Utils::removeFragmentFromUri($uri);
+        if (in_array($url, $this->_loaded)) {
+            // We didn't load anything this time
+            return false;
+        } else {
+            // Load the URL
+            $client = EasyRdf_Http::getDefaultHttpClient();
+            $client->resetParameters(true);
+            $client->setUri($url);
+            $client->setMethod('GET');
+            $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
+            $response = $client->request();
+            if (!$response->isSuccessful())
+                throw new EasyRdf_Exception(
+                    "HTTP request for $url failed: ".$response->getMessage()
+                );
 
-        if (!$format or $format == 'guess') {
-            list($format, $params) = EasyRdf_Utils::parseMimeType(
-                $response->getHeader('Content-Type')
-            );
+            if (!$format or $format == 'guess') {
+                list($format, $params) = EasyRdf_Utils::parseMimeType(
+                    $response->getHeader('Content-Type')
+                );
+            }
+
+            // Add the URL to the list of URLs loaded
+            $this->_loaded[] = $url;
+
+            // Parse the data
+            return $this->parse($response->getBody(), $format, $uri);
         }
-
-        // Parse the data
-        return $this->parse($response->getBody(), $format, $uri);
     }
 
     /** Get an associative array of all the resources stored in the graph.
