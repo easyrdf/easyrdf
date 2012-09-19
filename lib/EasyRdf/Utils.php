@@ -89,7 +89,7 @@ class EasyRdf_Utils
             return false;
         }
     }
-    
+
     /**
      * Remove the fragment from a URI (if it has one)
      *

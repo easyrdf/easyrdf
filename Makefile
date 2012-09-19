@@ -58,7 +58,7 @@ coverage:
 docs: index.html doap.rdf
 	mkdir -p docs
 	$(PHPDOC) -d lib -t docs
-	
+
 index.html: homepage.php
 	$(PHP) homepage.php > index.html
 
