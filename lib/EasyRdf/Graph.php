@@ -344,7 +344,7 @@ class EasyRdf_Graph
      */
     public function resourcesMatching($property, $value=null)
     {
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
         $this->checkValueParam($value);
 
         if ($inverse) {
@@ -410,7 +410,7 @@ class EasyRdf_Graph
                     "\$resource cannot be an empty string"
                 );
             } elseif (preg_match("|^<(.+)>$|", $resource, $matches)) {
-                $resource = $matches[0];
+                $resource = $matches[1];
             } else {
                 $resource = EasyRdf_Namespace::expand($resource);
             }
@@ -421,10 +421,11 @@ class EasyRdf_Graph
         }
     }
 
-    /** Check that a URI/property parameter is valid, and expand it if required
+    /** Check that a single URI/property parameter (not a property path)
+     *  is valid, and expand it if required
      *  @ignore
      */
-    protected function checkPropertyParam(&$property, &$inverse)
+    protected function checkSinglePropertyParam(&$property, &$inverse)
     {
         if (is_object($property) and $property instanceof EasyRdf_Resource) {
             $property = $property->getUri();
@@ -577,7 +578,7 @@ class EasyRdf_Graph
     protected function getSingleProperty($resource, $property, $type=null, $lang=null)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
 
         // Get an array of values for the property
         $values = $this->propertyValuesArray($resource, $property, $inverse);
@@ -751,7 +752,7 @@ class EasyRdf_Graph
     protected function allForSingleProperty($resource, $property, $type=null, $lang=null)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
 
         // Get an array of values for the property
         $values = $this->propertyValuesArray($resource, $property, $inverse);
@@ -862,7 +863,7 @@ class EasyRdf_Graph
     public function add($resource, $property, $value)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
         $this->checkValueParam($value);
 
         // No value given?
@@ -905,7 +906,7 @@ class EasyRdf_Graph
     public function addLiteral($resource, $property, $value, $lang=null)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
 
         if (is_array($value)) {
             foreach ($value as $v) {
@@ -947,7 +948,7 @@ class EasyRdf_Graph
     public function addResource($resource, $property, $resource2)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
         $this->checkResourceParam($resource2);
 
         return $this->add(
@@ -972,7 +973,7 @@ class EasyRdf_Graph
     public function set($resource, $property, $value)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
         $this->checkValueParam($value);
 
         // Delete the old values
@@ -991,7 +992,7 @@ class EasyRdf_Graph
     public function delete($resource, $property, $value=null)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
         $this->checkValueParam($value);
 
         $count = 0;
@@ -1033,7 +1034,7 @@ class EasyRdf_Graph
     public function deleteResource($resource, $property, $resource2)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
         $this->checkResourceParam($resource2);
 
         return $this->delete(
@@ -1057,7 +1058,7 @@ class EasyRdf_Graph
     public function deleteLiteral($resource, $property, $value, $lang=null)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
         $this->checkValueParam($value);
 
         if ($lang) {
@@ -1160,7 +1161,7 @@ class EasyRdf_Graph
     public function hasProperty($resource, $property)
     {
         $this->checkResourceParam($resource);
-        $this->checkPropertyParam($property, $inverse);
+        $this->checkSinglePropertyParam($property, $inverse);
 
         if (!$inverse) {
             if (isset($this->_index[$resource][$property]))

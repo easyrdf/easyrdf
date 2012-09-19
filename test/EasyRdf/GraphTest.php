@@ -544,13 +544,24 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
-    public function testGetWithUri()
+    public function testGetWithFullUri()
     {
         $this->assertStringEquals(
             'Test A',
             $this->_graph->get(
-                $this->_uri,
+                '<http://example.com/#me>',
                 '<http://www.w3.org/1999/02/22-rdf-syntax-ns#test>'
+            )
+        );
+    }
+
+    public function testGetResourceAngleBrackets()
+    {
+        $this->assertStringEquals(
+            'Test A',
+            $this->_graph->get(
+                '<'.$this->_uri.'>',
+                'rdf:test'
             )
         );
     }
@@ -1516,6 +1527,22 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testHasResourceProperty()
+    {
+        $property = new EasyRdf_Resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
+        $this->assertTrue(
+            $this->_graph->hasProperty($this->_uri, $property)
+        );
+    }
+
+    public function testHasParsedUriProperty()
+    {
+        $property = new EasyRdf_ParsedUri('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
+        $this->assertTrue(
+            $this->_graph->hasProperty($this->_uri, $property)
+        );
+    }
+
     public function testHasInverseProperty()
     {
         $this->assertTrue(
@@ -1745,6 +1772,34 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertEquals(3, $this->_graph->countTriples());
         $this->_graph->add($this->_uri, 'foaf:nick', 'Nick');
         $this->assertEquals(4, $this->_graph->countTriples());
+    }
+
+    public function testToArray()
+    {
+        $this->assertEquals(
+            array(
+                'http://example.com/#me' => array(
+                    'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' => array(
+                        array(
+                            'type' => 'uri',
+                            'value' => 'http://xmlns.com/foaf/0.1/Person'
+                        )
+                    ),
+                    'http://www.w3.org/1999/02/22-rdf-syntax-ns#test' => array(
+                        array(
+                            'type' => 'literal',
+                            'value' => 'Test A'
+                        ),
+                        array(
+                            'type' => 'literal',
+                            'value' => 'Test B',
+                            'lang' => 'en'
+                        )
+                    )
+                )
+            ),
+            $this->_graph->toArray()
+        );
     }
 
     public function testToString()
