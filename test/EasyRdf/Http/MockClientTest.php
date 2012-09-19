@@ -140,6 +140,14 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
         $this->assertEquals(30, $r->getBody());
     }
 
+    public function testRedirect()
+    {
+        $this->_client->addMockRedirect('GET', '/', 'http://example.com/test');
+        $r = $this->get('http://example.com/');
+        $this->assertEquals('Redirecting to http://example.com/test', $r->getBody());
+        $this->assertEquals('http://example.com/test', $r->getHeader('Location'));
+    }
+
     public function testCallbackWithoutArgs()
     {
         $alwaysTrue = array('callback' => array($this, 'alwaysTrue'));

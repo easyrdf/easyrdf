@@ -100,6 +100,13 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
         return $this->addMock($method, $uri, $body, $options);
     }
 
+    public function addMockRedirect($method, $uri, $location, $options = array())
+    {
+        $options = array('status' => 302, 'headers' => array('Location' => $location)) + $options;
+        $body = "Redirecting to $location";
+        return $this->addMock($method, $uri, $body, $options);
+    }
+
     protected function _buildUrl($parts)
     {
         $url = $parts['scheme'] . '://';
