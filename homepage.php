@@ -15,17 +15,15 @@
 <?php
   include_once "markdown.php";
   $readme = file_get_contents('README.md');
+  $downloads = json_decode(file_get_contents("https://api.github.com/repos/njh/easyrdf/downloads"));
 
-  $downloads = "<ul>\n";
-  $lines = preg_split("/[\n\r]+/",file_get_contents("http://github.com/njh/easyrdf/downloads"));
-  foreach ($lines as $line) {
-      if (preg_match('[<a href="(/downloads/njh/easyrdf/.+)">(.+)</a>]', $line, $matches)) {
-          $downloads .= "<li><a href='http://github.com$matches[1]'>$matches[2]</a></li>\n";
-      }
+  $ul = "<ul>\n";
+  foreach ($downloads as $download) {
+      $ul .= "<li><a href='".htmlspecialchars($download->html_url)."'>".htmlspecialchars($download->name)."</a></li>\n";
   }
-  $downloads .= "</ul>\n";
+  $ul .= "</ul>\n";
 
-  $readme = str_replace('The latest version of EasyRdf can be [downloaded from GitHub].', $downloads, $readme);
+  $readme = str_replace('The latest version of EasyRdf can be [downloaded from GitHub].', $ul, $readme);
 
   $html = Markdown($readme);
   $html = str_replace('<em>', '_', $html);
