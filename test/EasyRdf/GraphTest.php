@@ -305,6 +305,29 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testLoadRedirect()
+    {
+        // Check that loading the same URL as a redirected request
+        // doesn't result in multiple HTTP GETs
+        $this->_client->addMockRedirect('GET', 'http://www.example.org/', 'http://www.example.com/', 301);
+        $this->_client->addMockRedirect('GET', 'http://www.example.com/', 'http://www.example.com/foaf.rdf', 303);
+        $this->_client->addMockOnce('GET', 'http://www.example.com/foaf.rdf', readFixture('foaf.json'));
+        $graph = new EasyRdf_Graph();
+        $this->assertEquals(0, $graph->countTriples());
+        $this->assertEquals(
+            true, $graph->load('http://www.example.org/', 'json')
+        );
+        $this->assertEquals(14, $graph->countTriples());
+        $this->assertEquals(
+            false, $graph->load('http://www.example.com/foaf.rdf', 'json')
+        );
+        $this->assertEquals(14, $graph->countTriples());
+        $this->assertStringEquals(
+            'Joe Bloggs',
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
+        );
+    }
+
     public function testGetResourceSameGraph()
     {
         $graph = new EasyRdf_Graph();

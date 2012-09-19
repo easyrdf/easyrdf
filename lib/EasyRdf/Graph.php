@@ -61,6 +61,8 @@ class EasyRdf_Graph
     /** Array of URLs that have been loaded into the graph */
     private $_loaded = array();
 
+    private $_maxRedirects = 10;
+
 
     /**
      * Constructor
@@ -243,36 +245,65 @@ class EasyRdf_Graph
                 "No URI given to load() and the graph does not have a URI."
             );
 
-        // Have we already loaded it into the graph?
-        $url = EasyRdf_Utils::removeFragmentFromUri($uri);
-        if (in_array($url, $this->_loaded)) {
-            // We didn't load anything this time
-            return false;
-        } else {
-            // Load the URL
-            $client = EasyRdf_Http::getDefaultHttpClient();
-            $client->resetParameters(true);
-            $client->setUri($url);
-            $client->setMethod('GET');
-            $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
-            $response = $client->request();
-            if (!$response->isSuccessful())
-                throw new EasyRdf_Exception(
-                    "HTTP request for $url failed: ".$response->getMessage()
-                );
+        // Setup the HTTP client
+        $client = EasyRdf_Http::getDefaultHttpClient();
+        $client->resetParameters(true);
+        $client->setConfig(array('maxredirects' => 0));
+        $client->setMethod('GET');
+        $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
 
-            if (!$format or $format == 'guess') {
-                list($format, $params) = EasyRdf_Utils::parseMimeType(
-                    $response->getHeader('Content-Type')
-                );
+        $requestUrl = $uri;
+        $response = NULL;
+        $redirectCounter = 0;
+        do {
+            // Have we already loaded it into the graph?
+            $requestUrl = EasyRdf_Utils::removeFragmentFromUri($requestUrl);
+            if (in_array($requestUrl, $this->_loaded)) {
+                return false;
             }
 
-            // Add the URL to the list of URLs loaded
-            $this->_loaded[] = $url;
+            // Make the HTTP request
+            $client->setHeaders('host', null);
+            $client->setUri($requestUrl);
+            $response = $client->request();
 
-            // Parse the data
-            return $this->parse($response->getBody(), $format, $uri);
+            // Add the URL to the list of URLs loaded
+            $this->_loaded[] = $requestUrl;
+
+            if ($response->isRedirect() and $location = $response->getHeader('location')) {
+                // Avoid problems with buggy servers that add whitespace
+                $location = trim($location);
+
+                // Some servers return relative URLs in the location header
+                // resolve it in relation to previous request
+                $baseUri = new EasyRdf_ParsedUri($requestUrl);
+                $requestUrl = $baseUri->resolve($location)->toString();
+                $requestUrl = EasyRdf_Utils::removeFragmentFromUri($requestUrl);
+
+                // If it is a 303 then drop the parameters
+                if ($response->getStatus() == 303) {
+                    $client->resetParameters();
+                }
+
+                ++$redirectCounter;
+            } elseif ($response->isSuccessful()) {
+                // If we didn't get any location, stop redirecting
+                break;
+            } else {
+                throw new EasyRdf_Exception(
+                    "HTTP request for $requestUrl failed: ".$response->getMessage()
+                );
+            }
+        } while ($redirectCounter < $this->_maxRedirects);
+
+        if (!$format or $format == 'guess') {
+            list($format, $params) = EasyRdf_Utils::parseMimeType(
+                $response->getHeader('Content-Type')
+            );
         }
+
+        // Parse the data
+        return $this->parse($response->getBody(), $format, $uri);
     }
 
     /** Get an associative array of all the resources stored in the graph.
