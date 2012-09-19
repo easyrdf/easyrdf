@@ -144,7 +144,17 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
     {
         $this->_client->addMockRedirect('GET', '/', 'http://example.com/test');
         $r = $this->get('http://example.com/');
-        $this->assertEquals('Redirecting to http://example.com/test', $r->getBody());
+        $this->assertEquals('302 redirect to http://example.com/test', $r->getBody());
+        $this->assertEquals(302, $r->getStatus());
+        $this->assertEquals('http://example.com/test', $r->getHeader('Location'));
+    }
+
+    public function testRedirectSeeOther()
+    {
+        $this->_client->addMockRedirect('GET', '/', 'http://example.com/test', 303);
+        $r = $this->get('http://example.com/');
+        $this->assertEquals('303 redirect to http://example.com/test', $r->getBody());
+        $this->assertEquals(303, $r->getStatus());
         $this->assertEquals('http://example.com/test', $r->getHeader('Location'));
     }
 
