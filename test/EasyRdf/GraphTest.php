@@ -1036,7 +1036,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testAdd()
     {
-        $this->_graph->add($this->_uri, 'rdf:test', 'Test C');
+        $count = $this->_graph->add($this->_uri, 'rdf:test', 'Test C');
+        $this->assertEquals(1, $count);
         $all = $this->_graph->all($this->_uri, 'rdf:test');
         $this->assertEquals(3, count($all));
         $this->assertStringEquals('Test A', $all[0]);
@@ -1046,11 +1047,12 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testAddWithUri()
     {
-        $this->_graph->add(
+        $count = $this->_graph->add(
             $this->_uri,
             'http://www.w3.org/1999/02/22-rdf-syntax-ns#test',
             'Test C'
         );
+        $this->assertEquals(1, $count);
         $all = $this->_graph->all($this->_uri, 'rdf:test');
         $this->assertEquals(3, count($all));
         $this->assertStringEquals('Test A', $all[0]);
@@ -1060,7 +1062,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testAddLiteralWithLanguage()
     {
-        $this->_graph->addLiteral($this->_uri, 'dc:title', 'English Title', 'en');
+        $count = $this->_graph->addLiteral($this->_uri, 'dc:title', 'English Title', 'en');
+        $this->assertEquals(1, $count);
         $title = $this->_graph->get($this->_uri, 'dc:title');
         $this->assertEquals('English Title', $title->getValue());
         $this->assertEquals('en', $title->getLang());
@@ -1069,7 +1072,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testAddMultipleLiterals()
     {
-        $this->_graph->addLiteral($this->_uri, 'rdf:test', array('Test C', 'Test D'));
+        $count = $this->_graph->addLiteral($this->_uri, 'rdf:test', array('Test C', 'Test D'));
+        $this->assertEquals(2, $count);
         $all = $this->_graph->all($this->_uri, 'rdf:test');
         $this->assertEquals(4, count($all));
         $this->assertStringEquals('Test A', $all[0]);
@@ -1080,8 +1084,10 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testAddLiteralMultipleTimes()
     {
-        $this->_graph->add($this->_uri, 'rdf:test2', 'foobar');
-        $this->_graph->add($this->_uri, 'rdf:test2', 'foobar');
+        $count = $this->_graph->add($this->_uri, 'rdf:test2', 'foobar');
+        $this->assertEquals(1, $count);
+        $count = $this->_graph->add($this->_uri, 'rdf:test2', 'foobar');
+        $this->assertEquals(0, $count);
         $all = $this->_graph->all($this->_uri, 'rdf:test2');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('foobar', $all[0]);
@@ -1089,8 +1095,10 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testAddLiteralDifferentLanguages()
     {
-        $this->_graph->set($this->_uri, 'rdf:test', new EasyRdf_Literal('foobar', 'en'));
-        $this->_graph->add($this->_uri, 'rdf:test', new EasyRdf_Literal('foobar', 'fr'));
+        $count = $this->_graph->set($this->_uri, 'rdf:test', new EasyRdf_Literal('foobar', 'en'));
+        $this->assertEquals(1, $count);
+        $count = $this->_graph->add($this->_uri, 'rdf:test', new EasyRdf_Literal('foobar', 'fr'));
+        $this->assertEquals(1, $count);
         $all = $this->_graph->all($this->_uri, 'rdf:test');
         $this->assertEquals(2, count($all));
         $this->assertStringEquals('foobar', $all[0]);
@@ -1099,7 +1107,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testAddNull()
     {
-        $this->_graph->add($this->_uri, 'rdf:test', null);
+        $count = $this->_graph->add($this->_uri, 'rdf:test', null);
+        $this->assertEquals(0, $count);
         $all = $this->_graph->all($this->_uri, 'rdf:test');
         $this->assertEquals(2, count($all));
         $this->assertStringEquals('Test A', $all[0]);
@@ -1189,14 +1198,16 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testAddSingleValueToString()
     {
         $graph = new EasyRdf_Graph();
-        $graph->add('http://www.example.com/joe#me', 'foaf:name', 'Joe');
+        $count = $graph->add('http://www.example.com/joe#me', 'foaf:name', 'Joe');
+        $this->assertEquals(1, $count);
         $this->assertStringEquals('Joe', $graph->get('http://www.example.com/joe#me', 'foaf:name'));
     }
 
     public function testAddSingleValueToResource()
     {
         $graph = new EasyRdf_Graph();
-        $graph->add('http://www.example.com/joe#me', 'foaf:name', 'Joe');
+        $count = $graph->add('http://www.example.com/joe#me', 'foaf:name', 'Joe');
+        $this->assertEquals(1, $count);
         $this->assertStringEquals('Joe', $graph->get('http://www.example.com/joe#me', 'foaf:name'));
     }
 
@@ -1214,20 +1225,23 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testAddZero()
     {
         $this->assertNull($this->_graph->get($this->_uri, 'rdf:test2'));
-        $this->_graph->add($this->_uri, 'rdf:test2', 0);
+        $count = $this->_graph->add($this->_uri, 'rdf:test2', 0);
+        $this->assertEquals(1, $count);
         $this->assertStringEquals('0', $this->_graph->get($this->_uri, 'rdf:test2'));
     }
 
     public function testAddLiteralZero()
     {
         $this->assertNull($this->_graph->get($this->_uri, 'rdf:test2'));
-        $this->_graph->addLiteral($this->_uri, 'rdf:test2', 0);
+        $count = $this->_graph->addLiteral($this->_uri, 'rdf:test2', 0);
+        $this->assertEquals(1, $count);
         $this->assertStringEquals('0', $this->_graph->get($this->_uri, 'rdf:test2'));
     }
 
     public function testAddResource()
     {
-        $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://www.example.com/');
+        $count = $this->_graph->addResource($this->_uri, 'foaf:homepage', 'http://www.example.com/');
+        $this->assertEquals(1, $count);
         $res = $this->_graph->get($this->_uri, 'foaf:homepage');
         $this->assertInstanceOf('EasyRdf_Resource', $res);
         $this->assertStringEquals('http://www.example.com/', $res);
@@ -1235,7 +1249,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testAddBnodeResource()
     {
-        $this->_graph->addResource($this->_uri, 'foaf:interest', '_:abc');
+        $count = $this->_graph->addResource($this->_uri, 'foaf:interest', '_:abc');
+        $this->assertEquals(1, $count);
         $res = $this->_graph->get($this->_uri, 'foaf:interest');
         $this->assertInstanceOf('EasyRdf_Resource', $res);
         $this->assertTrue($res->isBnode());
@@ -1245,9 +1260,12 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testAddDulicateTriple()
     {
         $homepage = $this->_graph->resource('http://example.com/');
-        $this->_graph->add($this->_uri, 'foaf:homepage', $homepage);
-        $this->_graph->addResource($this->_uri, 'foaf:homepage', $homepage);
-        $this->_graph->addResource($this->_uri, 'foaf:homepage', $homepage);
+        $count = $this->_graph->add($this->_uri, 'foaf:homepage', $homepage);
+        $this->assertEquals(1, $count);
+        $count = $this->_graph->addResource($this->_uri, 'foaf:homepage', $homepage);
+        $this->assertEquals(0, $count);
+        $count = $this->_graph->addResource($this->_uri, 'foaf:homepage', $homepage);
+        $this->assertEquals(0, $count);
         $all = $this->_graph->all($this->_uri, 'foaf:homepage');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals($homepage, $all[0]);
@@ -1256,6 +1274,26 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $all = $this->_graph->all($homepage, '^foaf:homepage');
         $this->assertEquals(1, count($all));
         $this->assertStringEquals('http://example.com/#me', $all[0]);
+    }
+
+    public function testSet()
+    {
+        $count = $this->_graph->set($this->_uri, 'rdf:foobar', 'baz');
+        $this->assertEquals(1, $count);
+        $all = $this->_graph->all($this->_uri, 'rdf:foobar');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('baz', $all[0]);
+    }
+
+    public function testSetReplaces()
+    {
+        $count = $this->_graph->add($this->_uri, 'rdf:test', 'Test D');
+        $this->assertEquals(1, $count);
+        $count = $this->_graph->set($this->_uri, 'rdf:test', 'Test E');
+        $this->assertEquals(1, $count);
+        $all = $this->_graph->all($this->_uri, 'rdf:test');
+        $this->assertEquals(1, count($all));
+        $this->assertStringEquals('Test E', $all[0]);
     }
 
     public function testDelete()
@@ -1709,7 +1747,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testAddType()
     {
-        $this->_graph->addType($this->_uri, 'rdf:newType');
+        $count = $this->_graph->addType($this->_uri, 'rdf:newType');
+        $this->assertEquals(1, $count);
         $this->assertTrue(
             $this->_graph->is_a($this->_uri, 'rdf:newType')
         );
@@ -1717,7 +1756,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testSetType()
     {
-        $this->_graph->setType($this->_uri, 'foaf:Rat');
+        $count = $this->_graph->setType($this->_uri, 'foaf:Rat');
+        $this->assertEquals(1, $count);
         $this->assertTrue(
             $this->_graph->is_a($this->_uri, 'foaf:Rat')
         );

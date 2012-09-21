@@ -859,6 +859,7 @@ class EasyRdf_Graph
      * @param  mixed $resource   The resource to add data to
      * @param  mixed $property   The property name
      * @param  mixed $value      The new value for the property
+     * @return integer           The number of values added (1 or 0)
      */
     public function add($resource, $property, $value)
     {
@@ -868,14 +869,13 @@ class EasyRdf_Graph
 
         // No value given?
         if ($value === null)
-            return;
+            return 0;
 
-        # FIXME: re-factor this back into a $this->matches() function?
         // Check that the value doesn't already exist
         if (isset($this->_index[$resource][$property])) {
             foreach ($this->_index[$resource][$property] as $v) {
                 if ($v == $value)
-                    return;
+                    return 0;
             }
         }
         $this->_index[$resource][$property][] = $value;
@@ -888,6 +888,9 @@ class EasyRdf_Graph
                 'value' => $resource
             );
         }
+
+        // Success
+        return 1;
     }
 
     /** Add a literal value as a property of a resource
@@ -902,6 +905,7 @@ class EasyRdf_Graph
      * @param  mixed  $property  The property name
      * @param  mixed  $value     The value or values for the property
      * @param  string $lang      The language of the literal
+     * @return integer           The number of values added
      */
     public function addLiteral($resource, $property, $value, $lang=null)
     {
@@ -909,10 +913,11 @@ class EasyRdf_Graph
         $this->checkSinglePropertyParam($property, $inverse);
 
         if (is_array($value)) {
+            $added = 0;
             foreach ($value as $v) {
-                $this->addLiteral($resource, $property, $v, $lang);
+               $added += $this->addLiteral($resource, $property, $v, $lang);
             }
-            return;
+            return $added;
         } else {
             if ($lang) {
                 $value = array(
@@ -929,9 +934,8 @@ class EasyRdf_Graph
                 if (empty($value['datatype']))
                     unset($value['datatype']);
             }
+            return $this->add($resource, $property, $value);
         }
-
-        return $this->add($resource, $property, $value);
     }
 
     /** Add a resource as a property of another resource
@@ -944,6 +948,7 @@ class EasyRdf_Graph
      * @param  mixed $resource   The resource to add data to
      * @param  mixed $property   The property name
      * @param  mixed $resource2  The resource to be value of the property
+     * @return integer           The number of values added
      */
     public function addResource($resource, $property, $resource2)
     {
@@ -959,16 +964,14 @@ class EasyRdf_Graph
         );
     }
 
-    /** Set value(s) for a property
+    /** Set a value for a property
      *
-     * The new value(s) will replace the existing values for the property.
-     * The name of the property should be a string.
-     * If you set a property to null or an empty array, then the property
-     * will be deleted.
+     * The new value will replace the existing values for the property.
      *
+     * @param  string  $resource The resource to set the property on
      * @param  string  $property The name of the property (e.g. foaf:name)
-     * @param  mixed   $values   The value(s) for the property.
-     * @return array             Array of new values for this property.
+     * @param  mixed   $value    The value for the property
+     * @return integer           The number of values added (1 or 0)
      */
     public function set($resource, $property, $value)
     {
@@ -1156,7 +1159,7 @@ class EasyRdf_Graph
      * This method will return true if the property exists.
      *
      * @param  string  $property The name of the property (e.g. foaf:gender)
-     * @return bool              True if value the property exists.
+     * @return boolean           True if value the property exists.
      */
     public function hasProperty($resource, $property)
     {
@@ -1192,7 +1195,7 @@ class EasyRdf_Graph
      * return a pretty-print view of all the resources and their
      * properties.
      *
-     * @param  bool  $html  Set to true to format the dump using HTML
+     * @param  boolean  $html  Set to true to format the dump using HTML
      * @return string
      */
     public function dump($html=true)
@@ -1217,7 +1220,7 @@ class EasyRdf_Graph
      * This method is intended to be a debugging aid and will
      * print a resource and its properties.
      *
-     * @param  bool  $html  Set to true to format the dump using HTML
+     * @param  boolean  $html  Set to true to format the dump using HTML
      * @return string
      */
     public function dumpResource($resource, $html=true)
@@ -1357,6 +1360,7 @@ class EasyRdf_Graph
      *
      * @param  string  $resource The resource to add the type to
      * @param  string  $type     The new type (e.g. foaf:Person)
+     * @return integer           The number of types added
      */
     public function addType($resource, $types)
     {
@@ -1365,10 +1369,13 @@ class EasyRdf_Graph
         if (!is_array($types))
             $types = array($types);
 
+        $count = 0;
         foreach ($types as $type) {
             $type = EasyRdf_Namespace::expand($type);
-            $this->add($resource, 'rdf:type', array('type' => 'uri', 'value' => $type));
+            $count += $this->add($resource, 'rdf:type', array('type' => 'uri', 'value' => $type));
         }
+
+        return $count;
     }
 
     /** Change the rdf:type property for a resource
@@ -1378,6 +1385,7 @@ class EasyRdf_Graph
      *
      * @param  string  $resource The resource to change the type of
      * @param  string  $type     The new type (e.g. foaf:Person)
+     * @return integer           The number of types added
      */
     public function setType($resource, $type)
     {

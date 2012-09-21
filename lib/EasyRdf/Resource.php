@@ -250,23 +250,6 @@ class EasyRdf_Resource
         return $this->_graph->load($this->_uri, $format);
     }
 
-    /** Set value(s) for a property
-     *
-     * The new value(s) will replace the existing values for the property.
-     * The name of the property should be a string.
-     * If you set a property to null or an empty array, then the property
-     * will be deleted.
-     *
-     * @param  string  $property The name of the property (e.g. foaf:name)
-     * @param  mixed   $values   The value(s) for the property.
-     * @return array             Array of new values for this property.
-     */
-    public function set($property, $values)
-    {
-        $this->checkHasGraph();
-        return $this->_graph->set($this->_uri, $property, $values);
-    }
-
     /** Delete a property (or optionally just a specific value)
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
@@ -281,20 +264,18 @@ class EasyRdf_Resource
 
     /** Add values to for a property of the resource
      *
-     * The value can either be a single value or an array of values.
-     *
      * Example:
      *   $resource->add('prefix:property', 'value');
      *
      * @param  mixed $resource   The resource to add data to
      * @param  mixed $property   The property name
      * @param  mixed $value      The value for the property
-     * @return array             Array of all values associated with property.
+     * @return integer           The number of values added (1 or 0)
      */
-    public function add($property, $values=null)
+    public function add($property, $value)
     {
         $this->checkHasGraph();
-        return $this->_graph->add($this->_uri, $property, $values);
+        return $this->_graph->add($this->_uri, $property, $value);
     }
 
     /** Add a literal value as a property of the resource
@@ -307,6 +288,7 @@ class EasyRdf_Resource
      * @param  mixed  $property  The property name
      * @param  mixed  $value     The value or values for the property
      * @param  string $lang      The language of the literal
+     * @return integer           The number of values added
      */
     public function addLiteral($property, $values, $lang=null)
     {
@@ -321,11 +303,29 @@ class EasyRdf_Resource
      *
      * @param  mixed $property   The property name
      * @param  mixed $resource2  The resource to be value of the property
+     * @return integer           The number of values added (1 or 0)
      */
     public function addResource($property, $values)
     {
         $this->checkHasGraph();
         return $this->_graph->addResource($this->_uri, $property, $values);
+    }
+
+    /** Set value for a property
+     *
+     * The new value(s) will replace the existing values for the property.
+     * The name of the property should be a string.
+     * If you set a property to null or an empty array, then the property
+     * will be deleted.
+     *
+     * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  mixed   $value    The value for the property.
+     * @return integer           The number of values added (1 or 0)
+     */
+    public function set($property, $value)
+    {
+        $this->checkHasGraph();
+        return $this->_graph->set($this->_uri, $property, $value);
     }
 
     /** Get a single value for a property
@@ -562,6 +562,7 @@ class EasyRdf_Resource
     /** Add one or more rdf:type properties to the resource
      *
      * @param  string  $type     The new type (e.g. foaf:Person)
+     * @return integer           The number of types added
      */
     public function addType($types)
     {
@@ -574,6 +575,7 @@ class EasyRdf_Resource
      * Note that the PHP class of the resource will not change.
      *
      * @param  string  $type     The new type (e.g. foaf:Person)
+     * @return integer           The number of types added
      */
     public function setType($type)
     {
