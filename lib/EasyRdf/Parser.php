@@ -48,16 +48,25 @@ class EasyRdf_Parser
     /** Mapping from source to graph bnode identifiers */
     private $_bnodeMap = array();
 
+    /** The current graph to insert triples into */
+    protected $_graph = null;
+
+    /** The format of the document currently being parsed */
+    protected $_format = null;
+
+    /** The base URI for the document currently being parsed */
+    protected $_baseUri = null;
+
     /**
      * Create a new, unique bnode identifier from a source identifier.
      * If the source identifier has previously been seen, the
      * same new bnode identifier is returned.
      * @ignore
      */
-    protected function remapBnode($graph, $name)
+    protected function remapBnode($name)
     {
         if (!isset($this->_bnodeMap[$name])) {
-            $this->_bnodeMap[$name] = $graph->newBNodeId();
+            $this->_bnodeMap[$name] = $this->_graph->newBNodeId();
         }
         return $this->_bnodeMap[$name];
     }
@@ -72,29 +81,32 @@ class EasyRdf_Parser
     }
 
     /**
-     * Check and cleanup parameters passed to parse() method
+     * Check, cleanup parameters and prepare for parsing
      * @ignore
      */
-    protected function checkParseParams(&$graph, &$data, &$format, &$baseUri)
+    protected function checkParseParams($graph, $data, $format, $baseUri)
     {
         if ($graph == null or !is_object($graph) or
-            get_class($graph) != 'EasyRdf_Graph') {
+            !($graph instanceof EasyRdf_Graph)) {
             throw new InvalidArgumentException(
                 "\$graph should be an EasyRdf_Graph object and cannot be null"
             );
+        } else {
+            $this->_graph = $graph;
         }
 
         if ($format == null or $format == '') {
             throw new InvalidArgumentException(
                 "\$format cannot be null or empty"
             );
-        } else if (is_object($format) and
-                   get_class($format) == 'EasyRdf_Format') {
-            $format = $format->getName();
+        } else if (is_object($format) and $format instanceof EasyRdf_Format) {
+            $this->_format = $format = $format->getName();
         } else if (!is_string($format)) {
             throw new InvalidArgumentException(
                 "\$format should be a string or an EasyRdf_Format object"
             );
+        } else {
+            $this->_format = $format;
         }
 
         if ($baseUri) {
@@ -102,9 +114,34 @@ class EasyRdf_Parser
                 throw new InvalidArgumentException(
                     "\$baseUri should be a string"
                 );
+            } else {
+                $this->_baseUri = new EasyRdf_ParsedUri($baseUri);
             }
         } else {
-            $baseUri = null;
+            $this->_baseUri = null;
         }
+
+        // Prepare for parsing
+        $this->resetBnodeMap();
+        $this->_tripleCount = 0;
+    }
+
+    /**
+     * Sub-classes must follow this protocol
+     * @ignore
+     */
+    public function parse($graph, $data, $format, $baseUri)
+    {
+    }
+
+    /**
+     * Add a triple to the current graph, and keep count of the number of triples
+     * @ignore
+     */
+    protected function addTriple($resource, $property, $value)
+    {
+        $count = $this->_graph->add($resource, $property, $value);
+        $this->_tripleCount += $count;
+        return $count;
     }
 }

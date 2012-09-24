@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -40,7 +40,7 @@
  * A pure-php class to parse N-Triples with no dependancies.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
@@ -150,7 +150,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
       * @param string               $data    the RDF document data
       * @param string               $format  the format of the input data
       * @param string               $baseUri the base URI of the data being parsed
-      * @return boolean             true if parsing was successful
+      * @return integer             The number of triples added to the graph
       */
     public function parse($graph, $data, $format, $baseUri)
     {
@@ -167,7 +167,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
             if (preg_match("/^\s*#/", $line)) {
                 continue;
             } else if (preg_match("/(.+)\s+<([^<>]+)>\s+(.+)\s*\./", $line, $matches)) {
-                $graph->add(
+                $this->addTriple(
                     $this->parseNtriplesSubject($matches[1]),
                     $this->unescapeString($matches[2]),
                     $this->parseNtriplesObject($matches[3])
@@ -175,7 +175,6 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
             }
         }
 
-        // Success
-        return true;
+        return $this->_tripleCount;
     }
 }

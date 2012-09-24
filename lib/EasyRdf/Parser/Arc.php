@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -40,7 +40,7 @@
  * Class to parse RDF using the ARC2 library.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Parser_Arc extends EasyRdf_Parser_RdfPhp
@@ -69,7 +69,7 @@ class EasyRdf_Parser_Arc extends EasyRdf_Parser_RdfPhp
       * @param string               $data    the RDF document data
       * @param string               $format  the format of the input data
       * @param string               $baseUri the base URI of the data being parsed
-      * @return boolean             true if parsing was successful
+      * @return integer             The number of triples added to the graph
       */
     public function parse($graph, $data, $format, $baseUri)
     {

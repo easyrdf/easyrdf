@@ -187,7 +187,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
       * @param string               $data    the RDF document data
       * @param string               $format  the format of the input data
       * @param string               $baseUri the base URI of the data being parsed
-      * @return boolean             true if parsing was successful
+      * @return integer             The number of triples added to the graph
       */
     public function parse($graph, $data, $format, $baseUri)
     {
@@ -229,7 +229,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
                     librdf_statement_get_object($statement)
                 );
 
-                $graph->add($subject, $predicate, $object);
+                $this->addTriple($subject, $predicate, $object);
             }
         } while (!librdf_stream_next($stream));
 
@@ -242,8 +242,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
         librdf_free_stream($stream);
         librdf_free_parser($parser);
 
-        // Success
-        return true;
+        return $this->_tripleCount;
     }
 }
 

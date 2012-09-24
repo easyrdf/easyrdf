@@ -111,7 +111,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph();
         $data = readFixture('foaf.json');
-        $graph->parse($data, 'json');
+        $count = $graph->parse($data, 'json');
+        $this->assertEquals(14, $count);
 
         $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
         $this->assertEquals('EasyRdf_Literal', get_class($name));
@@ -124,7 +125,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph();
         $data = readFixture('foaf.json');
-        $graph->parse($data, 'guess');
+        $count = $graph->parse($data, 'guess');
+        $this->assertEquals(14, $count);
 
         $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
         $this->assertEquals('EasyRdf_Literal', get_class($name));
@@ -136,7 +138,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testParseFile()
     {
         $graph = new EasyRdf_Graph();
-        $graph->parseFile(fixturePath('foaf.json'));
+        $count = $graph->parseFile(fixturePath('foaf.json'));
+        $this->assertEquals(14, $count);
 
         $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
         $this->assertEquals('EasyRdf_Literal', get_class($name));
@@ -148,7 +151,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testParseFileRelativeUri()
     {
         $graph = new EasyRdf_Graph();
-        $graph->parseFile(fixturePath('foaf.rdf'));
+        $count = $graph->parseFile(fixturePath('foaf.rdf'));
+        $this->assertEquals(14, $count);
 
         $doc = $graph->get('foaf:PersonalProfileDocument', '^rdf:type');
         $this->assertStringEquals('EasyRdf_Resource', get_class($doc));
@@ -181,7 +185,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->_client->addMockOnce('GET', 'http://www.example.com/', readFixture('foaf.json'));
         $graph = new EasyRdf_Graph();
-        $graph->load('http://www.example.com/', 'json');
+        $count = $graph->load('http://www.example.com/', 'json');
+        $this->assertEquals(14, $count);
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
@@ -247,7 +252,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->_client->addMockOnce('GET', 'http://www.example.com/', readFixture('foaf.json'));
         $graph = new EasyRdf_Graph('http://www.example.com/');
-        $graph->load();
+        $this->assertEquals(14, $graph->load());
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
@@ -262,7 +267,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             array('headers' => array('Content-Type' => 'application/json'))
         );
         $graph = new EasyRdf_Graph('http://www.example.com/');
-        $graph->load();
+        $this->assertEquals(14, $graph->load());
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
@@ -277,7 +282,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             array('headers' => array('Content-Type' => 'text/plain; charset=utf8'))
         );
         $graph = new EasyRdf_Graph('http://www.example.com/');
-        $graph->load();
+        $this->assertEquals(14, $graph->load());
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
@@ -292,11 +297,11 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph = new EasyRdf_Graph();
         $this->assertEquals(0, $graph->countTriples());
         $this->assertEquals(
-            true, $graph->load('http://www.example.com/#foo', 'json')
+            14, $graph->load('http://www.example.com/#foo', 'json')
         );
         $this->assertEquals(14, $graph->countTriples());
         $this->assertEquals(
-            false, $graph->load('http://www.example.com/#bar', 'json')
+            0, $graph->load('http://www.example.com/#bar', 'json')
         );
         $this->assertEquals(14, $graph->countTriples());
         $this->assertStringEquals(
@@ -315,11 +320,11 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph = new EasyRdf_Graph();
         $this->assertEquals(0, $graph->countTriples());
         $this->assertEquals(
-            true, $graph->load('http://www.example.org/', 'json')
+            14, $graph->load('http://www.example.org/', 'json')
         );
         $this->assertEquals(14, $graph->countTriples());
         $this->assertEquals(
-            false, $graph->load('http://www.example.com/foaf.rdf', 'json')
+            0, $graph->load('http://www.example.com/foaf.rdf', 'json')
         );
         $this->assertEquals(14, $graph->countTriples());
         $this->assertStringEquals(

@@ -56,12 +56,13 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
 
     public function testParseRdfXml()
     {
-        $this->_parser->parse(
+        $count = $this->_parser->parse(
             $this->_graph,
             $this->_data,
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
+        $this->assertEquals(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
@@ -91,10 +92,11 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         $data .= "  </rdf:Seq>\n";
         $data .= "</rdf:RDF>\n";
 
-        $this->_parser->parse(
+        $count = $this->_parser->parse(
             $this->_graph, $data, 'rdfxml',
             'http://www.w3.org/TR/REC-rdf-syntax/'
         );
+        $this->assertEquals(5, $count);
 
         $favourites = $this->_graph->resource('http://example.org/favourite-fruit');
         $this->assertEquals('rdf:Seq', $favourites->type());
@@ -110,7 +112,7 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'EasyRdf_Parser_RdfXml does not support: unsupportedformat'
         );
-        $rdf = $this->_parser->parse(
+        $this->_parser->parse(
             $this->_graph, $this->_data, 'unsupportedformat', null
         );
     }

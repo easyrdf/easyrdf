@@ -83,7 +83,7 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
       * @param string               $data    the RDF document data
       * @param string               $format  the format of the input data
       * @param string               $baseUri the base URI of the data being parsed
-      * @return boolean             true if parsing was successful
+      * @return integer             The number of triples added to the graph
       */
     public function parse($graph, $data, $format, $baseUri)
     {

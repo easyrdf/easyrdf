@@ -64,7 +64,8 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
 
     public function testParse()
     {
-        $this->_parser->parse($this->_graph, $this->_data, 'php', null);
+        $count = $this->_parser->parse($this->_graph, $this->_data, 'php', null);
+        $this->assertEquals(1, $count);
 
         $joe = $this->_graph->resource('http://example.com/joe');
         $this->assertNotNull($joe);
@@ -80,6 +81,13 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
         $this->assertEquals(null, $name->getDatatype());
     }
 
+    public function testParseTwice()
+    {
+        $count = $this->_parser->parse($this->_graph, $this->_data, 'php', null);
+        $this->assertEquals(1, $count);
+        $count = $this->_parser->parse($this->_graph, $this->_data, 'php', null);
+        $this->assertEquals(0, $count);
+    }
 
     public function testParseDuplicateBNodes()
     {

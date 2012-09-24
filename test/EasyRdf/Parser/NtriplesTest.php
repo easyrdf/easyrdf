@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -54,7 +54,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
 
     public function testParse()
     {
-        $this->_parser->parse($this->_graph, $this->_data, 'ntriples', null);
+        $count = $this->_parser->parse($this->_graph, $this->_data, 'ntriples', null);
+        $this->assertEquals(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
@@ -71,11 +72,12 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
 
     public function testParseLang()
     {
-        $this->_parser->parse(
+        $count = $this->_parser->parse(
             $this->_graph,
             '<http://example.com/a> <http://example.com/b> "English"@en-gb .',
             'ntriples', null
         );
+        $this->assertEquals(1, $count);
 
         $int = $this->_graph->get('http://example.com/a', '<http://example.com/b>');
         $this->assertNotNull($int);
@@ -86,11 +88,12 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
 
     public function testParseDatatype()
     {
-        $this->_parser->parse(
+        $count = $this->_parser->parse(
             $this->_graph,
             '<http://example.com/a> <http://example.com/b> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .',
             'ntriples', null
         );
+        $this->assertEquals(1, $count);
 
         $int = $this->_graph->get('http://example.com/a', '<http://example.com/b>');
         $this->assertNotNull($int);
@@ -101,11 +104,12 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
 
     public function testParseEscaped()
     {
-        $this->_parser->parse(
+        $count = $this->_parser->parse(
             $this->_graph,
             '<http://example.com/a> <http://example.com/b> "\t" .',
             'ntriples', null
         );
+        $this->assertEquals(1, $count);
 
         $a = $this->_graph->resource('http://example.com/a');
         $this->assertNotNull($a);
@@ -117,7 +121,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
 
     public function testParseComment()
     {
-        $this->_parser->parse(
+        $count = $this->_parser->parse(
             $this->_graph,
             "<http://example.com/a> <http://example.com/a> \"Test 1\" .\n".
             "# <http://example.com/b> <http://example.com/b> \"a comment\" .\n".
@@ -125,8 +129,16 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             "<http://example.com/c> <http://example.com/c> \"Test 2\" .\n",
             'ntriples', null
         );
-
+        $this->assertEquals(2, $count);
         $this->assertEquals(2, count($this->_graph->resources()));
+    }
+
+    public function testParseEmpty()
+    {
+        $count = $this->_parser->parse(
+            $this->_graph, '', 'ntriples', null
+        );
+        $this->assertEquals(0, $count);
     }
 
     public function testParseInvalidSubject()

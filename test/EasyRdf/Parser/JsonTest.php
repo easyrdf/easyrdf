@@ -54,7 +54,8 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
     public function testParse()
     {
         $data = readFixture('foaf.json');
-        $this->_parser->parse($this->_graph, $data, 'json', null);
+        $count = $this->_parser->parse($this->_graph, $data, 'json', null);
+        $this->assertEquals(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
@@ -77,7 +78,8 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
     public function testParseJsonTriples()
     {
         $data = readFixture('foaf.json-triples');
-        $this->_parser->parse($this->_graph, $data, 'json', null);
+        $count = $this->_parser->parse($this->_graph, $data, 'json', null);
+        $this->assertEquals(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
@@ -101,7 +103,8 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
     {
         $data = readFixture('foaf.json');
         $format = EasyRdf_Format::getFormat('json');
-        $this->_parser->parse($this->_graph, $data, $format, null);
+        $count = $this->_parser->parse($this->_graph, $data, $format, null);
+        $this->assertEquals(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertStringEquals('Joe Bloggs', $joe->get('foaf:name'));
@@ -111,7 +114,8 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
     {
         # Test parsing JSON with 'bad' bnode identifiers
         $data = readFixture('foaf.bad-json');
-        $this->_parser->parse($this->_graph, $data, 'json', 'http://www.bbc.co.uk/');
+        $count = $this->_parser->parse($this->_graph, $data, 'json', 'http://www.bbc.co.uk/');
+        $this->assertEquals(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertStringEquals('Joe Bloggs', $joe->get('foaf:name'));
@@ -152,7 +156,8 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
 
     public function testParseEmpty()
     {
-        $this->_parser->parse($this->_graph, '{}', 'json', null);
+        $count = $this->_parser->parse($this->_graph, '{}', 'json', null);
+        $this->assertEquals(0, $count);
 
         // Should be empty but no exception thrown
         $this->assertEquals(0, $this->_graph->countTriples());

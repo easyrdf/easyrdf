@@ -56,12 +56,13 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
 
     public function testParseRdfXml()
     {
-        $this->_parser->parse(
+        $count = $this->_parser->parse(
             $this->_graph,
             $this->_data,
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
+        $this->assertEquals(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);

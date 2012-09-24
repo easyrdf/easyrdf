@@ -67,7 +67,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      * @param string               $data    the RDF document data
      * @param string               $format  the format of the input data
      * @param string               $baseUri the base URI of the data being parsed
-     * @return boolean             true if parsing was successful
+     * @return integer             The number of triples added to the graph
      */
     public function parse($graph, $data, $format, $baseUri)
     {
@@ -79,9 +79,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             );
         }
 
-        $this->_graph = $graph;
         $this->_data = $data;
-        $this->_baseUri = new EasyRdf_ParsedUri($baseUri);
         $this->_len = strlen($data);
         $this->_pos = 0;
 
@@ -94,13 +92,11 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
         $c = $this->skipWSC();
         while ($c != -1) {
-          $this->parseStatement();
-
-          $c = $this->skipWSC();
+            $this->parseStatement();
+            $c = $this->skipWSC();
         }
 
-        // Success
-        return true;
+        return $this->_tripleCount;
     }
 
 
@@ -338,7 +334,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $this->_object = $this->parseValue();
         }
 
-        $this->_graph->add(
+        $this->addTriple(
             $this->_subject['value'],
             $this->_predicate['value'],
             $this->_object
@@ -434,7 +430,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
                     'value' => $this->_graph->newBNodeId()
                 );
 
-                $this->_graph->add(
+                $this->addTriple(
                     $bNode['value'],
                     EasyRdf_Namespace::get('rdf') . 'rest',
                     $newNode
@@ -450,7 +446,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $this->read();
 
             // Close the list
-            $this->_graph->add(
+            $this->addTriple(
                 $bNode['value'],
                 EasyRdf_Namespace::get('rdf') . 'rest',
                 array(
@@ -933,7 +929,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
         return array(
             'type' => 'bnode',
-            'value' => $this->remapBnode($this->_graph, $name)
+            'value' => $this->remapBnode($name)
         );
     }
 

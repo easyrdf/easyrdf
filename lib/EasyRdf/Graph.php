@@ -184,6 +184,7 @@ class EasyRdf_Graph
      * @param  string  $data    Data to parse for the graph
      * @param  string  $format  Optional format of the data
      * @param  string  $uri     The URI of the data to load
+     * @return integer          The number of triples added to the graph
      */
     public function parse($data, $format=null, $uri=null)
     {
@@ -211,6 +212,7 @@ class EasyRdf_Graph
      * @param  string  $filename The path of the file to load
      * @param  string  $format   Optional format of the file
      * @param  string  $uri      The URI of the file to load
+     * @return integer           The number of triples added to the graph
      */
     public function parseFile($filename, $format=null, $uri=null)
     {
@@ -235,6 +237,7 @@ class EasyRdf_Graph
      *
      * @param  string  $uri     The URI of the data to load
      * @param  string  $format  Optional format of the data (eg. rdfxml)
+     * @return integer          The number of triples added to the graph
      */
     public function load($uri=null, $format=null)
     {
@@ -259,7 +262,7 @@ class EasyRdf_Graph
             // Have we already loaded it into the graph?
             $requestUrl = EasyRdf_Utils::removeFragmentFromUri($requestUrl);
             if (in_array($requestUrl, $this->_loaded)) {
-                return false;
+                return 0;
             }
 
             // Make the HTTP request

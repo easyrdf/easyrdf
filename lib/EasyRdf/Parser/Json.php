@@ -95,11 +95,11 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
      *
      * @ignore
      */
-    protected function _parseJsonTriples($graph, $data, $baseUri)
+    protected function _parseJsonTriples($data, $baseUri)
     {
         foreach ($data['triples'] as $triple) {
             if ($triple['subject']['type'] == 'bnode') {
-                $subject = $this->remapBnode($graph, $triple['subject']['value']);
+                $subject = $this->remapBnode($triple['subject']['value']);
             } else {
                 $subject = $triple['subject']['value'];
             }
@@ -109,16 +109,16 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
             if ($triple['object']['type'] == 'bnode') {
                 $object = array(
                     'type' => 'bnode',
-                    'value' => $this->remapBnode($graph, $triple['object']['value'])
+                    'value' => $this->remapBnode($triple['object']['value'])
                 );
             } else {
                 $object = $triple['object'];
             }
 
-            $graph->add($subject, $predicate, $object);
+            $this->addTriple($subject, $predicate, $object);
         }
 
-        return true;
+        return $this->_tripleCount;
     }
 
     /**
@@ -128,20 +128,17 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
       * @param string               $data    the RDF document data
       * @param string               $format  the format of the input data
       * @param string               $baseUri the base URI of the data being parsed
-      * @return boolean             true if parsing was successful
+      * @return integer             The number of triples added to the graph
       */
     public function parse($graph, $data, $format, $baseUri)
     {
-        parent::checkParseParams($graph, $data, $format, $baseUri);
+        $this->checkParseParams($graph, $data, $format, $baseUri);
 
         if ($format != 'json') {
             throw new EasyRdf_Exception(
                 "EasyRdf_Parser_Json does not support: $format"
             );
         }
-
-        // Reset the bnode mapping
-        $this->resetBnodeMap();
 
         $decoded = @json_decode(strval($data), true);
         if ($decoded === null) {
@@ -151,7 +148,7 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
         }
 
         if (array_key_exists('triples', $decoded)) {
-            return $this->_parseJsonTriples($graph, $decoded, $baseUri);
+            return $this->_parseJsonTriples($decoded, $baseUri);
         } else {
             return parent::parse($graph, $decoded, 'php', $baseUri);
         }

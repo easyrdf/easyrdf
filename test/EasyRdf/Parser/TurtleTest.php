@@ -56,10 +56,11 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     public function testParseFoaf()
     {
         $graph = new EasyRdf_Graph();
-        $this->_turtleParser->parse(
+        $count = $this->_turtleParser->parse(
             $graph, readFixture('foaf.ttl'),
             'turtle', $this->_baseUri
         );
+        $this->assertEquals(14, $count);
 
         $joe = $graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);

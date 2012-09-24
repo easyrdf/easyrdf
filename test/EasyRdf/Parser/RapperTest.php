@@ -72,12 +72,13 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
     public function testParseRdfXml()
     {
-        $this->_parser->parse(
+        $count = $this->_parser->parse(
             $this->_graph,
             $this->_data,
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
+        $this->assertEquals(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
@@ -98,7 +99,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
     public function testParseEmpty()
     {
-        $this->_parser->parse(
+        $count = $this->_parser->parse(
             $this->_graph,
             readFixture('empty.rdf'),
             'rdfxml',
@@ -106,17 +107,19 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         );
 
         // Should be empty but no exception thrown
+        $this->assertEquals(0, $count);
         $this->assertEquals(0, $this->_graph->countTriples());
     }
 
     function testParseXMLLiteral()
     {
-        $this->_parser->parse(
+        $count = $this->_parser->parse(
             $this->_graph,
             readFixture('xml_literal.rdf'),
             'rdfxml',
             'http://www.example.com/'
         );
+        $this->assertEquals(2, $count);
 
         $doc = $this->_graph->resource('http://www.example.com/');
         $this->assertEquals('foaf:Document', $doc->type());
