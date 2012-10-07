@@ -132,6 +132,9 @@ class EasyRdf_Parser
      */
     public function parse($graph, $data, $format, $baseUri)
     {
+        throw new EasyRdf_Exception(
+            "This method should be overridden by sub-classes."
+        );
     }
 
     /**

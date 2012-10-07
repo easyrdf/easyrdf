@@ -137,4 +137,14 @@ class EasyRdf_SerialiserTest extends EasyRdf_TestCase
         );
         $this->_serialiser->serialise($this->_graph, 1);
     }
+
+    public function testSerialiseUndefined()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'This method should be overridden by sub-classes.'
+        );
+        $serialiser = new EasyRdf_Serialiser();
+        $serialiser->serialise($this->_graph, 'format');
+    }
 }

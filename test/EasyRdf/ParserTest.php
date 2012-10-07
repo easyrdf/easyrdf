@@ -171,4 +171,14 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
         );
         $this->_parser->parse($this->_graph, $this->_data, 'json', 1);
     }
+
+    public function testParseUndefined()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'This method should be overridden by sub-classes.'
+        );
+        $parser = new EasyRdf_Parser();
+        $parser->parse($this->_graph, 'data', 'format', 'baseUri');
+    }
 }

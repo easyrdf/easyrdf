@@ -71,4 +71,15 @@ class EasyRdf_Serialiser
             );
         }
     }
+
+    /**
+     * Sub-classes must follow this protocol
+     * @ignore
+     */
+    public function serialise($graph, $format)
+    {
+        throw new EasyRdf_Exception(
+            "This method should be overridden by sub-classes."
+        );
+    }
 }
