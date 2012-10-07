@@ -61,7 +61,7 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
-            "The command 'random_command_that_doesnt_exist' is not available on this system."
+            "Failed to execute the command 'random_command_that_doesnt_exist'"
         );
         new EasyRdf_Serialiser_Rapper('random_command_that_doesnt_exist');
     }
@@ -87,7 +87,7 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
-            'Failed to convert RDF'
+            'Error while executing command rapper'
         );
         $rdf = $this->_serialiser->serialise(
             $this->_graph, 'unsupportedformat'

@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -43,7 +43,7 @@
  * Note: the built-in N-Triples serialiser is used to pass data to Rapper.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
@@ -58,13 +58,13 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
      */
     public function __construct($rapperCmd='rapper')
     {
-        exec("which ".escapeshellarg($rapperCmd), $output, $retval);
-        if ($retval == 0) {
-            $this->_rapperCmd = $rapperCmd;
-        } else {
+        $result = exec("$rapperCmd --version 2>/dev/null", $output, $status);
+        if ($status != 0) {
             throw new EasyRdf_Exception(
-                "The command '$rapperCmd' is not available on this system."
+                "Failed to execute the command '$rapperCmd': $result"
             );
+        } else {
+            $this->_rapperCmd = $rapperCmd;
         }
     }
 
@@ -81,59 +81,23 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
 
         $ntriples = parent::serialise($graph, 'ntriples');
 
-        // Open a pipe to the rapper command
-        $descriptorspec = array(
-            0 => array("pipe", "r"),
-            1 => array("pipe", "w"),
-            2 => array("pipe", "w")
-        );
-
         // Hack to produce more concise RDF/XML
         if ($format == 'rdfxml') $format = 'rdfxml-abbrev';
 
-        $process = proc_open(
-            escapeshellcmd($this->_rapperCmd).
-            " --quiet ".
-            " --input ntriples ".
-            " --output " . escapeshellarg($format).
-            " - ". 'unknown://', # FIXME: how can this be improved?
-            $descriptorspec, $pipes, '/tmp', null
+        return EasyRdf_Utils::execCommandPipe(
+            $this->_rapperCmd,
+            array(
+                '--quiet',
+                '--input', 'ntriples',
+                '--output', $format,
+                '-', 'unknown://'
+            ),
+            $ntriples
         );
-        if (is_resource($process)) {
-            // $pipes now looks like this:
-            // 0 => writeable handle connected to child stdin
-            // 1 => readable handle connected to child stdout
-            // 2 => readable handle connected to child stderr
-
-            fwrite($pipes[0], $ntriples);
-            fclose($pipes[0]);
-
-            $output = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-            $error = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-
-            // It is important that you close any pipes before calling
-            // proc_close in order to avoid a deadlock
-            $returnValue = proc_close($process);
-            if ($returnValue) {
-                throw new EasyRdf_Exception(
-                    "Failed to convert RDF: ".$error
-                );
-            }
-        } else {
-            throw new EasyRdf_Exception(
-                "Failed to execute rapper command."
-            );
-        }
-
-        return $output;
     }
 }
 
 // FIXME: do this automatically
-EasyRdf_Format::register('dot', 'Graphviz');
-EasyRdf_Format::register('json-triples', 'RDF/JSON Triples');
 EasyRdf_Format::registerSerialiser('dot', 'EasyRdf_Serialiser_Rapper');
 EasyRdf_Format::registerSerialiser('json-triples', 'EasyRdf_Serialiser_Rapper');
 EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Rapper');

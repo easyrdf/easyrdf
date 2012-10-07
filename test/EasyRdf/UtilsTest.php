@@ -289,4 +289,54 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         $this->assertEquals('text/plain', $type);
         $this->assertEquals('utf8', $params['charset']);
     }
+
+    public function testExecCommandPipeTrue()
+    {
+        $output = EasyRdf_Utils::execCommandPipe('true');
+        $this->assertEquals('', $output);
+    }
+
+    public function testExecCommandPipeLs()
+    {
+        $output = EasyRdf_Utils::execCommandPipe('ls', array('/bin/'));
+        $lines = explode("\n", $output);
+        $this->assertTrue(in_array('cat', $lines));
+    }
+
+    public function testExecCommandPipeLsWithDir()
+    {
+        $output = EasyRdf_Utils::execCommandPipe('ls', null, null, '/bin');
+        $lines = explode("\n", $output);
+        $this->assertTrue(in_array('rm', $lines));
+    }
+
+    public function testExecCommandPipeEcho()
+    {
+        $output = EasyRdf_Utils::execCommandPipe('echo', 'Test Message');
+        $this->assertEquals("Test Message\n", $output);
+    }
+
+    public function testExecCommandPipeCat()
+    {
+        $output = EasyRdf_Utils::execCommandPipe('cat', null, 'Test Message 2');
+        $this->assertEquals("Test Message 2", $output);
+    }
+
+    public function testExecCommandPipeFalse()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Error while executing command false'
+        );
+        $output = EasyRdf_Utils::execCommandPipe('false');
+    }
+
+    public function testExecCommandPipeNotFound()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Error while executing command no_such_command'
+        );
+        $output = EasyRdf_Utils::execCommandPipe('no_such_command');
+    }
 }

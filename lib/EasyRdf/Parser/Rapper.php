@@ -46,7 +46,6 @@
 class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
 {
     private $_rapperCmd = null;
-    private $_tempDir = '/tmp';
 
     const MINIMUM_RAPPER_VERSION = '1.4.17';
 
@@ -70,10 +69,6 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
         } else {
             $this->_rapperCmd = $rapperCmd;
         }
-
-        if (function_exists('sys_get_temp_dir')) {
-            $this->_tempDir = sys_get_temp_dir();
-        }
     }
 
     /**
@@ -89,54 +84,21 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
     {
         parent::checkParseParams($graph, $data, $format, $baseUri);
 
-        // Open a pipe to the rapper command
-        $descriptorspec = array(
-            0 => array("pipe", "r"),
-            1 => array("pipe", "w"),
-            2 => array("pipe", "w")
+        $json = EasyRdf_Utils::execCommandPipe(
+            $this->_rapperCmd,
+            array(
+                '--quiet',
+                '--input', $format,
+                '--output', 'json',
+                '--ignore-errors',
+                '--input-uri', $baseUri,
+                '--output-uri', '-', '-'
+            ),
+            $data
         );
-
-        $process = proc_open(
-            escapeshellcmd($this->_rapperCmd).
-            " --quiet ".
-            " --input " . escapeshellarg($format).
-            " --output json ".
-            " --ignore-errors ".
-            " --input-uri " . escapeshellarg($baseUri).
-            " --output-uri -".
-            " - ",
-            $descriptorspec, $pipes, $this->_tempDir, NULL
-        );
-        if (is_resource($process)) {
-            // $pipes now looks like this:
-            // 0 => writeable handle connected to child stdin
-            // 1 => readable handle connected to child stdout
-            // 2 => readable handle connected to child stderr
-
-            fwrite($pipes[0], $data);
-            fclose($pipes[0]);
-
-            $data = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-            $error = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
-
-            // It is important that you close any pipes before calling
-            // proc_close in order to avoid a deadlock
-            $returnValue = proc_close($process);
-            if ($returnValue) {
-                throw new EasyRdf_Exception(
-                    "Failed to parse RDF ($returnValue): ".$error
-                );
-            }
-        } else {
-            throw new EasyRdf_Exception(
-                "Failed to execute rapper command."
-            );
-        }
 
         // Parse in the JSON
-        return parent::parse($graph, $data, 'json', $baseUri);
+        return parent::parse($graph, $json, 'json', $baseUri);
     }
 }
 

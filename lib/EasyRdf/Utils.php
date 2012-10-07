@@ -201,4 +201,76 @@ class EasyRdf_Utils
         }
         return array($type, $params);
     }
+
+    /** Execute a command as a pipe
+     *
+     * The proc_open() function is used to open a pipe to a
+     * a command line process, writing $input to STDIN, returning STDOUT
+     * and throwing an exception if anything is written to STDERR or the
+     * process returns non-zero.
+     *
+     * @param  string $command   The command to execute
+     * @param  array  $args      Optional list of arguments to pass to the command
+     * @param  string $input     Optional buffer to send to the command
+     * @param  string $dir       Path to directory to run command in (defaults to /tmp)
+     * @return string The result of the command, printed to STDOUT
+     */
+    public static function execCommandPipe($command, $args=null, $input=null, $dir=null)
+    {
+        $descriptorspec = array(
+            0 => array('pipe', 'r'),
+            1 => array('pipe', 'w'),
+            2 => array('pipe', 'w')
+        );
+
+        // Use the system tmp directory by default
+        if (!$dir) {
+            $dir = sys_get_temp_dir();
+        }
+
+        if (is_array($args)) {
+            $fullCommand = implode(
+                ' ', array_map('escapeshellcmd', array_merge(array($command), $args))
+            );
+        } else {
+            $fullCommand = escapeshellcmd($command);
+            if ($args)
+                $fullCommand .= ' '.escapeshellcmd($args);
+        }
+
+        $process = proc_open(
+            $fullCommand, $descriptorspec, $pipes, $dir
+        );
+
+        if (is_resource($process)) {
+            // $pipes now looks like this:
+            // 0 => writeable handle connected to child stdin
+            // 1 => readable handle connected to child stdout
+            // 2 => readable handle connected to child stderr
+
+            if ($input)
+                fwrite($pipes[0], $input);
+            fclose($pipes[0]);
+
+            $output = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            $error = stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
+
+            // It is important that you close any pipes before calling
+            // proc_close in order to avoid a deadlock
+            $returnValue = proc_close($process);
+            if ($returnValue) {
+                throw new EasyRdf_Exception(
+                    "Error while executing command $command: ".$error
+                );
+            }
+        } else {
+            throw new EasyRdf_Exception(
+                "Failed to execute command $command"
+            );
+        }
+
+        return $output;
+    }
 }

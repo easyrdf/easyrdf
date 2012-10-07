@@ -70,6 +70,15 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         new EasyRdf_Parser_Rapper('random_command_that_doesnt_exist');
     }
 
+    function testRapperTooOld()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Version 1.4.17 or higher of rapper is required."
+        );
+        new EasyRdf_Parser_Rapper('echo 1.0.0');
+    }
+
     public function testParseRdfXml()
     {
         $count = $this->_parser->parse(
@@ -135,7 +144,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
-            'Failed to parse RDF'
+            'Error while executing command rapper'
         );
         $rdf = $this->_parser->parse(
             $this->_graph, $this->_data, 'unsupportedformat', null
