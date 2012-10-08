@@ -160,6 +160,11 @@ require_once "EasyRdf/Resource.php";
 require_once "EasyRdf/Serialiser.php";
 
 /**
+ * @see EasyRdf_Serialiser_GraphViz
+ */
+require_once "EasyRdf/Serialiser/GraphViz.php";
+
+/**
  * @see EasyRdf_Serialiser_RdfPhp
  */
 require_once "EasyRdf/Serialiser/RdfPhp.php";

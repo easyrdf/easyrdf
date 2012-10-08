@@ -565,6 +565,21 @@ EasyRdf_Format::register(
 );
 
 EasyRdf_Format::register(
+    'dot',
+    'Graphviz',
+    'http://www.graphviz.org/doc/info/lang.html',
+    array(
+        'text/vnd.graphviz' => 0.8
+    ),
+    array('gv', 'dot')
+);
+
+EasyRdf_Format::register(
+    'json-triples',
+    'RDF/JSON Triples'
+);
+
+EasyRdf_Format::register(
     'n3',
     'Notation3',
     'http://www.w3.org/2000/10/swap/grammar/n3#',
@@ -604,6 +619,36 @@ EasyRdf_Format::register(
     )
 );
 
+EasyRdf_Format::register(
+    'png',
+    'Portable Network Graphics (PNG)',
+    'http://www.w3.org/TR/PNG/',
+    array(
+        'image/png' => 0.3
+    ),
+    array('png')
+);
+
+EasyRdf_Format::register(
+    'gif',
+    'Graphics Interchange Format (GIF)',
+    'http://www.w3.org/Graphics/GIF/spec-gif89a.txt',
+    array(
+        'image/gif' => 0.2
+    ),
+    array('gif')
+);
+
+EasyRdf_Format::register(
+    'svg',
+    'Scalable Vector Graphics (SVG)',
+    'http://www.w3.org/TR/SVG/',
+    array(
+        'image/svg+xml' => 0.3
+    ),
+    array('svg')
+);
+
 
 /*
    Register default set of parsers and serialisers
@@ -621,3 +666,8 @@ EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Ntriples');
 EasyRdf_Format::registerSerialiser('php', 'EasyRdf_Serialiser_RdfPhp');
 EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_RdfXml');
 EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Turtle');
+
+EasyRdf_Format::registerSerialiser('dot', 'EasyRdf_Serialiser_GraphViz');
+EasyRdf_Format::registerSerialiser('gif', 'EasyRdf_Serialiser_GraphViz');
+EasyRdf_Format::registerSerialiser('png', 'EasyRdf_Serialiser_GraphViz');
+EasyRdf_Format::registerSerialiser('svg', 'EasyRdf_Serialiser_GraphViz');
