@@ -299,15 +299,13 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testExecCommandPipeLs()
     {
         $output = EasyRdf_Utils::execCommandPipe('ls', array('/bin/'));
-        $lines = explode("\n", $output);
-        $this->assertTrue(in_array('cat', $lines));
+        $this->assertContains('cat', explode("\n", $output));
     }
 
     public function testExecCommandPipeLsWithDir()
     {
         $output = EasyRdf_Utils::execCommandPipe('ls', null, null, '/bin');
-        $lines = explode("\n", $output);
-        $this->assertTrue(in_array('rm', $lines));
+        $this->assertContains('rm', explode("\n", $output));
     }
 
     public function testExecCommandPipeEcho()
