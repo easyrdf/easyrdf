@@ -20,6 +20,11 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
+
+    // Stupid PHP :(
+    if (get_magic_quotes_gpc() and isset($_REQUEST['query'])) {
+        $_REQUEST['query'] = stripslashes($_REQUEST['query']);
+    }
 ?>
 <html>
 <head>
@@ -41,13 +46,13 @@
   <?php
     print form_tag();
     print label_tag('endpoint');
-    print text_field_tag('endpoint', "http://localhost:8080/sparql", array('size'=>70)).'<br />';
+    print text_field_tag('endpoint', "http://dbpedia.org/sparql", array('size'=>80)).'<br />';
     print "<code>";
     foreach(EasyRdf_Namespace::namespaces() as $prefix => $uri) {
         print "PREFIX $prefix: &lt;".htmlspecialchars($uri)."&gt;<br />\n";
     }
     print "</code>";
-    print text_area_tag('query', "SELECT * WHERE {\n  ?s ?p ?o\n}\nLIMIT 10").'<br />';
+    print text_area_tag('query', "SELECT * WHERE {\n  ?s ?p ?o\n}\nLIMIT 10", array('rows' => 10, 'cols' => 80)).'<br />';
     print check_box_tag('text') . label_tag('text', 'Plain text results').'<br />';
     print reset_tag() . submit_tag();
     print form_end_tag();
