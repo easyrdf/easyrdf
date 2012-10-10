@@ -48,46 +48,46 @@ class Examples_SparqlqueryformTest extends EasyRdf_TestCase
         $this->assertContains('PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;', $output);
     }
 
-    public function testFactbookGreatestPopulationHtml()
+    public function testDbpediaCountries()
     {
         $output = executeExample(
             'sparql_queryform.php',
             array(
-                'endpoint' => 'http://www4.wiwiss.fu-berlin.de/factbook/sparql',
+                'endpoint' => 'http://dbpedia.org/sparql',
                 'query' =>
-                    'PREFIX factbook: <http://www4.wiwiss.fu-berlin.de/factbook/ns#> '.
+                    'PREFIX dbo: <http://dbpedia.org/ontology/> '.
                     'SELECT * WHERE {'.
-                    '  ?country rdf:type factbook:Country . '.
-                    '  ?country rdfs:label ?label . '.
-                    '  ?country factbook:population_total ?population_total . '.
-                    '} ORDER BY DESC(?population_total) LIMIT 10'
+                    '  ?country rdf:type dbo:Country . '.
+                    '  ?country rdfs:label ?label .'.
+                    '  ?country dc:subject category:Member_states_of_the_United_Nations .'.
+                    '  FILTER ( lang(?label) = "en" ) '.
+                    '} ORDER BY ?label LIMIT 100'
             )
         );
-        $this->assertContains('>http://www4.wiwiss.fu-berlin.de/factbook/resource/China</a>', $output);
-        $this->assertContains('>&quot;China&quot;</span>', $output);
-        $this->assertContains('>&quot;1321851888&quot;^^xsd:long</span>', $output);
+        $this->assertContains('>http://dbpedia.org/resource/China</a>', $output);
+        $this->assertContains('>&quot;China&quot;@en</span>', $output);
     }
 
-    public function testFactbookGreatestPopulationText()
+    public function testDbpediaCountriesText()
     {
         $output = executeExample(
             'sparql_queryform.php',
             array(
-                'endpoint' => 'http://www4.wiwiss.fu-berlin.de/factbook/sparql',
+                'endpoint' => 'http://dbpedia.org/sparql',
                 'query' =>
-                    'PREFIX factbook: <http://www4.wiwiss.fu-berlin.de/factbook/ns#> '.
+                    'PREFIX dbo: <http://dbpedia.org/ontology/> '.
                     'SELECT * WHERE {'.
-                    '  ?country rdf:type factbook:Country . '.
-                    '  ?country rdfs:label ?label . '.
-                    '  ?country factbook:population_total ?population_total . '.
-                    '} ORDER BY DESC(?population_total) LIMIT 10',
+                    '  ?country rdf:type dbo:Country . '.
+                    '  ?country rdfs:label ?label .'.
+                    '  ?country dc:subject category:Member_states_of_the_United_Nations .'.
+                    '  FILTER ( lang(?label) = "en" ) '.
+                    '} ORDER BY ?label LIMIT 100',
                 'text' => 1
             )
         );
 
-        $this->assertContains('| http://www4.wiwiss.fu-berlin.de/factbook/resource/China', $output);
-        $this->assertContains('| &quot;China&quot;', $output);
-        $this->assertContains('| &quot;1321851888&quot;^^xsd:long', $output);
+        $this->assertContains('| http://dbpedia.org/resource/China', $output);
+        $this->assertContains('| &quot;China&quot;@en', $output);
     }
 
 }
