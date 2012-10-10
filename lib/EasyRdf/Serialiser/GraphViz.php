@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,10 +38,13 @@
 
 /**
  * Class to serialise an EasyRdf_Graph to GraphViz
- * Depends upon the GraphViz 'dot' command line tools.
+ *
+ * Depends upon the GraphViz 'dot' command line tools to render images.
+ *
+ * See http://www.graphviz.org/ for more information.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
@@ -60,49 +63,125 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
     {
     }
 
+    /**
+     * Set the path to the GraphViz 'dot' command
+     *
+     * Default is to search PATH for the command 'dot'.
+     *
+     * @param string $cmd   The path to the 'dot' command.
+     * @return object EasyRdf_Serialiser_GraphViz
+     */
     public function setDotCommand($cmd)
     {
         $this->_dotCommand = $cmd;
+        return $this;
     }
 
+    /**
+     * Get the path to the GraphViz 'dot' command
+     *
+     * The default value is simply 'dot'
+     *
+     * @return string The path to the 'dot' command.
+     */
     public function getDotCommand()
     {
         return $this->_dotCommand;
     }
 
-    public function getUseLabels()
-    {
-        return $this->_useLabels;
-    }
-
+    /**
+     * Turn on/off the option to display labels instead of URIs.
+     *
+     * When this option is turned on, then labels for resources will
+     * be displayed instead of the full URI of a resource. This makes
+     * it simpler to create friendly diagrams that non-technical people
+     * can understand.
+     *
+     * This option is turned off by default.
+     *
+     * @param bool $useLabels   A boolean value to turn labels on and off
+     * @return object EasyRdf_Serialiser_GraphViz
+     */
     public function setUseLabels($useLabels)
     {
         $this->_useLabels = $useLabels;
         return $this;
     }
 
-    public function getOnlyLabelled()
+    /**
+     * Get the state of the use labels option
+     *
+     * @return bool The current state of the use labels option
+     */
+    public function getUseLabels()
     {
-        return $this->_onlyLabelled;
+        return $this->_useLabels;
     }
 
+    /**
+     * Turn on/off the option to only display nodes and edges with labels
+     *
+     * When this option is turned on, then only nodes (resources and literals)
+     * and edges (properties) will only be displayed if they have a label. You
+     * can use this option, to create concise, diagrams of your data, rather than
+     * the RDF.
+     *
+     * This option is turned off by default.
+     *
+     * @param bool $useLabels   A boolean value to enable/display only labelled items
+     * @return object EasyRdf_Serialiser_GraphViz
+     */
     public function setOnlyLabelled($onlyLabelled)
     {
         $this->_onlyLabelled = $onlyLabelled;
         return $this;
     }
 
+    /**
+     * Get the state of the only Only Labelled option
+     *
+     * @return bool The current state of the Only Labelled option
+     */
+    public function getOnlyLabelled()
+    {
+        return $this->_onlyLabelled;
+    }
+
+    /**
+     * Set an attribute on the GraphViz graph
+     *
+     * Example:
+     *     $serialiser->setAttribute('rotate', 90);
+     *
+     * See the GraphViz tool documentation for information about the
+     * available attributes.
+     *
+     * @param string $name    The name of the attribute
+     * @param string $value   The value for the attribute
+     * @return object EasyRdf_Serialiser_GraphViz
+     */
     public function setAttribute($name, $value)
     {
         $this->_attributes[$name] = $value;
         return $this;
     }
 
+    /**
+     * Get an attribute of the GraphViz graph
+     *
+     * @param string $name    Attribute name
+     * @return string The value of the graph attribute
+     */
     public function getAttribute($name)
     {
         return $this->_attributes[$name];
     }
 
+    /**
+     * Convert an EasyRdf object into a GraphViz node identifier
+     *
+     * @ignore
+     */
     protected function nodeName($entity)
     {
         if ($entity instanceof EasyRdf_Resource) {
@@ -117,10 +196,8 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
     }
 
     /**
-     * Returns a safe "ID" in DOT syntax
+     * Internal function to escape a string into DOT safe syntax
      *
-     * @param string  $input string to use as "ID"
-     * @return string The escaped string
      * @ignore
      */
     protected function escape($input)
@@ -136,6 +213,12 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
         }
     }
 
+    /**
+     * Internal function to escape an associate array of attributes and
+     * turns it into a DOT notation string
+     *
+     * @ignore
+     */
     protected function escapeAttributes($array)
     {
         $items = '';
@@ -145,6 +228,11 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
         return '['.implode(',', $items).']';
     }
 
+    /**
+     * Internal function to create dot syntax line for either a node or an edge
+     *
+     * @ignore
+     */
     protected function serialiseRow($node1, $node2=null, $attributes=array())
     {
         $result = '  '.$this->escape($node1);
@@ -155,6 +243,11 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
         return $result.";\n";
     }
 
+    /**
+     * Internal function to serialise an EasyRdf_Graph into a DOT formatted string
+     *
+     * @ignore
+     */
     protected function serialiseDot($graph)
     {
         $result = "digraph {\n";
@@ -241,6 +334,11 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
         return $result;
     }
 
+    /**
+     * Internal function to render a graph into an image
+     *
+     * @ignore
+     */
     public function renderImage($graph, $format='png')
     {
         $dot = $this->serialiseDot($graph);

@@ -60,6 +60,7 @@ Features
 * No required external dependancies upon other libraries (PEAR, Zend, etc...)
 * Complies with Zend Framework coding style.
 * Type mapper - resources of type foaf:Person can be mapped into PHP object of class Foaf_Person
+* Support for visualisation of graphs using [GraphViz]
 * Comes with a number of examples
 
 
@@ -100,6 +101,7 @@ More Examples
 * [foafmaker.php](https://github.com/njh/easyrdf/blob/master/examples/foafmaker.php#slider) - Construct a FOAF document with a choice of serialisations
 * [graph_direct.php](https://github.com/njh/easyrdf/blob/master/examples/graph_direct.php#slider) - Example of using EasyRdf_Graph directly without EasyRdf_Resource
 * [graphstore.php](https://github.com/njh/easyrdf/blob/master/examples/graphstore.php#slider) - Store and retrieve data from a SPARQL 1.1 Graph Store
+* [graphviz.php](https://github.com/njh/easyrdf/blob/master/examples/graphviz.php#slider) - GraphViz rendering example
 * [html_tag_helpers.php](https://github.com/njh/easyrdf/blob/master/examples/html_tag_helpers.php#slider) - Rails Style html tag helpers to make the EasyRdf examples simplier
 * [httpget.php](https://github.com/njh/easyrdf/blob/master/examples/httpget.php#slider) - No RDF, just test EasyRdf_Http_Client
 * [serialise.php](https://github.com/njh/easyrdf/blob/master/examples/serialise.php#slider) - Basic serialisation example
@@ -129,3 +131,4 @@ The examples are in the public domain, for more information see [UNLICENSE].
 [Zend_Http_Client]:http://framework.zend.com/manual/en/zend.http.client.html
 [downloaded from github]:https://github.com/njh/easyrdf/downloads
 [SPARQL 1.1 query language]:http://www.w3.org/TR/sparql11-query/
+[GraphViz]:http://www.graphviz.org/

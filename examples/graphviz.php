@@ -2,8 +2,17 @@
     /**
      * GraphViz rendering example
      *
+     * This example demonstrates converting an EasyRdf_Graph into the
+     * GraphViz graph file language. Using the 'Use Labels' option, you
+     * can have resource URIs replaced with text based labels and using
+     * 'Only Labelled' option, only the resources and properties with
+     * a label will be displayed.
+     *
+     * Rending a graph to an image will only work if you have the
+     * GraphViz 'dot' command installed.
+     *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2012 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
@@ -55,9 +64,9 @@
 
 <form action='' method='get'>
 <?php
-    echo label_tag('format').select_tag('format', $formats).tag('br');
-    echo label_tag('ul', 'Use labels').check_box_tag('ul').tag('br');
-    echo label_tag('ol', 'Only labelled').check_box_tag('ol').tag('br');
+    echo label_tag('format').' '.select_tag('format', $formats).tag('br');
+    echo label_tag('ul', 'Use labels:').' '.check_box_tag('ul').tag('br');
+    echo label_tag('ol', 'Only labelled:').' '.check_box_tag('ol').tag('br');
     echo submit_tag();
 ?>
 </form>
