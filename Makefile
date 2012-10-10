@@ -61,7 +61,7 @@ docs: index.html doap.rdf
 	mkdir -p docs
 	$(PHPDOC) -d lib -t docs
 
-index.html: homepage.php
+index.html: homepage.php README.md
 	$(PHP) homepage.php > index.html
 
 doap.rdf: doap.php
