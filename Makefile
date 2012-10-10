@@ -4,7 +4,9 @@ distdir = $(PACKAGE)-$(VERSION)
 PHP = $(shell which php)
 PHPUNIT = $(PHP) $(shell which phpunit) --strict --log-junit ./reports/test-results.xml
 PHPCS = phpcs --standard=Zend --tab-width=4 --encoding=utf8 -n
-PHPDOC = phpdoc --title "EasyRdf $(VERSION) API Documentation" --output "HTML:frames:default"
+PHPDOC = phpdoc --title "EasyRdf $(VERSION) API Documentation" \
+                --output "HTML:frames:default" \
+                --undocumentedelements on
 
 EXAMPLE_FILES = examples/*.php
 SOURCE_FILES = lib/EasyRdf.php \
