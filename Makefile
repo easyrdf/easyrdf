@@ -19,7 +19,8 @@ TEST_SUPPORT = Makefile test/cli_example_wrapper.php \
                test/EasyRdf/TestCase.php \
                test/EasyRdf/Http/MockClient.php \
                test/fixtures/*
-DOC_FILES = doap.rdf \
+DOC_FILES = composer.json \
+            doap.rdf \
             docs \
             README.md \
             LICENSE.md \
@@ -64,7 +65,7 @@ docs: index.html doap.rdf
 index.html: homepage.php README.md
 	$(PHP) homepage.php > index.html
 
-doap.rdf: doap.php
+doap.rdf: doap.php composer.json
 	$(PHP) doap.php > doap.rdf
 
 # TARGET:cs                  Check the code style of the PHP source code
