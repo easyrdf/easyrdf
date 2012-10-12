@@ -245,17 +245,17 @@ class EasyRdf_Sparql_Result extends ArrayIterator
     {
         switch($data['type']) {
           case 'bnode':
-            return new EasyRdf_Resource('_:'.$data['value']);
+              return new EasyRdf_Resource('_:'.$data['value']);
           case 'uri':
-            return new EasyRdf_Resource($data['value']);
+              return new EasyRdf_Resource($data['value']);
           case 'literal':
           case 'typed-literal':
-            return EasyRdf_Literal::create($data);
+              return EasyRdf_Literal::create($data);
           default:
-            throw new EasyRdf_Exception(
-                "Failed to parse SPARQL Query Results format, unknown term type: ".
-                $data['type']
-            );
+              throw new EasyRdf_Exception(
+                  "Failed to parse SPARQL Query Results format, unknown term type: ".
+                  $data['type']
+              );
         }
     }
 

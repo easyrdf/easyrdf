@@ -199,15 +199,22 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function startElementHandler($p, $t, $a)
     {
         switch($this->_state) {
-            case 0: return $this->startState0($t, $a);
-            case 1: return $this->startState1($t, $a);
-            case 2: return $this->startState2($t, $a);
-            case 4: return $this->startState4($t, $a);
-            case 5: return $this->startState5($t, $a);
-            case 6: return $this->startState6($t, $a);
-            default: throw new EasyRdf_Exception(
-                'startElementHandler() called at state ' . $this->_state . ' in '.$t
-            );
+            case 0:
+                return $this->startState0($t, $a);
+            case 1:
+                return $this->startState1($t, $a);
+            case 2:
+                return $this->startState2($t, $a);
+            case 4:
+                return $this->startState4($t, $a);
+            case 5:
+                return $this->startState5($t, $a);
+            case 6:
+                return $this->startState6($t, $a);
+            default:
+                throw new EasyRdf_Exception(
+                    'startElementHandler() called at state ' . $this->_state . ' in '.$t
+                );
         }
     }
 
@@ -215,15 +222,22 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function endElementHandler($p, $t)
     {
         switch($this->_state){
-            case 1: return $this->endState1($t);
-            case 2: return $this->endState2($t);
-            case 3: return $this->endState3($t);
-            case 4: return $this->endState4($t);
-            case 5: return $this->endState5($t);
-            case 6: return $this->endState6($t);
-            default: throw new EasyRdf_Exception(
-                'endElementHandler() called at state ' . $this->_state . ' in '.$t
-            );
+            case 1:
+                return $this->endState1($t);
+            case 2:
+                return $this->endState2($t);
+            case 3:
+                return $this->endState3($t);
+            case 4:
+                return $this->endState4($t);
+            case 5:
+                return $this->endState5($t);
+            case 6:
+                return $this->endState6($t);
+            default:
+                throw new EasyRdf_Exception(
+                    'endElementHandler() called at state ' . $this->_state . ' in '.$t
+                );
         }
     }
 
@@ -231,9 +245,12 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function cdataHandler($p, $d)
     {
         switch($this->_state){
-            case 4: return $this->cdataState4($d);
-            case 6: return $this->cdataState6($d);
-            default: return false;
+            case 4:
+                return $this->cdataState4($d);
+            case 6:
+                return $this->cdataState6($d);
+            default:
+                return false;
         }
     }
 

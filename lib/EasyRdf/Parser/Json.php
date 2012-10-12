@@ -70,19 +70,19 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
         if ($this->_jsonLastErrorExists) {
             switch (json_last_error()) {
                 case JSON_ERROR_NONE:
-                   return null;
+                    return null;
                 case JSON_ERROR_DEPTH:
-                   return "JSON Parse error: the maximum stack depth has been exceeded";
+                    return "JSON Parse error: the maximum stack depth has been exceeded";
                 case JSON_ERROR_STATE_MISMATCH:
-                   return "JSON Parse error: invalid or malformed JSON";
+                    return "JSON Parse error: invalid or malformed JSON";
                 case JSON_ERROR_CTRL_CHAR:
-                   return "JSON Parse error: control character error, possibly incorrectly encoded";
+                    return "JSON Parse error: control character error, possibly incorrectly encoded";
                 case JSON_ERROR_SYNTAX:
-                   return "JSON Parse syntax error";
+                    return "JSON Parse syntax error";
                 case JSON_ERROR_UTF8:
-                   return "JSON Parse error: malformed UTF-8 characters, possibly incorrectly encoded";
+                    return "JSON Parse error: malformed UTF-8 characters, possibly incorrectly encoded";
                 default:
-                   return "JSON Parse error: unknown";
+                    return "JSON Parse error: unknown";
             }
         } else {
            return "JSON Parse error";
