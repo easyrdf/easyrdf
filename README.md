@@ -118,6 +118,7 @@ The EasyRdf library and tests are licensed under the [BSD-3-Clause] license.
 The examples are in the public domain, for more information see [UNLICENSE].
 
 
+
 [EasyRdf_Graph]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Graph.html
 [EasyRdf_GraphStore]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_GraphStore.html
 [EasyRdf_Sparql_Client]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Sparql_Client.html
@@ -125,10 +126,11 @@ The examples are in the public domain, for more information see [UNLICENSE].
 
 [ARC2]:http://github.com/semsol/arc2/
 [BSD-3-Clause]:http://www.opensource.org/licenses/BSD-3-Clause
-[Redland Bindings]:http://librdf.org/bindings/
+[downloaded from github]:https://github.com/njh/easyrdf/downloads
+[GraphViz]:http://www.graphviz.org/
 [rapper]:http://librdf.org/raptor/rapper.html
+[RDF]:http://en.wikipedia.org/wiki/Resource_Description_Framework
+[Redland Bindings]:http://librdf.org/bindings/
+[SPARQL 1.1 query language]:http://www.w3.org/TR/sparql11-query/
 [UNLICENSE]:http://unlicense.org/
 [Zend_Http_Client]:http://framework.zend.com/manual/en/zend.http.client.html
-[downloaded from github]:https://github.com/njh/easyrdf/downloads
-[SPARQL 1.1 query language]:http://www.w3.org/TR/sparql11-query/
-[GraphViz]:http://www.graphviz.org/
