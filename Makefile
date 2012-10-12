@@ -18,6 +18,7 @@ TEST_SUPPORT = Makefile test/cli_example_wrapper.php \
                test/TestHelper.php \
                test/EasyRdf/TestCase.php \
                test/EasyRdf/Http/MockClient.php \
+               test/EasyRdf/Serialiser/NtriplesArray.php \
                test/fixtures/*
 DOC_FILES = composer.json \
             doap.rdf \
