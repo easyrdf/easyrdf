@@ -238,27 +238,22 @@ class EasyRdf_Format
         }
 
         // Then try and guess by the first 255 bytes of content
-        $short = substr(trim($data), 0, 255);
-        if (preg_match("/^\{/", $short)) {
+        $short = substr($data, 0, 255);
+        if (preg_match("/^\s*\{/", $short)) {
             return self::getFormat('json');
-        } else if (
-            preg_match("/<!DOCTYPE html/", $short) or
-            preg_match("/^<html/", $short)
-        ) {
-            # FIXME: might be erdf or something instead...
-            return self::getFormat('rdfa');
-        } else if (preg_match("/<rdf/", $short)) {
+        } elseif (preg_match("/<rdf:/i", $short)) {
             return self::getFormat('rdfxml');
-        } else if (preg_match("/^@prefix /", $short)) {
-            # FIXME: this could be improved
+        } elseif (preg_match("/@prefix\s|@base\s/", $short)) {
             return self::getFormat('turtle');
-        } else if (preg_match("/^<.+> <.+>/", $short)) {
+        } elseif (preg_match("/^\s*<.+> <.+>/m", $short)) {
             return self::getFormat('ntriples');
-        } else if (preg_match("|http://www.w3.org/2005/sparql-results|", $short)) {
+        } elseif (preg_match("|http://www.w3.org/2005/sparql-results|", $short)) {
             return self::getFormat('sparql-xml');
-        } else if (preg_match("/^<\?xml /", $short)) {
-            # FIXME: this could be improved
-            return self::getFormat('rdfxml');
+        } elseif (preg_match("/\WRDFa\W/i", $short)) {
+            return self::getFormat('rdfa');
+        } elseif (preg_match("/<!DOCTYPE html|<html/i", $short)) {
+            # We don't support any other microformats embedded in HTML
+            return self::getFormat('rdfa');
         } else {
             return NULL;
         }

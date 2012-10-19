@@ -547,10 +547,25 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->assertStringEquals('turtle', EasyRdf_Format::guessFormat($data));
     }
 
+    public function testGuessFormatTurtleWithComments()
+    {
+        $data = readFixture('webid.ttl');
+        $this->assertStringEquals('turtle', EasyRdf_Format::guessFormat($data));
+    }
+
     public function testGuessFormatNtriples()
     {
         $data = readFixture('foaf.nt');
         $this->assertStringEquals('ntriples', EasyRdf_Format::guessFormat($data));
+    }
+
+    public function testGuessFormatNtriplesWithComments()
+    {
+        $format = EasyRdf_Format::guessFormat(
+            "# This is a comment before the first triple\n".
+            " <http://example.com> <http://example.com> <http://example.com> .\n"
+        );
+        $this->assertStringEquals('ntriples', $format);
     }
 
     public function testGuessFormatSparqlXml()
@@ -565,12 +580,22 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->assertStringEquals('rdfa', EasyRdf_Format::guessFormat($data));
     }
 
+    public function testGuessFormatHtml()
+    {
+        # We don't support any other microformats embedded in HTML
+        $format = EasyRdf_Format::guessFormat(
+            '<html><head><title>Hello</title></head><body><h1>Hello World</h1></body></html>'
+        );
+        $this->assertEquals('rdfa', $format);
+    }
+
     public function testGuessFormatXml()
     {
+        # We support several different XML formats, don't know which one this is...
         $format = EasyRdf_Format::guessFormat(
-            '<?xml version="1.0" encoding="UTF-8"?><!-- long comment '
+            '<?xml version="1.0" encoding="UTF-8"?>'
         );
-        $this->assertStringEquals('rdfxml', $format);
+        $this->assertEquals(NULL, $format);
     }
 
     public function testGuessFormatByFilenameTtl()
