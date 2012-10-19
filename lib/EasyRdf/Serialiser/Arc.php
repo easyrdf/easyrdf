@@ -94,7 +94,7 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
     }
 }
 
-# FIXME: to this automatically
+
 EasyRdf_Format::register('posh', 'poshRDF');
 EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Arc');
 EasyRdf_Format::registerSerialiser('posh', 'EasyRdf_Serialiser_Arc');

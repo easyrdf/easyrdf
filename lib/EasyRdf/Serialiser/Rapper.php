@@ -97,7 +97,7 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
     }
 }
 
-// FIXME: do this automatically
+
 EasyRdf_Format::registerSerialiser('dot', 'EasyRdf_Serialiser_Rapper');
 EasyRdf_Format::registerSerialiser('json-triples', 'EasyRdf_Serialiser_Rapper');
 EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Rapper');

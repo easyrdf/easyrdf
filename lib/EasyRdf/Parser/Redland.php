@@ -246,7 +246,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
     }
 }
 
-## FIXME: do this automatically
+
 EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_Redland');
 EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Redland');
 EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Redland');
