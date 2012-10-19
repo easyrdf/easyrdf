@@ -58,6 +58,7 @@ class EasyRdf_Namespace
       'geo' => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
       'owl' => 'http://www.w3.org/2002/07/owl#',
       'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+      'rdfa' => 'http://www.w3.org/ns/rdfa#',
       'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
       'rss' => 'http://purl.org/rss/1.0/',
       'sioc' => 'http://rdfs.org/sioc/ns#',
