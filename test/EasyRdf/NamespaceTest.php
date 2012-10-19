@@ -259,6 +259,98 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         EasyRdf_Namespace::delete($this);
     }
 
+    public function testSplitUriFoafName()
+    {
+        $this->assertEquals(
+            array('foaf', 'name'),
+            EasyRdf_Namespace::splitUri('http://xmlns.com/foaf/0.1/name')
+        );
+    }
+
+    public function testSplitUriResource()
+    {
+        $this->assertEquals(
+            array('foaf','name'),
+            EasyRdf_Namespace::splitUri($this->_resource)
+        );
+    }
+
+    public function testSlitUriUnknown()
+    {
+        $this->assertEquals(
+            null,
+            EasyRdf_Namespace::splitUri('http://example.com/ns/foo/bar')
+        );
+    }
+
+    public function testSplitUriAndCreateOneUnknown()
+    {
+        $this->assertEquals(
+            array('ns0', 'bar'),
+            EasyRdf_Namespace::splitUri('http://example.com/ns/foo/bar', true)
+        );
+    }
+
+    public function testSplitUriAndCreateTwice()
+    {
+        $this->assertEquals(
+            array('ns0', 'bar'),
+            EasyRdf_Namespace::splitUri('http://example.com/ns/foo/bar', true)
+        );
+        $this->assertEquals(
+            array('ns0', 'bar'),
+            EasyRdf_Namespace::splitUri('http://example.com/ns/foo/bar', true)
+        );
+    }
+
+    public function testSplitUriAndCreateTwoUnknown()
+    {
+        $this->assertEquals(
+            array('ns0', 'bar'),
+            EasyRdf_Namespace::splitUri('http://example1.org/ns/foo/bar', true)
+        );
+        $this->assertEquals(
+            array('ns1', 'bar'),
+            EasyRdf_Namespace::splitUri('http://example2.org/ns/foo/bar', true)
+        );
+    }
+
+    public function testSplitUriUnsplitable()
+    {
+        $this->assertEquals(
+            null,
+            EasyRdf_Namespace::splitUri('http://example.com/foo/', true)
+        );
+    }
+
+    public function testSplitUriNull()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri cannot be null or empty'
+        );
+        EasyRdf_Namespace::splitUri(null);
+    }
+
+    public function testSplitUriEmpty()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri cannot be null or empty'
+        );
+        EasyRdf_Namespace::splitUri('');
+    }
+
+    public function testSplitUriNonString()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$uri should be a string or EasyRdf_Resource'
+        );
+        EasyRdf_Namespace::splitUri($this);
+    }
+
+
     public function testShortenFoafName()
     {
         $this->assertEquals(
