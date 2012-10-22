@@ -51,11 +51,11 @@ test-lib:
 	mkdir -p reports
 	$(PHPUNIT) test/EasyRdf
 
-# TARGET:coverage            Run all the tests and generate a code coverage report
+# TARGET:coverage            Run the library tests and generate a code coverage report
 .PHONY: coverage
 coverage:
 	mkdir -p reports/coverage
-	$(PHPUNIT) --coverage-html ./reports/coverage test
+	$(PHPUNIT) --coverage-html ./reports/coverage test/EasyRdf
 
 # TARGET:docs                Generate HTML documentation
 .PHONY: docs
