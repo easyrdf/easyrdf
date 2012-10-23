@@ -804,7 +804,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
         return array(
             'type' => 'uri',
-            'value' => $this->_baseUri->resolve($uri)->toString()
+            'value' => $this->resolve($uri)
         );
     }
 
@@ -933,6 +933,14 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         );
     }
 
+    protected function resolve($uri)
+    {
+        if ($this->_baseUri) {
+            return $this->_baseUri->resolve($uri)->toString();
+        } else {
+            return $uri;
+        }
+    }
 
     /**
      * Verifies that the supplied character $c is one of the expected
