@@ -45,6 +45,18 @@
  */
 class EasyRdf_Serialiser
 {
+    protected $_prefixes = array();
+
+    /**
+     * Keep track of the prefixes used while serialising
+     * @ignore
+     */
+    protected function addPrefix($qname)
+    {
+        list ($prefix) = explode(':', $qname);
+        $this->_prefixes[$prefix] = true;
+    }
+
     /**
      * Check and cleanup parameters passed to serialise() method
      * @ignore
@@ -69,6 +81,24 @@ class EasyRdf_Serialiser
             throw new InvalidArgumentException(
                 "\$format should be a string or an EasyRdf_Format object"
             );
+        }
+    }
+
+    /**
+     * Protected method to get the number of reverse properties for a resource
+     * If a resource only has a single property, the number of values for that
+     * property is returned instead.
+     * @ignore
+     */
+    protected function reversePropertyCount($resource)
+    {
+        $properties = $resource->reversePropertyUris();
+        $count = count($properties);
+        if ($count == 1) {
+            $property = $properties[0];
+            return $resource->count("^<$property>");
+        } else {
+            return $count;
         }
     }
 
