@@ -48,26 +48,15 @@
  */
 class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
 {
-    private $_prefixes = array();
-
-    /**
-     * @ignore
-     */
-    protected function addPrefix($qname)
-    {
-        list ($prefix) = explode(':', $qname);
-        $this->_prefixes[$prefix] = true;
-    }
-
     /**
      * @ignore
      */
     protected function serialiseResource($resource)
     {
-        if (substr($resource, 0, 2) == '_:') {
-            return $resource;
+        if ($resource->isBnode()) {
+            return $resource->getUri();
         } else {
-            $short = EasyRdf_Namespace::shorten($resource);
+            $short = $resource->shorten();
             if ($short) {
                 $this->addPrefix($short);
                 return $short;
@@ -83,13 +72,13 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
      */
     protected function serialiseObject($object)
     {
-        if ($object['type'] == 'uri' or $object['type'] == 'bnode') {
-            return $this->serialiseResource($object['value']);
-        } else if ($object['type'] == 'literal') {
-            $value = $this->escapeString($object['value']);
+        if ($object instanceof EasyRdf_Resource) {
+            return $this->serialiseResource($object);
+        } else {
+            $value = $this->escapeString($object->getValue());
 
-            if (isset($object['datatype'])) {
-                $short = EasyRdf_Namespace::shorten($object['datatype'], true);
+            if ($datatype = $object->getDatatypeUri()) {
+                $short = EasyRdf_Namespace::shorten($datatype, true);
                 if ($short) {
                     $this->addPrefix($short);
                     if ($short == 'xsd:integer') {
@@ -108,15 +97,84 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
                         return sprintf('"%s"^^%s', $value, $short);
                     }
                 } else {
-                    $datatypeUri = str_replace('>', '\\>', $object['datatype']);
+                    $datatypeUri = str_replace('>', '\\>', $datatype);
                     return sprintf('"%s"^^<%s>', $value, $datatypeUri);
                 }
-            } else if (isset($object['lang'])) {
-                return '"' . $value . '"@' . $object['lang'];
+            } else if ($lang = $object->getLang()) {
+                return '"' . $value . '"@' . $lang;
             } else {
                 return '"' . $value . '"';
             }
         }
+    }
+
+    /**
+     * Protected method to serialise the properties of a resource
+     * @ignore
+     */
+    protected function serialiseProperties($res, $depth=1)
+    {
+        $properties = $res->propertyUris();
+        $indent = str_repeat(' ', ($depth*2)-1);
+
+        $turtle = '';
+        if (count($properties) > 1) {
+            $turtle .= "\n$indent";
+        }
+
+        $pCount = 0;
+        foreach ($properties as $property) {
+            $short = EasyRdf_Namespace::shorten($property, true);
+            if ($short) {
+                if ($short == 'rdf:type') {
+                    $pStr = 'a';
+                } else {
+                    $this->addPrefix($short);
+                    $pStr = $short;
+                }
+            } else {
+                $pStr = '<'.str_replace('>', '\\>', $property).'>';
+            }
+
+            if ($pCount) {
+                $turtle .= " ;\n$indent";
+            }
+
+            $turtle .= ' ' . $pStr;
+
+            $oCount = 0;
+            foreach ($res->all("<$property>") as $object) {
+                if ($oCount)
+                    $turtle .= ',';
+
+                if ($object instanceof EasyRdf_Resource and $object->isBnode()) {
+                    $rpcount = $this->reversePropertyCount($object);
+                    if ($rpcount <= 1) {
+                        // Nested unlabelled Blank Node
+                        $turtle .= ' [';
+                        $turtle .= $this->serialiseProperties($object, $depth+1);
+                        $turtle .= ' ]';
+                    } else {
+                        // Multiple properties pointing to this blank node
+                        $turtle .= ' ' . $this->serialiseObject($object);
+                    }
+                } else {
+                    $turtle .= ' ' . $this->serialiseObject($object);
+                }
+                $oCount++;
+            }
+            $pCount++;
+        }
+
+        if ($depth == 1) {
+            $turtle .= " .";
+            if ($pCount > 1)
+                $turtle .= "\n";
+        } elseif ($pCount > 1) {
+            $turtle .= "\n" . str_repeat(' ', (($depth-1)*2)-1 );
+        }
+
+        return $turtle;
     }
 
     /**
@@ -149,48 +207,37 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
             );
         }
 
-        $this->_prefixes = array('rdf' => true);
+        $this->_prefixes = array();
 
         $turtle = '';
-        foreach ($graph->toArray() as $subject => $properties) {
+        foreach ($graph->resources() as $resource) {
+            // If the resource has no properties - don't serialise it
+            $properties = $resource->propertyUris();
             if (count($properties) == 0)
                 continue;
 
-            $turtle .= $this->serialiseResource($subject);
-
-            if (count($properties) > 1) {
-                $turtle .= "\n   ";
-            }
-
-            $pCount = 0;
-            foreach ($properties as $property => $objects) {
-                $short = EasyRdf_Namespace::shorten($property, true);
-                if ($short) {
-                    $this->addPrefix($short);
-                    $pStr = ($short == 'rdf:type' ? 'a' : $short);
+            if ($resource->isBnode()) {
+                $rpcount = $this->reversePropertyCount($resource);
+                if ($rpcount == 0) {
+                    $turtle .= '[]';
+                } elseif ($rpcount == 1) {
+                    // Blank node will get serialised nested
+                    continue;
                 } else {
-                    $pStr = '<'.str_replace('>', '\\>', $property).'>';
+                    $turtle .= $this->serialiseResource($resource);
                 }
-
-                if ($pCount) {
-                    $turtle .= " ;\n   ";
-                }
-
-                $turtle .= " " . $pStr;
-
-                $oCount = 0;
-                foreach ($objects as $object) {
-                    if ($oCount)
-                        $turtle .= ",";
-                    $turtle .= " " . $this->serialiseObject($object);
-                    $oCount++;
-                }
-                $pCount++;
+            } else {
+                $turtle .= $this->serialiseResource($resource);
             }
 
-            $turtle .= " .\n\n";
+            $turtle .= $this->serialiseProperties($resource);
+            $turtle .= "\n";
         }
 
-        return $this->serialisePrefixes() . "\n" . $turtle;
+        if (count($this->_prefixes)) {
+            return $this->serialisePrefixes() . "\n" . $turtle;
+        } else {
+            return $turtle;
+        }
     }
 }
