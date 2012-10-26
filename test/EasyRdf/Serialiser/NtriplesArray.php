@@ -37,8 +37,7 @@
  */
 
 /**
- * Class to serialise an EasyRdf_Graph to N-Triples
- * with no external dependancies.
+ * Class to serialise an EasyRdf_Graph to an array of triples.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
@@ -47,6 +46,24 @@
 class EasyRdf_Serialiser_NtriplesArray extends EasyRdf_Serialiser_Ntriples
 {
 
+    /**
+     * Sort an array of triples into a consistent order
+     *
+     * @ignore
+     */
+    protected function compareTriples($a, $b) 
+    {
+        if ($a['s'] != $b['s']) {
+            return strcmp($a['s'], $b['s']);
+        } elseif ($a['p'] != $b['p']) {
+            return strcmp($a['p'], $b['p']);
+        } elseif ($a['o'] != $b['o']) {
+            return strcmp($a['o'], $b['o']);
+        } else {
+            return 0;
+        }
+    }
+    
     /**
      * Serialise an EasyRdf_Graph into an array of N-Triples objects
      *
@@ -70,7 +87,8 @@ class EasyRdf_Serialiser_NtriplesArray extends EasyRdf_Serialiser_Ntriples
                 }
             }
         }
-        return $triples;
+
+        return usort($triples, array("EasyRdf_Serialiser_NtriplesArray", 'compareTriples'));
     }
 }
 
