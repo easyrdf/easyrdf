@@ -88,7 +88,10 @@ class EasyRdf_Serialiser_NtriplesArray extends EasyRdf_Serialiser_Ntriples
             }
         }
 
-        return usort($triples, array("EasyRdf_Serialiser_NtriplesArray", 'compareTriples'));
+        // Sort the triples into a consistent order
+        usort($triples, array("EasyRdf_Serialiser_NtriplesArray", 'compareTriples'));
+
+        return $triples;
     }
 }
 
