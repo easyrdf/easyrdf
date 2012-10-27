@@ -123,6 +123,11 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0012');
     }
 
+    public function testCase0013()
+    {
+        $this->rdfaTestCase('0013');
+    }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(

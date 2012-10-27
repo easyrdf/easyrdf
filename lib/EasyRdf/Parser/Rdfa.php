@@ -106,37 +106,37 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
-    protected function setProperty($node, $property)
+    protected function expandProperty($node, $context, $property)
     {
         $value = $node->getAttribute($property);
         if (preg_match("/^(\w+?):([\w\-]+)$/", $value, $matches)) {
             list (, $prefix, $local) = $matches;
             $prefix = strtolower($prefix);
-            if (isset($this->_namespaces[$prefix])) {
-                $this->_property = $this->_namespaces[$prefix] . $local;
+            if (isset($context['namespaces'][$prefix])) {
+                return $context['namespaces'][$prefix] . $local;
             } else {
                 $uri = $node->lookupNamespaceURI($prefix);
                 if ($uri) {
-                    $this->_property = $uri . $local;
+                    return $uri . $local;
                 } else {
-                    $this->_property = NULL;
+                    error_log("Unknown namespace: $prefix");
                 }
             }
+        } elseif (isset($context['namespaces'][''])) {
+            return $context['namespaces'][''] . $property;
         } else {
-            $this->_property = $property;
+            return $property;
         }
-
-        print "@property = ".$this->_property."\n";
     }
 
-    protected function establishSubject($node)
+    protected function getSubject($node, $context)
     {
         if ($node->hasAttribute('about')) {
-            $this->_subject = $this->resolve(
+            return $this->resolve(
                 $node->getAttribute('about')
             );
-        } elseif ($this->_object) {
-            $this->_subject = $this->_object;
+        } elseif ($context['object']) {
+            return $context['object'];
         }
 
         if ($node->hasAttribute('typeof')) {
@@ -144,89 +144,93 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
-    protected function establishObject($node)
+    protected function getObject($node)
     {
         if ($node->hasAttribute('href')) {
-            $this->_object = $this->resolve(
+            return $this->resolve(
                 $node->getAttribute('href')
             );
         }
     }
 
-    protected function processNode($node, $depth=1)
+    protected function processNode($node, $context, $depth=1)
     {
         $this->printNode($node, $depth);
 
         if ($node->hasAttributes()) {
 
+            $subject = $context['subject'];
+            $object = $context['object'];
+
             // Step 2
             if ($node->hasAttribute('vocab')) {
                 if ($vocab = $node->getAttribute('vocab')) {
-                    $this->_namespaces[''] = $vocab;
-                    $vocab = $this->_graph->resource( $vocab );
+                    $context['namespaces'][''] = $vocab;
+                    $vocab = $context['graph']->resource( $vocab );
                     $this->addTriple($this->_baseUri, 'rdfa:usesVocabulary', $vocab);
                 } else {
-                    $this->_namespaces[''] = NULL;
+                    $context['namespaces'][''] = NULL;
                 }
             }
 
             // Step 3
             if ($node->hasAttribute('prefix')) {
                 $prefix = $node->getAttribute('prefix');
-                $this->_namespaces[strtolower($prefix)] = $local;
+                $context['namespaces'][strtolower($prefix)] = $local;
             }
 
             // Step 4
             if ($node->hasAttributeNS(self::XML_NS, 'lang')) {
-                $this->_lang = $node->getAttributeNS(self::XML_NS, 'lang');
+                $context['lang'] = $node->getAttributeNS(self::XML_NS, 'lang');
             }
 
             if ($node->hasAttribute('lang')) {
-                $this->_lang = $node->getAttribute('lang');
+                $context['lang'] = $node->getAttribute('lang');
             }
 
             if (!$node->hasAttribute('rel') and !$node->hasAttribute('rev')) {
                 // Step 5
-                $this->establishSubject($node);
+                $subject = $this->getSubject($node, $context);
 
             } else {
                 // Step 6
-                $this->establishSubject($node);
-                $this->establishObject($node);
+                $subject = $this->getSubject($node, $context);
+                $object = $this->getObject($node, $context);
 
                 if ($node->hasAttribute('rev')) {
-                    $this->setProperty($node, 'rev');
-                    $this->addTriple($this->_object, $this->_property, $this->_subject);
+                    $property = $this->expandProperty($node, $context, 'rev');
+                    $this->addTriple($object, $property, $subject);
                 }
 
                 if ($node->hasAttribute('rel')) {
-                    $this->setProperty($node, 'rel');
-                    $this->addTriple($this->_subject, $this->_property, $this->_object);
+                    $property = $this->expandProperty($node, $context, 'rel');
+                    $this->addTriple($subject, $property, $object);
                 }
             }
 
             // Step 11
             if ($node->hasAttribute('property')) {
-                $this->setProperty($node, 'property');
+                $property = $this->expandProperty($node, $context, 'property');
 
                 if ($node->hasAttribute('content')) {
                     $value = new EasyRdf_Literal(
                         $node->getAttribute('content'),
-                        $this->_lang
+                        $context['lang']
                     );
                 } else {
                     $value = new EasyRdf_Literal(
                         $node->textContent,
-                        $this->_lang
+                        $context['lang']
                     );
                 }
-                $this->addTriple($this->_subject, $this->_property, $value);
+                $this->addTriple($subject, $property, $value);
             }
         }
 
+        // Step 13
         if ($node->hasChildNodes()) {
             foreach($node->childNodes as $child) {
-                $this->processNode($child, $depth+1);
+                $this->processNode($child, $context, $depth+1);
             }
         }
     }
@@ -250,20 +254,22 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             );
         }
 
-        // Step 1: Initialise parser state
-        $this->_namespaces = array();
-        $this->_subject = $this->_graph->resource($this->_baseUri);
-        $this->_property = NULL;
-        $this->_object = NULL;
-        $this->_lang = NULL;
-        $this->_datatype = NULL;
-        $this->_skipElement = false;
+        // Step 1: Initialise evaluation context
+        $context = array(
+            'namespaces' => array(),
+            'skipElement' => false,
+            'subject' => $this->_graph->resource($this->_baseUri),
+            'property' => NULL,
+            'object' => NULL,
+            'lang' => NULL,
+            'datatype' => NULL
+        );
 
         libxml_use_internal_errors(true);
 
         $doc = new DOMDocument();
         $doc->loadXML($data, LIBXML_NONET);
-        $this->processNode($doc);
+        $this->processNode($doc, $context);
 
         return $this->_tripleCount;
     }
