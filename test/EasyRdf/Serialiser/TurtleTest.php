@@ -137,7 +137,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $doc->set('dc:creator', $joe);
         $joe->set('foaf:name', 'Joe');
         $joe->addResource('foaf:homepage', 'http://example.com/joe');
-        
+
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertEquals(
             "@prefix dc: <http://purl.org/dc/terms/> .\n".
@@ -161,7 +161,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $eve->add('foaf:name', 'Eve');
         $alice->add('foaf:knows', $bob);
         $bob->add('foaf:knows', $eve);
-        
+
         $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
         $this->assertEquals(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".

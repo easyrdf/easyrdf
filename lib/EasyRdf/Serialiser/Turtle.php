@@ -171,7 +171,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
             if ($pCount > 1)
                 $turtle .= "\n";
         } elseif ($pCount > 1) {
-            $turtle .= "\n" . str_repeat(' ', (($depth-1)*2)-1 );
+            $turtle .= "\n" . str_repeat(' ', (($depth-1)*2)-1);
         }
 
         return $turtle;
