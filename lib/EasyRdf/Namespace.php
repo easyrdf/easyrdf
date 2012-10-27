@@ -45,7 +45,7 @@
  */
 class EasyRdf_Namespace
 {
-    /** Namespace registery */
+    /** Namespace registry */
     private static $_namespaces = array(
       'bibo' => 'http://purl.org/ontology/bibo/',
       'cc' => 'http://creativecommons.org/ns#',

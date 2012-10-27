@@ -45,7 +45,7 @@
  */
 class EasyRdf_TypeMapper
 {
-    /** The type map registery */
+    /** The type map registry */
     private static $_map = array();
 
     /** Get the registered class for an RDF type
