@@ -70,18 +70,17 @@ class Examples_FoafmakerTest extends EasyRdf_TestCase
         $this->assertContains('<title>EasyRdf FOAF Maker Example</title>', $output);
         $this->assertContains('<h1>EasyRdf FOAF Maker Example</h1>', $output);
         $this->assertContains(
-            "@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .\n".
             "@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .\n\n".
             "&lt;http://www.example.com/joe#me&gt;\n".
-            "    a foaf:Person ;\n".
-            "    foaf:name &quot;Mr Joe Bloggs&quot; ;\n".
-            "    foaf:mbox &lt;mailto:joe@example.com&gt; ;\n".
-            "    foaf:homepage &lt;http://www.example.com/joe/&gt; ;\n".
-            "    foaf:title &quot;Mr&quot; ;\n".
-            "    foaf:givenname &quot;Joe&quot; ;\n".
-            "    foaf:family_name &quot;Bloggs&quot; ;\n".
-            "    foaf:nick &quot;Joe&quot; ;\n".
-            "    foaf:knows &lt;http://www.example.com/fred#me&gt;,".
+            "  a foaf:Person ;\n".
+            "  foaf:name &quot;Mr Joe Bloggs&quot; ;\n".
+            "  foaf:mbox &lt;mailto:joe@example.com&gt; ;\n".
+            "  foaf:homepage &lt;http://www.example.com/joe/&gt; ;\n".
+            "  foaf:title &quot;Mr&quot; ;\n".
+            "  foaf:givenname &quot;Joe&quot; ;\n".
+            "  foaf:family_name &quot;Bloggs&quot; ;\n".
+            "  foaf:nick &quot;Joe&quot; ;\n".
+            "  foaf:knows &lt;http://www.example.com/fred#me&gt;,".
             " &lt;http://www.example.com/alice#me&gt; .\n",
             $output
         );
