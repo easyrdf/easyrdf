@@ -106,7 +106,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
-    protected function expandProperty($node, $context, $property)
+    protected function expandCurie($node, $context, $property)
     {
         $value = $node->getAttribute($property);
         if (preg_match("/^(\w+?):([\w\-]+)$/", $value, $matches)) {
@@ -123,9 +123,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 }
             }
         } elseif (isset($context['namespaces'][''])) {
-            return $context['namespaces'][''] . $property;
-        } else {
-            return $property;
+            return $context['namespaces'][''] . $value;
         }
     }
 
@@ -142,6 +140,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         if ($node->hasAttribute('typeof')) {
             #FIXME: create rdf:type triple
         }
+
+        return $context['subject'];
     }
 
     protected function getObject($node)
@@ -198,29 +198,32 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 $object = $this->getObject($node, $context);
 
                 if ($node->hasAttribute('rev')) {
-                    $property = $this->expandProperty($node, $context, 'rev');
+                    $property = $this->expandCurie($node, $context, 'rev');
                     $this->addTriple($object, $property, $subject);
                 }
 
                 if ($node->hasAttribute('rel')) {
-                    $property = $this->expandProperty($node, $context, 'rel');
+                    $property = $this->expandCurie($node, $context, 'rel');
                     $this->addTriple($subject, $property, $object);
                 }
             }
 
             // Step 11
             if ($node->hasAttribute('property')) {
-                $property = $this->expandProperty($node, $context, 'property');
+                $property = $this->expandCurie($node, $context, 'property');
+                $datatype = $this->expandCurie($node, $context, 'datatype');
 
                 if ($node->hasAttribute('content')) {
                     $value = new EasyRdf_Literal(
                         $node->getAttribute('content'),
-                        $context['lang']
+                        $context['lang'],
+                        $datatype
                     );
                 } else {
                     $value = new EasyRdf_Literal(
                         $node->textContent,
-                        $context['lang']
+                        $context['lang'],
+                        $datatype
                     );
                 }
                 $this->addTriple($subject, $property, $value);
