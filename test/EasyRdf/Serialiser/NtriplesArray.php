@@ -51,7 +51,7 @@ class EasyRdf_Serialiser_NtriplesArray extends EasyRdf_Serialiser_Ntriples
      *
      * @ignore
      */
-    protected function compareTriples($a, $b) 
+    protected function compareTriples($a, $b)
     {
         if ($a['s'] != $b['s']) {
             return strcmp($a['s'], $b['s']);
@@ -63,7 +63,7 @@ class EasyRdf_Serialiser_NtriplesArray extends EasyRdf_Serialiser_Ntriples
             return 0;
         }
     }
-    
+
     /**
      * Serialise an EasyRdf_Graph into an array of N-Triples objects
      *
