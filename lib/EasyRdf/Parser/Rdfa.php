@@ -106,10 +106,20 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
-    protected function expandCurie($node, $context, $property)
+    protected function expandCurie($node, $context, $attr)
     {
-        $value = $node->getAttribute($property);
-        if (preg_match("/^(\w+?):([\w\-]+)$/", $value, $matches)) {
+        $value = $node->getAttribute($attr);
+        if ($value === NULL)
+            return NULL;
+
+        if (preg_match("/^\[(.+)\]$/", $value, $matches)) {
+            $value = $matches[1];
+        }
+
+        if (substr($value, 0, 2) === '_:') {
+            # It is a bnode
+            return $this->remapBnode(substr($value, 2));
+        } elseif (preg_match("/^(\w+?):([\w\-]+)$/", $value, $matches)) {
             list (, $prefix, $local) = $matches;
             $prefix = strtolower($prefix);
             if (isset($context['namespaces'][$prefix])) {
@@ -119,22 +129,23 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 if ($uri) {
                     return $uri . $local;
                 } else {
+                    #FIXME: work out how to handle errors
                     error_log("Unknown namespace: $prefix");
                 }
             }
         } elseif (isset($context['namespaces'][''])) {
             return $context['namespaces'][''] . $value;
+        } else {
+            return $this->resolve($value);
         }
     }
 
     protected function getSubject($node, $context)
     {
         if ($node->hasAttribute('about')) {
-            return $this->resolve(
-                $node->getAttribute('about')
-            );
+            return $this->expandCurie($node, $context, 'about');
         } elseif ($context['object']) {
-            return $context['object'];
+            return $context['object']['value'];
         }
 
         if ($node->hasAttribute('typeof')) {
@@ -144,11 +155,20 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         return $context['subject'];
     }
 
-    protected function getObject($node)
+    protected function getObject($node, $context)
     {
-        if ($node->hasAttribute('href')) {
-            return $this->resolve(
-                $node->getAttribute('href')
+        if ($node->hasAttribute('resource')) {
+            $uri = $this->expandCurie($node, $context, 'resource');
+        } elseif ($node->hasAttribute('href')) {
+            $uri = $this->expandCurie($node, $context, 'href');
+        } elseif ($node->hasAttribute('src')) {
+            $uri = $this->expandCurie($node, $context, 'src');
+        }
+
+        if ($uri) {
+            return array(
+                'type' => 'uri',
+                'value' => $uri
             );
         }
     }
@@ -199,7 +219,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
                 if ($node->hasAttribute('rev')) {
                     $property = $this->expandCurie($node, $context, 'rev');
-                    $this->addTriple($object, $property, $subject);
+                    $this->addTriple(
+                        $object['value'],
+                        $property,
+                        array('type' => 'uri', 'value' => $subject)
+                    );
                 }
 
                 if ($node->hasAttribute('rel')) {
@@ -210,23 +234,24 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
             // Step 11
             if ($node->hasAttribute('property')) {
+                $object = array('type' => 'literal');
                 $property = $this->expandCurie($node, $context, 'property');
-                $datatype = $this->expandCurie($node, $context, 'datatype');
 
                 if ($node->hasAttribute('content')) {
-                    $value = new EasyRdf_Literal(
-                        $node->getAttribute('content'),
-                        $context['lang'],
-                        $datatype
-                    );
+                    $object['value'] = $node->getAttribute('content');
                 } else {
-                    $value = new EasyRdf_Literal(
-                        $node->textContent,
-                        $context['lang'],
-                        $datatype
-                    );
+                    $object['value'] = $node->textContent;
                 }
-                $this->addTriple($subject, $property, $value);
+
+                if ($node->hasAttribute('datatype')) {
+                    $object['datatype'] = $this->expandCurie($node, $context, 'datatype');
+                }
+
+                if ($context['lang']) {
+                    $object['lang'] = $context['lang'];
+                }
+
+                $this->addTriple($subject, $property, $object);
             }
         }
 
