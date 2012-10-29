@@ -104,8 +104,9 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
     {
         if (preg_match('/<([^<>]+)>/', $sub, $matches)) {
             return $this->unescapeString($matches[1]);
-        } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $sub, $matches)) {
-            return $this->unescapeString($matches[1]);
+        } else if (preg_match('/_:([A-Za-z][A-Za-z0-9]*)/', $sub, $matches)) {
+            $nodeid = $this->unescapeString($matches[1]);
+            return $this->remapBnode($nodeid);
         } else {
             throw new EasyRdf_Exception(
                 "Failed to parse subject: $sub"
@@ -134,8 +135,12 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
             return array('type' => 'literal', 'value' => $this->unescapeString($matches[1]));
         } else if (preg_match('/<([^<>]+)>/', $obj, $matches)) {
             return array('type' => 'uri', 'value' => $matches[1]);
-        } else if (preg_match('/(_:[A-Za-z][A-Za-z0-9]*)/', $obj, $matches)) {
-            return array('type' => 'bnode', 'value' => $this->unescapeString($matches[1]));
+        } else if (preg_match('/_:([A-Za-z][A-Za-z0-9]*)/', $obj, $matches)) {
+            $nodeid = $this->unescapeString($matches[1]);
+            return array(
+                'type' => 'bnode',
+                'value' => $this->remapBnode($nodeid)
+            );
         } else {
             throw new EasyRdf_Exception(
                 "Failed to parse object: $obj"
