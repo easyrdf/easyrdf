@@ -63,11 +63,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     protected function resolve($uri)
     {
         if ($this->_baseUri) {
-            return $this->_graph->resource(
-                $this->_baseUri->resolve($uri)
-            );
+            return $this->_baseUri->resolve($uri);
         } else {
-            return $this->_graph->resource($uri);
+            return $uri;
         }
     }
 
@@ -186,7 +184,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             if ($node->hasAttribute('vocab')) {
                 if ($vocab = $node->getAttribute('vocab')) {
                     $context['namespaces'][''] = $vocab;
-                    $vocab = $context['graph']->resource( $vocab );
+                    $vocab = array('type' => 'uri', 'value' => $vocab );
                     $this->addTriple($this->_baseUri, 'rdfa:usesVocabulary', $vocab);
                 } else {
                     $context['namespaces'][''] = NULL;
@@ -286,7 +284,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         $context = array(
             'namespaces' => array(),
             'skipElement' => false,
-            'subject' => $this->_graph->resource($this->_baseUri),
+            'subject' => $this->_baseUri,
             'property' => NULL,
             'object' => NULL,
             'lang' => NULL,
