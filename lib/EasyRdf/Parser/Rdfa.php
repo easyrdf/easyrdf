@@ -138,43 +138,15 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
-    protected function getSubject($node, $context)
-    {
-        if ($node->hasAttribute('about')) {
-            return $this->expandCurie($node, $context, 'about');
-        } elseif ($context['object']) {
-            return $context['object']['value'];
-        }
-
-        if ($node->hasAttribute('typeof')) {
-            #FIXME: create rdf:type triple
-        }
-
-        return $context['subject'];
-    }
-
-    protected function getObject($node, $context)
-    {
-        if ($node->hasAttribute('resource')) {
-            $uri = $this->expandCurie($node, $context, 'resource');
-        } elseif ($node->hasAttribute('href')) {
-            $uri = $this->expandCurie($node, $context, 'href');
-        } elseif ($node->hasAttribute('src')) {
-            $uri = $this->expandCurie($node, $context, 'src');
-        }
-
-        if (isset($uri)) {
-            return array(
-                'type' => 'uri',
-                'value' => $uri
-            );
-        }
-    }
-
     protected function processNode($node, $context, $depth=1)
     {
         $this->printNode($node, $depth);
+        $subject = NULL;
+        $object = NULL;
+        $incompleteRel = NULL;
+        $incompleteRev = NULL;
 
+        # FIXME: move this to Step 13
         if ($node->hasAttributes()) {
 
             // Step 2
@@ -205,60 +177,140 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
             if (!$node->hasAttribute('rel') and !$node->hasAttribute('rev')) {
                 // Step 5
-                $subject = $this->getSubject($node, $context);
+                if ($node->hasAttribute('about')) {
+                    $subject = $this->expandCurie($node, $context, 'about');
+                } elseif ($node->hasAttribute('src')) {
+                    $subject = $this->expandCurie($node, $context, 'src');
+                } elseif ($node->hasAttribute('resource')) {
+                    $subject = $this->expandCurie($node, $context, 'resource');
+                } elseif ($node->hasAttribute('href')) {
+                    $subject = $this->expandCurie($node, $context, 'href');
+                }
+
+                if ($subject === NULL) {
+                    $subject = $context['object'];
+                }
 
             } else {
                 // Step 6
-                $subject = $this->getSubject($node, $context);
-                $object = $this->getObject($node, $context);
+                // If the current element does contain a @rel or @rev attribute, then the next step is to
+                // establish both a value for new subject and a value for current object resource:
+                if ($node->hasAttribute('about')) {
+                    $subject = $this->expandCurie($node, $context, 'about');
+                } elseif ($node->hasAttribute('src')) {
+                    $subject = $this->expandCurie($node, $context, 'src');
+                }
+
+                if ($subject === NULL) {
+                    $subject = $context['object'];
+                }
+
+                if ($node->hasAttribute('resource')) {
+                    $object = $this->expandCurie($node, $context, 'resource');
+                } elseif ($node->hasAttribute('href')) {
+                    $object = $this->expandCurie($node, $context, 'href');
+                }
 
                 if ($node->hasAttribute('rev')) {
-                    $property = $this->expandCurie($node, $context, 'rev');
+                    $rev = $this->expandCurie($node, $context, 'rev');
+                }
+
+                if ($node->hasAttribute('rel')) {
+                    $rel = $this->expandCurie($node, $context, 'rel');
+                }
+            }
+
+
+            // Step 9: Generate triples with given object
+            if ($object) {
+                if (isset($rev)) {
                     $this->addTriple(
-                        $object['value'],
-                        $property,
+                        $object,
+                        $rev,
                         array('type' => 'uri', 'value' => $subject)
                     );
                 }
 
-                if ($node->hasAttribute('rel')) {
-                    $property = $this->expandCurie($node, $context, 'rel');
-                    $this->addTriple($subject, $property, $object);
+                if (isset($rel)) {
+                    $this->addTriple(
+                        $subject,
+                        $rel,
+                        array('type' => 'uri', 'value' => $object)
+                    );
+                }
+            } elseif (isset($rel) or isset($rev)) {
+                // Step 10: Incomplete triples and bnode creation
+                $object = $this->_graph->newBNodeId();
+                if (isset($rel)) {
+                    $incompleteRel = $rel;
+                    print "Incomplete rel: $rel\n";
+                }
+
+                if (isset($rev)) {
+                    $incompleteRev = $rev;
+                    print "Incomplete rev: $rev\n";
                 }
             }
 
             // Step 11
             if ($node->hasAttribute('property')) {
-                $object = array('type' => 'literal');
+                $literal = array('type' => 'literal');
                 $property = $this->expandCurie($node, $context, 'property');
 
                 if ($node->hasAttribute('content')) {
-                    $object['value'] = $node->getAttribute('content');
+                    $literal['value'] = $node->getAttribute('content');
                 } else {
-                    $object['value'] = $node->textContent;
+                    $literal['value'] = $node->textContent;
                 }
 
                 if ($node->hasAttribute('datatype')) {
-                    $object['datatype'] = $this->expandCurie($node, $context, 'datatype');
+                    $literal['datatype'] = $this->expandCurie($node, $context, 'datatype');
                 }
 
                 if ($context['lang']) {
-                    $object['lang'] = $context['lang'];
+                    $literal['lang'] = $context['lang'];
                 }
 
-                $this->addTriple($subject, $property, $object);
+                $this->addTriple($subject, $property, $literal);
+            }
+
+            // Step 12: Complete the incomplete triples from the evaluation context
+            if ($subject and ($context['incompleteRel'] or $context['incompleteRev'])) {
+                if ($context['incompleteRel']) {
+                    $this->addTriple(
+                        $context['subject'],
+                        $context['incompleteRel'],
+                        array('type' => 'uri', 'value' => $subject)
+                    );
+                }
+
+                if ($context['incompleteRev']) {
+                    $this->addTriple(
+                        $subject,
+                        $context['incompleteRel'],
+                        array('type' => 'uri', 'value' => $context['subject'])
+                    );
+                }
             }
         }
 
         // Step 13
         if ($node->hasChildNodes()) {
-            // Prepare new context
-            if (isset($subject) and $subject !== NULL)
-                $context['subject'] = $subject;
-            if (isset($object) and $object !== NULL)
+            // Prepare a new evaluation context
+            if ($object) {
                 $context['object'] = $object;
+            } elseif ($subject) {
+                $context['object'] = $subject;
+            } else {
+                $context['object'] = $context['subject'];
+            }
+            if ($subject)
+                $context['subject'] = $subject;
+            $context['incompleteRel'] = $incompleteRel;
+            $context['incompleteRev'] = $incompleteRev;
             foreach($node->childNodes as $child) {
-                $this->processNode($child, $context, $depth+1);
+                if ($child->nodeType == XML_ELEMENT_NODE)
+                    $this->processNode($child, $context, $depth+1);
             }
         }
     }
@@ -289,6 +341,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             'subject' => $this->_baseUri,
             'property' => NULL,
             'object' => NULL,
+            'incompleteRel' => NULL,
+            'incompleteRev' => NULL,
             'lang' => NULL,
             'datatype' => NULL
         );
