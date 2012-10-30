@@ -71,7 +71,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function addTriple($resource, $property, $value)
     {
-        print "Adding triple: $resource -> $property -> $value\n";
+        print "Adding triple: $resource -> $property -> ".$value['type'].':'.$value['value']."\n";
         $count = $this->_graph->add($resource, $property, $value);
         $this->_tripleCount += $count;
         return $count;
@@ -163,7 +163,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $uri = $this->expandCurie($node, $context, 'src');
         }
 
-        if ($uri) {
+        if (isset($uri)) {
             return array(
                 'type' => 'uri',
                 'value' => $uri
@@ -176,9 +176,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         $this->printNode($node, $depth);
 
         if ($node->hasAttributes()) {
-
-            $subject = $context['subject'];
-            $object = $context['object'];
 
             // Step 2
             if ($node->hasAttribute('vocab')) {
@@ -255,6 +252,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
         // Step 13
         if ($node->hasChildNodes()) {
+            // Prepare new context
+            if (isset($subject) and $subject !== NULL)
+                $context['subject'] = $subject;
+            if (isset($object) and $object !== NULL)
+                $context['object'] = $object;
             foreach($node->childNodes as $child) {
                 $this->processNode($child, $context, $depth+1);
             }

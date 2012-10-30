@@ -153,6 +153,51 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0019');
     }
 
+    public function testCase0020()
+    {
+        $this->rdfaTestCase('0020');
+    }
+
+    public function testCase0021()
+    {
+        $this->rdfaTestCase('0021');
+    }
+
+    public function testCase0023()
+    {
+        $this->rdfaTestCase('0023');
+    }
+
+    public function testCase0025()
+    {
+        $this->rdfaTestCase('0025');
+    }
+
+    public function testCase0026()
+    {
+        $this->rdfaTestCase('0026');
+    }
+
+    public function testCase0027()
+    {
+        $this->rdfaTestCase('0027');
+    }
+
+    public function testCase0029()
+    {
+        $this->rdfaTestCase('0029');
+    }
+
+    public function testCase0030()
+    {
+        $this->rdfaTestCase('0030');
+    }
+
+    public function testCase0031()
+    {
+        $this->rdfaTestCase('0031');
+    }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
