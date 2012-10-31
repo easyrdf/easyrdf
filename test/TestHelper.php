@@ -54,8 +54,8 @@ error_reporting( E_ALL | E_STRICT );
 /*
  * Check the version number of PHP Unit.
  */
-if (!preg_match("/^3\.6\.\d+$/", PHPUnit_Runner_Version::id())) {
-    error_log("PHPUnit version 3.6.x is required.");
+if (version_compare(PHPUnit_Runner_Version::id(), '3.5.15', '<')) {
+    error_log("PHPUnit version 3.5.15 or higher is required.");
     exit();
 }
 
