@@ -768,7 +768,6 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 
         xml_parser_free($this->_xmlParser);
 
-        // Success
-        return true;
+        return $this->_tripleCount;
     }
 }
