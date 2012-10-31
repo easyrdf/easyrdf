@@ -61,7 +61,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $joe->set('foaf:name', 'Joe Bloggs');
         $joe->addResource('foaf:homepage', 'http://www.example.com/joe/');
 
-        $this->assertEquals(
+        $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
@@ -82,7 +82,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $homepage->add('foaf:name', "Joe's Homepage");
         $joe->set('foaf:homepage', $homepage);
 
-        $this->assertEquals(
+        $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
@@ -108,7 +108,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $joe->set('foaf:homepage', $homepage);
         $joe->set('foaf:made', $homepage);
 
-        $this->assertEquals(
+        $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
@@ -133,7 +133,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $project->set('foaf:name', "Joe's Project");
         $joe->set('foaf:currentProject', $project);
 
-        $this->assertEquals(
+        $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
@@ -161,7 +161,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $alice->add('foaf:knows', $bob);
         $alice->add('foaf:knows', $carol);
 
-        $this->assertEquals(
+        $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
@@ -189,7 +189,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
         $joe->set('foaf:name', 'Joe Bloggs');
 
-        $this->assertEquals(
+        $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
@@ -208,7 +208,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $nodeB = $this->_graph->newBNode();
         $this->_graph->add($nodeA, 'rdf:foobar', $nodeB);
 
-        $this->assertEquals(
+        $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n\n".
             "  <rdf:Description rdf:nodeID=\"genid1\">\n".
@@ -311,7 +311,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('dc:creator', 'Max Bloggs');
 
-        $this->assertEquals(
+        $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\"\n".
@@ -337,7 +337,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $graph->addLiteral('http://example.com/2', 'rdf:label', 'label');
         $graph->addResource('http://example.com/1', 'foaf:homepage', 'http://example.com/2');
 
-        $this->assertEquals(
+        $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
             "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n" .

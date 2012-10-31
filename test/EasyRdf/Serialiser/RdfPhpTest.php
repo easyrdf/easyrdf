@@ -66,19 +66,19 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $subject = $php['http://www.example.com/joe#me'];
         $this->assertInternalType('array', $subject);
         $type = $subject['http://www.w3.org/1999/02/22-rdf-syntax-ns#type'][0];
-        $this->assertEquals('uri', $type['type']);
-        $this->assertEquals('http://xmlns.com/foaf/0.1/Person', $type['value']);
+        $this->assertSame('uri', $type['type']);
+        $this->assertSame('http://xmlns.com/foaf/0.1/Person', $type['value']);
         $name = $subject['http://xmlns.com/foaf/0.1/name'][0];
         $this->assertInternalType('array', $name);
-        $this->assertEquals('literal', $name['type']);
-        $this->assertEquals('Joe Bloggs', $name['value']);
+        $this->assertSame('literal', $name['type']);
+        $this->assertSame('Joe Bloggs', $name['value']);
         $this->assertFalse(isset($name['datatype']));
-        $this->assertEquals('en', $name['lang']);
+        $this->assertSame('en', $name['lang']);
         $age = $subject['http://xmlns.com/foaf/0.1/age'][0];
         $this->assertInternalType('array', $age);
-        $this->assertEquals('literal', $age['type']);
-        $this->assertEquals('59', $age['value']);
-        $this->assertEquals(
+        $this->assertSame('literal', $age['type']);
+        $this->assertSame('59', $age['value']);
+        $this->assertSame(
             'http://www.w3.org/2001/XMLSchema#integer',
             $age['datatype']
         );
@@ -87,7 +87,7 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $nodeid = $subject['http://xmlns.com/foaf/0.1/project'][0]['value'];
         $this->assertInternalType('array', $php[$nodeid]);
         $projectName = $php[$nodeid]['http://xmlns.com/foaf/0.1/name'][0];
-        $this->assertEquals('Project Name', $projectName['value']);
+        $this->assertSame('Project Name', $projectName['value']);
         $this->assertFalse(isset($projectName['lang']));
         $this->assertFalse(isset($projectName['datatype']));
     }

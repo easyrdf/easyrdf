@@ -27,7 +27,7 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
             'http://www.example.com/',
             array('foo' => 'bar')
         );
-        $this->assertEquals('EasyRdf_Http_Client', get_class($client));
+        $this->assertClass('EasyRdf_Http_Client', $client);
     }
 
     /**
@@ -39,7 +39,7 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $uristr = 'http://www.bbc.co.uk:80/';
         $this->_client->setUri($uristr);
 
-        $this->assertEquals(
+        $this->assertSame(
             $uristr,
             $this->_client->getUri(),
             'Returned Uri object does not hold the expected URI'
@@ -51,7 +51,7 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
             'Returned value expected to be a string, ' .
             gettype($uri) . ' returned'
         );
-        $this->assertEquals(
+        $this->assertSame(
             $uri, $uristr,
             'Returned string is not the expected URI'
         );
@@ -90,13 +90,13 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $this->_client->setUri($obj);
 
         $uri = $this->_client->getUri();
-        $this->assertEquals($uristr, $uri);
+        $this->assertSame($uristr, $uri);
     }
 
     public function testSetConfig()
     {
         $result = $this->_client->setConfig(array('foo' => 'bar'));
-        $this->assertEquals('EasyRdf_Http_Client', get_class($result));
+        $this->assertClass('EasyRdf_Http_Client', $result);
     }
 
     public function testSetConfigNull()
@@ -124,12 +124,12 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
     public function testGetHeader()
     {
         $this->_client->setHeaders('Accept-language', 'en,de,*');
-        $this->assertEquals(
+        $this->assertSame(
             $this->_client->getHeader('Accept-language'),
             'en,de,*',
             'Returned value of header is not as expected'
         );
-        $this->assertEquals(
+        $this->assertSame(
             $this->_client->getHeader('X-Fake-Header'),
             null,
             'Non-existing header should not return a value'
@@ -150,7 +150,7 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
     {
         $this->_client->setMethod('POST');
         $method = $this->_client->getMethod();
-        $this->assertEquals('POST', $method);
+        $this->assertSame('POST', $method);
     }
 
     public function testSetNonStringMethod()
@@ -174,13 +174,13 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
     public function testRedirectionCounterShouldStartAtZero()
     {
         $this->_client->setHeaders('Accept-Encoding', null);
-        $this->assertEquals(0, $this->_client->getRedirectionsCount());
+        $this->assertSame(0, $this->_client->getRedirectionsCount());
     }
 
     public function testSetParameterGet()
     {
         $this->_client->setParameterGet('key1', 'value1');
-        $this->assertEquals('value1', $this->_client->getParameterGet('key1'));
+        $this->assertSame('value1', $this->_client->getParameterGet('key1'));
     }
 
     public function testUnSetParameterGet()
@@ -188,14 +188,14 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $this->_client->setParameterGet('key1', 'value1');
         $this->_client->setParameterGet('key2', 'value2');
         $this->_client->setParameterGet('key1', null);
-        $this->assertEquals(null, $this->_client->getParameterGet('key1'));
-        $this->assertEquals('value2', $this->_client->getParameterGet('key2'));
+        $this->assertSame(NULL, $this->_client->getParameterGet('key1'));
+        $this->assertSame('value2', $this->_client->getParameterGet('key2'));
     }
 
     public function testSetRawData()
     {
         $this->_client->setRawData('Foo Bar');
-        $this->assertEquals('Foo Bar', $this->_client->getRawData());
+        $this->assertSame('Foo Bar', $this->_client->getRawData());
     }
 
     public function testRequestNoUri()
@@ -216,11 +216,11 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $this->_client->setHeaders('Content-Type', 'text/plain');
         $this->_client->setHeaders('Accept-Language', 'en');
         $this->_client->resetParameters();
-        $this->assertEquals('GET', $this->_client->getMethod());
-        $this->assertEquals(null, $this->_client->getRawData());
-        $this->assertEquals(null, $this->_client->getHeader('Content-Length'));
-        $this->assertEquals(null, $this->_client->getHeader('Content-Type'));
-        $this->assertEquals('en', $this->_client->getHeader('Accept-Language'));
+        $this->assertSame('GET', $this->_client->getMethod());
+        $this->assertSame(NULL, $this->_client->getRawData());
+        $this->assertSame(NULL, $this->_client->getHeader('Content-Length'));
+        $this->assertSame(NULL, $this->_client->getHeader('Content-Type'));
+        $this->assertSame('en', $this->_client->getHeader('Accept-Language'));
     }
 
     public function testResetParametersClearAll()
@@ -231,11 +231,11 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $this->_client->setHeaders('Content-Type', 'text/plain');
         $this->_client->setHeaders('Accept-Language', 'en');
         $this->_client->resetParameters(true);
-        $this->assertEquals('GET', $this->_client->getMethod());
-        $this->assertEquals(null, $this->_client->getRawData());
-        $this->assertEquals(null, $this->_client->getHeader('Content-Length'));
-        $this->assertEquals(null, $this->_client->getHeader('Content-Type'));
-        $this->assertEquals(null, $this->_client->getHeader('Accept-Language'));
+        $this->assertSame('GET', $this->_client->getMethod());
+        $this->assertSame(NULL, $this->_client->getRawData());
+        $this->assertSame(NULL, $this->_client->getHeader('Content-Length'));
+        $this->assertSame(NULL, $this->_client->getHeader('Content-Type'));
+        $this->assertSame(NULL, $this->_client->getHeader('Accept-Language'));
     }
 
 }

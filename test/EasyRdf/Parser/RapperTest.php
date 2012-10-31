@@ -87,19 +87,19 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
-        $this->assertEquals(14, $count);
+        $this->assertSame(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertEquals('EasyRdf_Resource', get_class($joe));
-        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
+        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertEquals('EasyRdf_Literal', get_class($name));
+        $this->assertClass('EasyRdf_Literal', $name);
         $this->assertStringEquals('Joe Bloggs', $name);
-        $this->assertEquals('en', $name->getLang());
-        $this->assertEquals(null, $name->getDatatype());
+        $this->assertSame('en', $name->getLang());
+        $this->assertSame(NULL, $name->getDatatype());
 
         $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);
@@ -116,8 +116,8 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         );
 
         // Should be empty but no exception thrown
-        $this->assertEquals(0, $count);
-        $this->assertEquals(0, $this->_graph->countTriples());
+        $this->assertSame(0, $count);
+        $this->assertSame(0, $this->_graph->countTriples());
     }
 
     function testParseXMLLiteral()
@@ -128,13 +128,13 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
             'rdfxml',
             'http://www.example.com/'
         );
-        $this->assertEquals(2, $count);
+        $this->assertSame(2, $count);
 
         $doc = $this->_graph->resource('http://www.example.com/');
-        $this->assertEquals('foaf:Document', $doc->type());
+        $this->assertSame('foaf:Document', $doc->type());
         $description = $doc->get('dc:description');
-        $this->assertEquals('rdf:XMLLiteral', $description->getDataType());
-        $this->assertEquals(
+        $this->assertSame('rdf:XMLLiteral', $description->getDataType());
+        $this->assertSame(
             "\n      <p>Here is a block of <em>HTML text</em></p>\n    ",
             $description->getValue()
         );

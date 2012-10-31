@@ -55,13 +55,13 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     public function testNamespaces()
     {
         $ns = EasyRdf_Namespace::namespaces();
-        $this->assertEquals('http://purl.org/dc/terms/', $ns['dc']);
-        $this->assertEquals('http://xmlns.com/foaf/0.1/', $ns['foaf']);
+        $this->assertSame('http://purl.org/dc/terms/', $ns['dc']);
+        $this->assertSame('http://xmlns.com/foaf/0.1/', $ns['foaf']);
     }
 
     public function testGetDcNamespace()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://purl.org/dc/terms/',
             EasyRdf_Namespace::get('dc')
         );
@@ -69,7 +69,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testGetFoafNamespace()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://xmlns.com/foaf/0.1/',
             EasyRdf_Namespace::get('foaf')
         );
@@ -77,7 +77,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testGetRdfNamespace()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
             EasyRdf_Namespace::get('rdf')
         );
@@ -85,7 +85,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testGetRdfsNamespace()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://www.w3.org/2000/01/rdf-schema#',
             EasyRdf_Namespace::get('rdfs')
         );
@@ -93,7 +93,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testGetXsdNamespace()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://www.w3.org/2001/XMLSchema#',
             EasyRdf_Namespace::get('xsd')
         );
@@ -101,7 +101,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testGetUpperCaseFoafNamespace()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://xmlns.com/foaf/0.1/',
             EasyRdf_Namespace::get('FOAF')
         );
@@ -146,7 +146,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     public function testAddNamespace()
     {
         EasyRdf_Namespace::set('po', 'http://purl.org/ontology/po/');
-        $this->assertEquals(
+        $this->assertSame(
             'http://purl.org/ontology/po/',
             EasyRdf_Namespace::get('po')
         );
@@ -155,7 +155,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     public function testAddUppercaseNamespace()
     {
         EasyRdf_Namespace::set('PO', 'http://purl.org/ontology/po/');
-        $this->assertEquals(
+        $this->assertSame(
             'http://purl.org/ontology/po/',
             EasyRdf_Namespace::get('po')
         );
@@ -261,7 +261,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testSplitUriFoafName()
     {
-        $this->assertEquals(
+        $this->assertSame(
             array('foaf', 'name'),
             EasyRdf_Namespace::splitUri('http://xmlns.com/foaf/0.1/name')
         );
@@ -269,7 +269,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testSplitUriResource()
     {
-        $this->assertEquals(
+        $this->assertSame(
             array('foaf','name'),
             EasyRdf_Namespace::splitUri($this->_resource)
         );
@@ -277,7 +277,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testSlitUriUnknown()
     {
-        $this->assertEquals(
+        $this->assertSame(
             null,
             EasyRdf_Namespace::splitUri('http://example.com/ns/foo/bar')
         );
@@ -285,7 +285,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testSplitUriAndCreateOneUnknown()
     {
-        $this->assertEquals(
+        $this->assertSame(
             array('ns0', 'bar'),
             EasyRdf_Namespace::splitUri('http://example.com/ns/foo/bar', true)
         );
@@ -293,11 +293,11 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testSplitUriAndCreateTwice()
     {
-        $this->assertEquals(
+        $this->assertSame(
             array('ns0', 'bar'),
             EasyRdf_Namespace::splitUri('http://example.com/ns/foo/bar', true)
         );
-        $this->assertEquals(
+        $this->assertSame(
             array('ns0', 'bar'),
             EasyRdf_Namespace::splitUri('http://example.com/ns/foo/bar', true)
         );
@@ -305,11 +305,11 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testSplitUriAndCreateTwoUnknown()
     {
-        $this->assertEquals(
+        $this->assertSame(
             array('ns0', 'bar'),
             EasyRdf_Namespace::splitUri('http://example1.org/ns/foo/bar', true)
         );
-        $this->assertEquals(
+        $this->assertSame(
             array('ns1', 'bar'),
             EasyRdf_Namespace::splitUri('http://example2.org/ns/foo/bar', true)
         );
@@ -317,7 +317,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testSplitUriUnsplitable()
     {
-        $this->assertEquals(
+        $this->assertSame(
             null,
             EasyRdf_Namespace::splitUri('http://example.com/foo/', true)
         );
@@ -353,7 +353,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testShortenFoafName()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'foaf:name',
             EasyRdf_Namespace::shorten('http://xmlns.com/foaf/0.1/name')
         );
@@ -361,12 +361,12 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testShortenResource()
     {
-        $this->assertEquals('foaf:name', EasyRdf_Namespace::shorten($this->_resource));
+        $this->assertSame('foaf:name', EasyRdf_Namespace::shorten($this->_resource));
     }
 
     public function testShortenUnknown()
     {
-        $this->assertEquals(
+        $this->assertSame(
             null,
             EasyRdf_Namespace::shorten('http://example.com/ns/foo/bar')
         );
@@ -374,7 +374,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testShortenAndCreateOneUnknown()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'ns0:bar',
             EasyRdf_Namespace::shorten('http://example.com/ns/foo/bar', true)
         );
@@ -382,11 +382,11 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testShortenAndCreateTwoUnknown()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'ns0:bar',
             EasyRdf_Namespace::shorten('http://example.com/ns/foo/bar', true)
         );
-        $this->assertEquals(
+        $this->assertSame(
             'ns1:bar',
             EasyRdf_Namespace::shorten('http://example.org/ns/foo/bar', true)
         );
@@ -394,7 +394,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testShortenUnshortenable()
     {
-        $this->assertEquals(
+        $this->assertSame(
             null,
             EasyRdf_Namespace::shorten('http://example.com/foo/', true)
         );
@@ -429,7 +429,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testPrefixOfUriFoafName()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'foaf',
             EasyRdf_Namespace::prefixOfUri('http://xmlns.com/foaf/0.1/name')
         );
@@ -437,7 +437,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testrefixOfUriForResource()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'foaf',
             EasyRdf_Namespace::prefixOfUri($this->_resource)
         );
@@ -445,7 +445,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testPrefixOfUnknownUrl()
     {
-        $this->assertEquals(
+        $this->assertSame(
             null,
             EasyRdf_Namespace::prefixOfUri('http://www.aelius.com/njh/')
         );
@@ -480,7 +480,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testExpandFoafName()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://xmlns.com/foaf/0.1/name',
             EasyRdf_Namespace::expand('foaf:name')
         );
@@ -488,7 +488,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testExpandFoafDoapProgrammingLanguage()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://usefulinc.com/ns/doap#programming-language',
             EasyRdf_Namespace::expand('doap:programming-language')
         );
@@ -496,7 +496,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testExpandMissingColon()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'unknown',
             EasyRdf_Namespace::expand('unknown')
         );
@@ -504,7 +504,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testExpandExpanded()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://www.aelius.com/njh/',
             EasyRdf_Namespace::expand('http://www.aelius.com/njh/')
         );
@@ -512,7 +512,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testExpandURN()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'urn:isbn:0451450523',
             EasyRdf_Namespace::expand('urn:isbn:0451450523')
         );
