@@ -40,15 +40,24 @@
 class EasyRdf_TestCase extends PHPUnit_Framework_TestCase
 {
 
-    public function assertStringEquals($str1, $str2, $message=null)
+    public static function assertStringEquals($str1, $str2, $message=null)
     {
-        $this->assertSame(strval($str1), strval($str2), $message);
+        self::assertSame(strval($str1), strval($str2), $message);
     }
 
     // Note: this differs from assertInstanceOf because it disallows subclasses
-    public function assertClass($class, $object)
+    public static function assertClass($class, $object)
     {
-        $this->assertSame($class, get_class($object));
+        self::assertSame($class, get_class($object));
     }
 
+    // PHPUnit 3.5 doesn't have assertCount()
+    public static function assertCount($expectedCount, $haystack, $message='')
+    {
+        if (method_exists(get_parent_class(__CLASS__), 'assertCount')) {
+            parent::assertCount($expectedCount, $haystack, $message);
+        } else {
+            self::assertSame($expectedCount, count($haystack));
+        }
+    }
 }
