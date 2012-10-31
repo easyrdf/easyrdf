@@ -50,6 +50,7 @@
 class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 {
     const XML_NS = 'http://www.w3.org/XML/1998/namespace';
+    const XHTML_NS = 'http://www.w3.org/1999/xhtml/vocab#';
 
     /**
      * Constructor
@@ -104,7 +105,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
-    protected function expandCurie($node, $context, $attr)
+    protected function expandCurie($node, $context, $attr, $isProp=false)
     {
         $value = $node->getAttribute($attr);
         if ($value === NULL)
@@ -131,8 +132,12 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     error_log("Unknown namespace: $prefix");
                 }
             }
-        } elseif (isset($context['namespaces'][''])) {
-            return $context['namespaces'][''] . $value;
+        } elseif (preg_match("/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/", $value) and $isProp) {
+            if (isset($context['vocab'])) {
+                return $context['vocab'] . $value;
+            } else {
+                # FIXME: now what?
+            }
         } else {
             return $this->resolve($value);
         }
@@ -152,11 +157,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             // Step 2
             if ($node->hasAttribute('vocab')) {
                 if ($vocab = $node->getAttribute('vocab')) {
-                    $context['namespaces'][''] = $vocab;
+                    $context['vocab'] = $vocab;
                     $vocab = array('type' => 'uri', 'value' => $vocab );
                     $this->addTriple($this->_baseUri, 'rdfa:usesVocabulary', $vocab);
                 } else {
-                    $context['namespaces'][''] = NULL;
+                    $context['vocab'] = NULL;
                 }
             }
 
@@ -212,11 +217,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 }
 
                 if ($node->hasAttribute('rev')) {
-                    $rev = $this->expandCurie($node, $context, 'rev');
+                    $rev = $this->expandCurie($node, $context, 'rev', true);
                 }
 
                 if ($node->hasAttribute('rel')) {
-                    $rel = $this->expandCurie($node, $context, 'rel');
+                    $rel = $this->expandCurie($node, $context, 'rel', true);
                 }
             }
 
@@ -255,7 +260,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             // Step 11
             if ($node->hasAttribute('property')) {
                 $literal = array('type' => 'literal');
-                $property = $this->expandCurie($node, $context, 'property');
+                $property = $this->expandCurie($node, $context, 'property', true);
 
                 if ($node->hasAttribute('content')) {
                     $literal['value'] = $node->getAttribute('content');
@@ -337,6 +342,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         // Step 1: Initialise evaluation context
         $context = array(
             'namespaces' => array(),
+            'vocab' => self::XHTML_NS,
             'skipElement' => false,
             'subject' => $this->_baseUri,
             'property' => NULL,
