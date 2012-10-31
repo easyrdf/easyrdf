@@ -80,8 +80,6 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         );
         $this->assertEquals(2, $count);
         
-        #var_dump($
-        
         $bnode1 = $this->_graph->resource('_:genid1');
         $this->assertNotNull($bnode1);
         $this->assertEquals(true, $bnode1->isBnode());
