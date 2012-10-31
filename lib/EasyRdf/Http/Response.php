@@ -99,7 +99,7 @@ class EasyRdf_Http_Response
         $version = '1.1', $message = null
     )
     {
-        $this->_status = $status;
+        $this->_status = intval($status);
         $this->_body = $body;
         $this->_version = $version;
         $this->_message = $message;
