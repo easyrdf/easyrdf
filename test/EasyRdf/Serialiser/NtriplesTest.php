@@ -60,7 +60,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
             'foaf:homepage',
             $this->_graph->resource('http://www.example.com/joe/')
         );
-        $this->assertEquals(
+        $this->assertSame(
             "<http://www.example.com/joe#me> ".
             "<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ".
             "<http://xmlns.com/foaf/0.1/Person> .\n".
@@ -78,7 +78,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:nick', '"Joey"');
-        $this->assertEquals(
+        $this->assertSame(
             "<http://www.example.com/joe#me> ".
             "<http://xmlns.com/foaf/0.1/nick> ".
             '"\"Joey\"" .'."\n",
@@ -93,7 +93,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         $project->add('foaf:name', 'Project Name');
         $joe->add('foaf:project', $project);
 
-        $this->assertEquals(
+        $this->assertSame(
             "_:genid1 <http://xmlns.com/foaf/0.1/name> \"Project Name\" .\n".
             "<http://www.example.com/joe#me> ".
             "<http://xmlns.com/foaf/0.1/project> _:genid1 .\n",

@@ -54,7 +54,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
 
     public function testGetUri()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://localhost:8080/data/',
             $this->_graphStore->getUri()
         );
@@ -67,8 +67,8 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             readFixture('foaf.json')
         );
         $graph = $this->_graphStore->get('foaf.rdf');
-        $this->assertInstanceOf('EasyRdf_Graph', $graph);
-        $this->assertEquals('http://localhost:8080/data/foaf.rdf', $graph->getUri());
+        $this->assertClass('EasyRdf_Graph', $graph);
+        $this->assertSame('http://localhost:8080/data/foaf.rdf', $graph->getUri());
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
@@ -82,8 +82,8 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             readFixture('foaf.json')
         );
         $graph = $this->_graphStore->get('http://foo.com/bar.rdf');
-        $this->assertInstanceOf('EasyRdf_Graph', $graph);
-        $this->assertEquals('http://foo.com/bar.rdf', $graph->getUri());
+        $this->assertClass('EasyRdf_Graph', $graph);
+        $this->assertSame('http://foo.com/bar.rdf', $graph->getUri());
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
@@ -96,7 +96,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             'DELETE', 'http://localhost:8080/data/foaf.rdf', 'OK'
         );
         $response = $this->_graphStore->delete('foaf.rdf');
-        $this->assertEquals('200', $response->getStatus());
+        $this->assertSame(200, $response->getStatus());
     }
 
     public function testDeleteIndirect()
@@ -105,7 +105,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             'DELETE', 'http://localhost:8080/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf', 'OK'
         );
         $response = $this->_graphStore->delete('http://foo.com/bar.rdf');
-        $this->assertEquals('200', $response->getStatus());
+        $this->assertSame(200, $response->getStatus());
     }
 
     public function testDeleteHttpError()
@@ -123,12 +123,12 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
 
     public function checkNtriplesRequest($client)
     {
-        $this->assertEquals(
+        $this->assertSame(
             "<urn:subject> <urn:predicate> \"object\" .\n",
             $client->getRawData()
         );
-        $this->assertEquals("text/plain", $client->getHeader('Content-Type'));
-        $this->assertEquals(41, $client->getHeader('Content-Length'));
+        $this->assertSame("text/plain", $client->getHeader('Content-Type'));
+        $this->assertSame(41, $client->getHeader('Content-Length'));
         return true;
     }
 
@@ -141,7 +141,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             array('callback' => array($this, 'checkNtriplesRequest'))
         );
         $response = $this->_graphStore->insert($graph);
-        $this->assertEquals('200', $response->getStatus());
+        $this->assertSame(200, $response->getStatus());
     }
 
     public function testInsertIndirect()
@@ -152,7 +152,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             array('callback' => array($this, 'checkNtriplesRequest'))
         );
         $response = $this->_graphStore->insert($data, "http://foo.com/bar.rdf");
-        $this->assertEquals('200', $response->getStatus());
+        $this->assertSame(200, $response->getStatus());
     }
 
     public function testInsertHttpError()
@@ -177,17 +177,17 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             array('callback' => array($this, 'checkNtriplesRequest'))
         );
         $response = $this->_graphStore->replace($data, "http://foo.com/bar.rdf");
-        $this->assertEquals('200', $response->getStatus());
+        $this->assertSame(200, $response->getStatus());
     }
 
     public function checkTurtleRequest($client)
     {
-        $this->assertEquals(
+        $this->assertSame(
             '{"urn:subject":{"urn:predicate":[{"type":"literal","value":"object"}]}}',
             $client->getRawData()
         );
-        $this->assertEquals("application/json", $client->getHeader('Content-Type'));
-        $this->assertEquals(71, $client->getHeader('Content-Length'));
+        $this->assertSame("application/json", $client->getHeader('Content-Type'));
+        $this->assertSame(71, $client->getHeader('Content-Length'));
         return true;
     }
 
@@ -200,7 +200,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             array('callback' => array($this, 'checkTurtleRequest'))
         );
         $response = $this->_graphStore->replace($graph, "http://foo.com/bar.rdf", 'json');
-        $this->assertEquals('200', $response->getStatus());
+        $this->assertSame(200, $response->getStatus());
     }
 
     public function testReplaceHttpError()

@@ -55,19 +55,19 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
     public function testParse()
     {
         $count = $this->_parser->parse($this->_graph, $this->_data, 'ntriples', null);
-        $this->assertEquals(14, $count);
+        $this->assertSame(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertEquals('EasyRdf_Resource', get_class($joe));
-        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
+        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertEquals('EasyRdf_Literal', get_class($name));
-        $this->assertEquals('Joe Bloggs', $name->getValue());
-        $this->assertEquals('en', $name->getLang());
-        $this->assertEquals(null, $name->getDatatype());
+        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertSame('Joe Bloggs', $name->getValue());
+        $this->assertSame('en', $name->getLang());
+        $this->assertSame(NULL, $name->getDatatype());
     }
 
     public function testParseBnode()
@@ -78,17 +78,17 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             "_:d <http://example.com/e> _:a . \n",
             'ntriples', null
         );
-        $this->assertEquals(2, $count);
-        
+        $this->assertSame(2, $count);
+
         $bnode1 = $this->_graph->resource('_:genid1');
         $this->assertNotNull($bnode1);
-        $this->assertEquals(true, $bnode1->isBnode());
-        $this->assertEquals('c', $bnode1->get('<http://example.com/b>'));
+        $this->assertSame(true, $bnode1->isBnode());
+        $this->assertStringEquals('c', $bnode1->get('<http://example.com/b>'));
 
         $bnode2 = $this->_graph->resource('_:genid2');
         $this->assertNotNull($bnode2);
-        $this->assertEquals(true, $bnode2->isBnode());
-        $this->assertEquals($bnode1, $bnode2->get('<http://example.com/e>'));
+        $this->assertSame(true, $bnode2->isBnode());
+        $this->assertSame($bnode1, $bnode2->get('<http://example.com/e>'));
     }
 
     public function testParseLang()
@@ -98,13 +98,13 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             '<http://example.com/a> <http://example.com/b> "English"@en-gb .',
             'ntriples', null
         );
-        $this->assertEquals(1, $count);
+        $this->assertSame(1, $count);
 
         $int = $this->_graph->get('http://example.com/a', '<http://example.com/b>');
         $this->assertNotNull($int);
-        $this->assertEquals('English', $int->getValue());
-        $this->assertEquals('en-gb', $int->getLang());
-        $this->assertEquals(null, $int->getDatatype());
+        $this->assertSame('English', $int->getValue());
+        $this->assertSame('en-gb', $int->getLang());
+        $this->assertSame(NULL, $int->getDatatype());
     }
 
     public function testParseDatatype()
@@ -114,13 +114,13 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             '<http://example.com/a> <http://example.com/b> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .',
             'ntriples', null
         );
-        $this->assertEquals(1, $count);
+        $this->assertSame(1, $count);
 
         $int = $this->_graph->get('http://example.com/a', '<http://example.com/b>');
         $this->assertNotNull($int);
-        $this->assertEquals(1, $int->getValue());
-        $this->assertEquals(null, $int->getLang());
-        $this->assertEquals('xsd:integer', $int->getDatatype());
+        $this->assertSame(1, $int->getValue());
+        $this->assertSame(NULL, $int->getLang());
+        $this->assertSame('xsd:integer', $int->getDatatype());
     }
 
     public function testParseEscaped()
@@ -130,14 +130,14 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             '<http://example.com/a> <http://example.com/b> "\t" .',
             'ntriples', null
         );
-        $this->assertEquals(1, $count);
+        $this->assertSame(1, $count);
 
         $a = $this->_graph->resource('http://example.com/a');
         $this->assertNotNull($a);
 
         $b = $a->get('<http://example.com/b>');
         $this->assertNotNull($b);
-        $this->assertEquals("\t", $b->getValue());
+        $this->assertSame("\t", $b->getValue());
     }
 
     public function testParseComment()
@@ -150,8 +150,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             "<http://example.com/c> <http://example.com/c> \"Test 2\" .\n",
             'ntriples', null
         );
-        $this->assertEquals(2, $count);
-        $this->assertEquals(2, count($this->_graph->resources()));
+        $this->assertSame(2, $count);
+        $this->assertCount(2, $this->_graph->resources());
     }
 
     public function testParseEmpty()
@@ -159,7 +159,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $count = $this->_parser->parse(
             $this->_graph, '', 'ntriples', null
         );
-        $this->assertEquals(0, $count);
+        $this->assertSame(0, $count);
     }
 
     public function testParseInvalidSubject()

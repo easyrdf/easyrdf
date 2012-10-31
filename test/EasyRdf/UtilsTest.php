@@ -42,7 +42,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 {
     public function testCameliseSimple()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'Hello',
             EasyRdf_Utils::camelise('hEllO')
         );
@@ -50,7 +50,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 
     public function testCameliseUnderscore()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'HelloWorld',
             EasyRdf_Utils::camelise('hello_world')
         );
@@ -58,7 +58,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 
     public function testCameliseDHyphen()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'HelloWorld',
             EasyRdf_Utils::camelise('hello-world')
         );
@@ -66,7 +66,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 
     public function testCameliseDoubleHyphen()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'HelloWorld',
             EasyRdf_Utils::camelise('hello--world')
         );
@@ -74,7 +74,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 
     public function testCameliseSpace()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'HelloWorld',
             EasyRdf_Utils::camelise('hello  world')
         );
@@ -82,7 +82,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 
     public function testCameliseFilePath()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'IAmEvilPhp',
             EasyRdf_Utils::camelise('../../I/am/Evil.php')
         );
@@ -90,7 +90,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 
     public function testCameliseEmpty()
     {
-        $this->assertEquals(
+        $this->assertSame(
             '',
             EasyRdf_Utils::camelise('')
         );
@@ -130,7 +130,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 
     public function testRemoveFragment()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://example.com/',
             EasyRdf_Utils::removeFragmentFromUri('http://example.com/#foo')
         );
@@ -138,7 +138,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 
     public function testRemoveFragmentNoFragment()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://example.com/',
             EasyRdf_Utils::removeFragmentFromUri('http://example.com/')
         );
@@ -146,7 +146,7 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
 
     public function testRemoveFragmentExtraHash()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://example.com/',
             EasyRdf_Utils::removeFragmentFromUri('http://example.com/#foo#bar')
         );
@@ -155,11 +155,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testDumpResourceValue()
     {
         $res = new EasyRdf_Resource('http://www.example.com/');
-        $this->assertEquals(
+        $this->assertSame(
             "http://www.example.com/",
             EasyRdf_Utils::dumpResourceValue($res, false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             "<a href='http://www.example.com/' ".
             "style='text-decoration:none;color:blue'>".
             "http://www.example.com/</a>",
@@ -170,11 +170,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testDumpResourceValueFromArray()
     {
         $res = array('type' => 'uri', 'value' => 'http://www.example.com/');
-        $this->assertEquals(
+        $this->assertSame(
             "http://www.example.com/",
             EasyRdf_Utils::dumpResourceValue($res, false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             "<a href='http://www.example.com/' ".
             "style='text-decoration:none;color:blue'>".
             "http://www.example.com/</a>",
@@ -185,11 +185,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testDumpLiteralValue()
     {
         $literal = new EasyRdf_Literal("hello & world");
-        $this->assertEquals(
+        $this->assertSame(
             '"hello & world"',
             EasyRdf_Utils::dumpLiteralValue($literal, false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             "<span style='color:black'>&quot;hello &amp; world&quot;</span>",
             EasyRdf_Utils::dumpLiteralValue($literal, true)
         );
@@ -198,11 +198,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testDumpLiteralValueFromArray()
     {
         $literal = array('type' => 'literal', 'value' => 'Hot Sauce');
-        $this->assertEquals(
+        $this->assertSame(
             '"Hot Sauce"',
             EasyRdf_Utils::dumpLiteralValue($literal, false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             "<span style='color:black'>&quot;Hot Sauce&quot;</span>",
             EasyRdf_Utils::dumpLiteralValue($literal, true)
         );
@@ -211,11 +211,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testDumpLiteralValueFromString()
     {
         $literal = 'a string';
-        $this->assertEquals(
+        $this->assertSame(
             '"a string"',
             EasyRdf_Utils::dumpLiteralValue($literal, false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             "<span style='color:black'>&quot;a string&quot;</span>",
             EasyRdf_Utils::dumpLiteralValue($literal, true)
         );
@@ -224,11 +224,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testDumpLiteralValueWithLanguage()
     {
         $literal = array('type' => 'literal', 'value' => 'Nick', 'lang' => 'en');
-        $this->assertEquals(
+        $this->assertSame(
             '"Nick"@en',
             EasyRdf_Utils::dumpLiteralValue($literal, false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             "<span style='color:black'>&quot;Nick&quot;@en</span>",
             EasyRdf_Utils::dumpLiteralValue($literal, true)
         );
@@ -241,11 +241,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
             'value' => '1',
             'datatype' => 'http://www.w3.org/2001/XMLSchema#integer'
         );
-        $this->assertEquals(
+        $this->assertSame(
             '"1"^^xsd:integer',
             EasyRdf_Utils::dumpLiteralValue($literal, false)
         );
-        $this->assertEquals(
+        $this->assertSame(
             "<span style='color:black'>&quot;1&quot;^^xsd:integer</span>",
             EasyRdf_Utils::dumpLiteralValue($literal, true)
         );
@@ -254,46 +254,46 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testParseMimeTypeBasic()
     {
         list($type) = EasyRdf_Utils::parseMimeType('text/plain');
-        $this->assertEquals('text/plain', $type);
+        $this->assertSame('text/plain', $type);
     }
 
     public function testParseMimeTypeMixedCase()
     {
         list($type) = EasyRdf_Utils::parseMimeType('TEXT/Plain');
-        $this->assertEquals('text/plain', $type);
+        $this->assertSame('text/plain', $type);
     }
 
     public function testParseMimeTypeBasicWithWhitespace()
     {
         list($type) = EasyRdf_Utils::parseMimeType(' text/plain  ');
-        $this->assertEquals('text/plain', $type);
+        $this->assertSame('text/plain', $type);
     }
 
     public function testParseMimeTypeBasicWithCharset()
     {
         list($type, $params) = EasyRdf_Utils::parseMimeType('text/plain;charset=utf8');
-        $this->assertEquals('text/plain', $type);
-        $this->assertEquals('utf8', $params['charset']);
+        $this->assertSame('text/plain', $type);
+        $this->assertSame('utf8', $params['charset']);
     }
 
     public function testParseMimeTypeBasicWithMixedcaseCharset()
     {
         list($type, $params) = EasyRdf_Utils::parseMimeType('text/plain;charset=UTF8');
-        $this->assertEquals('text/plain', $type);
-        $this->assertEquals('utf8', $params['charset']);
+        $this->assertSame('text/plain', $type);
+        $this->assertSame('utf8', $params['charset']);
     }
 
     public function testParseMimeTypeBasicWithCharsetAndWhitespace()
     {
         list($type, $params) = EasyRdf_Utils::parseMimeType(' text/plain ; charset = utf8 ');
-        $this->assertEquals('text/plain', $type);
-        $this->assertEquals('utf8', $params['charset']);
+        $this->assertSame('text/plain', $type);
+        $this->assertSame('utf8', $params['charset']);
     }
 
     public function testExecCommandPipeTrue()
     {
         $output = EasyRdf_Utils::execCommandPipe('true');
-        $this->assertEquals('', $output);
+        $this->assertSame('', $output);
     }
 
     public function testExecCommandPipeLs()
@@ -311,13 +311,13 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testExecCommandPipeEcho()
     {
         $output = EasyRdf_Utils::execCommandPipe('echo', 'Test Message');
-        $this->assertEquals("Test Message\n", $output);
+        $this->assertSame("Test Message\n", $output);
     }
 
     public function testExecCommandPipeCat()
     {
         $output = EasyRdf_Utils::execCommandPipe('cat', null, 'Test Message 2');
-        $this->assertEquals("Test Message 2", $output);
+        $this->assertSame("Test Message 2", $output);
     }
 
     public function testExecCommandPipeFalse()

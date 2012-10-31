@@ -51,7 +51,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
 
     public function testGetUri()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://localhost:8080/sparql',
             $this->_sparql->getUri()
         );
@@ -67,7 +67,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $result = $this->_sparql->query("SELECT * WHERE {?s ?p ?o}");
-        $this->assertEquals(14, count($result));
+        $this->assertCount(14, $result);
         $this->assertEquals(
             new EasyRdf_Resource('_:genid1'), $result[0]->s
         );
@@ -89,9 +89,9 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $result = $this->_sparql->query("SELECT * WHERE {?s ?p ?o}");
-        $this->assertEquals(14, count($result));
-        $this->assertEquals(3, $result->numFields());
-        $this->assertEquals(array('s','p','o'), $result->getFields());
+        $this->assertCount(14, $result);
+        $this->assertSame(3, $result->numFields());
+        $this->assertSame(array('s','p','o'), $result->getFields());
         $this->assertEquals(
             new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
         );
@@ -126,7 +126,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $result = $this->_sparql->query("SELECT ?t WHERE {?s rdf:type ?t}");
-        $this->assertEquals(3, count($result));
+        $this->assertCount(3, $result);
         $this->assertEquals(
             new EasyRdf_Resource('http://xmlns.com/foaf/0.1/Project'), $result[0]->t
         );
@@ -148,7 +148,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $result = $this->_sparql->query("ASK WHERE {?s ?p ?o}");
-        $this->assertEquals(true, $result->getBoolean());
+        $this->assertSame(true, $result->getBoolean());
     }
 
     public function testQueryAskFalse()
@@ -161,7 +161,8 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $result = $this->_sparql->query("ASK WHERE {?s ?p <false>}");
-        $this->assertEquals(false, $result->getBoolean());
+        $this->assertSame(
+        false, $result->getBoolean());
     }
 
     public function testQueryConstructJson()
@@ -174,7 +175,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $graph = $this->_sparql->query("CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
-        $this->assertInstanceOf('EasyRdf_Graph', $graph);
+        $this->assertClass('EasyRdf_Graph', $graph);
         $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
         $this->assertStringEquals('Joe Bloggs', $name);
     }
@@ -189,7 +190,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $graph = $this->_sparql->query("CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
-        $this->assertInstanceOf('EasyRdf_Graph', $graph);
+        $this->assertClass('EasyRdf_Graph', $graph);
         $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
         $this->assertStringEquals('Joe Bloggs', $name);
     }

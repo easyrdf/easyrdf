@@ -10,9 +10,9 @@ class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
         $literal = new EasyRdf_Literal_Boolean(true);
         $this->assertStringEquals('true', $literal);
         $this->assertInternalType('bool', $literal->getValue());
-        $this->assertEquals(true, $literal->getValue());
-        $this->assertEquals(null, $literal->getLang());
-        $this->assertEquals('xsd:boolean', $literal->getDatatype());
+        $this->assertSame(true, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:boolean', $literal->getDatatype());
     }
 
     public function testConstructFalse()
@@ -20,9 +20,9 @@ class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
         $literal = new EasyRdf_Literal_Boolean(false);
         $this->assertStringEquals('false', $literal);
         $this->assertInternalType('bool', $literal->getValue());
-        $this->assertEquals(false, $literal->getValue());
-        $this->assertEquals(null, $literal->getLang());
-        $this->assertEquals('xsd:boolean', $literal->getDatatype());
+        $this->assertSame(false, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:boolean', $literal->getDatatype());
     }
 
     public function testConstructCast1()
@@ -30,9 +30,9 @@ class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
         $literal = new EasyRdf_Literal_Boolean(1);
         $this->assertStringEquals('true', $literal);
         $this->assertInternalType('bool', $literal->getValue());
-        $this->assertEquals(true, $literal->getValue());
-        $this->assertEquals(null, $literal->getLang());
-        $this->assertEquals('xsd:boolean', $literal->getDatatype());
+        $this->assertSame(true, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:boolean', $literal->getDatatype());
     }
 
     public function testConstructCast0()
@@ -40,26 +40,26 @@ class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
         $literal = new EasyRdf_Literal_Boolean(0);
         $this->assertStringEquals('false', $literal);
         $this->assertInternalType('bool', $literal->getValue());
-        $this->assertEquals(false, $literal->getValue());
-        $this->assertEquals(null, $literal->getLang());
-        $this->assertEquals('xsd:boolean', $literal->getDatatype());
+        $this->assertSame(false, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:boolean', $literal->getDatatype());
     }
 
     public function testIsTrue()
     {
         $true = new EasyRdf_Literal_Boolean(true);
-        $this->assertEquals(true, $true->isTrue());
+        $this->assertSame(true, $true->isTrue());
 
         $false = new EasyRdf_Literal_Boolean(false);
-        $this->assertEquals(false, $false->isTrue());
+        $this->assertSame(false, $false->isTrue());
     }
 
     public function testIsFalse()
     {
         $false = new EasyRdf_Literal_Boolean(false);
-        $this->assertEquals(true, $false->isFalse());
+        $this->assertSame(true, $false->isFalse());
 
         $true = new EasyRdf_Literal_Boolean(true);
-        $this->assertEquals(false, $true->isFalse());
+        $this->assertSame(false, $true->isFalse());
     }
 }
