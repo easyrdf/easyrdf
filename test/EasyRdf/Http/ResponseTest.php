@@ -17,8 +17,8 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
         $response = EasyRdf_Http_Response::fromString(
             readFixture('http_response_200')
         );
-        $this->assertEquals(
-            1.1,
+        $this->assertSame(
+            '1.1',
             $response->getVersion(),
             'Version is expected to be 1.1'
         );
@@ -29,7 +29,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
         $response = EasyRdf_Http_Response::fromString(
             readFixture('http_response_200')
         );
-        $this->assertEquals(
+        $this->assertSame(
             'OK',
             $response->getMessage(),
             'Message is expected to be OK'
@@ -41,7 +41,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
         $response = EasyRdf_Http_Response::fromString(
             readFixture('http_response_200')
         );
-        $this->assertEquals(
+        $this->assertSame(
             "Hello World\n",
             $response->getBody()
         );
@@ -72,7 +72,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
         $response = EasyRdf_Http_Response::fromString(
             readFixture('http_response_200_chunked')
         );
-        $this->assertEquals(
+        $this->assertSame(
             "Hello World",
             $response->getBody()
         );
@@ -96,7 +96,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             readFixture('http_response_200')
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             200,
             $response->getStatus(),
             'Response code is expected to be 200, but it\'s not.'
@@ -121,7 +121,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             readFixture('http_response_404')
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             404,
             $response->getStatus(),
             'Response code is expected to be 404, but it\'s not.'
@@ -146,7 +146,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             readFixture('http_response_500')
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             500,
             $response->getStatus(),
             'Response code is expected to be 500, but it\'s not.'
@@ -171,12 +171,12 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             readFixture('http_response_302')
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             302,
             $response->getStatus(),
             'Response code is expected to be 302, but it\'s not.'
         );
-        $this->assertEquals(
+        $this->assertSame(
             'http://localhost/new/location',
             $response->getHeader('Location'),
             'Response code is expected to be 302, but it\'s not.'
@@ -201,21 +201,20 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             readFixture('http_response_200')
         );
 
-        $this->assertEquals(
-            8,
-            count($response->getHeaders()),
+        $this->assertCount(
+            8, $response->getHeaders(),
             'Header count is not as expected'
         );
-        $this->assertEquals(
+        $this->assertSame(
             'Apache/2.2.9 (Unix) PHP/5.2.6',
             $response->getHeader('Server'), 'Server header is not as expected'
         );
-        $this->assertEquals(
+        $this->assertSame(
             'text/plain',
             $response->getHeader('Content-Type'),
             'Content-type header is not as expected'
         );
-        $this->assertEquals(
+        $this->assertSame(
             array('foo','bar'),
             $response->getHeader('X-Multiple'),
             'Header with multiple values is not as expected'
@@ -228,12 +227,12 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
         $responseStr = readFixture('http_response_404');
         $response = EasyRdf_Http_Response::fromString($responseStr);
 
-        $this->assertEquals(
+        $this->assertSame(
             strtolower($responseStr),
             strtolower($response->asString()),
             'Response convertion to string does not match original string'
         );
-        $this->assertEquals(
+        $this->assertSame(
             strtolower($responseStr),
             strtolower((string)$response),
             'Response convertion to string does not match original string'

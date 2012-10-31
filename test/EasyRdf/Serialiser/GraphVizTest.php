@@ -66,7 +66,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
     function testSetDotCommand()
     {
         $this->_serialiser->setDotCommand('/usr/bin/dot');
-        $this->assertEquals('/usr/bin/dot', $this->_serialiser->getDotCommand());
+        $this->assertSame('/usr/bin/dot', $this->_serialiser->getDotCommand());
     }
 
     function testSetUseLabelsTrue()
@@ -95,7 +95,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
 
     function testGetAtrributeCharset()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'utf-8',
             $this->_serialiser->getAttribute('charset')
         );
@@ -104,9 +104,9 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
     function testSetAtrribute()
     {
         $this->_serialiser->setAttribute('rankdir', 'LR');
-        $this->assertEquals('LR', $this->_serialiser->getAttribute('rankdir'));
+        $this->assertSame('LR', $this->_serialiser->getAttribute('rankdir'));
         $this->_serialiser->setAttribute('rankdir', 'RL');
-        $this->assertEquals('RL', $this->_serialiser->getAttribute('rankdir'));
+        $this->assertSame('RL', $this->_serialiser->getAttribute('rankdir'));
     }
 
     function testSerialiseDot()
@@ -114,7 +114,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         $this->_serialiser->setUseLabels(false);
         $this->_serialiser->setOnlyLabelled(false);
         $dot = $this->_serialiser->serialise($this->_graph, 'dot');
-        $this->assertEquals(
+        $this->assertSame(
             array(
                 'digraph {',
                 '  charset="utf-8";',
@@ -142,7 +142,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         $this->_serialiser->setOnlyLabelled(false);
         $dot = $this->_serialiser->serialise($this->_graph, 'dot');
 
-        $this->assertEquals(
+        $this->assertSame(
             array(
                 'digraph {',
                 '  charset="utf-8";',
@@ -171,7 +171,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         $this->_serialiser->setOnlyLabelled(true);
         $dot = $this->_serialiser->serialise($this->_graph, 'dot');
 
-        $this->assertEquals(
+        $this->assertSame(
             array(
                 'digraph {',
                 '  charset="utf-8";',
@@ -198,7 +198,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
             'data:application/octet-stream;base64,'.base64_encode($img)
         );
 
-        $this->assertEquals('image/png', $info['mime']);
+        $this->assertSame('image/png', $info['mime']);
         $this->assertTrue(400 > $info[0], 'Image width is less than 400');  # width=373
         $this->assertTrue(350 < $info[0], 'Image width is greater than 350');
         $this->assertTrue(350 > $info[1], 'Image height is less than 350');  # height=299
@@ -214,7 +214,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
             'data:application/octet-stream;base64,'.base64_encode($img)
         );
 
-        $this->assertEquals('image/gif', $info['mime']);
+        $this->assertSame('image/gif', $info['mime']);
         $this->assertTrue(400 > $info[0], 'Image width is less than 400');  # width=373
         $this->assertTrue(350 < $info[0], 'Image width is greater than 350');
         $this->assertTrue(350 > $info[1], 'Image height is less than 350');  # height=299

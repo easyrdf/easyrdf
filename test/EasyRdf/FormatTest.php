@@ -100,7 +100,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->assertInternalType('array', $formats);
         $this->assertGreaterThan(0, count($formats));
         foreach ($formats as $format) {
-            $this->assertEquals('EasyRdf_Format', get_class($format));
+            $this->assertClass('EasyRdf_Format', $format);
         }
     }
 
@@ -138,50 +138,50 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     {
         $format = EasyRdf_Format::getFormat('my');
         $this->assertNotNull($format);
-        $this->assertEquals('EasyRdf_Format', get_class($format));
-        $this->assertEquals('my', $format->getName());
-        $this->assertEquals('My Format', $format->getLabel());
-        $this->assertEquals('http://example.com/myformat', $format->getUri());
+        $this->assertClass('EasyRdf_Format', $format);
+        $this->assertSame('my', $format->getName());
+        $this->assertSame('My Format', $format->getLabel());
+        $this->assertSame('http://example.com/myformat', $format->getUri());
     }
 
     public function testGetFormatByUri()
     {
         $format = EasyRdf_Format::getFormat('http://example.com/myformat');
         $this->assertNotNull($format);
-        $this->assertEquals('EasyRdf_Format', get_class($format));
-        $this->assertEquals('my', $format->getName());
-        $this->assertEquals('My Format', $format->getLabel());
-        $this->assertEquals('http://example.com/myformat', $format->getUri());
+        $this->assertClass('EasyRdf_Format', $format);
+        $this->assertSame('my', $format->getName());
+        $this->assertSame('My Format', $format->getLabel());
+        $this->assertSame('http://example.com/myformat', $format->getUri());
     }
 
     public function testGetFormatByMime()
     {
         $format = EasyRdf_Format::getFormat('my/mime');
         $this->assertNotNull($format);
-        $this->assertEquals('EasyRdf_Format', get_class($format));
-        $this->assertEquals('my', $format->getName());
-        $this->assertEquals('My Format', $format->getLabel());
-        $this->assertEquals('http://example.com/myformat', $format->getUri());
+        $this->assertClass('EasyRdf_Format', $format);
+        $this->assertSame('my', $format->getName());
+        $this->assertSame('My Format', $format->getLabel());
+        $this->assertSame('http://example.com/myformat', $format->getUri());
     }
 
     public function testGetFormatByMime2()
     {
         $format = EasyRdf_Format::getFormat('my/x-mime');
         $this->assertNotNull($format);
-        $this->assertEquals('EasyRdf_Format', get_class($format));
-        $this->assertEquals('my', $format->getName());
-        $this->assertEquals('My Format', $format->getLabel());
-        $this->assertEquals('http://example.com/myformat', $format->getUri());
+        $this->assertClass('EasyRdf_Format', $format);
+        $this->assertSame('my', $format->getName());
+        $this->assertSame('My Format', $format->getLabel());
+        $this->assertSame('http://example.com/myformat', $format->getUri());
     }
 
     public function testGetFormatByExtension()
     {
         $format = EasyRdf_Format::getFormat('mext');
         $this->assertNotNull($format);
-        $this->assertEquals('EasyRdf_Format', get_class($format));
-        $this->assertEquals('my', $format->getName());
-        $this->assertEquals('My Format', $format->getLabel());
-        $this->assertEquals('http://example.com/myformat', $format->getUri());
+        $this->assertClass('EasyRdf_Format', $format);
+        $this->assertSame('my', $format->getName());
+        $this->assertSame('My Format', $format->getLabel());
+        $this->assertSame('http://example.com/myformat', $format->getUri());
     }
 
     public function testGetFormatNull()
@@ -217,7 +217,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'Format is not recognised: unknown'
         );
-        $this->assertEquals(null, EasyRdf_Format::getFormat('unknown'));
+        $this->assertSame(NULL, EasyRdf_Format::getFormat('unknown'));
     }
 
     public function testGetNames()
@@ -229,30 +229,30 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('my', $this->_format->getName());
+        $this->assertSame('my', $this->_format->getName());
     }
 
     public function testGetLabel()
     {
-        $this->assertEquals('My Format', $this->_format->getLabel());
+        $this->assertSame('My Format', $this->_format->getLabel());
     }
 
     public function testSetLabel()
     {
         $this->_format->setLabel('testSetLabel');
-        $this->assertEquals('testSetLabel', $this->_format->getLabel());
+        $this->assertSame('testSetLabel', $this->_format->getLabel());
     }
 
     public function testSetLabelNull()
     {
         $this->_format->setLabel(null);
-        $this->assertEquals(null, $this->_format->getLabel());
+        $this->assertSame(NULL, $this->_format->getLabel());
     }
 
     public function testSetLabelEmpty()
     {
         $this->_format->setLabel('');
-        $this->assertEquals(null, $this->_format->getLabel());
+        $this->assertSame(NULL, $this->_format->getLabel());
     }
 
     public function testSetLabelNonString()
@@ -267,19 +267,19 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetUri()
     {
         $this->_format->setUri('testSetUri');
-        $this->assertEquals('testSetUri', $this->_format->getUri());
+        $this->assertSame('testSetUri', $this->_format->getUri());
     }
 
     public function testSetUriNull()
     {
         $this->_format->setUri(null);
-        $this->assertEquals(null, $this->_format->getUri());
+        $this->assertSame(NULL, $this->_format->getUri());
     }
 
     public function testSetUriEmpty()
     {
         $this->_format->setUri('');
-        $this->assertEquals(null, $this->_format->getUri());
+        $this->assertSame(NULL, $this->_format->getUri());
     }
 
     public function testSetUriNonString()
@@ -293,7 +293,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testGetUri()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'http://example.com/myformat',
             $this->_format->getUri()
         );
@@ -301,7 +301,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testGetDefaultMimeType()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'my/mime',
             $this->_format->getDefaultMimeType()
         );
@@ -309,7 +309,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testGetMimeTypes()
     {
-        $this->assertEquals(
+        $this->assertSame(
             array('my/mime' => 1.0, 'my/x-mime' => 0.9),
             $this->_format->getMimeTypes()
         );
@@ -318,7 +318,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetMimeType()
     {
         $this->_format->setMimeTypes('testSetMimeType');
-        $this->assertEquals(
+        $this->assertSame(
             array('testSetMimeType'),
             $this->_format->getMimeTypes()
         );
@@ -329,7 +329,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->_format->setMimeTypes(
             array('testSetMimeTypes1', 'testSetMimeTypes2')
         );
-        $this->assertEquals(
+        $this->assertSame(
             array('testSetMimeTypes1', 'testSetMimeTypes2'),
             $this->_format->getMimeTypes()
         );
@@ -338,12 +338,12 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetMimeTypeNull()
     {
         $this->_format->setMimeTypes(null);
-        $this->assertEquals(array(), $this->_format->getMimeTypes());
+        $this->assertSame(array(), $this->_format->getMimeTypes());
     }
 
     public function testGetDefaultExtension()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'mext',
             $this->_format->getDefaultExtension()
         );
@@ -351,7 +351,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
 
     public function testGetExtensions()
     {
-        $this->assertEquals(
+        $this->assertSame(
             array('mext'),
             $this->_format->getExtensions()
         );
@@ -360,7 +360,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetExtension()
     {
         $this->_format->setExtensions('testSetExtension');
-        $this->assertEquals(
+        $this->assertSame(
             array('testSetExtension'),
             $this->_format->getExtensions()
         );
@@ -371,7 +371,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->_format->setExtensions(
             array('ext1', 'ext2')
         );
-        $this->assertEquals(
+        $this->assertSame(
             array('ext1', 'ext2'),
             $this->_format->getExtensions()
         );
@@ -380,7 +380,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetExtensionsNull()
     {
         $this->_format->setExtensions(null);
-        $this->assertEquals(array(), $this->_format->getExtensions());
+        $this->assertSame(array(), $this->_format->getExtensions());
     }
 
     public function testToString()
@@ -391,7 +391,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetParserClass()
     {
         $this->_format->setParserClass('MockParserClass');
-        $this->assertEquals(
+        $this->assertSame(
             'MockParserClass',
             $this->_format->getParserClass()
         );
@@ -400,13 +400,13 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetParserClassNull()
     {
         $this->_format->setParserClass(null);
-        $this->assertEquals(null, $this->_format->getParserClass());
+        $this->assertSame(NULL, $this->_format->getParserClass());
     }
 
     public function testSetParserClassEmpty()
     {
         $this->_format->setParserClass('');
-        $this->assertEquals(null, $this->_format->getParserClass());
+        $this->assertSame(NULL, $this->_format->getParserClass());
     }
 
     public function testSetParserClassNonString()
@@ -421,7 +421,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testRegisterParser()
     {
         EasyRdf_Format::registerParser('my', 'MockParserClass');
-        $this->assertEquals(
+        $this->assertSame(
             'MockParserClass',
             $this->_format->getParserClass()
         );
@@ -432,7 +432,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         EasyRdf_Format::registerParser('testRegisterParser', 'MockParserClass');
         $format = EasyRdf_Format::getFormat('testRegisterParser');
         $this->assertNotNull($format);
-        $this->assertEquals('MockParserClass', $format->getParserClass());
+        $this->assertSame('MockParserClass', $format->getParserClass());
     }
 
     public function testNewParser()
@@ -440,7 +440,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->_format->setParserClass('MockParserClass');
         $parser = $this->_format->newParser();
         $this->assertInternalType('object', $parser);
-        $this->assertEquals('MockParserClass', get_class($parser));
+        $this->assertClass('MockParserClass', $parser);
     }
 
     public function testNewParserNull()
@@ -456,7 +456,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetSerialiserClass()
     {
         $this->_format->setSerialiserClass('MockSerialiserClass');
-        $this->assertEquals(
+        $this->assertSame(
             'MockSerialiserClass',
             $this->_format->getSerialiserClass()
         );
@@ -465,13 +465,13 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetSerialiserClassNull()
     {
         $this->_format->setSerialiserClass(null);
-        $this->assertEquals(null, $this->_format->getSerialiserClass());
+        $this->assertSame(NULL, $this->_format->getSerialiserClass());
     }
 
     public function testSetSerialiserClassEmpty()
     {
         $this->_format->setSerialiserClass('');
-         $this->assertEquals(null, $this->_format->getSerialiserClass());
+         $this->assertSame(NULL, $this->_format->getSerialiserClass());
     }
 
     public function testSetSerialiserClassNonString()
@@ -488,7 +488,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->_format->setSerialiserClass('MockSerialiserClass');
         $serialiser = $this->_format->newSerialiser();
         $this->assertInternalType('object', $serialiser);
-        $this->assertEquals('MockSerialiserClass', get_class($serialiser));
+        $this->assertClass('MockSerialiserClass', $serialiser);
     }
 
     public function testNewSerialiserNull()
@@ -504,7 +504,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testRegisterSerialiser()
     {
         EasyRdf_Format::registerSerialiser('my', 'MockSerialiserClass');
-        $this->assertEquals(
+        $this->assertSame(
             'MockSerialiserClass',
             $this->_format->getSerialiserClass()
         );
@@ -517,7 +517,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         );
         $format = EasyRdf_Format::getFormat('testRegisterSerialiser');
         $this->assertNotNull($format);
-        $this->assertEquals(
+        $this->assertSame(
             'MockSerialiserClass',
             $format->getSerialiserClass()
         );
@@ -586,7 +586,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $format = EasyRdf_Format::guessFormat(
             '<html><head><title>Hello</title></head><body><h1>Hello World</h1></body></html>'
         );
-        $this->assertEquals('rdfa', $format);
+        $this->assertStringEquals('rdfa', $format);
     }
 
     public function testGuessFormatXml()
@@ -595,7 +595,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $format = EasyRdf_Format::guessFormat(
             '<?xml version="1.0" encoding="UTF-8"?>'
         );
-        $this->assertEquals(NULL, $format);
+        $this->assertSame(NULL, $format);
     }
 
     public function testGuessFormatByFilenameTtl()

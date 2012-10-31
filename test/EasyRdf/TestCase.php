@@ -42,12 +42,13 @@ class EasyRdf_TestCase extends PHPUnit_Framework_TestCase
 
     public function assertStringEquals($str1, $str2, $message=null)
     {
-        $this->assertEquals(strval($str1), strval($str2), $message);
+        $this->assertSame(strval($str1), strval($str2), $message);
     }
 
+    // Note: this differs from assertInstanceOf because it disallows subclasses
     public function assertClass($class, $object)
     {
-        $this->assertEquals($class, get_class($object));
+        $this->assertSame($class, get_class($object));
     }
 
 }

@@ -43,18 +43,18 @@ class EasyRdf_HttpTest extends EasyRdf_TestCase
 // FIXME: this test needs to run before the first call to setDefaultHttpClient()
 //     public function testGetDefaultHttpClient()
 //     {
-//         $this->assertEquals(
+//         $this->assertClass(
 //             'EasyRdf_Http_Client',
-//             get_class(EasyRdf_Http::getDefaultHttpClient())
+//             EasyRdf_Http::getDefaultHttpClient()
 //         );
 //     }
 
     public function testSetDefaultHttpClient()
     {
         EasyRdf_Http::setDefaultHttpClient(new EasyRdf_Http_MockClient());
-        $this->assertEquals(
+        $this->assertClass(
             'EasyRdf_Http_MockClient',
-            get_class(EasyRdf_Http::getDefaultHttpClient())
+            EasyRdf_Http::getDefaultHttpClient()
         );
     }
 

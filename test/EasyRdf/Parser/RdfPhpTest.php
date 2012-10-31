@@ -65,28 +65,28 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
     public function testParse()
     {
         $count = $this->_parser->parse($this->_graph, $this->_data, 'php', null);
-        $this->assertEquals(1, $count);
+        $this->assertSame(1, $count);
 
         $joe = $this->_graph->resource('http://example.com/joe');
         $this->assertNotNull($joe);
-        $this->assertEquals('EasyRdf_Resource', get_class($joe));
-        $this->assertEquals('http://example.com/joe', $joe->getUri());
+        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertSame('http://example.com/joe', $joe->getUri());
         $this->assertNull($joe->type());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertEquals('EasyRdf_Literal', get_class($name));
-        $this->assertEquals('Joseph Bloggs', $name->getValue());
-        $this->assertEquals('en', $name->getLang());
-        $this->assertEquals(null, $name->getDatatype());
+        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertSame('Joseph Bloggs', $name->getValue());
+        $this->assertSame('en', $name->getLang());
+        $this->assertSame(NULL, $name->getDatatype());
     }
 
     public function testParseTwice()
     {
         $count = $this->_parser->parse($this->_graph, $this->_data, 'php', null);
-        $this->assertEquals(1, $count);
+        $this->assertSame(1, $count);
         $count = $this->_parser->parse($this->_graph, $this->_data, 'php', null);
-        $this->assertEquals(0, $count);
+        $this->assertSame(0, $count);
     }
 
     public function testParseDuplicateBNodes()

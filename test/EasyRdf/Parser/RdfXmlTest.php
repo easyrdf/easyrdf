@@ -62,19 +62,19 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
-        $this->assertEquals(14, $count);
+        $this->assertSame(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertEquals('EasyRdf_Resource', get_class($joe));
-        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
+        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertEquals('EasyRdf_Literal', get_class($name));
+        $this->assertClass('EasyRdf_Literal', $name);
         $this->assertStringEquals('Joe Bloggs', $name);
-        $this->assertEquals('en', $name->getLang());
-        $this->assertEquals(null, $name->getDatatype());
+        $this->assertSame('en', $name->getLang());
+        $this->assertSame(NULL, $name->getDatatype());
 
         $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);
@@ -96,10 +96,10 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
             $this->_graph, $data, 'rdfxml',
             'http://www.w3.org/TR/REC-rdf-syntax/'
         );
-        $this->assertEquals(5, $count);
+        $this->assertSame(5, $count);
 
         $favourites = $this->_graph->resource('http://example.org/favourite-fruit');
-        $this->assertEquals('rdf:Seq', $favourites->type());
+        $this->assertSame('rdf:Seq', $favourites->type());
         $this->assertStringEquals('http://example.org/banana', $favourites->get('rdf:_1'));
         $this->assertStringEquals('http://example.org/apple', $favourites->get('rdf:_2'));
         $this->assertStringEquals('http://example.org/pear', $favourites->get('rdf:_3'));

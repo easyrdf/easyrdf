@@ -61,7 +61,7 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
         $project->add('foaf:name', 'Project Name');
         $joe->add('foaf:project', $project);
 
-        $this->assertEquals(
+        $this->assertSame(
             '{"http:\/\/www.example.com\/joe#me":{'.
             '"http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#type":['.
             '{"type":"uri","value":"http:\/\/xmlns.com\/foaf\/0.1\/Person"}],'.

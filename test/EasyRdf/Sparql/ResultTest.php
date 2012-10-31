@@ -48,11 +48,11 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+xml'
         );
 
-        $this->assertEquals(3, $result->numFields());
-        $this->assertEquals(array('s','p','o'), $result->getFields());
+        $this->assertSame(3, $result->numFields());
+        $this->assertSame(array('s','p','o'), $result->getFields());
 
-        $this->assertEquals(14, count($result));
-        $this->assertEquals(14, $result->numRows());
+        $this->assertCount(14, $result);
+        $this->assertSame(14, $result->numRows());
         $this->assertEquals(
             new EasyRdf_Resource('_:genid1'), $result[0]->s
         );
@@ -71,11 +71,11 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+xml'
         );
 
-        $this->assertEquals(3, $result->numFields());
-        $this->assertEquals(array('s','p','o'), $result->getFields());
+        $this->assertSame(3, $result->numFields());
+        $this->assertSame(array('s','p','o'), $result->getFields());
 
-        $this->assertEquals(14, count($result));
-        $this->assertEquals(14, $result->numRows());
+        $this->assertCount(14, $result);
+        $this->assertSame(14, $result->numRows());
         $this->assertEquals(
             new EasyRdf_Resource('_:genid1'), $result[0]->s
         );
@@ -94,11 +94,11 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+json'
         );
 
-        $this->assertEquals(3, $result->numFields());
-        $this->assertEquals(array('s','p','o'), $result->getFields());
+        $this->assertSame(3, $result->numFields());
+        $this->assertSame(array('s','p','o'), $result->getFields());
 
-        $this->assertEquals(14, count($result));
-        $this->assertEquals(14, $result->numRows());
+        $this->assertCount(14, $result);
+        $this->assertSame(14, $result->numRows());
         $this->assertEquals(
             new EasyRdf_Resource('_:genid1'), $result[0]->s
         );
@@ -117,9 +117,9 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+xml'
         );
 
-        $this->assertEquals(3, $result->numFields());
-        $this->assertEquals(array('s','p','o'), $result->getFields());
-        $this->assertEquals(0, count($result));
+        $this->assertSame(3, $result->numFields());
+        $this->assertSame(array('s','p','o'), $result->getFields());
+        $this->assertCount(0, $result);
     }
 
     public function testSelectEmptyJson()
@@ -129,9 +129,9 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+json'
         );
 
-        $this->assertEquals(3, $result->numFields());
-        $this->assertEquals(array('s','p','o'), $result->getFields());
-        $this->assertEquals(0, count($result));
+        $this->assertSame(3, $result->numFields());
+        $this->assertSame(array('s','p','o'), $result->getFields());
+        $this->assertCount(0, $result);
     }
 
     public function testSelectLangLiteralXml()
@@ -143,21 +143,21 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         # 1st: Example using xml:lang="en"
         $first = $result[0];
-        $this->assertEquals('London', $first->label->getValue());
-        $this->assertEquals('en', $first->label->getLang());
-        $this->assertEquals(null, $first->label->getDatatype());
+        $this->assertSame('London', $first->label->getValue());
+        $this->assertSame('en', $first->label->getLang());
+        $this->assertSame(NULL, $first->label->getDatatype());
 
         # 2nd: Example using xml:lang="es"
         $second = $result[1];
-        $this->assertEquals('Londres', $second->label->getValue());
-        $this->assertEquals('es', $second->label->getLang());
-        $this->assertEquals(null, $second->label->getDatatype());
+        $this->assertSame('Londres', $second->label->getValue());
+        $this->assertSame('es', $second->label->getLang());
+        $this->assertSame(NULL, $second->label->getDatatype());
 
         # 3rd: no lang
         $third = $result[2];
-        $this->assertEquals('London', $third->label->getValue());
-        $this->assertEquals(null, $third->label->getLang());
-        $this->assertEquals(null, $third->label->getDatatype());
+        $this->assertSame('London', $third->label->getValue());
+        $this->assertSame(NULL, $third->label->getLang());
+        $this->assertSame(NULL, $third->label->getDatatype());
     }
 
     public function testSelectLangLiteralJson()
@@ -169,21 +169,21 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         # 1st: Example using xml:lang="en"
         $first = $result[0];
-        $this->assertEquals('London', $first->label->getValue());
-        $this->assertEquals('en', $first->label->getLang());
-        $this->assertEquals(null, $first->label->getDatatype());
+        $this->assertSame('London', $first->label->getValue());
+        $this->assertSame('en', $first->label->getLang());
+        $this->assertSame(NULL, $first->label->getDatatype());
 
         # 2nd: Example using lang="es"
         $second = $result[1];
-        $this->assertEquals('Londres', $second->label->getValue());
-        $this->assertEquals('es', $second->label->getLang());
-        $this->assertEquals(null, $second->label->getDatatype());
+        $this->assertSame('Londres', $second->label->getValue());
+        $this->assertSame('es', $second->label->getLang());
+        $this->assertSame(NULL, $second->label->getDatatype());
 
         # 3rd: no lang
         $third = $result[2];
-        $this->assertEquals('London', $third->label->getValue());
-        $this->assertEquals(null, $third->label->getLang());
-        $this->assertEquals(null, $third->label->getDatatype());
+        $this->assertSame('London', $third->label->getValue());
+        $this->assertSame(NULL, $third->label->getLang());
+        $this->assertSame(NULL, $third->label->getDatatype());
     }
 
     public function testSelectTypedLiteralJson()
@@ -219,14 +219,14 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+json'
         );
 
-        $this->assertEquals('boolean', $result->getType());
+        $this->assertSame('boolean', $result->getType());
         $this->assertFalse($result->isFalse());
         $this->assertTrue($result->isTrue());
-        $this->assertEquals(true, $result->getBoolean());
+        $this->assertSame(true, $result->getBoolean());
         $this->assertStringEquals('true', $result);
 
-        $this->assertEquals(0, $result->numFields());
-        $this->assertEquals(0, $result->numRows());
+        $this->assertSame(0, $result->numFields());
+        $this->assertSame(0, $result->numRows());
     }
 
     public function testAskFalseJson()
@@ -236,14 +236,14 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+json'
         );
 
-        $this->assertEquals('boolean', $result->getType());
+        $this->assertSame('boolean', $result->getType());
         $this->assertTrue($result->isFalse());
         $this->assertFalse($result->isTrue());
-        $this->assertEquals(false, $result->getBoolean());
+        $this->assertSame(false, $result->getBoolean());
         $this->assertStringEquals('false', $result);
 
-        $this->assertEquals(0, $result->numFields());
-        $this->assertEquals(0, $result->numRows());
+        $this->assertSame(0, $result->numFields());
+        $this->assertSame(0, $result->numRows());
     }
 
     public function testAskTrueXml()
@@ -252,14 +252,14 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             readFixture('sparql_ask_true.xml'),
             'application/sparql-results+xml'
         );
-        $this->assertEquals('boolean', $result->getType());
+        $this->assertSame('boolean', $result->getType());
         $this->assertFalse($result->isFalse());
         $this->assertTrue($result->isTrue());
-        $this->assertEquals(true, $result->getBoolean());
+        $this->assertSame(true, $result->getBoolean());
         $this->assertStringEquals('true', $result);
 
-        $this->assertEquals(0, $result->numFields());
-        $this->assertEquals(0, $result->numRows());
+        $this->assertSame(0, $result->numFields());
+        $this->assertSame(0, $result->numRows());
     }
 
     public function testAskFalseXml()
@@ -268,14 +268,14 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             readFixture('sparql_ask_false.xml'),
             'application/sparql-results+xml'
         );
-        $this->assertEquals('boolean', $result->getType());
+        $this->assertSame('boolean', $result->getType());
         $this->assertTrue($result->isFalse());
         $this->assertFalse($result->isTrue());
-        $this->assertEquals(false, $result->getBoolean());
+        $this->assertSame(false, $result->getBoolean());
         $this->assertStringEquals('false', $result);
 
-        $this->assertEquals(0, $result->numFields());
-        $this->assertEquals(0, $result->numRows());
+        $this->assertSame(0, $result->numFields());
+        $this->assertSame(0, $result->numRows());
     }
 
     public function testInvalidXml()
@@ -383,7 +383,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         );
 
         $text = $result->dump(false);
-        $this->assertEquals("Result: false", $text);
+        $this->assertSame("Result: false", $text);
     }
 
     public function testUnsupportedFormat()

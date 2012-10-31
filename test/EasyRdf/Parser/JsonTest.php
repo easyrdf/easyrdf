@@ -55,48 +55,48 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
     {
         $data = readFixture('foaf.json');
         $count = $this->_parser->parse($this->_graph, $data, 'json', null);
-        $this->assertEquals(14, $count);
+        $this->assertSame(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertEquals('EasyRdf_Resource', get_class($joe));
-        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
+        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertEquals('EasyRdf_Literal', get_class($name));
-        $this->assertEquals('Joe Bloggs', $name->getValue());
-        $this->assertEquals('en', $name->getLang());
-        $this->assertEquals(null, $name->getDatatype());
+        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertSame('Joe Bloggs', $name->getValue());
+        $this->assertSame('en', $name->getLang());
+        $this->assertSame(NULL, $name->getDatatype());
 
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);
-        $this->assertEquals('EasyRdf_Resource', get_class($project));
-        $this->assertEquals('_:genid1', $project->getUri());
+        $this->assertClass('EasyRdf_Resource', $project);
+        $this->assertSame('_:genid1', $project->getUri());
     }
 
     public function testParseJsonTriples()
     {
         $data = readFixture('foaf.json-triples');
         $count = $this->_parser->parse($this->_graph, $data, 'json', null);
-        $this->assertEquals(14, $count);
+        $this->assertSame(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertEquals('EasyRdf_Resource', get_class($joe));
-        $this->assertEquals('http://www.example.com/joe#me', $joe->getUri());
+        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertEquals('EasyRdf_Literal', get_class($name));
-        $this->assertEquals('Joe Bloggs', $name->getValue());
-        $this->assertEquals('en', $name->getLang());
-        $this->assertEquals(null, $name->getDatatype());
+        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertSame('Joe Bloggs', $name->getValue());
+        $this->assertSame('en', $name->getLang());
+        $this->assertSame(NULL, $name->getDatatype());
 
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);
-        $this->assertEquals('EasyRdf_Resource', get_class($project));
-        $this->assertEquals('_:genid1', $project->getUri());
+        $this->assertClass('EasyRdf_Resource', $project);
+        $this->assertSame('_:genid1', $project->getUri());
     }
 
     public function testParseWithFormatObject()
@@ -104,7 +104,7 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
         $data = readFixture('foaf.json');
         $format = EasyRdf_Format::getFormat('json');
         $count = $this->_parser->parse($this->_graph, $data, $format, null);
-        $this->assertEquals(14, $count);
+        $this->assertSame(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertStringEquals('Joe Bloggs', $joe->get('foaf:name'));
@@ -115,7 +115,7 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
         # Test parsing JSON with 'bad' bnode identifiers
         $data = readFixture('foaf.bad-json');
         $count = $this->_parser->parse($this->_graph, $data, 'json', 'http://www.bbc.co.uk/');
-        $this->assertEquals(14, $count);
+        $this->assertSame(14, $count);
 
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $this->assertStringEquals('Joe Bloggs', $joe->get('foaf:name'));
@@ -157,10 +157,10 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
     public function testParseEmpty()
     {
         $count = $this->_parser->parse($this->_graph, '{}', 'json', null);
-        $this->assertEquals(0, $count);
+        $this->assertSame(0, $count);
 
         // Should be empty but no exception thrown
-        $this->assertEquals(0, $this->_graph->countTriples());
+        $this->assertSame(0, $this->_graph->countTriples());
     }
 
     function testParseUnsupportedFormat()

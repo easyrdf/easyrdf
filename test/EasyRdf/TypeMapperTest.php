@@ -63,7 +63,7 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 
     public function testGet()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'MyType_Class',
             EasyRdf_TypeMapper::get('rdf:mytype')
         );
@@ -71,7 +71,7 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 
     public function testGetUri()
     {
-        $this->assertEquals(
+        $this->assertSame(
             'MyType_Class',
             EasyRdf_TypeMapper::get(
                 'http://www.w3.org/1999/02/22-rdf-syntax-ns#mytype'
@@ -108,7 +108,7 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 
     public function testGetUnknown()
     {
-        $this->assertEquals(null, EasyRdf_TypeMapper::get('unknown:type'));
+        $this->assertSame(NULL, EasyRdf_TypeMapper::get('unknown:type'));
     }
 
     public function testSetUri()
@@ -118,7 +118,7 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
             'MyType_Class'
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             'MyType_Class',
             EasyRdf_TypeMapper::get('foaf:Person')
         );
@@ -180,9 +180,9 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 
     public function testDelete()
     {
-        $this->assertEquals('MyType_Class', EasyRdf_TypeMapper::get('rdf:mytype'));
+        $this->assertSame('MyType_Class', EasyRdf_TypeMapper::get('rdf:mytype'));
         EasyRdf_TypeMapper::delete('rdf:mytype');
-        $this->assertEquals(null, EasyRdf_TypeMapper::get('rdf:mytype'));
+        $this->assertSame(NULL, EasyRdf_TypeMapper::get('rdf:mytype'));
     }
 
     public function testDeleteTypeNull()
@@ -220,7 +220,7 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
             'http://www.example.com/joe/foaf.rdf', $data, 'json'
         );
         $joe = $graph->resource('http://www.example.com/joe#me');
-        $this->assertEquals('MyType_Class', get_class($joe));
+        $this->assertClass('MyType_Class', $joe);
         $this->assertTrue($joe->myMethod());
     }
 }
