@@ -1,3 +1,21 @@
+EasyRdf 0.7.1
+=============
+
+Enhancements
+------------
+* Changed minimum version of PHPUnit to 3.5.15
+* Added RDFa namespace
+* Added Open Graph Protocol namespace
+* Made improvements to formatting of the Turtle serialiser
+* Added new splitUri() function to EasyRdf_Namespace
+* Made improvements to format guessing
+
+Bug Fixes
+---------
+* Fix for RDF/XML parser not returning the number of triples
+* Added re-mapping of b-nodes to N-Triples and Redland parsers
+
+
 EasyRdf 0.7.0
 =============
 
