@@ -287,7 +287,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 if ($context['incompleteRev']) {
                     $this->addTriple(
                         $subject,
-                        $context['incompleteRel'],
+                        $context['incompleteRev'],
                         array('type' => 'uri', 'value' => $context['subject'])
                     );
                 }
