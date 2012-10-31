@@ -161,8 +161,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $result = $this->_sparql->query("ASK WHERE {?s ?p <false>}");
-        $this->assertSame(
-        false, $result->getBoolean());
+        $this->assertSame(false, $result->getBoolean());
     }
 
     public function testQueryConstructJson()
