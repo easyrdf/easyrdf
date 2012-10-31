@@ -806,7 +806,10 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->addResource($this->_uri, 'foaf:knows', 'http://example.com/alice');
         $this->_graph->addLiteral('http://example.com/alice', 'foaf:name', 'Alice');
         $this->assertEquals(
-            array('Bob', 'Alice'),
+            array(
+                new EasyRdf_Literal('Bob'),
+                new EasyRdf_Literal('Alice')
+            ),
             $this->_graph->all($this->_uri, 'foaf:knows/foaf:name')
         );
     }
