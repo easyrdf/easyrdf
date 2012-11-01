@@ -1,0 +1,2 @@
+<http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0051.xml> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Document> .
+<http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0051.xml> <http://xmlns.com/foaf/0.1/topic> "John Doe" .

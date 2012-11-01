@@ -193,7 +193,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 }
 
                 if ($subject === NULL) {
-                    $subject = $context['object'];
+                    if ($node->hasAttribute('typeof')) {
+                        $subject = $this->_graph->newBNodeId();
+                    } else {
+                        $subject = $context['object'];
+                    }
                 }
 
             } else {
@@ -207,7 +211,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 }
 
                 if ($subject === NULL) {
-                    $subject = $context['object'];
+                    if ($node->hasAttribute('typeof')) {
+                        $subject = $this->_graph->newBNodeId();
+                    } else {
+                        $subject = $context['object'];
+                    }
                 }
 
                 if ($node->hasAttribute('resource')) {
@@ -225,6 +233,16 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 }
             }
 
+
+            // Step 7: Process @typeof if there is a subject
+            if ($subject and $node->hasAttribute('typeof')) {
+                $type = $this->expandCurie($node, $context, 'typeof', true);
+                $this->addTriple(
+                    $subject,
+                    'rdf:type',
+                    array('type' => 'uri', 'value' => $type)
+                );
+            }
 
             // Step 9: Generate triples with given object
             if ($object) {
