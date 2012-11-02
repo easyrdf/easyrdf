@@ -339,6 +339,21 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0071', 'No explicit @about');
     }
 
+    public function testCase0072()
+    {
+        $this->rdfaTestCase('0072', 'Relative URI in @about (with XHTML base in head)');
+    }
+
+    public function testCase0073()
+    {
+        $this->rdfaTestCase('0073', 'Relative URI in @resource (with XHTML base in head)');
+    }
+
+    public function testCase0074()
+    {
+        $this->rdfaTestCase('0074', 'Relative URI in @href (with XHTML base in head)');
+    }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(

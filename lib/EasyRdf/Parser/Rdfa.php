@@ -174,7 +174,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $typeof = $node->getAttribute('typeof');
             $vocab = $node->getAttribute('vocab');
 
-            // Step 2
+            // Step 2: Default vocabulary
             if ($vocab) {
                 $context['vocab'] = $vocab;
                 $vocab = array('type' => 'uri', 'value' => $vocab );
@@ -248,7 +248,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             }
 
             // Step 9: Generate triples with given object
-            if ($object) {
+            if ($subject and $object) {
                 foreach($revs as $prop) {
                     $this->addTriple(
                         $object,
@@ -279,7 +279,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             }
 
             // Step 11
-            if ($property) {
+            if ($subject and $property) {
                 $literal = array('type' => 'literal');
                 if ($node->hasAttribute('content')) {
                     $literal['value'] = $node->getAttribute('content');
@@ -361,6 +361,21 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             );
         }
 
+        libxml_use_internal_errors(true);
+
+        // Parse the document into DOM
+        $doc = new DOMDocument();
+        $doc->loadXML($data, LIBXML_NONET);
+
+        // Establish the base
+        # FIXME: only do this if document is XHTML
+        $xpath = new DOMXPath($doc);
+        $xpath->registerNamespace('xh', "http://www.w3.org/1999/xhtml");
+        $nodeList = $xpath->query('/xh:html/xh:head/xh:base');
+        if ($node = $nodeList->item(0) and $href = $node->getAttribute('href')) {
+            $this->_baseUri = new EasyRdf_ParsedUri($href);
+        }
+
         // Step 1: Initialise evaluation context
         $context = array(
             'prefixes' => array(),
@@ -376,10 +391,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             'path' => ''
         );
 
-        libxml_use_internal_errors(true);
-
-        $doc = new DOMDocument();
-        $doc->loadXML($data, LIBXML_NONET);
         $this->processNode($doc, $context);
 
         return $this->_tripleCount;
