@@ -115,12 +115,28 @@ class EasyRdf_ParsedUri
         return $this->_scheme;
     }
 
+    /** Sets the scheme of the URI (e.g. http)
+     * @param string $scheme The new value for the scheme of the URI
+     */
+    public function setScheme($scheme)
+    {
+        $this->_scheme = $scheme;
+    }
+
     /** Returns the authority of the URI (e.g. www.example.com:8080)
      * @return string
      */
     public function getAuthority()
     {
         return $this->_authority;
+    }
+
+    /** Sets the authority of the URI (e.g. www.example.com:8080)
+     * @param string $authority The new value for the authority component of the URI
+     */
+    public function setAuthority($authority)
+    {
+        $this->_authority = $authority;
     }
 
     /** Returns the path of the URI (e.g. /foo/bar)
@@ -131,6 +147,14 @@ class EasyRdf_ParsedUri
         return $this->_path;
     }
 
+    /** Set the path of the URI (e.g. /foo/bar)
+     * @param string $path The new value for the path component of the URI
+     */
+    public function setPath($path)
+    {
+        $this->_path = $path;
+    }
+
     /** Returns the query string part of the URI (e.g. foo=bar)
      * @return string
      */
@@ -139,12 +163,28 @@ class EasyRdf_ParsedUri
         return $this->_query;
     }
 
+    /** Set the query string of the URI (e.g. foo=bar)
+     * @param string $query The new value for the query string component of the URI
+     */
+    public function setQuery($query)
+    {
+        $this->_query = $query;
+    }
+
     /** Returns the fragment part of the URI (i.e. after the #)
      * @return string
      */
     public function getFragment()
     {
         return $this->_fragment;
+    }
+
+    /** Set the fragment of the URI (i.e. after the #)
+     * @param string $fragment The new value for the fragment component of the URI
+     */
+    public function setFragment($fragment)
+    {
+        $this->_fragment = $fragment;
     }
 
 
