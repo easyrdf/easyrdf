@@ -354,6 +354,272 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0074', 'Relative URI in @href (with XHTML base in head)');
     }
 
+    public function testCase0075()
+    {
+        $this->rdfaTestCase('0075', 'Reserved word \'license\' in @rel with no explizit @about');
+    }
+
+    public function testCase0079()
+    {
+        $this->rdfaTestCase('0079', '@resource and @href in completing incomplete triples');
+    }
+
+    public function testCase0080()
+    {
+        $this->rdfaTestCase('0080', '@about overrides @resource in incomplete triples');
+    }
+
+    public function testCase0083()
+    {
+        $this->rdfaTestCase('0083', 'multiple ways of handling incomplete triples (merged)');
+    }
+
+// FIXME
+//     public function testCase0084()
+//     {
+//         $this->markTestSkipped("The bnode code needs fixing");
+//         $this->rdfaTestCase('0084', 'multiple ways of handling incomplete triples, this time with both @rel and @rev');
+//     }
+
+    public function testCase0085()
+    {
+        $this->rdfaTestCase('0085', '@resource and @href in completing incomplete triples');
+    }
+
+    public function testCase0087()
+    {
+        $this->rdfaTestCase('0087', 'All reserved XHTML @rel values (with :xxx)');
+    }
+
+    # FIXME: RDFa parser is working but graph comparison isn't
+    public function testCase0088()
+    {
+        $this->markTestSkipped("Graph comparison isn't working");
+        $this->rdfaTestCase('0088', 'Interpretation of the CURIE "_:"');
+    }
+
+    public function testCase0089()
+    {
+        $this->rdfaTestCase('0089', '@src sets a new subject (@typeof)');
+    }
+
+    public function testCase0091()
+    {
+        $this->rdfaTestCase('0091', 'Non-reserved, un-prefixed CURIE in @property');
+    }
+
+    public function testCase0093()
+    {
+        $this->rdfaTestCase('0093', 'Tests XMLLiteral content with explicit @datatype (user-data-typed literal)');
+    }
+
+    public function testCase0099()
+    {
+        $this->rdfaTestCase('0099', 'Preservation of white space in literals');
+    }
+
+    public function testCase0104()
+    {
+        $this->rdfaTestCase('0104', 'rdf:value');
+    }
+
+// FIXME:
+//     public function testCase0106()
+//     {
+//         $this->rdfaTestCase('0106', 'chaining with empty value in inner @rel');
+//     }
+
+    public function testCase0107()
+    {
+        $this->rdfaTestCase('0107', 'no garbage collecting bnodes');
+    }
+
+    public function testCase0110()
+    {
+        $this->rdfaTestCase('0110', 'bNode generated even though no nested @about exists');
+    }
+
+    public function testCase0111()
+    {
+        $this->rdfaTestCase('0111', 'two bNodes generated after three levels of nesting');
+    }
+
+    public function testCase0112()
+    {
+        $this->rdfaTestCase('0112', 'plain literal with datatype=\"\"');
+    }
+
+    public function testCase0114()
+    {
+        $this->rdfaTestCase('0114', 'Relative URI dot-segment removal');
+    }
+
+    public function testCase0115()
+    {
+        $this->rdfaTestCase('0115', 'XML Entities must be supported by RDFa parser');
+    }
+
+// FIXME:
+//     public function testCase0117()
+//     {
+//         $this->rdfaTestCase('0117', 'Fragment identifiers stripped from BASE');
+//     }
+
+    public function testCase0118()
+    {
+        $this->rdfaTestCase('0118', 'empty string \"\" is not equivalent to NULL - @about');
+    }
+
+// FIXME:
+//     public function testCase0119()
+//     {
+//         $this->rdfaTestCase('0119', '\"[prefix:]\" CURIE format is valid');
+//     }
+
+// FIXME:
+//     public function testCase0120()
+//     {
+//         $this->rdfaTestCase('0120', '\"[:]\" CURIE format is valid');
+//     }
+
+// FIXME:
+//     public function testCase0121()
+//     {
+//         $this->rdfaTestCase('0121', '\"[]\" is a valid safe CURIE');
+//     }
+
+// FIXME:
+//     public function testCase0122()
+//     {
+//         $this->rdfaTestCase('0122', 'resource=\"[]\" does not set the object');
+//     }
+
+// FIXME:
+//     public function testCase0126()
+//     {
+//         $this->rdfaTestCase('0126', 'Multiple @typeof values');
+//     }
+
+    public function testCase0131()
+    {
+        $this->rdfaTestCase('0131', 'Whitespace alternatives in attributes');
+    }
+
+// FIXME:
+//     public function testCase0134()
+//     {
+//         $this->rdfaTestCase('0134', 'Uppercase reserved words');
+//     }
+
+// FIXME:
+//     public function testCase0140()
+//     {
+//         $this->rdfaTestCase('0140', 'Blank nodes identifiers are not allowed as predicates');
+//     }
+
+    public function testCase0147()
+    {
+        $this->rdfaTestCase('0147', 'xmlns prefix \'xmlzzz\' (reserved)');
+    }
+
+    public function testCase0174()
+    {
+        $this->rdfaTestCase('0174', 'Support single character prefix in CURIEs');
+    }
+
+    public function testCase0175()
+    {
+        $this->rdfaTestCase('0175', 'IRI for @property is allowed');
+    }
+
+    public function testCase0176()
+    {
+        $this->rdfaTestCase('0176', 'IRI for @rel and @rev is allowed');
+    }
+
+// FIXME:
+//     public function testCase0177()
+//     {
+//         $this->rdfaTestCase('0177', 'Test @prefix');
+//     }
+
+// FIXME:
+//     public function testCase0178()
+//     {
+//         $this->rdfaTestCase('0178', 'Test @prefix with multiple mappings');
+//     }
+
+// FIXME:
+//     public function testCase0179()
+//     {
+//         $this->rdfaTestCase('0179', 'Test @prefix vs @xmlns priority');
+//     }
+
+    public function testCase0180()
+    {
+        $this->rdfaTestCase('0180', 'Test @prefix with empty mapping');
+    }
+
+    public function testCase0181()
+    {
+        $this->rdfaTestCase('0181', 'Test default XHTML vocabulary');
+    }
+
+// FIXME:
+//     public function testCase0182()
+//     {
+//         $this->rdfaTestCase('0182', 'Test prefix locality');
+//     }
+
+// FIXME:
+//     public function testCase0183()
+//     {
+//         $this->rdfaTestCase('0183', 'Test @xmlns redefines @prefix');
+//     }
+
+    public function testCase0186()
+    {
+        $this->rdfaTestCase('0186', '@vocab after subject declaration');
+    }
+
+    public function testCase0187()
+    {
+        $this->rdfaTestCase('0187', '@vocab redefinition');
+    }
+
+    public function testCase0188()
+    {
+        $this->rdfaTestCase('0188', '@vocab only affects predicates');
+    }
+
+    public function testCase0189()
+    {
+        $this->rdfaTestCase('0189', '@vocab overrides default term');
+    }
+
+// FIXME:
+//     public function testCase0190()
+//     {
+//         $this->rdfaTestCase('0190', 'Test term case insensitivity');
+//     }
+
+    public function testCase0196()
+    {
+        $this->rdfaTestCase('0196', 'Test process explicit XMLLiteral');
+    }
+
+// FIXME:
+//     public function testCase0197()
+//     {
+//         $this->rdfaTestCase('0197', 'Test TERMorCURIEorAbsURI requires an absolute URI');
+//     }
+
+// FIXME:
+//     public function testCase0198()
+//     {
+//         $this->rdfaTestCase('0198', 'datatype XMLLiteral with other embedded RDFa');
+//     }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="http://www.w3.org/2006/vcard/ns#">
+<head> 
+   <title>Test 0174</title> 
+</head> 
+<body> 
+   <p>
+      This test ensures that single-character prefixes are allowed. 
+      My name is:
+      <span about="http://example.org/jd" property="v:fn">John Doe</span> 
+   </p>
+</body>
+
+</html>

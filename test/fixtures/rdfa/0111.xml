@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xhv="http://www.w3.org/1999/xhtml/vocab#">
+  <head>
+    <title>Test 0111</title>
+  </head>
+  <body>
+    <div rel="xhv:next">
+      <div rel="xhv:next">
+        <div rel="xhv:next" />
+      </div>
+    </div>
+  </body>
+</html>

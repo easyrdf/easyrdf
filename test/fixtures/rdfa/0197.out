@@ -1,0 +1,4 @@
+<http://www.example.org/me> <http://www.example.org/pred/name> "Gregg Kellogg" .
+<http://www.example.org/me> <http://purl.org/dc/terms/language> "Ruby" .
+<http://www.example.org/me> <http://www.example.org/pred/rel> <http://kellogg-assoc.com/> .
+<http://github.org/gkellogg/rdf_context> <http://www.example.org/pred/rev> <http://www.example.org/me> .

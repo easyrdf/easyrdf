@@ -1,0 +1,3 @@
+<http://example.org/> <http://www.w3.org/ns/rdfa#usesVocabulary> <http://example.org/wrong/foaf/uri/> .
+<http://example.org/> <http://www.w3.org/ns/rdfa#usesVocabulary> <http://xmlns.com/foaf/0.1/> .
+<http://example.org/#me> <http://xmlns.com/foaf/0.1/name> "Ivan Herman" .

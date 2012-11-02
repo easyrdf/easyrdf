@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Test 0178</title>
+    <base href="http://example.org/"/>
+  </head>
+  <body>
+    <div about ="#this" prefix="foaf: http://xmlns.com/foaf/0.1/ dc: http://purl.org/dc/terms/" typeof="dc:Agent">
+        <p property="foaf:name">A particular agent</p>
+    </div>
+  </body>
+</html>

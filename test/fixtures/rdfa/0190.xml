@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Test 0190</title>
+  </head>
+  <body>
+    <div about ="http://www.example.org/software">
+      <p rel="liCeNse" resource="http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231">Ivan Herman</p>
+    </div>
+  </body>
+</html>

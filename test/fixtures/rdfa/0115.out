@@ -1,0 +1,4 @@
+<http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0115.xml> <http://www.example.com/entity1> ">" .
+<http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0115.xml> <http://www.example.com/entity2> "Ben & Co." .
+<http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0115.xml> <http://www.example.com/entity3> "@" .
+<http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0115.xml> <http://www.example.com/entity4> "@" .

@@ -1,0 +1,4 @@
+_:manu <http://xmlns.com/foaf/0.1/mbox> <mailto:manu.sporny@digitalbazaar.com> .
+_:manu <http://xmlns.com/foaf/0.1/knows> _:gregg .
+_:gregg <http://xmlns.com/foaf/0.1/knows> _:manu .
+_:gregg <http://xmlns.com/foaf/0.1/mbox> <mailto:gregg@kellogg-assoc.com> .
