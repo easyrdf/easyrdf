@@ -284,6 +284,61 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0057', 'hanging @rel creates multiple triples');
     }
 
+    public function testCase0059()
+    {
+        $this->rdfaTestCase('0059', 'multiple hanging @rels with multiple children');
+    }
+
+    public function testCase0060()
+    {
+        $this->rdfaTestCase('0060', 'UTF-8 conformance');
+    }
+
+    public function testCase0063()
+    {
+        $this->rdfaTestCase('0063', '@rel in head using reserved XHTML value and empty-prefix CURIE syntax');
+    }
+
+    public function testCase0064()
+    {
+        $this->rdfaTestCase('0064', '@about with safe CURIE');
+    }
+
+    public function testCase0065()
+    {
+        $this->rdfaTestCase('0065', '@rel with safe CURIE');
+    }
+
+    public function testCase0066()
+    {
+        $this->rdfaTestCase('0066', '@about with @typeof in the head');
+    }
+
+    public function testCase0067()
+    {
+        $this->rdfaTestCase('0067', '@property in the head');
+    }
+
+    public function testCase0068()
+    {
+        $this->rdfaTestCase('0068', 'Relative URI in @about');
+    }
+
+    public function testCase0069()
+    {
+        $this->rdfaTestCase('0069', 'Relative URI in @href');
+    }
+
+    public function testCase0070()
+    {
+        $this->rdfaTestCase('0070', 'Relative URI in @resource');
+    }
+
+    public function testCase0071()
+    {
+        $this->rdfaTestCase('0071', 'No explicit @about');
+    }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(

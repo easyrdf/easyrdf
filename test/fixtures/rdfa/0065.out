@@ -1,0 +1,3 @@
+_:a <http://xmlns.com/foaf/0.1/mbox> <mailto:manu.sporny@digitalbazaar.com> .
+_:b <http://xmlns.com/foaf/0.1/mbox> <mailto:michael.hausenblas@joanneum.at> .
+_:a <http://xmlns.com/foaf/0.1/knows> _:b .

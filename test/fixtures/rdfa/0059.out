@@ -1,0 +1,6 @@
+<http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0059.xml> <http://purl.org/dc/elements/1.1/creator> <http://www.example.org/#manu> .
+<http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0059.xml> <http://purl.org/dc/elements/1.1/publisher> <http://www.example.org/#manu> .
+<http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0059.xml> <http://purl.org/dc/elements/1.1/creator> <http://www.example.org/#fabien> .
+<http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0059.xml> <http://purl.org/dc/elements/1.1/publisher> <http://www.example.org/#fabien> .
+<http://www.example.org/#manu> <http://xmlns.com/foaf/0.1/name> "Manu Sporny" .
+<http://www.example.org/#fabien> <http://xmlns.com/foaf/0.1/name> "Fabien Gandon" .

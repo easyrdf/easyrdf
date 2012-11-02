@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>Test 0063</title>
+      <link rel=":next" href="http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/0064.xml" />
+   </head>
+   <body>
+      <p>This is the 63<sup>rd</sup> test. The next test is #64.</p>
+   </body>
+</html>

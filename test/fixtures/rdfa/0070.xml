@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xhv="http://www.w3.org/1999/xhtml/vocab#">
+   <head>
+      <title>Test 0070</title>
+   </head>
+   <body>
+      <p>The previous test was
+         <span about="" rel="xhv:prev" resource="0069.xml">Test 0069</span>.
+      </p>
+   </body>
+</html>

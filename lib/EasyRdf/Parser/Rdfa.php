@@ -39,7 +39,7 @@
  */
 
 /**
- * Class to parse RDFa with no external dependancies.
+ * Class to parse RDFa 1.1 with no external dependancies.
  *
  * http://www.w3.org/TR/rdfa-core/
  *
@@ -114,25 +114,22 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         if (substr($value, 0, 2) === '_:') {
             # It is a bnode
             return $this->remapBnode(substr($value, 2));
-        } elseif (preg_match("/^(\w+?):([\w\-]+)$/", $value, $matches)) {
+        } elseif (preg_match("/^(\w*?):([\w\-]+)$/", $value, $matches)) {
             list (, $prefix, $local) = $matches;
             $prefix = strtolower($prefix);
-            if (isset($context['namespaces'][$prefix])) {
-                return $context['namespaces'][$prefix] . $local;
+            if (isset($context['prefixes'][$prefix])) {
+                return $context['prefixes'][$prefix] . $local;
             } else {
                 $uri = $node->lookupNamespaceURI($prefix);
                 if ($uri) {
                     return $uri . $local;
-                } else {
-                    #FIXME: work out how to handle errors
-                    error_log("Unknown namespace: $prefix");
+                } elseif ($context['vocab']) {
+                    return $context['vocab'] . $local;
                 }
             }
         } elseif (preg_match("/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/", $value) and $isProp) {
-            if (isset($context['vocab'])) {
+            if ($context['vocab']) {
                 return $context['vocab'] . $value;
-            } else {
-                # FIXME: now what?
             }
         } else {
             return $this->resolve($value);
@@ -162,9 +159,10 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         $incompleteRels = array();
         $incompleteRevs = array();
 
-        # FIXME: move this to Step 13
-        if ($node->hasAttributes()) {
+        if ($node->nodeType == XML_ELEMENT_NODE)
+            $context['path'] .= '/' . $node->nodeName;
 
+        if ($node->hasAttributes()) {
             $about = $node->hasAttribute('about') ? $node->getAttribute('about') : NULL;
             $href = $node->hasAttribute('href') ? $node->getAttribute('href') : NULL;
             $resource = $node->hasAttribute('resource') ? $node->getAttribute('resource') : NULL;
@@ -186,7 +184,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             # FIXME: implement this Step 3
             #if ($node->hasAttribute('prefix')) {
             #    $prefix = $node->getAttribute('prefix');
-            #    $context['namespaces'][strtolower($prefix)] = $local;
+            #    $context['prefixes'][strtolower($prefix)] = $local;
             #}
 
             // Step 4
@@ -208,14 +206,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $subject = $this->expandCurie($node, $context, $href);
                 }
 
-                if ($subject === NULL) {
-                    if ($typeof) {
-                        $subject = $this->_graph->newBNodeId();
-                    } else {
-                        $subject = $context['object'];
-                    }
-                }
-
             } else {
                 // Step 6
                 // If the current element does contain a @rel or @rev attribute, then the next step is to
@@ -224,14 +214,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $subject = $this->expandCurie($node, $context, $about);
                 } elseif ($src !== NULL) {
                     $subject = $this->expandCurie($node, $context, $src);
-                }
-
-                if ($subject === NULL) {
-                    if ($typeof) {
-                        $subject = $this->_graph->newBNodeId();
-                    } else {
-                        $subject = $context['object'];
-                    }
                 }
 
                 if ($resource !== NULL) {
@@ -244,6 +226,16 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 $rels = $this->expandCurieList($node, $context, $rel);
             }
 
+            // Establish a subject if there isn't one
+            if (is_null($subject)) {
+                if ($depth <= 2 or $context['path'] === '/html/head') {
+                    $subject = $this->_baseUri;
+                } elseif ($typeof) {
+                    $subject = $this->_graph->newBNodeId();
+                } else {
+                    $subject = $context['object'];
+                }
+            }
 
             // Step 7: Process @typeof if there is a subject
             if ($subject and $typeof) {
@@ -277,12 +269,12 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 $object = $this->_graph->newBNodeId();
                 if ($rels) {
                     $incompleteRels = $rels;
-                    print "Incomplete rel: $rels\n";
+                    print "Incomplete rels: ".implode(',',$rels)."\n";
                 }
 
                 if ($revs) {
                     $incompleteRevs = $revs;
-                    print "Incomplete rev: $revs\n";
+                    print "Incomplete revs: ".implode(',',$revs)."\n";
                 }
             }
 
@@ -329,7 +321,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             }
         }
 
-        // Step 13
+        // Step 13: create a new evaluation context and proceed recursively
         if ($node->hasChildNodes()) {
             // Prepare a new evaluation context
             if ($object) {
@@ -351,7 +343,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     }
 
     /**
-     * Parse RDFa into an EasyRdf_Graph
+     * Parse RDFa 1.1 into an EasyRdf_Graph
      *
      * @param object EasyRdf_Graph $graph   the graph to load the data into
      * @param string               $data    the RDF document data
@@ -371,7 +363,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
         // Step 1: Initialise evaluation context
         $context = array(
-            'namespaces' => array(),
+            'prefixes' => array(),
             'vocab' => self::XHTML_NS,
             'skipElement' => false,
             'subject' => $this->_baseUri,
@@ -380,7 +372,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             'incompleteRels' => array(),
             'incompleteRevs' => array(),
             'lang' => NULL,
-            'datatype' => NULL
+            'datatype' => NULL,
+            'path' => ''
         );
 
         libxml_use_internal_errors(true);
