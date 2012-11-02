@@ -265,6 +265,68 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSetScheme()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.ietf.org/rfc/rfc2396.txt');
+        $uri->setScheme('https');
+        $this->assertStringEquals('https://www.ietf.org/rfc/rfc2396.txt', $uri);
+    }
+
+    public function testSetAuthority()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.ietf.org/rfc/rfc2396.txt');
+        $uri->setAuthority('example.com');
+        $this->assertStringEquals('http://example.com/rfc/rfc2396.txt', $uri);
+    }
+
+    public function testSetPath()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.ietf.org/rfc/rfc2396.txt');
+        $uri->setPath('/foobar');
+        $this->assertStringEquals('http://www.ietf.org/foobar', $uri);
+    }
+
+    public function testSetQuery()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.ietf.org/rfc/rfc2396.txt');
+        $uri->setQuery('foo=bar');
+        $this->assertStringEquals('http://www.ietf.org/rfc/rfc2396.txt?foo=bar', $uri);
+    }
+
+    public function testSetQueryEmpty()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.ietf.org/rfc/rfc2396.txt?foo=bar');
+        $uri->setQuery('');
+        $this->assertStringEquals('http://www.ietf.org/rfc/rfc2396.txt?', $uri);
+    }
+
+    public function testSetQueryNull()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.ietf.org/rfc/rfc2396.txt?foo=bar');
+        $uri->setQuery(NULL);
+        $this->assertStringEquals('http://www.ietf.org/rfc/rfc2396.txt', $uri);
+    }
+
+    public function testSetFragment()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.ietf.org/rfc/rfc2396.txt');
+        $uri->setFragment('foobar');
+        $this->assertStringEquals('http://www.ietf.org/rfc/rfc2396.txt#foobar', $uri);
+    }
+
+    public function testSetFragmentEmpty()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.ietf.org/rfc/rfc2396.txt#foobar');
+        $uri->setFragment('');
+        $this->assertStringEquals('http://www.ietf.org/rfc/rfc2396.txt#', $uri);
+    }
+
+    public function testSetFragmentNull()
+    {
+        $uri = new EasyRdf_ParsedUri('http://www.ietf.org/rfc/rfc2396.txt#foobar');
+        $uri->setFragment(NULL);
+        $this->assertStringEquals('http://www.ietf.org/rfc/rfc2396.txt', $uri);
+    }
 
     /**
      * Tests from RFC3986 Section 5
