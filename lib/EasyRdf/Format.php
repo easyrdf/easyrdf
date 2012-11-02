@@ -587,8 +587,8 @@ EasyRdf_Format::register(
 
 EasyRdf_Format::register(
     'rdfa',
-    'RDF/A',
-    'http://www.w3.org/TR/rdfa/',
+    'RDFa',
+    'http://www.w3.org/TR/rdfa-core/',
     array(
         'text/html' => 0.4,
         'application/xhtml+xml' => 0.4
@@ -654,6 +654,7 @@ EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Ntriples');
 EasyRdf_Format::registerParser('php', 'EasyRdf_Parser_RdfPhp');
 EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_RdfXml');
 EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Turtle');
+EasyRdf_Format::registerParser('rdfa', 'EasyRdf_Parser_Rdfa');
 
 EasyRdf_Format::registerSerialiser('json', 'EasyRdf_Serialiser_Json');
 EasyRdf_Format::registerSerialiser('n3', 'EasyRdf_Serialiser_Turtle');
