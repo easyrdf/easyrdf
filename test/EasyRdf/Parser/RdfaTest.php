@@ -536,23 +536,20 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0176', 'IRI for @rel and @rev is allowed');
     }
 
-// FIXME:
-//     public function testCase0177()
-//     {
-//         $this->rdfaTestCase('0177', 'Test @prefix');
-//     }
+    public function testCase0177()
+    {
+        $this->rdfaTestCase('0177', 'Test @prefix');
+    }
 
-// FIXME:
-//     public function testCase0178()
-//     {
-//         $this->rdfaTestCase('0178', 'Test @prefix with multiple mappings');
-//     }
+    public function testCase0178()
+    {
+        $this->rdfaTestCase('0178', 'Test @prefix with multiple mappings');
+    }
 
-// FIXME:
-//     public function testCase0179()
-//     {
-//         $this->rdfaTestCase('0179', 'Test @prefix vs @xmlns priority');
-//     }
+    public function testCase0179()
+    {
+        $this->rdfaTestCase('0179', 'Test @prefix vs @xmlns priority');
+    }
 
     public function testCase0180()
     {
@@ -564,13 +561,12 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0181', 'Test default XHTML vocabulary');
     }
 
-// FIXME:
-//     public function testCase0182()
-//     {
-//         $this->rdfaTestCase('0182', 'Test prefix locality');
-//     }
+    public function testCase0182()
+    {
+        $this->rdfaTestCase('0182', 'Test prefix locality');
+    }
 
-// FIXME:
+// FIXME: not sure how to fix this test yet
 //     public function testCase0183()
 //     {
 //         $this->rdfaTestCase('0183', 'Test @xmlns redefines @prefix');

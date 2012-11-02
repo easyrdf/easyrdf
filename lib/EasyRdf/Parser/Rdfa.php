@@ -117,14 +117,14 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         } elseif (preg_match("/^(\w*?):([\w\-]+)$/", $value, $matches)) {
             list (, $prefix, $local) = $matches;
             $prefix = strtolower($prefix);
-            if (isset($context['prefixes'][$prefix])) {
+            if (!$prefix and $context['vocab']) {
+                return $context['vocab'] . $local;
+            } elseif (isset($context['prefixes'][$prefix])) {
                 return $context['prefixes'][$prefix] . $local;
             } else {
                 $uri = $node->lookupNamespaceURI($prefix);
                 if ($uri) {
                     return $uri . $local;
-                } elseif ($context['vocab']) {
-                    return $context['vocab'] . $local;
                 }
             }
         } elseif (preg_match("/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/", $value) and $isProp) {
@@ -181,11 +181,26 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 $this->addTriple($this->_baseUri, 'rdfa:usesVocabulary', $vocab);
             }
 
-            # FIXME: implement this Step 3
-            #if ($node->hasAttribute('prefix')) {
-            #    $prefix = $node->getAttribute('prefix');
-            #    $context['prefixes'][strtolower($prefix)] = $local;
-            #}
+            // Step 3: Set prefix mappings
+            if ($node->hasAttribute('prefix')) {
+                $mappings = preg_split("/\s+/", $node->getAttribute('prefix'));
+                while(count($mappings)) {
+                    $prefix = strtolower(array_shift($mappings));
+                    $uri = array_shift($mappings);
+
+                    if (substr($prefix, -1) == ':') {
+                        $prefix = substr($prefix, 0, -1);
+                    } else {
+                        continue;
+                    }
+
+                    // A Conforming RDFa Processor must ignore any definition of a mapping for the '_' prefix.
+                    if ($prefix == '_') continue;
+
+                    $context['prefixes'][$prefix] = $uri;
+                    print "Prefix: $prefix => $uri\n";
+                }
+            }
 
             // Step 4
             if ($node->hasAttribute('lang')) {
