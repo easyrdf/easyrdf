@@ -376,6 +376,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $this->_baseUri = new EasyRdf_ParsedUri($href);
         }
 
+        // Remove the fragment from the base URI
+        $this->_baseUri->setFragment(NULL);
+
         // Step 1: Initialise evaluation context
         $context = array(
             'prefixes' => array(),

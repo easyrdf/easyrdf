@@ -459,11 +459,10 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0115', 'XML Entities must be supported by RDFa parser');
     }
 
-// FIXME:
-//     public function testCase0117()
-//     {
-//         $this->rdfaTestCase('0117', 'Fragment identifiers stripped from BASE');
-//     }
+    public function testCase0117()
+    {
+        $this->rdfaTestCase('0117', 'Fragment identifiers stripped from BASE');
+    }
 
     public function testCase0118()
     {
