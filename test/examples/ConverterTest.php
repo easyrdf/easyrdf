@@ -114,4 +114,25 @@ class Examples_ConverterTest extends EasyRdf_TestCase
         );
     }
 
+    public function testConvertTurtleRaw()
+    {
+        $output = executeExample(
+            'converter.php',
+            array(
+                'uri' => 'http://www.w3.org/TR/turtle/examples/example1.ttl',
+                'input_format' => 'guess',
+                'output_format' => 'ntriples',
+                'raw' => 1
+            )
+        );
+
+        $this->assertSame(
+            "<http://www.w3.org/TR/rdf-syntax-grammar> <http://purl.org/dc/elements/1.1/title> ".
+            "\"RDF/XML Syntax Specification (Revised)\" .\n".
+            "<http://www.w3.org/TR/rdf-syntax-grammar> <http://example.org/stuff/1.0/editor> _:genid1 .\n".
+            "_:genid1 <http://example.org/stuff/1.0/fullname> \"Dave Beckett\" .\n".
+            "_:genid1 <http://example.org/stuff/1.0/homePage> <http://purl.org/net/dajobe/> .\n",
+            $output
+        );
+    }
 }
