@@ -52,6 +52,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     const XML_NS = 'http://www.w3.org/XML/1998/namespace';
     const XHTML_NS = 'http://www.w3.org/1999/xhtml/vocab#';
 
+    public $_debug = FALSE;
+
     /**
      * Constructor
      *
@@ -72,7 +74,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function addTriple($resource, $property, $value)
     {
-        print "Adding triple: $resource -> $property -> ".$value['type'].':'.$value['value']."\n";
+        if ($this->_debug)
+            print "Adding triple: $resource -> $property -> ".$value['type'].':'.$value['value']."\n";
         $count = $this->_graph->add($resource, $property, $value);
         $this->_tripleCount += $count;
         return $count;
@@ -95,8 +98,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             case XML_HTML_DOCUMENT_NODE: print 'html'; break;
             default: throw new Excpetion("unknown node type: ".$node->nodeType); break;
         }
-        print ' '.$node->nodeName;
-        print "\n";
+        print ' '.$node->nodeName."\n";
 
         if ($node->hasAttributes()) {
             foreach($node->attributes as $attr) {
@@ -151,7 +153,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function processNode($node, $context, $depth=1)
     {
-        $this->printNode($node, $depth);
+        if ($this->_debug)
+            $this->printNode($node, $depth);
         $subject = NULL;
         $object = NULL;
         $revs = array();
@@ -198,7 +201,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     if ($prefix == '_') continue;
 
                     $context['prefixes'][$prefix] = $uri;
-                    print "Prefix: $prefix => $uri\n";
+
+                    if ($this->_debug)
+                        print "Prefix: $prefix => $uri\n";
                 }
             }
 
@@ -284,12 +289,14 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 $object = $this->_graph->newBNodeId();
                 if ($rels) {
                     $incompleteRels = $rels;
-                    print "Incomplete rels: ".implode(',',$rels)."\n";
+                    if ($this->_debug)
+                        print "Incomplete rels: ".implode(',',$rels)."\n";
                 }
 
                 if ($revs) {
                     $incompleteRevs = $revs;
-                    print "Incomplete revs: ".implode(',',$revs)."\n";
+                    if ($this->_debug)
+                        print "Incomplete revs: ".implode(',',$revs)."\n";
                 }
             }
 
