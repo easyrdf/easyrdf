@@ -1182,12 +1182,20 @@ class EasyRdf_Graph
 
     /** Serialise the graph into RDF
      *
-     * @param  string  $format  The format to serialise to
-     * @return mixed   The serialised graph
+     * The $format parameter can be an EasyRdf_Format object, a
+     * format name, a mime type or a file extension.
+     *
+     * Example:
+     *   $turtle = $graph->serialise('turtle');
+     *
+     * @param  mixed  $format  The format to serialise to
+     * @return mixed  The serialised graph
      */
     public function serialise($format)
     {
-        $format = EasyRdf_Format::getFormat($format);
+        if (!$format instanceof EasyRdf_Format) {
+            $format = EasyRdf_Format::getFormat($format);
+        }
         $serialiser = $format->newSerialiser();
         return $serialiser->serialise($this, $format->getName());
     }

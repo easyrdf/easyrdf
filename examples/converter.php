@@ -13,7 +13,7 @@
      * That graph is than outputted again in the desired output format.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
@@ -36,37 +36,59 @@
     if (get_magic_quotes_gpc() and isset($_REQUEST['data'])) {
         $_REQUEST['data'] = stripslashes($_REQUEST['data']);
     }
-?>
-<html>
-<head><title>EasyRdf Converter</title></head>
-<body>
-<h1>EasyRdf Converter</h1>
 
-<div style="margin: 10px">
-  <?= form_tag() ?>
-  <?= label_tag('data', 'Input Data: ').'<br />'.text_area_tag('data', '', array('cols'=>80, 'rows'=>10)) ?><br />
-  <?= label_tag('uri', 'or Uri: ').text_field_tag('uri', 'http://www.dajobe.org/foaf.rdf', array('size'=>80)) ?><br />
-  <?= label_tag('input_format', 'Input Format: ').select_tag('input_format', $input_format_options, 'guess') ?><br />
-  <?= label_tag('output_format', 'Output Format: ').select_tag('output_format', $output_format_options, 'turtle') ?><br />
-  <?= reset_tag() ?> <?= submit_tag() ?>
-  <?= form_end_tag() ?>
-</div>
+    // Default to Turtle output
+    if (!isset($_REQUEST['output_format'])) {
+        $_REQUEST['output_format'] = 'turtle';
+    }
 
-<?php
+    // Display the form, if raw option isn't set
+    if (!isset($_REQUEST['raw'])) {
+        print "<html>\n";
+        print "<head><title>EasyRdf Converter</title></head>\n";
+        print "<body>\n";
+        print "<h1>EasyRdf Converter</h1>\n";
+
+        print "<div style='margin: 10px'>\n";
+        print form_tag();
+        print label_tag('data', 'Input Data: ').'<br />'.text_area_tag('data', '', array('cols'=>80, 'rows'=>10)) . "<br />\n";
+        print label_tag('uri', 'or Uri: ').text_field_tag('uri', 'http://www.dajobe.org/foaf.rdf', array('size'=>80)) . "<br />\n";
+        print label_tag('input_format', 'Input Format: ').select_tag('input_format', $input_format_options, 'guess') . "<br />\n";
+        print label_tag('output_format', 'Output Format: ').select_tag('output_format', $output_format_options) . "<br />\n";
+        print label_tag('raw', 'Raw Output: ').check_box_tag('raw') . "<br />\n";
+        print reset_tag() . submit_tag();
+        print form_end_tag();
+        print "</div>\n";
+    }
+
     if (isset($_REQUEST['uri']) or isset($_REQUEST['data'])) {
+        // Parse the input
         $graph = new EasyRdf_Graph($_REQUEST['uri']);
         if (empty($_REQUEST['data'])) {
-            $graph->load($_REQUEST['uri'], NULL, $_REQUEST['input_format']);
+            $graph->load($_REQUEST['uri'], $_REQUEST['input_format']);
         } else {
             $graph->parse($_REQUEST['data'], $_REQUEST['input_format'], $_REQUEST['uri']);
         }
 
-        $output = $graph->serialise($_REQUEST['output_format']);
+        // Lookup the output format
+        $format = EasyRdf_Format::getFormat($_REQUEST['output_format']);
+
+        // Serialise to the new output format
+        $output = $graph->serialise($format);
         if (!is_scalar($output)) {
             $output = var_export($output, true);
         }
-        print "<pre>".htmlspecialchars($output)."</pre>";
+
+        // Send the output back to the client
+        if (isset($_REQUEST['raw'])) {
+            header('Content-Type: '.$format->getDefaultMimeType());
+            print $output;
+        } else {
+            print '<pre>'.htmlspecialchars($output).'</pre>';
+        }
     }
-?>
-</body>
-</html>
+
+    if (!isset($_REQUEST['raw'])) {
+        print "</body>\n";
+        print "</html>\n";
+    }

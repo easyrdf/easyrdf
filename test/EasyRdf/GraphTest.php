@@ -1491,6 +1491,14 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSerialiseByFormatObject()
+    {
+        $format = EasyRdf_Format::register('mock', 'Mock Format');
+        $format->setSerialiserClass('Mock_RdfSerialiser');
+        $graph = new EasyRdf_Graph();
+        $this->assertSame("<rdf></rdf>", $graph->serialise($format));
+    }
+
     public function testIsEmpty()
     {
         $graph = new EasyRdf_Graph();
