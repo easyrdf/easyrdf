@@ -198,7 +198,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
-            "<http://example.com/joe#me> foaf:truth true^^xsd:boolean .\n",
+            "<http://example.com/joe#me> foaf:truth true .\n",
             $turtle
         );
     }
@@ -212,7 +212,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
-            "<http://example.com/joe#me> foaf:age 1.5^^xsd:decimal .\n",
+            "<http://example.com/joe#me> foaf:age 1.5 .\n",
             $turtle
         );
     }
@@ -226,7 +226,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
-            "<http://example.com/joe#me> foaf:age 1.500000e+0^^xsd:double .\n",
+            "<http://example.com/joe#me> foaf:age 1.500000e+0 .\n",
             $turtle
         );
     }
@@ -240,7 +240,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
-            "<http://example.com/joe#me> foaf:age 49^^xsd:integer .\n",
+            "<http://example.com/joe#me> foaf:age 49 .\n",
             $turtle
         );
     }
