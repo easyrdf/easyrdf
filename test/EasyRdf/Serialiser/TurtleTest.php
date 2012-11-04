@@ -245,6 +245,20 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
+    function testSerialiseDateTimeDatatype()
+    {
+        $doc = $this->_graph->resource('http://example.com/');
+        $doc->set('dc:date', new EasyRdf_Literal_DateTime('2012-11-04T13:01:26+01:00'));
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertSame(
+            "@prefix dc: <http://purl.org/dc/terms/> .\n".
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
+            "<http://example.com/> dc:date \"2012-11-04T13:01:26+0100\"^^xsd:dateTime .\n",
+            $turtle
+        );
+    }
+
     function testSerialiseOtherDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
