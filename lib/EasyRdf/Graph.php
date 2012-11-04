@@ -92,6 +92,27 @@ class EasyRdf_Graph
         }
     }
 
+    /**
+     * Create a new graph and load RDF data from a URI into it
+     *
+     * This static function is shorthand for:
+     *     $graph = new EasyRdf_Graph($uri);
+     *     $graph->load($uri, $format);
+     *
+     * The document type is optional but should be specified if it
+     * can't be guessed or got from the HTTP headers.
+     *
+     * @param  string  $uri     The URI of the data to load
+     * @param  string  $format  Optional format of the data (eg. rdfxml)
+     * @return object EasyRdf_Graph    The new the graph object
+     */
+    public static function newAndLoad($uri, $format=null)
+    {
+        $graph = new self($uri);
+        $graph->load($uri, $format);
+        return $graph;
+    }
+
     /** Get or create a resource stored in a graph
      *
      * If the resource did not previously exist, then a new resource will

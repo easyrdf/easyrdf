@@ -333,6 +333,17 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testNewAndLoad()
+    {
+        $this->_client->addMockOnce('GET', 'http://www.example.com/', readFixture('foaf.json'));
+        $graph = EasyRdf_Graph::newAndLoad('http://www.example.com/', 'json');
+        $this->assertClass('EasyRdf_Graph', $graph);
+        $this->assertStringEquals(
+            'Joe Bloggs',
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
+        );
+    }
+
     public function testGetResourceSameGraph()
     {
         $graph = new EasyRdf_Graph();

@@ -46,8 +46,7 @@
     if (isset($_REQUEST['postcode'])) {
         $postcode = str_replace(' ', '', strtoupper($_REQUEST['postcode']));
         $docuri = "http://www.uk-postcodes.com/postcode/$postcode.rdf";
-        $graph = new EasyRdf_Graph($docuri);
-        $graph->load();
+        $graph = EasyRdf_Graph::newAndLoad($docuri);
 
         $res = $graph->resource("postcode:$postcode");
         $ll = $res->get('geo:lat').','.$res->get('geo:long');
