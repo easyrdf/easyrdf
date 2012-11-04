@@ -20,8 +20,7 @@
 
 <?php
     if (isset($_REQUEST['id'])) {
-        $graph = new EasyRdf_Graph("http://dbpedialite.org/things/".$_REQUEST['id']);
-        $graph->load();
+        $graph = EasyRdf_Graph::newAndLoad("http://dbpedialite.org/things/".$_REQUEST['id']);
 
         $village = $graph->primaryTopic();
         print content_tag('h2',$village->label());
@@ -41,8 +40,7 @@
         echo "<br /><br />";
         echo $graph->dump();
     } else {
-        $graph = new EasyRdf_Graph("http://dbpedialite.org/categories/".$CATEGORY_ID);
-        $graph->load();
+        $graph = EasyRdf_Graph::newAndLoad("http://dbpedialite.org/categories/".$CATEGORY_ID);
         $category = $graph->primaryTopic();
 
         print "<ul>\n";

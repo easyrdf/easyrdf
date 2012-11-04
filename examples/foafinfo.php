@@ -31,8 +31,7 @@
 
 <?php
     if (isset($_REQUEST['uri'])) {
-        $graph = new EasyRdf_Graph($_REQUEST['uri']);
-        $graph->load();
+        $graph = EasyRdf_Graph::newAndLoad($_REQUEST['uri']);
         if ($graph->type() == 'foaf:PersonalProfileDocument') {
             $person = $graph->primaryTopic();
         } else if ($graph->type() == 'foaf:Person') {

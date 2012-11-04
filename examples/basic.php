@@ -22,8 +22,7 @@
 <body>
 
 <?php
-  $foaf = new EasyRdf_Graph('http://njh.me/foaf.rdf');
-  $foaf->load();
+  $foaf = EasyRdf_Graph::newAndLoad('http://njh.me/foaf.rdf');
   $me = $foaf->primaryTopic();
 ?>
 
