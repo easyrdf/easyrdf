@@ -1,0 +1,5 @@
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0131.xhtml> <http://www.w3.org/1999/xhtml/vocab#last> <http://example.org/test.css> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0131.xhtml> <http://www.w3.org/1999/xhtml/vocab#next> <http://example.org/test.css> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0131.xhtml> <http://www.w3.org/1999/xhtml/vocab#prev> <http://example.org/test.css> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0131.xhtml> <http://www.w3.org/1999/xhtml/vocab#subsection> <http://example.org/test.css> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0131.xhtml> <http://www.w3.org/1999/xhtml/vocab#first> <http://example.org/test.css> .

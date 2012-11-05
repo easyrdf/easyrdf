@@ -1,0 +1,2 @@
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0025.xhtml#me> <http://xmlns.com/foaf/0.1/name> "Ben Adida" .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0025.xhtml> <http://purl.org/dc/elements/1.1/creator> <http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0025.xhtml#me> .

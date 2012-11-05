@@ -1,0 +1,4 @@
+<http://www.example.org/#somebody> <http://xmlns.com/foaf/0.1/knows> _:g78779030 .
+_:g78779030 <http://xmlns.com/foaf/0.1/knows> <http://www.ivan-herman.org/Ivan_Herman> .
+_:g78779030 <http://xmlns.com/foaf/0.1/knows> <http://www.w3.org/People/Berners-Lee/card#i> .
+_:g78779030 <http://xmlns.com/foaf/0.1/knows> <http://danbri.org/foaf.rdf#danbri> .

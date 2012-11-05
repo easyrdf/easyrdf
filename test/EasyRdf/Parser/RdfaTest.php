@@ -52,7 +52,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     {
         $this->_rdfaParser = new EasyRdf_Parser_Rdfa();
         $this->_ntriplesParser = new EasyRdf_Parser_Ntriples();
-        $this->_baseUri = 'http://rdfa.info/test-suite/test-cases/xhtml1/rdfa1.0/';
+        $this->_baseUri = 'http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/';
     }
 
 
@@ -83,8 +83,8 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     protected function rdfaTestCase($name, $message)
     {
         $this->assertEquals(
-            $this->parseNtriples("rdfa/$name.out"),
-            $this->parseRdfa("rdfa/$name.xml"),
+            $this->parseNtriples("rdfa/$name.nt"),
+            $this->parseRdfa("rdfa/$name.xhtml"),
             $message
         );
     }
