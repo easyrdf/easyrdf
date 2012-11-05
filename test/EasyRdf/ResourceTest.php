@@ -40,6 +40,15 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class EasyRdf_ResourceTest extends EasyRdf_TestCase
 {
+    /**
+     * Set up the test suite before each test
+     */
+    public function setUp()
+    {
+        // Reset default namespace
+        EasyRdf_Namespace::setDefault(NULL);
+    }
+
     public function testConstructNullUri()
     {
         $this->setExpectedException(
@@ -1168,6 +1177,58 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
         $this->assertContains(
             "<span style='color:black'>&quot;Test B&quot;@en</span>", $html
+        );
+    }
+
+    public function testMagicGet()
+    {
+        $this->_setupTestGraph();
+        EasyRdf_Namespace::setDefault('rdf');
+        $this->assertStringEquals(
+            'Test A',
+            $this->_resource->test
+        );
+    }
+
+    public function testMagicGetNonExistent()
+    {
+        $this->_setupTestGraph();
+        EasyRdf_Namespace::setDefault('rdf');
+        $this->assertStringEquals(
+            NULL,
+            $this->_resource->foobar
+        );
+    }
+
+    public function testMagicSet()
+    {
+        $this->_setupTestGraph();
+        EasyRdf_Namespace::setDefault('rdf');
+        $this->_resource->test = 'testMagicSet';
+        $this->assertStringEquals(
+            'testMagicSet',
+            $this->_resource->get('rdf:test')
+        );
+    }
+
+    public function testMagicIsSet()
+    {
+        $this->_setupTestGraph();
+        EasyRdf_Namespace::setDefault('rdf');
+        $this->assertFalse(isset($this->_resource->testMagicIsSet));
+        $this->_resource->add('rdf:testMagicIsSet', 'testMagicIsSet');
+        $this->assertTrue(isset($this->_resource->testMagicIsSet));
+    }
+
+    public function testMagicUnset()
+    {
+        $this->_setupTestGraph();
+        EasyRdf_Namespace::setDefault('rdf');
+        $this->_resource->add('rdf:testMagicUnset', 'testMagicUnset');
+        unset($this->_resource->testMagicUnset);
+        $this->assertStringEquals(
+            NULL,
+            $this->_resource->get('rdf:testMagicUnset')
         );
     }
 }
