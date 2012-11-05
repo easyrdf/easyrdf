@@ -259,12 +259,13 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
             // Step 7: Process @typeof if there is a subject
             if ($subject and $typeof) {
-                $type = $this->expandCurie($node, $context, $typeof, true);
-                $this->addTriple(
-                    $subject,
-                    'rdf:type',
-                    array('type' => 'uri', 'value' => $type)
-                );
+                foreach($this->expandCurieList($node, $context, $typeof) as $type) {
+                    $this->addTriple(
+                        $subject,
+                        'rdf:type',
+                        array('type' => 'uri', 'value' => $type)
+                    );
+                }
             }
 
             // Step 9: Generate triples with given object

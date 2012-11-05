@@ -374,7 +374,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0083', 'multiple ways of handling incomplete triples (merged)');
     }
 
-// FIXME
+// FIXME:
 //     public function testCase0084()
 //     {
 //         $this->markTestSkipped("The bnode code needs fixing");
@@ -493,11 +493,10 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 //         $this->rdfaTestCase('0122', 'resource=\"[]\" does not set the object');
 //     }
 
-// FIXME:
-//     public function testCase0126()
-//     {
-//         $this->rdfaTestCase('0126', 'Multiple @typeof values');
-//     }
+    public function testCase0126()
+    {
+        $this->rdfaTestCase('0126', 'Multiple @typeof values');
+    }
 
     public function testCase0131()
     {
