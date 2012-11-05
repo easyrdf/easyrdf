@@ -311,9 +311,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
                 if ($datatype = $node->getAttribute('datatype')) {
                     $literal['datatype'] = $this->expandCurie($node, $context, $datatype);
-                }
-
-                if ($context['lang']) {
+                } elseif ($context['lang']) {
                     $literal['lang'] = $context['lang'];
                 }
 
