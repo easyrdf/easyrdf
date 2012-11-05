@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -42,6 +42,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 {
     public function setUp()
     {
+        EasyRdf_Namespace::setDefault(NULL);
         $this->_graph = new EasyRdf_Graph();
         $this->_resource = $this->_graph->resource('http://xmlns.com/foaf/0.1/name');
     }
@@ -257,6 +258,40 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
             '$prefix should be a string and cannot be null or empty'
         );
         EasyRdf_Namespace::delete($this);
+    }
+
+    public function testSetDefaultUri()
+    {
+        EasyRdf_Namespace::setDefault('http://ogp.me/ns#');
+        $this->assertSame(
+            'http://ogp.me/ns#',
+            EasyRdf_Namespace::getDefault()
+        );
+    }
+
+    public function testSetDefaultPrefix()
+    {
+        EasyRdf_Namespace::setDefault('foaf');
+        $this->assertSame(
+            'http://xmlns.com/foaf/0.1/',
+            EasyRdf_Namespace::getDefault()
+        );
+    }
+
+    public function testSetDefaultEmpty()
+    {
+        EasyRdf_Namespace::setDefault('http://ogp.me/ns#');
+        EasyRdf_Namespace::setDefault('');
+        $this->assertSame(NULL, EasyRdf_Namespace::getDefault());
+    }
+
+    public function testSetDefaultUnknown()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Unable to set default namespace to unknown prefix: foobar'
+        );
+        EasyRdf_Namespace::setDefault('foobar');
     }
 
     public function testSplitUriFoafName()
@@ -494,8 +529,27 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         );
     }
 
-    public function testExpandMissingColon()
+    public function testExpandWithDefaultUri()
     {
+        EasyRdf_Namespace::setDefault('http://ogp.me/ns#');
+        $this->assertSame(
+            'http://ogp.me/ns#title',
+            EasyRdf_Namespace::expand('title')
+        );
+    }
+
+    public function testExpandWithDefaultPrefix()
+    {
+        EasyRdf_Namespace::setDefault('foaf');
+        $this->assertSame(
+            'http://xmlns.com/foaf/0.1/name',
+            EasyRdf_Namespace::expand('name')
+        );
+    }
+
+    public function testExpandWithoutDefault()
+    {
+        EasyRdf_Namespace::setDefault(NULL);
         $this->assertSame(
             'unknown',
             EasyRdf_Namespace::expand('unknown')

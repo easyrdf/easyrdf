@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -79,7 +79,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testCreateWithDatatype()
     {
-        $literal = EasyRdf_Literal::create(1, null, 'xsd:integer');
+        $literal = EasyRdf_Literal::create(1, NULL, 'xsd:integer');
         $this->assertClass('EasyRdf_Literal_Integer', $literal);
         $this->assertSame(1, $literal->getValue());
         $this->assertSame(NULL, $literal->getLang());
@@ -104,10 +104,20 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertSame(NULL, $literal->getDatatype());
     }
 
+    public function testCreateWithObjectDatatype()
+    {
+        $datatype = new EasyRdf_ParsedUri('http://www.w3.org/2001/XMLSchema#integer');
+        $literal = EasyRdf_Literal::create(1, NULL, $datatype);
+        $this->assertClass('EasyRdf_Literal_Integer', $literal);
+        $this->assertSame(1, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:integer', $literal->getDatatype());
+    }
+
     public function testCreateWithUriDatatype()
     {
         $literal = EasyRdf_Literal::create(
-            1, null, 'http://www.w3.org/2001/XMLSchema#integer'
+            1, NULL, 'http://www.w3.org/2001/XMLSchema#integer'
         );
         $this->assertClass('EasyRdf_Literal_Integer', $literal);
         $this->assertSame(1, $literal->getValue());
@@ -118,7 +128,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     public function testCreateWithUnshortenableUriDatatype()
     {
         $literal = EasyRdf_Literal::create(
-            1, null, 'http://example.com/integer'
+            1, NULL, 'http://example.com/integer'
         );
         $this->assertClass('EasyRdf_Literal', $literal);
         $this->assertSame(1, $literal->getValue());
@@ -200,7 +210,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testCreateConvertToBooleanTrue()
     {
-        $literal = EasyRdf_Literal::create(1, null, 'xsd:boolean');
+        $literal = EasyRdf_Literal::create(1, NULL, 'xsd:boolean');
         $this->assertClass('EasyRdf_Literal_Boolean', $literal);
         $this->assertInternalType('bool', $literal->getValue());
         $this->assertSame(true, $literal->getValue());
@@ -210,7 +220,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testCreateConvertToBooleanFalse()
     {
-        $literal = EasyRdf_Literal::create(0, null, 'xsd:boolean');
+        $literal = EasyRdf_Literal::create(0, NULL, 'xsd:boolean');
         $this->assertClass('EasyRdf_Literal_Boolean', $literal);
         $this->assertInternalType('bool', $literal->getValue());
         $this->assertSame(false, $literal->getValue());
@@ -220,7 +230,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testCreateConvertToInteger()
     {
-        $literal = EasyRdf_Literal::create('100.00', null, 'xsd:integer');
+        $literal = EasyRdf_Literal::create('100.00', NULL, 'xsd:integer');
         $this->assertClass('EasyRdf_Literal_Integer', $literal);
         $this->assertInternalType('integer', $literal->getValue());
         $this->assertSame(100, $literal->getValue());
@@ -230,7 +240,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testCreateConvertToDecimal()
     {
-        $literal = EasyRdf_Literal::create('1', null, 'xsd:decimal');
+        $literal = EasyRdf_Literal::create('1', NULL, 'xsd:decimal');
         $this->assertClass('EasyRdf_Literal_Decimal', $literal);
         $this->assertInternalType('float', $literal->getValue());
         $this->assertSame(1.0, $literal->getValue());
@@ -240,7 +250,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testCreateConvertToString()
     {
-        $literal = EasyRdf_Literal::create(true, null, 'xsd:string');
+        $literal = EasyRdf_Literal::create(true, NULL, 'xsd:string');
         $this->assertClass('EasyRdf_Literal', $literal);
         $this->assertInternalType('string', $literal->getValue());
         # Hmm, not sure about this, but PHP does the conversion not me:
@@ -335,7 +345,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testDumpValueWithDatatype()
     {
-        $literal = EasyRdf_Literal::create(1, null, 'xsd:integer');
+        $literal = EasyRdf_Literal::create(1, NULL, 'xsd:integer');
         $this->assertSame(
             '"1"^^xsd:integer',
             $literal->dumpValue(false)
@@ -360,7 +370,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     public function testCreateCustomClass()
     {
         EasyRdf_Literal::setDatatypeMapping('ex:mytype', 'MyDatatype_Class');
-        $literal = EasyRdf_Literal::create('foobar', null, 'ex:mytype');
+        $literal = EasyRdf_Literal::create('foobar', NULL, 'ex:mytype');
         $this->assertClass('MyDatatype_Class', $literal);
         $this->assertStringEquals('!foobar!', $literal);
         $this->assertSame('foobar', $literal->getValue());
@@ -372,16 +382,16 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$datatype should be a string and cannot be null or empty'
+            '$datatype should be a string and cannot be NULL or empty'
         );
-        EasyRdf_Literal::setDatatypeMapping(null, 'MyDatatype_Class');
+        EasyRdf_Literal::setDatatypeMapping(NULL, 'MyDatatype_Class');
     }
 
     public function testSetDatatypeMappingEmpty()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$datatype should be a string and cannot be null or empty'
+            '$datatype should be a string and cannot be NULL or empty'
         );
         EasyRdf_Literal::setDatatypeMapping('', 'MyDatatype_Class');
     }
@@ -390,7 +400,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$datatype should be a string and cannot be null or empty'
+            '$datatype should be a string and cannot be NULL or empty'
         );
         EasyRdf_Literal::setDatatypeMapping(array(), 'MyDatatype_Class');
     }
@@ -399,16 +409,16 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$class should be a string and cannot be null or empty'
+            '$class should be a string and cannot be NULL or empty'
         );
-        EasyRdf_Literal::setDatatypeMapping('ex:mytype', null);
+        EasyRdf_Literal::setDatatypeMapping('ex:mytype', NULL);
     }
 
     public function testSetDatatypeMappingClassEmpty()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$class should be a string and cannot be null or empty'
+            '$class should be a string and cannot be NULL or empty'
         );
         EasyRdf_Literal::setDatatypeMapping('ex:mytype', '');
     }
@@ -417,7 +427,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$class should be a string and cannot be null or empty'
+            '$class should be a string and cannot be NULL or empty'
         );
         EasyRdf_Literal::setDatatypeMapping('ex:mytype', array());
     }
@@ -426,16 +436,16 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$datatype should be a string and cannot be null or empty'
+            '$datatype should be a string and cannot be NULL or empty'
         );
-        EasyRdf_Literal::deleteDatatypeMapping(null);
+        EasyRdf_Literal::deleteDatatypeMapping(NULL);
     }
 
     public function testDeleteDatatypeMappingEmpty()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$datatype should be a string and cannot be null or empty'
+            '$datatype should be a string and cannot be NULL or empty'
         );
         EasyRdf_Literal::deleteDatatypeMapping('');
     }
@@ -444,7 +454,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$datatype should be a string and cannot be null or empty'
+            '$datatype should be a string and cannot be NULL or empty'
         );
         EasyRdf_Literal::deleteDatatypeMapping(array());
     }

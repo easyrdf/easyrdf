@@ -92,6 +92,27 @@ class EasyRdf_Graph
         }
     }
 
+    /**
+     * Create a new graph and load RDF data from a URI into it
+     *
+     * This static function is shorthand for:
+     *     $graph = new EasyRdf_Graph($uri);
+     *     $graph->load($uri, $format);
+     *
+     * The document type is optional but should be specified if it
+     * can't be guessed or got from the HTTP headers.
+     *
+     * @param  string  $uri     The URI of the data to load
+     * @param  string  $format  Optional format of the data (eg. rdfxml)
+     * @return object EasyRdf_Graph    The new the graph object
+     */
+    public static function newAndLoad($uri, $format=null)
+    {
+        $graph = new self($uri);
+        $graph->load($uri, $format);
+        return $graph;
+    }
+
     /** Get or create a resource stored in a graph
      *
      * If the resource did not previously exist, then a new resource will
@@ -1479,5 +1500,67 @@ class EasyRdf_Graph
     public function __toString()
     {
         return $this->_uri == null ? '' : $this->_uri;
+    }
+
+    /** Magic method to get a property of the graph
+     *
+     * Note that only properties in the default namespace can be accessed in this way.
+     *
+     * Example:
+     *   $value = $graph->title;
+     *
+     * @see EasyRdf_Namespace::setDefault()
+     * @param  string $name The name of the property
+     * @return string       A single value for the named property
+     */
+    public function __get($name)
+    {
+        return $this->get($this->_uri, $name);
+    }
+
+    /** Magic method to set the value for a property of the graph
+     *
+     * Note that only properties in the default namespace can be accessed in this way.
+     *
+     * Example:
+     *   $graph->title = 'Title';
+     *
+     * @see EasyRdf_Namespace::setDefault()
+     * @param  string $name The name of the property
+     * @param  string $value The value for the property
+     */
+    public function __set($name, $value)
+    {
+        return $this->set($this->_uri, $name, $value);
+    }
+
+    /** Magic method to check if a property exists
+     *
+     * Note that only properties in the default namespace can be accessed in this way.
+     *
+     * Example:
+     *   if (isset($graph->title)) { blah(); }
+     *
+     * @see EasyRdf_Namespace::setDefault()
+     * @param string $name The name of the property
+     */
+    public function __isset($name)
+    {
+        return $this->hasProperty($this->_uri, $name);
+    }
+
+    /** Magic method to delete a property of the graph
+     *
+     * Note that only properties in the default namespace can be accessed in this way.
+     *
+     * Example:
+     *   unset($graph->title);
+     *
+     * @see EasyRdf_Namespace::setDefault()
+     * @param string $name The name of the property
+     */
+    public function __unset($name)
+    {
+        return $this->delete($this->_uri, $name);
     }
 }

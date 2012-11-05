@@ -37,9 +37,12 @@
         $_REQUEST['data'] = stripslashes($_REQUEST['data']);
     }
 
-    // Default to Turtle output
+    // Default to Guess input and Turtle output
     if (!isset($_REQUEST['output_format'])) {
         $_REQUEST['output_format'] = 'turtle';
+    }
+    if (!isset($_REQUEST['input_format'])) {
+        $_REQUEST['input_format'] = 'guess';
     }
 
     // Display the form, if raw option isn't set
@@ -53,7 +56,7 @@
         print form_tag();
         print label_tag('data', 'Input Data: ').'<br />'.text_area_tag('data', '', array('cols'=>80, 'rows'=>10)) . "<br />\n";
         print label_tag('uri', 'or Uri: ').text_field_tag('uri', 'http://www.dajobe.org/foaf.rdf', array('size'=>80)) . "<br />\n";
-        print label_tag('input_format', 'Input Format: ').select_tag('input_format', $input_format_options, 'guess') . "<br />\n";
+        print label_tag('input_format', 'Input Format: ').select_tag('input_format', $input_format_options) . "<br />\n";
         print label_tag('output_format', 'Output Format: ').select_tag('output_format', $output_format_options) . "<br />\n";
         print label_tag('raw', 'Raw Output: ').check_box_tag('raw') . "<br />\n";
         print reset_tag() . submit_tag();

@@ -623,5 +623,66 @@ class EasyRdf_Resource
         $this->checkHasGraph();
         return $this->_graph->dumpResource($this->_uri, $html);
     }
-}
 
+    /** Magic method to get a property of a resource
+     *
+     * Note that only properties in the default namespace can be accessed in this way.
+     *
+     * Example:
+     *   $value = $resource->title;
+     *
+     * @see EasyRdf_Namespace::setDefault()
+     * @param  string $name The name of the property
+     * @return string       A single value for the named property
+     */
+    public function __get($name)
+    {
+        return $this->_graph->get($this->_uri, $name);
+    }
+
+    /** Magic method to set the value for a property of a resource
+     *
+     * Note that only properties in the default namespace can be accessed in this way.
+     *
+     * Example:
+     *   $resource->title = 'Title';
+     *
+     * @see EasyRdf_Namespace::setDefault()
+     * @param  string $name The name of the property
+     * @param  string $value The value for the property
+     */
+    public function __set($name, $value)
+    {
+        return $this->_graph->set($this->_uri, $name, $value);
+    }
+
+    /** Magic method to check if a property exists
+     *
+     * Note that only properties in the default namespace can be accessed in this way.
+     *
+     * Example:
+     *   if (isset($resource->title)) { blah(); }
+     *
+     * @see EasyRdf_Namespace::setDefault()
+     * @param string $name The name of the property
+     */
+    public function __isset($name)
+    {
+        return $this->_graph->hasProperty($this->_uri, $name);
+    }
+
+    /** Magic method to delete a property of the resource
+     *
+     * Note that only properties in the default namespace can be accessed in this way.
+     *
+     * Example:
+     *   unset($resource->title);
+     *
+     * @see EasyRdf_Namespace::setDefault()
+     * @param string $name The name of the property
+     */
+    public function __unset($name)
+    {
+        return $this->_graph->delete($this->_uri, $name);
+    }
+}

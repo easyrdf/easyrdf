@@ -71,6 +71,9 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_RdfXml');
         EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Turtle');
 
+        // Reset default namespace
+        EasyRdf_Namespace::setDefault(NULL);
+
         EasyRdf_Http::setDefaultHttpClient(
             $this->_client = new EasyRdf_Http_MockClient()
         );
@@ -327,6 +330,17 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             0, $graph->load('http://www.example.com/foaf.rdf', 'json')
         );
         $this->assertSame(14, $graph->countTriples());
+        $this->assertStringEquals(
+            'Joe Bloggs',
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
+        );
+    }
+
+    public function testNewAndLoad()
+    {
+        $this->_client->addMockOnce('GET', 'http://www.example.com/', readFixture('foaf.json'));
+        $graph = EasyRdf_Graph::newAndLoad('http://www.example.com/', 'json');
+        $this->assertClass('EasyRdf_Graph', $graph);
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
@@ -1860,5 +1874,53 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph('http://example.com/joe/foaf.rdf');
         $this->assertStringEquals('http://example.com/joe/foaf.rdf', $graph);
+    }
+
+    public function testMagicGet()
+    {
+        EasyRdf_Namespace::setDefault('rdf');
+        $this->_graph->add($this->_graph->getUri(), 'rdf:test', 'testMagicGet');
+        $this->assertStringEquals(
+            'testMagicGet',
+            $this->_graph->test
+        );
+    }
+
+    public function testMagicGetNonExistant()
+    {
+        EasyRdf_Namespace::setDefault('rdf');
+        $this->assertSame(
+            NULL,
+            $this->_graph->foobar
+        );
+    }
+
+    public function testMagicSet()
+    {
+        EasyRdf_Namespace::setDefault('rdf');
+        $this->_graph->test = 'testMagicSet';
+        $this->assertStringEquals(
+            'testMagicSet',
+            $this->_graph->get($this->_graph->getUri(), 'rdf:test')
+        );
+    }
+
+    public function testMagicIsSet()
+    {
+        EasyRdf_Namespace::setDefault('rdf');
+        $this->assertFalse(isset($this->_graph->test));
+        $this->_graph->add($this->_graph->getUri(), 'rdf:test', 'testMagicIsSet');
+        $this->assertTrue(isset($this->_graph->test));
+    }
+
+    public function testMagicUnset()
+    {
+        EasyRdf_Namespace::setDefault('rdf');
+        $this->_graph->add($this->_graph->getUri(), 'rdf:test', 'testMagicUnset');
+        unset($this->_graph->test);
+        $this->assertStringEquals(
+            NULL,
+            $this->_graph->get($this->_graph->getUri(), 'rdf:test')
+        );
     }
 }

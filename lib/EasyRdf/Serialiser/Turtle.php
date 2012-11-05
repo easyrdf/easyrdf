@@ -75,24 +75,20 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
         if ($object instanceof EasyRdf_Resource) {
             return $this->serialiseResource($object);
         } else {
-            $value = $this->escapeString($object->getValue());
+            $value = $this->escapeString($object);
 
             if ($datatype = $object->getDatatypeUri()) {
                 $short = EasyRdf_Namespace::shorten($datatype, true);
                 if ($short) {
                     $this->addPrefix($short);
                     if ($short == 'xsd:integer') {
-                        return sprintf('%d^^%s', $value, $short);
+                        return sprintf('%d', $value);
                     } else if ($short == 'xsd:decimal') {
-                        return sprintf('%g^^%s', $value, $short);
+                        return sprintf('%g', $value);
                     } else if ($short == 'xsd:double') {
-                        return sprintf('%e^^%s', $value, $short);
+                        return sprintf('%e', $value);
                     } else if ($short == 'xsd:boolean') {
-                        return sprintf(
-                            '%s^^%s',
-                            $value ? 'true' : 'false',
-                            $short
-                        );
+                        return sprintf('%s', $value ? 'true' : 'false');
                     } else {
                         return sprintf('"%s"^^%s', $value, $short);
                     }

@@ -2,7 +2,7 @@ PACKAGE = easyrdf
 VERSION = $(shell php -r "print json_decode(file_get_contents('composer.json'))->version;")
 distdir = $(PACKAGE)-$(VERSION)
 PHP = $(shell which php)
-PHPUNIT = $(PHP) $(shell which phpunit) --strict --log-junit ./reports/test-results.xml
+PHPUNIT = $(PHP) $(shell which phpunit) -d zend.enable_gc=0 --strict --log-junit ./reports/test-results.xml
 PHPCS = phpcs --standard=Zend --tab-width=4 --encoding=utf8 -n
 PHPDOC = phpdoc --title "EasyRdf $(VERSION) API Documentation" \
                 --output "HTML:frames:default" \
