@@ -70,6 +70,8 @@ class EasyRdf_Namespace
       'xsd' => 'http://www.w3.org/2001/XMLSchema#'
     );
 
+    private static $_default = NULL;
+
     /** Counter for numbering anonymous namespaces */
     private static $_anonymousNamespaceCount = 0;
 
@@ -139,6 +141,47 @@ class EasyRdf_Namespace
 
         $prefix = strtolower($prefix);
         self::$_namespaces[$prefix] = $long;
+    }
+
+    /**
+      * Get the default namespace
+      *
+      * Returns the URI of the default namespace or NULL
+      * if no default namespace is defined.
+      *
+      * @return string The URI of the default namespace
+      */
+    public static function getDefault()
+    {
+        return self::$_default;
+    }
+
+    /**
+      * Set the default namespace
+      *
+      * Set the default namespace to either a URI or the prefix of
+      * an already defined namespace.
+      *
+      * Example:
+      *   EasyRdf_Namespace::setDefault('http://schema.org/');
+      *
+      * @param string $namespace The URI or prefix of a namespace (eg 'og')
+      */
+    public static function setDefault($namespace)
+    {
+        if (empty($namespace)) {
+            self::$_default = NULL;
+        } elseif (preg_match("/^\w+$/", $namespace)) {
+            if (isset(self::$_namespaces[$namespace])) {
+                self::$_default = self::$_namespaces[$namespace];
+            } else {
+                throw new InvalidArgumentException(
+                    "Unable to set default namespace to unknown prefix: $namespace"
+                );
+            }
+        } else {
+            self::$_default = $namespace;
+        }
     }
 
     /**
@@ -263,7 +306,7 @@ class EasyRdf_Namespace
       */
     public static function expand($shortUri)
     {
-        if (!is_string($shortUri) or $shortUri === null or $shortUri === '') {
+        if (!is_string($shortUri) or empty($shortUri)) {
             throw new InvalidArgumentException(
                 "\$shortUri should be a string and cannot be null or empty"
             );
@@ -274,7 +317,10 @@ class EasyRdf_Namespace
             if ($long) {
                 return $long . $matches[2];
             }
+        } elseif (preg_match("/^(\w+)$/", $shortUri) and isset(self::$_default)) {
+            return self::$_default . $shortUri;
         }
+
         return $shortUri;
     }
 }
