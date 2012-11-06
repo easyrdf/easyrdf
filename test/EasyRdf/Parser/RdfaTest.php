@@ -374,12 +374,11 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0083', 'multiple ways of handling incomplete triples (merged)');
     }
 
-// FIXME:
-//     public function testCase0084()
-//     {
-//         $this->markTestSkipped("The bnode code needs fixing");
-//         $this->rdfaTestCase('0084', 'multiple ways of handling incomplete triples, this time with both @rel and @rev');
-//     }
+    public function testCase0084()
+    {
+        $this->markTestSkipped("FIXME: The bnode code needs fixing");
+        $this->rdfaTestCase('0084', 'multiple ways of handling incomplete triples, this time with both @rel and @rev');
+    }
 
     public function testCase0085()
     {
@@ -391,10 +390,9 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0087', 'All reserved XHTML @rel values (with :xxx)');
     }
 
-    # FIXME: RDFa parser is working but graph comparison isn't
     public function testCase0088()
     {
-        $this->markTestSkipped("Graph comparison isn't working");
+        $this->markTestSkipped("FIXME: Graph comparison isn't working");
         $this->rdfaTestCase('0088', 'Interpretation of the CURIE "_:"');
     }
 
@@ -423,11 +421,11 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0104', 'rdf:value');
     }
 
-// FIXME:
-//     public function testCase0106()
-//     {
-//         $this->rdfaTestCase('0106', 'chaining with empty value in inner @rel');
-//     }
+    public function testCase0106()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0106', 'chaining with empty value in inner @rel');
+    }
 
     public function testCase0107()
     {
@@ -499,11 +497,11 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0131', 'Whitespace alternatives in attributes');
     }
 
-// FIXME:
-//     public function testCase0134()
-//     {
-//         $this->rdfaTestCase('0134', 'Uppercase reserved words');
-//     }
+    public function testCase0134()
+    {
+        $this->markTestSkipped("FIXME: is this a valid RDFa 1.1 test?");
+        $this->rdfaTestCase('0134', 'Uppercase reserved words');
+    }
 
     public function testCase0140()
     {
@@ -560,11 +558,11 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0182', 'Test prefix locality');
     }
 
-// FIXME: not sure how to fix this test yet
-//     public function testCase0183()
-//     {
-//         $this->rdfaTestCase('0183', 'Test @xmlns redefines @prefix');
-//     }
+    public function testCase0183()
+    {
+        $this->markTestSkipped("FIXME: not sure how to fix this because of PHP DOM");
+        $this->rdfaTestCase('0183', 'Test @xmlns redefines @prefix');
+    }
 
     public function testCase0186()
     {
@@ -586,28 +584,28 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0189', '@vocab overrides default term');
     }
 
-// FIXME:
-//     public function testCase0190()
-//     {
-//         $this->rdfaTestCase('0190', 'Test term case insensitivity');
-//     }
+    public function testCase0190()
+    {
+        $this->markTestSkipped("FIXME: is this a valid RDF 1.1 test?");
+        $this->rdfaTestCase('0190', 'Test term case insensitivity');
+    }
 
     public function testCase0196()
     {
         $this->rdfaTestCase('0196', 'Test process explicit XMLLiteral');
     }
 
-// FIXME:
-//     public function testCase0197()
-//     {
-//         $this->rdfaTestCase('0197', 'Test TERMorCURIEorAbsURI requires an absolute URI');
-//     }
+    public function testCase0197()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0197', 'Test TERMorCURIEorAbsURI requires an absolute URI');
+    }
 
-// FIXME:
-//     public function testCase0198()
-//     {
-//         $this->rdfaTestCase('0198', 'datatype XMLLiteral with other embedded RDFa');
-//     }
+    public function testCase0198()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0198', 'datatype XMLLiteral with other embedded RDFa');
+    }
 
     public function testParseUnsupportedFormat()
     {
