@@ -423,7 +423,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0106()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestSkipped("FIXME: not sure why object is a bnode?");
         $this->rdfaTestCase('0106', 'chaining with empty value in inner @rel');
     }
 
@@ -597,7 +597,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0197()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0197', 'Test TERMorCURIEorAbsURI requires an absolute URI');
     }
 

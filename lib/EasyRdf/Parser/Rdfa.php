@@ -64,15 +64,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     {
     }
 
-    protected function resolve($uri)
-    {
-        if ($this->_baseUri) {
-            return $this->_baseUri->resolve($uri);
-        } else {
-            return $uri;
-        }
-    }
-
     protected function addTriple($resource, $property, $value)
     {
         if ($this->_debug)
@@ -146,7 +137,15 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             if ($uri) {
                 return $uri;
             } else {
-                return $this->resolve($value);
+                $parsed = new EasyRdf_ParsedUri($value);
+                if ($parsed->isAbsolute()) {
+                    return $value;
+                } elseif ($isProp) {
+                    // Properties can't be relative URIs
+                    return NULL;
+                } elseif ($this->_baseUri) {
+                    return $this->_baseUri->resolve($parsed);
+                }
             }
         }
     }
@@ -228,7 +227,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             }
 
             if (!$rel and !$rev) {
-                // Step 5
+                // Step 5: Establish a new subject if no rel/rev
                 if ($about !== NULL) {
                     $subject = $this->processUri($node, $context, $about);
                 } elseif ($src !== NULL) {
@@ -324,7 +323,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 }
 
                 if ($datatype = $node->getAttribute('datatype')) {
-                    $literal['datatype'] = $this->processUri($node, $context, $datatype);
+                    $literal['datatype'] = $this->processUri($node, $context, $datatype, true);
                 } elseif ($context['lang']) {
                     $literal['lang'] = $context['lang'];
                 }
