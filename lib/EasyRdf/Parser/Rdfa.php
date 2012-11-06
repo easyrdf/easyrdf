@@ -51,6 +51,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 {
     const XML_NS = 'http://www.w3.org/XML/1998/namespace';
     const XHTML_NS = 'http://www.w3.org/1999/xhtml/vocab#';
+    const TERM_REGEXP = '/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/';
 
     public $_debug = FALSE;
 
@@ -107,16 +108,12 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
-    protected function expandCurie($node, $context, $value, $isProp=false)
+    protected function expandCurie($node, $context, $value)
     {
-        if (preg_match("/^\[(.+)\]$/", $value, $matches)) {
-            $value = $matches[1];
-        }
-
         if (substr($value, 0, 2) === '_:') {
             # It is a bnode
             return $this->remapBnode(substr($value, 2));
-        } elseif (preg_match("/^(\w*?):([\w\-]+)$/", $value, $matches)) {
+        } elseif (preg_match("/^(\w*?):([\w\-]*)$/", $value, $matches)) {
             list (, $prefix, $local) = $matches;
             $prefix = strtolower($prefix);
             if (!$prefix and $context['vocab']) {
@@ -129,23 +126,36 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     return $uri . $local;
                 }
             }
-        } elseif (preg_match("/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/", $value) and $isProp) {
+        }
+    }
+
+    protected function processUri($node, $context, $value, $isProp=false)
+    {
+        if (preg_match("/^\[(.*)\]$/", $value, $matches)) {
+            // Safe CURIE
+            return $this->expandCurie($node, $context, $matches[1]);
+        } elseif (preg_match(self::TERM_REGEXP, $value) and $isProp) {
             if ($context['vocab']) {
                 return $context['vocab'] . $value;
             }
         } else {
-            return $this->resolve($value);
+            $uri = $this->expandCurie($node, $context, $value);
+            if ($uri) {
+                return $uri;
+            } else {
+                return $this->resolve($value);
+            }
         }
     }
 
-    protected function expandCurieList($node, $context, $values)
+    protected function processUriList($node, $context, $values)
     {
         if (!$values)
             return array();
 
         $uris = array();
         foreach(preg_split("/\s+/", $values) as $value) {
-            $uri = $this->expandCurie($node, $context, $value, true);
+            $uri = $this->processUri($node, $context, $value, true);
             if ($uri) array_push($uris, $uri);
         }
         return $uris;
@@ -217,13 +227,13 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             if (!$rel and !$rev) {
                 // Step 5
                 if ($about !== NULL) {
-                    $subject = $this->expandCurie($node, $context, $about);
+                    $subject = $this->processUri($node, $context, $about);
                 } elseif ($src !== NULL) {
-                    $subject = $this->expandCurie($node, $context, $src);
+                    $subject = $this->processUri($node, $context, $src);
                 } elseif ($resource !== NULL) {
-                    $subject = $this->expandCurie($node, $context, $resource);
+                    $subject = $this->processUri($node, $context, $resource);
                 } elseif ($href !== NULL) {
-                    $subject = $this->expandCurie($node, $context, $href);
+                    $subject = $this->processUri($node, $context, $href);
                 }
 
             } else {
@@ -231,19 +241,19 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 // If the current element does contain a @rel or @rev attribute, then the next step is to
                 // establish both a value for new subject and a value for current object resource:
                 if ($about !== NULL) {
-                    $subject = $this->expandCurie($node, $context, $about);
+                    $subject = $this->processUri($node, $context, $about);
                 } elseif ($src !== NULL) {
-                    $subject = $this->expandCurie($node, $context, $src);
+                    $subject = $this->processUri($node, $context, $src);
                 }
 
                 if ($resource !== NULL) {
-                    $object = $this->expandCurie($node, $context, $resource);
+                    $object = $this->processUri($node, $context, $resource);
                 } elseif ($href !== NULL) {
-                    $object = $this->expandCurie($node, $context, $href);
+                    $object = $this->processUri($node, $context, $href);
                 }
 
-                $revs = $this->expandCurieList($node, $context, $rev);
-                $rels = $this->expandCurieList($node, $context, $rel);
+                $revs = $this->processUriList($node, $context, $rev);
+                $rels = $this->processUriList($node, $context, $rel);
             }
 
             // Establish a subject if there isn't one
@@ -259,7 +269,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
             // Step 7: Process @typeof if there is a subject
             if ($subject and $typeof) {
-                foreach($this->expandCurieList($node, $context, $typeof) as $type) {
+                foreach($this->processUriList($node, $context, $typeof) as $type) {
                     $this->addTriple(
                         $subject,
                         'rdf:type',
@@ -311,13 +321,13 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 }
 
                 if ($datatype = $node->getAttribute('datatype')) {
-                    $literal['datatype'] = $this->expandCurie($node, $context, $datatype);
+                    $literal['datatype'] = $this->processUri($node, $context, $datatype);
                 } elseif ($context['lang']) {
                     $literal['lang'] = $context['lang'];
                 }
 
                 // Add each of the properties
-                foreach($this->expandCurieList($node, $context, $property) as $prop) {
+                foreach($this->processUriList($node, $context, $property) as $prop) {
                     $this->addTriple($subject, $prop, $literal);
                 }
             }

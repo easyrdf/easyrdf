@@ -469,29 +469,25 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0118', 'empty string \"\" is not equivalent to NULL - @about');
     }
 
-// FIXME:
-//     public function testCase0119()
-//     {
-//         $this->rdfaTestCase('0119', '\"[prefix:]\" CURIE format is valid');
-//     }
+    public function testCase0119()
+    {
+        $this->rdfaTestCase('0119', '\"[prefix:]\" CURIE format is valid');
+    }
 
-// FIXME:
-//     public function testCase0120()
-//     {
-//         $this->rdfaTestCase('0120', '\"[:]\" CURIE format is valid');
-//     }
+    public function testCase0120()
+    {
+        $this->rdfaTestCase('0120', '\"[:]\" CURIE format is valid');
+    }
 
-// FIXME:
-//     public function testCase0121()
-//     {
-//         $this->rdfaTestCase('0121', '\"[]\" is a valid safe CURIE');
-//     }
+    public function testCase0121()
+    {
+        $this->rdfaTestCase('0121', '\"[]\" is a valid safe CURIE');
+    }
 
-// FIXME:
-//     public function testCase0122()
-//     {
-//         $this->rdfaTestCase('0122', 'resource=\"[]\" does not set the object');
-//     }
+    public function testCase0122()
+    {
+        $this->rdfaTestCase('0122', 'resource=\"[]\" does not set the object');
+    }
 
     public function testCase0126()
     {
