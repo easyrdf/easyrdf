@@ -110,13 +110,14 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function expandCurie($node, $context, $value)
     {
-        if (substr($value, 0, 2) === '_:') {
-            # It is a bnode
-            return $this->remapBnode(substr($value, 2));
-        } elseif (preg_match("/^(\w*?):([\w\-]*)$/", $value, $matches)) {
+        if (preg_match("/^(\w*?):([\w\-]*)$/", $value, $matches)) {
             list (, $prefix, $local) = $matches;
             $prefix = strtolower($prefix);
-            if (!$prefix and $context['vocab']) {
+            if ($prefix === '_') {
+                # It is a bnode
+                return $this->remapBnode(substr($value, 2));
+            } elseif (empty($prefix) and $context['vocab']) {
+                # Empty prefix
                 return $context['vocab'] . $local;
             } elseif (isset($context['prefixes'][$prefix])) {
                 return $context['prefixes'][$prefix] . $local;
@@ -138,6 +139,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             if ($context['vocab']) {
                 return $context['vocab'] . $value;
             }
+        } elseif (substr($value, 0, 2) === '_:' and $isProp) {
+            return NULL;
         } else {
             $uri = $this->expandCurie($node, $context, $value);
             if ($uri) {

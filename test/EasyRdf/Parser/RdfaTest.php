@@ -505,11 +505,10 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 //         $this->rdfaTestCase('0134', 'Uppercase reserved words');
 //     }
 
-// FIXME:
-//     public function testCase0140()
-//     {
-//         $this->rdfaTestCase('0140', 'Blank nodes identifiers are not allowed as predicates');
-//     }
+    public function testCase0140()
+    {
+        $this->rdfaTestCase('0140', 'Blank nodes identifiers are not allowed as predicates');
+    }
 
     public function testCase0147()
     {
