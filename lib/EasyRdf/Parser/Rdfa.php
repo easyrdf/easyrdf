@@ -99,6 +99,25 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
+    protected function guessTimeDatatype($value)
+    {
+        if (preg_match("/^-?\d{4}-\d{2}-\d{2}(Z|[\-\+]\d{2}:\d{2})?$/", $value)) {
+            return 'http://www.w3.org/2001/XMLSchema#date';
+        } elseif (preg_match("/^\d{2}:\d{2}:\d{2}(Z|[\-\+]\d{2}:\d{2})?$/", $value)) {
+            return 'http://www.w3.org/2001/XMLSchema#time';
+        } elseif (preg_match("/^-?\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|[\-\+]\d{2}:\d{2})?$/", $value)) {
+            return 'http://www.w3.org/2001/XMLSchema#dateTime';
+        } elseif (preg_match("/^P(\d+Y)?(\d+M)?(\d+D)?T?(\d+H)?(\d+M)?(\d+S)?$/", $value)) {
+            return 'http://www.w3.org/2001/XMLSchema#duration';
+        } elseif (preg_match("/^\d{4}$/", $value)) {
+            return 'http://www.w3.org/2001/XMLSchema#gYear';
+        } elseif (preg_match("/^\d{4}-\d{2}$/", $value)) {
+            return 'http://www.w3.org/2001/XMLSchema#gYearMonth';
+        } else {
+            return NULL;
+        }
+    }
+
     protected function expandCurie($node, $context, $value)
     {
         if (preg_match("/^(\w*?):([\w\-]*)$/", $value, $matches)) {
@@ -316,10 +335,20 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             // Step 11
             if ($subject and $property) {
                 $literal = array('type' => 'literal');
-                if ($node->hasAttribute('content')) {
+
+                if ($node->nodeName == 'data' and $node->hasAttribute('value')) {
+                    $literal['value'] = $node->getAttribute('value');
+                } elseif ($node->hasAttribute('datetime')) {
+                    $literal['value'] = $node->getAttribute('datetime');
+                    $datetime = TRUE;
+                } elseif ($node->hasAttribute('content')) {
                     $literal['value'] = $node->getAttribute('content');
                 } else {
                     $literal['value'] = $node->textContent;
+                }
+
+                if (isset($datetime) or $node->nodeName == 'time') {
+                    $literal['datatype'] = $this->guessTimeDatatype($literal['value']);
                 }
 
                 if ($datatype = $node->getAttribute('datatype')) {

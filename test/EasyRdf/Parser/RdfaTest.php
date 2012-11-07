@@ -870,67 +870,56 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0272()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0272', 'time element with @datetime an xsd:date');
     }
 
     public function testCase0273()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0273', 'time element with @datetime an xsd:time');
     }
 
     public function testCase0274()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0274', 'time element with @datetime an xsd:dateTime');
     }
 
     public function testCase0275()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0275', 'time element with value an xsd:date');
     }
 
     public function testCase0276()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0276', 'time element with value an xsd:time');
     }
 
     public function testCase0277()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0277', 'time element with value an xsd:dateTime');
     }
 
     public function testCase0278()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0278', '@datetime overrides @content');
     }
 
     public function testCase0279()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0279', '@datetype used with @datetime overrides default datatype');
     }
 
     public function testCase0280()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0280', 'time element with @datetime an xsd:duration');
     }
 
     public function testCase0281()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0281', 'time element with @datetime an xsd:gYear');
     }
 
     public function testCase0282()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0282', 'time element with @datetime an xsd:gYearMonth');
     }
 
@@ -941,25 +930,21 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0284()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0284', 'time element not matching datatype but with explicit @datatype');
     }
 
     public function testCase0285()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0285', 'time element with @datetime an invalid datatype and in scope @lang generates plain literal with language');
     }
 
     public function testCase0286()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0286', '@value attribute overrides @content');
     }
 
     public function testCase0287()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0287', 'time element with @datetime an xsd:dateTime with TZ offset');
     }
 
