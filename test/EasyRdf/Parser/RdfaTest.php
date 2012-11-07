@@ -608,7 +608,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0206()
     {
-        $this->markTestSkipped("FIXME: where is the list of default prefixes defined?");
         $this->rdfaTestCase('0206', 'Usage of Initial Context');
     }
 
@@ -624,7 +623,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0214()
     {
-        $this->markTestSkipped("FIXME: where is the list of default prefixes defined?");
         $this->rdfaTestCase('0214', 'Root element has implicit @about=""');
     }
 
@@ -700,7 +698,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0228()
     {
-        $this->markTestSkipped("FIXME: where is the list of default prefixes defined?");
+        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0228', '1.1 alternate for test 0040: @rev - @src/@resource test');
     }
 
@@ -1011,7 +1009,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0298()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0298', '@about=[] with @typeof does not create a new object');
     }
 

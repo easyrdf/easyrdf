@@ -105,18 +105,18 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             list (, $prefix, $local) = $matches;
             $prefix = strtolower($prefix);
             if ($prefix === '_') {
-                # It is a bnode
+                // It is a bnode
                 return $this->remapBnode(substr($value, 2));
             } elseif (empty($prefix) and $context['vocab']) {
-                # Empty prefix
+                // Empty prefix
                 return $context['vocab'] . $local;
             } elseif (isset($context['prefixes'][$prefix])) {
                 return $context['prefixes'][$prefix] . $local;
+            } elseif ($uri = $node->lookupNamespaceURI($prefix)) {
+                return $uri . $local;
             } else {
-                $uri = $node->lookupNamespaceURI($prefix);
-                if ($uri) {
-                    return $uri . $local;
-                }
+                // Expand using well-known prefixes
+                return EasyRdf_Namespace::expand($value);
             }
         }
     }
