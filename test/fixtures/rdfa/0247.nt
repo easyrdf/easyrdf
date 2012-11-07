@@ -1,0 +1,6 @@
+_:g78075450 <http://xmlns.com/foaf/0.1/name> "Mark Birbeck" .
+_:g78075450 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<http://www.example.org/#somebody> <http://xmlns.com/foaf/0.1/knows> _:g78112540 .
+<http://www.example.org/#somebody> <http://xmlns.com/foaf/0.1/knows> _:g78075450 .
+_:g78112540 <http://xmlns.com/foaf/0.1/name> "Ivan Herman" .
+_:g78112540 <http://xmlns.com/foaf/0.1/mailbox> <mailto:ivan@w3.org> .

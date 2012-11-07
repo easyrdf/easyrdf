@@ -1,0 +1,4 @@
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0303.xhtml> <http://www.w3.org/ns/rdfa#usesVocabulary> <http://schema.org/> .
+<http://example.org/base> <http://schema.org/name> "Gregg Kellogg" .
+<http://example.org/base> <http://xmlns.com/foaf/0.1/homepage> <http://greggkellogg.net/> .
+<http://example.org/base> <http://schema.org/uri> <http://example.orb/val1> .

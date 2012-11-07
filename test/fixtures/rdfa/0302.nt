@@ -1,0 +1,6 @@
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0302.xhtml> <http://www.w3.org/ns/rdfa#usesVocabulary> <http://schema.org/> .
+<http://openspring.net/scor#me> <http://schema.org/homepage> <http://openspring.net/> .
+<http://openspring.net/scor#me> <http://schema.org/name> "St\u00E9phane Corlosquet" .
+<http://openspring.net/scor#me> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
+<http://openspring.net/scor#me> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<http://openspring.net/scor#me> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/dc/terms/Agent> .

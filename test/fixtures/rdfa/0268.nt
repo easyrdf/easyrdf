@@ -1,0 +1,2 @@
+<http://www.ivan-herman.net/Images/me2003-small.png> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Image> .
+<http://www.ivan-herman.net/foaf#me> <http://xmlns.com/foaf/0.1/depiction> <http://www.ivan-herman.net/Images/me2003-small.png> .

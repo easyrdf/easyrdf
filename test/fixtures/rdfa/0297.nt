@@ -1,0 +1,2 @@
+_:g91413060 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0297.xhtml> <http://xmlns.com/foaf/0.1/name> "Alex Milowski" .

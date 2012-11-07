@@ -1,0 +1,4 @@
+_:g91168940 <http://www.milowski.com/V/name> "Fizzbit" .
+_:g91168940 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.milowski.com/V/thing> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0301.xhtml> <http://www.w3.org/ns/rdfa#usesVocabulary> <http://www.milowski.com/V/> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0301.xhtml> <http://www.milowski.com/V/bit> _:g91168940 .

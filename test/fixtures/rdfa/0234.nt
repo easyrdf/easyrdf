@@ -1,0 +1,3 @@
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0234.xhtml> <http://www.w3.org/1999/xhtml/vocab#role> <http://example.org/role> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0234.xhtml> <http://www.w3.org/2007/05/powder-s#describedby> <http://example.org/describedby> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0234.xhtml> <http://www.w3.org/1999/xhtml/vocab#license> <http://example.org/license> .

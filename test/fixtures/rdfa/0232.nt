@@ -1,0 +1,3 @@
+_:g77900230 <http://xmlns.com/foaf/0.1/name> "John Doe" .
+_:g77900230 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0232.xhtml> <http://xmlns.com/foaf/0.1/maker> _:g77900230 .

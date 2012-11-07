@@ -698,6 +698,358 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0227', 'confusion between multiple implicit collections (about)');
     }
 
+    public function testCase0228()
+    {
+        $this->markTestSkipped("FIXME: where is the list of default prefixes defined?");
+        $this->rdfaTestCase('0228', '1.1 alternate for test 0040: @rev - @src/@resource test');
+    }
+
+    public function testCase0229()
+    {
+        $this->markTestSkipped("FIXME: what is the rule for omitted @about?");
+        $this->rdfaTestCase('0229', 'img[@src] test with omitted @about');
+    }
+
+    public function testCase0230()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0230', '@src does not set a new subject (@rel/@href)');
+    }
+
+    public function testCase0231()
+    {
+        $this->rdfaTestCase('0231', 'Set image license information');
+    }
+
+    public function testCase0232()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0232', '@typeof with @rel present, no @href, @resource, or @about (1.1 behavior of 0046);');
+    }
+
+    public function testCase0233()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0233', '@typeof with @rel and @resource present, no @about (1.1 behavior of 0047)');
+    }
+
+    public function testCase0234()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0234', 'All defined HTML link relation values');
+    }
+
+    public function testCase0246()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0246', 'hanging @rel creates multiple triples, @typeof permutation; RDFa 1.1 version');
+    }
+
+    public function testCase0247()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0247', 'Multiple incomplete triples, RDFa 1.1version');
+    }
+
+    public function testCase0248()
+    {
+        $this->rdfaTestCase('0248', 'multiple ways of handling incomplete triples (with @rev); RDFa 1.1 version');
+    }
+
+    public function testCase0249()
+    {
+        $this->rdfaTestCase('0249', 'multiple ways of handling incomplete triples (with @rel and @rev); RDFa 1.1 version');
+    }
+
+    public function testCase0250()
+    {
+        $this->rdfaTestCase('0250', 'Checking the right behaviour of @typeof with @about, in presence of @property');
+    }
+
+    public function testCase0251()
+    {
+        $this->rdfaTestCase('0251', 'lang');
+    }
+
+    public function testCase0252()
+    {
+        $this->rdfaTestCase('0252', 'lang inheritance');
+    }
+
+    public function testCase0253()
+    {
+        $this->rdfaTestCase('0253', 'plain literal with datatype="" and lang preservation');
+    }
+
+    public function testCase0254()
+    {
+        $this->rdfaTestCase('0254', '@datatype="" generates plain literal in presence of child nodes');
+    }
+
+    public function testCase0255()
+    {
+        $this->rdfaTestCase('0255', 'lang="" clears language setting');
+    }
+
+    public function testCase0256()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0256', 'lang and xml:lang on the same element');
+    }
+
+    public function testCase0257()
+    {
+        $this->rdfaTestCase('0257', 'element with @property and no child nodes generates  empty plain literal (HTML5 version of 0113)');
+    }
+
+    public function testCase0258()
+    {
+        $this->rdfaTestCase('0258', 'The underscore character is not allowed as a prefix or in xmlns');
+    }
+
+    public function testCase0259()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0259', 'XML+RDFa Initial Context');
+    }
+
+    public function testCase0261()
+    {
+        $this->rdfaTestCase('0261', 'White space preservation in XMLLiteral');
+    }
+
+    public function testCase0262()
+    {
+        $this->rdfaTestCase('0262', 'Predicate establishment with @property, with white spaces before and after the attribute value');
+    }
+
+    public function testCase0263()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0263', '@property appearing on the html element yields the base as the subject');
+    }
+
+    public function testCase0264()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0264', '@property appearing on the head element gets the subject from <html>, ie, parent');
+    }
+
+    public function testCase0265()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0265', '@property appearing on the head element gets the subject from <html>, ie, parent');
+    }
+
+    public function testCase0266()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0266', '@property without @content or @datatype, typed object set by @href and @typeof');
+    }
+
+    public function testCase0267()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0267', '@property without @content or @datatype, typed object set by @resource and @typeof');
+    }
+
+    public function testCase0268()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0268', '@property without @content or @datatype, typed object set by @src and @typeof');
+    }
+
+    public function testCase0269()
+    {
+        $this->rdfaTestCase('0269', '@property appearing on the html element yields the base as the subject, also with @content');
+    }
+
+    public function testCase0271()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0271', 'Use of @property in HEAD with explicit parent subject via @about');
+    }
+
+    public function testCase0272()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0272', 'time element with @datetime an xsd:date');
+    }
+
+    public function testCase0273()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0273', 'time element with @datetime an xsd:time');
+    }
+
+    public function testCase0274()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0274', 'time element with @datetime an xsd:dateTime');
+    }
+
+    public function testCase0275()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0275', 'time element with value an xsd:date');
+    }
+
+    public function testCase0276()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0276', 'time element with value an xsd:time');
+    }
+
+    public function testCase0277()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0277', 'time element with value an xsd:dateTime');
+    }
+
+    public function testCase0278()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0278', '@datetime overrides @content');
+    }
+
+    public function testCase0279()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0279', '@datetype used with @datetime overrides default datatype');
+    }
+
+    public function testCase0280()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0280', 'time element with @datetime an xsd:duration');
+    }
+
+    public function testCase0281()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0281', 'time element with @datetime an xsd:gYear');
+    }
+
+    public function testCase0282()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0282', 'time element with @datetime an xsd:gYearMonth');
+    }
+
+    public function testCase0283()
+    {
+        $this->rdfaTestCase('0283', 'time element with @datetime an invalid datatype generates plain literal');
+    }
+
+    public function testCase0284()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0284', 'time element not matching datatype but with explicit @datatype');
+    }
+
+    public function testCase0285()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0285', 'time element with @datetime an invalid datatype and in scope @lang generates plain literal with language');
+    }
+
+    public function testCase0286()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0286', '@value attribute overrides @content');
+    }
+
+    public function testCase0287()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0287', 'time element with @datetime an xsd:dateTime with TZ offset');
+    }
+
+    public function testCase0289()
+    {
+        $this->rdfaTestCase('0289', '@href becomes subject when @property and @content are present');
+    }
+
+    public function testCase0290()
+    {
+        $this->rdfaTestCase('0290', '@href becomes subject when @property and @datatype are present');
+    }
+
+    public function testCase0291()
+    {
+        $this->rdfaTestCase('0291', '@href as subject overridden by @about');
+    }
+
+    public function testCase0292()
+    {
+        $this->rdfaTestCase('0292', '@about overriding @href as subject is used as parent resource');
+    }
+
+    public function testCase0293()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0293', 'Testing the \':\' character usage in a CURIE');
+    }
+
+    public function testCase0295()
+    {
+        $this->markTestSkipped("FIXME: don't run benchmark for now");
+        $this->rdfaTestCase('0295', 'Benchmark test');
+    }
+
+    public function testCase0296()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0296', '@property does set parent object without @typeof');
+    }
+
+    public function testCase0297()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0297', '@about=[] with @typeof does not create a new subject');
+    }
+
+    public function testCase0298()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0298', '@about=[] with @typeof does not create a new object');
+    }
+
+    public function testCase0299()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0299', '@resource=[] with @href or @src uses @href or @src (@rel)');
+    }
+
+    public function testCase0300()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0300', '@resource=[] with @href or @src uses @href or @src (@property)');
+    }
+
+    public function testCase0301()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0301', '@property with @typeof creates a typed_resource for chaining');
+    }
+
+    public function testCase0302()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0302', '@typeof with different content types');
+    }
+
+    public function testCase0303()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0303', 'For HTML+RDFa 1.1, remove term elements of @rel/@rev when on same element as @property');
+    }
+
+    public function testCase0311()
+    {
+        $this->rdfaTestCase('0311', 'Ensure no triples are generated when @property is empty');
+    }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(

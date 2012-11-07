@@ -1,0 +1,6 @@
+<http://www.example.org/#ben> <http://xmlns.com/foaf/0.1/knows> _:g78602720 .
+<http://www.example.org/#ben> <http://xmlns.com/foaf/0.1/knows> _:g78539140 .
+_:g78539140 <http://xmlns.com/foaf/0.1/name> "Ivan Herman" .
+_:g78539140 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+_:g78602720 <http://xmlns.com/foaf/0.1/name> "Mark Birbeck" .
+_:g78602720 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
