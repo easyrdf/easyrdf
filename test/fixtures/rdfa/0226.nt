@@ -1,0 +1,7 @@
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0226.xhtml> <http://www.example.org/inlist> <http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/res> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0226.xhtml> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> _:g78111740 .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/res> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> _:g78062780 .
+_:g78062780 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:g78062780 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> "Bar" .
+_:g78111740 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:g78111740 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> "Foo" .

@@ -1,0 +1,5 @@
+_:g78035150 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:g78035150 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> "Bar" .
+_:g78057660 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:g78035150 .
+_:g78057660 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> "Foo" .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0222.xhtml> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> _:g78057660 .

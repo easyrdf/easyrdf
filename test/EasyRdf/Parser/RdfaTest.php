@@ -606,6 +606,98 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0198', 'datatype XMLLiteral with other embedded RDFa');
     }
 
+    public function testCase0206()
+    {
+        $this->markTestSkipped("FIXME: where is the list of default prefixes defined?");
+        $this->rdfaTestCase('0206', 'Usage of Initial Context');
+    }
+
+    public function testCase0207()
+    {
+        $this->rdfaTestCase('0207', 'Vevent using @typeof');
+    }
+
+    public function testCase0213()
+    {
+        $this->rdfaTestCase('0213', 'Datatype generation for a literal with XML content, version 1.1');
+    }
+
+    public function testCase0214()
+    {
+        $this->markTestSkipped("FIXME: where is the list of default prefixes defined?");
+        $this->rdfaTestCase('0214', 'Root element has implicit @about=""');
+    }
+
+    public function testCase0216()
+    {
+        $this->rdfaTestCase('0216', 'Proper character encoding detection in spite of large headers');
+    }
+
+    public function testCase0217()
+    {
+        $this->rdfaTestCase('0217', '@vocab causes rdfa:usesVocabulary triple to be added');
+    }
+
+    public function testCase0218()
+    {
+        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->rdfaTestCase('0218', '@inlist to create empty list');
+    }
+
+    public function testCase0219()
+    {
+        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->rdfaTestCase('0219', '@inlist with literal');
+    }
+
+    public function testCase0220()
+    {
+        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->rdfaTestCase('0220', '@inlist with IRI');
+    }
+
+    public function testCase0221()
+    {
+        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->rdfaTestCase('0221', '@inlist with hetrogenious membership');
+    }
+
+    public function testCase0222()
+    {
+        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->rdfaTestCase('0222', '@inlist with multi-level elements');
+    }
+
+    public function testCase0223()
+    {
+        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->rdfaTestCase('0223', '@inlist with non-list property');
+    }
+
+    public function testCase0224()
+    {
+        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->rdfaTestCase('0224', '@inlist hanging @rel');
+    }
+
+    public function testCase0225()
+    {
+        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->rdfaTestCase('0225', '@inlist on different elements with same subject');
+    }
+
+    public function testCase0226()
+    {
+        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->rdfaTestCase('0226', 'confusion between multiple implicit collections (resource)');
+    }
+
+    public function testCase0227()
+    {
+        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->rdfaTestCase('0227', 'confusion between multiple implicit collections (about)');
+    }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(

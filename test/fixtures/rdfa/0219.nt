@@ -1,0 +1,3 @@
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0219.xhtml> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> _:g77749300 .
+_:g77749300 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:g77749300 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> "Foo" .

@@ -1,0 +1,6 @@
+_:g77844170 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> _:g77759660 .
+_:g77844170 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> "Foo" .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0223.xhtml> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "Baz" .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0223.xhtml> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> _:g77844170 .
+_:g77759660 <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil> .
+_:g77759660 <http://www.w3.org/1999/02/22-rdf-syntax-ns#first> "Bar" .
