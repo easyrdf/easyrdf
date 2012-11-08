@@ -969,7 +969,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0293()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0293', 'Testing the \':\' character usage in a CURIE');
     }
 

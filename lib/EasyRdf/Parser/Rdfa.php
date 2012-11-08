@@ -120,7 +120,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function expandCurie($node, $context, $value)
     {
-        if (preg_match("/^(\w*?):([\w\-]*)$/", $value, $matches)) {
+        if (preg_match("/^(\w*?):(.*)$/", $value, $matches)) {
             list (, $prefix, $local) = $matches;
             $prefix = strtolower($prefix);
             if ($prefix === '_') {
@@ -133,9 +133,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 return $context['prefixes'][$prefix] . $local;
             } elseif ($uri = $node->lookupNamespaceURI($prefix)) {
                 return $uri . $local;
-            } else {
+            } elseif ($uri = EasyRdf_Namespace::get($prefix)) {
                 // Expand using well-known prefixes
-                return EasyRdf_Namespace::expand($value);
+                return $uri . $local;
             }
         }
     }
