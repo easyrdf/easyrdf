@@ -239,10 +239,10 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             }
 
             // Step 4
-            if ($node->hasAttribute('lang')) {
-                $context['lang'] = $node->getAttribute('lang');
-            } elseif ($node->hasAttributeNS(self::XML_NS, 'lang')) {
+            if ($node->hasAttributeNS(self::XML_NS, 'lang')) {
                 $context['lang'] = $node->getAttributeNS(self::XML_NS, 'lang');
+            } elseif ($node->hasAttribute('lang')) {
+                $context['lang'] = $node->getAttribute('lang');
             }
 
             if (!$rel and !$rev) {

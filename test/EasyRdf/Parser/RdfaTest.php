@@ -791,7 +791,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0256()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0256', 'lang and xml:lang on the same element');
     }
 
