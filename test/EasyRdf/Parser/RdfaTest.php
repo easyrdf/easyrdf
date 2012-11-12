@@ -731,7 +731,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0234()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0234', 'All defined HTML link relation values');
     }
 
@@ -804,7 +803,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0259()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0259', 'XML+RDFa Initial Context');
     }
 
