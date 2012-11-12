@@ -50,7 +50,6 @@
 class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 {
     const XML_NS = 'http://www.w3.org/XML/1998/namespace';
-    const XHTML_NS = 'http://www.w3.org/1999/xhtml/vocab#';
     const TERM_REGEXP = '/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/';
 
     public $_debug = FALSE;
@@ -118,6 +117,33 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
+    protected function initialContext()
+    {
+        $context = array(
+            'prefixes' => array(),
+            'vocab' => NULL,
+            'skipElement' => false,
+            'subject' => $this->_baseUri,
+            'property' => NULL,
+            'object' => NULL,
+            'terms' => array(),
+            'incompleteRels' => array(),
+            'incompleteRevs' => array(),
+            'lang' => NULL,
+            'path' => ''
+        );
+
+        // Set the default prefix
+        $context['prefixes'][''] = 'http://www.w3.org/1999/xhtml/vocab#';
+
+        // RDFa 1.1 default term mapping
+        $context['terms']['describedby'] = 'http://www.w3.org/2007/05/powder-s#describedby';
+        $context['terms']['license'] = 'http://www.w3.org/1999/xhtml/vocab#license';
+        $context['terms']['role'] = 'http://www.w3.org/1999/xhtml/vocab#role';
+
+        return $context;
+    }
+
     protected function expandCurie($node, $context, $value)
     {
         if (preg_match("/^(\w*?):(.*)$/", $value, $matches)) {
@@ -133,7 +159,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 return $context['prefixes'][$prefix] . $local;
             } elseif ($uri = $node->lookupNamespaceURI($prefix)) {
                 return $uri . $local;
-            } elseif ($uri = EasyRdf_Namespace::get($prefix)) {
+            } elseif (!empty($prefix) and $uri = EasyRdf_Namespace::get($prefix)) {
                 // Expand using well-known prefixes
                 return $uri . $local;
             }
@@ -146,8 +172,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             // Safe CURIE
             return $this->expandCurie($node, $context, $matches[1]);
         } elseif (preg_match(self::TERM_REGEXP, $value) and $isProp) {
+            $term = strtolower($value);
             if ($context['vocab']) {
                 return $context['vocab'] . $value;
+            } elseif (isset($context['terms'][$term])) {
+                return $context['terms'][$term];
             }
         } elseif (substr($value, 0, 2) === '_:' and $isProp) {
             return NULL;
@@ -228,13 +257,13 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                         continue;
                     }
 
-                    // A Conforming RDFa Processor must ignore any definition of a mapping for the '_' prefix.
-                    if ($prefix == '_') continue;
-
-                    $context['prefixes'][$prefix] = $uri;
-
-                    if ($this->_debug)
-                        print "Prefix: $prefix => $uri\n";
+                    if ($prefix == '_') {
+                        continue;
+                    } elseif (!empty($prefix)) {
+                        $context['prefixes'][$prefix] = $uri;
+                        if ($this->_debug)
+                            print "Prefix: $prefix => $uri\n";
+                    }
                 }
             }
 
@@ -442,20 +471,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         $this->_baseUri->setFragment(NULL);
 
         // Step 1: Initialise evaluation context
-        $context = array(
-            'prefixes' => array(),
-            'vocab' => self::XHTML_NS,
-            'skipElement' => false,
-            'subject' => $this->_baseUri,
-            'property' => NULL,
-            'object' => NULL,
-            'incompleteRels' => array(),
-            'incompleteRevs' => array(),
-            'lang' => NULL,
-            'datatype' => NULL,
-            'path' => ''
-        );
+        $context = $this->initialContext();
 
+        // Recursively process XML nodes
         $this->processNode($doc, $context);
 
         return $this->_tripleCount;

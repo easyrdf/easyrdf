@@ -499,7 +499,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0134()
     {
-        $this->markTestSkipped("FIXME: is this a valid RDFa 1.1 test?");
         $this->rdfaTestCase('0134', 'Uppercase reserved words');
     }
 
@@ -586,7 +585,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0190()
     {
-        $this->markTestSkipped("FIXME: is this a valid RDF 1.1 test?");
         $this->rdfaTestCase('0190', 'Test term case insensitivity');
     }
 
