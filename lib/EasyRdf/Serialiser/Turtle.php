@@ -46,7 +46,7 @@
  * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
+class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 {
     /**
      * @ignore
@@ -70,12 +70,27 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
     /**
      * @ignore
      */
+    protected function quotedString($value)
+    {
+        if (preg_match("/[\t\n\r]/", $value)) {
+            $escaped = str_replace(array('\\', '"""'), array('\\\\', '\\"""'), $value);
+            return '"""'.$escaped.'"""';
+        } else {
+            $escaped = str_replace(array('\\', '"'), array('\\\\', '\\"'), $value);
+            return '"'.$escaped.'"';
+        }
+    }
+
+    /**
+     * @ignore
+     */
     protected function serialiseObject($object)
     {
         if ($object instanceof EasyRdf_Resource) {
             return $this->serialiseResource($object);
         } else {
-            $value = $this->escapeString($object);
+            $value = strval($object);
+            $quoted = $this->quotedString($value);
 
             if ($datatype = $object->getDatatypeUri()) {
                 $short = EasyRdf_Namespace::shorten($datatype, true);
@@ -90,16 +105,16 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
                     } else if ($short == 'xsd:boolean') {
                         return sprintf('%s', $value ? 'true' : 'false');
                     } else {
-                        return sprintf('"%s"^^%s', $value, $short);
+                        return sprintf('%s^^%s', $quoted, $short);
                     }
                 } else {
                     $datatypeUri = str_replace('>', '\\>', $datatype);
-                    return sprintf('"%s"^^<%s>', $value, $datatypeUri);
+                    return sprintf('%s^^<%s>', $quoted, $datatypeUri);
                 }
             } else if ($lang = $object->getLang()) {
-                return '"' . $value . '"@' . $lang;
+                return $quoted . '@' . $lang;
             } else {
-                return '"' . $value . '"';
+                return $quoted;
             }
         }
     }
