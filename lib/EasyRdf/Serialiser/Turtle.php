@@ -75,7 +75,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser_Ntriples
         if ($object instanceof EasyRdf_Resource) {
             return $this->serialiseResource($object);
         } else {
-            $value = $this->escapeString($object);
+            $value = $this->escapeString(strval($object));
 
             if ($datatype = $object->getDatatypeUri()) {
                 $short = EasyRdf_Namespace::shorten($datatype, true);
