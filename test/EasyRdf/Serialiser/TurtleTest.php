@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -185,6 +185,58 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
             "<http://example.com/joe#me> foaf:name \"Joe\"@en .\n",
+            $turtle
+        );
+    }
+
+    function testSerialiseEscaped()
+    {
+        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe->set('foaf:name', '\n');
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertSame(
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
+            "<http://example.com/joe#me> foaf:name \"\\\\n\" .\n",
+            $turtle
+        );
+    }
+
+    function testSerialiseEscaped2()
+    {
+        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe->set('foaf:name', '"Joe"');
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertSame(
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
+            "<http://example.com/joe#me> foaf:name \"\\\"Joe\\\"\" .\n",
+            $turtle
+        );
+    }
+
+    function testSerialiseMultiLineEscaped()
+    {
+        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe->set('foaf:name', "Line 1\nLine 2");
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertSame(
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
+            "<http://example.com/joe#me> foaf:name \"\"\"Line 1\nLine 2\"\"\" .\n",
+            $turtle
+        );
+    }
+
+    function testSerialiseMultiLineEscaped2()
+    {
+        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe->set('foaf:name', "\t".'"""'."\t");
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertSame(
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
+            "<http://example.com/joe#me> foaf:name \"\"\"\t\\\"\"\"\t\"\"\" .\n",
             $turtle
         );
     }
