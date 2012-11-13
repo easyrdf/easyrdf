@@ -636,25 +636,21 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0218()
     {
-        $this->markTestSkipped("FIXME: need to implement @inlist");
         $this->rdfaTestCase('0218', '@inlist to create empty list');
     }
 
     public function testCase0219()
     {
-        $this->markTestSkipped("FIXME: need to implement @inlist");
         $this->rdfaTestCase('0219', '@inlist with literal');
     }
 
     public function testCase0220()
     {
-        $this->markTestSkipped("FIXME: need to implement @inlist");
         $this->rdfaTestCase('0220', '@inlist with IRI');
     }
 
     public function testCase0221()
     {
-        $this->markTestSkipped("FIXME: need to implement @inlist");
         $this->rdfaTestCase('0221', '@inlist with hetrogenious membership');
     }
 
@@ -666,7 +662,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0223()
     {
-        $this->markTestSkipped("FIXME: need to implement @inlist");
         $this->rdfaTestCase('0223', '@inlist with non-list property');
     }
 
@@ -678,7 +673,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0225()
     {
-        $this->markTestSkipped("FIXME: need to implement @inlist");
         $this->rdfaTestCase('0225', '@inlist on different elements with same subject');
     }
 
