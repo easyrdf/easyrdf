@@ -156,7 +156,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         $context = array(
             'prefixes' => array(),
             'vocab' => NULL,
-            'skipElement' => false,
             'subject' => $this->_baseUri,
             'property' => NULL,
             'object' => NULL,
@@ -250,6 +249,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     {
         if ($this->_debug)
             $this->printNode($node, $depth);
+
+        // Step 1: establish local variables
         $subject = NULL;
         $object = NULL;
         $revs = array();
@@ -314,12 +315,12 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 // Step 5: Establish a new subject if no rel/rev
                 if ($about !== NULL) {
                     $subject = $this->processUri($node, $context, $about);
-                } elseif ($src !== NULL) {
-                    $subject = $this->processUri($node, $context, $src);
                 } elseif ($resource !== NULL) {
                     $subject = $this->processUri($node, $context, $resource);
                 } elseif ($href !== NULL) {
                     $subject = $this->processUri($node, $context, $href);
+                } elseif ($src !== NULL) {
+                    $subject = $this->processUri($node, $context, $src);
                 }
 
             } else {
@@ -345,6 +346,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             // Establish a subject if there isn't one
             if (is_null($subject)) {
                 if ($depth <= 2 or $context['path'] === '/html/head') {
+                    $subject = $context['object'];
+                } elseif ($depth <= 2) {
                     $subject = $this->_baseUri;
                 } elseif ($typeof) {
                     $subject = $this->_graph->newBNodeId();
@@ -542,7 +545,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         // Remove the fragment from the base URI
         $this->_baseUri->setFragment(NULL);
 
-        // Step 1: Initialise evaluation context
+        // Initialise evaluation context
         $context = $this->initialContext();
 
         // Recursively process XML nodes

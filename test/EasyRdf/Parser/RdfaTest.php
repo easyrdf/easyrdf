@@ -853,7 +853,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0271()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0271', 'Use of @property in HEAD with explicit parent subject via @about');
     }
 
