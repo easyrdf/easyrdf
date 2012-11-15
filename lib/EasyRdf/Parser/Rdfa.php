@@ -50,6 +50,7 @@
 class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 {
     const XML_NS = 'http://www.w3.org/XML/1998/namespace';
+    const RDF_XML_LITERAL = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral';
     const TERM_REGEXP = '/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/';
 
     public $_debug = FALSE;
@@ -420,6 +421,13 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             // Step 11
             if ($subject and $property) {
                 $literal = array('type' => 'literal');
+                $datatype = NULL;
+
+                if ($datatype = $node->getAttribute('datatype')) {
+                    $datatype = $this->processUri($node, $context, $datatype, true);
+                } elseif ($lang) {
+                    $literal['lang'] = $lang;
+                }
 
                 if ($node->nodeName === 'data' and $node->hasAttribute('value')) {
                     $literal['value'] = $node->getAttribute('value');
@@ -428,18 +436,19 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $datetime = TRUE;
                 } elseif ($node->hasAttribute('content')) {
                     $literal['value'] = $node->getAttribute('content');
+                } elseif ($datatype === self::RDF_XML_LITERAL) {
+                    $literal['value'] = '';
+                    foreach($node->childNodes as $child) {
+                        $literal['value'] .= $child->C14N();
+                    }
                 } else {
                     $literal['value'] = $node->textContent;
                 }
 
-                if (isset($datetime) or $node->nodeName === 'time') {
+                if ($datatype) {
+                    $literal['datatype'] = $datatype;
+                } elseif (isset($datetime) or $node->nodeName === 'time') {
                     $literal['datatype'] = $this->guessTimeDatatype($literal['value']);
-                }
-
-                if ($datatype = $node->getAttribute('datatype')) {
-                    $literal['datatype'] = $this->processUri($node, $context, $datatype, true);
-                } elseif ($lang) {
-                    $literal['lang'] = $lang;
                 }
 
                 // Add each of the properties

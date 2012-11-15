@@ -600,7 +600,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0198()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0198', 'datatype XMLLiteral with other embedded RDFa');
     }
 
