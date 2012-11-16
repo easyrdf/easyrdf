@@ -655,7 +655,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0222()
     {
-        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->markTestSkipped("FIXME: problem with bnode allocation");
         $this->rdfaTestCase('0222', '@inlist with multi-level elements');
     }
 
@@ -689,19 +689,16 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0228()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0228', '1.1 alternate for test 0040: @rev - @src/@resource test');
     }
 
     public function testCase0229()
     {
-        $this->markTestSkipped("FIXME: what is the rule for omitted @about?");
         $this->rdfaTestCase('0229', 'img[@src] test with omitted @about');
     }
 
     public function testCase0230()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0230', '@src does not set a new subject (@rel/@href)');
     }
 

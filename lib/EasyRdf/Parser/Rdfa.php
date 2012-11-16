@@ -330,14 +330,14 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 // establish both a value for new subject and a value for current object resource:
                 if ($about !== NULL) {
                     $subject = $this->processUri($node, $context, $about);
-                } elseif ($src !== NULL) {
-                    $subject = $this->processUri($node, $context, $src);
                 }
 
                 if ($resource !== NULL) {
                     $object = $this->processUri($node, $context, $resource);
                 } elseif ($href !== NULL) {
                     $object = $this->processUri($node, $context, $href);
+                } elseif ($src !== NULL) {
+                    $object = $this->processUri($node, $context, $src);
                 }
 
                 $revs = $this->processUriList($node, $context, $rev);
