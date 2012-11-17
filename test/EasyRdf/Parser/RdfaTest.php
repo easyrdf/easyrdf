@@ -808,19 +808,16 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0263()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0263', '@property appearing on the html element yields the base as the subject');
     }
 
     public function testCase0264()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0264', '@property appearing on the head element gets the subject from <html>, ie, parent');
     }
 
     public function testCase0265()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0265', '@property appearing on the head element gets the subject from <html>, ie, parent');
     }
 
@@ -1000,7 +997,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0302()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0302', '@typeof with different content types');
     }
 

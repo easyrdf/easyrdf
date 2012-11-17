@@ -269,6 +269,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $resource = $node->hasAttribute('resource') ? $node->getAttribute('resource') : NULL;
             $src = $node->hasAttribute('src') ? $node->getAttribute('src') : NULL;
 
+            $content = $node->hasAttribute('content') ? $node->getAttribute('content') : NULL;
+            $datatype = $node->hasAttribute('datatype') ? $node->getAttribute('datatype') : NULL;
+
             $property = $node->getAttribute('property');
             $rel = $node->getAttribute('rel');
             $rev = $node->getAttribute('rev');
@@ -314,14 +317,20 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
             if (!$rel and !$rev) {
                 // Step 5: Establish a new subject if no rel/rev
-                if ($about !== NULL) {
-                    $subject = $this->processUri($node, $context, $about);
-                } elseif ($resource !== NULL) {
-                    $subject = $this->processUri($node, $context, $resource);
-                } elseif ($href !== NULL) {
-                    $subject = $this->processUri($node, $context, $href);
-                } elseif ($src !== NULL) {
-                    $subject = $this->processUri($node, $context, $src);
+                if ($property and is_null($content) and is_null($datatype)) {
+                    if ($about !== NULL) {
+                        $subject = $this->processUri($node, $context, $about);
+                    }
+                } else {
+                    if ($about !== NULL) {
+                        $subject = $this->processUri($node, $context, $about);
+                    } elseif ($resource !== NULL) {
+                        $subject = $this->processUri($node, $context, $resource);
+                    } elseif ($href !== NULL) {
+                        $subject = $this->processUri($node, $context, $href);
+                    } elseif ($src !== NULL) {
+                        $subject = $this->processUri($node, $context, $src);
+                    }
                 }
 
             } else {
@@ -346,7 +355,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
             // Establish a subject if there isn't one
             if (is_null($subject)) {
-                if ($depth <= 2 or $context['path'] === '/html/head') {
+                if ($context['path'] === '/html/head') {
                     $subject = $context['object'];
                 } elseif ($depth <= 2) {
                     $subject = $this->_baseUri;
@@ -418,45 +427,62 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 }
             }
 
-            // Step 11
+            // Step 11: establish current property value
             if ($subject and $property) {
-                $literal = array('type' => 'literal');
-                $datatype = NULL;
+                $value = array();
 
-                if ($datatype = $node->getAttribute('datatype')) {
+                if ($datatype) {
                     $datatype = $this->processUri($node, $context, $datatype, true);
-                } elseif ($lang) {
-                    $literal['lang'] = $lang;
                 }
 
                 if ($node->nodeName === 'data' and $node->hasAttribute('value')) {
-                    $literal['value'] = $node->getAttribute('value');
+                    $value['value'] = $node->getAttribute('value');
                 } elseif ($node->hasAttribute('datetime')) {
-                    $literal['value'] = $node->getAttribute('datetime');
+                    $value['value'] = $node->getAttribute('datetime');
                     $datetime = TRUE;
-                } elseif ($node->hasAttribute('content')) {
-                    $literal['value'] = $node->getAttribute('content');
                 } elseif ($datatype === self::RDF_XML_LITERAL) {
-                    $literal['value'] = '';
+                    $value['value'] = '';
                     foreach($node->childNodes as $child) {
-                        $literal['value'] .= $child->C14N();
+                        $value['value'] .= $child->C14N();
                     }
-                } else {
-                    $literal['value'] = $node->textContent;
+                } elseif ($content !== NULL) {
+                    $value['value'] = $content;
+                } elseif (is_null($datatype) and empty($rel) and empty($rev)) {
+                    if ($resource !== NULL) {
+                        $value['type'] = 'uri';
+                        $value['value'] = $this->processUri($node, $context, $resource);
+                    } elseif ($href !== NULL) {
+                        $value['type'] = 'uri';
+                        $value['value'] = $this->processUri($node, $context, $href);
+                    } elseif ($src !== NULL) {
+                        $value['type'] = 'uri';
+                        $value['value'] = $this->processUri($node, $context, $src);
+                    }
                 }
 
-                if ($datatype) {
-                    $literal['datatype'] = $datatype;
-                } elseif (isset($datetime) or $node->nodeName === 'time') {
-                    $literal['datatype'] = $this->guessTimeDatatype($literal['value']);
+                if (empty($value['value'])) {
+                    $value['value'] = $node->textContent;
+                }
+
+                if (empty($value['type'])) {
+                    $value['type'] = 'literal';
+                    if ($datatype) {
+                        $value['datatype'] = $datatype;
+                    } elseif (isset($datetime) or $node->nodeName === 'time') {
+                        $value['datatype'] = $this->guessTimeDatatype($value['value']);
+                    }
+
+                    if (empty($value['datatype']) and $lang) {
+                        $value['lang'] = $lang;
+                    }
                 }
 
                 // Add each of the properties
                 foreach($this->processUriList($node, $context, $property) as $prop) {
                     if ($node->hasAttribute('inlist')) {
-                        $this->addToList($listMapping, $prop, $literal);
+                        $this->addToList($listMapping, $prop, $value);
                     } elseif ($subject) {
-                        $this->addTriple($subject, $prop, $literal);
+                        $this->addTriple($subject, $prop, $value);
                     }
                 }
             }
