@@ -53,7 +53,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     const RDF_XML_LITERAL = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral';
     const TERM_REGEXP = '/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/';
 
-    public $_debug = FALSE;
+    public $_debug = TRUE;
 
     /**
      * Constructor
@@ -246,6 +246,21 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         return $uris;
     }
 
+    protected function getUriAttribute($node, &$context, $attributes)
+    {
+        if (!is_array($attributes))
+            $attributes = array($attributes);
+
+        // Find the first attribute that returns a valid URI
+        foreach($attributes as $attribute) {
+            if ($node->hasAttribute($attribute)) {
+                $value = $node->getAttribute($attribute);
+                $uri = $this->processUri($node, $context, $value);
+                if ($uri) return $uri;
+            }
+        }
+    }
+
     protected function processNode($node, &$context, $depth=1)
     {
         if ($this->_debug)
@@ -264,11 +279,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $context['path'] .= '/' . $node->nodeName;
 
         if ($node->hasAttributes()) {
-            $about = $node->hasAttribute('about') ? $node->getAttribute('about') : NULL;
-            $href = $node->hasAttribute('href') ? $node->getAttribute('href') : NULL;
-            $resource = $node->hasAttribute('resource') ? $node->getAttribute('resource') : NULL;
-            $src = $node->hasAttribute('src') ? $node->getAttribute('src') : NULL;
-
             $content = $node->hasAttribute('content') ? $node->getAttribute('content') : NULL;
             $datatype = $node->hasAttribute('datatype') ? $node->getAttribute('datatype') : NULL;
 
@@ -318,36 +328,23 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             if (!$rel and !$rev) {
                 // Step 5: Establish a new subject if no rel/rev
                 if ($property and is_null($content) and is_null($datatype)) {
-                    if ($about !== NULL) {
-                        $subject = $this->processUri($node, $context, $about);
-                    }
+                    $subject = $this->getUriAttribute($node, $context, 'about');
                 } else {
-                    if ($about !== NULL) {
-                        $subject = $this->processUri($node, $context, $about);
-                    } elseif ($resource !== NULL) {
-                        $subject = $this->processUri($node, $context, $resource);
-                    } elseif ($href !== NULL) {
-                        $subject = $this->processUri($node, $context, $href);
-                    } elseif ($src !== NULL) {
-                        $subject = $this->processUri($node, $context, $src);
-                    }
+                    $subject = $this->getUriAttribute(
+                        $node, $context, array('about', 'resource', 'href', 'src')
+                    );
                 }
 
             } else {
                 // Step 6
                 // If the current element does contain a @rel or @rev attribute, then the next step is to
                 // establish both a value for new subject and a value for current object resource:
-                if ($about !== NULL) {
-                    $subject = $this->processUri($node, $context, $about);
-                }
 
-                if ($resource !== NULL) {
-                    $object = $this->processUri($node, $context, $resource);
-                } elseif ($href !== NULL) {
-                    $object = $this->processUri($node, $context, $href);
-                } elseif ($src !== NULL) {
-                    $object = $this->processUri($node, $context, $src);
-                }
+                $subject = $this->getUriAttribute($node, $context, 'about');
+
+                $object = $this->getUriAttribute(
+                    $node, $context, array('resource', 'href', 'src')
+                );
 
                 $revs = $this->processUriList($node, $context, $rev);
                 $rels = $this->processUriList($node, $context, $rel);
@@ -448,16 +445,12 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 } elseif ($content !== NULL) {
                     $value['value'] = $content;
                 } elseif (is_null($datatype) and empty($rel) and empty($rev)) {
-                    if ($resource !== NULL) {
+                    $value['value'] = $this->getUriAttribute(
+                        $node, $context, array('resource', 'href', 'src')
+                    );
+
+                    if ($value['value'])
                         $value['type'] = 'uri';
-                        $value['value'] = $this->processUri($node, $context, $resource);
-                    } elseif ($href !== NULL) {
-                        $value['type'] = 'uri';
-                        $value['value'] = $this->processUri($node, $context, $href);
-                    } elseif ($src !== NULL) {
-                        $value['type'] = 'uri';
-                        $value['value'] = $this->processUri($node, $context, $src);
-                    }
                 }
 
                 if (empty($value['value'])) {

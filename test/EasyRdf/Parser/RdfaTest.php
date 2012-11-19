@@ -979,13 +979,11 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0299()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0299', '@resource=[] with @href or @src uses @href or @src (@rel)');
     }
 
     public function testCase0300()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0300', '@resource=[] with @href or @src uses @href or @src (@property)');
     }
 
