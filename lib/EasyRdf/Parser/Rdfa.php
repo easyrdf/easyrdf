@@ -53,7 +53,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     const RDF_XML_LITERAL = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral';
     const TERM_REGEXP = '/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/';
 
-    public $_debug = TRUE;
+    public $_debug = FALSE;
 
     /**
      * Constructor
@@ -268,6 +268,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
         // Step 1: establish local variables
         $subject = NULL;
+        $typedResource = NULL;
         $object = NULL;
         $revs = array();
         $rels = array();
@@ -329,6 +330,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 // Step 5: Establish a new subject if no rel/rev
                 if ($property and is_null($content) and is_null($datatype)) {
                     $subject = $this->getUriAttribute($node, $context, 'about');
+                    if ($typeof) {
+                        $typedResource = $subject ? $subject : $this->_graph->newBNodeId();
+                    }
                 } else {
                     $subject = $this->getUriAttribute(
                         $node, $context, array('about', 'resource', 'href', 'src')
@@ -346,6 +350,10 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $node, $context, array('resource', 'href', 'src')
                 );
 
+                if ($typeof) {
+                    $typedResource = $subject ? $subject : $object;
+                }
+
                 $revs = $this->processUriList($node, $context, $rev);
                 $rels = $this->processUriList($node, $context, $rel);
             }
@@ -356,18 +364,22 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $subject = $context['object'];
                 } elseif ($depth <= 2) {
                     $subject = $this->_baseUri;
-                } elseif ($typeof) {
+                } elseif ($typeof and !$property) {
                     $subject = $this->_graph->newBNodeId();
                 } else {
                     $subject = $context['object'];
                 }
             }
 
+            if ($typeof and $subject and !$typedResource) {
+                $typedResource = $subject;
+            }
+
             // Step 7: Process @typeof if there is a subject
-            if ($subject and $typeof) {
+            if ($typedResource) {
                 foreach($this->processUriList($node, $context, $typeof) as $type) {
                     $this->addTriple(
-                        $subject,
+                        $typedResource,
                         'rdf:type',
                         array('type' => 'uri', 'value' => $type)
                     );

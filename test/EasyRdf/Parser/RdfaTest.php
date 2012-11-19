@@ -968,7 +968,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0297()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0297', '@about=[] with @typeof does not create a new subject');
     }
 
