@@ -726,7 +726,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0246()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestSkipped("FIXME: problem with bnode allocation");
         $this->rdfaTestCase('0246', 'hanging @rel creates multiple triples, @typeof permutation; RDFa 1.1 version');
     }
 
@@ -988,7 +988,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0301()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0301', '@property with @typeof creates a typed_resource for chaining');
     }
 

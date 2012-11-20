@@ -332,6 +332,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $subject = $this->getUriAttribute($node, $context, 'about');
                     if ($typeof) {
                         $typedResource = $subject ? $subject : $this->_graph->newBNodeId();
+                        $object = $typedResource;
                     }
                 } else {
                     $subject = $this->getUriAttribute(
@@ -463,6 +464,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
                     if ($value['value'])
                         $value['type'] = 'uri';
+                }
+
+                if (empty($value['value']) and $typedResource and !$node->hasAttribute('about')) {
+                    $value['type'] = 'uri';
+                    $value['value'] = $typedResource;
                 }
 
                 if (empty($value['value'])) {
