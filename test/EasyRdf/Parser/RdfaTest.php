@@ -1003,6 +1003,12 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0311', 'Ensure no triples are generated when @property is empty');
     }
 
+    public function testCase0312()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0312', 'Mute plain @rel if @property is present');
+    }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
