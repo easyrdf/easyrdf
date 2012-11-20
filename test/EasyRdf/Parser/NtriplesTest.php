@@ -91,6 +91,25 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->assertSame($bnode1, $bnode2->get('<http://example.com/e>'));
     }
 
+    public function testParseAnonymousBnode()
+    {
+        $count = $this->_parser->parse(
+            $this->_graph,
+            "_: <http://example.com/a> _: . \n".
+            "_: <http://example.com/b> _: . \n",
+            'ntriples', null
+        );
+        $this->assertSame(2, $count);
+
+        $bnode1 = $this->_graph->resource('_:genid1');
+        $this->assertSame(true, $bnode1->isBnode());
+        $this->assertStringEquals('_:genid2', $bnode1->get('<http://example.com/a>'));
+
+        $bnode2 = $this->_graph->resource('_:genid3');
+        $this->assertSame(true, $bnode2->isBnode());
+        $this->assertStringEquals('_:genid4', $bnode2->get('<http://example.com/b>'));
+    }
+
     public function testParseLang()
     {
         $count = $this->_parser->parse(
