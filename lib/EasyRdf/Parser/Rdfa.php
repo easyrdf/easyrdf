@@ -330,8 +330,12 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 // Step 5: Establish a new subject if no rel/rev
                 if ($property and is_null($content) and is_null($datatype)) {
                     $subject = $this->getUriAttribute($node, $context, 'about');
-                    if ($typeof) {
-                        $typedResource = $subject ? $subject : $this->_graph->newBNodeId();
+                    if ($typeof and !$subject) {
+                        $typedResource = $this->getUriAttribute(
+                            $node, $context, array('resource', 'href', 'src')
+                        );
+                        if (!$typedResource)
+                            $typedResource = $this->_graph->newBNodeId();
                         $object = $typedResource;
                     }
                 } else {

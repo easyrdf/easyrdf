@@ -823,19 +823,16 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0266()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0266', '@property without @content or @datatype, typed object set by @href and @typeof');
     }
 
     public function testCase0267()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0267', '@property without @content or @datatype, typed object set by @resource and @typeof');
     }
 
     public function testCase0268()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0268', '@property without @content or @datatype, typed object set by @src and @typeof');
     }
 
@@ -962,7 +959,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0296()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0296', '@property does set parent object without @typeof');
     }
 
