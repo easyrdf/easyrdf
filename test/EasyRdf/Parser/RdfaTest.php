@@ -709,13 +709,11 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0232()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0232', '@typeof with @rel present, no @href, @resource, or @about (1.1 behavior of 0046);');
     }
 
     public function testCase0233()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0233', '@typeof with @rel and @resource present, no @about (1.1 behavior of 0047)');
     }
 
@@ -732,7 +730,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0247()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestSkipped("FIXME: problem with bnode allocation");
         $this->rdfaTestCase('0247', 'Multiple incomplete triples, RDFa 1.1version');
     }
 

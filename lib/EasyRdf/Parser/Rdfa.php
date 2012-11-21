@@ -344,6 +344,20 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     );
                 }
 
+                // Establish a subject if there isn't one
+                # FIXME: refactor this
+                if (is_null($subject)) {
+                    if ($context['path'] === '/html/head') {
+                        $subject = $context['object'];
+                    } elseif ($depth <= 2) {
+                        $subject = $this->_baseUri;
+                    } elseif ($typeof and !$property) {
+                        $subject = $this->_graph->newBNodeId();
+                    } else {
+                        $subject = $context['object'];
+                    }
+                }
+
             } else {
                 // Step 6
                 // If the current element does contain a @rel or @rev attribute, then the next step is to
@@ -356,26 +370,21 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 );
 
                 if ($typeof) {
+                    if (!$object and !$subject)
+                        $object = $this->_graph->newBNodeId();
                     $typedResource = $subject ? $subject : $object;
+                }
+
+                # FIXME: if the element is the root element of the document then act as if there is an empty @about present
+                if (!$subject) {
+                    $subject = $context['object'];
                 }
 
                 $revs = $this->processUriList($node, $context, $rev);
                 $rels = $this->processUriList($node, $context, $rel);
             }
 
-            // Establish a subject if there isn't one
-            if (is_null($subject)) {
-                if ($context['path'] === '/html/head') {
-                    $subject = $context['object'];
-                } elseif ($depth <= 2) {
-                    $subject = $this->_baseUri;
-                } elseif ($typeof and !$property) {
-                    $subject = $this->_graph->newBNodeId();
-                } else {
-                    $subject = $context['object'];
-                }
-            }
-
+            # FIXME: better place for this?
             if ($typeof and $subject and !$typedResource) {
                 $typedResource = $subject;
             }
