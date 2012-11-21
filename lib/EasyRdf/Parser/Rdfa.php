@@ -53,7 +53,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     const RDF_XML_LITERAL = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral';
     const TERM_REGEXP = '/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/';
 
-    public $_debug = FALSE;
+    public $debug = FALSE;
 
     /**
      * Constructor
@@ -66,7 +66,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function addTriple($resource, $property, $value)
     {
-        if ($this->_debug)
+        if ($this->debug)
             print "Adding triple: $resource -> $property -> ".$value['type'].':'.$value['value']."\n";
         $count = $this->_graph->add($resource, $property, $value);
         $this->_tripleCount += $count;
@@ -79,7 +79,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         $prop = $property;
 
         // Output a blank node for each item in the list
-        foreach($list as $item) {
+        foreach ($list as $item) {
             $newNode = $this->_graph->newBNodeId();
             $this->addTriple($current, $prop, array('type' => 'bnode', 'value' => $newNode));
             $this->addTriple($newNode, 'rdf:first', $item);
@@ -98,7 +98,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function addToList($listMapping, $property, $value)
     {
-        if ($this->_debug)
+        if ($this->debug)
             print "Adding to list: $property -> ".$value['type'].':'.$value['value']."\n";
 
         // Create property in the list mapping if it doesn't already exist
@@ -107,27 +107,52 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         array_push($listMapping->$property, $value);
     }
 
-    protected function printNode($node, $depth) {
+    protected function printNode($node, $depth)
+    {
         $indent = str_repeat('  ', $depth);
         print $indent;
         switch($node->nodeType) {
-            case XML_ELEMENT_NODE: print 'node'; break;
-            case XML_ATTRIBUTE_NODE: print 'attr'; break;
-            case XML_TEXT_NODE: print 'text'; break;
-            case XML_CDATA_SECTION_NODE: print 'cdata'; break;
-            case XML_ENTITY_REF_NODE: print 'entref'; break;
-            case XML_ENTITY_NODE: print 'entity'; break;
-            case XML_PI_NODE: print 'pi'; break;
-            case XML_COMMENT_NODE: print 'comment'; break;
-            case XML_DOCUMENT_NODE: print 'doc'; break;
-            case XML_DOCUMENT_TYPE_NODE: print 'doctype'; break;
-            case XML_HTML_DOCUMENT_NODE: print 'html'; break;
-            default: throw new Excpetion("unknown node type: ".$node->nodeType); break;
+            case XML_ELEMENT_NODE:
+                print 'node';
+                break;
+            case XML_ATTRIBUTE_NODE:
+                print 'attr';
+                break;
+            case XML_TEXT_NODE:
+                print 'text';
+                break;
+            case XML_CDATA_SECTION_NODE:
+                print 'cdata';
+                break;
+            case XML_ENTITY_REF_NODE:
+                print 'entref';
+                break;
+            case XML_ENTITY_NODE:
+                print 'entity';
+                break;
+            case XML_PI_NODE:
+                print 'pi';
+                break;
+            case XML_COMMENT_NODE:
+                print 'comment';
+                break;
+            case XML_DOCUMENT_NODE:
+                print 'doc';
+                break;
+            case XML_DOCUMENT_TYPE_NODE:
+                print 'doctype';
+                break;
+            case XML_HTML_DOCUMENT_NODE:
+                print 'html';
+                break;
+            default:
+                throw new Excpetion("unknown node type: ".$node->nodeType);
+                break;
         }
         print ' '.$node->nodeName."\n";
 
         if ($node->hasAttributes()) {
-            foreach($node->attributes as $attr) {
+            foreach ($node->attributes as $attr) {
                 print $indent.' '.$attr->nodeName." => ".$attr->nodeValue."\n";
             }
         }
@@ -239,7 +264,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             return array();
 
         $uris = array();
-        foreach(preg_split("/\s+/", $values) as $value) {
+        foreach (preg_split("/\s+/", $values) as $value) {
             $uri = $this->processUri($node, $context, $value, true);
             if ($uri) array_push($uris, $uri);
         }
@@ -252,7 +277,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $attributes = array($attributes);
 
         // Find the first attribute that returns a valid URI
-        foreach($attributes as $attribute) {
+        foreach ($attributes as $attribute) {
             if ($node->hasAttribute($attribute)) {
                 $value = $node->getAttribute($attribute);
                 $uri = $this->processUri($node, $context, $value);
@@ -263,7 +288,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function processNode($node, &$context, $depth=1)
     {
-        if ($this->_debug)
+        if ($this->debug)
             $this->printNode($node, $depth);
 
         // Step 1: establish local variables
@@ -299,7 +324,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             // Step 3: Set prefix mappings
             if ($node->hasAttribute('prefix')) {
                 $mappings = preg_split("/\s+/", $node->getAttribute('prefix'));
-                while(count($mappings)) {
+                while (count($mappings)) {
                     $prefix = strtolower(array_shift($mappings));
                     $uri = array_shift($mappings);
 
@@ -313,7 +338,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                         continue;
                     } elseif (!empty($prefix)) {
                         $context['prefixes'][$prefix] = $uri;
-                        if ($this->_debug)
+                        if ($this->debug)
                             print "Prefix: $prefix => $uri\n";
                     }
                 }
@@ -375,7 +400,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $typedResource = $subject ? $subject : $object;
                 }
 
-                # FIXME: if the element is the root element of the document then act as if there is an empty @about present
+                # FIXME: if the element is the root element of the document
+                # then act as if there is an empty @about present
                 if (!$subject) {
                     $subject = $context['object'];
                 }
@@ -391,7 +417,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
             // Step 7: Process @typeof if there is a subject
             if ($typedResource) {
-                foreach($this->processUriList($node, $context, $typeof) as $type) {
+                foreach ($this->processUriList($node, $context, $typeof) as $type) {
                     $this->addTriple(
                         $typedResource,
                         'rdf:type',
@@ -409,7 +435,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
             // Step 9: Generate triples with given object
             if ($subject and $object) {
-                foreach($rels as $prop) {
+                foreach ($rels as $prop) {
                     $obj = array('type' => 'uri', 'value' => $object);
                     if ($node->hasAttribute('inlist')) {
                         $this->addToList($listMapping, $prop, $obj);
@@ -418,7 +444,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     }
                 }
 
-                foreach($revs as $prop) {
+                foreach ($revs as $prop) {
                     $this->addTriple(
                         $object,
                         $prop,
@@ -430,7 +456,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 $object = $this->_graph->newBNodeId();
                 if ($rels) {
                     if ($node->hasAttribute('inlist')) {
-                        foreach($rels as $prop) {
+                        foreach ($rels as $prop) {
                             # FIXME: add support for incomplete lists
                             if (!isset($listMapping->$prop)) {
                                 $listMapping->$prop = array();
@@ -438,15 +464,15 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                         }
                     } else {
                         $incompleteRels = $rels;
-                        if ($this->_debug)
-                            print "Incomplete rels: ".implode(',',$rels)."\n";
+                        if ($this->debug)
+                            print "Incomplete rels: ".implode(',', $rels)."\n";
                     }
                 }
 
                 if ($revs) {
                     $incompleteRevs = $revs;
-                    if ($this->_debug)
-                        print "Incomplete revs: ".implode(',',$revs)."\n";
+                    if ($this->debug)
+                        print "Incomplete revs: ".implode(',', $revs)."\n";
                 }
             }
 
@@ -465,7 +491,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $datetime = TRUE;
                 } elseif ($datatype === self::RDF_XML_LITERAL) {
                     $value['value'] = '';
-                    foreach($node->childNodes as $child) {
+                    foreach ($node->childNodes as $child) {
                         $value['value'] .= $child->C14N();
                     }
                 } elseif ($content !== NULL) {
@@ -502,7 +528,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 }
 
                 // Add each of the properties
-                foreach($this->processUriList($node, $context, $property) as $prop) {
+                foreach ($this->processUriList($node, $context, $property) as $prop) {
                     if ($node->hasAttribute('inlist')) {
                         $this->addToList($listMapping, $prop, $value);
                     } elseif ($subject) {
@@ -513,7 +539,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
             // Step 12: Complete the incomplete triples from the evaluation context
             if ($subject and ($context['incompleteRels'] or $context['incompleteRevs'])) {
-                foreach($context['incompleteRels'] as $prop) {
+                foreach ($context['incompleteRels'] as $prop) {
                     $this->addTriple(
                         $context['subject'],
                         $prop,
@@ -521,7 +547,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     );
                 }
 
-                foreach($context['incompleteRevs'] as $prop) {
+                foreach ($context['incompleteRevs'] as $prop) {
                     $this->addTriple(
                         $subject,
                         $prop,
@@ -549,7 +575,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $newContext['incompleteRevs'] = $incompleteRevs;
             if (isset($listMapping))
                 $newContext['listMapping'] = $listMapping;
-            foreach($node->childNodes as $child) {
+            foreach ($node->childNodes as $child) {
                 if ($child->nodeType === XML_ELEMENT_NODE)
                     $this->processNode($child, $newContext, $depth+1);
             }
@@ -557,9 +583,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
         // Step 14: create triples for lists
         if (!empty($listMapping)) {
-            foreach($listMapping as $prop => $list) {
+            foreach ($listMapping as $prop => $list) {
                 if ($context['listMapping'] !== $listMapping) {
-                    if ($this->_debug)
+                    if ($this->debug)
                         print "Need to create triples for $prop => ".count($list)." items\n";
                     $this->generateList($subject, $prop, $list);
                 }

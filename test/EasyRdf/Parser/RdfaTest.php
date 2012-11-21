@@ -444,7 +444,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0112()
     {
-        $this->rdfaTestCase('0112', 'plain literal with datatype=\"\"');
+        $this->rdfaTestCase('0112', 'plain literal with datatype=""');
     }
 
     public function testCase0114()
@@ -464,27 +464,27 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0118()
     {
-        $this->rdfaTestCase('0118', 'empty string \"\" is not equivalent to NULL - @about');
+        $this->rdfaTestCase('0118', 'empty string "" is not equivalent to NULL - @about');
     }
 
     public function testCase0119()
     {
-        $this->rdfaTestCase('0119', '\"[prefix:]\" CURIE format is valid');
+        $this->rdfaTestCase('0119', '"[prefix:]" CURIE format is valid');
     }
 
     public function testCase0120()
     {
-        $this->rdfaTestCase('0120', '\"[:]\" CURIE format is valid');
+        $this->rdfaTestCase('0120', '"[:]" CURIE format is valid');
     }
 
     public function testCase0121()
     {
-        $this->rdfaTestCase('0121', '\"[]\" is a valid safe CURIE');
+        $this->rdfaTestCase('0121', '"[]" is a valid safe CURIE');
     }
 
     public function testCase0122()
     {
-        $this->rdfaTestCase('0122', 'resource=\"[]\" does not set the object');
+        $this->rdfaTestCase('0122', 'resource="[]" does not set the object');
     }
 
     public function testCase0126()
@@ -709,7 +709,9 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0232()
     {
-        $this->rdfaTestCase('0232', '@typeof with @rel present, no @href, @resource, or @about (1.1 behavior of 0046);');
+        $this->rdfaTestCase(
+            '0232', '@typeof with @rel present, no @href, @resource, or @about (1.1 behavior of 0046);'
+        );
     }
 
     public function testCase0233()
@@ -741,7 +743,9 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0249()
     {
-        $this->rdfaTestCase('0249', 'multiple ways of handling incomplete triples (with @rel and @rev); RDFa 1.1 version');
+        $this->rdfaTestCase(
+            '0249', 'multiple ways of handling incomplete triples (with @rel and @rev); RDFa 1.1 version'
+        );
     }
 
     public function testCase0250()
@@ -781,7 +785,9 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0257()
     {
-        $this->rdfaTestCase('0257', 'element with @property and no child nodes generates  empty plain literal (HTML5 version of 0113)');
+        $this->rdfaTestCase(
+            '0257', 'element with @property and no child nodes generates  empty plain literal (HTML5 version of 0113)'
+        );
     }
 
     public function testCase0258()
@@ -801,7 +807,9 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0262()
     {
-        $this->rdfaTestCase('0262', 'Predicate establishment with @property, with white spaces before and after the attribute value');
+        $this->rdfaTestCase(
+            '0262', 'Predicate establishment with @property, with white spaces before and after the attribute value'
+        );
     }
 
     public function testCase0263()
@@ -811,12 +819,16 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0264()
     {
-        $this->rdfaTestCase('0264', '@property appearing on the head element gets the subject from <html>, ie, parent');
+        $this->rdfaTestCase(
+            '0264', '@property appearing on the head element gets the subject from <html>, ie, parent'
+        );
     }
 
     public function testCase0265()
     {
-        $this->rdfaTestCase('0265', '@property appearing on the head element gets the subject from <html>, ie, parent');
+        $this->rdfaTestCase(
+            '0265', '@property appearing on the head element gets the subject from <html>, ie, parent'
+        );
     }
 
     public function testCase0266()
@@ -826,7 +838,9 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0267()
     {
-        $this->rdfaTestCase('0267', '@property without @content or @datatype, typed object set by @resource and @typeof');
+        $this->rdfaTestCase(
+            '0267', '@property without @content or @datatype, typed object set by @resource and @typeof'
+        );
     }
 
     public function testCase0268()
@@ -836,7 +850,9 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0269()
     {
-        $this->rdfaTestCase('0269', '@property appearing on the html element yields the base as the subject, also with @content');
+        $this->rdfaTestCase(
+            '0269', '@property appearing on the html element yields the base as the subject, also with @content'
+        );
     }
 
     public function testCase0271()
@@ -911,7 +927,11 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0285()
     {
-        $this->rdfaTestCase('0285', 'time element with @datetime an invalid datatype and in scope @lang generates plain literal with language');
+        $this->rdfaTestCase(
+            '0285',
+            'time element with @datetime an invalid datatype and in scope @lang generates plain literal '.
+            'with language'
+        );
     }
 
     public function testCase0286()
@@ -993,7 +1013,9 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     public function testCase0303()
     {
         $this->markTestSkipped("FIXME");
-        $this->rdfaTestCase('0303', 'For HTML+RDFa 1.1, remove term elements of @rel/@rev when on same element as @property');
+        $this->rdfaTestCase(
+            '0303', 'For HTML+RDFa 1.1, remove term elements of @rel/@rev when on same element as @property'
+        );
     }
 
     public function testCase0311()

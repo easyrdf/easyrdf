@@ -32,6 +32,7 @@
 
         $id = $test->localName();
         $title = $test->get('dc:title');
+        $escapedTitle = addcslashes($title, '\'');
 
         # Download the test input
         $inputUri = "http://rdfa.info/test-suite/test-cases/$RDFA_VERSION/$HOST_LANGUAGE/$id.xhtml";
@@ -47,6 +48,12 @@
         # Output code for PHPUnit
         print "    public function testCase$id()\n";
         print "    {\n";
-        print "        \$this->rdfaTestCase('$id', '".addslashes($title)."');\n";
+        if (strlen($title) < 80) {
+            print "        \$this->rdfaTestCase('$id', '$escapedTitle');\n";
+        } else {
+            print "        \$this->rdfaTestCase(\n";
+            print "            '$id', '$escapedTitle'\n";
+            print "        );\n";
+        }
         print "    }\n\n";
     }
