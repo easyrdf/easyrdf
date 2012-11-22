@@ -5,6 +5,46 @@ require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
 
 class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
 {
+    public function testConstructStringTrue()
+    {
+        $literal = new EasyRdf_Literal_Boolean('true');
+        $this->assertStringEquals('true', $literal);
+        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertSame(true, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:boolean', $literal->getDatatype());
+    }
+
+    public function testConstructStringFalse()
+    {
+        $literal = new EasyRdf_Literal_Boolean('false');
+        $this->assertStringEquals('false', $literal);
+        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertSame(false, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:boolean', $literal->getDatatype());
+    }
+
+    public function testConstructString1()
+    {
+        $literal = new EasyRdf_Literal_Boolean('1');
+        $this->assertStringEquals('1', $literal);
+        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertSame(true, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:boolean', $literal->getDatatype());
+    }
+
+    public function testConstructString0()
+    {
+        $literal = new EasyRdf_Literal_Boolean('0');
+        $this->assertStringEquals('0', $literal);
+        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertSame(false, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:boolean', $literal->getDatatype());
+    }
+
     public function testConstructTrue()
     {
         $literal = new EasyRdf_Literal_Boolean(true);
@@ -25,7 +65,7 @@ class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
         $this->assertSame('xsd:boolean', $literal->getDatatype());
     }
 
-    public function testConstructCast1()
+    public function testConstruct1()
     {
         $literal = new EasyRdf_Literal_Boolean(1);
         $this->assertStringEquals('true', $literal);
@@ -35,7 +75,7 @@ class EasyRdf_Literal_BooleanTest extends EasyRdf_TestCase
         $this->assertSame('xsd:boolean', $literal->getDatatype());
     }
 
-    public function testConstructCast0()
+    public function testConstruct0()
     {
         $literal = new EasyRdf_Literal_Boolean(0);
         $this->assertStringEquals('false', $literal);

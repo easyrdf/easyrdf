@@ -306,7 +306,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $this->assertSame(
             "@prefix dc: <http://purl.org/dc/terms/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
-            "<http://example.com/> dc:date \"2012-11-04T13:01:26+0100\"^^xsd:dateTime .\n",
+            "<http://example.com/> dc:date \"2012-11-04T13:01:26+01:00\"^^xsd:dateTime .\n",
             $turtle
         );
     }

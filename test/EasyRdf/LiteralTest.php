@@ -131,7 +131,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
             1, NULL, 'http://example.com/integer'
         );
         $this->assertClass('EasyRdf_Literal', $literal);
-        $this->assertSame(1, $literal->getValue());
+        $this->assertSame('1', $literal->getValue());
         $this->assertSame(NULL, $literal->getLang());
         $this->assertSame(NULL, $literal->getDatatype());
     }

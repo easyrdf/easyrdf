@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -41,14 +41,19 @@
  *
  * @package    EasyRdf
  * @link       http://www.w3.org/TR/xmlschema-2/#date
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Literal_Date extends EasyRdf_Literal
 {
+    const REGEXP = '/^-?\d{4}-\d{2}-\d{2}(Z|[\-\+]\d{2}:\d{2})?$/';
+
     /** Constructor for creating a new date literal
      *
-     * The date is parsed and stored internally using a DateTime object.
+     * If the value is a DateTime object, then it will be converted to the xsd:date format.
+     * If the value is a string that does not look like an xsd:date, then it will be
+     * parsed using DateTime and converted to the xsd:date format.
+     *
      * @see DateTime
      *
      * @param  mixed  $value     The value of the literal
@@ -58,22 +63,39 @@ class EasyRdf_Literal_Date extends EasyRdf_Literal
      */
     public function __construct($value, $lang=null, $datatype=null)
     {
-        // Convert the value into a DateTime object, if it isn't already
-        if (!$value instanceof DateTime) {
-            $value = new DateTime(strval($value));
+        // If string doesn't match XSD pattern, convert it to a DateTime object
+        if (is_string($value) and !preg_match(self::REGEXP, $value)) {
+            $value = new DateTime($value);
+        }
+
+        // Convert DateTime object into string
+        if ($value instanceof DateTime) {
+            $value = $value->format('Y-m-d');
         }
 
         parent::__construct($value, null, $datatype);
     }
 
+    /** Returns the date as a PHP DateTime object
+     *
+     * @see DateTime::format
+     * @param string $format
+     * @return string
+     */
+    public function getValue()
+    {
+        return new DateTime($this->_value);
+    }
+
     /** Returns date formatted according to given format
      *
+     * @see DateTime::format
      * @param string $format
      * @return string
      */
     public function format($format)
     {
-        return $this->_value->format($format);
+        return $this->getValue()->format($format);
     }
 
     /** A full integer representation of the year, 4 digits
@@ -82,7 +104,7 @@ class EasyRdf_Literal_Date extends EasyRdf_Literal
      */
     public function year()
     {
-        return (int)$this->_value->format('Y');
+        return (int)$this->format('Y');
     }
 
     /** Integer representation of the month
@@ -91,7 +113,7 @@ class EasyRdf_Literal_Date extends EasyRdf_Literal
      */
     public function month()
     {
-        return (int)$this->_value->format('m');
+        return (int)$this->format('m');
     }
 
     /** Integer representation of the day of the month
@@ -100,16 +122,7 @@ class EasyRdf_Literal_Date extends EasyRdf_Literal
      */
     public function day()
     {
-        return (int)$this->_value->format('d');
-    }
-
-    /** Magic method to return the value as an ISO8601 date string
-     *
-     * @return string The date as an ISO8601 string
-     */
-    public function __toString()
-    {
-        return $this->_value->format('Y-m-d');
+        return (int)$this->format('d');
     }
 }
 
