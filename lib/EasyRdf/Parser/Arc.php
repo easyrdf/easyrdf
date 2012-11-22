@@ -95,7 +95,3 @@ class EasyRdf_Parser_Arc extends EasyRdf_Parser_RdfPhp
         }
     }
 }
-
-EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_Arc');
-EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Arc');
-EasyRdf_Format::registerParser('rdfa', 'EasyRdf_Parser_Arc');

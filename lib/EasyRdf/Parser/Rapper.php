@@ -101,8 +101,3 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
         return parent::parse($graph, $json, 'json', $baseUri);
     }
 }
-
-EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_Rapper');
-EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Rapper');
-EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Rapper');
-EasyRdf_Format::registerParser('rdfa', 'EasyRdf_Parser_Rapper');

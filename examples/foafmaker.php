@@ -15,11 +15,20 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    if (isset($_REQUEST['enable_arc']) && $_REQUEST['enable_arc'])
+    if (isset($_REQUEST['enable_arc']) && $_REQUEST['enable_arc']) {
         require_once "EasyRdf/Serialiser/Arc.php";
+        EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Arc');
+        EasyRdf_Format::registerSerialiser('posh', 'EasyRdf_Serialiser_Arc');
+        EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Arc');
+        EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Arc');
+    }
 
-    if (isset($_REQUEST['enable_rapper']) && $_REQUEST['enable_rapper'])
+    if (isset($_REQUEST['enable_rapper']) && $_REQUEST['enable_rapper']) {
         require_once "EasyRdf/Serialiser/Rapper.php";
+        EasyRdf_Format::registerSerialiser('dot', 'EasyRdf_Serialiser_Rapper');
+        EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Rapper');
+        EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Rapper');
+    }
 
     $format_options = array();
     foreach (EasyRdf_Format::getFormats() as $format) {
