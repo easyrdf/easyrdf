@@ -247,9 +247,3 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
         return $this->_tripleCount;
     }
 }
-
-
-EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_Redland');
-EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Redland');
-EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Redland');
-EasyRdf_Format::registerParser('rdfa', 'EasyRdf_Parser_Redland');
