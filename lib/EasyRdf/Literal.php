@@ -51,7 +51,7 @@ class EasyRdf_Literal
     /** @ignore A mapping from class name to datatype URI */
     private static $_classMap = array();
 
-    /** @ignore The value for this literal */
+    /** @ignore The string value for this literal */
     protected $_value = NULL;
 
     /** @ignore The language of the literal (e.g. 'en') */
@@ -222,10 +222,8 @@ class EasyRdf_Literal
             }
         }
 
-        // Cast to string if it is a string
-        if ($this->_lang or !$this->_datatype or $this->_datatype == 'http://www.w3.org/2001/XMLSchema#string') {
-            settype($this->_value, 'string');
-        }
+        // Cast value to string
+        settype($this->_value, 'string');
     }
 
     /** Returns the value of the literal.
@@ -279,7 +277,7 @@ class EasyRdf_Literal
     {
         $array = array(
             'type' => 'literal',
-            'value' => strval($this)
+            'value' => $this->_value
         );
 
         if ($this->_datatype)
@@ -291,13 +289,13 @@ class EasyRdf_Literal
         return $array;
     }
 
-    /** Magic method to return the value of a literal when casted to string
+    /** Magic method to return the value of a literal as a string
      *
      * @return string The value of the literal
      */
     public function __toString()
     {
-        return isset($this->_value) ? strval($this->_value) : '';
+        return isset($this->_value) ? $this->_value : '';
     }
 
     /** Return pretty-print view of the literal
