@@ -182,6 +182,8 @@ class EasyRdf_Literal
             return 'http://www.w3.org/2001/XMLSchema#integer';
         } else if (is_bool($value)) {
             return 'http://www.w3.org/2001/XMLSchema#boolean';
+        } else if (is_object($value) and $value instanceof DateTime) {
+            return 'http://www.w3.org/2001/XMLSchema#dateTime';
         } else {
             return NULL;
         }

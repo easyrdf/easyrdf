@@ -208,6 +208,16 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertSame(NULL, $literal->getLang());
     }
 
+    public function testCreateWithDateTime()
+    {
+        $dt = new DateTime('2010-09-08T07:06:05Z');
+        $literal = EasyRdf_Literal::create($dt);
+        $this->assertStringEquals('2010-09-08T07:06:05Z', $literal);
+        $this->assertEquals($dt, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:dateTime', $literal->getDatatype());
+    }
+
     public function testCreateConvertToBooleanTrue()
     {
         $literal = EasyRdf_Literal::create(1, NULL, 'xsd:boolean');
