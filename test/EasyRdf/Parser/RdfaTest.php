@@ -423,7 +423,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0106()
     {
-        $this->markTestSkipped("FIXME: not sure why object is a bnode?");
         $this->rdfaTestCase('0106', 'chaining with empty value in inner @rel');
     }
 

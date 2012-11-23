@@ -295,8 +295,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         $subject = NULL;
         $typedResource = NULL;
         $object = NULL;
-        $revs = array();
         $rels = array();
+        $revs = array();
         $lang = $context['lang'];
         $incompleteRels = array();
         $incompleteRevs = array();
@@ -309,8 +309,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $datatype = $node->hasAttribute('datatype') ? $node->getAttribute('datatype') : NULL;
 
             $property = $node->getAttribute('property');
-            $rel = $node->getAttribute('rel');
-            $rev = $node->getAttribute('rev');
             $typeof = $node->getAttribute('typeof');
             $vocab = $node->getAttribute('vocab');
 
@@ -351,7 +349,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 $lang = $node->getAttribute('lang');
             }
 
-            if (!$rel and !$rev) {
+            if (!$node->hasAttribute('rel') and !$node->hasAttribute('rev')) {
                 // Step 5: Establish a new subject if no rel/rev
                 if ($property and is_null($content) and is_null($datatype)) {
                     $subject = $this->getUriAttribute($node, $context, 'about');
@@ -406,8 +404,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $subject = $context['object'];
                 }
 
-                $revs = $this->processUriList($node, $context, $rev);
-                $rels = $this->processUriList($node, $context, $rel);
+                $rels = $this->processUriList($node, $context, $node->getAttribute('rel'));
+                $revs = $this->processUriList($node, $context, $node->getAttribute('rev'));
             }
 
             # FIXME: better place for this?
