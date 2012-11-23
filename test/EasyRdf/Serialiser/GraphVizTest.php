@@ -199,7 +199,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         );
 
         $this->assertSame('image/png', $info['mime']);
-        $this->assertTrue(400 > $info[0], 'Image width is less than 400');  # width=373
+        $this->assertTrue(450 > $info[0], 'Image width is less than 450');  # width=373
         $this->assertTrue(350 < $info[0], 'Image width is greater than 350');
         $this->assertTrue(350 > $info[1], 'Image height is less than 350');  # height=299
         $this->assertTrue(250 < $info[1], 'Image height is greater than 250');
@@ -215,7 +215,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         );
 
         $this->assertSame('image/gif', $info['mime']);
-        $this->assertTrue(400 > $info[0], 'Image width is less than 400');  # width=373
+        $this->assertTrue(450 > $info[0], 'Image width is less than 450');  # width=373
         $this->assertTrue(350 < $info[0], 'Image width is greater than 350');
         $this->assertTrue(350 > $info[1], 'Image height is less than 350');  # height=299
         $this->assertTrue(250 < $info[1], 'Image height is greater than 250');
