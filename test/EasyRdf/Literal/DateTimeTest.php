@@ -15,15 +15,6 @@ class EasyRdf_Literal_DateTimeTest extends EasyRdf_TestCase
         $this->assertSame('xsd:dateTime', $literal->getDatatype());
     }
 
-    public function testConstructFromUnixString()
-    {
-        $literal = new EasyRdf_Literal_DateTime('Mon 18 Jul 2011 18:45:43 BST');
-        $this->assertStringEquals('2011-07-18T18:45:43+0100', $literal);
-        $this->assertClass('DateTime', $literal->getValue());
-        $this->assertSame(NULL, $literal->getLang());
-        $this->assertSame('xsd:dateTime', $literal->getDatatype());
-    }
-
     public function testConstructFromDateTime()
     {
         $dt = new DateTime('2010-09-08T07:06:05Z');
@@ -31,6 +22,15 @@ class EasyRdf_Literal_DateTimeTest extends EasyRdf_TestCase
         $this->assertStringEquals('2010-09-08T07:06:05Z', $literal);
         $this->assertClass('DateTime', $literal->getValue());
         $this->assertEquals($dt, $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:dateTime', $literal->getDatatype());
+    }
+
+    public function testParse()
+    {
+        $literal = EasyRdf_Literal_DateTime::parse('Mon 18 Jul 2011 18:45:43 BST');
+        $this->assertStringEquals('2011-07-18T18:45:43+0100', $literal);
+        $this->assertClass('DateTime', $literal->getValue());
         $this->assertSame(NULL, $literal->getLang());
         $this->assertSame('xsd:dateTime', $literal->getDatatype());
     }
