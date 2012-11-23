@@ -70,7 +70,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
 
     public function testCreateWithLanguage()
     {
-        $literal = new EasyRdf_Literal('Rat', 'en');
+        $literal = EasyRdf_Literal::create('Rat', 'en');
         $this->assertClass('EasyRdf_Literal', $literal);
         $this->assertSame('Rat', $literal->getValue());
         $this->assertSame('en', $literal->getLang());
@@ -265,6 +265,31 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertSame('Rat', $literal->getValue());
         $this->assertSame(NULL, $literal->getLang());
         $this->assertSame(NULL, $literal->getDatatype());
+    }
+
+    public function testConstructWithLanguage()
+    {
+        $literal = new EasyRdf_Literal('Rat', 'en');
+        $this->assertSame('Rat', $literal->getValue());
+        $this->assertSame('en', $literal->getLang());
+        $this->assertSame(NULL, $literal->getDatatype());
+    }
+
+    public function testConstructWithDatatype()
+    {
+        $literal = new EasyRdf_Literal(1, NULL, 'xsd:integer');
+        $this->assertSame('1', $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:integer', $literal->getDatatype());
+    }
+
+    public function testConstructWithObjectDatatype()
+    {
+        $datatype = new EasyRdf_ParsedUri('http://www.w3.org/2001/XMLSchema#integer');
+        $literal = new EasyRdf_Literal(1, NULL, $datatype);
+        $this->assertSame('1', $literal->getValue());
+        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame('xsd:integer', $literal->getDatatype());
     }
 
     public function testGetDatatypeUri()
