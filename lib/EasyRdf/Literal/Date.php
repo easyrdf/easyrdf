@@ -46,13 +46,9 @@
  */
 class EasyRdf_Literal_Date extends EasyRdf_Literal
 {
-    const REGEXP = '/^-?\d{4}-\d{2}-\d{2}(Z|[\-\+]\d{2}:\d{2})?$/';
-
     /** Constructor for creating a new date literal
      *
      * If the value is a DateTime object, then it will be converted to the xsd:date format.
-     * If the value is a string that does not look like an xsd:date, then it will be
-     * parsed using DateTime and converted to the xsd:date format.
      *
      * @see DateTime
      *
@@ -63,17 +59,27 @@ class EasyRdf_Literal_Date extends EasyRdf_Literal
      */
     public function __construct($value, $lang=null, $datatype=null)
     {
-        // If string doesn't match XSD pattern, convert it to a DateTime object
-        if (is_string($value) and !preg_match(self::REGEXP, $value)) {
-            $value = new DateTime($value);
-        }
-
         // Convert DateTime object into string
         if ($value instanceof DateTime) {
             $value = $value->format('Y-m-d');
         }
 
         parent::__construct($value, null, $datatype);
+    }
+
+    /** Parses a string using DateTime and creates a new literal
+     *
+     * Example:
+     *   $date = EasyRdf_Literal_Date::parse('1 January 2011');
+     *
+     * @see DateTime
+     * @param string $value The date to parse
+     * @return object EasyRdf_Literal_Date
+     */
+    public static function parse($value)
+    {
+        $value = new DateTime($value);
+        return new EasyRdf_Literal_Date($value);
     }
 
     /** Returns the date as a PHP DateTime object

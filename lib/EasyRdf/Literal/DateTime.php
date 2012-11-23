@@ -46,13 +46,9 @@
  */
 class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
 {
-    const REGEXP = '/^-?\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|[\-\+]\d{2}:\d{2})?$/';
-
     /** Constructor for creating a new date and time literal
      *
      * If the value is a DateTime object, then it will be converted to the xsd:dateTime format.
-     * If the value is a string that does not look like an xsd:dateTime, then it will be
-     * parsed using DateTime and converted to the xsd:dateTime format.
      *
      * @see DateTime
      *
@@ -63,11 +59,6 @@ class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
      */
     public function __construct($value, $lang=null, $datatype=null)
     {
-        // If string doesn't match XSD pattern, convert it to a DateTime object
-        if (is_string($value) and !preg_match(self::REGEXP, $value)) {
-            $value = new DateTime($value);
-        }
-
         // Convert DateTime objects into string
         if ($value instanceof DateTime) {
             $iso = $value->format(DateTime::ISO8601);
@@ -75,6 +66,21 @@ class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
         }
 
         EasyRdf_Literal::__construct($value, null, $datatype);
+    }
+
+    /** Parses a string using DateTime and creates a new literal
+     *
+     * Example:
+     *   $dt = EasyRdf_Literal_DateTime::parse('Mon 18 Jul 2011 18:45:43 BST');
+     *
+     * @see DateTime
+     * @param string $value The date and time to parse
+     * @return object EasyRdf_Literal_DateTime
+     */
+    public static function parse($value)
+    {
+        $value = new DateTime($value);
+        return new EasyRdf_Literal_DateTime($value);
     }
 
     /** 24-hour format of the hour as an integer
