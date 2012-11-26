@@ -307,13 +307,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         if ($node->hasAttributes()) {
             $content = $node->hasAttribute('content') ? $node->getAttribute('content') : NULL;
             $datatype = $node->hasAttribute('datatype') ? $node->getAttribute('datatype') : NULL;
-
-            $property = $node->getAttribute('property');
-            $typeof = $node->getAttribute('typeof');
-            $vocab = $node->getAttribute('vocab');
+            $property = $node->getAttribute('property') ? $node->getAttribute('property') : NULL;
+            $typeof = $node->getAttribute('typeof') ? $node->getAttribute('typeof') : NULL;
 
             // Step 2: Default vocabulary
-            if ($vocab) {
+            if ($vocab = $node->getAttribute('vocab')) {
                 $context['vocab'] = $vocab;
                 $vocab = array('type' => 'uri', 'value' => $vocab );
                 $this->addTriple($this->_baseUri, 'rdfa:usesVocabulary', $vocab);
@@ -573,6 +571,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $newContext['incompleteRevs'] = $incompleteRevs;
             if (isset($listMapping))
                 $newContext['listMapping'] = $listMapping;
+
             foreach ($node->childNodes as $child) {
                 if ($child->nodeType === XML_ELEMENT_NODE)
                     $this->processNode($child, $newContext, $depth+1);
