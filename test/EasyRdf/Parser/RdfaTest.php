@@ -653,7 +653,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0222()
     {
-        $this->markTestSkipped("FIXME: problem with bnode allocation");
+        $this->markTestSkipped("FIXME: Graph comparison isn't working");
         $this->rdfaTestCase('0222', '@inlist with multi-level elements');
     }
 
@@ -675,13 +675,13 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0226()
     {
-        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->markTestSkipped("FIXME: Graph comparison isn't working");
         $this->rdfaTestCase('0226', 'confusion between multiple implicit collections (resource)');
     }
 
     public function testCase0227()
     {
-        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->markTestSkipped("FIXME: Graph comparison isn't working");
         $this->rdfaTestCase('0227', 'confusion between multiple implicit collections (about)');
     }
 
@@ -724,13 +724,13 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0246()
     {
-        $this->markTestSkipped("FIXME: problem with bnode allocation");
+        $this->markTestSkipped("FIXME: Graph comparison isn't working");
         $this->rdfaTestCase('0246', 'hanging @rel creates multiple triples, @typeof permutation; RDFa 1.1 version');
     }
 
     public function testCase0247()
     {
-        $this->markTestSkipped("FIXME: problem with bnode allocation");
+        $this->markTestSkipped("FIXME: Graph comparison isn't working");
         $this->rdfaTestCase('0247', 'Multiple incomplete triples, RDFa 1.1version');
     }
 
@@ -969,7 +969,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0295()
     {
-        $this->markTestSkipped("FIXME: don't run benchmark for now");
+        $this->markTestSkipped("FIXME: Graph comparison isn't working");
         $this->rdfaTestCase('0295', 'Benchmark test');
     }
 
