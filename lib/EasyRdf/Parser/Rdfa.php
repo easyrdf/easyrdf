@@ -292,6 +292,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $this->printNode($node, $depth);
 
         // Step 1: establish local variables
+        $skip = FALSE;
         $subject = NULL;
         $typedResource = NULL;
         $object = NULL;
@@ -301,10 +302,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         $incompleteRels = array();
         $incompleteRevs = array();
 
-        if ($node->nodeType === XML_ELEMENT_NODE)
+        if ($node->nodeType === XML_ELEMENT_NODE) {
             $context['path'] .= '/' . $node->nodeName;
 
-        if ($node->hasAttributes()) {
             $content = $node->hasAttribute('content') ? $node->getAttribute('content') : NULL;
             $datatype = $node->hasAttribute('datatype') ? $node->getAttribute('datatype') : NULL;
             $property = $node->getAttribute('property') ? $node->getAttribute('property') : NULL;
@@ -375,6 +375,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     } elseif ($typeof and !$property) {
                         $subject = $this->_graph->newBNodeId();
                     } else {
+                        if (!$property)
+                            $skip = TRUE;
                         $subject = $context['object'];
                     }
                 }
@@ -534,7 +536,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             }
 
             // Step 12: Complete the incomplete triples from the evaluation context
-            if ($subject and ($context['incompleteRels'] or $context['incompleteRevs'])) {
+            if (!$skip and $subject and ($context['incompleteRels'] or $context['incompleteRevs'])) {
                 foreach ($context['incompleteRels'] as $prop) {
                     $this->addTriple(
                         $context['subject'],
@@ -555,22 +557,28 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
         // Step 13: create a new evaluation context and proceed recursively
         if ($node->hasChildNodes()) {
-            // Prepare a new evaluation context
-            $newContext = $context;
-            if ($object) {
-                $newContext['object'] = $object;
-            } elseif ($subject) {
-                $newContext['object'] = $subject;
+            if ($skip) {
+                $newContext = $context;
             } else {
-                $newContext['object'] = $context['subject'];
+                // Prepare a new evaluation context
+                $newContext = $context;
+                if ($object) {
+                    $newContext['object'] = $object;
+                } elseif ($subject) {
+                    $newContext['object'] = $subject;
+                } else {
+                    $newContext['object'] = $context['subject'];
+                }
+                if ($subject)
+                    $newContext['subject'] = $subject;
+                $newContext['incompleteRels'] = $incompleteRels;
+                $newContext['incompleteRevs'] = $incompleteRevs;
+                if (isset($listMapping))
+                    $newContext['listMapping'] = $listMapping;
             }
-            if ($subject)
-                $newContext['subject'] = $subject;
+
+            // The language is always updated, even if skip is set
             $newContext['lang'] = $lang;
-            $newContext['incompleteRels'] = $incompleteRels;
-            $newContext['incompleteRevs'] = $incompleteRevs;
-            if (isset($listMapping))
-                $newContext['listMapping'] = $listMapping;
 
             foreach ($node->childNodes as $child) {
                 if ($child->nodeType === XML_ELEMENT_NODE)

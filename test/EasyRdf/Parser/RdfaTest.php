@@ -376,7 +376,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0084()
     {
-        $this->markTestSkipped("FIXME: The bnode code needs fixing");
         $this->rdfaTestCase('0084', 'multiple ways of handling incomplete triples, this time with both @rel and @rev');
     }
 
