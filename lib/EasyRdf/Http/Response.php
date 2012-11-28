@@ -40,11 +40,6 @@
  */
 
 /**
- * @see EasyRdf_Exception
- */
-require_once "EasyRdf/Exception.php";
-
-/**
  * Class that represents an HTTP 1.0 / 1.1 response message.
  *
  * @package    EasyRdf
