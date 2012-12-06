@@ -110,11 +110,11 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
             }
             return $str;
         } else if ($type == 'bnode') {
-            return $this->remapBnode(
+            return EasyRdf_Parser_Redland::remapBnode(
                 librdf_node_get_blank_identifier($node)
             );
         } else {
-            throw new EasyRdf_Exception("Unsupported type: ".$object['type']);
+            throw new EasyRdf_Exception("Unsupported type: ".$type);
         }
     }
 
