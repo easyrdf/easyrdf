@@ -48,6 +48,8 @@
  */
 class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 {
+    private $_outputtedBnodes = array();
+
     /**
      * @ignore
      */
@@ -159,9 +161,11 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                     $turtle .= ',';
 
                 if ($object instanceof EasyRdf_Resource and $object->isBnode()) {
+                    $id = $object->getNodeId();
                     $rpcount = $this->reversePropertyCount($object);
-                    if ($rpcount <= 1) {
+                    if ($rpcount <= 1 and !isset($this->_outputtedBnodes[$id])) {
                         // Nested unlabelled Blank Node
+                        $this->_outputtedBnodes[$id] = true;
                         $turtle .= ' [';
                         $turtle .= $this->serialiseProperties($object, $depth+1);
                         $turtle .= ' ]';
@@ -219,6 +223,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         }
 
         $this->_prefixes = array();
+        $this->_outputtedBnodes = array();
 
         $turtle = '';
         foreach ($graph->resources() as $resource) {
@@ -228,14 +233,18 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                 continue;
 
             if ($resource->isBnode()) {
+                $id = $resource->getNodeId();
                 $rpcount = $this->reversePropertyCount($resource);
-                if ($rpcount == 0) {
-                    $turtle .= '[]';
-                } elseif ($rpcount == 1) {
-                    // Blank node will get serialised nested
+                if (isset($this->_outputtedBnodes[$id])) {
+                    // Already been serialised
                     continue;
                 } else {
-                    $turtle .= $this->serialiseResource($resource);
+                    $this->_outputtedBnodes[$id] = true;
+                    if ($rpcount == 0) {
+                        $turtle .= '[]';
+                    } else {
+                        $turtle .= $this->serialiseResource($resource);
+                    }
                 }
             } else {
                 $turtle .= $this->serialiseResource($resource);
