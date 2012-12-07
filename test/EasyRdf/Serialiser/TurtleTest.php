@@ -176,6 +176,28 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
+    function testSerialiseNestedBnode4()
+    {
+        $joe =  $this->_graph->newBnode();
+        $alice =  $this->_graph->newBnode();
+        $joe->add('foaf:name', 'Joe');
+        $alice->add('foaf:name', 'Alice');
+        $joe->add('foaf:knows', $alice);
+        $alice->add('foaf:knows', $joe);
+
+        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $this->assertSame(
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
+            "_:genid1\n".
+            "  foaf:name \"Joe\" ;\n".
+            "  foaf:knows [\n".
+            "    foaf:name \"Alice\" ;\n".
+            "    foaf:knows _:genid1\n".
+            "  ] .\n\n",
+            $turtle
+        );
+    }
+
     function testSerialiseLang()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
