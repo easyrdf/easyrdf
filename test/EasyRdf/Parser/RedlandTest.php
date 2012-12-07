@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -79,5 +79,26 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
         $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
+    }
+
+    public function testParseRdfXmlBnodeRemap()
+    {
+        $count = $this->_parser->parse(
+            $this->_graph,
+            "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' ".
+	          "         xmlns:foaf='http://xmlns.com/foaf/0.1/' >".
+            "  <rdf:Description rdf:nodeID='bob'>".
+            "    <foaf:name>Bob</foaf:name>".
+            "  </rdf:Description>".
+            "</rdf:RDF>",
+            'rdfxml',
+            'http://www.example.com/bob/foaf.rdf'
+        );
+        $this->assertSame(1, $count);
+
+        $this->assertStringEquals(
+            'Bob',
+            $this->_graph->get('_:genid1', 'foaf:name')
+        );
     }
 }
