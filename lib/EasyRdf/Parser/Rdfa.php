@@ -146,7 +146,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 print 'html';
                 break;
             default:
-                throw new Excpetion("unknown node type: ".$node->nodeType);
+                throw new EasyRdf_Exception("unknown node type: ".$node->nodeType);
                 break;
         }
         print ' '.$node->nodeName."\n";
