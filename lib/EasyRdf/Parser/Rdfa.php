@@ -190,7 +190,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             'incompleteRevs' => array(),
             'listMapping' => NULL,
             'lang' => NULL,
-            'path' => ''
+            'path' => '',
+            'xmlns' => array(),
         );
 
         // Set the default prefix
@@ -318,6 +319,14 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             }
 
             // Step 3: Set prefix mappings
+            // Support for deprecated xmlns if present in document
+            foreach ($context['xmlns'] as $prefix => $ns) {
+              if ($node->hasAttribute('xmlns:' . $prefix)) {
+                $context['prefixes'][$prefix] = $node->getAttribute('xmlns:' . $prefix);
+                if ($this->debug)
+                  print "Prefix (xmlns): $prefix => $uri\n";
+              }
+            }
             if ($node->hasAttribute('prefix')) {
                 $mappings = preg_split("/\s+/", $node->getAttribute('prefix'));
                 while (count($mappings)) {
@@ -637,6 +646,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
         // Initialise evaluation context
         $context = $this->initialContext();
+
+        // Collect all xmlns namespaces defined throughout the document
+        $sxe = simplexml_import_dom($doc);
+        $context['xmlns'] = $sxe->getDocNamespaces(true);
+        unset($context['xmlns']['']);
 
         // Recursively process XML nodes
         $this->processNode($doc, $context);
