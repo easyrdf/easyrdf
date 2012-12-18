@@ -557,7 +557,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0183()
     {
-        $this->markTestSkipped("FIXME: not sure how to fix this because of PHP DOM");
         $this->rdfaTestCase('0183', 'Test @xmlns redefines @prefix');
     }
 
