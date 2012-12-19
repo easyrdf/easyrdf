@@ -1627,6 +1627,15 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testDoesntHasBnodeProperty()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$property cannot be a blank node'
+        );
+        $this->_graph->hasProperty($this->_uri, '_:foo');
+    }
+
     public function testDumpText()
     {
         $text = $this->_graph->dump(false);

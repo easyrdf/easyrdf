@@ -463,6 +463,10 @@ class EasyRdf_Graph
             } else if (substr($property, 0, 1) == '^') {
                 $inverse = true;
                 $property = EasyRdf_Namespace::expand(substr($property, 1));
+            } else if (substr($property, 0, 2) == '_:') {
+                throw new InvalidArgumentException(
+                    "\$property cannot be a blank node"
+                );
             } else {
                 $inverse = false;
                 $property = EasyRdf_Namespace::expand($property);
