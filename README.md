@@ -35,8 +35,8 @@ The latest version of EasyRdf can be [downloaded from GitHub].
 Links
 -----
 
-* [EasyRdf Homepage](http://www.aelius.com/njh/easyrdf/)
-* [API documentation](http://www.aelius.com/njh/easyrdf/docs/)
+* [EasyRdf Homepage](http://www.easyrdf.org/)
+* [API documentation](http://www.easyrdf.org/docs/)
 * [Change Log](http://github.com/njh/easyrdf/blob/master/CHANGELOG.md)
 * Source Code: <http://github.com/njh/easyrdf>
 * Issue Tracker: <http://github.com/njh/easyrdf/issues>
@@ -119,10 +119,10 @@ The examples are in the public domain, for more information see [UNLICENSE].
 
 
 
-[EasyRdf_Graph]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Graph.html
-[EasyRdf_GraphStore]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_GraphStore.html
-[EasyRdf_Sparql_Client]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Sparql_Client.html
-[EasyRdf_Sparql_Result]:http://www.aelius.com/njh/easyrdf/docs/EasyRdf/EasyRdf_Sparql_Result.html
+[EasyRdf_Graph]:http://www.easyrdf.org/docs/EasyRdf/EasyRdf_Graph.html
+[EasyRdf_GraphStore]:http://www.easyrdf.org/docs/EasyRdf/EasyRdf_GraphStore.html
+[EasyRdf_Sparql_Client]:http://www.easyrdf.org/docs/EasyRdf/EasyRdf_Sparql_Client.html
+[EasyRdf_Sparql_Result]:http://www.easyrdf.org/docs/EasyRdf/EasyRdf_Sparql_Result.html
 
 [ARC2]:http://github.com/semsol/arc2/
 [BSD-3-Clause]:http://www.opensource.org/licenses/BSD-3-Clause

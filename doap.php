@@ -2,14 +2,14 @@
     set_include_path(get_include_path() . PATH_SEPARATOR . './lib/');
     require_once "EasyRdf.php";
 
+    // Load some properties from the composer file
+    $composer = json_decode(file_get_contents('composer.json'));
+
     // Start building up a RDF graph
-    $doap = new EasyRdf_Graph('http://www.aelius.com/njh/easyrdf/doap.rdf');
+    $doap = new EasyRdf_Graph($composer->homepage.'doap.rdf');
     $easyrdf = $doap->resource('#easyrdf', 'doap:Project', 'foaf:Project');
     $easyrdf->addLiteral('doap:name',  'EasyRDF');
     $easyrdf->addLiteral('doap:shortname', 'easyrdf');
-
-    // Load some properties from the composer file
-    $composer = json_decode(file_get_contents('composer.json'));
     $easyrdf->addLiteral('doap:revision', $composer->version);
     $easyrdf->addLiteral('doap:shortdesc', $composer->description, 'en');
     $easyrdf->addResource('doap:homepage', $composer->homepage);
@@ -36,8 +36,9 @@
     $repository->addResource('doap:location', 'git://github.com/njh/easyrdf.git');
     $easyrdf->addResource('doap:repository', $repository);
 
-    $njh = $doap->resource('http://www.aelius.com/njh#me', 'foaf:Person');
-    $njh->add('foaf:name', 'Nicholas J Humfrey');
+    $njh = $doap->resource('http://njh.me/', 'foaf:Person');
+    $njh->addLiteral('foaf:name', 'Nicholas J Humfrey');
+    $njh->addResource('foaf:homepage', 'http://www.aelius.com/njh/');
     $easyrdf->add('doap:maintainer', $njh);
     $easyrdf->add('doap:developer', $njh);
     $easyrdf->add('foaf:maker', $njh);
