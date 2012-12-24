@@ -649,11 +649,14 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 print "Document was parsed as HTML.";
         }
 
-        // Establish the base
-        # FIXME: only do this if document is XHTML
+        // Establish the base for both XHTML and HTML documents.
         $xpath = new DOMXPath($doc);
         $xpath->registerNamespace('xh', "http://www.w3.org/1999/xhtml");
         $nodeList = $xpath->query('/xh:html/xh:head/xh:base');
+        if ($node = $nodeList->item(0) and $href = $node->getAttribute('href')) {
+            $this->_baseUri = new EasyRdf_ParsedUri($href);
+        }
+        $nodeList = $xpath->query('/html/head/base');
         if ($node = $nodeList->item(0) and $href = $node->getAttribute('href')) {
             $this->_baseUri = new EasyRdf_ParsedUri($href);
         }
