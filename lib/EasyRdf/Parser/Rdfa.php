@@ -626,11 +626,28 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             );
         }
 
+        // Initialise evaluation context.
+        $context = $this->initialContext();
+
         libxml_use_internal_errors(true);
 
         // Parse the document into DOM
         $doc = new DOMDocument();
-        $doc->loadXML($data, LIBXML_NONET);
+        // Attempt to parse the document as strict XML, and fall back to HTML
+        // if XML parsing fails.
+        if ($doc->loadXML($data, LIBXML_NONET)) {
+            if ($this->debug)
+                print "Document was parsed as XML.";
+            // Collect all xmlns namespaces defined throughout the document.
+            $sxe = simplexml_import_dom($doc);
+            $context['xmlns'] = $sxe->getDocNamespaces(true);
+            unset($context['xmlns']['']);
+        }
+        else {
+            $doc->loadHTML($data);
+            if ($this->debug)
+                print "Document was parsed as HTML.";
+        }
 
         // Establish the base
         # FIXME: only do this if document is XHTML
@@ -643,14 +660,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
         // Remove the fragment from the base URI
         $this->_baseUri->setFragment(NULL);
-
-        // Initialise evaluation context
-        $context = $this->initialContext();
-
-        // Collect all xmlns namespaces defined throughout the document
-        $sxe = simplexml_import_dom($doc);
-        $context['xmlns'] = $sxe->getDocNamespaces(true);
-        unset($context['xmlns']['']);
 
         // Recursively process XML nodes
         $this->processNode($doc, $context);
