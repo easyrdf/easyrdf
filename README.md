@@ -82,7 +82,7 @@ You can use the pipe character (|) to get alternate properties, for example:
 You can use a forward slash (/) to follow a property sequence, for example to get
 the names of all my friends:
 
-    $name = $me->all('foaf:knows/foaf:name');
+    $names = $me->all('foaf:knows/foaf:name');
 
 Finally, in order to use a full property URI, enclose it in angle brackets:
 
