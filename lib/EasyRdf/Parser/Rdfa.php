@@ -496,6 +496,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 } elseif ($node->hasAttribute('datetime')) {
                     $value['value'] = $node->getAttribute('datetime');
                     $datetime = TRUE;
+                } elseif ($datatype === '') {
+                    $value['value'] = $node->textContent;
                 } elseif ($datatype === self::RDF_XML_LITERAL) {
                     $value['value'] = '';
                     foreach ($node->childNodes as $child) {
