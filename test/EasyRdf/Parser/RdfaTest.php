@@ -356,7 +356,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0075()
     {
-        $this->rdfaTestCase('0075', 'Reserved word \'license\' in @rel with no explizit @about');
+        $this->rdfaTestCase('0075', 'Reserved word \'license\' in @rel with no explicit @about');
     }
 
     public function testCase0079()
@@ -894,7 +894,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0279()
     {
-        $this->rdfaTestCase('0279', '@datetype used with @datetime overrides default datatype');
+        $this->rdfaTestCase('0279', '@datatype used with @datetime overrides default datatype');
     }
 
     public function testCase0280()
@@ -1024,6 +1024,21 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     {
         $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0312', 'Mute plain @rel if @property is present');
+    }
+
+    public function testCase0315()
+    {
+        $this->rdfaTestCase('0315', '@property and @typeof with incomplete triples');
+    }
+
+    public function testCase0316()
+    {
+        $this->rdfaTestCase('0316', '@property and @typeof with incomplete triples (@href variant)');
+    }
+
+    public function testCase0317()
+    {
+        $this->rdfaTestCase('0317', '@datatype inhibits new @property behavior');
     }
 
     public function testParseUnsupportedFormat()
