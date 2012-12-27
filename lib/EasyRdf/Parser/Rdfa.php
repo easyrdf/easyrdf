@@ -644,8 +644,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $sxe = simplexml_import_dom($doc);
             $context['xmlns'] = $sxe->getDocNamespaces(true);
             unset($context['xmlns']['']);
-        }
-        else {
+        } else {
             $doc->loadHTML($data);
             if ($this->debug)
                 print "Document was parsed as HTML.";
