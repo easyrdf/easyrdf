@@ -1,6 +1,6 @@
 <?php
     /**
-     * Example of using EasyRdf_Graph directly without EasyRdf_Resource
+     * Using EasyRdf_Graph directly without EasyRdf_Resource
      *
      * Triple data is inserted and retrieved directly from a graph object,
      * where it is stored internally as an associative array.

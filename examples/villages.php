@@ -1,6 +1,15 @@
 <?php
     /**
-     * Fetch and information about villages in Fife from dbpedialite.org
+     * Consuming Linked Data from dbpedialite.org
+     *
+     * This example demonstrates fetching information about villages in Fife
+     * from dbpedialite.org. 
+     *
+     * First it fetches a list of villages that are members of the 
+     * Wikipedia category 'Villages in Fife' and displays them as a list.
+     *
+     * If you click on an village, then it displays a page about that village
+     * with a title, synopsis and Google Map.
      *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey

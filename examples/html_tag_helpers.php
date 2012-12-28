@@ -1,7 +1,10 @@
 <?php
 
 /**
- * Rails Style html tag helpers to make the EasyRdf examples simplier
+ * Rails Style html tag helpers
+ *
+ * These are used by the other examples to make the code
+ * more concise and simpler to read.
  *
  * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
  * @license    http://unlicense.org/

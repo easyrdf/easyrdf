@@ -1,9 +1,12 @@
 <?php
     /**
-     * Example of using Zend_Http_Client and Zend_Loader_Autoloader with EasyRdf
+     * Using EasyRdf with the Zend Framework
      *
-     * This example creates a simple graph in memory, saves it to a local
-     * graphstore and then fetches the data back using a SPARQL SELECT query.
+     * This example demonstrates using Zend_Http_Client and 
+     * Zend_Loader_Autoloader with EasyRdf.
+     *
+     * It creates a simple graph in memory, saves it to a local graphstore
+     * and then fetches the data back using a SPARQL SELECT query.
      * Zend's curl HTTP client adaptor is used to perform the HTTP requests.
      *
      * @package    EasyRdf

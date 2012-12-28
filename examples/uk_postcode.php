@@ -1,6 +1,6 @@
 <?php
     /**
-     * Example of resolving UK postcodes using uk-postcodes.com
+     * Resolving UK postcodes using uk-postcodes.com
      *
      * Another basic example that demonstrates registering namespaces,
      * loading RDF data from the web and then directly displaying
