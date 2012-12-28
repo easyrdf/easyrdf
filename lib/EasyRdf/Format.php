@@ -68,7 +68,7 @@ class EasyRdf_Format
         return array_keys(self::$_formats);
     }
 
-    /** Get a list of all the registsed formats
+    /** Get a list of all the registered formats
      *
      * @return array          An array of format objects
      */
