@@ -1,6 +1,6 @@
 <?php
     /**
-     * Example of mapping an RDF class type to a PHP Class
+     * Mapping an RDF class type to a PHP Class
      *
      * This example fetches and displays artist information from the
      * BBC Music website. The artist object is an instance of the

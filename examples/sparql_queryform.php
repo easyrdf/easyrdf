@@ -1,6 +1,6 @@
 <?php
     /**
-     * Form to submit SPARQL queries and display the result
+     * Form to submit and display SPARQL queries
      *
      * This example presents a form that you can enter the URI
      * of a a SPARQL endpoint and a SPARQL query into. The

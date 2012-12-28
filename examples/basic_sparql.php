@@ -1,8 +1,8 @@
 <?php
     /**
-     * Example of making a SPARQL SELECT query
+     * Making a SPARQL SELECT query
      *
-     * The example creates a new SPARQL client, pointing at the
+     * This example creates a new SPARQL client, pointing at the
      * dbpedia.org endpoint. It then makes a SELECT query that
      * returns all of the countries in DBpedia along with an
      * english label.
