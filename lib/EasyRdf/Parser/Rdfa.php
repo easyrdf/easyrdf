@@ -312,10 +312,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $typeof = $node->getAttribute('typeof') ? $node->getAttribute('typeof') : NULL;
 
             // Step 2: Default vocabulary
-            if ($vocab = $node->getAttribute('vocab')) {
-                $context['vocab'] = $vocab;
-                $vocab = array('type' => 'uri', 'value' => $vocab );
-                $this->addTriple($this->_baseUri, 'rdfa:usesVocabulary', $vocab);
+            if ($node->hasAttribute('vocab')) {
+                $context['vocab'] = $node->getAttribute('vocab');
+                if ($context['vocab']) {
+                    $this->addTriple($this->_baseUri, 'rdfa:usesVocabulary', array('type' => 'uri', 'value' => $context['vocab']));
+                }
             }
 
             // Step 3: Set prefix mappings
