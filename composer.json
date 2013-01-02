@@ -28,6 +28,8 @@
         }
     ],
     "autoload": {
-        "psr-0": { "EasyRdf": "lib/" }
+        "psr-0": {
+            "EasyRdf\\": "lib/"
+        }
     }
 }
