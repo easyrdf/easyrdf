@@ -315,7 +315,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             if ($node->hasAttribute('vocab')) {
                 $context['vocab'] = $node->getAttribute('vocab');
                 if ($context['vocab']) {
-                    $this->addTriple($this->_baseUri, 'rdfa:usesVocabulary', array('type' => 'uri', 'value' => $context['vocab']));
+                    $this->addTriple(
+                        $this->_baseUri,
+                        'rdfa:usesVocabulary',
+                        array('type' => 'uri', 'value' => $context['vocab'])
+                    );
                 }
             }
 
