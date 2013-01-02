@@ -59,7 +59,7 @@ coverage:
 
 # TARGET:docs                Generate HTML documentation
 .PHONY: docs
-docs: index.html doap.rdf
+docs:
 	mkdir -p docs
 	$(PHPDOC) -d lib -t docs
 
@@ -96,7 +96,7 @@ $(distdir): $(DISTFILES)
 .PHONY: clean
 clean:
 	-rm -Rf $(distdir) docs reports
-	-rm -f doap.rdf index.html
+	-rm -f doap.rdf
 
 # TARGET:check-fixme         Scan for files containing the words TODO or FIXME
 .PHONY: check-fixme
