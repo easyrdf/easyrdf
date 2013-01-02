@@ -1,4 +1,4 @@
-EasyRdf
+EasyRdf [![Build Status](https://travis-ci.org/njh/easyrdf.png?branch=master)](https://travis-ci.org/njh/easyrdf)
 =======
 EasyRdf is a PHP library designed to make it easy to consume and produce [RDF].
 It was designed for use in mixed teams of experienced and inexperienced RDF

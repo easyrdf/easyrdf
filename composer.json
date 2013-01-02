@@ -21,13 +21,12 @@
     "require": {
         "php": ">=5.2.8"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/njh/easyrdf"
-        }
-    ],
+    "require-dev": {
+        "phpunit/PHPUnit": ">=3.5.15"
+    },
     "autoload": {
-        "psr-0": { "EasyRdf": "lib/" }
+        "psr-0": {
+            "EasyRdf_": "lib/"
+        }
     }
 }

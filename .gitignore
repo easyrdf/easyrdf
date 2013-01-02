@@ -4,3 +4,4 @@ index.html
 lib/arc/
 reports
 *.tar.gz
+vendor

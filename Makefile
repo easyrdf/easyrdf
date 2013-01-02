@@ -101,12 +101,12 @@ clean:
 # TARGET:check-fixme         Scan for files containing the words TODO or FIXME
 .PHONY: check-fixme
 check-fixme:
-	@git grep -n -E 'FIXME|TODO' || echo "No FIXME or TODO lines found."
+	@git grep -n -E 'FIXME|TODO' -- *.php || echo "No FIXME or TODO lines found."; exit 0;
 
 # TARGET:check-whitespace    Scan for files with trailing whitespace
 .PHONY: check-whitespace
 check-whitespace:
-	@git grep -n -E '[ 	]+$$' || echo "No trailing whitespace found."
+	@git grep -n -E '[ 	]+$$' -- *.php || echo "No trailing whitespace found."; exit 0;
 
 # TARGET:help                You're looking at it!
 .PHONY: help
