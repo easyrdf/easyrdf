@@ -57,7 +57,7 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
         }
     }
 
-    function testRapperNotFound()
+    public function testRapperNotFound()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
@@ -66,7 +66,7 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
         new EasyRdf_Serialiser_Rapper('random_command_that_doesnt_exist');
     }
 
-    function testSerialiseRdfXml()
+    public function testSerialiseRdfXml()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:name', 'Joe Bloggs');
@@ -83,7 +83,7 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
         $this->assertContains(':name>Project Name<', $rdfxml);
     }
 
-    function testSerialiseUnsupportedFormat()
+    public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

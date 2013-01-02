@@ -163,7 +163,7 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
         $this->assertSame(0, $this->_graph->countTriples());
     }
 
-    function testParseUnsupportedFormat()
+    public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

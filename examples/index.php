@@ -16,10 +16,10 @@
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>EasyRdf Examples</title>
+    <title>EasyRdf Examples</title>
 </head>
 <body>
 
@@ -47,15 +47,15 @@
             if (preg_match("/^\s*\/\*\*/", $line, $m)) {
               $startDoc = true;
               $tags = array();
-            } else if ($startDoc && preg_match("/^\s+\*\//", $line, $m)) {
+            } elseif ($startDoc && preg_match("/^\s+\*\//", $line, $m)) {
               $text[] = $para;
               break;
-            } else if ($startDoc && preg_match("/^\s+\*\s+@(\w+)\s+(.*)/", $line, $m)) {
+            } elseif ($startDoc && preg_match("/^\s+\*\s+@(\w+)\s+(.*)/", $line, $m)) {
               $tags[$m[1]] = $m[2];
-            } else if ($startDoc && preg_match("/^\s+\*\s*$/", $line, $m)) {
+            } elseif ($startDoc && preg_match("/^\s+\*\s*$/", $line, $m)) {
               $text[] = $para;
               $para = '';
-           } else if ($startDoc && preg_match("/^\s+\*\s*(.*)/", $line, $m)) {
+           } elseif ($startDoc && preg_match("/^\s+\*\s*(.*)/", $line, $m)) {
               if ($para) $para .= ' ';
               $para .= $m[1];
             }

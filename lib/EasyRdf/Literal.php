@@ -82,7 +82,7 @@ class EasyRdf_Literal
         if (EasyRdf_Utils::isAssociativeArray($value)) {
             if (isset($value['xml:lang'])) {
                $lang = $value['xml:lang'];
-            } else if (isset($value['lang'])) {
+            } elseif (isset($value['lang'])) {
                $lang = $value['lang'];
             }
             if (isset($value['datatype'])) {
@@ -178,11 +178,11 @@ class EasyRdf_Literal
     {
         if (is_float($value)) {
             return 'http://www.w3.org/2001/XMLSchema#decimal';
-        } else if (is_int($value)) {
+        } elseif (is_int($value)) {
             return 'http://www.w3.org/2001/XMLSchema#integer';
-        } else if (is_bool($value)) {
+        } elseif (is_bool($value)) {
             return 'http://www.w3.org/2001/XMLSchema#boolean';
-        } else if (is_object($value) and $value instanceof DateTime) {
+        } elseif (is_object($value) and $value instanceof DateTime) {
             return 'http://www.w3.org/2001/XMLSchema#dateTime';
         } else {
             return NULL;

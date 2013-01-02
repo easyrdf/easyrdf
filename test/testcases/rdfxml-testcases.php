@@ -48,14 +48,16 @@
     echo "Tests that fail: $failCount\n";
 
 
-    function testdata_filepath($uri) {
+    function testdata_filepath($uri)
+    {
         return str_replace(
             "http://www.w3.org/2000/10/rdf-tests/rdfcore/",
             dirname(__FILE__) . '/rdfxml/', $uri
         );
     }
 
-    function parse_testdata($uri) {
+    function parse_testdata($uri)
+    {
         $filepath = testdata_filepath($uri);
         $data = file_get_contents($filepath);
         return new EasyRdf_Graph("$uri", $data, 'rdfxml');

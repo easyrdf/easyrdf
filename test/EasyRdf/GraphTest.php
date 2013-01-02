@@ -1162,7 +1162,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->add($this->_uri, array(), 'Test C');
     }
 
-    function testAddInvalidObject()
+    public function testAddInvalidObject()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
@@ -1171,7 +1171,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->add($this->_uri, 'rdf:foo', $this);
     }
 
-    function testAddMissingArrayType()
+    public function testAddMissingArrayType()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
@@ -1180,7 +1180,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->add($this->_uri, 'rdf:foo', array('value' => 'bar'));
     }
 
-    function testAddMissingArrayValue()
+    public function testAddMissingArrayValue()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
@@ -1189,7 +1189,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->add($this->_uri, 'rdf:foo', array('type' => 'literal'));
     }
 
-    function testAddInvalidArrayType()
+    public function testAddInvalidArrayType()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
@@ -1198,7 +1198,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->add($this->_uri, 'rdf:foo', array('type' => 'foo', 'value' => 'bar'));
     }
 
-    function testAddArrayWithLangAndDatatype()
+    public function testAddArrayWithLangAndDatatype()
     {
         $this->setExpectedException(
             'InvalidArgumentException',

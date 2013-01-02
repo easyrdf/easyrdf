@@ -81,7 +81,7 @@ class EasyRdf_ParsedUri
                     $this->_fragment = isset($matches[9]) ? $matches[9] : '';
                 }
             }
-        } else if (is_array($uri)) {
+        } elseif (is_array($uri)) {
             $this->_scheme = isset($uri['scheme']) ? $uri['scheme'] : NULL;
             $this->_authority = isset($uri['authority']) ? $uri['authority'] : NULL;
             $this->_path = isset($uri['path']) ? $uri['path'] : NULL;
@@ -228,7 +228,7 @@ class EasyRdf_ParsedUri
                 $count = count($newSegments);
                 if ($count > 0 && $newSegments[$count-1])
                     array_pop($newSegments);
-            } else if ($segment == '.') {
+            } elseif ($segment == '.') {
                 // Ignore
                 continue;
             } else {

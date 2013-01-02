@@ -62,7 +62,7 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
             throw new EasyRdf_Exception(
                 "Failed to execute the command '$rapperCmd': $result"
             );
-        } else if (version_compare($result, self::MINIMUM_RAPPER_VERSION) < 0) {
+        } elseif (version_compare($result, self::MINIMUM_RAPPER_VERSION) < 0) {
             throw new EasyRdf_Exception(
                 "Version ".self::MINIMUM_RAPPER_VERSION." or higher of rapper is required."
             );

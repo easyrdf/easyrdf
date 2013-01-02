@@ -136,7 +136,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         if ($p = $this->getParentS()) {
             if (isset($p['p_x_base']) && $p['p_x_base']) {
                 return $p['p_x_base'];
-            } else if (isset($p['x_base'])) {
+            } elseif (isset($p['x_base'])) {
                 return $p['x_base'];
             } else {
                 return '';
@@ -152,7 +152,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         if ($p = $this->getParentS()) {
             if (isset($p['p_x_lang']) && $p['p_x_lang']) {
                 return $p['p_x_lang'];
-            } else if (isset($p['x_lang'])) {
+            } elseif (isset($p['x_lang'])) {
                 return $p['x_lang'];
             } else {
                 return null;

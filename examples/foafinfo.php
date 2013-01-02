@@ -34,7 +34,7 @@
         $graph = EasyRdf_Graph::newAndLoad($_REQUEST['uri']);
         if ($graph->type() == 'foaf:PersonalProfileDocument') {
             $person = $graph->primaryTopic();
-        } else if ($graph->type() == 'foaf:Person') {
+        } elseif ($graph->type() == 'foaf:Person') {
             $person = $graph->resource();
         }
     }

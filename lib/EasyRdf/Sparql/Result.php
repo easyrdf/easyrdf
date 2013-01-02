@@ -68,7 +68,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
     {
         if ($mimeType == 'application/sparql-results+xml') {
             return $this->_parseXml($data);
-        } else if ($mimeType == 'application/sparql-results+json') {
+        } elseif ($mimeType == 'application/sparql-results+json') {
             return $this->_parseJson($data);
         } else {
             throw new EasyRdf_Exception(
@@ -222,7 +222,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
 
             }
             return $result;
-        } else if ($this->_type == 'boolean') {
+        } elseif ($this->_type == 'boolean') {
             $str = ($this->_boolean ? 'true' : 'false');
             if ($html) {
                 return "<p>Result: <span style='font-weight:bold'>$str</span></p>";
@@ -342,7 +342,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
         if (isset($data['boolean'])) {
             $this->_type = 'boolean';
             $this->_boolean = $data['boolean'];
-        } else if (isset($data['results'])) {
+        } elseif (isset($data['results'])) {
             $this->_type = 'bindings';
             if (isset($data['head']['vars'])) {
                 $this->_fields = $data['head']['vars'];

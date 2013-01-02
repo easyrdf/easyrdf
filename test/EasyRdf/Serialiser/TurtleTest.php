@@ -56,7 +56,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         EasyRdf_Namespace::delete('example');
     }
 
-    function testSerialise()
+    public function testSerialise()
     {
         $joe = $this->_graph->resource(
             'http://example.com/joe#me',
@@ -80,7 +80,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseAnonymousSubject()
+    public function testSerialiseAnonymousSubject()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $anon =  $this->_graph->newBnode();
@@ -95,7 +95,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseBnode()
+    public function testSerialiseBnode()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $alice = $this->_graph->resource('http://example.com/alice#me');
@@ -114,7 +114,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseNestedBnode1()
+    public function testSerialiseNestedBnode1()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $amy =  $this->_graph->newBnode();
@@ -130,7 +130,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseNestedBnode2()
+    public function testSerialiseNestedBnode2()
     {
         $doc = $this->_graph->resource('http://example.com/doc');
         $joe = $this->_graph->newBnode();
@@ -150,7 +150,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseNestedBnode3()
+    public function testSerialiseNestedBnode3()
     {
         $alice = $this->_graph->newBnode();
         $alice->add('foaf:name', 'Alice');
@@ -176,7 +176,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseNestedBnode4()
+    public function testSerialiseNestedBnode4()
     {
         $joe =  $this->_graph->newBnode();
         $alice =  $this->_graph->newBnode();
@@ -198,7 +198,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseLang()
+    public function testSerialiseLang()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', new EasyRdf_Literal('Joe', 'en'));
@@ -211,7 +211,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseEscaped()
+    public function testSerialiseEscaped()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', '\n');
@@ -224,7 +224,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseEscaped2()
+    public function testSerialiseEscaped2()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', '"Joe"');
@@ -237,7 +237,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseMultiLineEscaped()
+    public function testSerialiseMultiLineEscaped()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', "Line 1\nLine 2");
@@ -250,7 +250,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseMultiLineEscaped2()
+    public function testSerialiseMultiLineEscaped2()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', "\t".'"""'."\t");
@@ -263,7 +263,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseBooleanDatatype()
+    public function testSerialiseBooleanDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:truth', EasyRdf_Literal::create(true));
@@ -277,7 +277,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseDecimalDatatype()
+    public function testSerialiseDecimalDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:age', new EasyRdf_Literal_Decimal(1.5));
@@ -291,7 +291,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseDoubleDatatype()
+    public function testSerialiseDoubleDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:age', EasyRdf_Literal::create(1.5, null, 'xsd:double'));
@@ -305,7 +305,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseIntegerDatatype()
+    public function testSerialiseIntegerDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:age', new EasyRdf_Literal_Integer(49));
@@ -319,7 +319,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseDateTimeDatatype()
+    public function testSerialiseDateTimeDatatype()
     {
         $doc = $this->_graph->resource('http://example.com/');
         $doc->set('dc:date', new EasyRdf_Literal_DateTime('2012-11-04T13:01:26+01:00'));
@@ -333,7 +333,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseOtherDatatype()
+    public function testSerialiseOtherDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:foo', EasyRdf_Literal::create('foobar', null, 'xsd:other'));
@@ -347,7 +347,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseUnknownDatatype()
+    public function testSerialiseUnknownDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set(
@@ -364,7 +364,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseShortenableResource()
+    public function testSerialiseShortenableResource()
     {
         EasyRdf_Namespace::set("example", 'http://example.com/');
         $joe = $this->_graph->resource('http://example.com/joe#me');
@@ -378,7 +378,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseUnshortenableDatatype()
+    public function testSerialiseUnshortenableDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set(
@@ -394,7 +394,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialisePropertyWithUnknownNamespace()
+    public function testSerialisePropertyWithUnknownNamespace()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('http://example.com/ns/prop', 'bar');
@@ -410,7 +410,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseUnshortenableProperty()
+    public function testSerialiseUnshortenableProperty()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('http://example.com/property/', 'bar');
@@ -422,7 +422,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseUnsupportedFormat()
+    public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
