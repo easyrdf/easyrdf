@@ -1,3 +1,28 @@
+EasyRdf 0.7.2
+=============
+
+Enhancements
+------------
+* Removed automatic registration of ARC2 and librdf parsers and serialisers
+** You must now specifically choose the parser or serialiser
+* Refactored `EasyRdf_Literal` with datatypes so that it preserves exact value
+* Changed Turtle serialiser to not escape Unicode characters unnecessarily
+* Fix for escaping literals objects in Turtle serialiser
+* Added a new static function `newAndLoad()` to `EasyRdf_Graph`
+* Added setters for each of the components of the URI to the class `EasyRdf_ParsedUri`
+* Added option to the converter example, to allow raw output, without any HTML
+
+Bug Fixes
+---------
+* Fixed broken Redland parser (thanks to Jon Phipps)
+* Fix for serialising two bnodes that reference each other in Turtle
+* Added support for parsing literals with single quotes in Turtle
+* Removed require for EasyRdf/Exception.php
+* Fix for serialising `EasyRdf_Literal_DateTime` to Turtle
+* Fix for serialising Turtle literals with a shorthand syntax
+* Several typo fixes and minor corrections
+
+
 EasyRdf 0.7.1
 =============
 
