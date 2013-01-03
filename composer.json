@@ -4,7 +4,7 @@
     "version": "0.7.1",
     "type": "library",
     "keywords": ["RDF", "Semantic Web", "Turtle"],
-    "homepage": "http://www.aelius.com/njh/easyrdf/",
+    "homepage": "http://www.easyrdf.org/",
     "license": "BSD-3-Clause",
     "authors": [
         {
