@@ -26,6 +26,10 @@
     },
     "repositories": [
         {
+            "type": "composer",
+            "url": "http://www.easyrdf.org"
+        },
+        {
             "type": "vcs",
             "url": "https://github.com/njh/easyrdf"
         }
