@@ -1,0 +1,6 @@
+<http://example.com/a> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "'single'" .
+<http://example.com/b> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "\"double\"" .
+<http://example.com/c> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "'single'" .
+<http://example.com/d> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "\"double\"" .
+<http://example.com/e> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "'single'" .
+<http://example.com/f> <http://www.w3.org/1999/02/22-rdf-syntax-ns#value> "\"double\"" .

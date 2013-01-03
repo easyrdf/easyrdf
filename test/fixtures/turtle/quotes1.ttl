@@ -1,0 +1,9 @@
+# quotes1 - Test different types of quotes
+@prefix ex: <http://example.com/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+ex:a rdf:value "'single'" .
+ex:b rdf:value '"double"' .
+ex:c rdf:value """'single'""" .
+ex:d rdf:value '''"double"''' .
+ex:e rdf:value '\'single\'' .
+ex:f rdf:value "\"double\"" .

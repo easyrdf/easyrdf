@@ -290,6 +290,11 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
         $this->turtleTestCase('rdf-schema');
     }
 
+    public function testQuotes1()
+    {
+        $this->turtleTestCase('quotes1');
+    }
+
     public function testBad00()
     {
         # prefix name must end in a :
