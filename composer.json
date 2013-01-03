@@ -16,7 +16,8 @@
     ],
     "support": {
         "forum": "http://groups.google.com/group/easyrdf/",
-        "issues": "http://github.com/njh/easyrdf/issues"
+        "issues": "http://github.com/njh/easyrdf/issues",
+        "irc": "irc://chat.freenode.net/easyrdf"
     },
     "require": {
         "php": ">=5.2.8"
