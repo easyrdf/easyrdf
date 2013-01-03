@@ -106,7 +106,7 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         $this->assertStringEquals('http://example.org/pear', $favourites->get('rdf:_4'));
     }
 
-    function testParseUnsupportedFormat()
+    public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

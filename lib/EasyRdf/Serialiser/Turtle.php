@@ -100,11 +100,11 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                     $this->addPrefix($short);
                     if ($short == 'xsd:integer') {
                         return sprintf('%d', $value);
-                    } else if ($short == 'xsd:decimal') {
+                    } elseif ($short == 'xsd:decimal') {
                         return sprintf('%g', $value);
-                    } else if ($short == 'xsd:double') {
+                    } elseif ($short == 'xsd:double') {
                         return sprintf('%e', $value);
-                    } else if ($short == 'xsd:boolean') {
+                    } elseif ($short == 'xsd:boolean') {
                         return sprintf('%s', $value ? 'true' : 'false');
                     } else {
                         return sprintf('%s^^%s', $quoted, $short);
@@ -113,7 +113,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                     $datatypeUri = str_replace('>', '\\>', $datatype);
                     return sprintf('%s^^<%s>', $quoted, $datatypeUri);
                 }
-            } else if ($lang = $object->getLang()) {
+            } elseif ($lang = $object->getLang()) {
                 return $quoted . '@' . $lang;
             } else {
                 return $quoted;

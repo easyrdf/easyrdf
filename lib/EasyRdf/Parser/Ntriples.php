@@ -104,7 +104,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
     {
         if (preg_match('/<([^<>]+)>/', $sub, $matches)) {
             return $this->unescapeString($matches[1]);
-        } else if (preg_match('/_:([A-Za-z0-9]*)/', $sub, $matches)) {
+        } elseif (preg_match('/_:([A-Za-z0-9]*)/', $sub, $matches)) {
             if (empty($matches[1])) {
                 return $this->_graph->newBNodeId();
             } else {
@@ -129,17 +129,17 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
                 'value' => $this->unescapeString($matches[1]),
                 'datatype' => $this->unescapeString($matches[2])
             );
-        } else if (preg_match('/"(.+)"@([\w\-]+)/', $obj, $matches)) {
+        } elseif (preg_match('/"(.+)"@([\w\-]+)/', $obj, $matches)) {
             return array(
                 'type' => 'literal',
                 'value' => $this->unescapeString($matches[1]),
                 'lang' => $this->unescapeString($matches[2])
             );
-        } else if (preg_match('/"(.*)"/', $obj, $matches)) {
+        } elseif (preg_match('/"(.*)"/', $obj, $matches)) {
             return array('type' => 'literal', 'value' => $this->unescapeString($matches[1]));
-        } else if (preg_match('/<([^<>]+)>/', $obj, $matches)) {
+        } elseif (preg_match('/<([^<>]+)>/', $obj, $matches)) {
             return array('type' => 'uri', 'value' => $matches[1]);
-        } else if (preg_match('/_:([A-Za-z0-9]*)/', $obj, $matches)) {
+        } elseif (preg_match('/_:([A-Za-z0-9]*)/', $obj, $matches)) {
             if (empty($matches[1])) {
                 return array(
                     'type' => 'bnode',
@@ -182,7 +182,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
         foreach ($lines as $line) {
             if (preg_match("/^\s*#/", $line)) {
                 continue;
-            } else if (preg_match("/(.+)\s+<([^<>]+)>\s+(.+)\s*\./", $line, $matches)) {
+            } elseif (preg_match("/(.+)\s+<([^<>]+)>\s+(.+)\s*\./", $line, $matches)) {
                 $this->addTriple(
                     $this->parseNtriplesSubject($matches[1]),
                     $this->unescapeString($matches[2]),

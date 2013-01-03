@@ -50,7 +50,7 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $this->_serialiser = new EasyRdf_Serialiser_RdfPhp();
     }
 
-    function testSerialisePhp()
+    public function testSerialisePhp()
     {
         $joe = $this->_graph->resource(
             'http://www.example.com/joe#me', 'foaf:Person'
@@ -92,7 +92,7 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
         $this->assertFalse(isset($projectName['datatype']));
     }
 
-    function testSerialiseUnsupportedFormat()
+    public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

@@ -37,7 +37,7 @@
 
 <h2>List of countries</h2>
 <ul>
-<?
+<?php
     $result = $sparql->query(
       'SELECT * WHERE {'.
       '  ?country rdf:type dbo:Country .'.

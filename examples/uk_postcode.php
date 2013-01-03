@@ -26,9 +26,9 @@
   <style type="text/css" media="all">
     #map
     {
-    	border: 1px gray solid;
-    	float: right;
-    	margin: 0 0 20px 20px;
+        border: 1px gray solid;
+        float: right;
+        margin: 0 0 20px 20px;
     }
     th { text-align: right }
     td { padding: 5px; }

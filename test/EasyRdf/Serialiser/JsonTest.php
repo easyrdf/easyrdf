@@ -50,7 +50,7 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
         $this->_serialiser = new EasyRdf_Serialiser_Json();
     }
 
-    function testSerialiseJson()
+    public function testSerialiseJson()
     {
         $joe = $this->_graph->resource(
             'http://www.example.com/joe#me', 'foaf:Person'
@@ -78,7 +78,7 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseUnsupportedFormat()
+    public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

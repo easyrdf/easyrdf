@@ -207,7 +207,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         );
     }
 
-    function testParseUnsupportedFormat()
+    public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

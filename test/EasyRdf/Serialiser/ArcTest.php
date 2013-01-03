@@ -56,7 +56,7 @@ class EasyRdf_Serialiser_ArcTest extends EasyRdf_TestCase
         }
     }
 
-    function testSerialiseRdfXml()
+    public function testSerialiseRdfXml()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:name', 'Joe Bloggs');
@@ -73,7 +73,7 @@ class EasyRdf_Serialiser_ArcTest extends EasyRdf_TestCase
         $this->assertContains(':name>Project Name<', $rdfxml);
     }
 
-    function testSerialiseUnsupportedFormat()
+    public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

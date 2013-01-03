@@ -87,7 +87,7 @@ class EasyRdf_Parser_ArcTest extends EasyRdf_TestCase
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
 
-    function testParseUnsupportedFormat()
+    public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

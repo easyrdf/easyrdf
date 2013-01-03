@@ -121,7 +121,7 @@ class EasyRdf_Utils
     {
         if (is_object($resource)) {
             $resource = strval($resource);
-        } else if (is_array($resource)) {
+        } elseif (is_array($resource)) {
             $resource = $resource['value'];
         }
 
@@ -162,7 +162,7 @@ class EasyRdf_Utils
     {
         if (is_object($literal)) {
             $literal = $literal->toArray();
-        } else if (!is_array($literal)) {
+        } elseif (!is_array($literal)) {
             $literal = array('value' => $literal);
         }
 

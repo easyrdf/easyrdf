@@ -50,7 +50,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         $this->_serialiser = new EasyRdf_Serialiser_Ntriples();
     }
 
-    function testSerialise()
+    public function testSerialise()
     {
         $joe = $this->_graph->resource(
             'http://www.example.com/joe#me', 'foaf:Person'
@@ -74,7 +74,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseQuotes()
+    public function testSerialiseQuotes()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:nick', '"Joey"');
@@ -86,7 +86,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseBNode()
+    public function testSerialiseBNode()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me');
         $project = $this->_graph->newBNode();
@@ -100,7 +100,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
             $this->_serialiser->serialise($this->_graph, 'ntriples')
         );
     }
-    function testSerialiseLang()
+    public function testSerialiseLang()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', new EasyRdf_Literal('Joe', 'en'));
@@ -114,7 +114,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseDatatype()
+    public function testSerialiseDatatype()
     {
         $joe = $this->_graph->resource('http://example.com/joe#me');
         $joe->set('foaf:foo', EasyRdf_Literal::create(1, null, 'xsd:integer'));
@@ -128,7 +128,7 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseUnsupportedFormat()
+    public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

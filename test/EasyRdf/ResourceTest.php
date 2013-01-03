@@ -701,7 +701,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_resource->add(array(), 'Test C');
     }
 
-    function testAddInvalidObject()
+    public function testAddInvalidObject()
     {
         $this->_setupTestGraph();
         $this->setExpectedException(
