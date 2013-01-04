@@ -47,5 +47,5 @@
  */
 class EasyRdf_Exception extends Exception
 {
-
+    // Comment to make PHP CodeSniffer happy
 }
