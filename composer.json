@@ -23,7 +23,8 @@
         "php": ">=5.2.8"
     },
     "require-dev": {
-        "phpunit/PHPUnit": ">=3.5.15"
+        "phpunit/PHPUnit": ">=3.5.15",
+        "squizlabs/php_codesniffer": ">=1.4.3"
     },
     "replace": {
         "njh/easyrdf": "self.version"
