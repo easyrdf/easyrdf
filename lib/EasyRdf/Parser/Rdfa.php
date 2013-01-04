@@ -227,7 +227,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
-    protected function processUri($node, &$context, $value, $isProp=false)
+    protected function processUri($node, &$context, $value, $isProp = false)
     {
         if (preg_match("/^\[(.*)\]$/", $value, $matches)) {
             // Safe CURIE
@@ -287,7 +287,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
     }
 
-    protected function processNode($node, &$context, $depth=1)
+    protected function processNode($node, &$context, $depth = 1)
     {
         if ($this->debug)
             $this->printNode($node, $depth);

@@ -233,7 +233,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      *
      * @ignore
      */
-    protected function serialiseRow($node1, $node2=null, $attributes=array())
+    protected function serialiseRow($node1, $node2 = null, $attributes = array())
     {
         $result = '  '.$this->escape($node1);
         if ($node2)
@@ -339,7 +339,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      *
      * @ignore
      */
-    public function renderImage($graph, $format='png')
+    public function renderImage($graph, $format = 'png')
     {
         $dot = $this->serialiseDot($graph);
 

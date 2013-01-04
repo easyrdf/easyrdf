@@ -53,7 +53,7 @@ class EasyRdf_Literal_Integer extends EasyRdf_Literal
      * @param  string $datatype  Optional datatype (default 'xsd:integer')
      * @return object EasyRdf_Literal_Integer
      */
-    public function __construct($value, $lang=null, $datatype=null)
+    public function __construct($value, $lang = null, $datatype = null)
     {
         parent::__construct($value, null, $datatype);
     }

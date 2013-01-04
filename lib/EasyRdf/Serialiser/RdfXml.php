@@ -117,7 +117,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
      * Protected method to serialise a whole resource and its properties
      * @ignore
      */
-    protected function rdfxmlResource($res, $showNodeId, $depth=1)
+    protected function rdfxmlResource($res, $showNodeId, $depth = 1)
     {
         // Keep track of the resources we have already serialised
         if (isset($this->_outputtedResources[$res->getUri()])) {

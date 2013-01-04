@@ -63,7 +63,7 @@ class EasyRdf_ParsedUri
      * @param  string $uristr    The URI as a string
      * @return object EasyRdf_ParsedUri
      */
-    public function __construct($uri=null)
+    public function __construct($uri = null)
     {
         if (is_string($uri)) {
             if (preg_match(self::URI_REGEX, $uri, $matches)) {

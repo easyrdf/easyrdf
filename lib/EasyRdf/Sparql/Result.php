@@ -154,7 +154,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      *
      * @param  bool  $html  Set to true to format the dump using HTML
      */
-    public function dump($html=true)
+    public function dump($html = true)
     {
         if ($this->_type == 'bindings') {
             $result = '';

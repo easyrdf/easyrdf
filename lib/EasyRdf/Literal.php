@@ -77,7 +77,7 @@ class EasyRdf_Literal
      * @param  string $datatype  The datatype of the literal or null (e.g. 'xsd:integer')
      * @return object EasyRdf_Literal (or subclass of EasyRdf_Literal)
      */
-    public static function create($value, $lang=null, $datatype=null)
+    public static function create($value, $lang = null, $datatype = null)
     {
         if (EasyRdf_Utils::isAssociativeArray($value)) {
             if (isset($value['xml:lang'])) {
@@ -198,7 +198,7 @@ class EasyRdf_Literal
      * @param  string $datatype  The datatype of the literal or null (e.g. 'xsd:string')
      * @return object EasyRdf_Literal
      */
-    public function __construct($value, $lang=null, $datatype=null)
+    public function __construct($value, $lang = null, $datatype = null)
     {
         $this->_value = $value;
         $this->_lang = $lang ? $lang : null;
@@ -306,7 +306,7 @@ class EasyRdf_Literal
      * @param  string $color The colour of the text
      * @return string
      */
-    public function dumpValue($html=true, $color='black')
+    public function dumpValue($html = true, $color = 'black')
     {
         return EasyRdf_Utils::dumpLiteralValue($this, $html, $color);
     }

@@ -53,7 +53,7 @@ class Mock_RdfParser
 
 class Mock_RdfSerialiser
 {
-    public function serialise($graph, $format=null)
+    public function serialise($graph, $format = null)
     {
         return "<rdf></rdf>";
     }

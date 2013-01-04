@@ -187,7 +187,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     }
 
     /** @ignore */
-    protected function reify($t, $s, $p, $o, $sType, $oType, $oDatatype=null, $oLang=null)
+    protected function reify($t, $s, $p, $o, $sType, $oType, $oDatatype = null, $oLang = null)
     {
         $this->add($t, $this->_rdf.'type', $this->_rdf.'Statement', 'uri', 'uri');
         $this->add($t, $this->_rdf.'subject', $s, 'uri', $sType);

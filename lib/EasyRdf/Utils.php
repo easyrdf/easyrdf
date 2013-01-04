@@ -117,7 +117,7 @@ class EasyRdf_Utils
      * @param  string $color   The colour of the text
      * @return string
      */
-    public static function dumpResourceValue($resource, $html=true, $color='blue')
+    public static function dumpResourceValue($resource, $html = true, $color = 'blue')
     {
         if (is_object($resource)) {
             $resource = strval($resource);
@@ -158,7 +158,7 @@ class EasyRdf_Utils
      * @param  string $color   The colour of the text
      * @return string
      */
-    public static function dumpLiteralValue($literal, $html=true, $color='black')
+    public static function dumpLiteralValue($literal, $html = true, $color = 'black')
     {
         if (is_object($literal)) {
             $literal = $literal->toArray();
@@ -215,7 +215,7 @@ class EasyRdf_Utils
      * @param  string $dir       Path to directory to run command in (defaults to /tmp)
      * @return string The result of the command, printed to STDOUT
      */
-    public static function execCommandPipe($command, $args=null, $input=null, $dir=null)
+    public static function execCommandPipe($command, $args = null, $input = null, $dir = null)
     {
         $descriptorspec = array(
             0 => array('pipe', 'r'),

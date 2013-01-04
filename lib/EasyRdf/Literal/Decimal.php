@@ -53,7 +53,7 @@ class EasyRdf_Literal_Decimal extends EasyRdf_Literal
      * @param  string $datatype  Optional datatype (default 'xsd:decimal')
      * @return object EasyRdf_Literal_Decimal
      */
-    public function __construct($value, $lang=null, $datatype=null)
+    public function __construct($value, $lang = null, $datatype = null)
     {
         parent::__construct($value, null, $datatype);
     }

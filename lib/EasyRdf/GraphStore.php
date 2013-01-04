@@ -141,7 +141,7 @@ class EasyRdf_GraphStore
      * @param string $format The format of the data to send to the graph store
      * @return object EasyRdf_Http_Response The response from the graph store
      */
-    public function replace($graph, $uriRef=null, $format='ntriples')
+    public function replace($graph, $uriRef = null, $format = 'ntriples')
     {
         return $this->sendGraph('PUT', $graph, $uriRef, $format);
     }
@@ -162,7 +162,7 @@ class EasyRdf_GraphStore
      * @param string $format The format of the data to send to the graph store
      * @return object EasyRdf_Http_Response The response from the graph store
      */
-    public function insert($graph, $uriRef=null, $format='ntriples')
+    public function insert($graph, $uriRef = null, $format = 'ntriples')
     {
         return $this->sendGraph('POST', $graph, $uriRef, $format);
     }

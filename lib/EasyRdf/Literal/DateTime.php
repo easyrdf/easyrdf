@@ -57,7 +57,7 @@ class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
      * @param  string $datatype  Optional datatype (default 'xsd:dateTime')
      * @return object EasyRdf_Literal_DateTime
      */
-    public function __construct($value, $lang=null, $datatype=null)
+    public function __construct($value, $lang = null, $datatype = null)
     {
         // Convert DateTime objects into string
         if ($value instanceof DateTime) {

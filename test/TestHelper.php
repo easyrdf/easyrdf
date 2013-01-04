@@ -153,7 +153,7 @@ function requireExists($filename)
  * @param string $params query string parameters to pass to the script
  * @return string The resulting webpage (everything printed to STDOUT)
  */
-function executeExample($name, $params=array())
+function executeExample($name, $params = array())
 {
     $phpBin = getenv('PHP');
     if (!$phpBin) {

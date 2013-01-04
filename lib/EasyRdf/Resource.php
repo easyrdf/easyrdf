@@ -60,7 +60,7 @@ class EasyRdf_Resource
      * $resource = $graph->resource('http://www.example.com/');
      *
      */
-    public function __construct($uri, $graph=null)
+    public function __construct($uri, $graph = null)
     {
         if (!is_string($uri) or $uri == null or $uri == '') {
             throw new InvalidArgumentException(
@@ -172,7 +172,7 @@ class EasyRdf_Resource
      * @param  array   $options Associative array of attributes for the anchor tag
      * @return string  The HTML link string
      */
-    public function htmlLink($text=null, $options=array())
+    public function htmlLink($text = null, $options = array())
     {
         $options = array_merge(array('href' => $this->_uri), $options);
         if ($text === null)
@@ -209,7 +209,7 @@ class EasyRdf_Resource
      * @param  string $color The colour of the text
      * @return string
      */
-    public function dumpValue($html=true, $color='blue')
+    public function dumpValue($html = true, $color = 'blue')
     {
         return EasyRdf_Utils::dumpResourceValue($this, $html, $color);
     }
@@ -244,7 +244,7 @@ class EasyRdf_Resource
      *
      * @param  string  $format  Optional format of the data (eg. rdfxml)
      */
-    public function load($format=null)
+    public function load($format = null)
     {
         $this->checkHasGraph();
         return $this->_graph->load($this->_uri, $format);
@@ -256,7 +256,7 @@ class EasyRdf_Resource
      * @param  object  $value The value to delete (null to delete all values)
      * @return null
      */
-    public function delete($property, $value=null)
+    public function delete($property, $value = null)
     {
         $this->checkHasGraph();
         return $this->_graph->delete($this->_uri, $property, $value);
@@ -290,7 +290,7 @@ class EasyRdf_Resource
      * @param  string $lang      The language of the literal
      * @return integer           The number of values added
      */
-    public function addLiteral($property, $values, $lang=null)
+    public function addLiteral($property, $values, $lang = null)
     {
         $this->checkHasGraph();
         return $this->_graph->addLiteral($this->_uri, $property, $values, $lang);
@@ -342,7 +342,7 @@ class EasyRdf_Resource
      * @param  string       $lang     The language to filter by (e.g. en)
      * @return mixed                  A value associated with the property
      */
-    public function get($property, $type=null, $lang=null)
+    public function get($property, $type = null, $lang = null)
     {
         $this->checkHasGraph();
         return $this->_graph->get($this->_uri, $property, $type, $lang);
@@ -361,7 +361,7 @@ class EasyRdf_Resource
      * @param  string       $lang     The language to filter by (e.g. en)
      * @return object EasyRdf_Literal Literal value associated with the property
      */
-    public function getLiteral($property, $lang=null)
+    public function getLiteral($property, $lang = null)
     {
         $this->checkHasGraph();
         return $this->_graph->get($this->_uri, $property, 'literal', $lang);
@@ -393,7 +393,7 @@ class EasyRdf_Resource
      * @param  string  $lang     The language to filter by (e.g. en)
      * @return array             An array of values associated with the property
      */
-    public function all($property, $type=null, $lang=null)
+    public function all($property, $type = null, $lang = null)
     {
         $this->checkHasGraph();
         return $this->_graph->all($this->_uri, $property, $type, $lang);
@@ -408,7 +408,7 @@ class EasyRdf_Resource
      * @param  string  $lang     The language to filter by (e.g. en)
      * @return array             An array of values associated with the property
      */
-    public function allLiterals($property, $lang=null)
+    public function allLiterals($property, $lang = null)
     {
         $this->checkHasGraph();
         return $this->_graph->all($this->_uri, $property, 'literal', $lang);
@@ -437,7 +437,7 @@ class EasyRdf_Resource
      * @param  string  $lang     The language to filter by (e.g. en)
      * @return integer           The number of values associated with the property
      */
-    public function count($property, $type=null, $lang=null)
+    public function count($property, $type = null, $lang = null)
     {
         $this->checkHasGraph();
         return $this->_graph->count($this->_uri, $property, $type, $lang);
@@ -453,7 +453,7 @@ class EasyRdf_Resource
      * @param  string  $lang     The language to filter by (e.g. en)
      * @return string            Concatenation of all the values.
      */
-    public function join($property, $glue=' ', $lang=null)
+    public function join($property, $glue = ' ', $lang = null)
     {
         $this->checkHasGraph();
         return $this->_graph->join($this->_uri, $property, $glue, $lang);
@@ -503,7 +503,7 @@ class EasyRdf_Resource
      * @param  mixed   $value    An optional value of the property
      * @return bool              True if value the property exists.
      */
-    public function hasProperty($property, $value=null)
+    public function hasProperty($property, $value = null)
     {
         $this->checkHasGraph();
         return $this->_graph->hasProperty($this->_uri, $property, $value);
@@ -607,7 +607,7 @@ class EasyRdf_Resource
      *
      * @return string A label for the resource.
      */
-    public function label($lang=null)
+    public function label($lang = null)
     {
         $this->checkHasGraph();
         return $this->_graph->label($this->_uri, $lang);
@@ -621,7 +621,7 @@ class EasyRdf_Resource
      * @param  bool  $html  Set to true to format the dump using HTML
      * @return string
      */
-    public function dump($html=true)
+    public function dump($html = true)
     {
         $this->checkHasGraph();
         return $this->_graph->dumpResource($this->_uri, $html);

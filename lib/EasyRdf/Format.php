@@ -90,7 +90,7 @@ class EasyRdf_Format
      * @param array $extraTypes    extra MIME types to add
      * @return string              list of supported MIME types
      */
-    public static function getHttpAcceptHeader($extraTypes=array())
+    public static function getHttpAcceptHeader($extraTypes = array())
     {
         $accept = $extraTypes;
         foreach (self::$_formats as $format) {
@@ -161,8 +161,8 @@ class EasyRdf_Format
      * @param  string  $extensions One or more extensions (file suffix)
      * @return object              The new EasyRdf_Format object
      */
-    public static function register($name, $label=null, $uri=null,
-                                    $mimeTypes=array(), $extensions=array())
+    public static function register($name, $label = null, $uri = null,
+                                    $mimeTypes = array(), $extensions = array())
     {
         if (!is_string($name) or $name == null or $name == '') {
             throw new InvalidArgumentException(
@@ -221,7 +221,7 @@ class EasyRdf_Format
      * @param  string $data The document data
      * @return EasyRdf_Format The format object
      */
-    public static function guessFormat($data, $filename=null)
+    public static function guessFormat($data, $filename = null)
     {
         if (is_array($data)) {
             # Data has already been parsed into RDF/PHP

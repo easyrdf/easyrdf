@@ -55,7 +55,7 @@ class EasyRdf_Literal_Boolean extends EasyRdf_Literal
      * @param  string $datatype  Optional datatype (default 'xsd:boolean')
      * @return object EasyRdf_Literal_Boolean
      */
-    public function __construct($value, $lang=null, $datatype=null)
+    public function __construct($value, $lang = null, $datatype = null)
     {
         if (!is_string($value))
             $value = $value ? 'true' : 'false';

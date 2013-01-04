@@ -125,7 +125,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
      * Protected method to serialise the properties of a resource
      * @ignore
      */
-    protected function serialiseProperties($res, $depth=1)
+    protected function serialiseProperties($res, $depth = 1)
     {
         $properties = $res->propertyUris();
         $indent = str_repeat(' ', ($depth*2)-1);

@@ -57,36 +57,36 @@ function tag_options($options)
     return $html;
 }
 
-function tag($name, $options=array(), $open=false)
+function tag($name, $options = array(), $open = false)
 {
     return "<$name".tag_options($options).($open ? ">" : " />");
 }
 
-function content_tag($name, $content=null, $options=array())
+function content_tag($name, $content = null, $options = array())
 {
     return "<$name".tag_options($options).">".
            htmlspecialchars($content)."</$name>";
 }
 
-function link_to($text, $uri=null, $options=array())
+function link_to($text, $uri = null, $options = array())
 {
     if ($uri == null) $uri = $text;
     $options = array_merge(array('href' => $uri), $options);
     return content_tag('a', $text, $options);
 }
 
-function link_to_self($text, $query_string, $options=array())
+function link_to_self($text, $query_string, $options = array())
 {
     return link_to($text, $_SERVER['PHP_SELF'].'?'.$query_string, $options);
 }
 
-function image_tag($src, $options=array())
+function image_tag($src, $options = array())
 {
     $options = array_merge(array('src' => $src), $options);
     return tag('img', $options);
 }
 
-function input_tag($type, $name, $value=null, $options=array())
+function input_tag($type, $name, $value = null, $options = array())
 {
     $options = array_merge(
         array(
@@ -100,13 +100,13 @@ function input_tag($type, $name, $value=null, $options=array())
     return tag('input', $options);
 }
 
-function text_field_tag($name, $default=null, $options=array())
+function text_field_tag($name, $default = null, $options = array())
 {
     $value = isset($_REQUEST[$name]) ? $_REQUEST[$name] : $default;
     return input_tag('text', $name, $value, $options);
 }
 
-function text_area_tag($name, $default=null, $options=array())
+function text_area_tag($name, $default = null, $options = array())
 {
     $content = isset($_REQUEST[$name]) ? $_REQUEST[$name] : $default;
     $options = array_merge(
@@ -121,19 +121,19 @@ function text_area_tag($name, $default=null, $options=array())
     return content_tag('textarea', $content, $options);
 }
 
-function hidden_field_tag($name, $default=null, $options=array())
+function hidden_field_tag($name, $default = null, $options = array())
 {
     $value = isset($_REQUEST[$name]) ? $_REQUEST[$name] : $default;
     return input_tag('hidden', $name, $value, $options);
 }
 
-function password_field_tag($name='password', $default=null, $options=array())
+function password_field_tag($name = 'password', $default = null, $options = array())
 {
     $value = isset($_REQUEST[$name]) ? $_REQUEST[$name] : $default;
     return input_tag('password', $name, $value, $options);
 }
 
-function radio_button_tag($name, $value, $default=false, $options=array())
+function radio_button_tag($name, $value, $default = false, $options = array())
 {
     if ((isset($_REQUEST[$name]) and $_REQUEST[$name] == $value) or
         (!isset($_REQUEST[$name]) and $default))
@@ -144,7 +144,7 @@ function radio_button_tag($name, $value, $default=false, $options=array())
     return input_tag('radio', $name, $value, $options);
 }
 
-function check_box_tag($name, $value='1', $default=false, $options=array())
+function check_box_tag($name, $value = '1', $default = false, $options = array())
 {
     if ((isset($_REQUEST[$name]) and $_REQUEST[$name] == $value) or
         (!isset($_REQUEST['submit']) and $default))
@@ -154,17 +154,17 @@ function check_box_tag($name, $value='1', $default=false, $options=array())
     return input_tag('checkbox', $name, $value, $options);
 }
 
-function submit_tag($name='', $value='Submit', $options=array())
+function submit_tag($name = '', $value = 'Submit', $options = array())
 {
     return input_tag('submit', $name, $value, $options);
 }
 
-function reset_tag($name='', $value='Reset', $options=array())
+function reset_tag($name = '', $value = 'Reset', $options = array())
 {
     return input_tag('reset', $name, $value, $options);
 }
 
-function label_tag($name, $text=null, $options=array())
+function label_tag($name, $text = null, $options = array())
 {
     if ($text == null) {
         $text = ucwords(str_replace('_', ' ', $name)).': ';
@@ -175,13 +175,13 @@ function label_tag($name, $text=null, $options=array())
     return content_tag('label', $text, $options);
 }
 
-function labeled_text_field_tag($name, $default=null, $options=array())
+function labeled_text_field_tag($name, $default = null, $options = array())
 {
     return label_tag($name).
            text_field_tag($name, $default, $options);
 }
 
-function select_tag($name, $options, $default=null, $html_options=array())
+function select_tag($name, $options, $default = null, $html_options = array())
 {
     $opts = '';
     foreach ($options as $key => $value) {
@@ -200,7 +200,7 @@ function select_tag($name, $options, $default=null, $html_options=array())
     return "<select".tag_options($html_options).">$opts</select>";
 }
 
-function form_tag($uri=null, $options=array())
+function form_tag($uri = null, $options = array())
 {
     if ($uri == null) {
         $uri = $_SERVER['PHP_SELF'];

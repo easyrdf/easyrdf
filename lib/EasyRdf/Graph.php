@@ -80,7 +80,7 @@ class EasyRdf_Graph
      * @param  string  $format  The document type of the data (e.g. rdfxml)
      * @return object EasyRdf_Graph
      */
-    public function __construct($uri=null, $data=null, $format=null)
+    public function __construct($uri = null, $data = null, $format = null)
     {
         $this->checkResourceParam($uri, true);
 
@@ -106,7 +106,7 @@ class EasyRdf_Graph
      * @param  string  $format  Optional format of the data (eg. rdfxml)
      * @return object EasyRdf_Graph    The new the graph object
      */
-    public static function newAndLoad($uri, $format=null)
+    public static function newAndLoad($uri, $format = null)
     {
         $graph = new self($uri);
         $graph->load($uri, $format);
@@ -126,7 +126,7 @@ class EasyRdf_Graph
      * @param  mixed   $types  RDF type of a new resource (e.g. foaf:Person)
      * @return object EasyRdf_Resource
      */
-    public function resource($uri=null, $types=array())
+    public function resource($uri = null, $types = array())
     {
         $this->checkResourceParam($uri, true);
         if (!$uri) {
@@ -184,7 +184,7 @@ class EasyRdf_Graph
      * @param  mixed  $types  RDF type of a new blank node (e.g. foaf:Person)
      * @return object EasyRdf_Resource The new blank node
      */
-    public function newBNode($types=array())
+    public function newBNode($types = array())
     {
         return $this->resource($this->newBNodeId(), $types);
     }
@@ -207,7 +207,7 @@ class EasyRdf_Graph
      * @param  string  $uri     The URI of the data to load
      * @return integer          The number of triples added to the graph
      */
-    public function parse($data, $format=null, $uri=null)
+    public function parse($data, $format = null, $uri = null)
     {
         $this->checkResourceParam($uri, true);
 
@@ -235,7 +235,7 @@ class EasyRdf_Graph
      * @param  string  $uri      The URI of the file to load
      * @return integer           The number of triples added to the graph
      */
-    public function parseFile($filename, $format=null, $uri=null)
+    public function parseFile($filename, $format = null, $uri = null)
     {
         if ($uri === null) {
             $uri = "file://$filename";
@@ -260,7 +260,7 @@ class EasyRdf_Graph
      * @param  string  $format  Optional format of the data (eg. rdfxml)
      * @return integer          The number of triples added to the graph
      */
-    public function load($uri=null, $format=null)
+    public function load($uri = null, $format = null)
     {
         $this->checkResourceParam($uri, true);
 
@@ -366,7 +366,7 @@ class EasyRdf_Graph
      * @param  mixed   $value      Optional, the value of the propery to check for.
      * @return array   Array of EasyRdf_Resource
      */
-    public function resourcesMatching($property, $value=null)
+    public function resourcesMatching($property, $value = null)
     {
         $this->checkSinglePropertyParam($property, $inverse);
         $this->checkValueParam($value);
@@ -409,7 +409,7 @@ class EasyRdf_Graph
     /** Check that a URI/resource parameter is valid, and convert it to a string
      *  @ignore
      */
-    protected function checkResourceParam(&$resource, $allowNull=false)
+    protected function checkResourceParam(&$resource, $allowNull = false)
     {
         if ($allowNull == true) {
             if ($resource === null) {
@@ -555,7 +555,7 @@ class EasyRdf_Graph
      * @param  string    $lang           The language to filter by (e.g. en)
      * @return mixed                     A value associated with the property
      */
-    public function get($resource, $propertyPath, $type=null, $lang=null)
+    public function get($resource, $propertyPath, $type = null, $lang = null)
     {
         $this->checkResourceParam($resource);
 
@@ -604,7 +604,7 @@ class EasyRdf_Graph
      *
      * @ignore
      */
-    protected function getSingleProperty($resource, $property, $type=null, $lang=null)
+    protected function getSingleProperty($resource, $property, $type = null, $lang = null)
     {
         $this->checkResourceParam($resource);
         $this->checkSinglePropertyParam($property, $inverse);
@@ -652,7 +652,7 @@ class EasyRdf_Graph
      * @param  string       $lang     The language to filter by (e.g. en)
      * @return object EasyRdf_Literal Literal value associated with the property
      */
-    public function getLiteral($resource, $property, $lang=null)
+    public function getLiteral($resource, $property, $lang = null)
     {
         return $this->get($resource, $property, 'literal', $lang);
     }
@@ -677,7 +677,7 @@ class EasyRdf_Graph
     /** Return all the values for a particular property of a resource
      *  @ignore
      */
-    protected function propertyValuesArray($resource, $property, $inverse=false)
+    protected function propertyValuesArray($resource, $property, $inverse = false)
     {
         // Is an inverse property being requested?
         if ($inverse) {
@@ -721,7 +721,7 @@ class EasyRdf_Graph
      * @param  string  $lang          The language to filter by (e.g. en)
      * @return array                  An array of values associated with the property
      */
-    public function all($resource, $propertyPath, $type=null, $lang=null)
+    public function all($resource, $propertyPath, $type = null, $lang = null)
     {
         $this->checkResourceParam($resource);
 
@@ -778,7 +778,7 @@ class EasyRdf_Graph
      *
      * @ignore
      */
-    protected function allForSingleProperty($resource, $property, $type=null, $lang=null)
+    protected function allForSingleProperty($resource, $property, $type = null, $lang = null)
     {
         $this->checkResourceParam($resource);
         $this->checkSinglePropertyParam($property, $inverse);
@@ -818,7 +818,7 @@ class EasyRdf_Graph
      * @param  string  $lang     The language to filter by (e.g. en)
      * @return array             An array of values associated with the property
      */
-    public function allLiterals($resource, $property, $lang=null)
+    public function allLiterals($resource, $property, $lang = null)
     {
         return $this->all($resource, $property, 'literal', $lang);
     }
@@ -858,7 +858,7 @@ class EasyRdf_Graph
      * @param  string  $lang     The language to filter by (e.g. en)
      * @return integer           The number of values for this property
      */
-    public function count($resource, $property, $type=null, $lang=null)
+    public function count($resource, $property, $type = null, $lang = null)
     {
         return count($this->all($resource, $property, $type, $lang));
     }
@@ -873,7 +873,7 @@ class EasyRdf_Graph
      * @param  string  $lang     The language to filter by (e.g. en)
      * @return string            Concatenation of all the values.
      */
-    public function join($resource, $property, $glue=' ', $lang=null)
+    public function join($resource, $property, $glue = ' ', $lang = null)
     {
         return join($glue, $this->all($resource, $property, 'literal', $lang));
     }
@@ -936,7 +936,7 @@ class EasyRdf_Graph
      * @param  string $lang      The language of the literal
      * @return integer           The number of values added
      */
-    public function addLiteral($resource, $property, $value, $lang=null)
+    public function addLiteral($resource, $property, $value, $lang = null)
     {
         $this->checkResourceParam($resource);
         $this->checkSinglePropertyParam($property, $inverse);
@@ -1021,7 +1021,7 @@ class EasyRdf_Graph
      * @param  object  $value The value to delete (null to delete all values)
      * @return integer The number of values deleted
      */
-    public function delete($resource, $property, $value=null)
+    public function delete($resource, $property, $value = null)
     {
         $this->checkResourceParam($resource);
         $this->checkSinglePropertyParam($property, $inverse);
@@ -1087,7 +1087,7 @@ class EasyRdf_Graph
      * @param  mixed  $value     The value of the property
      * @param  string $lang      The language of the literal
      */
-    public function deleteLiteral($resource, $property, $value, $lang=null)
+    public function deleteLiteral($resource, $property, $value, $lang = null)
     {
         $this->checkResourceParam($resource);
         $this->checkSinglePropertyParam($property, $inverse);
@@ -1196,7 +1196,7 @@ class EasyRdf_Graph
      * @param  mixed   $value    An optional value of the property
      * @return boolean           True if value the property exists.
      */
-    public function hasProperty($resource, $property, $value=null)
+    public function hasProperty($resource, $property, $value = null)
     {
         $this->checkResourceParam($resource);
         $this->checkSinglePropertyParam($property, $inverse);
@@ -1252,7 +1252,7 @@ class EasyRdf_Graph
      * @param  boolean  $html  Set to true to format the dump using HTML
      * @return string
      */
-    public function dump($html=true)
+    public function dump($html = true)
     {
         $result = '';
         if ($html) {
@@ -1277,7 +1277,7 @@ class EasyRdf_Graph
      * @param  boolean  $html  Set to true to format the dump using HTML
      * @return string
      */
-    public function dumpResource($resource, $html=true)
+    public function dumpResource($resource, $html = true)
     {
         $this->checkResourceParam($resource, true);
 
@@ -1337,7 +1337,7 @@ class EasyRdf_Graph
      *
      * @return string A type assocated with the resource (e.g. foaf:Document)
      */
-    public function type($resource=null)
+    public function type($resource = null)
     {
         $this->checkResourceParam($resource, true);
 
@@ -1358,7 +1358,7 @@ class EasyRdf_Graph
      *
      * @return object EasyRdf_Resource  A type assocated with the resource
      */
-    public function typeAsResource($resource=null)
+    public function typeAsResource($resource = null)
     {
         $this->checkResourceParam($resource, true);
 
@@ -1378,7 +1378,7 @@ class EasyRdf_Graph
      *
      * @return array All types assocated with the resource (e.g. foaf:Person)
      */
-    public function types($resource=null)
+    public function types($resource = null)
     {
         $this->checkResourceParam($resource, true);
 
@@ -1458,7 +1458,7 @@ class EasyRdf_Graph
      *
      * @return string A label for the resource.
      */
-    public function label($resource=null, $lang=null)
+    public function label($resource = null, $lang = null)
     {
         $this->checkResourceParam($resource, true);
 
@@ -1478,7 +1478,7 @@ class EasyRdf_Graph
      *
      * @return EasyRdf_Resource The primary topic of the document.
      */
-    public function primaryTopic($resource=null)
+    public function primaryTopic($resource = null)
     {
         $this->checkResourceParam($resource, true);
 

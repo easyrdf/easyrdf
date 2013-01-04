@@ -56,7 +56,7 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
      * @param string $rapperCmd Optional path to the rapper command to use.
      * @return object EasyRdf_Serialiser_Rapper
      */
-    public function __construct($rapperCmd='rapper')
+    public function __construct($rapperCmd = 'rapper')
     {
         $result = exec("$rapperCmd --version 2>/dev/null", $output, $status);
         if ($status != 0) {

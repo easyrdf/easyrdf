@@ -250,7 +250,7 @@ class EasyRdf_Namespace
       * @param bool    $createNamespace If true, a new namespace will be created
       * @return array  The split URI (eg 'foaf', 'name') or null
       */
-    public static function splitUri($uri, $createNamespace=false)
+    public static function splitUri($uri, $createNamespace = false)
     {
         if ($uri === null or $uri === '') {
             throw new InvalidArgumentException(
@@ -311,7 +311,7 @@ class EasyRdf_Namespace
       * @param bool    $createNamespace If true, a new namespace will be created
       * @return string The shortened URI (eg 'foaf:name') or null
       */
-    public static function shorten($uri, $createNamespace=false)
+    public static function shorten($uri, $createNamespace = false)
     {
         if ($parts = self::splitUri($uri, $createNamespace)) {
             return implode(':', $parts);

@@ -53,7 +53,7 @@ class EasyRdf_Literal_HexBinary extends EasyRdf_Literal
      * @param  string $datatype  Optional datatype (default 'xsd:hexBinary')
      * @return object EasyRdf_Literal_HexBinary
      */
-    public function __construct($value, $lang=null, $datatype=null)
+    public function __construct($value, $lang = null, $datatype = null)
     {
         // Normalise the canonical representation, as specified here:
         // http://www.w3.org/TR/xmlschema-2/#hexBinary-canonical-repr
