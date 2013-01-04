@@ -61,7 +61,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         }
     }
 
-    function testRapperNotFound()
+    public function testRapperNotFound()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
@@ -70,7 +70,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         new EasyRdf_Parser_Rapper('random_command_that_doesnt_exist');
     }
 
-    function testRapperTooOld()
+    public function testRapperTooOld()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
@@ -120,7 +120,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         $this->assertSame(0, $this->_graph->countTriples());
     }
 
-    function testParseXMLLiteral()
+    public function testParseXMLLiteral()
     {
         $count = $this->_parser->parse(
             $this->_graph,
@@ -140,7 +140,7 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         );
     }
 
-    function testParseUnsupportedFormat()
+    public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

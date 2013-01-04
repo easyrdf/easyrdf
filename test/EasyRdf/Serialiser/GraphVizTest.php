@@ -63,37 +63,37 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         }
     }
 
-    function testSetDotCommand()
+    public function testSetDotCommand()
     {
         $this->_serialiser->setDotCommand('/usr/bin/dot');
         $this->assertSame('/usr/bin/dot', $this->_serialiser->getDotCommand());
     }
 
-    function testSetUseLabelsTrue()
+    public function testSetUseLabelsTrue()
     {
         $this->_serialiser->setUseLabels(true);
         $this->assertTrue($this->_serialiser->getUseLabels());
     }
 
-    function testSetUseLabelsFalse()
+    public function testSetUseLabelsFalse()
     {
         $this->_serialiser->setUseLabels(false);
         $this->assertFalse($this->_serialiser->getUseLabels());
     }
 
-    function testSetOnlyLabelledTrue()
+    public function testSetOnlyLabelledTrue()
     {
         $this->_serialiser->setOnlyLabelled(true);
         $this->assertTrue($this->_serialiser->getOnlyLabelled());
     }
 
-    function testSetOnlyLabelledFalse()
+    public function testSetOnlyLabelledFalse()
     {
         $this->_serialiser->setOnlyLabelled(false);
         $this->assertFalse($this->_serialiser->getOnlyLabelled());
     }
 
-    function testGetAtrributeCharset()
+    public function testGetAtrributeCharset()
     {
         $this->assertSame(
             'utf-8',
@@ -101,7 +101,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         );
     }
 
-    function testSetAtrribute()
+    public function testSetAtrribute()
     {
         $this->_serialiser->setAttribute('rankdir', 'LR');
         $this->assertSame('LR', $this->_serialiser->getAttribute('rankdir'));
@@ -109,7 +109,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         $this->assertSame('RL', $this->_serialiser->getAttribute('rankdir'));
     }
 
-    function testSerialiseDot()
+    public function testSerialiseDot()
     {
         $this->_serialiser->setUseLabels(false);
         $this->_serialiser->setOnlyLabelled(false);
@@ -136,7 +136,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseDotUseLabels()
+    public function testSerialiseDotUseLabels()
     {
         $this->_serialiser->setUseLabels(true);
         $this->_serialiser->setOnlyLabelled(false);
@@ -164,7 +164,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseDotOnlyLabelled()
+    public function testSerialiseDotOnlyLabelled()
     {
         $this->_graph->set('foaf:project', 'rdfs:label', 'project');
         $this->_serialiser->setUseLabels(true);
@@ -189,7 +189,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialisePng()
+    public function testSerialisePng()
     {
         $this->_serialiser->setUseLabels(false);
         $this->_serialiser->setOnlyLabelled(false);
@@ -205,7 +205,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         $this->assertTrue(250 < $info[1], 'Image height is greater than 250');
     }
 
-    function testSerialiseGif()
+    public function testSerialiseGif()
     {
         $this->_serialiser->setUseLabels(false);
         $this->_serialiser->setOnlyLabelled(false);
@@ -221,7 +221,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         $this->assertTrue(250 < $info[1], 'Image height is greater than 250');
     }
 
-    function testSerialiseSvg()
+    public function testSerialiseSvg()
     {
         $this->_serialiser->setUseLabels(false);
         $this->_serialiser->setOnlyLabelled(false);
@@ -250,7 +250,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         );
     }
 
-    function testDotNotFound()
+    public function testDotNotFound()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
@@ -260,7 +260,7 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         $this->_serialiser->renderImage($this->_graph);
     }
 
-    function testSerialiseUnsupportedFormat()
+    public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',

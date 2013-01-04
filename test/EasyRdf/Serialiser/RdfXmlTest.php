@@ -55,7 +55,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         EasyRdf_Namespace::reset();
     }
 
-    function testSerialiseRdfXml()
+    public function testSerialiseRdfXml()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');
@@ -74,7 +74,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseRdfXmlWithInline()
+    public function testSerialiseRdfXmlWithInline()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');
@@ -99,7 +99,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseRdfXmlDoubleRefernce()
+    public function testSerialiseRdfXmlDoubleRefernce()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');
@@ -125,7 +125,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseRdfXmlWithInlineBnode()
+    public function testSerialiseRdfXmlWithInlineBnode()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');
@@ -150,7 +150,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseRdfXmlBnodeMentionedTwice()
+    public function testSerialiseRdfXmlBnodeMentionedTwice()
     {
         $bob = $this->_graph->newBnode('foaf:Person');
         $alice = $this->_graph->newBnode('foaf:Person');
@@ -181,7 +181,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseRdfXmlTwoTypes()
+    public function testSerialiseRdfXmlTwoTypes()
     {
         $joe = $this->_graph->resource(
             'http://www.example.com/joe#me',
@@ -202,7 +202,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseRdfXmlWithTwoBNodes()
+    public function testSerialiseRdfXmlWithTwoBNodes()
     {
         $nodeA = $this->_graph->newBNode();
         $nodeB = $this->_graph->newBNode();
@@ -219,7 +219,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseRdfXmlWithLang()
+    public function testSerialiseRdfXmlWithLang()
     {
         $this->_graph->add(
             'http://www.example.com/joe#me',
@@ -233,7 +233,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseRdfXmlWithDatatype()
+    public function testSerialiseRdfXmlWithDatatype()
     {
         $this->_graph->add(
             'http://www.example.com/joe#me',
@@ -248,7 +248,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
     }
 
-    function testSerialiseRdfXmlWithUnknownProperty()
+    public function testSerialiseRdfXmlWithUnknownProperty()
     {
         $this->_graph->add(
             'http://www.example.com/joe#me',
@@ -261,7 +261,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->assertContains("xmlns:ns0=\"http://www.example.com/ns/\"", $xml);
     }
 
-    function testSerialiseRdfXmlWithUnshortenableProperty()
+    public function testSerialiseRdfXmlWithUnshortenableProperty()
     {
         $this->_graph->add(
             'http://www.example.com/joe#me',
@@ -276,7 +276,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->_serialiser->serialise($this->_graph, 'rdfxml');
     }
 
-    function testSerialiseRdfXmlWithXMLLiteral()
+    public function testSerialiseRdfXmlWithXMLLiteral()
     {
         $this->_graph->add(
             'http://www.example.com/joe#me',
@@ -290,7 +290,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
-    function testSerialiseUnsupportedFormat()
+    public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
@@ -306,7 +306,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
      * adds the correct namespace prefix, even if there are no properties tied
      * to that particular namespace.
      */
-    function testSerialiseRdfTypeAddsPrefix()
+    public function testSerialiseRdfTypeAddsPrefix()
     {
         $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('dc:creator', 'Max Bloggs');
@@ -330,7 +330,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
      * Test referencing a resource with a single property that
      * has already been output.
      */
-    function testSerialiseReferenceAlreadyOutput()
+    public function testSerialiseReferenceAlreadyOutput()
     {
         $graph = new EasyRdf_Graph();
 

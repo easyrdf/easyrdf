@@ -112,7 +112,7 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
         );
     }
 
-    function testParseUnsupportedFormat()
+    public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
             'EasyRdf_Exception',
