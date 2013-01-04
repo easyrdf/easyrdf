@@ -1213,7 +1213,7 @@ class EasyRdf_Graph
             if (is_null($value)) {
                 return TRUE;
             } else {
-                foreach($index[$resource][$property] as $v) {
+                foreach ($index[$resource][$property] as $v) {
                     if ($v == $value)
                         return TRUE;
                 }
