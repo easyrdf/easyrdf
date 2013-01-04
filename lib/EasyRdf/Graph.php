@@ -371,10 +371,11 @@ class EasyRdf_Graph
         $this->checkSinglePropertyParam($property, $inverse);
         $this->checkValueParam($value);
 
+        // Use the reverse index if it is an inverse property
         if ($inverse) {
-            $index = $this->_revIndex;
+            $index = &$this->_revIndex;
         } else {
-            $index = $this->_index;
+            $index = &$this->_index;
         }
 
         $matched = array();
@@ -681,10 +682,10 @@ class EasyRdf_Graph
         // Is an inverse property being requested?
         if ($inverse) {
             if (isset($this->_revIndex[$resource]))
-                $properties = $this->_revIndex[$resource];
+                $properties = &$this->_revIndex[$resource];
         } else {
             if (isset($this->_index[$resource]))
-                $properties = $this->_index[$resource];
+                $properties = &$this->_index[$resource];
         }
 
         if (isset($properties[$property])) {
