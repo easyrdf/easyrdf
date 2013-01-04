@@ -47,8 +47,8 @@
 class EasyRdf_GraphStore
 {
     /** The address of the GraphStore endpoint */
-    private $_uri = NULL;
-    private $_parsedUri = NULL;
+    private $_uri = null;
+    private $_parsedUri = null;
 
 
     /** Create a new SPARQL Graph Store client

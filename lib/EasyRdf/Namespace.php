@@ -93,7 +93,7 @@ class EasyRdf_Namespace
       'xsd' => 'http://www.w3.org/2001/XMLSchema#',
     );
 
-    private static $_default = NULL;
+    private static $_default = null;
 
     /** Counter for numbering anonymous namespaces */
     private static $_anonymousNamespaceCount = 0;
@@ -169,7 +169,7 @@ class EasyRdf_Namespace
     /**
       * Get the default namespace
       *
-      * Returns the URI of the default namespace or NULL
+      * Returns the URI of the default namespace or null
       * if no default namespace is defined.
       *
       * @return string The URI of the default namespace
@@ -193,7 +193,7 @@ class EasyRdf_Namespace
     public static function setDefault($namespace)
     {
         if (empty($namespace)) {
-            self::$_default = NULL;
+            self::$_default = null;
         } elseif (preg_match("/^\w+$/", $namespace)) {
             if (isset(self::$_namespaces[$namespace])) {
                 self::$_default = self::$_namespaces[$namespace];

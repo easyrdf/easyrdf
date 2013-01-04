@@ -74,7 +74,7 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
         $this->assertClass('EasyRdf_Literal', $name);
         $this->assertStringEquals('Joe Bloggs', $name);
         $this->assertSame('en', $name->getLang());
-        $this->assertSame(NULL, $name->getDatatype());
+        $this->assertSame(null, $name->getDatatype());
 
         $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);

@@ -72,7 +72,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Turtle');
 
         // Reset default namespace
-        EasyRdf_Namespace::setDefault(NULL);
+        EasyRdf_Namespace::setDefault(null);
 
         EasyRdf_Http::setDefaultHttpClient(
             $this->_client = new EasyRdf_Http_MockClient()
@@ -121,7 +121,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertClass('EasyRdf_Literal', $name);
         $this->assertSame('Joe Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
-        $this->assertSame(NULL, $name->getDatatype());
+        $this->assertSame(null, $name->getDatatype());
     }
 
     public function testParseDataGuess()
@@ -135,7 +135,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertClass('EasyRdf_Literal', $name);
         $this->assertSame('Joe Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
-        $this->assertSame(NULL, $name->getDatatype());
+        $this->assertSame(null, $name->getDatatype());
     }
 
     public function testParseFile()
@@ -148,7 +148,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertClass('EasyRdf_Literal', $name);
         $this->assertSame('Joe Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
-        $this->assertSame(NULL, $name->getDatatype());
+        $this->assertSame(null, $name->getDatatype());
     }
 
     public function testParseFileRelativeUri()
@@ -1087,7 +1087,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $title = $this->_graph->get($this->_uri, 'dc:title');
         $this->assertSame('English Title', $title->getValue());
         $this->assertSame('en', $title->getLang());
-        $this->assertSame(NULL, $title->getDataType());
+        $this->assertSame(null, $title->getDataType());
     }
 
     public function testAddMultipleLiterals()
@@ -1945,7 +1945,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         EasyRdf_Namespace::setDefault('rdf');
         $this->assertSame(
-            NULL,
+            null,
             $this->_graph->foobar
         );
     }
@@ -1974,7 +1974,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->_graph->add($this->_graph->getUri(), 'rdf:test', 'testMagicUnset');
         unset($this->_graph->test);
         $this->assertStringEquals(
-            NULL,
+            null,
             $this->_graph->get($this->_graph->getUri(), 'rdf:test')
         );
     }

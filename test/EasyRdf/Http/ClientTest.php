@@ -188,7 +188,7 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $this->_client->setParameterGet('key1', 'value1');
         $this->_client->setParameterGet('key2', 'value2');
         $this->_client->setParameterGet('key1', null);
-        $this->assertSame(NULL, $this->_client->getParameterGet('key1'));
+        $this->assertSame(null, $this->_client->getParameterGet('key1'));
         $this->assertSame('value2', $this->_client->getParameterGet('key2'));
     }
 
@@ -217,9 +217,9 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $this->_client->setHeaders('Accept-Language', 'en');
         $this->_client->resetParameters();
         $this->assertSame('GET', $this->_client->getMethod());
-        $this->assertSame(NULL, $this->_client->getRawData());
-        $this->assertSame(NULL, $this->_client->getHeader('Content-Length'));
-        $this->assertSame(NULL, $this->_client->getHeader('Content-Type'));
+        $this->assertSame(null, $this->_client->getRawData());
+        $this->assertSame(null, $this->_client->getHeader('Content-Length'));
+        $this->assertSame(null, $this->_client->getHeader('Content-Type'));
         $this->assertSame('en', $this->_client->getHeader('Accept-Language'));
     }
 
@@ -232,10 +232,10 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $this->_client->setHeaders('Accept-Language', 'en');
         $this->_client->resetParameters(true);
         $this->assertSame('GET', $this->_client->getMethod());
-        $this->assertSame(NULL, $this->_client->getRawData());
-        $this->assertSame(NULL, $this->_client->getHeader('Content-Length'));
-        $this->assertSame(NULL, $this->_client->getHeader('Content-Type'));
-        $this->assertSame(NULL, $this->_client->getHeader('Accept-Language'));
+        $this->assertSame(null, $this->_client->getRawData());
+        $this->assertSame(null, $this->_client->getHeader('Content-Length'));
+        $this->assertSame(null, $this->_client->getHeader('Content-Type'));
+        $this->assertSame(null, $this->_client->getHeader('Accept-Language'));
     }
 
 }

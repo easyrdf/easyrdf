@@ -217,7 +217,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'Format is not recognised: unknown'
         );
-        $this->assertSame(NULL, EasyRdf_Format::getFormat('unknown'));
+        $this->assertSame(null, EasyRdf_Format::getFormat('unknown'));
     }
 
     public function testGetNames()
@@ -246,13 +246,13 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetLabelNull()
     {
         $this->_format->setLabel(null);
-        $this->assertSame(NULL, $this->_format->getLabel());
+        $this->assertSame(null, $this->_format->getLabel());
     }
 
     public function testSetLabelEmpty()
     {
         $this->_format->setLabel('');
-        $this->assertSame(NULL, $this->_format->getLabel());
+        $this->assertSame(null, $this->_format->getLabel());
     }
 
     public function testSetLabelNonString()
@@ -273,13 +273,13 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetUriNull()
     {
         $this->_format->setUri(null);
-        $this->assertSame(NULL, $this->_format->getUri());
+        $this->assertSame(null, $this->_format->getUri());
     }
 
     public function testSetUriEmpty()
     {
         $this->_format->setUri('');
-        $this->assertSame(NULL, $this->_format->getUri());
+        $this->assertSame(null, $this->_format->getUri());
     }
 
     public function testSetUriNonString()
@@ -400,13 +400,13 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetParserClassNull()
     {
         $this->_format->setParserClass(null);
-        $this->assertSame(NULL, $this->_format->getParserClass());
+        $this->assertSame(null, $this->_format->getParserClass());
     }
 
     public function testSetParserClassEmpty()
     {
         $this->_format->setParserClass('');
-        $this->assertSame(NULL, $this->_format->getParserClass());
+        $this->assertSame(null, $this->_format->getParserClass());
     }
 
     public function testSetParserClassNonString()
@@ -465,13 +465,13 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testSetSerialiserClassNull()
     {
         $this->_format->setSerialiserClass(null);
-        $this->assertSame(NULL, $this->_format->getSerialiserClass());
+        $this->assertSame(null, $this->_format->getSerialiserClass());
     }
 
     public function testSetSerialiserClassEmpty()
     {
         $this->_format->setSerialiserClass('');
-         $this->assertSame(NULL, $this->_format->getSerialiserClass());
+         $this->assertSame(null, $this->_format->getSerialiserClass());
     }
 
     public function testSetSerialiserClassNonString()
@@ -595,7 +595,7 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $format = EasyRdf_Format::guessFormat(
             '<?xml version="1.0" encoding="UTF-8"?>'
         );
-        $this->assertSame(NULL, $format);
+        $this->assertSame(null, $format);
     }
 
     public function testGuessFormatByFilenameTtl()

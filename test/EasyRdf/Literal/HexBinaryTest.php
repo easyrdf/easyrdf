@@ -19,7 +19,7 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
         $this->assertStringEquals('48656C6C6F', $literal);
         $this->assertInternalType('string', $literal->getValue());
         $this->assertSame('48656C6C6F', $literal->getValue());
-        $this->assertSame(NULL, $literal->getLang());
+        $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:hexBinary', $literal->getDatatype());
         $this->assertSame('Hello', $literal->toBinary());
     }
@@ -93,7 +93,7 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
             $modulus
         );
         $this->assertInternalType('string', $modulus->getValue());
-        $this->assertSame(NULL, $modulus->getLang());
+        $this->assertSame(null, $modulus->getLang());
         $this->assertSame('xsd:hexBinary', $modulus->getDatatype());
     }
 

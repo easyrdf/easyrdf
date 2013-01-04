@@ -277,7 +277,7 @@ class EasyRdf_Graph
         $client->setHeaders('Accept', EasyRdf_Format::getHttpAcceptHeader());
 
         $requestUrl = $uri;
-        $response = NULL;
+        $response = null;
         $redirectCounter = 0;
         do {
             // Have we already loaded it into the graph?
@@ -577,7 +577,7 @@ class EasyRdf_Graph
         foreach (explode('/', $propertyPath) as $part) {
             // Stop if we come to a literal
             if ($resource instanceof EasyRdf_Literal)
-                return NULL;
+                return null;
 
             // Try each of the alternative paths
             foreach (explode('|', $part) as $p) {
@@ -1196,7 +1196,7 @@ class EasyRdf_Graph
      * @param  mixed   $value    An optional value of the property
      * @return boolean           True if value the property exists.
      */
-    public function hasProperty($resource, $property, $value=NULL)
+    public function hasProperty($resource, $property, $value=null)
     {
         $this->checkResourceParam($resource);
         $this->checkSinglePropertyParam($property, $inverse);
@@ -1211,16 +1211,16 @@ class EasyRdf_Graph
 
         if (isset($index[$resource][$property])) {
             if (is_null($value)) {
-                return TRUE;
+                return true;
             } else {
                 foreach ($index[$resource][$property] as $v) {
                     if ($v == $value)
-                        return TRUE;
+                        return true;
                 }
             }
         }
 
-        return FALSE;
+        return false;
     }
 
     /** Serialise the graph into RDF

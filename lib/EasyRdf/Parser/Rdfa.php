@@ -53,7 +53,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     const RDF_XML_LITERAL = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral';
     const TERM_REGEXP = '/^([a-zA-Z_])([0-9a-zA-Z_\.-]*)$/';
 
-    public $debug = FALSE;
+    public $debug = false;
 
     /**
      * Constructor
@@ -173,7 +173,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         } elseif (preg_match("/^\d{4}-\d{2}$/", $value)) {
             return 'http://www.w3.org/2001/XMLSchema#gYearMonth';
         } else {
-            return NULL;
+            return null;
         }
     }
 
@@ -181,15 +181,15 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     {
         $context = array(
             'prefixes' => array(),
-            'vocab' => NULL,
+            'vocab' => null,
             'subject' => $this->_baseUri,
-            'property' => NULL,
-            'object' => NULL,
+            'property' => null,
+            'object' => null,
             'terms' => array(),
             'incompleteRels' => array(),
             'incompleteRevs' => array(),
-            'listMapping' => NULL,
-            'lang' => NULL,
+            'listMapping' => null,
+            'lang' => null,
             'path' => '',
             'xmlns' => array(),
         );
@@ -240,7 +240,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 return $context['terms'][$term];
             }
         } elseif (substr($value, 0, 2) === '_:' and $isProp) {
-            return NULL;
+            return null;
         } else {
             $uri = $this->expandCurie($node, $context, $value);
             if ($uri) {
@@ -251,7 +251,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     return $value;
                 } elseif ($isProp) {
                     // Properties can't be relative URIs
-                    return NULL;
+                    return null;
                 } elseif ($this->_baseUri) {
                     return $this->_baseUri->resolve($parsed);
                 }
@@ -293,10 +293,10 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             $this->printNode($node, $depth);
 
         // Step 1: establish local variables
-        $skip = FALSE;
-        $subject = NULL;
-        $typedResource = NULL;
-        $object = NULL;
+        $skip = false;
+        $subject = null;
+        $typedResource = null;
+        $object = null;
         $rels = array();
         $revs = array();
         $lang = $context['lang'];
@@ -306,10 +306,10 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         if ($node->nodeType === XML_ELEMENT_NODE) {
             $context['path'] .= '/' . $node->nodeName;
 
-            $content = $node->hasAttribute('content') ? $node->getAttribute('content') : NULL;
-            $datatype = $node->hasAttribute('datatype') ? $node->getAttribute('datatype') : NULL;
-            $property = $node->getAttribute('property') ? $node->getAttribute('property') : NULL;
-            $typeof = $node->getAttribute('typeof') ? $node->getAttribute('typeof') : NULL;
+            $content = $node->hasAttribute('content') ? $node->getAttribute('content') : null;
+            $datatype = $node->hasAttribute('datatype') ? $node->getAttribute('datatype') : null;
+            $property = $node->getAttribute('property') ? $node->getAttribute('property') : null;
+            $typeof = $node->getAttribute('typeof') ? $node->getAttribute('typeof') : null;
 
             // Step 2: Default vocabulary
             if ($node->hasAttribute('vocab')) {
@@ -390,7 +390,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                         $subject = $this->_graph->newBNodeId();
                     } else {
                         if (!$property)
-                            $skip = TRUE;
+                            $skip = true;
                         $subject = $context['object'];
                     }
                 }
@@ -500,7 +500,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $value['value'] = $node->getAttribute('value');
                 } elseif ($node->hasAttribute('datetime')) {
                     $value['value'] = $node->getAttribute('datetime');
-                    $datetime = TRUE;
+                    $datetime = true;
                 } elseif ($datatype === '') {
                     $value['value'] = $node->textContent;
                 } elseif ($datatype === self::RDF_XML_LITERAL) {
@@ -508,7 +508,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     foreach ($node->childNodes as $child) {
                         $value['value'] .= $child->C14N();
                     }
-                } elseif ($content !== NULL) {
+                } elseif ($content !== null) {
                     $value['value'] = $content;
                 } elseif (is_null($datatype) and empty($rel) and empty($rev)) {
                     $value['value'] = $this->getUriAttribute(
@@ -668,7 +668,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         }
 
         // Remove the fragment from the base URI
-        $this->_baseUri->setFragment(NULL);
+        $this->_baseUri->setFragment(null);
 
         // Recursively process XML nodes
         $this->processNode($doc, $context);

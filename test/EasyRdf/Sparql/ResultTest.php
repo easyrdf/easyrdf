@@ -145,19 +145,19 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $first = $result[0];
         $this->assertSame('London', $first->label->getValue());
         $this->assertSame('en', $first->label->getLang());
-        $this->assertSame(NULL, $first->label->getDatatype());
+        $this->assertSame(null, $first->label->getDatatype());
 
         # 2nd: Example using xml:lang="es"
         $second = $result[1];
         $this->assertSame('Londres', $second->label->getValue());
         $this->assertSame('es', $second->label->getLang());
-        $this->assertSame(NULL, $second->label->getDatatype());
+        $this->assertSame(null, $second->label->getDatatype());
 
         # 3rd: no lang
         $third = $result[2];
         $this->assertSame('London', $third->label->getValue());
-        $this->assertSame(NULL, $third->label->getLang());
-        $this->assertSame(NULL, $third->label->getDatatype());
+        $this->assertSame(null, $third->label->getLang());
+        $this->assertSame(null, $third->label->getDatatype());
     }
 
     public function testSelectLangLiteralJson()
@@ -171,19 +171,19 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $first = $result[0];
         $this->assertSame('London', $first->label->getValue());
         $this->assertSame('en', $first->label->getLang());
-        $this->assertSame(NULL, $first->label->getDatatype());
+        $this->assertSame(null, $first->label->getDatatype());
 
         # 2nd: Example using lang="es"
         $second = $result[1];
         $this->assertSame('Londres', $second->label->getValue());
         $this->assertSame('es', $second->label->getLang());
-        $this->assertSame(NULL, $second->label->getDatatype());
+        $this->assertSame(null, $second->label->getDatatype());
 
         # 3rd: no lang
         $third = $result[2];
         $this->assertSame('London', $third->label->getValue());
-        $this->assertSame(NULL, $third->label->getLang());
-        $this->assertSame(NULL, $third->label->getDatatype());
+        $this->assertSame(null, $third->label->getLang());
+        $this->assertSame(null, $third->label->getDatatype());
     }
 
     public function testSelectTypedLiteralJson()

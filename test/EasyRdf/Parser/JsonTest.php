@@ -67,7 +67,7 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
         $this->assertClass('EasyRdf_Literal', $name);
         $this->assertSame('Joe Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
-        $this->assertSame(NULL, $name->getDatatype());
+        $this->assertSame(null, $name->getDatatype());
 
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);
@@ -91,7 +91,7 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
         $this->assertClass('EasyRdf_Literal', $name);
         $this->assertSame('Joe Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
-        $this->assertSame(NULL, $name->getDatatype());
+        $this->assertSame(null, $name->getDatatype());
 
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);

@@ -84,9 +84,9 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $this->_pos = 0;
 
         $this->_namespaces = array();
-        $this->_subject = NULL;
-        $this->_predicate = NULL;
-        $this->_object = NULL;
+        $this->_subject = null;
+        $this->_predicate = null;
+        $this->_object = null;
 
         $this->resetBnodeMap();
 
@@ -210,9 +210,9 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $this->skipWSC();
         $this->parsePredicateObjectList();
 
-        $this->_subject = NULL;
-        $this->_predicate = NULL;
-        $this->_object = NULL;
+        $this->_subject = null;
+        $this->_predicate = null;
+        $this->_object = null;
     }
 
     /**
@@ -575,7 +575,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function parseQuotedString($quote)
     {
-        $result = NULL;
+        $result = null;
 
         // First character should be ' or "
         $this->verifyCharacter($this->read(), $quote);
@@ -832,12 +832,12 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             );
         }
 
-        $namespace = NULL;
+        $namespace = null;
 
         if ($c == ':') {
             // qname using default namespace
             $namespace = $this->_namespaces[""];
-            if ($namespace == NULL) {
+            if ($namespace == null) {
                 throw new EasyRdf_Exception(
                     "Turtle Parse Error: default namespace used but not defined"
                 );
@@ -958,7 +958,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             throw new EasyRdf_Exception(
                 "Turtle Parse Error: unexpected end of file"
             );
-        } elseif (strpbrk($c, $expected) === FALSE) {
+        } elseif (strpbrk($c, $expected) === false) {
             $msg = 'expected ';
             for ($i = 0; $i < strlen($expected); $i++) {
                 if ($i > 0) {

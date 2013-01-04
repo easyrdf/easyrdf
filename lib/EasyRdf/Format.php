@@ -221,7 +221,7 @@ class EasyRdf_Format
      * @param  string $data The document data
      * @return EasyRdf_Format The format object
      */
-    public static function guessFormat($data, $filename=NULL)
+    public static function guessFormat($data, $filename=null)
     {
         if (is_array($data)) {
             # Data has already been parsed into RDF/PHP
@@ -255,7 +255,7 @@ class EasyRdf_Format
             # We don't support any other microformats embedded in HTML
             return self::getFormat('rdfa');
         } else {
-            return NULL;
+            return null;
         }
     }
 

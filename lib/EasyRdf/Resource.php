@@ -172,10 +172,10 @@ class EasyRdf_Resource
      * @param  array   $options Associative array of attributes for the anchor tag
      * @return string  The HTML link string
      */
-    public function htmlLink($text=NULL, $options=array())
+    public function htmlLink($text=null, $options=array())
     {
         $options = array_merge(array('href' => $this->_uri), $options);
-        if ($text === NULL)
+        if ($text === null)
             $text = $this->_uri;
 
         $html = "<a";
@@ -503,7 +503,7 @@ class EasyRdf_Resource
      * @param  mixed   $value    An optional value of the property
      * @return bool              True if value the property exists.
      */
-    public function hasProperty($property, $value=NULL)
+    public function hasProperty($property, $value=null)
     {
         $this->checkHasGraph();
         return $this->_graph->hasProperty($this->_uri, $property, $value);

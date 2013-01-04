@@ -78,7 +78,7 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
         $this->assertClass('EasyRdf_Literal', $name);
         $this->assertSame('Joseph Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
-        $this->assertSame(NULL, $name->getDatatype());
+        $this->assertSame(null, $name->getDatatype());
     }
 
     public function testParseTwice()

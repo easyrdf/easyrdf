@@ -42,7 +42,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 {
     public function setUp()
     {
-        EasyRdf_Namespace::setDefault(NULL);
+        EasyRdf_Namespace::setDefault(null);
         $this->_graph = new EasyRdf_Graph();
         $this->_resource = $this->_graph->resource('http://xmlns.com/foaf/0.1/name');
     }
@@ -282,7 +282,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     {
         EasyRdf_Namespace::setDefault('http://ogp.me/ns#');
         EasyRdf_Namespace::setDefault('');
-        $this->assertSame(NULL, EasyRdf_Namespace::getDefault());
+        $this->assertSame(null, EasyRdf_Namespace::getDefault());
     }
 
     public function testSetDefaultUnknown()
@@ -549,7 +549,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testExpandWithoutDefault()
     {
-        EasyRdf_Namespace::setDefault(NULL);
+        EasyRdf_Namespace::setDefault(null);
         $this->assertSame(
             'unknown',
             EasyRdf_Namespace::expand('unknown')

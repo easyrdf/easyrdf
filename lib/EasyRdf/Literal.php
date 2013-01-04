@@ -52,13 +52,13 @@ class EasyRdf_Literal
     private static $_classMap = array();
 
     /** @ignore The string value for this literal */
-    protected $_value = NULL;
+    protected $_value = null;
 
     /** @ignore The language of the literal (e.g. 'en') */
-    protected $_lang = NULL;
+    protected $_lang = null;
 
     /** @ignore The datatype URI of the literal */
-    protected $_datatype = NULL;
+    protected $_datatype = null;
 
 
     /** Create a new literal object
@@ -73,11 +73,11 @@ class EasyRdf_Literal
      * Literals cannot have both a language and a datatype.
      *
      * @param  mixed  $value     The value of the literal or an associative array
-     * @param  string $lang      The natural language of the literal or NULL (e.g. 'en')
-     * @param  string $datatype  The datatype of the literal or NULL (e.g. 'xsd:integer')
+     * @param  string $lang      The natural language of the literal or null (e.g. 'en')
+     * @param  string $datatype  The datatype of the literal or null (e.g. 'xsd:integer')
      * @return object EasyRdf_Literal (or subclass of EasyRdf_Literal)
      */
-    public static function create($value, $lang=NULL, $datatype=NULL)
+    public static function create($value, $lang=null, $datatype=null)
     {
         if (EasyRdf_Utils::isAssociativeArray($value)) {
             if (isset($value['xml:lang'])) {
@@ -88,7 +88,7 @@ class EasyRdf_Literal
             if (isset($value['datatype'])) {
                $datatype = $value['datatype'];
             }
-            $value = isset($value['value']) ? $value['value'] : NULL;
+            $value = isset($value['value']) ? $value['value'] : null;
         }
 
         if (empty($datatype)) {
@@ -128,15 +128,15 @@ class EasyRdf_Literal
      */
     public static function setDatatypeMapping($datatype, $class)
     {
-        if (!is_string($datatype) or $datatype == NULL or $datatype == '') {
+        if (!is_string($datatype) or $datatype == null or $datatype == '') {
             throw new InvalidArgumentException(
-                "\$datatype should be a string and cannot be NULL or empty"
+                "\$datatype should be a string and cannot be null or empty"
             );
         }
 
-        if (!is_string($class) or $class == NULL or $class == '') {
+        if (!is_string($class) or $class == null or $class == '') {
             throw new InvalidArgumentException(
-                "\$class should be a string and cannot be NULL or empty"
+                "\$class should be a string and cannot be null or empty"
             );
         }
 
@@ -151,9 +151,9 @@ class EasyRdf_Literal
      */
     public static function deleteDatatypeMapping($datatype)
     {
-        if (!is_string($datatype) or $datatype == NULL or $datatype == '') {
+        if (!is_string($datatype) or $datatype == null or $datatype == '') {
             throw new InvalidArgumentException(
-                "\$datatype should be a string and cannot be NULL or empty"
+                "\$datatype should be a string and cannot be null or empty"
             );
         }
 
@@ -185,7 +185,7 @@ class EasyRdf_Literal
         } elseif (is_object($value) and $value instanceof DateTime) {
             return 'http://www.w3.org/2001/XMLSchema#dateTime';
         } else {
-            return NULL;
+            return null;
         }
     }
 
@@ -194,15 +194,15 @@ class EasyRdf_Literal
     /** Constructor for creating a new literal
      *
      * @param  string $value     The value of the literal
-     * @param  string $lang      The natural language of the literal or NULL (e.g. 'en')
-     * @param  string $datatype  The datatype of the literal or NULL (e.g. 'xsd:string')
+     * @param  string $lang      The natural language of the literal or null (e.g. 'en')
+     * @param  string $datatype  The datatype of the literal or null (e.g. 'xsd:string')
      * @return object EasyRdf_Literal
      */
-    public function __construct($value, $lang=NULL, $datatype=NULL)
+    public function __construct($value, $lang=null, $datatype=null)
     {
         $this->_value = $value;
-        $this->_lang = $lang ? $lang : NULL;
-        $this->_datatype = $datatype ? $datatype : NULL;
+        $this->_lang = $lang ? $lang : null;
+        $this->_datatype = $datatype ? $datatype : null;
 
         if ($this->_datatype) {
             if (is_object($this->_datatype)) {
@@ -214,13 +214,13 @@ class EasyRdf_Literal
             }
 
             // Literals can not have both a language and a datatype
-            $this->_lang = NULL;
+            $this->_lang = null;
         } else {
             // Set the datatype based on the subclass
             $class = get_class($this);
             if (isset(self::$_classMap[$class])) {
                 $this->_datatype = self::$_classMap[$class];
-                $this->_lang = NULL;
+                $this->_lang = null;
             }
         }
 
@@ -255,7 +255,7 @@ class EasyRdf_Literal
         if ($this->_datatype) {
             return EasyRdf_Namespace::shorten($this->_datatype);
         } else {
-            return NULL;
+            return null;
         }
     }
 

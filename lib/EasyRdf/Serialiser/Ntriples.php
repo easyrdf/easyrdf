@@ -53,7 +53,7 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
      */
     protected function escapeString($str)
     {
-        if (strpos(utf8_decode(str_replace('?', '', $str)), '?') === FALSE) {
+        if (strpos(utf8_decode(str_replace('?', '', $str)), '?') === false) {
             $str = utf8_decode($str);
         }
 

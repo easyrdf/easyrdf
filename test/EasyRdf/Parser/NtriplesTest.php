@@ -67,7 +67,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->assertClass('EasyRdf_Literal', $name);
         $this->assertSame('Joe Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
-        $this->assertSame(NULL, $name->getDatatype());
+        $this->assertSame(null, $name->getDatatype());
     }
 
     public function testParseBnode()
@@ -123,7 +123,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->assertNotNull($int);
         $this->assertSame('English', $int->getValue());
         $this->assertSame('en-gb', $int->getLang());
-        $this->assertSame(NULL, $int->getDatatype());
+        $this->assertSame(null, $int->getDatatype());
     }
 
     public function testParseDatatype()
@@ -138,7 +138,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $int = $this->_graph->get('http://example.com/a', '<http://example.com/b>');
         $this->assertNotNull($int);
         $this->assertSame(1, $int->getValue());
-        $this->assertSame(NULL, $int->getLang());
+        $this->assertSame(null, $int->getLang());
         $this->assertSame('xsd:integer', $int->getDatatype());
     }
 

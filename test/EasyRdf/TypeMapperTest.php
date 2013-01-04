@@ -108,7 +108,7 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
 
     public function testGetUnknown()
     {
-        $this->assertSame(NULL, EasyRdf_TypeMapper::get('unknown:type'));
+        $this->assertSame(null, EasyRdf_TypeMapper::get('unknown:type'));
     }
 
     public function testSetUri()
@@ -182,7 +182,7 @@ class EasyRdf_TypeMapperTest extends EasyRdf_TestCase
     {
         $this->assertSame('MyType_Class', EasyRdf_TypeMapper::get('rdf:mytype'));
         EasyRdf_TypeMapper::delete('rdf:mytype');
-        $this->assertSame(NULL, EasyRdf_TypeMapper::get('rdf:mytype'));
+        $this->assertSame(null, EasyRdf_TypeMapper::get('rdf:mytype'));
     }
 
     public function testDeleteTypeNull()

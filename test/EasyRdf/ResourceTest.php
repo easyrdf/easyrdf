@@ -46,7 +46,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function setUp()
     {
         // Reset default namespace
-        EasyRdf_Namespace::setDefault(NULL);
+        EasyRdf_Namespace::setDefault(null);
     }
 
     public function testConstructNullUri()
@@ -115,7 +115,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testGetNodeIdForUri()
     {
         $nonbnode = new EasyRdf_Resource('http://www.exaple.com/');
-        $this->assertSame(NULL, $nonbnode->getNodeId());
+        $this->assertSame(null, $nonbnode->getNodeId());
     }
 
     public function testPrefix()
@@ -139,7 +139,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testShortenUnknown()
     {
         $unknown = new EasyRdf_Resource('http://example.com/foo');
-        $this->assertSame(NULL, $unknown->shorten());
+        $this->assertSame(null, $unknown->shorten());
     }
 
     public function testLocalnameWithSlash()
@@ -163,7 +163,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testLocalnameWithNoPath()
     {
         $res = new EasyRdf_Resource('http://example.com/');
-        $this->assertSame(NULL, $res->localName());
+        $this->assertSame(null, $res->localName());
     }
 
     public function testParseUri()
@@ -610,7 +610,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $title = $this->_resource->get('dc:title');
         $this->assertSame('English Title', $title->getValue());
         $this->assertSame('en', $title->getLang());
-        $this->assertSame(NULL, $title->getDataType());
+        $this->assertSame(null, $title->getDataType());
     }
 
     public function testAddResource()
@@ -1203,7 +1203,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         EasyRdf_Namespace::setDefault('rdf');
         $this->assertStringEquals(
-            NULL,
+            null,
             $this->_resource->foobar
         );
     }
@@ -1235,7 +1235,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_resource->add('rdf:testMagicUnset', 'testMagicUnset');
         unset($this->_resource->testMagicUnset);
         $this->assertStringEquals(
-            NULL,
+            null,
             $this->_resource->get('rdf:testMagicUnset')
         );
     }
