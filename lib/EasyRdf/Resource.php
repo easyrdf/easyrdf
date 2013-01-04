@@ -73,7 +73,7 @@ class EasyRdf_Resource
         # Check that $graph is an EasyRdf_Graph object
         if (is_object($graph) and $graph instanceof EasyRdf_Graph) {
             $this->_graph = $graph;
-        } else if (!is_null($graph)) {
+        } elseif (!is_null($graph)) {
             throw new InvalidArgumentException(
                 "\$graph should be an EasyRdf_Graph object"
             );

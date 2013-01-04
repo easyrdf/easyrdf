@@ -50,8 +50,7 @@
     $gv->setOnlyLabelled( isset($_REQUEST['ol']) );
 
     // If this is a request for the image, just render it and exit
-    if (isset($_REQUEST['image']))
-    {
+    if (isset($_REQUEST['image'])) {
         header("Content-Type: ".$format->getDefaultMimeType());
         echo $gv->renderImage($graph, $format);
         exit;

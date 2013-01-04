@@ -419,7 +419,7 @@ class EasyRdf_Graph
                     return;
                 }
             }
-        } else if ($resource === null) {
+        } elseif ($resource === null) {
             throw new InvalidArgumentException(
                 "\$resource cannot be null"
             );
@@ -427,9 +427,9 @@ class EasyRdf_Graph
 
         if (is_object($resource) and $resource instanceof EasyRdf_Resource) {
             $resource = $resource->getUri();
-        } else if (is_object($resource) and $resource instanceof EasyRdf_ParsedUri) {
+        } elseif (is_object($resource) and $resource instanceof EasyRdf_ParsedUri) {
             $resource = strval($resource);
-        } else if (is_string($resource)) {
+        } elseif (is_string($resource)) {
             if ($resource == '') {
                 throw new InvalidArgumentException(
                     "\$resource cannot be an empty string"
@@ -454,17 +454,17 @@ class EasyRdf_Graph
     {
         if (is_object($property) and $property instanceof EasyRdf_Resource) {
             $property = $property->getUri();
-        } else if (is_object($property) and $property instanceof EasyRdf_ParsedUri) {
+        } elseif (is_object($property) and $property instanceof EasyRdf_ParsedUri) {
             $property = strval($property);
-        } else if (is_string($property)) {
+        } elseif (is_string($property)) {
             if ($property == '') {
                 throw new InvalidArgumentException(
                     "\$property cannot be an empty string"
                 );
-            } else if (substr($property, 0, 1) == '^') {
+            } elseif (substr($property, 0, 1) == '^') {
                 $inverse = true;
                 $property = EasyRdf_Namespace::expand(substr($property, 1));
-            } else if (substr($property, 0, 2) == '_:') {
+            } elseif (substr($property, 0, 2) == '_:') {
                 throw new InvalidArgumentException(
                     "\$property cannot be a blank node"
                 );
@@ -495,7 +495,7 @@ class EasyRdf_Graph
                         "\$value should respond to the method toArray()"
                     );
                 }
-            } else if (is_array($value)) {
+            } elseif (is_array($value)) {
                 if (!isset($value['type'])) {
                     throw new InvalidArgumentException(
                         "\$value is missing a 'type' key"
@@ -561,13 +561,13 @@ class EasyRdf_Graph
 
         if (is_object($propertyPath) and $propertyPath instanceof EasyRdf_Resource) {
             return $this->getSingleProperty($resource, $propertyPath->getUri(), $type, $lang);
-        } else if (is_string($propertyPath) and preg_match('|^(\^?)<(.+)>|', $propertyPath, $matches)) {
+        } elseif (is_string($propertyPath) and preg_match('|^(\^?)<(.+)>|', $propertyPath, $matches)) {
             return $this->getSingleProperty($resource, "$matches[1]$matches[2]", $type, $lang);
-        } else if ($propertyPath === null or !is_string($propertyPath)) {
+        } elseif ($propertyPath === null or !is_string($propertyPath)) {
             throw new InvalidArgumentException(
                 "\$propertyPath should be a string or EasyRdf_Resource and cannot be null"
             );
-        } else if ($propertyPath === '') {
+        } elseif ($propertyPath === '') {
             throw new InvalidArgumentException(
                 "\$propertyPath cannot be an empty string"
             );
@@ -624,7 +624,7 @@ class EasyRdf_Graph
                         $result = $value;
                         break;
                     }
-                } else if ($type == 'resource') {
+                } elseif ($type == 'resource') {
                     if ($value['type'] == 'uri' or $value['type'] == 'bnode') {
                         $result = $value;
                         break;
@@ -727,13 +727,13 @@ class EasyRdf_Graph
 
         if (is_object($propertyPath) and $propertyPath instanceof EasyRdf_Resource) {
             return $this->allForSingleProperty($resource, $propertyPath->getUri(), $type, $lang);
-        } else if (is_string($propertyPath) and preg_match('|^(\^?)<(.+)>|', $propertyPath, $matches)) {
+        } elseif (is_string($propertyPath) and preg_match('|^(\^?)<(.+)>|', $propertyPath, $matches)) {
             return $this->allForSingleProperty($resource, "$matches[1]$matches[2]", $type, $lang);
-        } else if ($propertyPath === null or !is_string($propertyPath)) {
+        } elseif ($propertyPath === null or !is_string($propertyPath)) {
             throw new InvalidArgumentException(
                 "\$propertyPath should be a string or EasyRdf_Resource and cannot be null"
             );
-        } else if ($propertyPath === '') {
+        } elseif ($propertyPath === '') {
             throw new InvalidArgumentException(
                 "\$propertyPath cannot be an empty string"
             );
@@ -795,7 +795,7 @@ class EasyRdf_Graph
                 if ($type == 'literal' and $value['type'] == 'literal') {
                     if ($lang == null or (isset($value['lang']) and $value['lang'] == $lang))
                         $objects[] = $this->arrayToObject($value);
-                } else if ($type == 'resource') {
+                } elseif ($type == 'resource') {
                     if ($value['type'] == 'uri' or $value['type'] == 'bnode')
                         $objects[] = $this->arrayToObject($value);
                 }

@@ -389,7 +389,7 @@ class EasyRdf_Http_Client
             $uri = parse_url($this->_uri);
             if ($uri['scheme'] === 'http') {
                 $host = $uri['host'];
-            } else if ($uri['scheme'] === 'https') {
+            } elseif ($uri['scheme'] === 'https') {
                 $host = 'ssl://'.$uri['host'];
             } else {
                 throw new EasyRdf_Exception(

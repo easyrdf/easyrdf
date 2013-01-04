@@ -99,9 +99,9 @@ class EasyRdf_Parser
             throw new InvalidArgumentException(
                 "\$format cannot be null or empty"
             );
-        } else if (is_object($format) and $format instanceof EasyRdf_Format) {
+        } elseif (is_object($format) and $format instanceof EasyRdf_Format) {
             $this->_format = $format = $format->getName();
-        } else if (!is_string($format)) {
+        } elseif (!is_string($format)) {
             throw new InvalidArgumentException(
                 "\$format should be a string or an EasyRdf_Format object"
             );

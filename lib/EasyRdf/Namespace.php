@@ -260,7 +260,7 @@ class EasyRdf_Namespace
 
         if (is_object($uri) and ($uri instanceof EasyRdf_Resource)) {
             $uri = $uri->getUri();
-        } else if (!is_string($uri)) {
+        } elseif (!is_string($uri)) {
             throw new InvalidArgumentException(
                 "\$uri should be a string or EasyRdf_Resource"
             );

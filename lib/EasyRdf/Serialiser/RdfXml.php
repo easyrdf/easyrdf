@@ -84,7 +84,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
                 return $tag."/>\n";
             }
 
-        } else if (is_object($obj) and $obj instanceof EasyRdf_Literal) {
+        } elseif (is_object($obj) and $obj instanceof EasyRdf_Literal) {
             $atrributes = "";
             $datatype = $obj->getDatatypeUri();
             if ($datatype) {

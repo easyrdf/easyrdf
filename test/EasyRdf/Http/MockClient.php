@@ -27,9 +27,9 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
             list($m, $response, $once) = $this->_mocks[$i];
             if (isset($m['uri']) && !$this->_matchUri($m['uri'], $uri)) {
                 continue;
-            } else if (isset($m['method']) && $m['method'] !== $this->getMethod()) {
+            } elseif (isset($m['method']) && $m['method'] !== $this->getMethod()) {
                 continue;
-            } else if (isset($m['callback'])) {
+            } elseif (isset($m['callback'])) {
                 $args = array_merge($m['callbackArgs'], array($this));
                 $test = call_user_func_array($m['callback'], $args);
                 if (!$test) {

@@ -73,8 +73,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
      */
     protected function nodeTypeString($node)
     {
-        switch(librdf_node_get_type($node))
-        {
+        switch(librdf_node_get_type($node)) {
             case 1:
                 return 'uri';
                 break;
@@ -109,7 +108,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
                 );
             }
             return $str;
-        } else if ($type == 'bnode') {
+        } elseif ($type == 'bnode') {
             return $this->remapBnode(
                 librdf_node_get_blank_identifier($node)
             );
@@ -128,9 +127,9 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
         $object['type'] = EasyRdf_Parser_Redland::nodeTypeString($node);
         if ($object['type'] == 'uri') {
             $object['value'] = EasyRdf_Parser_Redland::nodeUriString($node);
-        } else if ($object['type'] == 'bnode') {
+        } elseif ($object['type'] == 'bnode') {
             $object['value'] = '_:'.librdf_node_get_blank_identifier($node);
-        } else if ($object['type'] == 'literal') {
+        } elseif ($object['type'] == 'literal') {
             $object['value'] = librdf_node_get_literal_value($node);
             $lang = librdf_node_get_literal_value_language($node);
             if ($lang) {

@@ -144,12 +144,12 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
     {
         if ($value['type'] == 'uri' or $value['type'] == 'bnode') {
             return $this->ntriplesResource($value['value']);
-        } else if ($value['type'] == 'literal') {
+        } elseif ($value['type'] == 'literal') {
             $escaped = $this->escapeString($value['value']);
             if (isset($value['lang'])) {
                 $lang = $this->escapeString($value['lang']);
                 return '"' . $escaped . '"' . '@' . $lang;
-            } else if (isset($value['datatype'])) {
+            } elseif (isset($value['datatype'])) {
                 $datatype = $this->escapeString($value['datatype']);
                 return '"' . $escaped . '"' . "^^<$datatype>";
             } else {
