@@ -22,6 +22,9 @@
     "require": {
         "php": ">=5.2.8"
     },
+    "require-dev": {
+        "phpunit/PHPUnit": ">=3.5.15"
+    },
     "replace": {
         "njh/easyrdf": "self.version"
     },

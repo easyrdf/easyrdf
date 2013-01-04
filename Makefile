@@ -2,7 +2,9 @@ PACKAGE = easyrdf
 VERSION = $(shell php -r "print json_decode(file_get_contents('composer.json'))->version;")
 distdir = $(PACKAGE)-$(VERSION)
 PHP = $(shell which php)
-PHPUNIT = $(PHP) $(shell which phpunit) -d zend.enable_gc=0 --strict --log-junit ./reports/test-results.xml
+COMPOSER_FLAGS=--no-ansi --no-interaction
+PHPUNIT = vendor/bin/phpunit 
+PHPUNIT_FLAGS = -c config/phpunit.xml
 PHPCS = phpcs --standard=Zend --tab-width=4 --encoding=utf8 -n
 PHPDOC = phpdoc --title "EasyRdf $(VERSION) API Documentation" \
                 --output "HTML:frames:default" \
@@ -35,27 +37,27 @@ all: help
 
 # TARGET:test                Run all the PHPUnit tests
 .PHONY: test
-test:
+test: $(PHPUNIT)
 	mkdir -p reports
-	$(PHPUNIT) test
+	$(PHP) $(PHPUNIT) $(PHPUNIT_FLAGS)
 
 # TARGET:test-examples       Run PHPUnit tests for each of the examples
 .PHONY: test-examples
-test-examples:
+test-examples: $(PHPUNIT)
 	mkdir -p reports
-	$(PHPUNIT) test/examples
+	$(PHP) $(PHPUNIT) $(PHPUNIT_FLAGS) --testsuite "EasyRdf Examples"
 
 # TARGET:test-lib            Run PHPUnit tests for the library
 .PHONY: test-lib
-test-lib:
+test-lib: $(PHPUNIT)
 	mkdir -p reports
-	$(PHPUNIT) test/EasyRdf
+	$(PHP) $(PHPUNIT) $(PHPUNIT_FLAGS) --testsuite "EasyRdf Library"
 
 # TARGET:coverage            Run the library tests and generate a code coverage report
 .PHONY: coverage
-coverage:
+coverage: $(PHPUNIT)
 	mkdir -p reports/coverage
-	$(PHPUNIT) --coverage-html ./reports/coverage test/EasyRdf
+	$(PHP) $(PHPUNIT) $(PHPUNIT_FLAGS) --coverage-html ./reports/coverage --testsuite "EasyRdf Library"
 
 # TARGET:docs                Generate HTML documentation
 .PHONY: docs
@@ -95,7 +97,8 @@ $(distdir): $(DISTFILES)
 # TARGET:clean               Delete any temporary and generated files
 .PHONY: clean
 clean:
-	-rm -Rf $(distdir) docs reports
+	-rm -Rf $(distdir) docs reports vendor
+	-rm -f composer.phar
 	-rm -f doap.rdf
 
 # TARGET:check-fixme         Scan for files containing the words TODO or FIXME
@@ -119,3 +122,17 @@ help:
 	#
 	# Options:
 	#   PHP                 Path to php
+
+
+
+# Composer rules
+composer.phar:
+	curl -s -z composer.phar -o composer.phar http://getcomposer.org/composer.phar
+
+composer-install: composer.phar
+	$(PHP) composer.phar $(COMPOSER_FLAGS) install --dev
+
+composer-update: clean composer.phar
+	$(PHP) composer.phar $(COMPOSER_FLAGS) update
+
+vendor/bin/phpunit: composer-install
