@@ -1038,21 +1038,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testIsA()
     {
         $this->_setupTestGraph();
-        $this->assertTrue($this->_resource->is_a('foaf:Person'));
+        $this->assertTrue($this->_resource->isA('foaf:Person'));
     }
 
     public function testIsAFullUri()
     {
         $this->_setupTestGraph();
         $this->assertTrue(
-            $this->_resource->is_a('http://xmlns.com/foaf/0.1/Person')
+            $this->_resource->isA('http://xmlns.com/foaf/0.1/Person')
         );
     }
 
     public function testIsntA()
     {
         $this->_setupTestGraph();
-        $this->assertFalse($this->_resource->is_a('foaf:Rat'));
+        $this->assertFalse($this->_resource->isA('foaf:Rat'));
     }
 
     public function testAddType()
@@ -1061,7 +1061,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $count = $this->_resource->addType('rdf:newType');
         $this->assertSame(1, $count);
         $this->assertTrue(
-            $this->_resource->is_a('rdf:newType')
+            $this->_resource->isA('rdf:newType')
         );
     }
 
@@ -1069,15 +1069,15 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->_setupTestGraph();
         $this->assertTrue(
-            $this->_resource->is_a('foaf:Person')
+            $this->_resource->isA('foaf:Person')
         );
         $count = $this->_resource->setType('foaf:Rat');
         $this->assertSame(1, $count);
         $this->assertTrue(
-            $this->_resource->is_a('foaf:Rat')
+            $this->_resource->isA('foaf:Rat')
         );
         $this->assertFalse(
-            $this->_resource->is_a('foaf:Person')
+            $this->_resource->isA('foaf:Person')
         );
     }
 

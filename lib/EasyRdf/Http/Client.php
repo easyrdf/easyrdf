@@ -416,7 +416,7 @@ class EasyRdf_Http_Client
                 $uri['query'] .= http_build_query($this->_paramsGet, null, '&');
             }
 
-            $headers = $this->_prepareHeaders($uri['host'], $port);
+            $headers = $this->prepareHeaders($uri['host'], $port);
 
             // Open socket to remote server
             $socket = @fsockopen(
@@ -504,7 +504,7 @@ class EasyRdf_Http_Client
      * @ignore
      * @return array
      */
-    protected function _prepareHeaders($host, $port)
+    protected function prepareHeaders($host, $port)
     {
         $headers = array();
 

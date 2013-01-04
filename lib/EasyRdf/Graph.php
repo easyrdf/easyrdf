@@ -1397,7 +1397,7 @@ class EasyRdf_Graph
      * @param  string  $type The type to check (e.g. foaf:Person)
      * @return boolean       True if resource is of specified type.
      */
-    public function is_a($resource, $type)
+    public function isA($resource, $type)
     {
         $this->checkResourceParam($resource, true);
 

@@ -74,7 +74,7 @@
     <dt>Homepage:</dt><dd><?= link_to($artist->get('foaf:homepage')) ?></dd>
     <dt>Wikipedia page:</dt><dd><?= link_to($artist->get('mo:wikipedia')) ?></dd>
     <?php
-        if ($artist->is_a('mo:SoloMusicArtist')) {
+        if ($artist->isA('mo:SoloMusicArtist')) {
             echo "  <dt>Age:</dt>";
             echo "  <dd>".$artist->age()."</dd>\n";
         }

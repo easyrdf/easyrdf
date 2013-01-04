@@ -65,7 +65,7 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
      *
      * @ignore
      */
-    protected function _jsonLastErrorString()
+    protected function jsonLastErrorString()
     {
         if ($this->_jsonLastErrorExists) {
             switch (json_last_error()) {
@@ -95,7 +95,7 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
      *
      * @ignore
      */
-    protected function _parseJsonTriples($data, $baseUri)
+    protected function parseJsonTriples($data, $baseUri)
     {
         foreach ($data['triples'] as $triple) {
             if ($triple['subject']['type'] == 'bnode') {
@@ -143,12 +143,12 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
         $decoded = @json_decode(strval($data), true);
         if ($decoded === null) {
             throw new EasyRdf_Exception(
-                $this->_jsonLastErrorString()
+                $this->jsonLastErrorString()
             );
         }
 
         if (array_key_exists('triples', $decoded)) {
-            return $this->_parseJsonTriples($decoded, $baseUri);
+            return $this->parseJsonTriples($decoded, $baseUri);
         } else {
             return parent::parse($graph, $decoded, 'php', $baseUri);
         }

@@ -67,9 +67,9 @@ class EasyRdf_Sparql_Result extends ArrayIterator
     public function __construct($data, $mimeType)
     {
         if ($mimeType == 'application/sparql-results+xml') {
-            return $this->_parseXml($data);
+            return $this->parseXml($data);
         } elseif ($mimeType == 'application/sparql-results+json') {
-            return $this->_parseJson($data);
+            return $this->parseJson($data);
         } else {
             throw new EasyRdf_Exception(
                 "Unsupported SPARQL Query Results format: $mimeType"
@@ -241,7 +241,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      *
      * @ignore
      */
-    protected function _newTerm($data)
+    protected function newTerm($data)
     {
         switch($data['type']) {
           case 'bnode':
@@ -263,7 +263,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      *
      * @ignore
      */
-    protected function _parseXml($data)
+    protected function parseXml($data)
     {
         $doc = new DOMDocument();
         $doc->loadXML($data);
@@ -309,7 +309,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
                     foreach ($binding->childNodes as $node) {
                         if ($node->nodeType != XML_ELEMENT_NODE)
                             continue;
-                        $t->$key = $this->_newTerm(
+                        $t->$key = $this->newTerm(
                             array(
                                 'type' => $node->nodeName,
                                 'value' => $node->nodeValue,
@@ -334,7 +334,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      *
      * @ignore
      */
-    protected function _parseJson($data)
+    protected function parseJson($data)
     {
         // Decode JSON to an array
         $data = json_decode($data, true);
@@ -351,7 +351,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
             foreach ($data['results']['bindings'] as $row) {
               $t = new stdClass();
               foreach ($row as $key => $value) {
-                  $t->$key = $this->_newTerm($value);
+                  $t->$key = $this->newTerm($value);
               }
               $this[] = $t;
             }

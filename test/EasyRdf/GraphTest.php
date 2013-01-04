@@ -1813,19 +1813,19 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testIsA()
     {
-        $this->assertTrue($this->_graph->is_a($this->_uri, 'foaf:Person'));
+        $this->assertTrue($this->_graph->isA($this->_uri, 'foaf:Person'));
     }
 
     public function testIsAFullUri()
     {
         $this->assertTrue(
-            $this->_graph->is_a($this->_uri, 'http://xmlns.com/foaf/0.1/Person')
+            $this->_graph->isA($this->_uri, 'http://xmlns.com/foaf/0.1/Person')
         );
     }
 
     public function testIsntA()
     {
-        $this->assertFalse($this->_graph->is_a($this->_uri, 'foaf:Rat'));
+        $this->assertFalse($this->_graph->isA($this->_uri, 'foaf:Rat'));
     }
 
     public function testAddType()
@@ -1833,7 +1833,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $count = $this->_graph->addType($this->_uri, 'rdf:newType');
         $this->assertSame(1, $count);
         $this->assertTrue(
-            $this->_graph->is_a($this->_uri, 'rdf:newType')
+            $this->_graph->isA($this->_uri, 'rdf:newType')
         );
     }
 
@@ -1842,10 +1842,10 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $count = $this->_graph->setType($this->_uri, 'foaf:Rat');
         $this->assertSame(1, $count);
         $this->assertTrue(
-            $this->_graph->is_a($this->_uri, 'foaf:Rat')
+            $this->_graph->isA($this->_uri, 'foaf:Rat')
         );
         $this->assertFalse(
-            $this->_graph->is_a($this->_uri, 'http://xmlns.com/foaf/0.1/Person')
+            $this->_graph->isA($this->_uri, 'http://xmlns.com/foaf/0.1/Person')
         );
     }
 
