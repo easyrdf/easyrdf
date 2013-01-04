@@ -2,7 +2,7 @@
     /**
      * Using EasyRdf with the Zend Framework
      *
-     * This example demonstrates using Zend_Http_Client and 
+     * This example demonstrates using Zend_Http_Client and
      * Zend_Loader_Autoloader with EasyRdf.
      *
      * It creates a simple graph in memory, saves it to a local graphstore

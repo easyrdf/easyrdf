@@ -3,9 +3,9 @@
      * Consuming Linked Data from dbpedialite.org
      *
      * This example demonstrates fetching information about villages in Fife
-     * from dbpedialite.org. 
+     * from dbpedialite.org.
      *
-     * First it fetches a list of villages that are members of the 
+     * First it fetches a list of villages that are members of the
      * Wikipedia category 'Villages in Fife' and displays them as a list.
      *
      * If you click on an village, then it displays a page about that village
