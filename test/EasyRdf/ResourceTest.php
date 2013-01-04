@@ -996,6 +996,14 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testHasPropertyWithValue()
+    {
+        $this->_setupTestGraph();
+        $this->assertTrue(
+            $this->_resource->hasProperty('rdf:type', $this->_type)
+        );
+    }
+
     public function testDoesntHaveProperty()
     {
         $this->_setupTestGraph();

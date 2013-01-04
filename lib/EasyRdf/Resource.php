@@ -496,14 +496,17 @@ class EasyRdf_Resource
     /** Check to see if a property exists for this resource.
      *
      * This method will return true if the property exists.
+     * If the value parameter is given, then it will only return true
+     * if the value also exists for that property.
      *
-     * @param  string  $property The name of the property (e.g. foaf:gender)
+     * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  mixed   $value    An optional value of the property
      * @return bool              True if value the property exists.
      */
-    public function hasProperty($property)
+    public function hasProperty($property, $value=NULL)
     {
         $this->checkHasGraph();
-        return $this->_graph->hasProperty($this->_uri, $property);
+        return $this->_graph->hasProperty($this->_uri, $property, $value);
     }
 
     /** Get a list of types for a resource.

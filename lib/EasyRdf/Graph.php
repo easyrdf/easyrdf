@@ -1186,24 +1186,41 @@ class EasyRdf_Graph
     /** Check to see if a property exists for a resource.
      *
      * This method will return true if the property exists.
+     * If the value parameter is given, then it will only return true
+     * if the value also exists for that property.
      *
-     * @param  string  $property The name of the property (e.g. foaf:gender)
+     * By providing a value parameter you can use this function to check
+     * to see if a triple exists in the graph.
+     *
+     * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  mixed   $value    An optional value of the property
      * @return boolean           True if value the property exists.
      */
-    public function hasProperty($resource, $property)
+    public function hasProperty($resource, $property, $value=NULL)
     {
         $this->checkResourceParam($resource);
         $this->checkSinglePropertyParam($property, $inverse);
+        $this->checkValueParam($value);
 
-        if (!$inverse) {
-            if (isset($this->_index[$resource][$property]))
-                return true;
+        // Use the reverse index if it is an inverse property
+        if ($inverse) {
+            $index = &$this->_revIndex;
         } else {
-            if (isset($this->_revIndex[$resource][$property]))
-                return true;
+            $index = &$this->_index;
         }
 
-        return false;
+        if (isset($index[$resource][$property])) {
+            if (is_null($value)) {
+                return TRUE;
+            } else {
+                foreach($index[$resource][$property] as $v) {
+                    if ($v == $value)
+                        return TRUE;
+                }
+            }
+        }
+
+        return FALSE;
     }
 
     /** Serialise the graph into RDF

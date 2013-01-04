@@ -1593,6 +1593,29 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testHasPropertyWithLiteralValue()
+    {
+        $this->assertTrue(
+            $this->_graph->hasProperty($this->_uri, 'rdf:test', 'Test A')
+        );
+    }
+
+    public function testHasPropertyWithLangValue()
+    {
+        $literal = new EasyRdf_Literal('Test B', 'en');
+        $this->assertTrue(
+            $this->_graph->hasProperty($this->_uri, 'rdf:test', $literal)
+        );
+    }
+
+    public function testHasPropertyWithResourceValue()
+    {
+        $person = $this->_graph->resource('foaf:Person');
+        $this->assertTrue(
+            $this->_graph->hasProperty($this->_uri, 'rdf:type', $person)
+        );
+    }
+
     public function testHasResourceProperty()
     {
         $property = new EasyRdf_Resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#type');
@@ -1616,10 +1639,33 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testHasInversePropertyWithValue()
+    {
+        $resource = $this->_graph->resource($this->_uri);
+        $this->assertTrue(
+            $this->_graph->hasProperty('foaf:Person', '^rdf:type', $resource)
+        );
+    }
+
     public function testDoesntHaveProperty()
     {
         $this->assertFalse(
             $this->_graph->hasProperty($this->_uri, 'rdf:doesntexist')
+        );
+    }
+
+    public function testDoesntHavePropertyWithLiteralValue()
+    {
+        $this->assertFalse(
+            $this->_graph->hasProperty($this->_uri, 'rdf:test', 'Test Z')
+        );
+    }
+
+    public function testDoesntHavePropertyWithLangValue()
+    {
+        $literal = new EasyRdf_Literal('Test A', 'fr');
+        $this->assertFalse(
+            $this->_graph->hasProperty($this->_uri, 'rdf:test', $literal)
         );
     }
 
