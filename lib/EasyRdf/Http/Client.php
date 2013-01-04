@@ -188,9 +188,8 @@ class EasyRdf_Http_Client
         // If $value is null or false, unset the header
         if ($value === null || $value === false) {
             unset($this->_headers[$normalizedName]);
-
-        // Else, set the header
         } else {
+            // Else, set the header
             $this->_headers[$normalizedName] = array($name, $value);
         }
 

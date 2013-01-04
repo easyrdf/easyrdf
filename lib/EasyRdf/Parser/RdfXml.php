@@ -320,8 +320,8 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 $this->add($coll['value'], $this->_rdf.'first', $s['value'], $coll['type'], $s['type']);
                 $this->pushS($coll);
 
-            /* new entry in existing coll */
             } elseif (isset($supS['is_coll']) && $supS['is_coll']) {
+                /* new entry in existing coll */
                 $coll = array(
                 'type' => 'bnode',
                 'value' => $this->_graph->newBNodeId(),
@@ -347,10 +347,10 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         }
 
         /* Seq|Bag|Alt */
-//         if (in_array($t, array($this->_rdf.'Seq', $this->_rdf.'Bag', $this->_rdf.'Alt'))) {
-//             # FIXME: what is this?
-//             $s['is_con'] = true;
-//         }
+        // if (in_array($t, array($this->_rdf.'Seq', $this->_rdf.'Bag', $this->_rdf.'Alt'))) {
+        //     # FIXME: what is this?
+        //     $s['is_con'] = true;
+        // }
 
         /* any other attrs (skip rdf and xml, except rdf:_, rdf:value, rdf:Seq) */
         foreach ($a as $k => $v) {
@@ -421,8 +421,8 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 unset($s['p_id']);
             }
             $this->_state = 3;
-        /* named bnode */
         } elseif (isset($a[$this->_rdf.'nodeID'])) {
+            /* named bnode */
             $o['value'] = $this->remapBnode($a[$this->_rdf.'nodeID']);
             $o['type'] = 'bnode';
             $this->add($s['value'], $s['p'], $o['value'], $s['type'], $o['type']);
@@ -463,8 +463,8 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 $s['o_is_coll'] = true;
                 $this->_state = 4;
             }
-        /* sub-node or literal */
         } else {
+            /* sub-node or literal */
             $s['o_cdata'] = '';
             if (isset($a[$this->_rdf.'datatype'])) {
                 $s['o_datatype'] = $a[$this->_rdf.'datatype'];

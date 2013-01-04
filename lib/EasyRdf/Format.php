@@ -138,12 +138,12 @@ class EasyRdf_Format
         }
 
         foreach (self::$_formats as $format) {
-           if ($query == $format->_name or
-               $query == $format->_uri or
-               array_key_exists($query, $format->_mimeTypes) or
-               in_array($query, $format->_extensions)) {
-               return $format;
-           }
+            if ($query == $format->_name or
+                $query == $format->_uri or
+                array_key_exists($query, $format->_mimeTypes) or
+                in_array($query, $format->_extensions)) {
+                return $format;
+            }
         }
 
         # No match
@@ -161,9 +161,13 @@ class EasyRdf_Format
      * @param  string  $extensions One or more extensions (file suffix)
      * @return object              The new EasyRdf_Format object
      */
-    public static function register($name, $label = null, $uri = null,
-                                    $mimeTypes = array(), $extensions = array())
-    {
+    public static function register(
+        $name,
+        $label = null,
+        $uri = null,
+        $mimeTypes = array(),
+        $extensions = array()
+    ) {
         if (!is_string($name) or $name == null or $name == '') {
             throw new InvalidArgumentException(
                 "\$name should be a string and cannot be null or empty"
@@ -231,9 +235,9 @@ class EasyRdf_Format
         // First try and identify by the filename
         if ($filename and preg_match("/\.(\w+)$/", $filename, $matches)) {
             foreach (self::$_formats as $format) {
-               if (in_array($matches[1], $format->_extensions)) {
-                   return $format;
-               }
+                if (in_array($matches[1], $format->_extensions)) {
+                    return $format;
+                }
             }
         }
 

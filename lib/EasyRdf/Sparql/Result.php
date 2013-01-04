@@ -244,18 +244,18 @@ class EasyRdf_Sparql_Result extends ArrayIterator
     protected function newTerm($data)
     {
         switch($data['type']) {
-          case 'bnode':
-              return new EasyRdf_Resource('_:'.$data['value']);
-          case 'uri':
-              return new EasyRdf_Resource($data['value']);
-          case 'literal':
-          case 'typed-literal':
-              return EasyRdf_Literal::create($data);
-          default:
-              throw new EasyRdf_Exception(
-                  "Failed to parse SPARQL Query Results format, unknown term type: ".
-                  $data['type']
-              );
+            case 'bnode':
+                return new EasyRdf_Resource('_:'.$data['value']);
+            case 'uri':
+                return new EasyRdf_Resource($data['value']);
+            case 'literal':
+            case 'typed-literal':
+                return EasyRdf_Literal::create($data);
+            default:
+                throw new EasyRdf_Exception(
+                    "Failed to parse SPARQL Query Results format, unknown term type: ".
+                    $data['type']
+                );
         }
     }
 
@@ -349,11 +349,11 @@ class EasyRdf_Sparql_Result extends ArrayIterator
             }
 
             foreach ($data['results']['bindings'] as $row) {
-              $t = new stdClass();
-              foreach ($row as $key => $value) {
-                  $t->$key = $this->newTerm($value);
-              }
-              $this[] = $t;
+                $t = new stdClass();
+                foreach ($row as $key => $value) {
+                    $t->$key = $this->newTerm($value);
+                }
+                $this[] = $t;
             }
         } else {
             throw new EasyRdf_Exception(

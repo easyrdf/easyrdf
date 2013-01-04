@@ -944,7 +944,7 @@ class EasyRdf_Graph
         if (is_array($value)) {
             $added = 0;
             foreach ($value as $v) {
-               $added += $this->addLiteral($resource, $property, $v, $lang);
+                $added += $this->addLiteral($resource, $property, $v, $lang);
             }
             return $added;
         } else {
@@ -1292,9 +1292,9 @@ class EasyRdf_Graph
             $olist = array();
             foreach ($values as $value) {
                 if ($value['type'] == 'literal') {
-                  $olist []= EasyRdf_Utils::dumpLiteralValue($value, $html, 'black');
+                    $olist []= EasyRdf_Utils::dumpLiteralValue($value, $html, 'black');
                 } else {
-                  $olist []= EasyRdf_Utils::dumpResourceValue($value['value'], $html, 'blue');
+                    $olist []= EasyRdf_Utils::dumpResourceValue($value['value'], $html, 'blue');
                 }
             }
 

@@ -81,12 +81,12 @@ class EasyRdf_Literal
     {
         if (EasyRdf_Utils::isAssociativeArray($value)) {
             if (isset($value['xml:lang'])) {
-               $lang = $value['xml:lang'];
+                $lang = $value['xml:lang'];
             } elseif (isset($value['lang'])) {
-               $lang = $value['lang'];
+                $lang = $value['lang'];
             }
             if (isset($value['datatype'])) {
-               $datatype = $value['datatype'];
+                $datatype = $value['datatype'];
             }
             $value = isset($value['value']) ? $value['value'] : null;
         }

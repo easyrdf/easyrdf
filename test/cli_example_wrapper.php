@@ -8,11 +8,11 @@
 
 $EXAMPLES_DIR = realpath(dirname(__FILE__) . '/../examples');
 if (count($argv) <= 1) {
-   print "Error: Missing name of the example to run.\n";
-   exit(-1);
+    print "Error: Missing name of the example to run.\n";
+    exit(-1);
 } else {
-   $THIS_SCRIPT = array_shift($argv);
-   $EXAMPLE_FILE = array_shift($argv);
+    $THIS_SCRIPT = array_shift($argv);
+    $EXAMPLE_FILE = array_shift($argv);
 }
 
 // Catch more errors
@@ -26,14 +26,14 @@ chdir($EXAMPLES_DIR);
 
 // Check that the example exists
 if (!file_exists($EXAMPLE_FILE)) {
-   print "Error: example does not exist: $EXAMPLE_FILE\n";
-   exit(-1);
+    print "Error: example does not exist: $EXAMPLE_FILE\n";
+    exit(-1);
 }
 
 // Setup the $_GET variable based on command-line arguments
 parse_str(
-  implode('&', $argv),
-  $_GET
+    implode('&', $argv),
+    $_GET
 );
 
 // Copy the GET parameters into the REQUEST variable

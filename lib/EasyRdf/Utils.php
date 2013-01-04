@@ -195,9 +195,9 @@ class EasyRdf_Utils
         $type = trim(array_shift($parts));
         $params = array();
         foreach ($parts as $part) {
-           if (preg_match("/^\s*(\w+)\s*=\s*(.+?)\s*$/", $part, $matches)) {
-              $params[$matches[1]] = $matches[2];
-           }
+            if (preg_match("/^\s*(\w+)\s*=\s*(.+?)\s*$/", $part, $matches)) {
+                $params[$matches[1]] = $matches[2];
+            }
         }
         return array($type, $params);
     }

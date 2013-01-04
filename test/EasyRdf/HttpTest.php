@@ -40,14 +40,14 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class EasyRdf_HttpTest extends EasyRdf_TestCase
 {
-// FIXME: this test needs to run before the first call to setDefaultHttpClient()
-//     public function testGetDefaultHttpClient()
-//     {
-//         $this->assertClass(
-//             'EasyRdf_Http_Client',
-//             EasyRdf_Http::getDefaultHttpClient()
-//         );
-//     }
+    // FIXME: this test needs to run before the first call to setDefaultHttpClient()
+    //     public function testGetDefaultHttpClient()
+    //     {
+    //         $this->assertClass(
+    //             'EasyRdf_Http_Client',
+    //             EasyRdf_Http::getDefaultHttpClient()
+    //         );
+    //     }
 
     public function testSetDefaultHttpClient()
     {

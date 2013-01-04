@@ -326,11 +326,11 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             // Step 3: Set prefix mappings
             // Support for deprecated xmlns if present in document
             foreach ($context['xmlns'] as $prefix => $uri) {
-              if ($node->hasAttribute('xmlns:' . $prefix)) {
-                $context['prefixes'][$prefix] = $node->getAttribute('xmlns:' . $prefix);
-                if ($this->debug)
-                  print "Prefix (xmlns): $prefix => $uri\n";
-              }
+                if ($node->hasAttribute('xmlns:' . $prefix)) {
+                    $context['prefixes'][$prefix] = $node->getAttribute('xmlns:' . $prefix);
+                    if ($this->debug)
+                        print "Prefix (xmlns): $prefix => $uri\n";
+                }
             }
             if ($node->hasAttribute('prefix')) {
                 $mappings = preg_split("/\s+/", $node->getAttribute('prefix'));

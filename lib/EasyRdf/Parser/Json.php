@@ -85,7 +85,7 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
                     return "JSON Parse error: unknown";
             }
         } else {
-           return "JSON Parse error";
+            return "JSON Parse error";
         }
     }
 

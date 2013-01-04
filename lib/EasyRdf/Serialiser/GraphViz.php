@@ -362,16 +362,16 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
         parent::checkSerialiseParams($graph, $format);
 
         switch($format) {
-          case 'dot':
-              return $this->serialiseDot($graph);
-          case 'png':
-          case 'gif':
-          case 'svg':
-              return $this->renderImage($graph, $format);
-          default:
-              throw new EasyRdf_Exception(
-                  "EasyRdf_Serialiser_GraphViz does not support: $format"
-              );
+            case 'dot':
+                return $this->serialiseDot($graph);
+            case 'png':
+            case 'gif':
+            case 'svg':
+                return $this->renderImage($graph, $format);
+            default:
+                throw new EasyRdf_Exception(
+                    "EasyRdf_Serialiser_GraphViz does not support: $format"
+                );
         }
     }
 
