@@ -10,17 +10,17 @@ $manifest = parse_testdata("http://www.w3.org/2000/10/rdf-tests/rdfcore/Manifest
 $passCount = 0;
 $failCount = 0;
 
-foreach($manifest->allOfType('test:PositiveParserTest') as $test) {
+foreach ($manifest->allOfType('test:PositiveParserTest') as $test) {
     echo "\n\n";
 
     echo "Input: ".$test->get('test:inputDocument')."\n";
-    if (!file_exists(testdata_filepath($test->get('test:inputDocument')))) {
+    if (!file_exists(testdataFilepath($test->get('test:inputDocument')))) {
         echo "File does not exist.\n";
         continue;
     }
 
     echo "Output: ".$test->get('test:outputDocument')."\n";
-    if (!file_exists(testdata_filepath($test->get('test:outputDocument')))) {
+    if (!file_exists(testdataFilepath($test->get('test:outputDocument')))) {
         echo "File does not exist.\n";
         continue;
     }
@@ -29,8 +29,8 @@ foreach($manifest->allOfType('test:PositiveParserTest') as $test) {
     if ($test->get('test:status') != 'APPROVED')
         continue;
 
-    $graph = parse_testdata($test->get('test:inputDocument'));
-    $out_path = testdata_filepath($test->get('test:outputDocument'));
+    $graph = parseTestdata($test->get('test:inputDocument'));
+    $out_path = testdataFilepath($test->get('test:outputDocument'));
 
     $easyrdf_out_path = $out_path . ".easyrdf";
     file_put_contents($easyrdf_out_path, $graph->serialise('ntriples'));
@@ -49,7 +49,7 @@ echo "Tests that pass: $passCount\n";
 echo "Tests that fail: $failCount\n";
 
 
-function testdata_filepath($uri)
+function testdataFilepath($uri)
 {
     return str_replace(
         "http://www.w3.org/2000/10/rdf-tests/rdfcore/",
@@ -58,7 +58,7 @@ function testdata_filepath($uri)
     );
 }
 
-function parse_testdata($uri)
+function parseTestdata($uri)
 {
     $filepath = testdata_filepath($uri);
     $data = file_get_contents($filepath);
