@@ -107,11 +107,6 @@ clean:
 check-fixme:
 	@git grep -n -E 'FIXME|TODO' || echo "No FIXME or TODO lines found."
 
-# TARGET:check-whitespace    Scan for files with trailing whitespace
-.PHONY: check-whitespace
-check-whitespace:
-	@git grep -n -E '[ 	]+$$' || echo "No trailing whitespace found."
-
 # TARGET:help                You're looking at it!
 .PHONY: help
 help:
