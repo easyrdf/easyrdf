@@ -83,7 +83,8 @@ class EasyRdf_Literal_DateTimeTest extends EasyRdf_TestCase
     public function testToString()
     {
         $this->assertStringEquals(
-            '2010-09-08T07:06:05Z', $this->_dt
+            '2010-09-08T07:06:05Z',
+            $this->_dt
         );
     }
 }

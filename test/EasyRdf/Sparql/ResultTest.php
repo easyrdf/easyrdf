@@ -54,13 +54,16 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertCount(14, $result);
         $this->assertSame(14, $result->numRows());
         $this->assertEquals(
-            new EasyRdf_Resource('_:genid1'), $result[0]->s
+            new EasyRdf_Resource('_:genid1'),
+            $result[0]->s
         );
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'), $result[0]->p
+            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'),
+            $result[0]->p
         );
         $this->assertEquals(
-            new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
+            new EasyRdf_Literal("Joe's Current Project"),
+            $result[0]->o
         );
     }
 
@@ -77,13 +80,16 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertCount(14, $result);
         $this->assertSame(14, $result->numRows());
         $this->assertEquals(
-            new EasyRdf_Resource('_:genid1'), $result[0]->s
+            new EasyRdf_Resource('_:genid1'),
+            $result[0]->s
         );
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'), $result[0]->p
+            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'),
+            $result[0]->p
         );
         $this->assertEquals(
-            new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
+            new EasyRdf_Literal("Joe's Current Project"),
+            $result[0]->o
         );
     }
 
@@ -100,13 +106,16 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertCount(14, $result);
         $this->assertSame(14, $result->numRows());
         $this->assertEquals(
-            new EasyRdf_Resource('_:genid1'), $result[0]->s
+            new EasyRdf_Resource('_:genid1'),
+            $result[0]->s
         );
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'), $result[0]->p
+            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'),
+            $result[0]->p
         );
         $this->assertEquals(
-            new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
+            new EasyRdf_Literal("Joe's Current Project"),
+            $result[0]->o
         );
     }
 

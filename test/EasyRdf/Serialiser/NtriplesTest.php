@@ -53,7 +53,8 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
     public function testSerialise()
     {
         $joe = $this->_graph->resource(
-            'http://www.example.com/joe#me', 'foaf:Person'
+            'http://www.example.com/joe#me',
+            'foaf:Person'
         );
         $joe->set('foaf:name', 'Joe Bloggs');
         $joe->set(
@@ -135,7 +136,8 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
             'EasyRdf_Serialiser_Ntriples does not support: unsupportedformat'
         );
         $rdf = $this->_serialiser->serialise(
-            $this->_graph, 'unsupportedformat'
+            $this->_graph,
+            'unsupportedformat'
         );
     }
 }

@@ -14,13 +14,13 @@ foreach($manifest->allOfType('test:PositiveParserTest') as $test) {
     echo "\n\n";
 
     echo "Input: ".$test->get('test:inputDocument')."\n";
-    if (!file_exists(testdata_filepath( $test->get('test:inputDocument') ))) {
+    if (!file_exists(testdata_filepath($test->get('test:inputDocument')))) {
         echo "File does not exist.\n";
         continue;
     }
 
     echo "Output: ".$test->get('test:outputDocument')."\n";
-    if (!file_exists(testdata_filepath( $test->get('test:outputDocument') ))) {
+    if (!file_exists(testdata_filepath($test->get('test:outputDocument')))) {
         echo "File does not exist.\n";
         continue;
     }
@@ -29,8 +29,8 @@ foreach($manifest->allOfType('test:PositiveParserTest') as $test) {
     if ($test->get('test:status') != 'APPROVED')
         continue;
 
-    $graph = parse_testdata( $test->get('test:inputDocument') );
-    $out_path = testdata_filepath( $test->get('test:outputDocument') );
+    $graph = parse_testdata($test->get('test:inputDocument'));
+    $out_path = testdata_filepath($test->get('test:outputDocument'));
 
     $easyrdf_out_path = $out_path . ".easyrdf";
     file_put_contents($easyrdf_out_path, $graph->serialise('ntriples'));
@@ -53,7 +53,8 @@ function testdata_filepath($uri)
 {
     return str_replace(
         "http://www.w3.org/2000/10/rdf-tests/rdfcore/",
-        dirname(__FILE__) . '/rdfxml/', $uri
+        dirname(__FILE__) . '/rdfxml/',
+        $uri
     );
 }
 

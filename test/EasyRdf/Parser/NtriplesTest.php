@@ -76,7 +76,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             $this->_graph,
             "_:a <http://example.com/b> \"c\" . \n".
             "_:d <http://example.com/e> _:a . \n",
-            'ntriples', null
+            'ntriples',
+            null
         );
         $this->assertSame(2, $count);
 
@@ -97,7 +98,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             $this->_graph,
             "_: <http://example.com/a> _: . \n".
             "_: <http://example.com/b> _: . \n",
-            'ntriples', null
+            'ntriples',
+            null
         );
         $this->assertSame(2, $count);
 
@@ -115,7 +117,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $count = $this->_parser->parse(
             $this->_graph,
             '<http://example.com/a> <http://example.com/b> "English"@en-gb .',
-            'ntriples', null
+            'ntriples',
+            null
         );
         $this->assertSame(1, $count);
 
@@ -131,7 +134,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $count = $this->_parser->parse(
             $this->_graph,
             '<http://example.com/a> <http://example.com/b> "1"^^<http://www.w3.org/2001/XMLSchema#integer> .',
-            'ntriples', null
+            'ntriples',
+            null
         );
         $this->assertSame(1, $count);
 
@@ -147,7 +151,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $count = $this->_parser->parse(
             $this->_graph,
             '<http://example.com/a> <http://example.com/b> "\t" .',
-            'ntriples', null
+            'ntriples',
+            null
         );
         $this->assertSame(1, $count);
 
@@ -167,7 +172,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             "# <http://example.com/b> <http://example.com/b> \"a comment\" .\n".
             "  # another comment .\n".
             "<http://example.com/c> <http://example.com/c> \"Test 2\" .\n",
-            'ntriples', null
+            'ntriples',
+            null
         );
         $this->assertSame(2, $count);
         $this->assertCount(2, $this->_graph->resources());
@@ -176,7 +182,10 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
     public function testParseEmpty()
     {
         $count = $this->_parser->parse(
-            $this->_graph, '', 'ntriples', null
+            $this->_graph,
+            '',
+            'ntriples',
+            null
         );
         $this->assertSame(0, $count);
     }
@@ -190,7 +199,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->_parser->parse(
             $this->_graph,
             "foobar <http://example.com/a> \"Test 1\" .\n",
-            'ntriples', null
+            'ntriples',
+            null
         );
     }
 
@@ -203,7 +213,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->_parser->parse(
             $this->_graph,
             "<http://example.com/b> <http://example.com/a> foobar .\n",
-            'ntriples', null
+            'ntriples',
+            null
         );
     }
 
@@ -214,7 +225,10 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
             'EasyRdf_Parser_Ntriples does not support: unsupportedformat'
         );
         $rdf = $this->_parser->parse(
-            $this->_graph, $this->_data, 'unsupportedformat', null
+            $this->_graph,
+            $this->_data,
+            'unsupportedformat',
+            null
         );
     }
 }

@@ -52,7 +52,8 @@ class Examples_VillagesTest extends EasyRdf_TestCase
     public function testCeres()
     {
         $output = executeExample(
-            'villages.php', array('id' => '934787')
+            'villages.php',
+            array('id' => '934787')
         );
         $this->assertContains('<h2>Ceres, Fife</h2>', $output);
         $this->assertContains('<p>Ceres is a village in Fife, Scotland', $output);

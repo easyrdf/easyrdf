@@ -60,7 +60,8 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
     public function testQuerySelectAll()
     {
         $this->_client->addMock(
-            'GET', '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            'GET',
+            '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
             readFixture('sparql_select_all.xml'),
             array(
                 'headers' => array('Content-Type' => 'application/sparql-results+xml')
@@ -69,20 +70,24 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $result = $this->_sparql->query("SELECT * WHERE {?s ?p ?o}");
         $this->assertCount(14, $result);
         $this->assertEquals(
-            new EasyRdf_Resource('_:genid1'), $result[0]->s
+            new EasyRdf_Resource('_:genid1'),
+            $result[0]->s
         );
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'), $result[0]->p
+            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'),
+            $result[0]->p
         );
         $this->assertEquals(
-            new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
+            new EasyRdf_Literal("Joe's Current Project"),
+            $result[0]->o
         );
     }
 
     public function testQuerySelectAllJsonWithCharset()
     {
         $this->_client->addMock(
-            'GET', '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            'GET',
+            '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
             readFixture('sparql_select_all.json'),
             array(
                 'headers' => array('Content-Type' => 'application/sparql-results+json; charset=utf-8')
@@ -93,14 +98,16 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $this->assertSame(3, $result->numFields());
         $this->assertSame(array('s','p','o'), $result->getFields());
         $this->assertEquals(
-            new EasyRdf_Literal("Joe's Current Project"), $result[0]->o
+            new EasyRdf_Literal("Joe's Current Project"),
+            $result[0]->o
         );
     }
 
     public function testQuerySelectAllUnsupportedFormat()
     {
         $this->_client->addMock(
-            'GET', '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            'GET',
+            '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
             readFixture('sparql_select_all.json'),
             array(
                 'headers' => array('Content-Type' => 'unsupported/format')
@@ -128,20 +135,24 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $result = $this->_sparql->query("SELECT ?t WHERE {?s rdf:type ?t}");
         $this->assertCount(3, $result);
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/Project'), $result[0]->t
+            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/Project'),
+            $result[0]->t
         );
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/PersonalProfileDocument'), $result[1]->t
+            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/PersonalProfileDocument'),
+            $result[1]->t
         );
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/Person'), $result[2]->t
+            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/Person'),
+            $result[2]->t
         );
     }
 
     public function testQueryAskTrue()
     {
         $this->_client->addMock(
-            'GET', '/sparql?query=ASK+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            'GET',
+            '/sparql?query=ASK+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
             readFixture('sparql_ask_true.xml'),
             array(
                 'headers' => array('Content-Type' => 'application/sparql-results+xml')
@@ -154,7 +165,8 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
     public function testQueryAskFalse()
     {
         $this->_client->addMock(
-            'GET', '/sparql?query=ASK+WHERE+%7B%3Fs+%3Fp+%3Cfalse%3E%7D',
+            'GET',
+            '/sparql?query=ASK+WHERE+%7B%3Fs+%3Fp+%3Cfalse%3E%7D',
             readFixture('sparql_ask_false.xml'),
             array(
                 'headers' => array('Content-Type' => 'application/sparql-results+xml')
@@ -167,7 +179,8 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
     public function testQueryConstructJson()
     {
         $this->_client->addMock(
-            'GET', '/sparql?query=CONSTRUCT+%7B%3Fs+%3Fp+%3Fo%7D+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            'GET',
+            '/sparql?query=CONSTRUCT+%7B%3Fs+%3Fp+%3Fo%7D+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
             readFixture('foaf.json'),
             array(
                 'headers' => array('Content-Type' => 'application/json')
@@ -182,7 +195,8 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
     public function testQueryConstructJsonWithCharset()
     {
         $this->_client->addMock(
-            'GET', '/sparql?query=CONSTRUCT+%7B%3Fs+%3Fp+%3Fo%7D+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            'GET',
+            '/sparql?query=CONSTRUCT+%7B%3Fs+%3Fp+%3Fo%7D+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
             readFixture('foaf.json'),
             array(
                 'headers' => array('Content-Type' => 'application/json; charset=utf-8')
@@ -197,7 +211,8 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
     public function testQueryInvalid()
     {
         $this->_client->addMock(
-            'GET', '/sparql?query=FOOBAR',
+            'GET',
+            '/sparql?query=FOOBAR',
             "There was an error while executing the query.\nSPARQL syntax error at 'F', line 1",
             array(
                 'status' => 500,

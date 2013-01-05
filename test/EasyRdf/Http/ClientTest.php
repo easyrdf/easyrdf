@@ -52,7 +52,8 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
             gettype($uri) . ' returned'
         );
         $this->assertSame(
-            $uri, $uristr,
+            $uri,
+            $uristr,
             'Returned string is not the expected URI'
         );
     }

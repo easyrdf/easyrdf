@@ -49,7 +49,7 @@ require_once 'PHPUnit/Util/Filter.php';
 /*
  * Set error reporting to the level to be stricter.
  */
-error_reporting( E_ALL | E_STRICT );
+error_reporting(E_ALL | E_STRICT);
 
 /*
  * Check the version number of PHP Unit.
@@ -175,7 +175,8 @@ function executeExample($name, $params = array())
         escapeshellcmd($wrapper)." ".
         escapeshellcmd($name)." ".
         escapeshellcmd(http_build_query($params)),
-        $descriptorspec, $pipes
+        $descriptorspec,
+        $pipes
     );
     if (is_resource($process)) {
         // $pipes now looks like this:

@@ -150,7 +150,10 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
             );
         }
         $this->_parser->parse(
-            $this->_graph, '{ "foo":"bar"', 'json', 'http://www.example.com/'
+            $this->_graph,
+            '{ "foo":"bar"',
+            'json',
+            'http://www.example.com/'
         );
     }
 
@@ -170,7 +173,10 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
             'EasyRdf_Parser_Json does not support: unsupportedformat'
         );
         $rdf = $this->_parser->parse(
-            $this->_graph, $this->_data, 'unsupportedformat', null
+            $this->_graph,
+            $this->_data,
+            'unsupportedformat',
+            null
         );
     }
 }

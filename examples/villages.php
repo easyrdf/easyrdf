@@ -35,8 +35,10 @@
         print content_tag('h2',$village->label());
 
         if ($village->get('foaf:depiction')) {
-            print image_tag($village->get('foaf:depiction'),
-              array('style'=>'max-width:400px;max-height:250px;'));
+            print image_tag(
+                $village->get('foaf:depiction'),
+                array('style'=>'max-width:400px;max-height:250px;')
+            );
         }
 
         print content_tag('p',$village->get('rdfs:comment'));

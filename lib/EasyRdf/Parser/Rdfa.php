@@ -367,7 +367,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $subject = $this->getUriAttribute($node, $context, 'about');
                     if ($typeof and !$subject) {
                         $typedResource = $this->getUriAttribute(
-                            $node, $context, array('resource', 'href', 'src')
+                            $node,
+                            $context,
+                            array('resource', 'href', 'src')
                         );
                         if (!$typedResource)
                             $typedResource = $this->_graph->newBNodeId();
@@ -375,7 +377,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     }
                 } else {
                     $subject = $this->getUriAttribute(
-                        $node, $context, array('about', 'resource', 'href', 'src')
+                        $node,
+                        $context,
+                        array('about', 'resource', 'href', 'src')
                     );
                 }
 
@@ -403,7 +407,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 $subject = $this->getUriAttribute($node, $context, 'about');
 
                 $object = $this->getUriAttribute(
-                    $node, $context, array('resource', 'href', 'src')
+                    $node,
+                    $context,
+                    array('resource', 'href', 'src')
                 );
 
                 if ($typeof) {
@@ -512,7 +518,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $value['value'] = $content;
                 } elseif (is_null($datatype) and empty($rel) and empty($rev)) {
                     $value['value'] = $this->getUriAttribute(
-                        $node, $context, array('resource', 'href', 'src')
+                        $node,
+                        $context,
+                        array('resource', 'href', 'src')
                     );
 
                     if ($value['value'])

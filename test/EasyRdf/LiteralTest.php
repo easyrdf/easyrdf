@@ -117,7 +117,9 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     public function testCreateWithUriDatatype()
     {
         $literal = EasyRdf_Literal::create(
-            1, null, 'http://www.w3.org/2001/XMLSchema#integer'
+            1,
+            null,
+            'http://www.w3.org/2001/XMLSchema#integer'
         );
         $this->assertClass('EasyRdf_Literal_Integer', $literal);
         $this->assertSame(1, $literal->getValue());
@@ -128,7 +130,9 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     public function testCreateWithUnshortenableUriDatatype()
     {
         $literal = EasyRdf_Literal::create(
-            1, null, 'http://example.com/integer'
+            1,
+            null,
+            'http://example.com/integer'
         );
         $this->assertClass('EasyRdf_Literal', $literal);
         $this->assertSame('1', $literal->getValue());
@@ -324,7 +328,8 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
             array(
                'type' => 'literal',
                'value' => 'Rat'
-            ), $literal->toArray()
+            ),
+            $literal->toArray()
         );
     }
 
@@ -336,7 +341,8 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
                'type' => 'literal',
                'value' => 'Chat',
                'lang' => 'fr'
-            ), $literal->toArray()
+            ),
+            $literal->toArray()
         );
     }
 
@@ -348,7 +354,8 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
                'type' => 'literal',
                'value' => '44',
                'datatype' => 'http://www.w3.org/2001/XMLSchema#integer'
-            ), $literal->toArray()
+            ),
+            $literal->toArray()
         );
     }
 

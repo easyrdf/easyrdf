@@ -229,7 +229,8 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
         $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
         $this->assertContains(
-            '<foaf:name xml:lang="en">Joe</foaf:name>', $xml
+            '<foaf:name xml:lang="en">Joe</foaf:name>',
+            $xml
         );
     }
 
@@ -243,7 +244,8 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
         $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
         $this->assertContains(
-            "<foaf:age rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">59</foaf:age>", $xml
+            "<foaf:age rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">59</foaf:age>",
+            $xml
         );
 
     }
@@ -286,7 +288,8 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
         $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
         $this->assertContains(
-            "<foaf:bio rdf:parseType=\"Literal\"><b>html</b></foaf:bio>", $xml
+            "<foaf:bio rdf:parseType=\"Literal\"><b>html</b></foaf:bio>",
+            $xml
         );
     }
 

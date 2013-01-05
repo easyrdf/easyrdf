@@ -147,7 +147,10 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
             'Error while executing command rapper'
         );
         $rdf = $this->_parser->parse(
-            $this->_graph, $this->_data, 'unsupportedformat', null
+            $this->_graph,
+            $this->_data,
+            'unsupportedformat',
+            null
         );
     }
 }

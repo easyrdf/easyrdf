@@ -513,7 +513,8 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
     public function testRegisterSerialiserForUnknownFormat()
     {
         EasyRdf_Format::registerSerialiser(
-            'testRegisterSerialiser', 'MockSerialiserClass'
+            'testRegisterSerialiser',
+            'MockSerialiserClass'
         );
         $format = EasyRdf_Format::getFormat('testRegisterSerialiser');
         $this->assertNotNull($format);

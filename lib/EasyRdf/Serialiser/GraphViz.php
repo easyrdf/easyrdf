@@ -277,7 +277,8 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
                     $nodes[$name1] = $resource;
                     $nodes[$name2] = $value;
                     $result .= $this->serialiseRow(
-                        $name1, $name2,
+                        $name1,
+                        $name2,
                         array('label' => $label)
                     );
                 }
@@ -298,7 +299,8 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
                 if (!$label)
                     $label = $node->getURI();
                     $result .= $this->serialiseRow(
-                        $name, null,
+                        $name,
+                        null,
                         array(
                             'URL'   => $node->getURI(),
                             'label' => $label,
@@ -310,7 +312,8 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
                 if ($this->_useLabels)
                     $label = $node->label();
                     $result .= $this->serialiseRow(
-                        $name, null,
+                        $name,
+                        null,
                         array(
                             'label' => $label,
                             'shape' => 'circle',
@@ -319,7 +322,8 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
                     );
             } else {
                 $result .= $this->serialiseRow(
-                    $name, null,
+                    $name,
+                    null,
                     array(
                         'label' => strval($node),
                         'shape' => 'record',
@@ -344,7 +348,9 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
         $dot = $this->serialiseDot($graph);
 
         return EasyRdf_Utils::execCommandPipe(
-            $this->_dotCommand, array("-T$format"), $dot
+            $this->_dotCommand,
+            array("-T$format"),
+            $dot
         );
     }
 

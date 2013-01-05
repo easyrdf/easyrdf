@@ -176,7 +176,8 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function add($s, $p, $o, $sType, $oType, $oDatatype = null, $oLang = null)
     {
         $this->addTriple(
-            $s, $p,
+            $s,
+            $p,
             array(
                 'type' => $oType,
                 'value' => $o,
@@ -406,17 +407,22 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             /* type */
             if (isset($a[$this->_rdf.'type'])) {
                 $this->add(
-                    $o['value'], $this->_rdf.'type',
+                    $o['value'],
+                    $this->_rdf.'type',
                     $a[$this->_rdf.'type'],
-                    'uri', 'uri'
+                    'uri',
+                    'uri'
                 );
             }
             /* reification */
             if (isset($s['p_id'])) {
                 $this->reify(
                     $b->resolve('#'.$s['p_id']),
-                    $s['value'], $s['p'], $o['value'],
-                    $s['type'], $o['type']
+                    $s['value'],
+                    $s['p'],
+                    $o['value'],
+                    $s['type'],
+                    $o['type']
                 );
                 unset($s['p_id']);
             }
@@ -431,8 +437,11 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             if (isset($s['p_id'])) {
                 $this->reify(
                     $b->resolve('#'.$s['p_id']),
-                    $s['value'], $s['p'], $o['value'],
-                    $s['type'], $o['type']
+                    $s['value'],
+                    $s['p'],
+                    $o['value'],
+                    $s['type'],
+                    $o['type']
                 );
             }
             /* parseType */
@@ -453,8 +462,11 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 if (isset($s['p_id'])) {
                     $this->reify(
                         $b->resolve('#'.$s['p_id']),
-                        $s['value'], $s['p'], $o['value'],
-                        $s['type'], $o['type']
+                        $s['value'],
+                        $s['p'],
+                        $o['value'],
+                        $s['type'],
+                        $o['type']
                     );
                     unset($s['p_id']);
                 }
@@ -486,8 +498,11 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                     if (isset($s['p_id'])) {
                         $this->reify(
                             $b->resolve('#'.$s['p_id']),
-                            $s['value'], $s['p'], $o['value'],
-                            $s['type'], $o['type']
+                            $s['value'],
+                            $s['p'],
+                            $o['value'],
+                            $s['type'],
+                            $o['type']
                         );
                         unset($s['p_id']);
                     }
@@ -619,8 +634,11 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                 if (isset($s['p_id']) && $s['p_id']) {
                     $this->reify(
                         $b->resolve('#'.$s['p_id']),
-                        $s['value'], $s['p'], $subS['value'],
-                        $s['type'], $subS['type']
+                        $s['value'],
+                        $s['p'],
+                        $subS['value'],
+                        $s['type'],
+                        $subS['type']
                     );
                 }
                 unset($s['p']);
@@ -631,17 +649,25 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
                      $s['p_x_lang'] : (isset($s['x_lang']) ? $s['x_lang'] : null);
                 $o = array('type' => 'literal', 'value' => $s['o_cdata']);
                 $this->add(
-                    $s['value'], $s['p'],
-                    $o['value'], $s['type'],
-                    $o['type'], $dt, $l
+                    $s['value'],
+                    $s['p'],
+                    $o['value'],
+                    $s['type'],
+                    $o['type'],
+                    $dt,
+                    $l
                 );
                 /* reification */
                 if (isset($s['p_id']) && $s['p_id']) {
                     $this->reify(
                         $b->resolve('#'.$s['p_id']),
-                        $s['value'], $s['p'],
-                        $o['value'], $s['type'],
-                        $o['type'], $dt, $l
+                        $s['value'],
+                        $s['p'],
+                        $o['value'],
+                        $s['type'],
+                        $o['type'],
+                        $dt,
+                        $l
                     );
                 }
                 unset($s['o_cdata']);
@@ -676,9 +702,13 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             if ($level === 0) {
                 /* pClose */
                 $this->add(
-                    $s['value'], $s['p'],
-                    trim($data, ' '), $s['type'],
-                    'literal', $this->_rdf.'XMLLiteral', $l
+                    $s['value'],
+                    $s['p'],
+                    trim($data, ' '),
+                    $s['type'],
+                    'literal',
+                    $this->_rdf.'XMLLiteral',
+                    $l
                 );
                 unset($s['o_xml_data']);
                 $this->_state = 2;

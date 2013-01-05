@@ -152,7 +152,8 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
     protected function parserErrorCount($parser)
     {
         $errorUri = librdf_new_uri(
-            $this->_world, self::LIBRDF_PARSER_FEATURE_ERROR_COUNT
+            $this->_world,
+            self::LIBRDF_PARSER_FEATURE_ERROR_COUNT
         );
         $errorNode = librdf_parser_get_feature($parser, $errorUri);
         $errorCount = librdf_node_get_literal_value($errorNode);
@@ -208,9 +209,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
             );
         }
 
-        $stream = librdf_parser_parse_string_as_stream(
-            $parser, $data, $rdfUri
-        );
+        $stream = librdf_parser_parse_string_as_stream($parser, $data, $rdfUri);
         if (!$stream) {
             throw new EasyRdf_Exception(
                 "Failed to parse RDF stream for: $rdfUri"

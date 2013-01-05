@@ -23,7 +23,8 @@
 
     // use the CURL based HTTP client adaptor
     $client = new Zend_Http_Client(
-        null, array(
+        null,
+        array(
             'adapter' => 'Zend_Http_Client_Adapter_Curl',
             'keepalive' => true,
             'useragent' => "EasyRdf/zendtest"

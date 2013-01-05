@@ -44,7 +44,7 @@
 
 <dl>
   <dt>Name:</dt><dd><?= $person->get('foaf:name') ?></dd>
-  <dt>Homepage:</dt><dd><?= link_to( $person->get('foaf:homepage') ) ?></dd>
+  <dt>Homepage:</dt><dd><?= link_to($person->get('foaf:homepage')) ?></dd>
 </dl>
 
 <?php
@@ -59,7 +59,7 @@
             if ($friend->isBnode()) {
                 echo "<li>$label</li>";
             } else {
-                echo "<li>".link_to_self( $label, 'uri='.urlencode($friend) )."</li>";
+                echo "<li>".link_to_self($label, 'uri='.urlencode($friend))."</li>";
             }
         }
         echo "</ul>\n";

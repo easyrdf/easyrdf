@@ -57,8 +57,10 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph();
         $count = $this->_turtleParser->parse(
-            $graph, readFixture('foaf.ttl'),
-            'turtle', $this->_baseUri
+            $graph,
+            readFixture('foaf.ttl'),
+            'turtle',
+            $this->_baseUri
         );
         $this->assertSame(14, $count);
 
@@ -86,7 +88,10 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
             'EasyRdf_Parser_Turtle does not support: unsupportedformat'
         );
         $this->_turtleParser->parse(
-            new EasyRdf_Graph(), "data", 'unsupportedformat', null
+            new EasyRdf_Graph(),
+            'data',
+            'unsupportedformat',
+            null
         );
     }
 

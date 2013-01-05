@@ -752,7 +752,8 @@ class EasyRdf_Graph
                         continue;
 
                     $results = array_merge(
-                        $results, $this->allForSingleProperty($o, $p, $type, $lang)
+                        $results,
+                        $this->allForSingleProperty($o, $p, $type, $lang)
                     );
                 }
             }
@@ -986,7 +987,9 @@ class EasyRdf_Graph
         $this->checkResourceParam($resource2);
 
         return $this->add(
-            $resource, $property, array(
+            $resource,
+            $property,
+            array(
                 'type' => substr($resource2, 0, 2) == '_:' ? 'bnode' : 'uri',
                 'value' => $resource2
             )
@@ -1070,7 +1073,9 @@ class EasyRdf_Graph
         $this->checkResourceParam($resource2);
 
         return $this->delete(
-            $resource, $property, array(
+            $resource,
+            $property,
+            array(
                 'type' => substr($resource2, 0, 2) == '_:' ? 'bnode' : 'uri',
                 'value' => $resource2
             )
@@ -1484,7 +1489,9 @@ class EasyRdf_Graph
 
         if ($resource) {
             return $this->get(
-                $resource, 'foaf:primaryTopic|^foaf:isPrimaryTopicOf', 'resource'
+                $resource,
+                'foaf:primaryTopic|^foaf:isPrimaryTopicOf',
+                'resource'
             );
         } else {
             return null;

@@ -418,9 +418,7 @@ class EasyRdf_Http_Client
             $headers = $this->prepareHeaders($uri['host'], $port);
 
             // Open socket to remote server
-            $socket = @fsockopen(
-                $host, $port, $errno, $errstr, $this->_config['timeout']
-            );
+            $socket = @fsockopen($host, $port, $errno, $errstr, $this->_config['timeout']);
             if (!$socket) {
                 throw new EasyRdf_Exception("Unable to connect to $host:$port ($errstr)");
             }

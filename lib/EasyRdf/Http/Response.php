@@ -306,9 +306,7 @@ class EasyRdf_Http_Response
             }
         }
 
-        return new EasyRdf_Http_Response(
-            $status, $headers, $body, $version, $message
-        );
+        return new EasyRdf_Http_Response($status, $headers, $body, $version, $message);
     }
 
 

@@ -93,7 +93,9 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         $data .= "</rdf:RDF>\n";
 
         $count = $this->_parser->parse(
-            $this->_graph, $data, 'rdfxml',
+            $this->_graph,
+            $data,
+            'rdfxml',
             'http://www.w3.org/TR/REC-rdf-syntax/'
         );
         $this->assertSame(5, $count);
@@ -113,7 +115,10 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
             'EasyRdf_Parser_RdfXml does not support: unsupportedformat'
         );
         $this->_parser->parse(
-            $this->_graph, $this->_data, 'unsupportedformat', null
+            $this->_graph,
+            $this->_data,
+            'unsupportedformat',
+            null
         );
     }
 }

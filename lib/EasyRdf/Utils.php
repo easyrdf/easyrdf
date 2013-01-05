@@ -230,7 +230,8 @@ class EasyRdf_Utils
 
         if (is_array($args)) {
             $fullCommand = implode(
-                ' ', array_map('escapeshellcmd', array_merge(array($command), $args))
+                ' ',
+                array_map('escapeshellcmd', array_merge(array($command), $args))
             );
         } else {
             $fullCommand = escapeshellcmd($command);
@@ -238,10 +239,7 @@ class EasyRdf_Utils
                 $fullCommand .= ' '.escapeshellcmd($args);
         }
 
-        $process = proc_open(
-            $fullCommand, $descriptorspec, $pipes, $dir
-        );
-
+        $process = proc_open($fullCommand, $descriptorspec, $pipes, $dir);
         if (is_resource($process)) {
             // $pipes now looks like this:
             // 0 => writeable handle connected to child stdin

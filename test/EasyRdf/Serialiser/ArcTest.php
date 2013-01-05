@@ -80,7 +80,8 @@ class EasyRdf_Serialiser_ArcTest extends EasyRdf_TestCase
             'EasyRdf_Serialiser_Arc does not support: unsupportedformat'
         );
         $rdf = $this->_serialiser->serialise(
-            $this->_graph, 'unsupportedformat'
+            $this->_graph,
+            'unsupportedformat'
         );
     }
 }

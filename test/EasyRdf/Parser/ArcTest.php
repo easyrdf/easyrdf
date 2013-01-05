@@ -94,7 +94,10 @@ class EasyRdf_Parser_ArcTest extends EasyRdf_TestCase
             'EasyRdf_Parser_Arc does not support: unsupportedformat'
         );
         $rdf = $this->_parser->parse(
-            $this->_graph, $this->_data, 'unsupportedformat', null
+            $this->_graph,
+            $this->_data,
+            'unsupportedformat',
+            null
         );
     }
 }

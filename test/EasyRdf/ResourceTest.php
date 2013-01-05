@@ -447,7 +447,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_resource->addLiteral('foaf:homepage', 'Joe');
         $this->_resource->addResource('foaf:homepage', 'http://example.com/');
         $this->assertStringEquals(
-            'http://example.com/', $this->_resource->getResource('foaf:homepage')
+            'http://example.com/',
+            $this->_resource->getResource('foaf:homepage')
         );
     }
 
@@ -1151,13 +1152,16 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->_setupTestGraph();
         $text = $this->_resource->dump(false);
         $this->assertContains(
-            "http://example.com/#me (EasyRdf_Resource)", $text
+            "http://example.com/#me (EasyRdf_Resource)",
+            $text
         );
         $this->assertContains(
-            '-> rdf:type -> foaf:Person', $text
+            '-> rdf:type -> foaf:Person',
+            $text
         );
         $this->assertContains(
-            '-> rdf:test -> "Test A", "Test B"@en', $text
+            '-> rdf:test -> "Test A", "Test B"@en',
+            $text
         );
 
         $html = $this->_resource->dump(true);
@@ -1165,7 +1169,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertContains(
             "<a href='http://example.com/#me' ".
             "style='text-decoration:none;color:blue'>".
-            "http://example.com/#me</a>", $html
+            "http://example.com/#me</a>",
+            $html
         );
         $this->assertContains(
             "<span style='text-decoration:none;color:green'>rdf:type</span>",
@@ -1181,10 +1186,12 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             $html
         );
         $this->assertContains(
-            "<span style='color:black'>&quot;Test A&quot;</span>", $html
+            "<span style='color:black'>&quot;Test A&quot;</span>",
+            $html
         );
         $this->assertContains(
-            "<span style='color:black'>&quot;Test B&quot;@en</span>", $html
+            "<span style='color:black'>&quot;Test B&quot;@en</span>",
+            $html
         );
     }
 

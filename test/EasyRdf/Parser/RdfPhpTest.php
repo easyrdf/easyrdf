@@ -119,7 +119,10 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
             'EasyRdf_Parser_RdfPhp does not support: unsupportedformat'
         );
         $rdf = $this->_parser->parse(
-            $this->_graph, $this->_data, 'unsupportedformat', null
+            $this->_graph,
+            $this->_data,
+            'unsupportedformat',
+            null
         );
     }
 }

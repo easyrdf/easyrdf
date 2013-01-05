@@ -53,7 +53,8 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
     public function testSerialisePhp()
     {
         $joe = $this->_graph->resource(
-            'http://www.example.com/joe#me', 'foaf:Person'
+            'http://www.example.com/joe#me',
+            'foaf:Person'
         );
         $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
         $joe->set('foaf:age', 59);
@@ -99,7 +100,8 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
             'EasyRdf_Serialiser_RdfPhp does not support: unsupportedformat'
         );
         $rdf = $this->_serialiser->serialise(
-            $this->_graph, 'unsupportedformat'
+            $this->_graph,
+            'unsupportedformat'
         );
     }
 }

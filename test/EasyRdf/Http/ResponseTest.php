@@ -202,12 +202,14 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
         );
 
         $this->assertCount(
-            8, $response->getHeaders(),
+            8,
+            $response->getHeaders(),
             'Header count is not as expected'
         );
         $this->assertSame(
             'Apache/2.2.9 (Unix) PHP/5.2.6',
-            $response->getHeader('Server'), 'Server header is not as expected'
+            $response->getHeader('Server'),
+            'Server header is not as expected'
         );
         $this->assertSame(
             'text/plain',

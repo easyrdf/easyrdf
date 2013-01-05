@@ -36,7 +36,7 @@
 
 <?php
     if (isset($_REQUEST['uri'])) {
-        $graph = EasyRdf_Graph::newAndLoad( $_REQUEST['uri'] );
+        $graph = EasyRdf_Graph::newAndLoad($_REQUEST['uri']);
         if ($graph) {
             if (isset($_REQUEST['format']) && $_REQUEST['format'] == 'text') {
                 print "<pre>".$graph->dump(false)."</pre>";

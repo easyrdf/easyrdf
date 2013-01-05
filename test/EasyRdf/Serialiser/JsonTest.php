@@ -52,9 +52,7 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
 
     public function testSerialiseJson()
     {
-        $joe = $this->_graph->resource(
-            'http://www.example.com/joe#me', 'foaf:Person'
-        );
+        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
         $joe->set('foaf:age', 59);
         $project = $this->_graph->newBNode();
@@ -85,7 +83,8 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
             'EasyRdf_Serialiser_Json does not support: unsupportedformat'
         );
         $rdf = $this->_serialiser->serialise(
-            $this->_graph, 'unsupportedformat'
+            $this->_graph,
+            'unsupportedformat'
         );
     }
 }
