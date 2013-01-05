@@ -90,10 +90,12 @@ class EasyRdf_Http_Response
      * @return object  EasyRdf_Http_Response
      */
     public function __construct(
-        $status, $headers, $body = null,
-        $version = '1.1', $message = null
-    )
-    {
+        $status,
+        $headers,
+        $body = null,
+        $version = '1.1',
+        $message = null
+    ) {
         $this->_status = intval($status);
         $this->_body = $body;
         $this->_version = $version;
