@@ -85,7 +85,6 @@ class EasyRdf_Literal_Date extends EasyRdf_Literal
     /** Returns the date as a PHP DateTime object
      *
      * @see DateTime::format
-     * @param string $format
      * @return string
      */
     public function getValue()

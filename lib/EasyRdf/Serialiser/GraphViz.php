@@ -128,7 +128,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      *
      * This option is turned off by default.
      *
-     * @param bool $useLabels   A boolean value to enable/display only labelled items
+     * @param bool $onlyLabelled   A boolean value to enable/display only labelled items
      * @return object EasyRdf_Serialiser_GraphViz
      */
     public function setOnlyLabelled($onlyLabelled)

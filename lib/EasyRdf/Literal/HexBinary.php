@@ -71,7 +71,7 @@ class EasyRdf_Literal_HexBinary extends EasyRdf_Literal
 
     /** Constructor for creating a new literal object from a binary blob
      *
-     * @param  string $value     The binary data
+     * @param  string $binary  The binary data
      * @return object EasyRdf_Literal_HexBinary
      */
     public static function fromBinary($binary)
