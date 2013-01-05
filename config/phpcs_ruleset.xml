@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ruleset name="EasyRdf">
+ <description>Extensions to the PSR-2 coding standard.</description>
+
+ <!-- Include the PSR-2 standard -->
+ <rule ref="PSR2">
+    <!--
+      These two sniffs doesn't detect PHP 5.2 namespaces / class names correctly
+      See: https://pear.php.net/bugs/bug.php?id=19774
+    -->
+    <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+    <exclude name="Squiz.Classes.ValidClassName"/>
+
+    <!-- FIXME: We currently use side-effects to register classes -->
+    <exclude name="PSR1.Files.SideEffects.FoundWithSymbols" />
+ </rule>
+
+</ruleset>

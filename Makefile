@@ -6,7 +6,7 @@ COMPOSER_FLAGS=--no-ansi --no-interaction
 PHPUNIT = vendor/bin/phpunit 
 PHPUNIT_FLAGS = -c config/phpunit.xml
 PHPCS = vendor/bin/phpcs
-PHPCS_FLAGS = --standard=Zend --tab-width=4 --encoding=utf8 --extensions=php -n
+PHPCS_FLAGS = --standard=./config/phpcs_ruleset.xml --encoding=utf8 --extensions=php
 PHPDOC = phpdoc --title "EasyRdf $(VERSION) API Documentation" \
                 --output "HTML:frames:default" \
                 --undocumentedelements on
@@ -72,7 +72,7 @@ doap.rdf: doap.php composer.json
 # TARGET:cs                  Check the code style of the PHP source code
 .PHONY: cs
 cs: $(PHPCS)
-	$(PHPCS) $(PHPCS_FLAGS) lib
+	$(PHPCS) $(PHPCS_FLAGS) lib test
 
 # TARGET:lint                Perform basic PHP syntax check on all files
 .PHONY: lint
