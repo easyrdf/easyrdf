@@ -1,5 +1,6 @@
 doap.rdf
 docs
+samicache
 lib/arc/
 reports
 *.tar.gz

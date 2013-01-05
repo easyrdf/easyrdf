@@ -7,9 +7,7 @@ PHPUNIT = vendor/bin/phpunit
 PHPUNIT_FLAGS = -c config/phpunit.xml
 PHPCS = vendor/bin/phpcs
 PHPCS_FLAGS = --standard=./config/phpcs_ruleset.xml --encoding=utf8 --extensions=php
-PHPDOC = phpdoc --title "EasyRdf $(VERSION) API Documentation" \
-                --output "HTML:frames:default" \
-                --undocumentedelements on
+SAMI = vendor/bin/sami.php
 
 EXAMPLE_FILES = examples/*.php
 SOURCE_FILES = lib/EasyRdf.php \
@@ -25,7 +23,7 @@ TEST_SUPPORT = Makefile test/cli_example_wrapper.php \
                test/fixtures/*
 DOC_FILES = composer.json \
             doap.rdf \
-            docs \
+            docs/api \
             README.md \
             LICENSE.md \
             CHANGELOG.md
@@ -60,11 +58,12 @@ coverage: $(PHPUNIT)
 	mkdir -p reports/coverage
 	$(PHP) $(PHPUNIT) $(PHPUNIT_FLAGS) --coverage-html ./reports/coverage --testsuite "EasyRdf Library"
 
-# TARGET:docs                Generate HTML documentation
-.PHONY: docs
-docs:
-	mkdir -p docs
-	$(PHPDOC) -d lib -t docs
+# TARGET:apidocs             Generate HTML API documentation
+.PHONY: apidocs
+apidocs: $(SAMI)
+	$(PHP) $(SAMI) update config/sami.php -n -v --force
+
+docs/api: apidocs
 
 doap.rdf: doap.php composer.json
 	$(PHP) doap.php > doap.rdf
@@ -98,7 +97,8 @@ $(distdir): $(DISTFILES)
 # TARGET:clean               Delete any temporary and generated files
 .PHONY: clean
 clean:
-	-rm -Rf $(distdir) docs reports vendor
+	-rm -Rf $(distdir) reports vendor
+	-rm -Rf docs/api samicache
 	-rm -f composer.phar composer.lock
 	-rm -f doap.rdf
 
@@ -133,3 +133,4 @@ composer-update: clean composer.phar
 
 vendor/bin/phpunit: composer-install
 vendor/bin/phpcs: composer-install
+vendor/bin/sami.php: composer-install
