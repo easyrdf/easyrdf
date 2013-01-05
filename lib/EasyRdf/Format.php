@@ -223,10 +223,13 @@ class EasyRdf_Format
 
     /** Attempt to guess the document format from some content.
      *
+     * If $filename is given, then the suffix is first used to guess the format.
+     *
      * If the document format is not recognised, null is returned.
      *
-     * @param  string $data The document data
-     * @return EasyRdf_Format The format object
+     * @param  string $data     The document data
+     * @param  string $filename Optional filename
+     * @return object EasyRdf_Format The format object
      */
     public static function guessFormat($data, $filename = null)
     {
@@ -399,7 +402,7 @@ class EasyRdf_Format
 
     /** Set the file format extensions (filename suffix) for a format object
      *
-     * @param array $mimeTypes  One or more file extensions
+     * @param mixed $extensions  One or more file extensions
      */
     public function setExtensions($extensions)
     {

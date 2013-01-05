@@ -60,7 +60,11 @@ class EasyRdf_ParsedUri
 
     /** Constructor for creating a new parsed URI
      *
-     * @param  string $uristr    The URI as a string
+     * The $uri parameter can either be a string or an
+     * associative array with the following keys:
+     * scheme, authority, path, query, fragment
+     *
+     * @param  mixed $uri  The URI as a string or an array
      * @return object EasyRdf_ParsedUri
      */
     public function __construct($uri = null)

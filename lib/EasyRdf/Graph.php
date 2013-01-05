@@ -884,6 +884,7 @@ class EasyRdf_Graph
      * The default is to join the values together with a space character.
      * This method will return an empty string if the property does not exist.
      *
+     * @param  mixed   $resource The resource to get the property on
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $glue     The string to glue the values together with.
      * @param  string  $lang     The language to filter by (e.g. en)
@@ -1038,8 +1039,9 @@ class EasyRdf_Graph
 
     /** Delete a property (or optionally just a specific value)
      *
+     * @param  mixed   $resource The resource to delete the property from
      * @param  string  $property The name of the property (e.g. foaf:name)
-     * @param  object  $value The value to delete (null to delete all values)
+     * @param  mixed   $value The value to delete (null to delete all values)
      * @return integer The number of values deleted
      */
     public function delete($resource, $property, $value = null)
@@ -1220,6 +1222,7 @@ class EasyRdf_Graph
      * By providing a value parameter you can use this function to check
      * to see if a triple exists in the graph.
      *
+     * @param  mixed   $resource The resource to check
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  mixed   $value    An optional value of the property
      * @return boolean           True if value the property exists.
@@ -1298,12 +1301,13 @@ class EasyRdf_Graph
         return $result;
     }
 
-    /** Return a human readable view of the resource and its properties
+    /** Return a human readable view of a resource and its properties
      *
      * This method is intended to be a debugging aid and will
      * print a resource and its properties.
      *
-     * @param  boolean  $html  Set to true to format the dump using HTML
+     * @param  mixed    $resource  The resource to dump
+     * @param  boolean  $html      Set to true to format the dump using HTML
      * @return string
      */
     public function dumpResource($resource, $html = true)
@@ -1400,7 +1404,7 @@ class EasyRdf_Graph
         return null;
     }
 
-    /** Get a list of types for a resource.
+    /** Get a list of types for a resource
      *
      * The types will each be a shortened URI as a string.
      * This method will return an empty array if the resource has no types.
@@ -1425,8 +1429,9 @@ class EasyRdf_Graph
 
     /** Check if a resource is of the specified type
      *
-     * @param  string  $type The type to check (e.g. foaf:Person)
-     * @return boolean       True if resource is of specified type.
+     * @param  string  $resource The resource to check the type of
+     * @param  string  $type     The type to check (e.g. foaf:Person)
+     * @return boolean           True if resource is of specified type
      */
     public function isA($resource, $type)
     {
@@ -1444,7 +1449,7 @@ class EasyRdf_Graph
     /** Add one or more rdf:type properties to a resource
      *
      * @param  string  $resource The resource to add the type to
-     * @param  string  $type     The new type (e.g. foaf:Person)
+     * @param  string  $types    One or more types to add (e.g. foaf:Person)
      * @return integer           The number of types added
      */
     public function addType($resource, $types)

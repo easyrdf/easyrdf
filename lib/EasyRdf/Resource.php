@@ -269,7 +269,6 @@ class EasyRdf_Resource
      * Example:
      *   $resource->add('prefix:property', 'value');
      *
-     * @param  mixed $resource   The resource to add data to
      * @param  mixed $property   The property name
      * @param  mixed $value      The value for the property
      * @return integer           The number of values added (1 or 0)
@@ -288,7 +287,7 @@ class EasyRdf_Resource
      *   $resource->add('dc:title', 'Title of Page');
      *
      * @param  mixed  $property  The property name
-     * @param  mixed  $value     The value or values for the property
+     * @param  mixed  $values    The value or values for the property
      * @param  string $lang      The language of the literal
      * @return integer           The number of values added
      */
@@ -304,13 +303,13 @@ class EasyRdf_Resource
      *   $bob->add('foaf:knows', 'http://example.com/alice');
      *
      * @param  mixed $property   The property name
-     * @param  mixed $resource2  The resource to be value of the property
+     * @param  mixed $resource2  The resource to be the value of the property
      * @return integer           The number of values added (1 or 0)
      */
-    public function addResource($property, $values)
+    public function addResource($property, $resource2)
     {
         $this->checkHasGraph();
-        return $this->graph->addResource($this->uri, $property, $values);
+        return $this->graph->addResource($this->uri, $property, $resource2);
     }
 
     /** Set value for a property
@@ -341,6 +340,7 @@ class EasyRdf_Resource
      * This method will return null if the property does not exist.
      *
      * @param  string|array $property The name of the property (e.g. foaf:name)
+     * @param  string       $type     The type of value to filter by (e.g. literal or resource)
      * @param  string       $lang     The language to filter by (e.g. en)
      * @return mixed                  A value associated with the property
      */
@@ -358,7 +358,6 @@ class EasyRdf_Resource
      * This method will return null if there is not literal value for the
      * property.
      *
-     * @param  string       $resource The URI of the resource (e.g. http://example.com/joe#me)
      * @param  string|array $property The name of the property (e.g. foaf:name)
      * @param  string       $lang     The language to filter by (e.g. en)
      * @return object EasyRdf_Literal Literal value associated with the property
@@ -566,7 +565,7 @@ class EasyRdf_Resource
 
     /** Add one or more rdf:type properties to the resource
      *
-     * @param  string  $type     The new type (e.g. foaf:Person)
+     * @param  string  $types    One or more types to add (e.g. foaf:Person)
      * @return integer           The number of types added
      */
     public function addType($types)

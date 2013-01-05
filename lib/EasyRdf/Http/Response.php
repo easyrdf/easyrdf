@@ -232,8 +232,8 @@ class EasyRdf_Http_Response
     /**
      * Get all headers as string
      *
-     * @param boolean $status_line Whether to return the first status line (IE "HTTP 200 OK")
-     * @param string $br Line breaks (eg. "\n", "\r\n", "<br />")
+     * @param boolean $statusLine Whether to return the first status line (ie "HTTP 200 OK")
+     * @param string  $br         Line breaks (eg. "\n", "\r\n", "<br />")
      * @return string
      */
     public function getHeadersAsString($statusLine = true, $br = "\n")
