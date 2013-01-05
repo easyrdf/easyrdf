@@ -76,22 +76,23 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
         while (preg_match('/\\\(U)([0-9A-F]{8})/', $str, $matches) ||
                preg_match('/\\\(u)([0-9A-F]{4})/', $str, $matches)) {
             $no = hexdec($matches[2]);
-            if ($no < 128)
+            if ($no < 128) {
                 $char = chr($no);
-            else if ($no < 2048)
+            } elseif ($no < 2048) {
                 $char = chr(($no >> 6) + 192) .
                         chr(($no & 63) + 128);
-            else if ($no < 65536)
+            } elseif ($no < 65536) {
                 $char = chr(($no >> 12) + 224) .
                         chr((($no >> 6) & 63) + 128) .
                         chr(($no & 63) + 128);
-            else if ($no < 2097152)
+            } elseif ($no < 2097152) {
                 $char = chr(($no >> 18) + 240) .
                         chr((($no >> 12) & 63) + 128) .
                         chr((($no >> 6) & 63) + 128) .
                         chr(($no & 63) + 128);
-            else
-                $char= '';
+            } else {
+                $char = '';
+            }
             $str = str_replace('\\' . $matches[1] . $matches[2], $char, $str);
         }
         return $str;
