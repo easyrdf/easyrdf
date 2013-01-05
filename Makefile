@@ -99,7 +99,7 @@ $(distdir): $(DISTFILES)
 .PHONY: clean
 clean:
 	-rm -Rf $(distdir) docs reports vendor
-	-rm -f composer.phar
+	-rm -f composer.phar composer.lock
 	-rm -f doap.rdf
 
 # TARGET:check-fixme         Scan for files containing the words TODO or FIXME
