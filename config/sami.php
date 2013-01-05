@@ -7,6 +7,7 @@ $root = realpath(__DIR__ . "/..");
 $iterator = Finder::create()
     ->files()
     ->name('*.php')
+    ->exclude('arc')
     ->in($root.'/lib')
 ;
 
