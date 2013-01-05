@@ -102,8 +102,9 @@ class EasyRdf_Format
 
         $acceptStr='';
         foreach ($accept as $type => $q) {
-            if ($acceptStr)
+            if ($acceptStr) {
                 $acceptStr .= ',';
+            }
             if ($q == 1.0) {
                 $acceptStr .= $type;
             } else {
@@ -201,8 +202,9 @@ class EasyRdf_Format
      */
     public static function registerParser($name, $class)
     {
-        if (!self::formatExists($name))
+        if (!self::formatExists($name)) {
             self::register($name);
+        }
         self::getFormat($name)->setParserClass($class);
     }
 
@@ -213,8 +215,9 @@ class EasyRdf_Format
      */
     public static function registerSerialiser($name, $class)
     {
-        if (!self::formatExists($name))
+        if (!self::formatExists($name)) {
             self::register($name);
+        }
         self::getFormat($name)->setSerialiserClass($class);
     }
 

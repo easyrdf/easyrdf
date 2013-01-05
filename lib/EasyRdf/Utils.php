@@ -235,8 +235,9 @@ class EasyRdf_Utils
             );
         } else {
             $fullCommand = escapeshellcmd($command);
-            if ($args)
+            if ($args) {
                 $fullCommand .= ' '.escapeshellcmd($args);
+            }
         }
 
         $process = proc_open($fullCommand, $descriptorspec, $pipes, $dir);
@@ -246,8 +247,9 @@ class EasyRdf_Utils
             // 1 => readable handle connected to child stdout
             // 2 => readable handle connected to child stderr
 
-            if ($input)
+            if ($input) {
                 fwrite($pipes[0], $input);
+            }
             fclose($pipes[0]);
 
             $output = stream_get_contents($pipes[1]);

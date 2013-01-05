@@ -26,8 +26,9 @@ foreach ($manifest->allOfType('test:PositiveParserTest') as $test) {
     }
 
     echo "Status: ".$test->get('test:status')."\n";
-    if ($test->get('test:status') != 'APPROVED')
+    if ($test->get('test:status') != 'APPROVED') {
         continue;
+    }
 
     $graph = parseTestdata($test->get('test:inputDocument'));
     $out_path = testdataFilepath($test->get('test:outputDocument'));

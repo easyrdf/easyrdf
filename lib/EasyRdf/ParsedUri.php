@@ -198,8 +198,9 @@ class EasyRdf_ParsedUri
      */
     public function normalise()
     {
-        if (empty($this->path))
+        if (empty($this->path)) {
             return $this;
+        }
 
         // Remove ./ from the start
         if (substr($this->path, 0, 2) == './') {
@@ -226,8 +227,9 @@ class EasyRdf_ParsedUri
             if ($segment == '..') {
                 // Remove the previous part of the path
                 $count = count($newSegments);
-                if ($count > 0 && $newSegments[$count-1])
+                if ($count > 0 && $newSegments[$count-1]) {
                     array_pop($newSegments);
+                }
             } elseif ($segment == '.') {
                 // Ignore
                 continue;
@@ -308,15 +310,19 @@ class EasyRdf_ParsedUri
     public function toString()
     {
         $str = '';
-        if ($this->scheme !== null)
+        if ($this->scheme !== null) {
             $str .= $this->scheme . ':';
-        if ($this->authority !== null)
+        }
+        if ($this->authority !== null) {
             $str .= '//' . $this->authority;
+        }
         $str .= $this->path;
-        if ($this->query !== null)
+        if ($this->query !== null) {
             $str .= '?' . $this->query;
-        if ($this->fragment !== null)
+        }
+        if ($this->fragment !== null) {
             $str .= '#' . $this->fragment;
+        }
         return $str;
     }
 

@@ -57,8 +57,9 @@ class EasyRdf_Literal_Boolean extends EasyRdf_Literal
      */
     public function __construct($value, $lang = null, $datatype = null)
     {
-        if (!is_string($value))
+        if (!is_string($value)) {
             $value = $value ? 'true' : 'false';
+        }
         parent::__construct($value, null, $datatype);
     }
 

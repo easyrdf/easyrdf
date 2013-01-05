@@ -175,8 +175,9 @@ class EasyRdf_Resource
     public function htmlLink($text = null, $options = array())
     {
         $options = array_merge(array('href' => $this->uri), $options);
-        if ($text === null)
+        if ($text === null) {
             $text = $this->uri;
+        }
 
         $html = "<a";
         foreach ($options as $key => $value) {
@@ -197,10 +198,11 @@ class EasyRdf_Resource
      */
     public function toArray()
     {
-        if ($this->isBnode())
+        if ($this->isBnode()) {
             return array('type' => 'bnode', 'value' => $this->uri);
-        else
+        } else {
             return array('type' => 'uri', 'value' => $this->uri);
+        }
     }
 
     /** Return pretty-print view of the resource

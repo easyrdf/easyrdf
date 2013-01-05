@@ -282,11 +282,13 @@ class EasyRdf_Literal
             'value' => $this->value
         );
 
-        if ($this->datatype)
+        if ($this->datatype) {
             $array['datatype'] = $this->datatype;
+        }
 
-        if ($this->lang)
+        if ($this->lang) {
             $array['lang'] = $this->lang;
+        }
 
         return $array;
     }

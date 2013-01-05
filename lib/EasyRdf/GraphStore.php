@@ -96,8 +96,9 @@ class EasyRdf_GraphStore
     protected function sendGraph($method, $graph, $uriRef, $format)
     {
         if (is_object($graph) and $graph instanceof EasyRdf_Graph) {
-            if ($uriRef == null)
+            if ($uriRef == null) {
                 $uriRef = $graph->getUri();
+            }
             $data = $graph->serialise($format);
         } else {
             $data = $graph;

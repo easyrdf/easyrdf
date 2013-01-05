@@ -75,8 +75,9 @@ class EasyRdf_Http
      */
     public static function getDefaultHttpClient()
     {
-        if (!isset(self::$defaultHttpClient))
+        if (!isset(self::$defaultHttpClient)) {
             self::$defaultHttpClient = new EasyRdf_Http_Client();
+        }
         return self::$defaultHttpClient;
     }
 }

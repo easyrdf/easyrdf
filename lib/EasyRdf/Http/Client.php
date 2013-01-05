@@ -255,8 +255,9 @@ class EasyRdf_Http_Client
     public function setParameterGet($name, $value = null)
     {
         if ($value === null) {
-            if (isset($this->paramsGet[$name]))
+            if (isset($this->paramsGet[$name])) {
                 unset($this->paramsGet[$name]);
+            }
         } else {
             $this->paramsGet[$name] = $value;
         }
@@ -425,10 +426,14 @@ class EasyRdf_Http_Client
 
             // Write the request
             $path = $uri['path'];
-            if (isset($uri['query'])) $path .= '?' . $uri['query'];
+            if (isset($uri['query'])) {
+                $path .= '?' . $uri['query'];
+            }
             fwrite($socket, "{$this->method} {$path} HTTP/1.1\r\n");
             foreach ($headers as $k => $v) {
-                if (is_string($k)) $v = ucfirst($k) . ": $v";
+                if (is_string($k)) {
+                    $v = ucfirst($k) . ": $v";
+                }
                 fwrite($socket, "$v\r\n");
             }
             fwrite($socket, "\r\n");

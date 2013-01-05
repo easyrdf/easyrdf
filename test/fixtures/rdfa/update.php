@@ -23,12 +23,15 @@ $client = new EasyRdf_Http_Client();
 
 $manifest = EasyRdf_Graph::newAndLoad('http://rdfa.info/test-suite/manifest.ttl');
 foreach ($manifest->allOfType('test:TestCase') as $test) {
-    if (!in_array($RDFA_VERSION, $test->all('rdfatest:rdfaVersion')))
+    if (!in_array($RDFA_VERSION, $test->all('rdfatest:rdfaVersion'))) {
         continue;
-    if (!in_array($HOST_LANGUAGE, $test->all('rdfatest:hostLanguage')))
+    }
+    if (!in_array($HOST_LANGUAGE, $test->all('rdfatest:hostLanguage'))) {
         continue;
-    if ($test->get('test:classification')->shorten() != 'test:required')
+    }
+    if ($test->get('test:classification')->shorten() != 'test:required') {
         continue;
+    }
 
     $id = $test->localName();
     $title = $test->get('dc:title');

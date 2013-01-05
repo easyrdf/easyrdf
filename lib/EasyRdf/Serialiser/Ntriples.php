@@ -108,20 +108,35 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
         $no = $this->unicodeCharNo($c);
 
         /* see http://www.w3.org/TR/rdf-testcases/#ntrip_strings */
-        if ($no < 9)        return "\\u" . sprintf('%04X', $no);  /* #x0-#x8 (0-8) */
-        if ($no == 9)       return '\t';                          /* #x9 (9) */
-        if ($no == 10)      return '\n';                          /* #xA (10) */
-        if ($no < 13)       return "\\u" . sprintf('%04X', $no);  /* #xB-#xC (11-12) */
-        if ($no == 13)      return '\r';                          /* #xD (13) */
-        if ($no < 32)       return "\\u" . sprintf('%04X', $no);  /* #xE-#x1F (14-31) */
-        if ($no < 34)       return $c;                            /* #x20-#x21 (32-33) */
-        if ($no == 34)      return '\"';                          /* #x22 (34) */
-        if ($no < 92)       return $c;                            /* #x23-#x5B (35-91) */
-        if ($no == 92)      return '\\';                          /* #x5C (92) */
-        if ($no < 127)      return $c;                            /* #x5D-#x7E (93-126) */
-        if ($no < 65536)    return "\\u" . sprintf('%04X', $no);  /* #x7F-#xFFFF (128-65535) */
-        if ($no < 1114112)  return "\\U" . sprintf('%08X', $no);  /* #x10000-#x10FFFF (65536-1114111) */
-        return '';                                                /* not defined => ignore */
+        if ($no < 9) {
+            return "\\u" . sprintf('%04X', $no);  /* #x0-#x8 (0-8) */
+        } elseif ($no == 9) {
+            return '\t';                          /* #x9 (9) */
+        } elseif ($no == 10) {
+            return '\n';                          /* #xA (10) */
+        } elseif ($no < 13) {
+            return "\\u" . sprintf('%04X', $no);  /* #xB-#xC (11-12) */
+        } elseif ($no == 13) {
+            return '\r';                          /* #xD (13) */
+        } elseif ($no < 32) {
+            return "\\u" . sprintf('%04X', $no);  /* #xE-#x1F (14-31) */
+        } elseif ($no < 34) {
+            return $c;                            /* #x20-#x21 (32-33) */
+        } elseif ($no == 34) {
+            return '\"';                          /* #x22 (34) */
+        } elseif ($no < 92) {
+            return $c;                            /* #x23-#x5B (35-91) */
+        } elseif ($no == 92) {
+            return '\\';                          /* #x5C (92) */
+        } elseif ($no < 127) {
+            return $c;                            /* #x5D-#x7E (93-126) */
+        } elseif ($no < 65536) {
+            return "\\u" . sprintf('%04X', $no);  /* #x7F-#xFFFF (128-65535) */
+        } elseif ($no < 1114112) {
+            return "\\U" . sprintf('%08X', $no);  /* #x10000-#x10FFFF (65536-1114111) */
+        } else {
+            return '';                            /* not defined => ignore */
+        }
     }
 
     /**

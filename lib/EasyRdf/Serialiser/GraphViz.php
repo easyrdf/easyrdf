@@ -236,10 +236,12 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
     protected function serialiseRow($node1, $node2 = null, $attributes = array())
     {
         $result = '  '.$this->escape($node1);
-        if ($node2)
+        if ($node2) {
             $result .= ' -> '.$this->escape($node2);
-        if (count($attributes))
+        }
+        if (count($attributes)) {
             $result .= ' '.$this->escapeAttributes($attributes);
+        }
         return $result.";\n";
     }
 
@@ -264,13 +266,15 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
             $name1 = $this->nodeName($resource);
             foreach ($resource->propertyUris() as $property) {
                 $label = null;
-                if ($this->useLabels)
+                if ($this->useLabels) {
                     $label = $graph->resource($property)->label();
+                }
                 if ($label === null) {
-                    if ($this->onlyLabelled == true)
+                    if ($this->onlyLabelled == true) {
                         continue;
-                    else
+                    } else {
                         $label = EasyRdf_Namespace::shorten($property);
+                    }
                 }
                 foreach ($resource->all("<$property>") as $value) {
                     $name2 = $this->nodeName($value);
@@ -292,34 +296,38 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
             $type = substr($name, 0, 1);
             $label = '';
             if ($type == 'R') {
-                if ($this->useLabels)
+                if ($this->useLabels) {
                     $label = $node->label();
-                if (!$label)
+                }
+                if (!$label) {
                     $label = $node->shorten();
-                if (!$label)
+                }
+                if (!$label) {
                     $label = $node->getURI();
-                    $result .= $this->serialiseRow(
-                        $name,
-                        null,
-                        array(
-                            'URL'   => $node->getURI(),
-                            'label' => $label,
-                            'shape' => 'ellipse',
-                            'color' => 'blue'
-                        )
-                    );
+                }
+                $result .= $this->serialiseRow(
+                    $name,
+                    null,
+                    array(
+                        'URL'   => $node->getURI(),
+                        'label' => $label,
+                        'shape' => 'ellipse',
+                        'color' => 'blue'
+                    )
+                );
             } elseif ($type == 'B') {
-                if ($this->useLabels)
+                if ($this->useLabels) {
                     $label = $node->label();
-                    $result .= $this->serialiseRow(
-                        $name,
-                        null,
-                        array(
-                            'label' => $label,
-                            'shape' => 'circle',
-                            'color' => 'green'
-                        )
-                    );
+                }
+                $result .= $this->serialiseRow(
+                    $name,
+                    null,
+                    array(
+                        'label' => $label,
+                        'shape' => 'circle',
+                        'color' => 'green'
+                    )
+                );
             } else {
                 $result .= $this->serialiseRow(
                     $name,

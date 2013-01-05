@@ -128,8 +128,9 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
 
         // If the resource has no properties - don't serialise it
         $properties = $res->propertyUris();
-        if (count($properties) == 0)
+        if (count($properties) == 0) {
             return '';
+        }
 
         $type = $res->type();
         if ($type) {
@@ -154,8 +155,9 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             if ($short) {
                 $this->addPrefix($short);
                 $objects = $res->all("<$property>");
-                if ($short == 'rdf:type')
+                if ($short == 'rdf:type') {
                     array_shift($objects);
+                }
                 foreach ($objects as $object) {
                     $xml .= $this->rdfxmlObject($short, $object, $depth+1);
                 }

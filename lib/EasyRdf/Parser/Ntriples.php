@@ -54,8 +54,9 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
      **/
     protected function unescapeString($str)
     {
-        if (strpos($str, '\\') === false)
+        if (strpos($str, '\\') === false) {
             return $str;
+        }
 
         $mappings = array(
             't' => chr(0x09),
@@ -70,8 +71,9 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
             $str = preg_replace('/\x5c([' . $in . '])/', $out, $str);
         }
 
-        if (stripos($str, '\u') === false)
+        if (stripos($str, '\u') === false) {
             return $str;
+        }
 
         while (preg_match('/\\\(U)([0-9A-F]{8})/', $str, $matches) ||
                preg_match('/\\\(u)([0-9A-F]{4})/', $str, $matches)) {

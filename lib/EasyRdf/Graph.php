@@ -87,8 +87,9 @@ class EasyRdf_Graph
         if ($uri) {
             $this->uri = $uri;
             $this->parsedUri = new EasyRdf_ParsedUri($uri);
-            if ($data)
+            if ($data) {
                 $this->parse($data, $format, $this->uri);
+            }
         }
     }
 
@@ -218,10 +219,11 @@ class EasyRdf_Graph
             $format = EasyRdf_Format::getFormat($format);
         }
 
-        if (!$format)
+        if (!$format) {
             throw new EasyRdf_Exception(
                 "Unable to parse data of an unknown format."
             );
+        }
 
         $parser = $format->newParser();
         return $parser->parse($this, $data, $format, $uri);
@@ -264,10 +266,11 @@ class EasyRdf_Graph
     {
         $this->checkResourceParam($uri, true);
 
-        if (!$uri)
+        if (!$uri) {
             throw new EasyRdf_Exception(
                 "No URI given to load() and the graph does not have a URI."
             );
+        }
 
         // Setup the HTTP client
         $client = EasyRdf_Http::getDefaultHttpClient();
@@ -527,10 +530,12 @@ class EasyRdf_Graph
                     "\$value does not have a valid type (".$value['type'].")"
                 );
             }
-            if (empty($value['datatype']))
+            if (empty($value['datatype'])) {
                 unset($value['datatype']);
-            if (empty($value['lang']))
+            }
+            if (empty($value['lang'])) {
                 unset($value['lang']);
+            }
             if (isset($value['lang']) and isset($value['datatype'])) {
                 throw new InvalidArgumentException(
                     "\$value cannot have both and language and a datatype"
@@ -576,19 +581,23 @@ class EasyRdf_Graph
         // Loop through each component in the path
         foreach (explode('/', $propertyPath) as $part) {
             // Stop if we come to a literal
-            if ($resource instanceof EasyRdf_Literal)
+            if ($resource instanceof EasyRdf_Literal) {
                 return null;
+            }
 
             // Try each of the alternative paths
             foreach (explode('|', $part) as $p) {
                 $res = $this->getSingleProperty($resource, $p, $type, $lang);
-                if ($res) break;
+                if ($res) {
+                    break;
+                }
             }
 
             // Stop if nothing was found
             $resource = $res;
-            if (!$resource)
+            if (!$resource) {
                 break;
+            }
         }
 
         return $resource;
@@ -681,11 +690,13 @@ class EasyRdf_Graph
     {
         // Is an inverse property being requested?
         if ($inverse) {
-            if (isset($this->revIndex[$resource]))
+            if (isset($this->revIndex[$resource])) {
                 $properties = &$this->revIndex[$resource];
+            }
         } else {
-            if (isset($this->index[$resource]))
+            if (isset($this->index[$resource])) {
                 $properties = &$this->index[$resource];
+            }
         }
 
         if (isset($properties[$property])) {
@@ -748,8 +759,9 @@ class EasyRdf_Graph
             foreach (explode('|', $part) as $p) {
                 foreach ($objects as $o) {
                     // Ignore literals found earlier in path
-                    if ($o instanceof EasyRdf_Literal)
+                    if ($o instanceof EasyRdf_Literal) {
                         continue;
+                    }
 
                     $results = array_merge(
                         $results,
@@ -759,8 +771,9 @@ class EasyRdf_Graph
             }
 
             // Stop if we don't have anything
-            if (empty($objects))
+            if (empty($objects)) {
                 break;
+            }
 
             // Use the results as the input to the next iteration
             $objects = $results;
@@ -794,11 +807,13 @@ class EasyRdf_Graph
         if ($type) {
             foreach ($values as $value) {
                 if ($type == 'literal' and $value['type'] == 'literal') {
-                    if ($lang == null or (isset($value['lang']) and $value['lang'] == $lang))
+                    if ($lang == null or (isset($value['lang']) and $value['lang'] == $lang)) {
                         $objects[] = $this->arrayToObject($value);
+                    }
                 } elseif ($type == 'resource') {
-                    if ($value['type'] == 'uri' or $value['type'] == 'bnode')
+                    if ($value['type'] == 'uri' or $value['type'] == 'bnode') {
                         $objects[] = $this->arrayToObject($value);
+                    }
                 }
             }
         } else {
@@ -898,14 +913,16 @@ class EasyRdf_Graph
         $this->checkValueParam($value);
 
         // No value given?
-        if ($value === null)
+        if ($value === null) {
             return 0;
+        }
 
         // Check that the value doesn't already exist
         if (isset($this->index[$resource][$property])) {
             foreach ($this->index[$resource][$property] as $v) {
-                if ($v == $value)
+                if ($v == $value) {
                     return 0;
+                }
             }
         }
         $this->index[$resource][$property][] = $value;
@@ -961,8 +978,9 @@ class EasyRdf_Graph
                     'value' => $value,
                     'datatype' => EasyRdf_Literal::getDatatypeForValue($value)
                 );
-                if (empty($value['datatype']))
+                if (empty($value['datatype'])) {
                     unset($value['datatype']);
+                }
             }
             return $this->add($resource, $property, $value);
         }
@@ -1045,10 +1063,12 @@ class EasyRdf_Graph
 
             // Clean up the indexes - remove empty properties and resources
             if ($count) {
-                if (count($this->index[$resource][$property]) == 0)
+                if (count($this->index[$resource][$property]) == 0) {
                     unset($this->index[$resource][$property]);
-                if (count($this->index[$resource]) == 0)
+                }
+                if (count($this->index[$resource]) == 0) {
                     unset($this->index[$resource]);
+                }
             }
         }
 
@@ -1119,10 +1139,12 @@ class EasyRdf_Graph
                     unset($this->revIndex[$resource][$property][$k]);
                 }
             }
-            if (count($this->revIndex[$resource][$property]) == 0)
+            if (count($this->revIndex[$resource][$property]) == 0) {
                 unset($this->revIndex[$resource][$property]);
-            if (count($this->revIndex[$resource]) == 0)
+            }
+            if (count($this->revIndex[$resource]) == 0) {
                 unset($this->revIndex[$resource]);
+            }
         }
     }
 
@@ -1149,8 +1171,9 @@ class EasyRdf_Graph
         if (isset($this->index[$resource])) {
             foreach ($this->index[$resource] as $property => $value) {
                 $short = EasyRdf_Namespace::shorten($property);
-                if ($short)
+                if ($short) {
                     $properties[] = $short;
+                }
             }
         }
         return $properties;
@@ -1219,8 +1242,9 @@ class EasyRdf_Graph
                 return true;
             } else {
                 foreach ($index[$resource][$property] as $v) {
-                    if ($v == $value)
+                    if ($v == $value) {
                         return true;
+                    }
                 }
             }
         }
@@ -1304,8 +1328,9 @@ class EasyRdf_Graph
             }
 
             $pstr = EasyRdf_Namespace::shorten($property);
-            if ($pstr == null)
+            if ($pstr == null) {
                 $pstr = $property;
+            }
             if ($html) {
                 $plist []= "<span style='font-size:130%'>&rarr;</span> ".
                            "<span style='text-decoration:none;color:green'>".
@@ -1348,8 +1373,9 @@ class EasyRdf_Graph
 
         if ($resource) {
             $type = $this->get($resource, 'rdf:type', 'resource');
-            if ($type)
+            if ($type) {
                 return EasyRdf_Namespace::shorten($type);
+            }
         }
 
         return null;
@@ -1425,8 +1451,9 @@ class EasyRdf_Graph
     {
         $this->checkResourceParam($resource, true);
 
-        if (!is_array($types))
+        if (!is_array($types)) {
             $types = array($types);
+        }
 
         $count = 0;
         foreach ($types as $type) {

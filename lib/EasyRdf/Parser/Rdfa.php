@@ -66,8 +66,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function addTriple($resource, $property, $value)
     {
-        if ($this->debug)
+        if ($this->debug) {
             print "Adding triple: $resource -> $property -> ".$value['type'].':'.$value['value']."\n";
+        }
         $count = $this->graph->add($resource, $property, $value);
         $this->tripleCount += $count;
         return $count;
@@ -98,12 +99,14 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function addToList($listMapping, $property, $value)
     {
-        if ($this->debug)
+        if ($this->debug) {
             print "Adding to list: $property -> ".$value['type'].':'.$value['value']."\n";
+        }
 
         // Create property in the list mapping if it doesn't already exist
-        if (!isset($listMapping->$property))
-           $listMapping->$property = array();
+        if (!isset($listMapping->$property)) {
+            $listMapping->$property = array();
+        }
         array_push($listMapping->$property, $value);
     }
 
@@ -261,36 +264,43 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
     protected function processUriList($node, $context, $values)
     {
-        if (!$values)
+        if (!$values) {
             return array();
+        }
 
         $uris = array();
         foreach (preg_split("/\s+/", $values) as $value) {
             $uri = $this->processUri($node, $context, $value, true);
-            if ($uri) array_push($uris, $uri);
+            if ($uri) {
+                array_push($uris, $uri);
+            }
         }
         return $uris;
     }
 
     protected function getUriAttribute($node, &$context, $attributes)
     {
-        if (!is_array($attributes))
+        if (!is_array($attributes)) {
             $attributes = array($attributes);
+        }
 
         // Find the first attribute that returns a valid URI
         foreach ($attributes as $attribute) {
             if ($node->hasAttribute($attribute)) {
                 $value = $node->getAttribute($attribute);
                 $uri = $this->processUri($node, $context, $value);
-                if ($uri) return $uri;
+                if ($uri) {
+                    return $uri;
+                }
             }
         }
     }
 
     protected function processNode($node, &$context, $depth = 1)
     {
-        if ($this->debug)
+        if ($this->debug) {
             $this->printNode($node, $depth);
+        }
 
         // Step 1: establish local variables
         $skip = false;
@@ -328,8 +338,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             foreach ($context['xmlns'] as $prefix => $uri) {
                 if ($node->hasAttribute('xmlns:' . $prefix)) {
                     $context['prefixes'][$prefix] = $node->getAttribute('xmlns:' . $prefix);
-                    if ($this->debug)
+                    if ($this->debug) {
                         print "Prefix (xmlns): $prefix => $uri\n";
+                    }
                 }
             }
             if ($node->hasAttribute('prefix')) {
@@ -348,8 +359,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                         continue;
                     } elseif (!empty($prefix)) {
                         $context['prefixes'][$prefix] = $uri;
-                        if ($this->debug)
+                        if ($this->debug) {
                             print "Prefix: $prefix => $uri\n";
+                        }
                     }
                 }
             }
@@ -371,8 +383,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                             $context,
                             array('resource', 'href', 'src')
                         );
-                        if (!$typedResource)
+                        if (!$typedResource) {
                             $typedResource = $this->graph->newBNodeId();
+                        }
                         $object = $typedResource;
                     }
                 } else {
@@ -393,8 +406,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     } elseif ($typeof and !$property) {
                         $subject = $this->graph->newBNodeId();
                     } else {
-                        if (!$property)
+                        if (!$property) {
                             $skip = true;
+                        }
                         $subject = $context['object'];
                     }
                 }
@@ -413,8 +427,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 );
 
                 if ($typeof) {
-                    if (!$object and !$subject)
+                    if (!$object and !$subject) {
                         $object = $this->graph->newBNodeId();
+                    }
                     $typedResource = $subject ? $subject : $object;
                 }
 
@@ -482,15 +497,17 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                         }
                     } else {
                         $incompleteRels = $rels;
-                        if ($this->debug)
+                        if ($this->debug) {
                             print "Incomplete rels: ".implode(',', $rels)."\n";
+                        }
                     }
                 }
 
                 if ($revs) {
                     $incompleteRevs = $revs;
-                    if ($this->debug)
+                    if ($this->debug) {
                         print "Incomplete revs: ".implode(',', $revs)."\n";
+                    }
                 }
             }
 
@@ -523,8 +540,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                         array('resource', 'href', 'src')
                     );
 
-                    if ($value['value'])
+                    if ($value['value']) {
                         $value['type'] = 'uri';
+                    }
                 }
 
                 if (empty($value['value']) and $typedResource and !$node->hasAttribute('about')) {
@@ -593,20 +611,23 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 } else {
                     $newContext['object'] = $context['subject'];
                 }
-                if ($subject)
+                if ($subject) {
                     $newContext['subject'] = $subject;
+                }
                 $newContext['incompleteRels'] = $incompleteRels;
                 $newContext['incompleteRevs'] = $incompleteRevs;
-                if (isset($listMapping))
+                if (isset($listMapping)) {
                     $newContext['listMapping'] = $listMapping;
+                }
             }
 
             // The language is always updated, even if skip is set
             $newContext['lang'] = $lang;
 
             foreach ($node->childNodes as $child) {
-                if ($child->nodeType === XML_ELEMENT_NODE)
+                if ($child->nodeType === XML_ELEMENT_NODE) {
                     $this->processNode($child, $newContext, $depth+1);
+                }
             }
         }
 
@@ -614,8 +635,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         if (!empty($listMapping)) {
             foreach ($listMapping as $prop => $list) {
                 if ($context['listMapping'] !== $listMapping) {
-                    if ($this->debug)
+                    if ($this->debug) {
                         print "Need to create triples for $prop => ".count($list)." items\n";
+                    }
                     $this->generateList($subject, $prop, $list);
                 }
             }
@@ -651,16 +673,18 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         // Attempt to parse the document as strict XML, and fall back to HTML
         // if XML parsing fails.
         if ($doc->loadXML($data, LIBXML_NONET)) {
-            if ($this->debug)
+            if ($this->debug) {
                 print "Document was parsed as XML.";
+            }
             // Collect all xmlns namespaces defined throughout the document.
             $sxe = simplexml_import_dom($doc);
             $context['xmlns'] = $sxe->getDocNamespaces(true);
             unset($context['xmlns']['']);
         } else {
             $doc->loadHTML($data);
-            if ($this->debug)
+            if ($this->debug) {
                 print "Document was parsed as HTML.";
+            }
         }
 
         // Establish the base for both XHTML and HTML documents.

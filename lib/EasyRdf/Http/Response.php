@@ -246,10 +246,9 @@ class EasyRdf_Http_Response
 
         // Iterate over the headers and stringify them
         foreach ($this->headers as $name => $value) {
-            if (is_string($value))
+            if (is_string($value)) {
                 $str .= "{$name}: {$value}{$br}";
-
-            elseif (is_array($value)) {
+            } elseif (is_array($value)) {
                 foreach ($value as $subval) {
                     $str .= "{$name}: {$subval}{$br}";
                 }

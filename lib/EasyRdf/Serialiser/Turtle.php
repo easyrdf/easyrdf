@@ -157,8 +157,9 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 
             $oCount = 0;
             foreach ($res->all("<$property>") as $object) {
-                if ($oCount)
+                if ($oCount) {
                     $turtle .= ',';
+                }
 
                 if ($object instanceof EasyRdf_Resource and $object->isBnode()) {
                     $id = $object->getNodeId();
@@ -183,8 +184,9 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 
         if ($depth == 1) {
             $turtle .= " .";
-            if ($pCount > 1)
+            if ($pCount > 1) {
                 $turtle .= "\n";
+            }
         } elseif ($pCount > 1) {
             $turtle .= "\n" . str_repeat(' ', (($depth-1)*2)-1);
         }
@@ -229,8 +231,9 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         foreach ($graph->resources() as $resource) {
             // If the resource has no properties - don't serialise it
             $properties = $resource->propertyUris();
-            if (count($properties) == 0)
+            if (count($properties) == 0) {
                 continue;
+            }
 
             if ($resource->isBnode()) {
                 $id = $resource->getNodeId();

@@ -307,8 +307,9 @@ class EasyRdf_Sparql_Result extends ArrayIterator
                 foreach ($bindings as $binding) {
                     $key = $binding->getAttribute('name');
                     foreach ($binding->childNodes as $node) {
-                        if ($node->nodeType != XML_ELEMENT_NODE)
+                        if ($node->nodeType != XML_ELEMENT_NODE) {
                             continue;
+                        }
                         $t->$key = $this->newTerm(
                             array(
                                 'type' => $node->nodeName,

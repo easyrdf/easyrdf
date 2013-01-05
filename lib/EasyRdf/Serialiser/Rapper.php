@@ -82,7 +82,9 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
         $ntriples = parent::serialise($graph, 'ntriples');
 
         // Hack to produce more concise RDF/XML
-        if ($format == 'rdfxml') $format = 'rdfxml-abbrev';
+        if ($format == 'rdfxml') {
+            $format = 'rdfxml-abbrev';
+        }
 
         return EasyRdf_Utils::execCommandPipe(
             $this->rapperCmd,

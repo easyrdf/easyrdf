@@ -166,9 +166,13 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function splitURI($v)
     {
         /* auto-splitting on / or # */
-        if (preg_match('/^(.*[\/\#])([^\/\#]+)$/', $v, $m)) return array($m[1], $m[2]);
+        if (preg_match('/^(.*[\/\#])([^\/\#]+)$/', $v, $m)) {
+            return array($m[1], $m[2]);
+        }
         /* auto-splitting on last special char, e.g. urn:foo:bar */
-        if (preg_match('/^(.*[\:\/])([^\:\/]+)$/', $v, $m)) return array($m[1], $m[2]);
+        if (preg_match('/^(.*[\:\/])([^\:\/]+)$/', $v, $m)) {
+            return array($m[1], $m[2]);
+        }
         return array($v, '');
     }
 

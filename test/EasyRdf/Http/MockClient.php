@@ -111,14 +111,17 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
     {
         $url = $parts['scheme'] . '://';
         $url .= $parts['host'];
-        if (isset($parts['port']))
+        if (isset($parts['port'])) {
             $url .= ':' . $parts['port'];
-        if (isset($parts['path']))
+        }
+        if (isset($parts['path'])) {
             $url .= $parts['path'];
-        else
+        } else {
             $url .= '/';
-        if (isset($parts['query']))
+        }
+        if (isset($parts['query'])) {
             $url .= '?' . $parts['query'];
+        }
         return $url;
     }
 
