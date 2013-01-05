@@ -110,9 +110,19 @@ require_once "EasyRdf/Literal/Decimal.php";
 require_once "EasyRdf/Literal/HexBinary.php";
 
 /**
+ * @see EasyRdf_Literal_HTML
+ */
+require_once "EasyRdf/Literal/HTML.php";
+
+/**
  * @see EasyRdf_Literal_Integer
  */
 require_once "EasyRdf/Literal/Integer.php";
+
+/**
+ * @see EasyRdf_Literal_XML
+ */
+require_once "EasyRdf/Literal/XML.php";
 
 /**
  * @see EasyRdf_ParsedUri
