@@ -79,5 +79,4 @@ class EasyRdf_Http
             self::$_defaultHttpClient = new EasyRdf_Http_Client();
         return self::$_defaultHttpClient;
     }
-
 }

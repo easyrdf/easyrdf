@@ -224,5 +224,4 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             $this->_graphStore
         );
     }
-
 }

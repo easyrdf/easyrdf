@@ -89,5 +89,4 @@ class Examples_SparqlqueryformTest extends EasyRdf_TestCase
         $this->assertContains('| http://dbpedia.org/resource/China', $output);
         $this->assertContains('| &quot;China&quot;@en', $output);
     }
-
 }

@@ -73,5 +73,4 @@ class Examples_FoafinfoTest extends EasyRdf_TestCase
         $this->assertContains("<h2>Interests</h2>", $output);
         $this->assertContains(">RDF</a></li>", $output);
     }
-
 }

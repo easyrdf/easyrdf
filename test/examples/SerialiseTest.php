@@ -77,5 +77,4 @@ class Examples_SerialiseTest extends EasyRdf_TestCase
         $this->assertContains('<title>EasyRdf Serialiser Example</title>', $output);
         $this->assertContains("'value' =&gt; 'http://xmlns.com/foaf/0.1/Person',", $output);
     }
-
 }

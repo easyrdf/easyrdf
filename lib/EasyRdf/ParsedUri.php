@@ -328,5 +328,4 @@ class EasyRdf_ParsedUri
     {
         return $this->toString();
     }
-
 }

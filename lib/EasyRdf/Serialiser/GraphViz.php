@@ -374,5 +374,4 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
                 );
         }
     }
-
 }

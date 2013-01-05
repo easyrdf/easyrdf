@@ -85,5 +85,4 @@ class Examples_FoafmakerTest extends EasyRdf_TestCase
             $output
         );
     }
-
 }

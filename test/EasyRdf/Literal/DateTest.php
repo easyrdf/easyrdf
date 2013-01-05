@@ -57,5 +57,4 @@ class EasyRdf_Literal_DateTest extends EasyRdf_TestCase
         $literal = new EasyRdf_Literal_Date('2011-08-05');
         $this->assertSame(5, $literal->day());
     }
-
 }

@@ -213,5 +213,4 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         return "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
                "<rdf:RDF". $namespaceStr . ">\n" . $xml . "\n</rdf:RDF>\n";
     }
-
 }

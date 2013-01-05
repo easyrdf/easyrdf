@@ -136,5 +136,4 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
             }
         }
     }
-
 }

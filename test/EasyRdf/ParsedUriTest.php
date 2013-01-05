@@ -678,5 +678,4 @@ class EasyRdf_ParsedUriTest extends EasyRdf_TestCase
             $this->baseUri->resolve("http:g")
         );
     }
-
 }

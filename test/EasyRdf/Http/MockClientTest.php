@@ -230,5 +230,4 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
         $r = $this->get('http://example.com');
         $this->assertSame('application/json', $r->getHeader('Content-Type'));
     }
-
 }

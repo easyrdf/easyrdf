@@ -359,5 +359,4 @@ class EasyRdf_Http_Response
     {
         return $this->asString();
     }
-
 }

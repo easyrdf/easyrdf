@@ -96,5 +96,4 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
         $this->assertSame(null, $modulus->getLang());
         $this->assertSame('xsd:hexBinary', $modulus->getDatatype());
     }
-
 }

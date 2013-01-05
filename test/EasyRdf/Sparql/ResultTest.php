@@ -394,5 +394,4 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         );
         $result = new EasyRdf_Sparql_Result('foobar', 'foo/bar');
     }
-
 }

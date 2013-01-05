@@ -675,5 +675,4 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
         return $this->_tripleCount;
     }
-
 }

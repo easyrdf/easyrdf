@@ -237,5 +237,4 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
         $this->assertSame(null, $this->_client->getHeader('Content-Type'));
         $this->assertSame(null, $this->_client->getHeader('Accept-Language'));
     }
-
 }

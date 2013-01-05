@@ -238,5 +238,4 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
             'Response convertion to string does not match original string'
         );
     }
-
 }

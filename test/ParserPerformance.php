@@ -65,5 +65,4 @@ foreach ($documents as $filename => $type) {
 
         unset($graph);
     }
-
 }

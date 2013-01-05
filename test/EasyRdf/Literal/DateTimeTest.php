@@ -86,5 +86,4 @@ class EasyRdf_Literal_DateTimeTest extends EasyRdf_TestCase
             '2010-09-08T07:06:05Z', $this->_dt
         );
     }
-
 }

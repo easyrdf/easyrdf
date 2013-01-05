@@ -218,5 +218,4 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             $this->_sparql
         );
     }
-
 }
