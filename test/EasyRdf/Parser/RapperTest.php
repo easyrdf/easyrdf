@@ -43,17 +43,17 @@ require_once 'EasyRdf/Parser/Rapper.php';
 
 class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 {
-    protected $_parser = null;
-    protected $_graph = null;
-    protected $_data = null;
+    protected $parser = null;
+    protected $graph = null;
+    protected $data = null;
 
     public function setUp()
     {
         exec('rapper --version 2>/dev/null', $output, $retval);
         if ($retval == 0) {
-            $this->_parser = new EasyRdf_Parser_Rapper();
-            $this->_graph = new EasyRdf_Graph();
-            $this->_data = readFixture('foaf.rdf');
+            $this->parser = new EasyRdf_Parser_Rapper();
+            $this->graph = new EasyRdf_Graph();
+            $this->data = readFixture('foaf.rdf');
         } else {
             $this->markTestSkipped(
                 "The rapper command is not available on this system."
@@ -81,15 +81,15 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
     public function testParseRdfXml()
     {
-        $count = $this->_parser->parse(
-            $this->_graph,
-            $this->_data,
+        $count = $this->parser->parse(
+            $this->graph,
+            $this->data,
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
         $this->assertSame(14, $count);
 
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
         $this->assertClass('EasyRdf_Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
@@ -101,15 +101,15 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
 
-        $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
+        $foaf = $this->graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
 
     public function testParseEmpty()
     {
-        $count = $this->_parser->parse(
-            $this->_graph,
+        $count = $this->parser->parse(
+            $this->graph,
             readFixture('empty.rdf'),
             'rdfxml',
             'http://www.example.com/empty.rdf'
@@ -117,20 +117,20 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
         // Should be empty but no exception thrown
         $this->assertSame(0, $count);
-        $this->assertSame(0, $this->_graph->countTriples());
+        $this->assertSame(0, $this->graph->countTriples());
     }
 
     public function testParseXMLLiteral()
     {
-        $count = $this->_parser->parse(
-            $this->_graph,
+        $count = $this->parser->parse(
+            $this->graph,
             readFixture('xml_literal.rdf'),
             'rdfxml',
             'http://www.example.com/'
         );
         $this->assertSame(2, $count);
 
-        $doc = $this->_graph->resource('http://www.example.com/');
+        $doc = $this->graph->resource('http://www.example.com/');
         $this->assertSame('foaf:Document', $doc->type());
         $description = $doc->get('dc:description');
         $this->assertSame('rdf:XMLLiteral', $description->getDataType());
@@ -146,9 +146,9 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'Error while executing command rapper'
         );
-        $rdf = $this->_parser->parse(
-            $this->_graph,
-            $this->_data,
+        $rdf = $this->parser->parse(
+            $this->graph,
+            $this->data,
             'unsupportedformat',
             null
         );

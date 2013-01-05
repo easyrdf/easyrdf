@@ -46,16 +46,16 @@
 class EasyRdf_Parser
 {
     /** Mapping from source to graph bnode identifiers */
-    private $_bnodeMap = array();
+    private $bnodeMap = array();
 
     /** The current graph to insert triples into */
-    protected $_graph = null;
+    protected $graph = null;
 
     /** The format of the document currently being parsed */
-    protected $_format = null;
+    protected $format = null;
 
     /** The base URI for the document currently being parsed */
-    protected $_baseUri = null;
+    protected $baseUri = null;
 
     /**
      * Create a new, unique bnode identifier from a source identifier.
@@ -65,10 +65,10 @@ class EasyRdf_Parser
      */
     protected function remapBnode($name)
     {
-        if (!isset($this->_bnodeMap[$name])) {
-            $this->_bnodeMap[$name] = $this->_graph->newBNodeId();
+        if (!isset($this->bnodeMap[$name])) {
+            $this->bnodeMap[$name] = $this->graph->newBNodeId();
         }
-        return $this->_bnodeMap[$name];
+        return $this->bnodeMap[$name];
     }
 
     /**
@@ -77,7 +77,7 @@ class EasyRdf_Parser
      */
     protected function resetBnodeMap()
     {
-        $this->_bnodeMap = array();
+        $this->bnodeMap = array();
     }
 
     /**
@@ -92,7 +92,7 @@ class EasyRdf_Parser
                 "\$graph should be an EasyRdf_Graph object and cannot be null"
             );
         } else {
-            $this->_graph = $graph;
+            $this->graph = $graph;
         }
 
         if ($format == null or $format == '') {
@@ -100,13 +100,13 @@ class EasyRdf_Parser
                 "\$format cannot be null or empty"
             );
         } elseif (is_object($format) and $format instanceof EasyRdf_Format) {
-            $this->_format = $format = $format->getName();
+            $this->format = $format = $format->getName();
         } elseif (!is_string($format)) {
             throw new InvalidArgumentException(
                 "\$format should be a string or an EasyRdf_Format object"
             );
         } else {
-            $this->_format = $format;
+            $this->format = $format;
         }
 
         if ($baseUri) {
@@ -115,15 +115,15 @@ class EasyRdf_Parser
                     "\$baseUri should be a string"
                 );
             } else {
-                $this->_baseUri = new EasyRdf_ParsedUri($baseUri);
+                $this->baseUri = new EasyRdf_ParsedUri($baseUri);
             }
         } else {
-            $this->_baseUri = null;
+            $this->baseUri = null;
         }
 
         // Prepare for parsing
         $this->resetBnodeMap();
-        $this->_tripleCount = 0;
+        $this->tripleCount = 0;
     }
 
     /**
@@ -143,8 +143,8 @@ class EasyRdf_Parser
      */
     protected function addTriple($resource, $property, $value)
     {
-        $count = $this->_graph->add($resource, $property, $value);
-        $this->_tripleCount += $count;
+        $count = $this->graph->add($resource, $property, $value);
+        $this->tripleCount += $count;
         return $count;
     }
 }

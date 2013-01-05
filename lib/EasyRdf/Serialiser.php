@@ -45,7 +45,7 @@
  */
 class EasyRdf_Serialiser
 {
-    protected $_prefixes = array();
+    protected $prefixes = array();
 
     /**
      * Keep track of the prefixes used while serialising
@@ -54,7 +54,7 @@ class EasyRdf_Serialiser
     protected function addPrefix($qname)
     {
         list ($prefix) = explode(':', $qname);
-        $this->_prefixes[$prefix] = true;
+        $this->prefixes[$prefix] = true;
     }
 
     /**

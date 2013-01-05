@@ -107,7 +107,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
             return $this->unescapeString($matches[1]);
         } elseif (preg_match('/_:([A-Za-z0-9]*)/', $sub, $matches)) {
             if (empty($matches[1])) {
-                return $this->_graph->newBNodeId();
+                return $this->graph->newBNodeId();
             } else {
                 $nodeid = $this->unescapeString($matches[1]);
                 return $this->remapBnode($nodeid);
@@ -144,7 +144,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
             if (empty($matches[1])) {
                 return array(
                     'type' => 'bnode',
-                    'value' => $this->_graph->newBNodeId()
+                    'value' => $this->graph->newBNodeId()
                 );
             } else {
                 $nodeid = $this->unescapeString($matches[1]);
@@ -192,6 +192,6 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
             }
         }
 
-        return $this->_tripleCount;
+        return $this->tripleCount;
     }
 }

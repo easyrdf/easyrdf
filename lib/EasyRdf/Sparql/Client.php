@@ -46,10 +46,10 @@
 class EasyRdf_Sparql_Client
 {
     /** The address of the SPARQL Endpoint */
-    private $_uri = null;
+    private $uri = null;
 
     /** Configuration settings */
-    private $_config = array();
+    private $config = array();
 
 
     /** Create a new SPARQL endpoint client
@@ -58,7 +58,7 @@ class EasyRdf_Sparql_Client
      */
     public function __construct($uri)
     {
-        $this->_uri = $uri;
+        $this->uri = $uri;
     }
 
     /** Get the URI of the SPARQL endpoint
@@ -67,7 +67,7 @@ class EasyRdf_Sparql_Client
      */
     public function getUri()
     {
-        return $this->_uri;
+        return $this->uri;
     }
 
     /** Make a query to the SPARQL endpoint
@@ -94,7 +94,7 @@ class EasyRdf_Sparql_Client
 
         $client = EasyRdf_Http::getDefaultHttpClient();
         $client->resetParameters();
-        $client->setUri($this->_uri);
+        $client->setUri($this->uri);
         $client->setMethod('GET');
 
         $accept = EasyRdf_Format::getHttpAcceptHeader(
@@ -114,7 +114,7 @@ class EasyRdf_Sparql_Client
             if (strpos($type, 'application/sparql-results') === 0) {
                 return new EasyRdf_Sparql_Result($response->getBody(), $type);
             } else {
-                return new EasyRdf_Graph($this->_uri, $response->getBody(), $type);
+                return new EasyRdf_Graph($this->uri, $response->getBody(), $type);
             }
         } else {
             throw new EasyRdf_Exception(
@@ -129,6 +129,6 @@ class EasyRdf_Sparql_Client
      */
     public function __toString()
     {
-        return $this->_uri == null ? '' : $this->_uri;
+        return $this->uri == null ? '' : $this->uri;
     }
 }

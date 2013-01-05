@@ -47,8 +47,8 @@
 class EasyRdf_GraphStore
 {
     /** The address of the GraphStore endpoint */
-    private $_uri = null;
-    private $_parsedUri = null;
+    private $uri = null;
+    private $parsedUri = null;
 
 
     /** Create a new SPARQL Graph Store client
@@ -57,8 +57,8 @@ class EasyRdf_GraphStore
      */
     public function __construct($uri)
     {
-        $this->_uri = $uri;
-        $this->_parsedUri = new EasyRdf_ParsedUri($uri);
+        $this->uri = $uri;
+        $this->parsedUri = new EasyRdf_ParsedUri($uri);
     }
 
     /** Get the URI of the graph store
@@ -67,7 +67,7 @@ class EasyRdf_GraphStore
      */
     public function getUri()
     {
-        return $this->_uri;
+        return $this->uri;
     }
 
     /** Fetch a named graph from the graph store
@@ -80,7 +80,7 @@ class EasyRdf_GraphStore
      */
     public function get($uriRef)
     {
-        $graphUri = $this->_parsedUri->resolve($uriRef)->toString();
+        $graphUri = $this->parsedUri->resolve($uriRef)->toString();
         $dataUrl = $this->urlForGraph($graphUri);
         $graph = new EasyRdf_Graph($graphUri);
         $graph->load($dataUrl);
@@ -106,7 +106,7 @@ class EasyRdf_GraphStore
         $formatObj = EasyRdf_Format::getFormat($format);
         $mimeType = $formatObj->getDefaultMimeType();
 
-        $graphUri = $this->_parsedUri->resolve($uriRef)->toString();
+        $graphUri = $this->parsedUri->resolve($uriRef)->toString();
         $dataUrl = $this->urlForGraph($graphUri);
 
         $client = EasyRdf_Http::getDefaultHttpClient();
@@ -177,7 +177,7 @@ class EasyRdf_GraphStore
      */
     public function delete($uriRef)
     {
-        $graphUri = $this->_parsedUri->resolve($uriRef)->toString();
+        $graphUri = $this->parsedUri->resolve($uriRef)->toString();
         $dataUrl = $this->urlForGraph($graphUri);
 
         $client = EasyRdf_Http::getDefaultHttpClient();
@@ -199,8 +199,8 @@ class EasyRdf_GraphStore
      */
     protected function urlForGraph($url)
     {
-        if (strpos($url, $this->_uri) === false) {
-            $url = $this->_uri."?graph=".urlencode($url);
+        if (strpos($url, $this->uri) === false) {
+            $url = $this->uri."?graph=".urlencode($url);
         }
         return $url;
     }
@@ -211,6 +211,6 @@ class EasyRdf_GraphStore
      */
     public function __toString()
     {
-        return empty($this->_uri) ? '' : $this->_uri;
+        return empty($this->uri) ? '' : $this->uri;
     }
 }

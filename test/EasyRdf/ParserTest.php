@@ -55,18 +55,18 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
      */
     public function setUp()
     {
-        $this->_graph = new EasyRdf_Graph();
-        $this->_resource = $this->_graph->resource('http://www.example.com/');
-        $this->_parser = new MockParser();
-        $this->_data = readFixture('foaf.json');
+        $this->graph = new EasyRdf_Graph();
+        $this->resource = $this->graph->resource('http://www.example.com/');
+        $this->parser = new MockParser();
+        $this->data = readFixture('foaf.json');
     }
 
     public function testParse()
     {
         $this->assertTrue(
-            $this->_parser->parse(
-                $this->_graph,
-                $this->_data,
+            $this->parser->parse(
+                $this->graph,
+                $this->data,
                 'json',
                 null
             )
@@ -77,9 +77,9 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
     {
         $format = EasyRdf_Format::getFormat('json');
         $this->assertTrue(
-            $this->_parser->parse(
-                $this->_graph,
-                $this->_data,
+            $this->parser->parse(
+                $this->graph,
+                $this->data,
                 $format,
                 null
             )
@@ -92,7 +92,7 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$graph should be an EasyRdf_Graph object and cannot be null'
         );
-        $this->_parser->parse(null, $this->_data, 'json', null);
+        $this->parser->parse(null, $this->data, 'json', null);
     }
 
     public function testParseNonObjectGraph()
@@ -101,7 +101,7 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$graph should be an EasyRdf_Graph object and cannot be null'
         );
-        $this->_parser->parse('string', $this->_data, 'json', null);
+        $this->parser->parse('string', $this->data, 'json', null);
     }
 
     public function testParseNonGraph()
@@ -110,20 +110,20 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$graph should be an EasyRdf_Graph object and cannot be null'
         );
-        $this->_parser->parse($this->_resource, $this->_data, 'json', null);
+        $this->parser->parse($this->resource, $this->data, 'json', null);
     }
 
     public function testParseNullData()
     {
         $this->assertTrue(
-            $this->_parser->parse($this->_graph, null, 'json', null)
+            $this->parser->parse($this->graph, null, 'json', null)
         );
     }
 
     public function testParseEmptyData()
     {
         $this->assertTrue(
-            $this->_parser->parse($this->_graph, '', 'json', null)
+            $this->parser->parse($this->graph, '', 'json', null)
         );
     }
 
@@ -133,7 +133,7 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$format cannot be null or empty'
         );
-        $this->_parser->parse($this->_graph, $this->_data, null, null);
+        $this->parser->parse($this->graph, $this->data, null, null);
     }
 
     public function testParseEmptyFormat()
@@ -142,7 +142,7 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$format cannot be null or empty'
         );
-        $this->_parser->parse($this->_graph, $this->_data, '', null);
+        $this->parser->parse($this->graph, $this->data, '', null);
     }
 
     public function testParseBadObjectFormat()
@@ -151,7 +151,7 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$format should be a string or an EasyRdf_Format object'
         );
-        $this->_parser->parse($this->_graph, $this->_data, $this, null);
+        $this->parser->parse($this->graph, $this->data, $this, null);
     }
 
     public function testParseIntegerFormat()
@@ -160,7 +160,7 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$format should be a string or an EasyRdf_Format object'
         );
-        $this->_parser->parse($this->_graph, $this->_data, 1, null);
+        $this->parser->parse($this->graph, $this->data, 1, null);
     }
 
     public function testParseNonStringBaseUri()
@@ -169,7 +169,7 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$baseUri should be a string'
         );
-        $this->_parser->parse($this->_graph, $this->_data, 'json', 1);
+        $this->parser->parse($this->graph, $this->data, 'json', 1);
     }
 
     public function testParseUndefined()
@@ -179,6 +179,6 @@ class EasyRdf_ParserTest extends EasyRdf_TestCase
             'This method should be overridden by sub-classes.'
         );
         $parser = new EasyRdf_Parser();
-        $parser->parse($this->_graph, 'data', 'format', 'baseUri');
+        $parser->parse($this->graph, 'data', 'format', 'baseUri');
     }
 }

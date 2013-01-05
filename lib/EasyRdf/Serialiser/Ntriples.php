@@ -46,7 +46,7 @@
  */
 class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
 {
-    private $_escChars = array();   // Character encoding cache
+    private $escChars = array();   // Character encoding cache
 
     /**
      * @ignore
@@ -61,10 +61,10 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
         $strLen = strlen($str);
         for ($i = 0; $i < $strLen; $i++) {
             $c = $str[$i];
-            if (!isset($this->_escChars[$c])) {
-                $this->_escChars[$c] = $this->escapedChar($c);
+            if (!isset($this->escChars[$c])) {
+                $this->escChars[$c] = $this->escapedChar($c);
             }
-            $result .= $this->_escChars[$c];
+            $result .= $this->escChars[$c];
         }
         return $result;
     }

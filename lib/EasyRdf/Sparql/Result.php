@@ -45,12 +45,12 @@
  */
 class EasyRdf_Sparql_Result extends ArrayIterator
 {
-    private $_type = null;
-    private $_boolean = null;
+    private $type = null;
+    private $boolean = null;
 
-    private $_ordered = null;
-    private $_distinct = null;
-    private $_fields = array();
+    private $ordered = null;
+    private $distinct = null;
+    private $fields = array();
 
     /** A constant for the SPARQL Query Results XML Format namespace */
     const SPARQL_XML_RESULTS_NS = 'http://www.w3.org/2005/sparql-results#';
@@ -86,7 +86,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
 
     /** Return the boolean value of the query result
@@ -99,7 +99,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      */
     public function getBoolean()
     {
-        return $this->_boolean;
+        return $this->boolean;
     }
 
     /** Return true if the result of the query was true.
@@ -108,7 +108,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      */
     public function isTrue()
     {
-        return $this->_boolean == true;
+        return $this->boolean == true;
     }
 
     /** Return false if the result of the query was false.
@@ -117,7 +117,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      */
     public function isFalse()
     {
-        return $this->_boolean == false;
+        return $this->boolean == false;
     }
 
     /** Return the number of fields in a query result of type bindings.
@@ -126,7 +126,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      */
     public function numFields()
     {
-        return count($this->_fields);
+        return count($this->fields);
     }
 
     /** Return the number of rows in a query result of type bindings.
@@ -144,7 +144,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      */
     public function getFields()
     {
-        return $this->_fields;
+        return $this->fields;
     }
 
     /** Return a human readable view of the query result.
@@ -156,12 +156,12 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      */
     public function dump($html = true)
     {
-        if ($this->_type == 'bindings') {
+        if ($this->type == 'bindings') {
             $result = '';
             if ($html) {
                 $result .= "<table class='sparql-results' style='border-collapse:collapse'>";
                 $result .= "<tr>";
-                foreach ($this->_fields as $field) {
+                foreach ($this->fields as $field) {
                     $result .= "<th style='border:solid 1px #000;padding:4px;".
                                "vertical-align:top;background-color:#eee;'>".
                                "?$field</th>";
@@ -169,7 +169,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
                 $result .= "</tr>";
                 foreach ($this as $row) {
                     $result .= "<tr>";
-                    foreach ($this->_fields as $field) {
+                    foreach ($this->fields as $field) {
                         $result .= "<td style='border:solid 1px #000;padding:4px;".
                                    "vertical-align:top'>".
                                    $row->$field->dumpValue($html)."</td>";
@@ -180,7 +180,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
             } else {
                 // First calculate the width of each comment
                 $colWidths = array();
-                foreach ($this->_fields as $field) {
+                foreach ($this->fields as $field) {
                     $colWidths[$field] = strlen($field);
                 }
 
@@ -205,7 +205,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
 
                 // Output the field names
                 $result .= "$hr\n|";
-                foreach ($this->_fields as $field) {
+                foreach ($this->fields as $field) {
                     $result .= ' '.str_pad("?$field", $colWidths[$field]).' |';
                 }
 
@@ -222,8 +222,8 @@ class EasyRdf_Sparql_Result extends ArrayIterator
 
             }
             return $result;
-        } elseif ($this->_type == 'boolean') {
-            $str = ($this->_boolean ? 'true' : 'false');
+        } elseif ($this->type == 'boolean') {
+            $str = ($this->boolean ? 'true' : 'false');
             if ($html) {
                 return "<p>Result: <span style='font-weight:bold'>$str</span></p>";
             } else {
@@ -231,7 +231,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
             }
         } else {
             throw new EasyRdf_Exception(
-                "Failed to dump SPARQL Query Results format, unknown type: ". $this->_type
+                "Failed to dump SPARQL Query Results format, unknown type: ". $this->type
             );
         }
     }
@@ -281,9 +281,9 @@ class EasyRdf_Sparql_Result extends ArrayIterator
         # Is it the result of an ASK query?
         $boolean = $doc->getElementsByTagName('boolean');
         if ($boolean->length) {
-            $this->_type = 'boolean';
+            $this->type = 'boolean';
             $value = $boolean->item(0)->nodeValue;
-            $this->_boolean = $value == 'true' ? true : false;
+            $this->boolean = $value == 'true' ? true : false;
             return;
         }
 
@@ -292,14 +292,14 @@ class EasyRdf_Sparql_Result extends ArrayIterator
         if ($head->length) {
             $variables = $head->item(0)->getElementsByTagName('variable');
             foreach ($variables as $variable) {
-                $this->_fields[] = $variable->getAttribute('name');
+                $this->fields[] = $variable->getAttribute('name');
             }
         }
 
         # Is it the result of a SELECT query?
         $resultstag = $doc->getElementsByTagName('results');
         if ($resultstag->length) {
-            $this->_type = 'bindings';
+            $this->type = 'bindings';
             $results = $resultstag->item(0)->getElementsByTagName('result');
             foreach ($results as $result) {
                 $bindings = $result->getElementsByTagName('binding');
@@ -340,12 +340,12 @@ class EasyRdf_Sparql_Result extends ArrayIterator
         $data = json_decode($data, true);
 
         if (isset($data['boolean'])) {
-            $this->_type = 'boolean';
-            $this->_boolean = $data['boolean'];
+            $this->type = 'boolean';
+            $this->boolean = $data['boolean'];
         } elseif (isset($data['results'])) {
-            $this->_type = 'bindings';
+            $this->type = 'bindings';
             if (isset($data['head']['vars'])) {
-                $this->_fields = $data['head']['vars'];
+                $this->fields = $data['head']['vars'];
             }
 
             foreach ($data['results']['bindings'] as $row) {
@@ -371,8 +371,8 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      */
     public function __toString()
     {
-        if ($this->_type == 'boolean') {
-            return $this->_boolean ? 'true' : 'false';
+        if ($this->type == 'boolean') {
+            return $this->boolean ? 'true' : 'false';
         } else {
             return $this->dump(false);
         }

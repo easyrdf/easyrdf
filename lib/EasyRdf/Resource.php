@@ -46,10 +46,10 @@
 class EasyRdf_Resource
 {
     /** The URI for this resource */
-    private $_uri = null;
+    private $uri = null;
 
     /** The Graph that this resource belongs to */
-    private $_graph = null;
+    private $graph = null;
 
 
     /** Constructor
@@ -68,11 +68,11 @@ class EasyRdf_Resource
             );
         }
 
-        $this->_uri = $uri;
+        $this->uri = $uri;
 
         # Check that $graph is an EasyRdf_Graph object
         if (is_object($graph) and $graph instanceof EasyRdf_Graph) {
-            $this->_graph = $graph;
+            $this->graph = $graph;
         } elseif (!is_null($graph)) {
             throw new InvalidArgumentException(
                 "\$graph should be an EasyRdf_Graph object"
@@ -86,7 +86,7 @@ class EasyRdf_Resource
      */
     public function getUri()
     {
-        return $this->_uri;
+        return $this->uri;
     }
 
     /** Check to see if a resource is a blank node.
@@ -95,7 +95,7 @@ class EasyRdf_Resource
      */
     public function isBnode()
     {
-        if (substr($this->_uri, 0, 2) == '_:') {
+        if (substr($this->uri, 0, 2) == '_:') {
             return true;
         } else {
             return false;
@@ -110,8 +110,8 @@ class EasyRdf_Resource
      */
     public function getNodeId()
     {
-        if (substr($this->_uri, 0, 2) == '_:') {
-            return substr($this->_uri, 2);
+        if (substr($this->uri, 0, 2) == '_:') {
+            return substr($this->uri, 2);
         } else {
             return null;
         }
@@ -126,7 +126,7 @@ class EasyRdf_Resource
      */
     public function prefix()
     {
-        return EasyRdf_Namespace::prefixOfUri($this->_uri);
+        return EasyRdf_Namespace::prefixOfUri($this->uri);
     }
 
     /** Get a shortened version of the resources URI.
@@ -138,7 +138,7 @@ class EasyRdf_Resource
      */
     public function shorten()
     {
-        return EasyRdf_Namespace::shorten($this->_uri);
+        return EasyRdf_Namespace::shorten($this->uri);
     }
 
     /** Gets the local name of the URI of this resource
@@ -150,7 +150,7 @@ class EasyRdf_Resource
      */
     public function localName()
     {
-        if (preg_match("|([^#:/]+)$|", $this->_uri, $matches)) {
+        if (preg_match("|([^#:/]+)$|", $this->uri, $matches)) {
             return $matches[1];
         }
     }
@@ -161,7 +161,7 @@ class EasyRdf_Resource
      */
     public function parseUri()
     {
-        return new EasyRdf_ParsedUri($this->_uri);
+        return new EasyRdf_ParsedUri($this->uri);
     }
 
     /** Generates an HTML anchor tag, linking to this resource.
@@ -174,9 +174,9 @@ class EasyRdf_Resource
      */
     public function htmlLink($text = null, $options = array())
     {
-        $options = array_merge(array('href' => $this->_uri), $options);
+        $options = array_merge(array('href' => $this->uri), $options);
         if ($text === null)
-            $text = $this->_uri;
+            $text = $this->uri;
 
         $html = "<a";
         foreach ($options as $key => $value) {
@@ -198,9 +198,9 @@ class EasyRdf_Resource
     public function toArray()
     {
         if ($this->isBnode())
-            return array('type' => 'bnode', 'value' => $this->_uri);
+            return array('type' => 'bnode', 'value' => $this->uri);
         else
-            return array('type' => 'uri', 'value' => $this->_uri);
+            return array('type' => 'uri', 'value' => $this->uri);
     }
 
     /** Return pretty-print view of the resource
@@ -220,7 +220,7 @@ class EasyRdf_Resource
      */
     public function __toString()
     {
-        return $this->_uri;
+        return $this->uri;
     }
 
 
@@ -230,7 +230,7 @@ class EasyRdf_Resource
      */
     protected function checkHasGraph()
     {
-        if (!$this->_graph) {
+        if (!$this->graph) {
             throw new EasyRdf_Exception(
                 "EasyRdf_Resource is not part of a graph."
             );
@@ -247,7 +247,7 @@ class EasyRdf_Resource
     public function load($format = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->load($this->_uri, $format);
+        return $this->graph->load($this->uri, $format);
     }
 
     /** Delete a property (or optionally just a specific value)
@@ -259,7 +259,7 @@ class EasyRdf_Resource
     public function delete($property, $value = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->delete($this->_uri, $property, $value);
+        return $this->graph->delete($this->uri, $property, $value);
     }
 
     /** Add values to for a property of the resource
@@ -275,7 +275,7 @@ class EasyRdf_Resource
     public function add($property, $value)
     {
         $this->checkHasGraph();
-        return $this->_graph->add($this->_uri, $property, $value);
+        return $this->graph->add($this->uri, $property, $value);
     }
 
     /** Add a literal value as a property of the resource
@@ -293,7 +293,7 @@ class EasyRdf_Resource
     public function addLiteral($property, $values, $lang = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->addLiteral($this->_uri, $property, $values, $lang);
+        return $this->graph->addLiteral($this->uri, $property, $values, $lang);
     }
 
     /** Add a resource as a property of the resource
@@ -308,7 +308,7 @@ class EasyRdf_Resource
     public function addResource($property, $values)
     {
         $this->checkHasGraph();
-        return $this->_graph->addResource($this->_uri, $property, $values);
+        return $this->graph->addResource($this->uri, $property, $values);
     }
 
     /** Set value for a property
@@ -325,7 +325,7 @@ class EasyRdf_Resource
     public function set($property, $value)
     {
         $this->checkHasGraph();
-        return $this->_graph->set($this->_uri, $property, $value);
+        return $this->graph->set($this->uri, $property, $value);
     }
 
     /** Get a single value for a property
@@ -345,7 +345,7 @@ class EasyRdf_Resource
     public function get($property, $type = null, $lang = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->get($this->_uri, $property, $type, $lang);
+        return $this->graph->get($this->uri, $property, $type, $lang);
     }
 
     /** Get a single literal value for a property of the resource
@@ -364,7 +364,7 @@ class EasyRdf_Resource
     public function getLiteral($property, $lang = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->get($this->_uri, $property, 'literal', $lang);
+        return $this->graph->get($this->uri, $property, 'literal', $lang);
     }
 
     /** Get a single resource value for a property of the resource
@@ -381,7 +381,7 @@ class EasyRdf_Resource
     public function getResource($property)
     {
         $this->checkHasGraph();
-        return $this->_graph->get($this->_uri, $property, 'resource');
+        return $this->graph->get($this->uri, $property, 'resource');
     }
 
     /** Get all values for a property
@@ -396,7 +396,7 @@ class EasyRdf_Resource
     public function all($property, $type = null, $lang = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->all($this->_uri, $property, $type, $lang);
+        return $this->graph->all($this->uri, $property, $type, $lang);
     }
 
     /** Get all literal values for a property of the resource
@@ -411,7 +411,7 @@ class EasyRdf_Resource
     public function allLiterals($property, $lang = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->all($this->_uri, $property, 'literal', $lang);
+        return $this->graph->all($this->uri, $property, 'literal', $lang);
     }
 
     /** Get all resources for a property of the resource
@@ -425,7 +425,7 @@ class EasyRdf_Resource
     public function allResources($property)
     {
         $this->checkHasGraph();
-        return $this->_graph->all($this->_uri, $property, 'resource');
+        return $this->graph->all($this->uri, $property, 'resource');
     }
 
     /** Count the number of values for a property of a resource
@@ -440,7 +440,7 @@ class EasyRdf_Resource
     public function count($property, $type = null, $lang = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->count($this->_uri, $property, $type, $lang);
+        return $this->graph->count($this->uri, $property, $type, $lang);
     }
 
     /** Concatenate all values for a property into a string.
@@ -456,7 +456,7 @@ class EasyRdf_Resource
     public function join($property, $glue = ' ', $lang = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->join($this->_uri, $property, $glue, $lang);
+        return $this->graph->join($this->uri, $property, $glue, $lang);
     }
 
     /** Get a list of the full URIs for the properties of this resource.
@@ -468,7 +468,7 @@ class EasyRdf_Resource
     public function propertyUris()
     {
         $this->checkHasGraph();
-        return $this->_graph->propertyUris($this->_uri);
+        return $this->graph->propertyUris($this->uri);
     }
 
     /** Get a list of all the shortened property names (qnames) for a resource.
@@ -480,7 +480,7 @@ class EasyRdf_Resource
     public function properties()
     {
         $this->checkHasGraph();
-        return $this->_graph->properties($this->_uri);
+        return $this->graph->properties($this->uri);
     }
 
     /** Get a list of the full URIs for the properties that point to this resource.
@@ -490,7 +490,7 @@ class EasyRdf_Resource
     public function reversePropertyUris()
     {
         $this->checkHasGraph();
-        return $this->_graph->reversePropertyUris($this->_uri);
+        return $this->graph->reversePropertyUris($this->uri);
     }
 
     /** Check to see if a property exists for this resource.
@@ -506,7 +506,7 @@ class EasyRdf_Resource
     public function hasProperty($property, $value = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->hasProperty($this->_uri, $property, $value);
+        return $this->graph->hasProperty($this->uri, $property, $value);
     }
 
     /** Get a list of types for a resource.
@@ -519,7 +519,7 @@ class EasyRdf_Resource
     public function types()
     {
         $this->checkHasGraph();
-        return $this->_graph->types($this->_uri);
+        return $this->graph->types($this->uri);
     }
 
     /** Get a single type for a resource.
@@ -534,7 +534,7 @@ class EasyRdf_Resource
     public function type()
     {
         $this->checkHasGraph();
-        return $this->_graph->type($this->_uri);
+        return $this->graph->type($this->uri);
     }
 
     /** Get a single type for a resource, as a resource.
@@ -548,7 +548,7 @@ class EasyRdf_Resource
      */
     public function typeAsResource()
     {
-        return $this->_graph->typeAsResource($this->_uri);
+        return $this->graph->typeAsResource($this->uri);
     }
 
     /** Check if a resource is of the specified type
@@ -559,7 +559,7 @@ class EasyRdf_Resource
     public function isA($type)
     {
         $this->checkHasGraph();
-        return $this->_graph->isA($this->_uri, $type);
+        return $this->graph->isA($this->uri, $type);
     }
 
     /** Add one or more rdf:type properties to the resource
@@ -570,7 +570,7 @@ class EasyRdf_Resource
     public function addType($types)
     {
         $this->checkHasGraph();
-        return $this->_graph->addType($this->_uri, $types);
+        return $this->graph->addType($this->uri, $types);
     }
 
     /** Change the rdf:type property for the resource
@@ -583,7 +583,7 @@ class EasyRdf_Resource
     public function setType($type)
     {
         $this->checkHasGraph();
-        return $this->_graph->setType($this->_uri, $type);
+        return $this->graph->setType($this->uri, $type);
     }
 
     /** Get the primary topic of this resource.
@@ -595,7 +595,7 @@ class EasyRdf_Resource
     public function primaryTopic()
     {
         $this->checkHasGraph();
-        return $this->_graph->primaryTopic($this->_uri);
+        return $this->graph->primaryTopic($this->uri);
     }
 
     /** Get a human readable label for this resource
@@ -610,7 +610,7 @@ class EasyRdf_Resource
     public function label($lang = null)
     {
         $this->checkHasGraph();
-        return $this->_graph->label($this->_uri, $lang);
+        return $this->graph->label($this->uri, $lang);
     }
 
     /** Return a human readable view of the resource and its properties
@@ -624,7 +624,7 @@ class EasyRdf_Resource
     public function dump($html = true)
     {
         $this->checkHasGraph();
-        return $this->_graph->dumpResource($this->_uri, $html);
+        return $this->graph->dumpResource($this->uri, $html);
     }
 
     /** Magic method to get a property of a resource
@@ -640,7 +640,7 @@ class EasyRdf_Resource
      */
     public function __get($name)
     {
-        return $this->_graph->get($this->_uri, $name);
+        return $this->graph->get($this->uri, $name);
     }
 
     /** Magic method to set the value for a property of a resource
@@ -656,7 +656,7 @@ class EasyRdf_Resource
      */
     public function __set($name, $value)
     {
-        return $this->_graph->set($this->_uri, $name, $value);
+        return $this->graph->set($this->uri, $name, $value);
     }
 
     /** Magic method to check if a property exists
@@ -671,7 +671,7 @@ class EasyRdf_Resource
      */
     public function __isset($name)
     {
-        return $this->_graph->hasProperty($this->_uri, $name);
+        return $this->graph->hasProperty($this->uri, $name);
     }
 
     /** Magic method to delete a property of the resource
@@ -686,6 +686,6 @@ class EasyRdf_Resource
      */
     public function __unset($name)
     {
-        return $this->_graph->delete($this->_uri, $name);
+        return $this->graph->delete($this->uri, $name);
     }
 }

@@ -47,8 +47,8 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
     {
         exec('which rapper', $output, $retval);
         if ($retval == 0) {
-            $this->_graph = new EasyRdf_Graph();
-            $this->_serialiser = new EasyRdf_Serialiser_Rapper();
+            $this->graph = new EasyRdf_Graph();
+            $this->serialiser = new EasyRdf_Serialiser_Rapper();
             parent::setUp();
         } else {
             $this->markTestSkipped(
@@ -68,13 +68,13 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
 
     public function testSerialiseRdfXml()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:name', 'Joe Bloggs');
-        $project = $this->_graph->newBNode();
+        $project = $this->graph->newBNode();
         $project->add('foaf:name', 'Project Name');
         $joe->add('foaf:project', $project);
 
-        $rdfxml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $rdfxml = $this->serialiser->serialise($this->graph, 'rdfxml');
         $this->assertNotNull($rdfxml);
         $this->assertContains(
             '<rdf:Description rdf:about="http://www.example.com/joe#me">',
@@ -89,8 +89,8 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'Error while executing command rapper'
         );
-        $rdf = $this->_serialiser->serialise(
-            $this->_graph,
+        $rdf = $this->serialiser->serialise(
+            $this->graph,
             'unsupportedformat'
         );
     }

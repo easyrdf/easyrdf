@@ -45,7 +45,7 @@
  */
 class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
 {
-    private $_rapperCmd = null;
+    private $rapperCmd = null;
 
     const MINIMUM_RAPPER_VERSION = '1.4.17';
 
@@ -67,7 +67,7 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
                 "Version ".self::MINIMUM_RAPPER_VERSION." or higher of rapper is required."
             );
         } else {
-            $this->_rapperCmd = $rapperCmd;
+            $this->rapperCmd = $rapperCmd;
         }
     }
 
@@ -85,7 +85,7 @@ class EasyRdf_Parser_Rapper extends EasyRdf_Parser_Json
         parent::checkParseParams($graph, $data, $format, $baseUri);
 
         $json = EasyRdf_Utils::execCommandPipe(
-            $this->_rapperCmd,
+            $this->rapperCmd,
             array(
                 '--quiet',
                 '--input', $format,

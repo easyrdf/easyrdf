@@ -43,28 +43,28 @@ require_once 'EasyRdf/Parser/RdfXml.php';
 
 class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
 {
-    protected $_parser = null;
-    protected $_graph = null;
-    protected $_data = null;
+    protected $parser = null;
+    protected $graph = null;
+    protected $data = null;
 
     public function setUp()
     {
-        $this->_graph = new EasyRdf_Graph();
-        $this->_parser = new EasyRdf_Parser_RdfXml();
-        $this->_data = readFixture('foaf.rdf');
+        $this->graph = new EasyRdf_Graph();
+        $this->parser = new EasyRdf_Parser_RdfXml();
+        $this->data = readFixture('foaf.rdf');
     }
 
     public function testParseRdfXml()
     {
-        $count = $this->_parser->parse(
-            $this->_graph,
-            $this->_data,
+        $count = $this->parser->parse(
+            $this->graph,
+            $this->data,
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
         $this->assertSame(14, $count);
 
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
         $this->assertClass('EasyRdf_Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
@@ -76,7 +76,7 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
 
-        $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
+        $foaf = $this->graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
@@ -92,15 +92,15 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         $data .= "  </rdf:Seq>\n";
         $data .= "</rdf:RDF>\n";
 
-        $count = $this->_parser->parse(
-            $this->_graph,
+        $count = $this->parser->parse(
+            $this->graph,
             $data,
             'rdfxml',
             'http://www.w3.org/TR/REC-rdf-syntax/'
         );
         $this->assertSame(5, $count);
 
-        $favourites = $this->_graph->resource('http://example.org/favourite-fruit');
+        $favourites = $this->graph->resource('http://example.org/favourite-fruit');
         $this->assertSame('rdf:Seq', $favourites->type());
         $this->assertStringEquals('http://example.org/banana', $favourites->get('rdf:_1'));
         $this->assertStringEquals('http://example.org/apple', $favourites->get('rdf:_2'));
@@ -114,9 +114,9 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'EasyRdf_Parser_RdfXml does not support: unsupportedformat'
         );
-        $this->_parser->parse(
-            $this->_graph,
-            $this->_data,
+        $this->parser->parse(
+            $this->graph,
+            $this->data,
             'unsupportedformat',
             null
         );

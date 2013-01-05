@@ -46,22 +46,22 @@
 class EasyRdf_Graph
 {
     /** The URI of the graph */
-    private $_uri = null;
-    private $_parsedUri = null;
+    private $uri = null;
+    private $parsedUri = null;
 
     /** Array of resources contained in the graph */
-    private $_resources = array();
+    private $resources = array();
 
-    private $_index = array();
-    private $_revIndex = array();
+    private $index = array();
+    private $revIndex = array();
 
     /** Counter for the number of bnodes */
-    private $_bNodeCount = 0;
+    private $bNodeCount = 0;
 
     /** Array of URLs that have been loaded into the graph */
-    private $_loaded = array();
+    private $loaded = array();
 
-    private $_maxRedirects = 10;
+    private $maxRedirects = 10;
 
 
     /**
@@ -85,10 +85,10 @@ class EasyRdf_Graph
         $this->checkResourceParam($uri, true);
 
         if ($uri) {
-            $this->_uri = $uri;
-            $this->_parsedUri = new EasyRdf_ParsedUri($uri);
+            $this->uri = $uri;
+            $this->parsedUri = new EasyRdf_ParsedUri($uri);
             if ($data)
-                $this->parse($data, $format, $this->_uri);
+                $this->parse($data, $format, $this->uri);
         }
     }
 
@@ -136,20 +136,20 @@ class EasyRdf_Graph
         }
 
         // Resolve relative URIs
-        if ($this->_parsedUri) {
-            $uri = $this->_parsedUri->resolve($uri)->toString();
+        if ($this->parsedUri) {
+            $uri = $this->parsedUri->resolve($uri)->toString();
         }
 
         // Add the types
         $this->addType($uri, $types);
 
         // Create resource object if it doesn't already exist
-        if (!isset($this->_resources[$uri])) {
+        if (!isset($this->resources[$uri])) {
             $resClass = $this->classForResource($uri);
-            $this->_resources[$uri] = new $resClass($uri, $this);
+            $this->resources[$uri] = new $resClass($uri, $this);
         }
 
-        return $this->_resources[$uri];
+        return $this->resources[$uri];
     }
 
     /** Work out the class to instantiate a resource as
@@ -159,8 +159,8 @@ class EasyRdf_Graph
     {
         $resClass = 'EasyRdf_Resource';
         $rdfType = EasyRdf_Namespace::expand('rdf:type');
-        if (isset($this->_index[$uri][$rdfType])) {
-            foreach ($this->_index[$uri][$rdfType] as $type) {
+        if (isset($this->index[$uri][$rdfType])) {
+            foreach ($this->index[$uri][$rdfType] as $type) {
                 if ($type['type'] == 'uri' or $type['type'] == 'bnode') {
                     $class = EasyRdf_TypeMapper::get($type['value']);
                     if ($class != null) {
@@ -196,7 +196,7 @@ class EasyRdf_Graph
      */
     public function newBNodeId()
     {
-        return "_:genid".(++$this->_bNodeCount);
+        return "_:genid".(++$this->bNodeCount);
     }
 
     /**
@@ -282,7 +282,7 @@ class EasyRdf_Graph
         do {
             // Have we already loaded it into the graph?
             $requestUrl = EasyRdf_Utils::removeFragmentFromUri($requestUrl);
-            if (in_array($requestUrl, $this->_loaded)) {
+            if (in_array($requestUrl, $this->loaded)) {
                 return 0;
             }
 
@@ -292,7 +292,7 @@ class EasyRdf_Graph
             $response = $client->request();
 
             // Add the URL to the list of URLs loaded
-            $this->_loaded[] = $requestUrl;
+            $this->loaded[] = $requestUrl;
 
             if ($response->isRedirect() and $location = $response->getHeader('location')) {
                 // Avoid problems with buggy servers that add whitespace
@@ -318,7 +318,7 @@ class EasyRdf_Graph
                     "HTTP request for $requestUrl failed: ".$response->getMessage()
                 );
             }
-        } while ($redirectCounter < $this->_maxRedirects);
+        } while ($redirectCounter < $this->maxRedirects);
 
         if (!$format or $format == 'guess') {
             list($format, $params) = EasyRdf_Utils::parseMimeType(
@@ -337,17 +337,17 @@ class EasyRdf_Graph
      */
     public function resources()
     {
-        foreach ($this->_index as $subject => $properties) {
+        foreach ($this->index as $subject => $properties) {
             $this->resource($subject);
         }
 
-        foreach ($this->_revIndex as $object => $properties) {
-            if (!isset($this->_resources[$object])) {
+        foreach ($this->revIndex as $object => $properties) {
+            if (!isset($this->resources[$object])) {
                 $this->resource($object);
             }
         }
 
-        return $this->_resources;
+        return $this->resources;
     }
 
     /** Get an arry of resources matching a certain property and optional value.
@@ -373,16 +373,16 @@ class EasyRdf_Graph
 
         // Use the reverse index if it is an inverse property
         if ($inverse) {
-            $index = &$this->_revIndex;
+            $index = &$this->revIndex;
         } else {
-            $index = &$this->_index;
+            $index = &$this->index;
         }
 
         $matched = array();
         foreach ($index as $subject => $props) {
             if (isset($index[$subject][$property])) {
                 if (isset($value)) {
-                    foreach ($this->_index[$subject][$property] as $v) {
+                    foreach ($this->index[$subject][$property] as $v) {
                         if ($v['type'] == $value['type'] and
                             $v['value'] == $value['value']) {
                             $matched[] = $this->resource($subject);
@@ -403,7 +403,7 @@ class EasyRdf_Graph
      */
     public function getUri()
     {
-        return $this->_uri;
+        return $this->uri;
     }
 
     /** Check that a URI/resource parameter is valid, and convert it to a string
@@ -413,8 +413,8 @@ class EasyRdf_Graph
     {
         if ($allowNull == true) {
             if ($resource === null) {
-                if ($this->_uri) {
-                    $resource = $this->_uri;
+                if ($this->uri) {
+                    $resource = $this->uri;
                 } else {
                     return;
                 }
@@ -681,11 +681,11 @@ class EasyRdf_Graph
     {
         // Is an inverse property being requested?
         if ($inverse) {
-            if (isset($this->_revIndex[$resource]))
-                $properties = &$this->_revIndex[$resource];
+            if (isset($this->revIndex[$resource]))
+                $properties = &$this->revIndex[$resource];
         } else {
-            if (isset($this->_index[$resource]))
-                $properties = &$this->_index[$resource];
+            if (isset($this->index[$resource]))
+                $properties = &$this->index[$resource];
         }
 
         if (isset($properties[$property])) {
@@ -902,18 +902,18 @@ class EasyRdf_Graph
             return 0;
 
         // Check that the value doesn't already exist
-        if (isset($this->_index[$resource][$property])) {
-            foreach ($this->_index[$resource][$property] as $v) {
+        if (isset($this->index[$resource][$property])) {
+            foreach ($this->index[$resource][$property] as $v) {
                 if ($v == $value)
                     return 0;
             }
         }
-        $this->_index[$resource][$property][] = $value;
+        $this->index[$resource][$property][] = $value;
 
         // Add to the reverse index if it is a resource
         if ($value['type'] == 'uri' or $value['type'] == 'bnode') {
             $uri = $value['value'];
-            $this->_revIndex[$uri][$property][] = array(
+            $this->revIndex[$uri][$property][] = array(
                 'type' => substr($resource, 0, 2) == '_:' ? 'bnode' : 'uri',
                 'value' => $resource
             );
@@ -1032,10 +1032,10 @@ class EasyRdf_Graph
 
         $count = 0;
         $property = EasyRdf_Namespace::expand($property);
-        if (isset($this->_index[$resource][$property])) {
-            foreach ($this->_index[$resource][$property] as $k => $v) {
+        if (isset($this->index[$resource][$property])) {
+            foreach ($this->index[$resource][$property] as $k => $v) {
                 if (!$value or $v == $value) {
-                    unset($this->_index[$resource][$property][$k]);
+                    unset($this->index[$resource][$property][$k]);
                     $count++;
                     if ($v['type'] == 'uri' or $v['type'] == 'bnode') {
                         $this->deleteInverse($v['value'], $property, $resource);
@@ -1045,10 +1045,10 @@ class EasyRdf_Graph
 
             // Clean up the indexes - remove empty properties and resources
             if ($count) {
-                if (count($this->_index[$resource][$property]) == 0)
-                    unset($this->_index[$resource][$property]);
-                if (count($this->_index[$resource]) == 0)
-                    unset($this->_index[$resource]);
+                if (count($this->index[$resource][$property]) == 0)
+                    unset($this->index[$resource][$property]);
+                if (count($this->index[$resource]) == 0)
+                    unset($this->index[$resource]);
             }
         }
 
@@ -1113,16 +1113,16 @@ class EasyRdf_Graph
      */
     protected function deleteInverse($resource, $property, $value)
     {
-        if (isset($this->_revIndex[$resource])) {
-            foreach ($this->_revIndex[$resource][$property] as $k => $v) {
+        if (isset($this->revIndex[$resource])) {
+            foreach ($this->revIndex[$resource][$property] as $k => $v) {
                 if ($v['value'] === $value) {
-                    unset($this->_revIndex[$resource][$property][$k]);
+                    unset($this->revIndex[$resource][$property][$k]);
                 }
             }
-            if (count($this->_revIndex[$resource][$property]) == 0)
-                unset($this->_revIndex[$resource][$property]);
-            if (count($this->_revIndex[$resource]) == 0)
-                unset($this->_revIndex[$resource]);
+            if (count($this->revIndex[$resource][$property]) == 0)
+                unset($this->revIndex[$resource][$property]);
+            if (count($this->revIndex[$resource]) == 0)
+                unset($this->revIndex[$resource]);
         }
     }
 
@@ -1132,7 +1132,7 @@ class EasyRdf_Graph
      */
     public function isEmpty()
     {
-        return count($this->_index) == 0;
+        return count($this->index) == 0;
     }
 
     /** Get a list of all the shortened property names (qnames) for a resource.
@@ -1146,8 +1146,8 @@ class EasyRdf_Graph
         $this->checkResourceParam($resource);
 
         $properties = array();
-        if (isset($this->_index[$resource])) {
-            foreach ($this->_index[$resource] as $property => $value) {
+        if (isset($this->index[$resource])) {
+            foreach ($this->index[$resource] as $property => $value) {
                 $short = EasyRdf_Namespace::shorten($property);
                 if ($short)
                     $properties[] = $short;
@@ -1166,8 +1166,8 @@ class EasyRdf_Graph
     {
         $this->checkResourceParam($resource);
 
-        if (isset($this->_index[$resource])) {
-            return array_keys($this->_index[$resource]);
+        if (isset($this->index[$resource])) {
+            return array_keys($this->index[$resource]);
         } else {
             return array();
         }
@@ -1181,8 +1181,8 @@ class EasyRdf_Graph
     {
         $this->checkResourceParam($resource);
 
-        if (isset($this->_revIndex[$resource])) {
-            return array_keys($this->_revIndex[$resource]);
+        if (isset($this->revIndex[$resource])) {
+            return array_keys($this->revIndex[$resource]);
         } else {
             return array();
         }
@@ -1209,9 +1209,9 @@ class EasyRdf_Graph
 
         // Use the reverse index if it is an inverse property
         if ($inverse) {
-            $index = &$this->_revIndex;
+            $index = &$this->revIndex;
         } else {
-            $index = &$this->_index;
+            $index = &$this->index;
         }
 
         if (isset($index[$resource][$property])) {
@@ -1263,12 +1263,12 @@ class EasyRdf_Graph
         if ($html) {
             $result .= "<div style='font-family:arial; font-weight: bold; padding:0.5em; ".
                    "color: black; background-color:lightgrey;border:dashed 1px grey;'>".
-                   "Graph: ". $this->_uri . "</div>\n";
+                   "Graph: ". $this->uri . "</div>\n";
         } else {
-            $result .= "Graph: ". $this->_uri . "\n";
+            $result .= "Graph: ". $this->uri . "\n";
         }
 
-        foreach ($this->_index as $resource => $properties) {
+        foreach ($this->index as $resource => $properties) {
             $result .= $this->dumpResource($resource, $html);
         }
         return $result;
@@ -1286,8 +1286,8 @@ class EasyRdf_Graph
     {
         $this->checkResourceParam($resource, true);
 
-        if (isset($this->_index[$resource])) {
-            $properties = $this->_index[$resource];
+        if (isset($this->index[$resource])) {
+            $properties = $this->index[$resource];
         } else {
             return '';
         }
@@ -1504,7 +1504,7 @@ class EasyRdf_Graph
      */
     public function toArray()
     {
-        return $this->_index;
+        return $this->index;
     }
 
     /** Calculates the number of triples in the graph
@@ -1514,7 +1514,7 @@ class EasyRdf_Graph
     public function countTriples()
     {
         $count = 0;
-        foreach ($this->_index as $resource) {
+        foreach ($this->index as $resource) {
             foreach ($resource as $property => $values) {
                 $count += count($values);
             }
@@ -1528,7 +1528,7 @@ class EasyRdf_Graph
      */
     public function __toString()
     {
-        return $this->_uri == null ? '' : $this->_uri;
+        return $this->uri == null ? '' : $this->uri;
     }
 
     /** Magic method to get a property of the graph
@@ -1544,7 +1544,7 @@ class EasyRdf_Graph
      */
     public function __get($name)
     {
-        return $this->get($this->_uri, $name);
+        return $this->get($this->uri, $name);
     }
 
     /** Magic method to set the value for a property of the graph
@@ -1560,7 +1560,7 @@ class EasyRdf_Graph
      */
     public function __set($name, $value)
     {
-        return $this->set($this->_uri, $name, $value);
+        return $this->set($this->uri, $name, $value);
     }
 
     /** Magic method to check if a property exists
@@ -1575,7 +1575,7 @@ class EasyRdf_Graph
      */
     public function __isset($name)
     {
-        return $this->hasProperty($this->_uri, $name);
+        return $this->hasProperty($this->uri, $name);
     }
 
     /** Magic method to delete a property of the graph
@@ -1590,6 +1590,6 @@ class EasyRdf_Graph
      */
     public function __unset($name)
     {
-        return $this->delete($this->_uri, $name);
+        return $this->delete($this->uri, $name);
     }
 }

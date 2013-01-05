@@ -45,13 +45,13 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
     {
         exec('which dot', $output, $retval);
         if ($retval == 0) {
-            $this->_graph = new EasyRdf_Graph();
-            $this->_serialiser = new EasyRdf_Serialiser_GraphViz();
+            $this->graph = new EasyRdf_Graph();
+            $this->serialiser = new EasyRdf_Serialiser_GraphViz();
 
             // Put some data in the graph
-            $joe = $this->_graph->resource('http://www.example.com/joe#me');
+            $joe = $this->graph->resource('http://www.example.com/joe#me');
             $joe->set('foaf:name', 'Joe Bloggs');
-            $project = $this->_graph->newBNode();
+            $project = $this->graph->newBNode();
             $project->add('foaf:name', 'Project Name');
             $joe->add('foaf:project', $project);
 
@@ -65,55 +65,55 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
 
     public function testSetDotCommand()
     {
-        $this->_serialiser->setDotCommand('/usr/bin/dot');
-        $this->assertSame('/usr/bin/dot', $this->_serialiser->getDotCommand());
+        $this->serialiser->setDotCommand('/usr/bin/dot');
+        $this->assertSame('/usr/bin/dot', $this->serialiser->getDotCommand());
     }
 
     public function testSetUseLabelsTrue()
     {
-        $this->_serialiser->setUseLabels(true);
-        $this->assertTrue($this->_serialiser->getUseLabels());
+        $this->serialiser->setUseLabels(true);
+        $this->assertTrue($this->serialiser->getUseLabels());
     }
 
     public function testSetUseLabelsFalse()
     {
-        $this->_serialiser->setUseLabels(false);
-        $this->assertFalse($this->_serialiser->getUseLabels());
+        $this->serialiser->setUseLabels(false);
+        $this->assertFalse($this->serialiser->getUseLabels());
     }
 
     public function testSetOnlyLabelledTrue()
     {
-        $this->_serialiser->setOnlyLabelled(true);
-        $this->assertTrue($this->_serialiser->getOnlyLabelled());
+        $this->serialiser->setOnlyLabelled(true);
+        $this->assertTrue($this->serialiser->getOnlyLabelled());
     }
 
     public function testSetOnlyLabelledFalse()
     {
-        $this->_serialiser->setOnlyLabelled(false);
-        $this->assertFalse($this->_serialiser->getOnlyLabelled());
+        $this->serialiser->setOnlyLabelled(false);
+        $this->assertFalse($this->serialiser->getOnlyLabelled());
     }
 
     public function testGetAtrributeCharset()
     {
         $this->assertSame(
             'utf-8',
-            $this->_serialiser->getAttribute('charset')
+            $this->serialiser->getAttribute('charset')
         );
     }
 
     public function testSetAtrribute()
     {
-        $this->_serialiser->setAttribute('rankdir', 'LR');
-        $this->assertSame('LR', $this->_serialiser->getAttribute('rankdir'));
-        $this->_serialiser->setAttribute('rankdir', 'RL');
-        $this->assertSame('RL', $this->_serialiser->getAttribute('rankdir'));
+        $this->serialiser->setAttribute('rankdir', 'LR');
+        $this->assertSame('LR', $this->serialiser->getAttribute('rankdir'));
+        $this->serialiser->setAttribute('rankdir', 'RL');
+        $this->assertSame('RL', $this->serialiser->getAttribute('rankdir'));
     }
 
     public function testSerialiseDot()
     {
-        $this->_serialiser->setUseLabels(false);
-        $this->_serialiser->setOnlyLabelled(false);
-        $dot = $this->_serialiser->serialise($this->_graph, 'dot');
+        $this->serialiser->setUseLabels(false);
+        $this->serialiser->setOnlyLabelled(false);
+        $dot = $this->serialiser->serialise($this->graph, 'dot');
         $this->assertSame(
             array(
                 'digraph {',
@@ -139,9 +139,9 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
 
     public function testSerialiseDotUseLabels()
     {
-        $this->_serialiser->setUseLabels(true);
-        $this->_serialiser->setOnlyLabelled(false);
-        $dot = $this->_serialiser->serialise($this->_graph, 'dot');
+        $this->serialiser->setUseLabels(true);
+        $this->serialiser->setOnlyLabelled(false);
+        $dot = $this->serialiser->serialise($this->graph, 'dot');
 
         $this->assertSame(
             array(
@@ -168,10 +168,10 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
 
     public function testSerialiseDotOnlyLabelled()
     {
-        $this->_graph->set('foaf:project', 'rdfs:label', 'project');
-        $this->_serialiser->setUseLabels(true);
-        $this->_serialiser->setOnlyLabelled(true);
-        $dot = $this->_serialiser->serialise($this->_graph, 'dot');
+        $this->graph->set('foaf:project', 'rdfs:label', 'project');
+        $this->serialiser->setUseLabels(true);
+        $this->serialiser->setOnlyLabelled(true);
+        $dot = $this->serialiser->serialise($this->graph, 'dot');
 
         $this->assertSame(
             array(
@@ -194,9 +194,9 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
 
     public function testSerialisePng()
     {
-        $this->_serialiser->setUseLabels(false);
-        $this->_serialiser->setOnlyLabelled(false);
-        $img = $this->_serialiser->serialise($this->_graph, 'png');
+        $this->serialiser->setUseLabels(false);
+        $this->serialiser->setOnlyLabelled(false);
+        $img = $this->serialiser->serialise($this->graph, 'png');
         $info = getimagesize(
             'data:application/octet-stream;base64,'.base64_encode($img)
         );
@@ -210,9 +210,9 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
 
     public function testSerialiseGif()
     {
-        $this->_serialiser->setUseLabels(false);
-        $this->_serialiser->setOnlyLabelled(false);
-        $img = $this->_serialiser->serialise($this->_graph, 'gif');
+        $this->serialiser->setUseLabels(false);
+        $this->serialiser->setOnlyLabelled(false);
+        $img = $this->serialiser->serialise($this->graph, 'gif');
         $info = getimagesize(
             'data:application/octet-stream;base64,'.base64_encode($img)
         );
@@ -226,9 +226,9 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
 
     public function testSerialiseSvg()
     {
-        $this->_serialiser->setUseLabels(false);
-        $this->_serialiser->setOnlyLabelled(false);
-        $svg = $this->_serialiser->serialise($this->_graph, 'svg');
+        $this->serialiser->setUseLabels(false);
+        $this->serialiser->setOnlyLabelled(false);
+        $svg = $this->serialiser->serialise($this->graph, 'svg');
 
         $this->assertContains(
             '<g id="node1" class="node"><title>Rhttp://www.example.com/joe#me</title>',
@@ -266,8 +266,8 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'Error while executing command does/not/exist'
         );
-        $this->_serialiser->setDotCommand('does/not/exist');
-        $this->_serialiser->renderImage($this->_graph);
+        $this->serialiser->setDotCommand('does/not/exist');
+        $this->serialiser->renderImage($this->graph);
     }
 
     public function testSerialiseUnsupportedFormat()
@@ -276,8 +276,8 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'EasyRdf_Serialiser_GraphViz does not support: unsupportedformat'
         );
-        $rdf = $this->_serialiser->serialise(
-            $this->_graph,
+        $rdf = $this->serialiser->serialise(
+            $this->graph,
             'unsupportedformat'
         );
     }

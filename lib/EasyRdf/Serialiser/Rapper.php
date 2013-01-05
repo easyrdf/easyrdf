@@ -48,7 +48,7 @@
  */
 class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
 {
-    private $_rapperCmd = null;
+    private $rapperCmd = null;
 
     /**
      * Constructor
@@ -64,7 +64,7 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
                 "Failed to execute the command '$rapperCmd': $result"
             );
         } else {
-            $this->_rapperCmd = $rapperCmd;
+            $this->rapperCmd = $rapperCmd;
         }
     }
 
@@ -85,7 +85,7 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
         if ($format == 'rdfxml') $format = 'rdfxml-abbrev';
 
         return EasyRdf_Utils::execCommandPipe(
-            $this->_rapperCmd,
+            $this->rapperCmd,
             array(
                 '--quiet',
                 '--input', 'ntriples',

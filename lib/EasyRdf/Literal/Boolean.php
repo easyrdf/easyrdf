@@ -70,7 +70,7 @@ class EasyRdf_Literal_Boolean extends EasyRdf_Literal
      */
     public function getValue()
     {
-        return strtolower($this->_value) === 'true' or $this->_value === '1';
+        return strtolower($this->value) === 'true' or $this->value === '1';
     }
 
     /** Return true if the value of the literal is 'true' or '1'
@@ -79,7 +79,7 @@ class EasyRdf_Literal_Boolean extends EasyRdf_Literal
      */
     public function isTrue()
     {
-        return strtolower($this->_value) === 'true' or $this->_value === '1';
+        return strtolower($this->value) === 'true' or $this->value === '1';
     }
 
     /** Return true if the value of the literal is 'false' or '0'
@@ -88,7 +88,7 @@ class EasyRdf_Literal_Boolean extends EasyRdf_Literal
      */
     public function isFalse()
     {
-        return strtolower($this->_value) === 'false' or $this->_value === '0';
+        return strtolower($this->value) === 'false' or $this->value === '0';
     }
 }
 

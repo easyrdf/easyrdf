@@ -42,7 +42,7 @@ class MyDatatype_Class extends EasyRdf_Literal
 {
     public function __toString()
     {
-        return "!".strval($this->_value)."!";
+        return "!".strval($this->value)."!";
     }
 }
 

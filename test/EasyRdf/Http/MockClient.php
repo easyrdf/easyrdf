@@ -2,7 +2,7 @@
 
 class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
 {
-    private $_mocks = array();
+    private $mocks = array();
 
     public function request($method = null)
     {
@@ -22,9 +22,9 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
         }
 
         # Try and find a matching response
-        $n = sizeof($this->_mocks);
+        $n = sizeof($this->mocks);
         for ($i = 0; $i < $n; $i++) {
-            list($m, $response, $once) = $this->_mocks[$i];
+            list($m, $response, $once) = $this->mocks[$i];
             if (isset($m['uri']) && !$this->matchUri($m['uri'], $uri)) {
                 continue;
             } elseif (isset($m['method']) && $m['method'] !== $this->getMethod()) {
@@ -37,7 +37,7 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
                 }
             }
             if ($once) {
-                array_splice($this->_mocks, $i, 1);
+                array_splice($this->mocks, $i, 1);
             }
             return $response;
         }
@@ -91,7 +91,7 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
         }
         $once = isset($options['once']) ? $options['once'] : false;
 
-        $this->_mocks[] = array($match, $response, $once);
+        $this->mocks[] = array($match, $response, $once);
     }
 
     public function addMockOnce($method, $uri, $body, $options = array())

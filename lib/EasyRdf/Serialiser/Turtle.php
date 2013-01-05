@@ -48,7 +48,7 @@
  */
 class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
 {
-    private $_outputtedBnodes = array();
+    private $outputtedBnodes = array();
 
     /**
      * @ignore
@@ -163,9 +163,9 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                 if ($object instanceof EasyRdf_Resource and $object->isBnode()) {
                     $id = $object->getNodeId();
                     $rpcount = $this->reversePropertyCount($object);
-                    if ($rpcount <= 1 and !isset($this->_outputtedBnodes[$id])) {
+                    if ($rpcount <= 1 and !isset($this->outputtedBnodes[$id])) {
                         // Nested unlabelled Blank Node
-                        $this->_outputtedBnodes[$id] = true;
+                        $this->outputtedBnodes[$id] = true;
                         $turtle .= ' [';
                         $turtle .= $this->serialiseProperties($object, $depth+1);
                         $turtle .= ' ]';
@@ -198,7 +198,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     protected function serialisePrefixes()
     {
         $turtle = '';
-        foreach ($this->_prefixes as $prefix => $count) {
+        foreach ($this->prefixes as $prefix => $count) {
             $url = EasyRdf_Namespace::get($prefix);
             $turtle .= "@prefix $prefix: <$url> .\n";
         }
@@ -222,8 +222,8 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
             );
         }
 
-        $this->_prefixes = array();
-        $this->_outputtedBnodes = array();
+        $this->prefixes = array();
+        $this->outputtedBnodes = array();
 
         $turtle = '';
         foreach ($graph->resources() as $resource) {
@@ -235,11 +235,11 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
             if ($resource->isBnode()) {
                 $id = $resource->getNodeId();
                 $rpcount = $this->reversePropertyCount($resource);
-                if (isset($this->_outputtedBnodes[$id])) {
+                if (isset($this->outputtedBnodes[$id])) {
                     // Already been serialised
                     continue;
                 } else {
-                    $this->_outputtedBnodes[$id] = true;
+                    $this->outputtedBnodes[$id] = true;
                     if ($rpcount == 0) {
                         $turtle .= '[]';
                     } else {
@@ -254,7 +254,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
             $turtle .= "\n";
         }
 
-        if (count($this->_prefixes)) {
+        if (count($this->prefixes)) {
             return $this->serialisePrefixes() . "\n" . $turtle;
         } else {
             return $turtle;

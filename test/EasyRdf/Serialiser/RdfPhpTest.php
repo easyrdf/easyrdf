@@ -41,28 +41,28 @@ require_once dirname(dirname(dirname(__FILE__))).
 
 class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
 {
-    protected $_serialiser = null;
-    protected $_graph = null;
+    protected $serialiser = null;
+    protected $graph = null;
 
     public function setUp()
     {
-        $this->_graph = new EasyRdf_Graph();
-        $this->_serialiser = new EasyRdf_Serialiser_RdfPhp();
+        $this->graph = new EasyRdf_Graph();
+        $this->serialiser = new EasyRdf_Serialiser_RdfPhp();
     }
 
     public function testSerialisePhp()
     {
-        $joe = $this->_graph->resource(
+        $joe = $this->graph->resource(
             'http://www.example.com/joe#me',
             'foaf:Person'
         );
         $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
         $joe->set('foaf:age', 59);
-        $project = $this->_graph->newBNode();
+        $project = $this->graph->newBNode();
         $project->add('foaf:name', 'Project Name');
         $joe->add('foaf:project', $project);
 
-        $php = $this->_serialiser->serialise($this->_graph, 'php');
+        $php = $this->serialiser->serialise($this->graph, 'php');
         $this->assertInternalType('array', $php);
         $subject = $php['http://www.example.com/joe#me'];
         $this->assertInternalType('array', $subject);
@@ -99,8 +99,8 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'EasyRdf_Serialiser_RdfPhp does not support: unsupportedformat'
         );
-        $rdf = $this->_serialiser->serialise(
-            $this->_graph,
+        $rdf = $this->serialiser->serialise(
+            $this->graph,
             'unsupportedformat'
         );
     }

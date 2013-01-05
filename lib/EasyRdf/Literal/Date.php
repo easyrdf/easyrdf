@@ -90,7 +90,7 @@ class EasyRdf_Literal_Date extends EasyRdf_Literal
      */
     public function getValue()
     {
-        return new DateTime($this->_value);
+        return new DateTime($this->value);
     }
 
     /** Returns date formatted according to given format

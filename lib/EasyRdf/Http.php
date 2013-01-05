@@ -47,7 +47,7 @@
 class EasyRdf_Http
 {
     /** The default HTTP Client object */
-    private static $_defaultHttpClient = null;
+    private static $defaultHttpClient = null;
 
     /** Set the HTTP Client object used to fetch RDF data
      *
@@ -63,7 +63,7 @@ class EasyRdf_Http
                 "\$httpClient should be an object of class Zend_Http_Client or EasyRdf_Http_Client"
             );
         }
-        return self::$_defaultHttpClient = $httpClient;
+        return self::$defaultHttpClient = $httpClient;
     }
 
     /** Get the HTTP Client object used to fetch RDF data
@@ -75,8 +75,8 @@ class EasyRdf_Http
      */
     public static function getDefaultHttpClient()
     {
-        if (!isset(self::$_defaultHttpClient))
-            self::$_defaultHttpClient = new EasyRdf_Http_Client();
-        return self::$_defaultHttpClient;
+        if (!isset(self::$defaultHttpClient))
+            self::$defaultHttpClient = new EasyRdf_Http_Client();
+        return self::$defaultHttpClient;
     }
 }

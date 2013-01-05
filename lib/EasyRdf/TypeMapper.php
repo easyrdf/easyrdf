@@ -46,7 +46,7 @@
 class EasyRdf_TypeMapper
 {
     /** The type map registry */
-    private static $_map = array();
+    private static $map = array();
 
     /** Get the registered class for an RDF type
      *
@@ -64,8 +64,8 @@ class EasyRdf_TypeMapper
         }
 
         $type = EasyRdf_Namespace::expand($type);
-        if (array_key_exists($type, self::$_map)) {
-            return self::$_map[$type];
+        if (array_key_exists($type, self::$map)) {
+            return self::$map[$type];
         } else {
             return null;
         }
@@ -92,7 +92,7 @@ class EasyRdf_TypeMapper
         }
 
         $type = EasyRdf_Namespace::expand($type);
-        return self::$_map[$type] = $class;
+        return self::$map[$type] = $class;
     }
 
     /**
@@ -109,8 +109,8 @@ class EasyRdf_TypeMapper
         }
 
         $type = EasyRdf_Namespace::expand($type);
-        if (isset(self::$_map[$type])) {
-            unset(self::$_map[$type]);
+        if (isset(self::$map[$type])) {
+            unset(self::$map[$type]);
         }
     }
 }

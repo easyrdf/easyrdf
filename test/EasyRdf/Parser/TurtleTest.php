@@ -44,23 +44,23 @@ require_once 'EasyRdf/Serialiser/NtriplesArray.php';
 
 class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
 {
-    protected $_parser = null;
+    protected $parser = null;
 
     public function setUp()
     {
-        $this->_turtleParser = new EasyRdf_Parser_Turtle();
-        $this->_ntriplesParser = new EasyRdf_Parser_Ntriples();
-        $this->_baseUri = 'http://www.w3.org/2001/sw/DataAccess/df1/tests/';
+        $this->turtleParser = new EasyRdf_Parser_Turtle();
+        $this->ntriplesParser = new EasyRdf_Parser_Ntriples();
+        $this->baseUri = 'http://www.w3.org/2001/sw/DataAccess/df1/tests/';
     }
 
     public function testParseFoaf()
     {
         $graph = new EasyRdf_Graph();
-        $count = $this->_turtleParser->parse(
+        $count = $this->turtleParser->parse(
             $graph,
             readFixture('foaf.ttl'),
             'turtle',
-            $this->_baseUri
+            $this->baseUri
         );
         $this->assertSame(14, $count);
 
@@ -87,7 +87,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'EasyRdf_Parser_Turtle does not support: unsupportedformat'
         );
-        $this->_turtleParser->parse(
+        $this->turtleParser->parse(
             new EasyRdf_Graph(),
             'data',
             'unsupportedformat',
@@ -103,11 +103,11 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     protected function parseTurtle($filename)
     {
         $graph = new EasyRdf_Graph();
-        $this->_turtleParser->parse(
+        $this->turtleParser->parse(
             $graph,
             readFixture($filename),
             'turtle',
-            $this->_baseUri . basename($filename)
+            $this->baseUri . basename($filename)
         );
         return $graph->serialise('ntriples-array');
     }
@@ -115,11 +115,11 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     protected function parseNtriples($filename)
     {
         $graph = new EasyRdf_Graph();
-        $this->_ntriplesParser->parse(
+        $this->ntriplesParser->parse(
             $graph,
             readFixture($filename),
             'ntriples',
-            $this->_baseUri . basename($filename)
+            $this->baseUri . basename($filename)
         );
         return $graph->serialise('ntriples-array');
     }

@@ -46,9 +46,9 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
     public function setUp()
     {
         if (extension_loaded('redland')) {
-            $this->_parser = new EasyRdf_Parser_Redland();
-            $this->_graph = new EasyRdf_Graph();
-            $this->_data = readFixture('foaf.rdf');
+            $this->parser = new EasyRdf_Parser_Redland();
+            $this->graph = new EasyRdf_Graph();
+            $this->data = readFixture('foaf.rdf');
         } else {
             $this->markTestSkipped("Redland PHP extension is not available.");
         }
@@ -56,15 +56,15 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
 
     public function testParseRdfXml()
     {
-        $count = $this->_parser->parse(
-            $this->_graph,
-            $this->_data,
+        $count = $this->parser->parse(
+            $this->graph,
+            $this->data,
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
         $this->assertSame(14, $count);
 
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
         $this->assertClass('EasyRdf_Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
@@ -76,15 +76,15 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
 
-        $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
+        $foaf = $this->graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
 
     public function testParseRdfXmlBnodeRemap()
     {
-        $count = $this->_parser->parse(
-            $this->_graph,
+        $count = $this->parser->parse(
+            $this->graph,
             "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' ".
             "         xmlns:foaf='http://xmlns.com/foaf/0.1/' >".
             "  <rdf:Description rdf:nodeID='bob'>".
@@ -98,7 +98,7 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
 
         $this->assertStringEquals(
             'Bob',
-            $this->_graph->get('_:genid1', 'foaf:name')
+            $this->graph->get('_:genid1', 'foaf:name')
         );
     }
 }

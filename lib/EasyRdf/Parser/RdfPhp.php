@@ -95,6 +95,6 @@ class EasyRdf_Parser_RdfPhp extends EasyRdf_Parser
             }
         }
 
-        return $this->_tripleCount;
+        return $this->tripleCount;
     }
 }

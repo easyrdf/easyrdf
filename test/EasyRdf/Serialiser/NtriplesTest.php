@@ -41,25 +41,25 @@ require_once dirname(dirname(dirname(__FILE__))).
 
 class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
 {
-    protected $_serialiser = null;
-    protected $_graph = null;
+    protected $serialiser = null;
+    protected $graph = null;
 
     public function setUp()
     {
-        $this->_graph = new EasyRdf_Graph();
-        $this->_serialiser = new EasyRdf_Serialiser_Ntriples();
+        $this->graph = new EasyRdf_Graph();
+        $this->serialiser = new EasyRdf_Serialiser_Ntriples();
     }
 
     public function testSerialise()
     {
-        $joe = $this->_graph->resource(
+        $joe = $this->graph->resource(
             'http://www.example.com/joe#me',
             'foaf:Person'
         );
         $joe->set('foaf:name', 'Joe Bloggs');
         $joe->set(
             'foaf:homepage',
-            $this->_graph->resource('http://www.example.com/joe/')
+            $this->graph->resource('http://www.example.com/joe/')
         );
         $this->assertSame(
             "<http://www.example.com/joe#me> ".
@@ -71,26 +71,26 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
             "<http://www.example.com/joe#me> ".
             "<http://xmlns.com/foaf/0.1/homepage> ".
             "<http://www.example.com/joe/> .\n",
-            $this->_serialiser->serialise($this->_graph, 'ntriples')
+            $this->serialiser->serialise($this->graph, 'ntriples')
         );
     }
 
     public function testSerialiseQuotes()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->graph->resource('http://www.example.com/joe#me');
         $joe->set('foaf:nick', '"Joey"');
         $this->assertSame(
             "<http://www.example.com/joe#me> ".
             "<http://xmlns.com/foaf/0.1/nick> ".
             '"\"Joey\"" .'."\n",
-            $this->_serialiser->serialise($this->_graph, 'ntriples')
+            $this->serialiser->serialise($this->graph, 'ntriples')
         );
     }
 
     public function testSerialiseBNode()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
-        $project = $this->_graph->newBNode();
+        $joe = $this->graph->resource('http://www.example.com/joe#me');
+        $project = $this->graph->newBNode();
         $project->add('foaf:name', 'Project Name');
         $joe->add('foaf:project', $project);
 
@@ -98,15 +98,15 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
             "_:genid1 <http://xmlns.com/foaf/0.1/name> \"Project Name\" .\n".
             "<http://www.example.com/joe#me> ".
             "<http://xmlns.com/foaf/0.1/project> _:genid1 .\n",
-            $this->_serialiser->serialise($this->_graph, 'ntriples')
+            $this->serialiser->serialise($this->graph, 'ntriples')
         );
     }
     public function testSerialiseLang()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', new EasyRdf_Literal('Joe', 'en'));
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'ntriples');
+        $turtle = $this->serialiser->serialise($this->graph, 'ntriples');
         $this->assertStringEquals(
             "<http://example.com/joe#me> ".
             "<http://xmlns.com/foaf/0.1/name> ".
@@ -117,10 +117,10 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
 
     public function testSerialiseDatatype()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:foo', EasyRdf_Literal::create(1, null, 'xsd:integer'));
 
-        $ntriples = $this->_serialiser->serialise($this->_graph, 'ntriples');
+        $ntriples = $this->serialiser->serialise($this->graph, 'ntriples');
         $this->assertStringEquals(
             "<http://example.com/joe#me> ".
             "<http://xmlns.com/foaf/0.1/foo> ".
@@ -135,8 +135,8 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'EasyRdf_Serialiser_Ntriples does not support: unsupportedformat'
         );
-        $rdf = $this->_serialiser->serialise(
-            $this->_graph,
+        $rdf = $this->serialiser->serialise(
+            $this->graph,
             'unsupportedformat'
         );
     }

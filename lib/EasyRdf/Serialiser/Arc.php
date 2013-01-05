@@ -45,7 +45,7 @@
  */
 class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
 {
-    private static $_supportedTypes = array(
+    private static $supportedTypes = array(
         'rdfxml' => 'RDFXML',
         'turtle' => 'Turtle',
         'ntriples' => 'NTriples',
@@ -73,8 +73,8 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
     {
         parent::checkSerialiseParams($graph, $format);
 
-        if (array_key_exists($format, self::$_supportedTypes)) {
-            $className = self::$_supportedTypes[$format];
+        if (array_key_exists($format, self::$supportedTypes)) {
+            $className = self::$supportedTypes[$format];
         } else {
             throw new EasyRdf_Exception(
                 "EasyRdf_Serialiser_Arc does not support: $format"

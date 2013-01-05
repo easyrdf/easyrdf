@@ -46,7 +46,7 @@
 class EasyRdf_Parser_Redland extends EasyRdf_Parser
 {
     /** Variable set to the librdf world */
-    private $_world = null;
+    private $world = null;
 
     /** Parser feature URI string for getting the error count of last parse. */
     const LIBRDF_PARSER_FEATURE_ERROR_COUNT =
@@ -152,7 +152,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
     protected function parserErrorCount($parser)
     {
         $errorUri = librdf_new_uri(
-            $this->_world,
+            $this->world,
             self::LIBRDF_PARSER_FEATURE_ERROR_COUNT
         );
         $errorNode = librdf_parser_get_feature($parser, $errorUri);
@@ -169,8 +169,8 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
     public function __construct()
     {
         if (extension_loaded('redland')) {
-            $this->_world = librdf_php_get_world();
-            if (!$this->_world) {
+            $this->world = librdf_php_get_world();
+            if (!$this->world) {
                 throw new EasyRdf_Exception(
                     "Failed to initialise librdf world."
                 );
@@ -195,14 +195,14 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
     {
         parent::checkParseParams($graph, $data, $format, $baseUri);
 
-        $parser = librdf_new_parser($this->_world, $format, null, null);
+        $parser = librdf_new_parser($this->world, $format, null, null);
         if (!$parser) {
             throw new EasyRdf_Exception(
                 "Failed to create librdf_parser of type: $format"
             );
         }
 
-        $rdfUri = librdf_new_uri($this->_world, $baseUri);
+        $rdfUri = librdf_new_uri($this->world, $baseUri);
         if (!$rdfUri) {
             throw new EasyRdf_Exception(
                 "Failed to create librdf_uri from: $baseUri"
@@ -242,6 +242,6 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
         librdf_free_stream($stream);
         librdf_free_parser($parser);
 
-        return $this->_tripleCount;
+        return $this->tripleCount;
     }
 }

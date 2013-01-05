@@ -44,26 +44,26 @@ require_once 'EasyRdf/Serialiser/NtriplesArray.php';
 
 class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 {
-    protected $_parser = null;
-    protected $_graph = null;
-    protected $_data = null;
+    protected $parser = null;
+    protected $graph = null;
+    protected $data = null;
 
     public function setUp()
     {
-        $this->_rdfaParser = new EasyRdf_Parser_Rdfa();
-        $this->_ntriplesParser = new EasyRdf_Parser_Ntriples();
-        $this->_baseUri = 'http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/';
+        $this->rdfaParser = new EasyRdf_Parser_Rdfa();
+        $this->ntriplesParser = new EasyRdf_Parser_Ntriples();
+        $this->baseUri = 'http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/';
     }
 
 
     protected function parseRdfa($filename)
     {
         $graph = new EasyRdf_Graph();
-        $this->_rdfaParser->parse(
+        $this->rdfaParser->parse(
             $graph,
             readFixture($filename),
             'rdfa',
-            $this->_baseUri . basename($filename)
+            $this->baseUri . basename($filename)
         );
         return $graph->serialise('ntriples-array');
     }
@@ -71,11 +71,11 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     protected function parseNtriples($filename)
     {
         $graph = new EasyRdf_Graph();
-        $this->_ntriplesParser->parse(
+        $this->ntriplesParser->parse(
             $graph,
             readFixture($filename),
             'ntriples',
-            $this->_baseUri . basename($filename)
+            $this->baseUri . basename($filename)
         );
         return $graph->serialise('ntriples-array');
     }
@@ -1057,7 +1057,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
             'EasyRdf_Parser_Rdfa does not support: unsupportedformat'
         );
         $graph = new EasyRdf_Graph();
-        $this->_rdfaParser->parse(
+        $this->rdfaParser->parse(
             $graph,
             'data',
             'unsupportedformat',

@@ -79,14 +79,14 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             );
         }
 
-        $this->_data = $data;
-        $this->_len = strlen($data);
-        $this->_pos = 0;
+        $this->data = $data;
+        $this->len = strlen($data);
+        $this->pos = 0;
 
-        $this->_namespaces = array();
-        $this->_subject = null;
-        $this->_predicate = null;
-        $this->_object = null;
+        $this->namespaces = array();
+        $this->subject = null;
+        $this->predicate = null;
+        $this->object = null;
 
         $this->resetBnodeMap();
 
@@ -96,7 +96,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $c = $this->skipWSC();
         }
 
-        return $this->_tripleCount;
+        return $this->tripleCount;
     }
 
 
@@ -185,7 +185,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $namespace = $this->parseURI();
 
         // Store local namespace mapping
-        $this->_namespaces[$prefixID] = $namespace['value'];
+        $this->namespaces[$prefixID] = $namespace['value'];
     }
 
     /**
@@ -197,7 +197,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $this->skipWSC();
 
         $baseUri = $this->parseURI();
-        $this->_baseUri = new EasyRdf_ParsedUri($baseUri['value']);
+        $this->baseUri = new EasyRdf_ParsedUri($baseUri['value']);
     }
 
     /**
@@ -210,9 +210,9 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $this->skipWSC();
         $this->parsePredicateObjectList();
 
-        $this->_subject = null;
-        $this->_predicate = null;
-        $this->_object = null;
+        $this->subject = null;
+        $this->predicate = null;
+        $this->object = null;
     }
 
     /**
@@ -221,7 +221,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function parsePredicateObjectList()
     {
-        $this->_predicate = $this->parsePredicate();
+        $this->predicate = $this->parsePredicate();
 
         $this->skipWSC();
         $this->parseObjectList();
@@ -235,7 +235,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
                 break;
             }
 
-            $this->_predicate = $this->parsePredicate();
+            $this->predicate = $this->parsePredicate();
 
             $this->skipWSC();
 
@@ -266,14 +266,14 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     {
         $c = $this->peek();
         if ($c == '(') {
-            $this->_subject = $this->parseCollection();
+            $this->subject = $this->parseCollection();
         } elseif ($c == '[') {
-            $this->_subject = $this->parseImplicitBlank();
+            $this->subject = $this->parseImplicitBlank();
         } else {
             $value = $this->parseValue();
 
             if ($value['type'] == 'uri' or $value['type'] == 'bnode') {
-                $this->_subject = $value;
+                $this->subject = $value;
             } else {
                 throw new EasyRdf_Exception(
                     "Turtle Parse Error: illegal subject type: ".$value['type']
@@ -327,17 +327,17 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $c = $this->peek();
 
         if ($c == '(') {
-            $this->_object = $this->parseCollection();
+            $this->object = $this->parseCollection();
         } elseif ($c == '[') {
-            $this->_object = $this->parseImplicitBlank();
+            $this->object = $this->parseImplicitBlank();
         } else {
-            $this->_object = $this->parseValue();
+            $this->object = $this->parseValue();
         }
 
         $this->addTriple(
-            $this->_subject['value'],
-            $this->_predicate['value'],
-            $this->_object
+            $this->subject['value'],
+            $this->predicate['value'],
+            $this->object
         );
     }
 
@@ -355,7 +355,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
         $bnode = array(
             'type' => 'bnode',
-            'value' => $this->_graph->newBNodeId()
+            'value' => $this->graph->newBNodeId()
         );
 
         $c = $this->read();
@@ -363,11 +363,11 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $this->unread($c);
 
             // Remember current subject and predicate
-            $oldSubject = $this->_subject;
-            $oldPredicate = $this->_predicate;
+            $oldSubject = $this->subject;
+            $oldPredicate = $this->predicate;
 
             // generated bNode becomes subject
-            $this->_subject = $bnode;
+            $this->subject = $bnode;
 
             // Enter recursion with nested predicate-object list
             $this->skipWSC();
@@ -380,8 +380,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $this->verifyCharacter($this->read(), "]");
 
             // Restore previous subject and predicate
-            $this->_subject = $oldSubject;
-            $this->_predicate = $oldPredicate;
+            $this->subject = $oldSubject;
+            $this->predicate = $oldPredicate;
         }
 
         return $bnode;
@@ -406,16 +406,16 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         } else {
             $listRoot = array(
                 'type' => 'bnode',
-                'value' => $this->_graph->newBNodeId()
+                'value' => $this->graph->newBNodeId()
             );
 
             // Remember current subject and predicate
-            $oldSubject = $this->_subject;
-            $oldPredicate = $this->_predicate;
+            $oldSubject = $this->subject;
+            $oldPredicate = $this->predicate;
 
             // generated bNode becomes subject, predicate becomes rdf:first
-            $this->_subject = $listRoot;
-            $this->_predicate = array(
+            $this->subject = $listRoot;
+            $this->predicate = array(
                 'type' => 'uri',
                 'value' => EasyRdf_Namespace::get('rdf') . 'first'
             );
@@ -427,7 +427,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
                 // Create another list node and link it to the previous
                 $newNode = array(
                     'type' => 'bnode',
-                    'value' => $this->_graph->newBNodeId()
+                    'value' => $this->graph->newBNodeId()
                 );
 
                 $this->addTriple(
@@ -437,7 +437,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
                 );
 
                 // New node becomes the current
-                $this->_subject = $bNode = $newNode;
+                $this->subject = $bNode = $newNode;
 
                 $this->parseObject();
             }
@@ -456,8 +456,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             );
 
             // Restore previous subject and predicate
-            $this->_subject = $oldSubject;
-            $this->_predicate = $oldPredicate;
+            $this->subject = $oldSubject;
+            $this->predicate = $oldPredicate;
 
             return $listRoot;
         }
@@ -836,7 +836,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
         if ($c == ':') {
             // qname using default namespace
-            $namespace = $this->_namespaces[""];
+            $namespace = $this->namespaces[""];
             if ($namespace == null) {
                 throw new EasyRdf_Exception(
                     "Turtle Parse Error: default namespace used but not defined"
@@ -867,8 +867,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
             $this->verifyCharacter($c, ":");
 
-            if (isset($this->_namespaces[$prefix])) {
-                $namespace = $this->_namespaces[$prefix];
+            if (isset($this->namespaces[$prefix])) {
+                $namespace = $this->namespaces[$prefix];
             } else {
                 throw new EasyRdf_Exception(
                     "Turtle Parse Error: namespace prefix '$prefix' used but not defined"
@@ -939,8 +939,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
     protected function resolve($uri)
     {
-        if ($this->_baseUri) {
-            return $this->_baseUri->resolve($uri)->toString();
+        if ($this->baseUri) {
+            return $this->baseUri->resolve($uri)->toString();
         } else {
             return $uri;
         }
@@ -1019,9 +1019,9 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function read()
     {
-        if ($this->_pos < $this->_len) {
-            $c = $this->_data[$this->_pos];
-            $this->_pos++;
+        if ($this->pos < $this->len) {
+            $c = $this->data[$this->pos];
+            $this->pos++;
             return $c;
         } else {
             return -1;
@@ -1035,8 +1035,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function peek()
     {
-        if ($this->_pos < $this->_len) {
-            return $this->_data[$this->_pos];
+        if ($this->pos < $this->len) {
+            return $this->data[$this->pos];
         } else {
             return -1;
         }
@@ -1049,8 +1049,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function unread()
     {
-        if ($this->_pos > 0) {
-            $this->_pos--;
+        if ($this->pos > 0) {
+            $this->pos--;
         } else {
             throw new EasyRdf_Exception("Turtle Parse Error: unread error");
         }

@@ -64,7 +64,7 @@ class EasyRdf_Literal_Integer extends EasyRdf_Literal
      */
     public function getValue()
     {
-        return (int)$this->_value;
+        return (int)$this->value;
     }
 }
 

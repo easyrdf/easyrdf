@@ -85,7 +85,7 @@ class EasyRdf_Literal_HexBinary extends EasyRdf_Literal
      */
     public function toBinary()
     {
-        return pack("H*", $this->_value);
+        return pack("H*", $this->value);
     }
 }
 

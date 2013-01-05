@@ -41,13 +41,13 @@ require_once dirname(dirname(dirname(__FILE__))).
 
 class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 {
-    protected $_serialiser = null;
-    protected $_graph = null;
+    protected $serialiser = null;
+    protected $graph = null;
 
     public function setUp()
     {
-        $this->_graph = new EasyRdf_Graph();
-        $this->_serialiser = new EasyRdf_Serialiser_RdfXml();
+        $this->graph = new EasyRdf_Graph();
+        $this->serialiser = new EasyRdf_Serialiser_RdfXml();
     }
 
     public function tearDown()
@@ -57,7 +57,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
     public function testSerialiseRdfXml()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
+        $joe = $this->graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');
         $joe->addResource('foaf:homepage', 'http://www.example.com/joe/');
 
@@ -70,15 +70,15 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "    <foaf:homepage rdf:resource=\"http://www.example.com/joe/\"/>\n".
             "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
-            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+            $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
 
     public function testSerialiseRdfXmlWithInline()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
+        $joe = $this->graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');
-        $homepage = $this->_graph->resource('http://www.example.com/joe/');
+        $homepage = $this->graph->resource('http://www.example.com/joe/');
         $homepage->add('foaf:name', "Joe's Homepage");
         $joe->set('foaf:homepage', $homepage);
 
@@ -95,15 +95,15 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "    </foaf:homepage>\n\n".
             "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
-            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+            $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
 
     public function testSerialiseRdfXmlDoubleRefernce()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
+        $joe = $this->graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');
-        $homepage = $this->_graph->resource('http://www.example.com/joe/');
+        $homepage = $this->graph->resource('http://www.example.com/joe/');
         $homepage->add('foaf:name', "Joe's Homepage");
         $joe->set('foaf:homepage', $homepage);
         $joe->set('foaf:made', $homepage);
@@ -121,15 +121,15 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "    <foaf:name>Joe's Homepage</foaf:name>\n".
             "  </rdf:Description>\n\n".
             "</rdf:RDF>\n",
-            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+            $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
 
     public function testSerialiseRdfXmlWithInlineBnode()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
+        $joe = $this->graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');
-        $project = $this->_graph->newBNode('foaf:Project');
+        $project = $this->graph->newBNode('foaf:Project');
         $project->set('foaf:name', "Joe's Project");
         $joe->set('foaf:currentProject', $project);
 
@@ -146,15 +146,15 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "    </foaf:currentProject>\n\n".
             "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
-            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+            $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
 
     public function testSerialiseRdfXmlBnodeMentionedTwice()
     {
-        $bob = $this->_graph->newBnode('foaf:Person');
-        $alice = $this->_graph->newBnode('foaf:Person');
-        $carol = $this->_graph->newBnode('foaf:Person');
+        $bob = $this->graph->newBnode('foaf:Person');
+        $alice = $this->graph->newBnode('foaf:Person');
+        $carol = $this->graph->newBnode('foaf:Person');
 
         $bob->add('foaf:knows', $alice);
         $bob->add('foaf:knows', $carol);
@@ -177,13 +177,13 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "  <foaf:Person rdf:nodeID=\"genid3\">\n".
             "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
-            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+            $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
 
     public function testSerialiseRdfXmlTwoTypes()
     {
-        $joe = $this->_graph->resource(
+        $joe = $this->graph->resource(
             'http://www.example.com/joe#me',
             array('foaf:Person', 'foaf:Mammal')
         );
@@ -198,15 +198,15 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "    <foaf:name>Joe Bloggs</foaf:name>\n".
             "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
-            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+            $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
 
     public function testSerialiseRdfXmlWithTwoBNodes()
     {
-        $nodeA = $this->_graph->newBNode();
-        $nodeB = $this->_graph->newBNode();
-        $this->_graph->add($nodeA, 'rdf:foobar', $nodeB);
+        $nodeA = $this->graph->newBNode();
+        $nodeB = $this->graph->newBNode();
+        $this->graph->add($nodeA, 'rdf:foobar', $nodeB);
 
         $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
@@ -215,19 +215,19 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "    <rdf:foobar rdf:nodeID=\"genid2\"/>\n".
             "  </rdf:Description>\n\n".
             "</rdf:RDF>\n",
-            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+            $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
 
     public function testSerialiseRdfXmlWithLang()
     {
-        $this->_graph->add(
+        $this->graph->add(
             'http://www.example.com/joe#me',
             'foaf:name',
             new EasyRdf_Literal('Joe', 'en')
         );
 
-        $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $xml = $this->serialiser->serialise($this->graph, 'rdfxml');
         $this->assertContains(
             '<foaf:name xml:lang="en">Joe</foaf:name>',
             $xml
@@ -236,13 +236,13 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
     public function testSerialiseRdfXmlWithDatatype()
     {
-        $this->_graph->add(
+        $this->graph->add(
             'http://www.example.com/joe#me',
             'foaf:age',
             EasyRdf_Literal::create(59, null, 'xsd:int')
         );
 
-        $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $xml = $this->serialiser->serialise($this->graph, 'rdfxml');
         $this->assertContains(
             "<foaf:age rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">59</foaf:age>",
             $xml
@@ -252,20 +252,20 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
     public function testSerialiseRdfXmlWithUnknownProperty()
     {
-        $this->_graph->add(
+        $this->graph->add(
             'http://www.example.com/joe#me',
             'http://www.example.com/ns/foo',
             'bar'
         );
 
-        $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $xml = $this->serialiser->serialise($this->graph, 'rdfxml');
         $this->assertContains("<ns0:foo>bar</ns0:foo>", $xml);
         $this->assertContains("xmlns:ns0=\"http://www.example.com/ns/\"", $xml);
     }
 
     public function testSerialiseRdfXmlWithUnshortenableProperty()
     {
-        $this->_graph->add(
+        $this->graph->add(
             'http://www.example.com/joe#me',
             'http://www.example.com/foo/',
             'bar'
@@ -275,18 +275,18 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'foo'
         );
-        $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $this->serialiser->serialise($this->graph, 'rdfxml');
     }
 
     public function testSerialiseRdfXmlWithXMLLiteral()
     {
-        $this->_graph->add(
+        $this->graph->add(
             'http://www.example.com/joe#me',
             'foaf:bio',
             EasyRdf_Literal::create("<b>html</b>", null, 'rdf:XMLLiteral')
         );
 
-        $xml = $this->_serialiser->serialise($this->_graph, 'rdfxml');
+        $xml = $this->serialiser->serialise($this->graph, 'rdfxml');
         $this->assertContains(
             "<foaf:bio rdf:parseType=\"Literal\"><b>html</b></foaf:bio>",
             $xml
@@ -299,7 +299,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'EasyRdf_Serialiser_RdfXml does not support: unsupportedformat'
         );
-        $rdf = $this->_serialiser->serialise($this->_graph, 'unsupportedformat');
+        $rdf = $this->serialiser->serialise($this->graph, 'unsupportedformat');
     }
 
     /**
@@ -311,7 +311,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
      */
     public function testSerialiseRdfTypeAddsPrefix()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me', 'foaf:Person');
+        $joe = $this->graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('dc:creator', 'Max Bloggs');
 
         $this->assertSame(
@@ -323,7 +323,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "    <dc:creator>Max Bloggs</dc:creator>\n".
             "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
-            $this->_serialiser->serialise($this->_graph, 'rdfxml')
+            $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
 
@@ -351,7 +351,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "    <foaf:homepage rdf:resource=\"http://example.com/2\"/>\n".
             "  </rdf:Description>\n\n".
             "</rdf:RDF>\n",
-            $this->_serialiser->serialise($graph, 'rdfxml')
+            $this->serialiser->serialise($graph, 'rdfxml')
         );
     }
 }

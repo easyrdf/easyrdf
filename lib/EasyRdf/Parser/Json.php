@@ -47,7 +47,7 @@
  */
 class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
 {
-    private $_jsonLastErrorExists = false;
+    private $jsonLastErrorExists = false;
 
     /**
      * Constructor
@@ -56,7 +56,7 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
      */
     public function __construct()
     {
-        $this->_jsonLastErrorExists = function_exists('json_last_error');
+        $this->jsonLastErrorExists = function_exists('json_last_error');
     }
 
     /** Return the last JSON parser error as a string
@@ -67,7 +67,7 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
      */
     protected function jsonLastErrorString()
     {
-        if ($this->_jsonLastErrorExists) {
+        if ($this->jsonLastErrorExists) {
             switch (json_last_error()) {
                 case JSON_ERROR_NONE:
                     return null;
@@ -118,7 +118,7 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
             $this->addTriple($subject, $predicate, $object);
         }
 
-        return $this->_tripleCount;
+        return $this->tripleCount;
     }
 
     /**

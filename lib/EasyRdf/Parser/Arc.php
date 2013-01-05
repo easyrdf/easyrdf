@@ -45,7 +45,7 @@
  */
 class EasyRdf_Parser_Arc extends EasyRdf_Parser_RdfPhp
 {
-    private static $_supportedTypes = array(
+    private static $supportedTypes = array(
         'rdfxml' => 'RDFXML',
         'turtle' => 'Turtle',
         'ntriples' => 'Turtle',
@@ -75,8 +75,8 @@ class EasyRdf_Parser_Arc extends EasyRdf_Parser_RdfPhp
     {
         parent::checkParseParams($graph, $data, $format, $baseUri);
 
-        if (array_key_exists($format, self::$_supportedTypes)) {
-            $className = self::$_supportedTypes[$format];
+        if (array_key_exists($format, self::$supportedTypes)) {
+            $className = self::$supportedTypes[$format];
         } else {
             throw new EasyRdf_Exception(
                 "EasyRdf_Parser_Arc does not support: $format"

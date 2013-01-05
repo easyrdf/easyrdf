@@ -44,9 +44,9 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
     public function setUp()
     {
         EasyRdf_Http::setDefaultHttpClient(
-            $this->_client = new EasyRdf_Http_MockClient()
+            $this->client = new EasyRdf_Http_MockClient()
         );
-        $this->_graphStore = new EasyRdf_GraphStore('http://localhost:8080/data/');
+        $this->graphStore = new EasyRdf_GraphStore('http://localhost:8080/data/');
 
         // Ensure that the built-in n-triples parser is used
         EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Ntriples');
@@ -56,18 +56,18 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
     {
         $this->assertSame(
             'http://localhost:8080/data/',
-            $this->_graphStore->getUri()
+            $this->graphStore->getUri()
         );
     }
 
     public function testGetDirect()
     {
-        $this->_client->addMock(
+        $this->client->addMock(
             'GET',
             'http://localhost:8080/data/foaf.rdf',
             readFixture('foaf.json')
         );
-        $graph = $this->_graphStore->get('foaf.rdf');
+        $graph = $this->graphStore->get('foaf.rdf');
         $this->assertClass('EasyRdf_Graph', $graph);
         $this->assertSame('http://localhost:8080/data/foaf.rdf', $graph->getUri());
         $this->assertStringEquals(
@@ -78,12 +78,12 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
 
     public function testGetIndirect()
     {
-        $this->_client->addMock(
+        $this->client->addMock(
             'GET',
             'http://localhost:8080/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf',
             readFixture('foaf.json')
         );
-        $graph = $this->_graphStore->get('http://foo.com/bar.rdf');
+        $graph = $this->graphStore->get('http://foo.com/bar.rdf');
         $this->assertClass('EasyRdf_Graph', $graph);
         $this->assertSame('http://foo.com/bar.rdf', $graph->getUri());
         $this->assertStringEquals(
@@ -94,29 +94,29 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
 
     public function testDeleteDirect()
     {
-        $this->_client->addMock(
+        $this->client->addMock(
             'DELETE',
             'http://localhost:8080/data/foaf.rdf',
             'OK'
         );
-        $response = $this->_graphStore->delete('foaf.rdf');
+        $response = $this->graphStore->delete('foaf.rdf');
         $this->assertSame(200, $response->getStatus());
     }
 
     public function testDeleteIndirect()
     {
-        $this->_client->addMock(
+        $this->client->addMock(
             'DELETE',
             'http://localhost:8080/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf',
             'OK'
         );
-        $response = $this->_graphStore->delete('http://foo.com/bar.rdf');
+        $response = $this->graphStore->delete('http://foo.com/bar.rdf');
         $this->assertSame(200, $response->getStatus());
     }
 
     public function testDeleteHttpError()
     {
-        $this->_client->addMock(
+        $this->client->addMock(
             'DELETE',
             'http://localhost:8080/data/filenotfound',
             'Graph not found.',
@@ -126,7 +126,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'HTTP request to delete http://localhost:8080/data/filenotfound failed'
         );
-        $response = $this->_graphStore->delete('filenotfound');
+        $response = $this->graphStore->delete('filenotfound');
     }
 
     public function checkNtriplesRequest($client)
@@ -144,33 +144,33 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph('http://localhost:8080/data/new.rdf');
         $graph->add('urn:subject', 'urn:predicate', 'object');
-        $this->_client->addMock(
+        $this->client->addMock(
             'POST',
             'http://localhost:8080/data/new.rdf',
             'OK',
             array('callback' => array($this, 'checkNtriplesRequest'))
         );
-        $response = $this->_graphStore->insert($graph);
+        $response = $this->graphStore->insert($graph);
         $this->assertSame(200, $response->getStatus());
     }
 
     public function testInsertIndirect()
     {
         $data = "<urn:subject> <urn:predicate> \"object\" .\n";
-        $this->_client->addMock(
+        $this->client->addMock(
             'POST',
             '/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf',
             'OK',
             array('callback' => array($this, 'checkNtriplesRequest'))
         );
-        $response = $this->_graphStore->insert($data, "http://foo.com/bar.rdf");
+        $response = $this->graphStore->insert($data, "http://foo.com/bar.rdf");
         $this->assertSame(200, $response->getStatus());
     }
 
     public function testInsertHttpError()
     {
         $data = "<urn:subject> <urn:predicate> \"object\" .\n";
-        $this->_client->addMock(
+        $this->client->addMock(
             'POST',
             '/data/new.rdf',
             'Internal Server Error',
@@ -180,19 +180,19 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'HTTP request for http://localhost:8080/data/new.rdf failed'
         );
-        $response = $this->_graphStore->insert($data, 'new.rdf');
+        $response = $this->graphStore->insert($data, 'new.rdf');
     }
 
     public function testReplaceIndirect()
     {
         $data = "<urn:subject> <urn:predicate> \"object\" .\n";
-        $this->_client->addMock(
+        $this->client->addMock(
             'PUT',
             '/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf',
             'OK',
             array('callback' => array($this, 'checkNtriplesRequest'))
         );
-        $response = $this->_graphStore->replace($data, "http://foo.com/bar.rdf");
+        $response = $this->graphStore->replace($data, "http://foo.com/bar.rdf");
         $this->assertSame(200, $response->getStatus());
     }
 
@@ -211,20 +211,20 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
     {
         $graph = new EasyRdf_Graph('http://localhost:8080/data/new.rdf');
         $graph->add('urn:subject', 'urn:predicate', 'object');
-        $this->_client->addMock(
+        $this->client->addMock(
             'PUT',
             '/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf',
             'OK',
             array('callback' => array($this, 'checkTurtleRequest'))
         );
-        $response = $this->_graphStore->replace($graph, "http://foo.com/bar.rdf", 'json');
+        $response = $this->graphStore->replace($graph, "http://foo.com/bar.rdf", 'json');
         $this->assertSame(200, $response->getStatus());
     }
 
     public function testReplaceHttpError()
     {
         $data = "<urn:subject> <urn:predicate> \"object\" .\n";
-        $this->_client->addMock(
+        $this->client->addMock(
             'PUT',
             '/data/existing.rdf',
             'Internal Server Error',
@@ -234,14 +234,14 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'HTTP request for http://localhost:8080/data/existing.rdf failed'
         );
-        $response = $this->_graphStore->replace($data, 'existing.rdf');
+        $response = $this->graphStore->replace($data, 'existing.rdf');
     }
 
     public function testToString()
     {
         $this->assertStringEquals(
             'http://localhost:8080/data/',
-            $this->_graphStore
+            $this->graphStore
         );
     }
 }

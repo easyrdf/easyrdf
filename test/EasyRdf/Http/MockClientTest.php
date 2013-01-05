@@ -9,19 +9,19 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function setUp()
     {
-        $this->_client = new EasyRdf_Http_MockClient();
+        $this->client = new EasyRdf_Http_MockClient();
     }
 
     protected function get($uri)
     {
-        $this->_client->setUri($uri);
-        return $this->_client->request('GET');
+        $this->client->setUri($uri);
+        return $this->client->request('GET');
     }
 
     public function testUrlMatch()
     {
-        $this->_client->addMock('GET', 'http://foo.com/test', 'A');
-        $this->_client->addMock('GET', 'http://www.bar.com/test', 'B');
+        $this->client->addMock('GET', 'http://foo.com/test', 'A');
+        $this->client->addMock('GET', 'http://www.bar.com/test', 'B');
 
         $response = $this->get('http://foo.com/test');
         $this->assertSame('A', $response->getBody());
@@ -31,8 +31,8 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function testPathMatch()
     {
-        $this->_client->addMock('GET', '/testA', 'A');
-        $this->_client->addMock('GET', '/testB', 'B');
+        $this->client->addMock('GET', '/testA', 'A');
+        $this->client->addMock('GET', '/testB', 'B');
         $response = $this->get('http://example.com/testA');
         $this->assertSame('A', $response->getBody());
         $response = $this->get('http://example.org/testB');
@@ -41,9 +41,9 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function testPathAndQueryMatch()
     {
-        $this->_client->addMock('GET', '/testA', '10');
-        $this->_client->addMock('GET', '/testA?foo=bar', '20');
-        $this->_client->addMock('GET', '/testA?bar=foo', '30');
+        $this->client->addMock('GET', '/testA', '10');
+        $this->client->addMock('GET', '/testA?foo=bar', '20');
+        $this->client->addMock('GET', '/testA?bar=foo', '30');
         $response = $this->get('http://example.com/testA?foo=bar');
         $this->assertSame('20', $response->getBody());
         $response = $this->get('http://example.org/testA');
@@ -52,17 +52,17 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function testSettingGetParameter()
     {
-        $this->_client->addMock('GET', '/testA', '10');
-        $this->_client->addMock('GET', '/testA?a=1', '20');
-        $this->_client->addMock('GET', '/testA?a=1&b=2', '30');
+        $this->client->addMock('GET', '/testA', '10');
+        $this->client->addMock('GET', '/testA?a=1', '20');
+        $this->client->addMock('GET', '/testA?a=1&b=2', '30');
 
-        $this->_client->setParameterGet('a', '1');
-        $this->_client->setParameterGet('b', '2');
+        $this->client->setParameterGet('a', '1');
+        $this->client->setParameterGet('b', '2');
         $response = $this->get('http://example.org/testA');
         $this->assertSame('30', $response->getBody());
 
-        $this->_client->resetParameters();
-        $this->_client->setParameterGet('b', '2');
+        $this->client->resetParameters();
+        $this->client->setParameterGet('b', '2');
         $response = $this->get('http://example.com/testA?a=1');
         $this->assertSame('30', $response->getBody());
     }
@@ -82,27 +82,27 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'Unexpected request: GET http://example.com/test'
         );
-        $this->_client->addMock('PUT', '/test', '10');
+        $this->client->addMock('PUT', '/test', '10');
         $this->get('http://example.com/test');
     }
 
     public function testWildcardMethod()
     {
-        $this->_client->addMock(null, '/test', 'testWildcardMethod');
+        $this->client->addMock(null, '/test', 'testWildcardMethod');
         $response = $this->get('http://example.com/test');
         $this->assertSame('testWildcardMethod', $response->getBody());
     }
 
     public function testWildcardUrl()
     {
-        $this->_client->addMock('GET', null, 'testWildcardUrl');
+        $this->client->addMock('GET', null, 'testWildcardUrl');
         $response = $this->get('http://example.com/foo');
         $this->assertSame('testWildcardUrl', $response->getBody());
     }
 
     public function testSetStatus()
     {
-        $this->_client->addMock('GET', '/test', 'x', array('status' => 404));
+        $this->client->addMock('GET', '/test', 'x', array('status' => 404));
         $response = $this->get('http://example.com/test');
         $this->assertSame(404, $response->getStatus());
     }
@@ -110,7 +110,7 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
     public function testSetHeaders()
     {
         $h = array('Content-Type' => 'text/html');
-        $this->_client->addMock('GET', '/test', 'x', array('headers' => $h));
+        $this->client->addMock('GET', '/test', 'x', array('headers' => $h));
         $response = $this->get('http://example.com/test');
         $this->assertSame('text/html', $response->getHeader('Content-Type'));
     }
@@ -118,7 +118,7 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
     public function testSetResponse()
     {
         $response = new EasyRdf_Http_Response(234, array('Foo' => 'bar'), 'x');
-        $this->_client->addMock('GET', '/test', $response);
+        $this->client->addMock('GET', '/test', $response);
         $r = $this->get('http://example.com/test', array('throw' => false));
         $this->assertSame(234, $r->getStatus());
         $this->assertSame('bar', $r->getHeader('Foo'));
@@ -127,9 +127,9 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function testOnce()
     {
-        $this->_client->addMock('GET', '/test', '10', array('once' => true));
-        $this->_client->addMockOnce('GET', '/test', '20');
-        $this->_client->addMock('GET', '/test', '30');
+        $this->client->addMock('GET', '/test', '10', array('once' => true));
+        $this->client->addMockOnce('GET', '/test', '20');
+        $this->client->addMock('GET', '/test', '30');
         $r = $this->get('http://example.com/test');
         $this->assertSame('10', $r->getBody());
         $r = $this->get('http://example.com/test');
@@ -142,7 +142,7 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function testRedirect()
     {
-        $this->_client->addMockRedirect('GET', '/', 'http://example.com/test');
+        $this->client->addMockRedirect('GET', '/', 'http://example.com/test');
         $r = $this->get('http://example.com/');
         $this->assertSame('302 redirect to http://example.com/test', $r->getBody());
         $this->assertSame(302, $r->getStatus());
@@ -151,7 +151,7 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function testRedirectSeeOther()
     {
-        $this->_client->addMockRedirect('GET', '/', 'http://example.com/test', 303);
+        $this->client->addMockRedirect('GET', '/', 'http://example.com/test', 303);
         $r = $this->get('http://example.com/');
         $this->assertSame('303 redirect to http://example.com/test', $r->getBody());
         $this->assertSame(303, $r->getStatus());
@@ -163,13 +163,13 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
         $alwaysTrue = array('callback' => array($this, 'alwaysTrue'));
         $alwaysFalse = array('callback' => array($this, 'alwaysFalse'));
 
-        $this->_client->addMock('GET', '/test1', '10', $alwaysTrue);
+        $this->client->addMock('GET', '/test1', '10', $alwaysTrue);
         $r = $this->get('http://example.com/test1');
         $this->assertSame('10', $r->getBody());
 
-        $this->_client->addMock('GET', '/test2', '10', $alwaysFalse);
-        $this->_client->addMock('GET', '/test2', '20', $alwaysFalse);
-        $this->_client->addMock('GET', '/test2', '30', $alwaysTrue);
+        $this->client->addMock('GET', '/test2', '10', $alwaysFalse);
+        $this->client->addMock('GET', '/test2', '20', $alwaysFalse);
+        $this->client->addMock('GET', '/test2', '30', $alwaysTrue);
         $r = $this->get('http://example.com/test2');
         $this->assertSame('30', $r->getBody());
     }
@@ -191,13 +191,13 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
         $echoFalse = array('callback' => array($this, 'echoValue'),
                            'callbackArgs' => array(false));
 
-        $this->_client->addMock('GET', '/test1', '10', $echoTrue);
+        $this->client->addMock('GET', '/test1', '10', $echoTrue);
         $r = $this->get('http://example.com/test1');
         $this->assertSame('10', $r->getBody());
 
-        $this->_client->addMock('GET', '/test2', '10', $echoFalse);
-        $this->_client->addMock('GET', '/test2', '20', $echoTrue);
-        $this->_client->addMock('GET', '/test2', '30', $echoFalse);
+        $this->client->addMock('GET', '/test2', '10', $echoFalse);
+        $this->client->addMock('GET', '/test2', '20', $echoTrue);
+        $this->client->addMock('GET', '/test2', '30', $echoFalse);
         $r = $this->get('http://example.com/test2');
         $this->assertSame('20', $r->getBody());
     }
@@ -210,7 +210,7 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
     public function testCallbackWithMockHttp()
     {
         $isMockHttp = array('callback' => array($this, 'isMockHttp'));
-        $this->_client->addMock('GET', '/test1', '10', $isMockHttp);
+        $this->client->addMock('GET', '/test1', '10', $isMockHttp);
         $r = $this->get('http://example.com/test1');
         $this->assertSame('10', $r->getBody());
     }
@@ -222,11 +222,11 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function testGuessJsonContentType()
     {
-        $this->_client->addMockOnce('GET', null, '{"a":1}');
+        $this->client->addMockOnce('GET', null, '{"a":1}');
         $r = $this->get('http://example.com');
         $this->assertSame('application/json', $r->getHeader('Content-Type'));
 
-        $this->_client->addMockOnce('GET', null, "\n{\"a\"\n:\n1\n}\n");
+        $this->client->addMockOnce('GET', null, "\n{\"a\"\n:\n1\n}\n");
         $r = $this->get('http://example.com');
         $this->assertSame('application/json', $r->getHeader('Content-Type'));
     }

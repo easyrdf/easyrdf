@@ -64,7 +64,7 @@ class EasyRdf_Literal_Decimal extends EasyRdf_Literal
      */
     public function getValue()
     {
-        return (double)$this->_value;
+        return (double)$this->value;
     }
 }
 

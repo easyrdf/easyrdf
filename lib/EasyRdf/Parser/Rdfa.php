@@ -68,8 +68,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
     {
         if ($this->debug)
             print "Adding triple: $resource -> $property -> ".$value['type'].':'.$value['value']."\n";
-        $count = $this->_graph->add($resource, $property, $value);
-        $this->_tripleCount += $count;
+        $count = $this->graph->add($resource, $property, $value);
+        $this->tripleCount += $count;
         return $count;
     }
 
@@ -80,7 +80,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
         // Output a blank node for each item in the list
         foreach ($list as $item) {
-            $newNode = $this->_graph->newBNodeId();
+            $newNode = $this->graph->newBNodeId();
             $this->addTriple($current, $prop, array('type' => 'bnode', 'value' => $newNode));
             $this->addTriple($newNode, 'rdf:first', $item);
 
@@ -182,7 +182,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         $context = array(
             'prefixes' => array(),
             'vocab' => null,
-            'subject' => $this->_baseUri,
+            'subject' => $this->baseUri,
             'property' => null,
             'object' => null,
             'terms' => array(),
@@ -252,8 +252,8 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 } elseif ($isProp) {
                     // Properties can't be relative URIs
                     return null;
-                } elseif ($this->_baseUri) {
-                    return $this->_baseUri->resolve($parsed);
+                } elseif ($this->baseUri) {
+                    return $this->baseUri->resolve($parsed);
                 }
             }
         }
@@ -316,7 +316,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 $context['vocab'] = $node->getAttribute('vocab');
                 if ($context['vocab']) {
                     $this->addTriple(
-                        $this->_baseUri,
+                        $this->baseUri,
                         'rdfa:usesVocabulary',
                         array('type' => 'uri', 'value' => $context['vocab'])
                     );
@@ -372,7 +372,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                             array('resource', 'href', 'src')
                         );
                         if (!$typedResource)
-                            $typedResource = $this->_graph->newBNodeId();
+                            $typedResource = $this->graph->newBNodeId();
                         $object = $typedResource;
                     }
                 } else {
@@ -389,9 +389,9 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     if ($context['path'] === '/html/head') {
                         $subject = $context['object'];
                     } elseif ($depth <= 2) {
-                        $subject = $this->_baseUri;
+                        $subject = $this->baseUri;
                     } elseif ($typeof and !$property) {
-                        $subject = $this->_graph->newBNodeId();
+                        $subject = $this->graph->newBNodeId();
                     } else {
                         if (!$property)
                             $skip = true;
@@ -414,7 +414,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
                 if ($typeof) {
                     if (!$object and !$subject)
-                        $object = $this->_graph->newBNodeId();
+                        $object = $this->graph->newBNodeId();
                     $typedResource = $subject ? $subject : $object;
                 }
 
@@ -471,7 +471,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 }
             } elseif ($rels or $revs) {
                 // Step 10: Incomplete triples and bnode creation
-                $object = $this->_graph->newBNodeId();
+                $object = $this->graph->newBNodeId();
                 if ($rels) {
                     if ($node->hasAttribute('inlist')) {
                         foreach ($rels as $prop) {
@@ -668,19 +668,19 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
         $xpath->registerNamespace('xh', "http://www.w3.org/1999/xhtml");
         $nodeList = $xpath->query('/xh:html/xh:head/xh:base');
         if ($node = $nodeList->item(0) and $href = $node->getAttribute('href')) {
-            $this->_baseUri = new EasyRdf_ParsedUri($href);
+            $this->baseUri = new EasyRdf_ParsedUri($href);
         }
         $nodeList = $xpath->query('/html/head/base');
         if ($node = $nodeList->item(0) and $href = $node->getAttribute('href')) {
-            $this->_baseUri = new EasyRdf_ParsedUri($href);
+            $this->baseUri = new EasyRdf_ParsedUri($href);
         }
 
         // Remove the fragment from the base URI
-        $this->_baseUri->setFragment(null);
+        $this->baseUri->setFragment(null);
 
         // Recursively process XML nodes
         $this->processNode($doc, $context);
 
-        return $this->_tripleCount;
+        return $this->tripleCount;
     }
 }

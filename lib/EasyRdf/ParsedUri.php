@@ -48,13 +48,13 @@
 class EasyRdf_ParsedUri
 {
     // For all URIs:
-    private $_scheme = null;
-    private $_fragment = null;
+    private $scheme = null;
+    private $fragment = null;
 
     // For hierarchical URIs:
-    private $_authority = null;
-    private $_path = null;
-    private $_query = null;
+    private $authority = null;
+    private $path = null;
+    private $query = null;
 
     const URI_REGEX = "|^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?|";
 
@@ -68,25 +68,25 @@ class EasyRdf_ParsedUri
         if (is_string($uri)) {
             if (preg_match(self::URI_REGEX, $uri, $matches)) {
                 if (!empty($matches[1])) {
-                    $this->_scheme = isset($matches[2]) ? $matches[2] : '';
+                    $this->scheme = isset($matches[2]) ? $matches[2] : '';
                 }
                 if (!empty($matches[3])) {
-                    $this->_authority = isset($matches[4]) ? $matches[4] : '';
+                    $this->authority = isset($matches[4]) ? $matches[4] : '';
                 }
-                $this->_path = isset($matches[5]) ? $matches[5] : '';
+                $this->path = isset($matches[5]) ? $matches[5] : '';
                 if (!empty($matches[6])) {
-                    $this->_query = isset($matches[7]) ? $matches[7] : '';
+                    $this->query = isset($matches[7]) ? $matches[7] : '';
                 }
                 if (!empty($matches[8])) {
-                    $this->_fragment = isset($matches[9]) ? $matches[9] : '';
+                    $this->fragment = isset($matches[9]) ? $matches[9] : '';
                 }
             }
         } elseif (is_array($uri)) {
-            $this->_scheme = isset($uri['scheme']) ? $uri['scheme'] : null;
-            $this->_authority = isset($uri['authority']) ? $uri['authority'] : null;
-            $this->_path = isset($uri['path']) ? $uri['path'] : null;
-            $this->_query = isset($uri['query']) ? $uri['query'] : null;
-            $this->_fragment = isset($uri['fragment']) ? $uri['fragment'] : null;
+            $this->scheme = isset($uri['scheme']) ? $uri['scheme'] : null;
+            $this->authority = isset($uri['authority']) ? $uri['authority'] : null;
+            $this->path = isset($uri['path']) ? $uri['path'] : null;
+            $this->query = isset($uri['query']) ? $uri['query'] : null;
+            $this->fragment = isset($uri['fragment']) ? $uri['fragment'] : null;
         }
     }
 
@@ -96,7 +96,7 @@ class EasyRdf_ParsedUri
      */
     public function isAbsolute()
     {
-        return $this->_scheme !== null;
+        return $this->scheme !== null;
     }
 
     /** Returns true if this is an relative (partial) URI
@@ -104,7 +104,7 @@ class EasyRdf_ParsedUri
      */
     public function isRelative()
     {
-        return $this->_scheme === null;
+        return $this->scheme === null;
     }
 
     /** Returns the scheme of the URI (e.g. http)
@@ -112,7 +112,7 @@ class EasyRdf_ParsedUri
      */
     public function getScheme()
     {
-        return $this->_scheme;
+        return $this->scheme;
     }
 
     /** Sets the scheme of the URI (e.g. http)
@@ -120,7 +120,7 @@ class EasyRdf_ParsedUri
      */
     public function setScheme($scheme)
     {
-        $this->_scheme = $scheme;
+        $this->scheme = $scheme;
     }
 
     /** Returns the authority of the URI (e.g. www.example.com:8080)
@@ -128,7 +128,7 @@ class EasyRdf_ParsedUri
      */
     public function getAuthority()
     {
-        return $this->_authority;
+        return $this->authority;
     }
 
     /** Sets the authority of the URI (e.g. www.example.com:8080)
@@ -136,7 +136,7 @@ class EasyRdf_ParsedUri
      */
     public function setAuthority($authority)
     {
-        $this->_authority = $authority;
+        $this->authority = $authority;
     }
 
     /** Returns the path of the URI (e.g. /foo/bar)
@@ -144,7 +144,7 @@ class EasyRdf_ParsedUri
      */
     public function getPath()
     {
-        return $this->_path;
+        return $this->path;
     }
 
     /** Set the path of the URI (e.g. /foo/bar)
@@ -152,7 +152,7 @@ class EasyRdf_ParsedUri
      */
     public function setPath($path)
     {
-        $this->_path = $path;
+        $this->path = $path;
     }
 
     /** Returns the query string part of the URI (e.g. foo=bar)
@@ -160,7 +160,7 @@ class EasyRdf_ParsedUri
      */
     public function getQuery()
     {
-        return $this->_query;
+        return $this->query;
     }
 
     /** Set the query string of the URI (e.g. foo=bar)
@@ -168,7 +168,7 @@ class EasyRdf_ParsedUri
      */
     public function setQuery($query)
     {
-        $this->_query = $query;
+        $this->query = $query;
     }
 
     /** Returns the fragment part of the URI (i.e. after the #)
@@ -176,7 +176,7 @@ class EasyRdf_ParsedUri
      */
     public function getFragment()
     {
-        return $this->_fragment;
+        return $this->fragment;
     }
 
     /** Set the fragment of the URI (i.e. after the #)
@@ -184,7 +184,7 @@ class EasyRdf_ParsedUri
      */
     public function setFragment($fragment)
     {
-        $this->_fragment = $fragment;
+        $this->fragment = $fragment;
     }
 
 
@@ -198,27 +198,27 @@ class EasyRdf_ParsedUri
      */
     public function normalise()
     {
-        if (empty($this->_path))
+        if (empty($this->path))
             return $this;
 
         // Remove ./ from the start
-        if (substr($this->_path, 0, 2) == './') {
+        if (substr($this->path, 0, 2) == './') {
             // Remove both characters
-            $this->_path = substr($this->_path, 2);
+            $this->path = substr($this->path, 2);
         }
 
         // Remove /. from the end
-        if (substr($this->_path, -2) == '/.') {
+        if (substr($this->path, -2) == '/.') {
             // Remove only the last dot, not the slash!
-            $this->_path = substr($this->_path, 0, -1);
+            $this->path = substr($this->path, 0, -1);
         }
 
-        if (substr($this->_path, -3) == '/..') {
-            $this->_path .= '/';
+        if (substr($this->path, -3) == '/..') {
+            $this->path .= '/';
         }
 
         // Split the path into its segments
-        $segments = explode('/', $this->_path);
+        $segments = explode('/', $this->path);
         $newSegments = array();
 
         // Remove all unnecessary '.' and '..' segments
@@ -237,7 +237,7 @@ class EasyRdf_ParsedUri
         }
 
         // Construct the new normalised path
-        $this->_path = implode($newSegments, '/');
+        $this->path = implode($newSegments, '/');
 
         // Allow easy chaining of methods
         return $this;
@@ -255,29 +255,29 @@ class EasyRdf_ParsedUri
 
         // This code is based on the pseudocode in section 5.2.2 of RFC3986
         $target = new EasyRdf_ParsedUri();
-        if ($relUri->_scheme) {
-            $target->_scheme = $relUri->_scheme;
-            $target->_authority = $relUri->_authority;
-            $target->_path = $relUri->_path;
-            $target->_query = $relUri->_query;
+        if ($relUri->scheme) {
+            $target->scheme = $relUri->scheme;
+            $target->authority = $relUri->authority;
+            $target->path = $relUri->path;
+            $target->query = $relUri->query;
         } else {
-            if ($relUri->_authority) {
-                $target->_authority = $relUri->_authority;
-                $target->_path = $relUri->_path;
-                $target->_query = $relUri->_query;
+            if ($relUri->authority) {
+                $target->authority = $relUri->authority;
+                $target->path = $relUri->path;
+                $target->query = $relUri->query;
             } else {
-                if (empty($relUri->_path)) {
-                    $target->_path = $this->_path;
-                    if ($relUri->_query) {
-                        $target->_query = $relUri->_query;
+                if (empty($relUri->path)) {
+                    $target->path = $this->path;
+                    if ($relUri->query) {
+                        $target->query = $relUri->query;
                     } else {
-                        $target->_query = $this->_query;
+                        $target->query = $this->query;
                     }
                 } else {
-                    if (substr($relUri->_path, 0, 1) == '/') {
-                        $target->_path = $relUri->_path;
+                    if (substr($relUri->path, 0, 1) == '/') {
+                        $target->path = $relUri->path;
                     } else {
-                        $path = $this->_path;
+                        $path = $this->path;
                         $lastSlash = strrpos($path, '/');
                         if ($lastSlash !== false) {
                             $path = substr($path, 0, $lastSlash + 1);
@@ -285,16 +285,16 @@ class EasyRdf_ParsedUri
                             $path = '/';
                         }
 
-                        $target->_path .= $path . $relUri->_path;
+                        $target->path .= $path . $relUri->path;
                     }
-                    $target->_query = $relUri->_query;
+                    $target->query = $relUri->query;
                 }
-                $target->_authority = $this->_authority;
+                $target->authority = $this->authority;
             }
-            $target->_scheme = $this->_scheme;
+            $target->scheme = $this->scheme;
         }
 
-        $target->_fragment = $relUri->_fragment;
+        $target->fragment = $relUri->fragment;
 
         $target->normalise();
 
@@ -308,15 +308,15 @@ class EasyRdf_ParsedUri
     public function toString()
     {
         $str = '';
-        if ($this->_scheme !== null)
-            $str .= $this->_scheme . ':';
-        if ($this->_authority !== null)
-            $str .= '//' . $this->_authority;
-        $str .= $this->_path;
-        if ($this->_query !== null)
-            $str .= '?' . $this->_query;
-        if ($this->_fragment !== null)
-            $str .= '#' . $this->_fragment;
+        if ($this->scheme !== null)
+            $str .= $this->scheme . ':';
+        if ($this->authority !== null)
+            $str .= '//' . $this->authority;
+        $str .= $this->path;
+        if ($this->query !== null)
+            $str .= '?' . $this->query;
+        if ($this->fragment !== null)
+            $str .= '#' . $this->fragment;
         return $str;
     }
 

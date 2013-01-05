@@ -49,15 +49,15 @@
  */
 class EasyRdf_Format
 {
-    private static $_formats = array();
+    private static $formats = array();
 
-    private $_name = array();
-    private $_label = null;
-    private $_uri = null;
-    private $_mimeTypes = array();
-    private $_extensions = array();
-    private $_parserClass = null;
-    private $_serialiserClass = null;
+    private $name = array();
+    private $label = null;
+    private $uri = null;
+    private $mimeTypes = array();
+    private $extensions = array();
+    private $parserClass = null;
+    private $serialiserClass = null;
 
     /** Get a list of format names
      *
@@ -65,7 +65,7 @@ class EasyRdf_Format
      */
     public static function getNames()
     {
-        return array_keys(self::$_formats);
+        return array_keys(self::$formats);
     }
 
     /** Get a list of all the registered formats
@@ -74,7 +74,7 @@ class EasyRdf_Format
      */
     public static function getFormats()
     {
-        return self::$_formats;
+        return self::$formats;
     }
 
     /** Generates an HTTP Accept header string
@@ -93,9 +93,9 @@ class EasyRdf_Format
     public static function getHttpAcceptHeader($extraTypes = array())
     {
         $accept = $extraTypes;
-        foreach (self::$_formats as $format) {
-            if ($format->_parserClass and count($format->_mimeTypes) > 0) {
-                $accept = array_merge($accept, $format->_mimeTypes);
+        foreach (self::$formats as $format) {
+            if ($format->parserClass and count($format->mimeTypes) > 0) {
+                $accept = array_merge($accept, $format->mimeTypes);
             }
         }
         arsort($accept, SORT_NUMERIC);
@@ -120,7 +120,7 @@ class EasyRdf_Format
      */
     public static function formatExists($name)
     {
-        return array_key_exists($name, self::$_formats);
+        return array_key_exists($name, self::$formats);
     }
 
     /** Get a EasyRdf_Format from a name, uri or mime type
@@ -137,11 +137,11 @@ class EasyRdf_Format
             );
         }
 
-        foreach (self::$_formats as $format) {
-            if ($query == $format->_name or
-                $query == $format->_uri or
-                array_key_exists($query, $format->_mimeTypes) or
-                in_array($query, $format->_extensions)) {
+        foreach (self::$formats as $format) {
+            if ($query == $format->name or
+                $query == $format->uri or
+                array_key_exists($query, $format->mimeTypes) or
+                in_array($query, $format->extensions)) {
                 return $format;
             }
         }
@@ -174,15 +174,15 @@ class EasyRdf_Format
             );
         }
 
-        if (!array_key_exists($name, self::$_formats)) {
-            self::$_formats[$name] = new EasyRdf_Format($name);
+        if (!array_key_exists($name, self::$formats)) {
+            self::$formats[$name] = new EasyRdf_Format($name);
         }
 
-        self::$_formats[$name]->setLabel($label);
-        self::$_formats[$name]->setUri($uri);
-        self::$_formats[$name]->setMimeTypes($mimeTypes);
-        self::$_formats[$name]->setExtensions($extensions);
-        return self::$_formats[$name];
+        self::$formats[$name]->setLabel($label);
+        self::$formats[$name]->setUri($uri);
+        self::$formats[$name]->setMimeTypes($mimeTypes);
+        self::$formats[$name]->setExtensions($extensions);
+        return self::$formats[$name];
     }
 
     /** Remove a format from the registry
@@ -191,7 +191,7 @@ class EasyRdf_Format
      */
     public static function unregister($name)
     {
-        unset(self::$_formats[$name]);
+        unset(self::$formats[$name]);
     }
 
     /** Class method to register a parser class to a format name
@@ -234,8 +234,8 @@ class EasyRdf_Format
 
         // First try and identify by the filename
         if ($filename and preg_match("/\.(\w+)$/", $filename, $matches)) {
-            foreach (self::$_formats as $format) {
-                if (in_array($matches[1], $format->_extensions)) {
+            foreach (self::$formats as $format) {
+                if (in_array($matches[1], $format->extensions)) {
                     return $format;
                 }
             }
@@ -273,8 +273,8 @@ class EasyRdf_Format
      */
     public function __construct($name)
     {
-        $this->_name = $name;
-        $this->_label = $name;  # Only a default
+        $this->name = $name;
+        $this->label = $name;  # Only a default
     }
 
     /** Get the name of a format object
@@ -283,7 +283,7 @@ class EasyRdf_Format
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /** Get the label for a format object
@@ -292,7 +292,7 @@ class EasyRdf_Format
      */
     public function getLabel()
     {
-        return $this->_label;
+        return $this->label;
     }
 
     /** Set the label for a format object
@@ -307,9 +307,9 @@ class EasyRdf_Format
                     "\$label should be a string"
                 );
             }
-            return $this->_label = $label;
+            return $this->label = $label;
         } else {
-            return $this->_label = null;
+            return $this->label = null;
         }
     }
 
@@ -319,7 +319,7 @@ class EasyRdf_Format
      */
     public function getUri()
     {
-        return $this->_uri;
+        return $this->uri;
     }
 
     /** Set the URI for a format object
@@ -334,9 +334,9 @@ class EasyRdf_Format
                     "\$uri should be a string"
                 );
             }
-            return $this->_uri = $uri;
+            return $this->uri = $uri;
         } else {
-            return $this->_uri = null;
+            return $this->uri = null;
         }
     }
 
@@ -346,7 +346,7 @@ class EasyRdf_Format
      */
     public function getDefaultMimeType()
     {
-        $types = array_keys($this->_mimeTypes);
+        $types = array_keys($this->mimeTypes);
         return $types[0];
     }
 
@@ -357,7 +357,7 @@ class EasyRdf_Format
      */
     public function getMimeTypes()
     {
-        return $this->_mimeTypes;
+        return $this->mimeTypes;
     }
 
     /** Set the MIME Types for a format object
@@ -370,9 +370,9 @@ class EasyRdf_Format
             if (!is_array($mimeTypes)) {
                 $mimeTypes = array($mimeTypes);
             }
-            $this->_mimeTypes = $mimeTypes;
+            $this->mimeTypes = $mimeTypes;
         } else {
-            $this->_mimeTypes = array();
+            $this->mimeTypes = array();
         }
     }
 
@@ -382,7 +382,7 @@ class EasyRdf_Format
      */
     public function getDefaultExtension()
     {
-        return $this->_extensions[0];
+        return $this->extensions[0];
     }
 
     /** Get all the registered file extensions (filename suffix) for a format object
@@ -391,7 +391,7 @@ class EasyRdf_Format
      */
     public function getExtensions()
     {
-        return $this->_extensions;
+        return $this->extensions;
     }
 
     /** Set the file format extensions (filename suffix) for a format object
@@ -404,9 +404,9 @@ class EasyRdf_Format
             if (!is_array($extensions)) {
                 $extensions = array($extensions);
             }
-            $this->_extensions = $extensions;
+            $this->extensions = $extensions;
         } else {
-            $this->_extensions = array();
+            $this->extensions = array();
         }
     }
 
@@ -422,9 +422,9 @@ class EasyRdf_Format
                     "\$class should be a string"
                 );
             }
-            $this->_parserClass = $class;
+            $this->parserClass = $class;
         } else {
-            $this->_parserClass = null;
+            $this->parserClass = null;
         }
     }
 
@@ -434,7 +434,7 @@ class EasyRdf_Format
      */
     public function getParserClass()
     {
-        return $this->_parserClass;
+        return $this->parserClass;
     }
 
     /** Create a new parser to parse this format
@@ -443,7 +443,7 @@ class EasyRdf_Format
      */
     public function newParser()
     {
-        $parserClass = $this->_parserClass;
+        $parserClass = $this->parserClass;
         if (!$parserClass) {
             throw new EasyRdf_Exception(
                 "No parser class available for format: ".$this->getName()
@@ -464,9 +464,9 @@ class EasyRdf_Format
                     "\$class should be a string"
                 );
             }
-            $this->_serialiserClass = $class;
+            $this->serialiserClass = $class;
         } else {
-            $this->_serialiserClass = null;
+            $this->serialiserClass = null;
         }
     }
 
@@ -476,7 +476,7 @@ class EasyRdf_Format
      */
     public function getSerialiserClass()
     {
-        return $this->_serialiserClass;
+        return $this->serialiserClass;
     }
 
     /** Create a new serialiser to parse this format
@@ -485,7 +485,7 @@ class EasyRdf_Format
      */
     public function newSerialiser()
     {
-        $serialiserClass = $this->_serialiserClass;
+        $serialiserClass = $this->serialiserClass;
         if (!$serialiserClass) {
             throw new EasyRdf_Exception(
                 "No serialiser class available for format: ".$this->getName()
@@ -500,7 +500,7 @@ class EasyRdf_Format
      */
     public function __toString()
     {
-        return $this->_name;
+        return $this->name;
     }
 }
 

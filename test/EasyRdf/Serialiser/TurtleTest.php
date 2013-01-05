@@ -41,13 +41,13 @@ require_once dirname(dirname(dirname(__FILE__))).
 
 class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 {
-    protected $_serialiser = null;
-    protected $_graph = null;
+    protected $serialiser = null;
+    protected $graph = null;
 
     public function setUp()
     {
-        $this->_graph = new EasyRdf_Graph();
-        $this->_serialiser = new EasyRdf_Serialiser_Turtle();
+        $this->graph = new EasyRdf_Graph();
+        $this->serialiser = new EasyRdf_Serialiser_Turtle();
     }
 
     public function tearDown()
@@ -58,17 +58,17 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialise()
     {
-        $joe = $this->_graph->resource(
+        $joe = $this->graph->resource(
             'http://example.com/joe#me',
             'foaf:Person'
         );
         $joe->set('foaf:name', 'Joe Bloggs');
         $joe->set(
             'foaf:homepage',
-            $this->_graph->resource('http://example.com/joe/')
+            $this->graph->resource('http://example.com/joe/')
         );
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "\n".
@@ -82,11 +82,11 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseAnonymousSubject()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
-        $anon =  $this->_graph->newBnode();
+        $joe = $this->graph->resource('http://example.com/joe#me');
+        $anon =  $this->graph->newBnode();
         $anon->addLiteral('foaf:name', 'Anon');
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "\n".
@@ -97,14 +97,14 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseBnode()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
-        $alice = $this->_graph->resource('http://example.com/alice#me');
-        $project =  $this->_graph->newBnode();
+        $joe = $this->graph->resource('http://example.com/joe#me');
+        $alice = $this->graph->resource('http://example.com/alice#me');
+        $project =  $this->graph->newBnode();
         $project->add('foaf:name', 'Amazing Project');
         $joe->add('foaf:currentProject', $project);
         $alice->add('foaf:currentProject', $project);
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
             "<http://example.com/joe#me> foaf:currentProject _:genid1 .\n".
@@ -116,12 +116,12 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseNestedBnode1()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
-        $amy =  $this->_graph->newBnode();
+        $joe = $this->graph->resource('http://example.com/joe#me');
+        $amy =  $this->graph->newBnode();
         $amy->addLiteral('foaf:name', 'Amy');
         $joe->add('foaf:knows', $amy);
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "\n".
@@ -132,13 +132,13 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseNestedBnode2()
     {
-        $doc = $this->_graph->resource('http://example.com/doc');
-        $joe = $this->_graph->newBnode();
+        $doc = $this->graph->resource('http://example.com/doc');
+        $joe = $this->graph->newBnode();
         $doc->set('dc:creator', $joe);
         $joe->set('foaf:name', 'Joe');
         $joe->addResource('foaf:homepage', 'http://example.com/joe');
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix dc: <http://purl.org/dc/terms/> .\n".
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
@@ -152,17 +152,17 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseNestedBnode3()
     {
-        $alice = $this->_graph->newBnode();
+        $alice = $this->graph->newBnode();
         $alice->add('foaf:name', 'Alice');
-        $bob = $this->_graph->newBnode();
+        $bob = $this->graph->newBnode();
         $bob->add('foaf:name', 'Bob');
         $bob->addResource('foaf:mbox', 'mailto:bob@example.com');
-        $eve = $this->_graph->newBnode();
+        $eve = $this->graph->newBnode();
         $eve->add('foaf:name', 'Eve');
         $alice->add('foaf:knows', $bob);
         $bob->add('foaf:knows', $eve);
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
             "[]\n".
@@ -178,14 +178,14 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseNestedBnode4()
     {
-        $joe =  $this->_graph->newBnode();
-        $alice =  $this->_graph->newBnode();
+        $joe =  $this->graph->newBnode();
+        $alice =  $this->graph->newBnode();
         $joe->add('foaf:name', 'Joe');
         $alice->add('foaf:name', 'Alice');
         $joe->add('foaf:knows', $alice);
         $alice->add('foaf:knows', $joe);
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
             "_:genid1\n".
@@ -200,10 +200,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseLang()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', new EasyRdf_Literal('Joe', 'en'));
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
             "<http://example.com/joe#me> foaf:name \"Joe\"@en .\n",
@@ -213,10 +213,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseEscaped()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', '\n');
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
             "<http://example.com/joe#me> foaf:name \"\\\\n\" .\n",
@@ -226,10 +226,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseEscaped2()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', '"Joe"');
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
             "<http://example.com/joe#me> foaf:name \"\\\"Joe\\\"\" .\n",
@@ -239,10 +239,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseMultiLineEscaped()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', "Line 1\nLine 2");
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
             "<http://example.com/joe#me> foaf:name \"\"\"Line 1\nLine 2\"\"\" .\n",
@@ -252,10 +252,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseMultiLineEscaped2()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:name', "\t".'"""'."\t");
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
             "<http://example.com/joe#me> foaf:name \"\"\"\t\\\"\"\"\t\"\"\" .\n",
@@ -265,10 +265,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseBooleanDatatype()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:truth', EasyRdf_Literal::create(true));
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
@@ -279,10 +279,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseDecimalDatatype()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:age', new EasyRdf_Literal_Decimal(1.5));
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
@@ -293,10 +293,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseDoubleDatatype()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:age', EasyRdf_Literal::create(1.5, null, 'xsd:double'));
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
@@ -307,10 +307,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseIntegerDatatype()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:age', new EasyRdf_Literal_Integer(49));
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
@@ -321,10 +321,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseDateTimeDatatype()
     {
-        $doc = $this->_graph->resource('http://example.com/');
+        $doc = $this->graph->resource('http://example.com/');
         $doc->set('dc:date', new EasyRdf_Literal_DateTime('2012-11-04T13:01:26+01:00'));
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix dc: <http://purl.org/dc/terms/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
@@ -335,10 +335,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseOtherDatatype()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set('foaf:foo', EasyRdf_Literal::create('foobar', null, 'xsd:other'));
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n".
@@ -349,13 +349,13 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseUnknownDatatype()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set(
             'foaf:foo',
             EasyRdf_Literal::create('foobar', null, 'http://example.com/ns/type')
         );
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
             "@prefix ns0: <http://example.com/ns/> .\n\n".
@@ -367,10 +367,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function testSerialiseShortenableResource()
     {
         EasyRdf_Namespace::set("example", 'http://example.com/');
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->add('rdf:type', 'foaf:Person');
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix example: <http://example.com/> .\n\n".
             "example:joe#me a \"foaf:Person\" .\n",
@@ -380,13 +380,13 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseUnshortenableDatatype()
     {
-        $joe = $this->_graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set(
             'foaf:foo',
             EasyRdf_Literal::create('foobar', null, 'http://example.com/datatype/')
         );
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
             "<http://example.com/joe#me> foaf:foo \"foobar\"^^<http://example.com/datatype/> .\n",
@@ -396,10 +396,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialisePropertyWithUnknownNamespace()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->graph->resource('http://www.example.com/joe#me');
         $joe->set('http://example.com/ns/prop', 'bar');
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertContains(
             "@prefix ns0: <http://example.com/ns/> .",
             $turtle
@@ -413,10 +413,10 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseUnshortenableProperty()
     {
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->graph->resource('http://www.example.com/joe#me');
         $joe->set('http://example.com/property/', 'bar');
 
-        $turtle = $this->_serialiser->serialise($this->_graph, 'turtle');
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "<http://www.example.com/joe#me> <http://example.com/property/> \"bar\" .\n",
             $turtle
@@ -429,8 +429,8 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'EasyRdf_Serialiser_Turtle does not support: unsupportedformat'
         );
-        $rdf = $this->_serialiser->serialise(
-            $this->_graph,
+        $rdf = $this->serialiser->serialise(
+            $this->graph,
             'unsupportedformat'
         );
     }

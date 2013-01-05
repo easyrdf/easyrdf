@@ -45,7 +45,7 @@
  */
 class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
 {
-    private $_outputtedResources = array();
+    private $outputtedResources = array();
 
     /** A constant for the RDF Type property URI */
     const RDF_XML_LITERAL = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral';
@@ -60,7 +60,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         if (is_object($obj) and $obj instanceof EasyRdf_Resource) {
             $pcount = count($obj->propertyUris());
             $rpcount = $this->reversePropertyCount($obj);
-            $alreadyOutput = isset($this->_outputtedResources[$obj->getUri()]);
+            $alreadyOutput = isset($this->outputtedResources[$obj->getUri()]);
 
             $tag = "$indent<$property";
             if ($obj->isBNode()) {
@@ -120,10 +120,10 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
     protected function rdfxmlResource($res, $showNodeId, $depth = 1)
     {
         // Keep track of the resources we have already serialised
-        if (isset($this->_outputtedResources[$res->getUri()])) {
+        if (isset($this->outputtedResources[$res->getUri()])) {
             return '';
         } else {
-            $this->_outputtedResources[$res->getUri()] = true;
+            $this->outputtedResources[$res->getUri()] = true;
         }
 
         // If the resource has no properties - don't serialise it
@@ -190,10 +190,10 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         }
 
         // store of namespaces to be appended to the rdf:RDF tag
-        $this->_prefixes = array('rdf' => true);
+        $this->prefixes = array('rdf' => true);
 
         // store of the resource URIs we have serialised
-        $this->_outputtedResources = array();
+        $this->outputtedResources = array();
 
         $xml = '';
         foreach ($graph->resources() as $resource) {
@@ -202,7 +202,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
 
         // iterate through namepsaces array prefix and output a string.
         $namespaceStr = '';
-        foreach ($this->_prefixes as $prefix => $count) {
+        foreach ($this->prefixes as $prefix => $count) {
             $url = EasyRdf_Namespace::get($prefix);
             if (strlen($namespaceStr)) {
                 $namespaceStr .= "\n        ";

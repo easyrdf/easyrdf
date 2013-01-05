@@ -43,8 +43,8 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     public function setUp()
     {
         EasyRdf_Namespace::setDefault(null);
-        $this->_graph = new EasyRdf_Graph();
-        $this->_resource = $this->_graph->resource('http://xmlns.com/foaf/0.1/name');
+        $this->graph = new EasyRdf_Graph();
+        $this->resource = $this->graph->resource('http://xmlns.com/foaf/0.1/name');
     }
 
     public function tearDown()
@@ -306,7 +306,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     {
         $this->assertSame(
             array('foaf','name'),
-            EasyRdf_Namespace::splitUri($this->_resource)
+            EasyRdf_Namespace::splitUri($this->resource)
         );
     }
 
@@ -396,7 +396,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testShortenResource()
     {
-        $this->assertSame('foaf:name', EasyRdf_Namespace::shorten($this->_resource));
+        $this->assertSame('foaf:name', EasyRdf_Namespace::shorten($this->resource));
     }
 
     public function testShortenUnknown()
@@ -474,7 +474,7 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     {
         $this->assertSame(
             'foaf',
-            EasyRdf_Namespace::prefixOfUri($this->_resource)
+            EasyRdf_Namespace::prefixOfUri($this->resource)
         );
     }
 

@@ -43,16 +43,16 @@ require_once 'EasyRdf/Parser/Arc.php';
 
 class EasyRdf_Parser_ArcTest extends EasyRdf_TestCase
 {
-    protected $_parser = null;
-    protected $_graph = null;
-    protected $_data = null;
+    protected $parser = null;
+    protected $graph = null;
+    protected $data = null;
 
     public function setUp()
     {
         if (requireExists('arc/ARC2.php')) {
-            $this->_parser = new EasyRdf_Parser_Arc();
-            $this->_graph = new EasyRdf_Graph();
-            $this->_data = readFixture('foaf.rdf');
+            $this->parser = new EasyRdf_Parser_Arc();
+            $this->graph = new EasyRdf_Graph();
+            $this->data = readFixture('foaf.rdf');
         } else {
             $this->markTestSkipped(
                 "ARC2 library is not available."
@@ -62,15 +62,15 @@ class EasyRdf_Parser_ArcTest extends EasyRdf_TestCase
 
     public function testParseRdfXml()
     {
-        $count = $this->_parser->parse(
-            $this->_graph,
-            $this->_data,
+        $count = $this->parser->parse(
+            $this->graph,
+            $this->data,
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
         $this->assertSame(14, $count);
 
-        $joe = $this->_graph->resource('http://www.example.com/joe#me');
+        $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
         $this->assertClass('EasyRdf_Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
@@ -82,7 +82,7 @@ class EasyRdf_Parser_ArcTest extends EasyRdf_TestCase
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
 
-        $foaf = $this->_graph->resource('http://www.example.com/joe/foaf.rdf');
+        $foaf = $this->graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
@@ -93,9 +93,9 @@ class EasyRdf_Parser_ArcTest extends EasyRdf_TestCase
             'EasyRdf_Exception',
             'EasyRdf_Parser_Arc does not support: unsupportedformat'
         );
-        $rdf = $this->_parser->parse(
-            $this->_graph,
-            $this->_data,
+        $rdf = $this->parser->parse(
+            $this->graph,
+            $this->data,
             'unsupportedformat',
             null
         );
