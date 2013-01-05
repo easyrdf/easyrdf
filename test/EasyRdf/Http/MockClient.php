@@ -25,7 +25,7 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
         $n = sizeof($this->_mocks);
         for ($i = 0; $i < $n; $i++) {
             list($m, $response, $once) = $this->_mocks[$i];
-            if (isset($m['uri']) && !$this->_matchUri($m['uri'], $uri)) {
+            if (isset($m['uri']) && !$this->matchUri($m['uri'], $uri)) {
                 continue;
             } elseif (isset($m['method']) && $m['method'] !== $this->getMethod()) {
                 continue;
@@ -107,7 +107,7 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
         return $this->addMock($method, $uri, $body, $options);
     }
 
-    protected function _buildUrl($parts)
+    protected function buildUrl($parts)
     {
         $url = $parts['scheme'] . '://';
         $url .= $parts['host'];
@@ -122,10 +122,10 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
         return $url;
     }
 
-    private function _matchUri($match, $parts)
+    private function matchUri($match, $parts)
     {
         # FIXME: Ugh, this is nasty
-        $url = $this->_buildUrl($parts);
+        $url = $this->buildUrl($parts);
         if ($match == $url) {
             return true;
         } else {
