@@ -1,3 +1,23 @@
+EasyRdf 0.8.0
+=============
+
+API changes
+-----------
+* is_a() has been renamed to isA()
+
+Major new features
+------------------
+* Now PSR-2 compliant
+* Added RDFa parser
+
+Enhancements
+------------
+
+Bug Fixes
+---------
+
+
+
 EasyRdf 0.7.2
 =============
 
@@ -43,6 +63,10 @@ Bug Fixes
 
 EasyRdf 0.7.0
 =============
+
+API Changes
+-----------
+* You must now wrap full property URIs in angle brackets
 
 Major new features
 ------------------
