@@ -30,16 +30,6 @@
     "replace": {
         "njh/easyrdf": "self.version"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://www.easyrdf.org"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/njh/easyrdf"
-        }
-    ],
     "autoload": {
         "psr-0": { "EasyRdf_": "lib/" }
     }
