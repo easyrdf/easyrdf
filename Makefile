@@ -1,6 +1,7 @@
 PACKAGE = easyrdf
 VERSION = $(shell php -r "print json_decode(file_get_contents('composer.json'))->version;")
 distdir = $(PACKAGE)-$(VERSION)
+distdir_lib = $(PACKAGE)-lib-$(VERSION)
 PHP = $(shell which php)
 COMPOSER_FLAGS=--no-ansi --no-interaction
 PHPUNIT = vendor/bin/phpunit 
@@ -21,15 +22,17 @@ TEST_SUPPORT = Makefile test/cli_example_wrapper.php \
                test/EasyRdf/Http/MockClient.php \
                test/EasyRdf/Serialiser/NtriplesArray.php \
                test/fixtures/*
-DOC_FILES = composer.json \
-            doap.rdf \
-            docs/api \
-            README.md \
-            LICENSE.md \
-            CHANGELOG.md
+INFO_FILES = composer.json \
+             doap.rdf \
+             README.md \
+             LICENSE.md \
+             CHANGELOG.md
 
 DISTFILES = $(EXAMPLE_FILES) $(SOURCE_FILES) $(TEST_FILES) \
-            $(TEST_SUPPORT) $(DOC_FILES)
+            $(TEST_SUPPORT) $(INFO_FILES) docs
+
+DISTFILES_LIB = $(SOURCE_FILES) $(INFO_FILES)
+
 
 .DEFAULT: help
 all: help
@@ -80,24 +83,33 @@ lint: $(EXAMPLE_FILES) $(SOURCE_FILES) $(TEST_FILES)
 	  $(PHP) -l $$file || exit -1; \
 	done
 
-# TARGET:dist                Build tarball for distribution
+# TARGET:dist                Build archives for distribution
 .PHONY: dist
-dist: $(distdir)
-	tar zcf $(distdir).tar.gz $(distdir)
-	rm -Rf $(distdir)
-	@echo "Created $(distdir).tar.gz"
+dist: $(distdir).tar.gz $(distdir_lib).tar.gz
+	rm -Rf $(distdir) $(distdir_lib)
+	@echo "Done."
+
+%.tar.gz: %
+	tar zcf $@ $^
 
 $(distdir): $(DISTFILES)
+	$(gatherfiles)
+
+$(distdir_lib): $(DISTFILES_LIB)
+	$(gatherfiles)
+
+define gatherfiles
 	@for file in $^; do  \
-		dir=$(distdir)/`dirname "$$file"`; \
+		dir=$@/`dirname "$$file"`; \
 		test -d "$$dir" || mkdir -p "$$dir" || exit -1; \
-		cp -Rfp "$$file" "$(distdir)/$$file" || exit -1; \
+		cp -Rfp "$$file" "$@/$$file" || exit -1; \
 	done
+endef
 
 # TARGET:clean               Delete any temporary and generated files
 .PHONY: clean
 clean:
-	-rm -Rf $(distdir) reports vendor
+	-rm -Rf $(distdir) $(distdir_lib) reports vendor
 	-rm -Rf docs/api samicache
 	-rm -f composer.phar composer.lock
 	-rm -f doap.rdf
