@@ -10,6 +10,9 @@ PHPCS = vendor/bin/phpcs
 PHPCS_FLAGS = --standard=./config/phpcs_ruleset.xml --encoding=utf8 --extensions=php
 SAMI = vendor/bin/sami.php
 
+# Disable copying extended attributes and resource forks on Mac OS X
+export COPYFILE_DISABLE=true
+
 EXAMPLE_FILES = examples/*.php
 SOURCE_FILES = lib/EasyRdf.php \
                lib/EasyRdf/*.php \
