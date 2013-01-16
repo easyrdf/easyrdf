@@ -76,7 +76,7 @@ apidocs: $(SAMI)
 
 docs/api: apidocs
 
-doap.rdf: doap.php composer.json
+doap.rdf: doap.php composer.json vendor/autoload.php
 	$(PHP) doap.php > doap.rdf
 
 # TARGET:cs                  Check the code style of the PHP source code
@@ -152,6 +152,7 @@ composer-install: composer.phar
 composer-update: clean composer.phar
 	$(PHP) composer.phar $(COMPOSER_FLAGS) update --dev
 
+vendor/autoload.php: composer-install
 vendor/bin/phpunit: composer-install
 vendor/bin/phpcs: composer-install
 vendor/bin/sami.php: composer-install

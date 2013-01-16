@@ -1,6 +1,5 @@
 <?php
-    set_include_path(get_include_path() . PATH_SEPARATOR . './lib/');
-    require_once "EasyRdf.php";
+    require_once "vendor/autoload.php";
 
     // Load some properties from the composer file
     $composer = json_decode(file_get_contents('composer.json'));
