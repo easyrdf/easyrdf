@@ -10,6 +10,9 @@ PHPCS = vendor/bin/phpcs
 PHPCS_FLAGS = --standard=./config/phpcs_ruleset.xml --encoding=utf8 --extensions=php
 SAMI = vendor/bin/sami.php
 
+# Composer doesn't work with bsdtar - try and use GNU tar
+TAR = $(shell which gtar || which gnutar || which tar)
+
 # Disable copying extended attributes and resource forks on Mac OS X
 export COPYFILE_DISABLE=true
 
@@ -93,7 +96,7 @@ dist: $(distdir).tar.gz $(distdir_lib).tar.gz
 	@echo "Done."
 
 %.tar.gz: %
-	tar zcf $@ $^
+	$(TAR) zcf $@ $^
 
 $(distdir): $(DISTFILES)
 	$(gatherfiles)
