@@ -63,7 +63,7 @@ test-lib: $(PHPUNIT)
 	mkdir -p reports
 	$(PHP) $(PHPUNIT) $(PHPUNIT_FLAGS) --testsuite "EasyRdf Library"
 
-# TARGET:coverage            Run the library tests and generate a code coverage report
+# TARGET:coverage            Run library tests and generate coverage report
 .PHONY: coverage
 coverage: $(PHPUNIT)
 	mkdir -p reports/coverage
