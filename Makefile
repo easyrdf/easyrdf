@@ -109,6 +109,7 @@ endef
 # TARGET:clean               Delete any temporary and generated files
 .PHONY: clean
 clean:
+	find . -name '.DS_Store' -type f -delete
 	-rm -Rf $(distdir) $(distdir_lib) reports vendor
 	-rm -Rf docs/api samicache
 	-rm -f composer.phar composer.lock
