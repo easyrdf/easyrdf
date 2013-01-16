@@ -28,6 +28,8 @@ TEST_SUPPORT = Makefile test/cli_example_wrapper.php \
                test/EasyRdf/Http/MockClient.php \
                test/EasyRdf/Serialiser/NtriplesArray.php \
                test/fixtures/*
+DOC_FILES = docs/*.md \
+            docs/api
 INFO_FILES = composer.json \
              doap.rdf \
              README.md \
@@ -35,7 +37,7 @@ INFO_FILES = composer.json \
              CHANGELOG.md
 
 DISTFILES = $(EXAMPLE_FILES) $(SOURCE_FILES) $(TEST_FILES) \
-            $(TEST_SUPPORT) $(INFO_FILES) docs
+            $(TEST_SUPPORT) $(INFO_FILES) $(DOC_FILES)
 
 DISTFILES_LIB = $(SOURCE_FILES) $(INFO_FILES)
 
