@@ -2,7 +2,7 @@
     require_once "vendor/autoload.php";
 
     // Load some properties from the composer file
-    $composer = json_decode(file_get_contents('composer.json'));
+    $composer = json_decode(file_get_contents(__DIR__."/composer.json"));
 
     // Start building up a RDF graph
     $doap = new EasyRdf_Graph($composer->homepage.'doap.rdf');
