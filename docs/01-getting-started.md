@@ -15,19 +15,9 @@ Create a composer.json file in your project root:
     {
         "require": {
             "easyrdf/easyrdf": "*"
-        },
-        "repositories": [
-            {
-                "type": "composer",
-                "url": "http://www.easyrdf.org/"
-            }
-        ]
+        }
     }
 
-
-By adding the EasyRdf.org repository to your composer file, you will only get stable
-releases of EasyRdf, with the tests and documentation removed, resulting in a faster
-download.
 
 Install EasyRdf (and any other dependencies) using:
 
