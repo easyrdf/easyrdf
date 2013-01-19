@@ -1,7 +1,6 @@
 PACKAGE = easyrdf
 VERSION = $(shell php -r "print json_decode(file_get_contents('composer.json'))->version;")
 distdir = $(PACKAGE)-$(VERSION)
-distdir_lib = $(PACKAGE)-lib-$(VERSION)
 PHP = $(shell which php)
 COMPOSER_FLAGS=--no-ansi --no-interaction
 PHPUNIT = vendor/bin/phpunit 
@@ -38,8 +37,6 @@ INFO_FILES = composer.json \
 
 DISTFILES = $(EXAMPLE_FILES) $(SOURCE_FILES) $(TEST_FILES) \
             $(TEST_SUPPORT) $(INFO_FILES) $(DOC_FILES)
-
-DISTFILES_LIB = $(SOURCE_FILES) $(INFO_FILES)
 
 
 .DEFAULT: help
@@ -93,17 +90,14 @@ lint: $(EXAMPLE_FILES) $(SOURCE_FILES) $(TEST_FILES)
 
 # TARGET:dist                Build archives for distribution
 .PHONY: dist
-dist: $(distdir).tar.gz $(distdir_lib).tar.gz
-	rm -Rf $(distdir) $(distdir_lib)
+dist: $(distdir).tar.gz
+	rm -Rf $(distdir)
 	@echo "Done."
 
 %.tar.gz: %
 	$(TAR) zcf $@ $^
 
 $(distdir): $(DISTFILES)
-	$(gatherfiles)
-
-$(distdir_lib): $(DISTFILES_LIB)
 	$(gatherfiles)
 
 define gatherfiles
@@ -118,7 +112,7 @@ endef
 .PHONY: clean
 clean:
 	find . -name '.DS_Store' -type f -delete
-	-rm -Rf $(distdir) $(distdir_lib) reports vendor
+	-rm -Rf $(distdir) reports vendor
 	-rm -Rf docs/api samicache
 	-rm -f composer.phar composer.lock
 	-rm -f doap.rdf
