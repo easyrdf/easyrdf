@@ -162,7 +162,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                 }
 
                 if ($object instanceof EasyRdf_Resource and $object->isBNode()) {
-                    $id = $object->getNodeId();
+                    $id = $object->getBNodeId();
                     $rpcount = $this->reversePropertyCount($object);
                     if ($rpcount <= 1 and !isset($this->outputtedBnodes[$id])) {
                         // Nested unlabelled Blank Node
@@ -236,7 +236,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
             }
 
             if ($resource->isBNode()) {
-                $id = $resource->getNodeId();
+                $id = $resource->getBNodeId();
                 $rpcount = $this->reversePropertyCount($resource);
                 if (isset($this->outputtedBnodes[$id])) {
                     // Already been serialised

@@ -108,7 +108,7 @@ class EasyRdf_Resource
      *
      * @return string The identifer for the bnode
      */
-    public function getNodeId()
+    public function getBNodeId()
     {
         if (substr($this->uri, 0, 2) == '_:') {
             return substr($this->uri, 2);
