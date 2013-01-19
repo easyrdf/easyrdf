@@ -55,7 +55,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
      */
     protected function serialiseResource($resource)
     {
-        if ($resource->isBnode()) {
+        if ($resource->isBNode()) {
             return $resource->getUri();
         } else {
             $short = $resource->shorten();
@@ -161,7 +161,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                     $turtle .= ',';
                 }
 
-                if ($object instanceof EasyRdf_Resource and $object->isBnode()) {
+                if ($object instanceof EasyRdf_Resource and $object->isBNode()) {
                     $id = $object->getNodeId();
                     $rpcount = $this->reversePropertyCount($object);
                     if ($rpcount <= 1 and !isset($this->outputtedBnodes[$id])) {
@@ -235,7 +235,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                 continue;
             }
 
-            if ($resource->isBnode()) {
+            if ($resource->isBNode()) {
                 $id = $resource->getNodeId();
                 $rpcount = $this->reversePropertyCount($resource);
                 if (isset($this->outputtedBnodes[$id])) {

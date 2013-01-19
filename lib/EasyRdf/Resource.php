@@ -93,7 +93,7 @@ class EasyRdf_Resource
      *
      * @return bool True if this resource is a blank node.
      */
-    public function isBnode()
+    public function isBNode()
     {
         if (substr($this->uri, 0, 2) == '_:') {
             return true;
@@ -198,7 +198,7 @@ class EasyRdf_Resource
      */
     public function toArray()
     {
-        if ($this->isBnode()) {
+        if ($this->isBNode()) {
             return array('type' => 'bnode', 'value' => $this->uri);
         } else {
             return array('type' => 'uri', 'value' => $this->uri);
