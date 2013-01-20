@@ -22,3 +22,5 @@ Finally, in order to use a full property URI, enclose it in angle brackets:
 
     $name = $me->get('<http://xmlns.com/foaf/0.1/name>');
 
+
+[SPARQL 1.1 query language]:http://www.w3.org/TR/sparql11-query/
