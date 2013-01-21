@@ -373,6 +373,23 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertContains('| "Joe Bloggs"@en                |', $text);
     }
 
+    public function testDumpSelectUnbound()
+    {
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('sparql_select_unbound.xml'),
+            'application/sparql-results+xml'
+        );
+
+        $html = $result->dump(true);
+        $this->assertContains(">?person</th>", $html);
+        $this->assertContains(">?name</th>", $html);
+        $this->assertContains(">?foo</th>", $html);
+
+        $this->assertContains('>http://dbpedia.org/resource/Tim_Berners-Lee</a>', $html);
+        $this->assertContains('>&quot;Tim Berners-Lee&quot;@en</span>', $html);
+        $this->assertContains('<td>&nbsp;</td>', $html);
+    }
+
     public function testDumpAskFalseHtml()
     {
         $result = new EasyRdf_Sparql_Result(

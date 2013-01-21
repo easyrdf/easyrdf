@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sparql xmlns="http://www.w3.org/2005/sparql-results#">
+ <head>
+  <variable name="person"/>
+  <variable name="name"/>
+  <variable name="foo"/>
+ </head>
+ <results distinct="false" ordered="true">
+  <result>
+   <binding name="person"><uri>http://dbpedia.org/resource/Tim_Berners-Lee</uri></binding>
+   <binding name="name"><literal xml:lang="en">Tim Berners-Lee</literal></binding>
+  </result>
+  <result>
+   <binding name="person"><uri>http://dbpedia.org/resource/Sergey_Brin</uri></binding>
+   <binding name="name"><literal xml:lang="en">Sergey Brin</literal></binding>
+  </result>
+  <result>
+   <binding name="person"><uri>http://dbpedia.org/resource/Larry_Page</uri></binding>
+   <binding name="name"><literal xml:lang="en">Larry Page</literal></binding>
+  </result>
+ </results>
+</sparql>

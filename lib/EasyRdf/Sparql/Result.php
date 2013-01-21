@@ -170,9 +170,13 @@ class EasyRdf_Sparql_Result extends ArrayIterator
                 foreach ($this as $row) {
                     $result .= "<tr>";
                     foreach ($this->fields as $field) {
-                        $result .= "<td style='border:solid 1px #000;padding:4px;".
-                                   "vertical-align:top'>".
-                                   $row->$field->dumpValue($html)."</td>";
+                        if (isset($row->$field)) {
+                            $result .= "<td style='border:solid 1px #000;padding:4px;".
+                                       "vertical-align:top'>".
+                                       $row->$field->dumpValue($html)."</td>";
+                        } else {
+                            $result .= "<td>&nbsp;</td>";
+                        }
                     }
                     $result .= "</tr>";
                 }
