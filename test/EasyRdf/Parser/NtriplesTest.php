@@ -83,12 +83,12 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
 
         $bnode1 = $this->graph->resource('_:genid1');
         $this->assertNotNull($bnode1);
-        $this->assertSame(true, $bnode1->isBnode());
+        $this->assertSame(true, $bnode1->isBNode());
         $this->assertStringEquals('c', $bnode1->get('<http://example.com/b>'));
 
         $bnode2 = $this->graph->resource('_:genid2');
         $this->assertNotNull($bnode2);
-        $this->assertSame(true, $bnode2->isBnode());
+        $this->assertSame(true, $bnode2->isBNode());
         $this->assertSame($bnode1, $bnode2->get('<http://example.com/e>'));
     }
 
@@ -104,11 +104,11 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->assertSame(2, $count);
 
         $bnode1 = $this->graph->resource('_:genid1');
-        $this->assertSame(true, $bnode1->isBnode());
+        $this->assertSame(true, $bnode1->isBNode());
         $this->assertStringEquals('_:genid2', $bnode1->get('<http://example.com/a>'));
 
         $bnode2 = $this->graph->resource('_:genid3');
-        $this->assertSame(true, $bnode2->isBnode());
+        $this->assertSame(true, $bnode2->isBNode());
         $this->assertStringEquals('_:genid4', $bnode2->get('<http://example.com/b>'));
     }
 

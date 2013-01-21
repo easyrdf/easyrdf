@@ -4,6 +4,8 @@ EasyRdf 0.8.0
 API changes
 -----------
 * is_a() has been renamed to isA()
+* isBnode() has been renamed to isBNode()
+* getNodeId() has been renamed to getBNodeId()
 
 Major new features
 ------------------
