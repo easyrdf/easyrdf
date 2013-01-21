@@ -192,7 +192,7 @@ class EasyRdf_Namespace
       */
     public static function setDefault($namespace)
     {
-        if (empty($namespace)) {
+        if (is_null($namespace) or $namespace === '') {
             self::$default = null;
         } elseif (preg_match("/^\w+$/", $namespace)) {
             if (isset(self::$namespaces[$namespace])) {
@@ -329,7 +329,7 @@ class EasyRdf_Namespace
       */
     public static function expand($shortUri)
     {
-        if (!is_string($shortUri) or empty($shortUri)) {
+        if (!is_string($shortUri) or $shortUri === '') {
             throw new InvalidArgumentException(
                 "\$shortUri should be a string and cannot be null or empty"
             );
