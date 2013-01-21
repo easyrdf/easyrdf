@@ -106,16 +106,16 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->assertSame(false, $nonbnode->isBNode());
     }
 
-    public function testGetNodeId()
+    public function testGetBNodeId()
     {
         $bnode = new EasyRdf_Resource('_:foobar');
-        $this->assertSame('foobar', $bnode->getNodeId());
+        $this->assertSame('foobar', $bnode->getBNodeId());
     }
 
-    public function testGetNodeIdForUri()
+    public function testGetBNodeIdForUri()
     {
         $nonbnode = new EasyRdf_Resource('http://www.exaple.com/');
-        $this->assertSame(null, $nonbnode->getNodeId());
+        $this->assertSame(null, $nonbnode->getBNodeId());
     }
 
     public function testPrefix()
