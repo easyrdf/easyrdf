@@ -94,16 +94,16 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
-    public function testIsBnode()
+    public function testIsBNode()
     {
         $bnode = new EasyRdf_Resource('_:foobar');
-        $this->assertSame(true, $bnode->isBnode());
+        $this->assertSame(true, $bnode->isBNode());
     }
 
     public function testIsNotBnode()
     {
         $nonbnode = new EasyRdf_Resource('http://www.exaple.com/');
-        $this->assertSame(false, $nonbnode->isBnode());
+        $this->assertSame(false, $nonbnode->isBNode());
     }
 
     public function testGetNodeId()
@@ -562,9 +562,9 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $all = $this->resource->allResources('rdf:test');
         $this->assertCount(2, $all);
         $this->assertStringEquals('http://example.com/thing', $all[0]);
-        $this->assertFalse($all[0]->isBnode());
+        $this->assertFalse($all[0]->isBNode());
         $this->assertStringEquals('_:bnode1', $all[1]);
-        $this->assertTrue($all[1]->isBnode());
+        $this->assertTrue($all[1]->isBNode());
     }
 
     public function testAdd()

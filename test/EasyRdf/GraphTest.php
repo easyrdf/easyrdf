@@ -937,9 +937,9 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $all = $this->graph->allResources($this->uri, 'rdf:test');
         $this->assertCount(2, $all);
         $this->assertStringEquals('http://example.com/thing', $all[0]);
-        $this->assertFalse($all[0]->isBnode());
+        $this->assertFalse($all[0]->isBNode());
         $this->assertStringEquals('_:bnode1', $all[1]);
-        $this->assertTrue($all[1]->isBnode());
+        $this->assertTrue($all[1]->isBNode());
     }
 
     public function testCount()
@@ -1286,7 +1286,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertSame(1, $count);
         $res = $this->graph->get($this->uri, 'foaf:interest');
         $this->assertClass('EasyRdf_Resource', $res);
-        $this->assertTrue($res->isBnode());
+        $this->assertTrue($res->isBNode());
         $this->assertStringEquals('_:abc', $res);
     }
 
