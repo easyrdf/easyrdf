@@ -185,7 +185,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
     protected function nodeName($entity)
     {
         if ($entity instanceof EasyRdf_Resource) {
-            if ($entity->isBnode()) {
+            if ($entity->isBNode()) {
                 return "B".$entity->getUri();
             } else {
                 return "R".$entity->getUri();
