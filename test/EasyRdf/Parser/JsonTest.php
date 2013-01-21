@@ -122,13 +122,13 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
 
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);
-        $this->assertTrue($project->isBnode());
+        $this->assertTrue($project->isBNode());
         $this->assertStringEquals("Joe's Current Project", $project->label());
 
         # Test going the other way
         $project2 = $this->graph->resource('foaf:Project')->get('^rdf:type');
         $this->assertNotNull($project2);
-        $this->assertTrue($project2->isBnode());
+        $this->assertTrue($project2->isBNode());
         $this->assertStringEquals("Joe's Current Project", $project2->label());
 
         $joe2 = $project2->get('^foaf:currentProject');

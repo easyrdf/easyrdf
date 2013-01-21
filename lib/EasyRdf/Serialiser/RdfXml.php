@@ -65,7 +65,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
             $tag = "$indent<$property";
             if ($obj->isBNode()) {
                 if ($alreadyOutput or $rpcount > 1 or $pcount == 0) {
-                    $tag .= " rdf:nodeID=\"".htmlspecialchars($obj->getNodeId()).'"';
+                    $tag .= " rdf:nodeID=\"".htmlspecialchars($obj->getBNodeId()).'"';
                 }
             } else {
                 if ($alreadyOutput or $rpcount != 1 or $pcount == 0) {
@@ -143,7 +143,7 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         $xml = "\n$indent<$type";
         if ($res->isBNode()) {
             if ($showNodeId) {
-                $xml .= ' rdf:nodeID="'.htmlspecialchars($res->getNodeId()).'"';
+                $xml .= ' rdf:nodeID="'.htmlspecialchars($res->getBNodeId()).'"';
             }
         } else {
             $xml .= ' rdf:about="'.htmlspecialchars($res->getUri()).'"';

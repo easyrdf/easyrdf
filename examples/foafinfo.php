@@ -56,7 +56,7 @@
                 $label = $friend->getUri();
             }
 
-            if ($friend->isBnode()) {
+            if ($friend->isBNode()) {
                 echo "<li>$label</li>";
             } else {
                 echo "<li>".link_to_self($label, 'uri='.urlencode($friend))."</li>";
@@ -69,7 +69,7 @@
         foreach ($person->all('foaf:interest') as $interest) {
             $label = $interest->label();
             if ($label) {
-                if ($interest->isBnode()) {
+                if ($interest->isBNode()) {
                     echo "<li>$label</li>";
                 } else {
                     echo "<li>".$interest->htmlLink($label)."</li>";
