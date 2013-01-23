@@ -116,7 +116,6 @@ class EasyRdf_GraphStore
         $client->setMethod($method);
         $client->setRawData($data);
         $client->setHeaders('Content-Type', $mimeType);
-        $client->setHeaders('Content-Length', strlen($data));
         $response = $client->request();
         if (!$response->isSuccessful()) {
             throw new EasyRdf_Exception(
