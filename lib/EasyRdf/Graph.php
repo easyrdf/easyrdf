@@ -512,9 +512,14 @@ class EasyRdf_Graph
                 }
 
                 // Fix ordering and remove unknown keys
+                if ($value['value'] instanceof DateTime) {
+                    $_value = $value['value']->format(DateTime::ATOM);
+                } else {
+                    $_value = strval($value['value']);
+                }
                 $value = array(
                     'type' => strval($value['type']),
-                    'value' => strval($value['value']),
+                    'value' => $_value,
                     'lang' => isset($value['lang']) ? strval($value['lang']) : null,
                     'datatype' => isset($value['datatype']) ? strval($value['datatype']) : null
                 );
