@@ -529,7 +529,7 @@ class EasyRdf_Http_Client
             $headers[] = "User-Agent: {$this->config['useragent']}";
         }
 
-        // If we have _rawPostData set, set the content-length header
+        // If we have rawPostData set, set the content-length header
         if (isset($this->rawPostData)) {
             $headers[] = "Content-Length: ".strlen($this->rawPostData);
         }
