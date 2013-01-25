@@ -136,7 +136,6 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             $client->getRawData()
         );
         $this->assertSame("text/plain", $client->getHeader('Content-Type'));
-        $this->assertSame(41, $client->getHeader('Content-Length'));
         return true;
     }
 
@@ -203,7 +202,6 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             $client->getRawData()
         );
         $this->assertSame("application/json", $client->getHeader('Content-Type'));
-        $this->assertSame(71, $client->getHeader('Content-Length'));
         return true;
     }
 
