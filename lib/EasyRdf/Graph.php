@@ -491,13 +491,11 @@ class EasyRdf_Graph
     {
         if (isset($value)) {
             if (is_object($value)) {
-                if (method_exists($value, 'toArray')) {
-                    $value = $value->toArray();
-                } else {
-                    throw new InvalidArgumentException(
-                        "\$value should respond to the method toArray()"
-                    );
+                if (!method_exists($value, 'toArray')) {
+                    // Convert to a literal object
+                    $value = EasyRdf_Literal::create($value);
                 }
+                $value = $value->toArray();
             } elseif (is_array($value)) {
                 if (!isset($value['type'])) {
                     throw new InvalidArgumentException(
@@ -966,25 +964,10 @@ class EasyRdf_Graph
                 $added += $this->addLiteral($resource, $property, $v, $lang);
             }
             return $added;
-        } else {
-            if ($lang) {
-                $value = array(
-                    'type' => 'literal',
-                    'value' => $value,
-                    'lang' => $lang
-                );
-            } else {
-                $value = array(
-                    'type' => 'literal',
-                    'value' => $value,
-                    'datatype' => EasyRdf_Literal::getDatatypeForValue($value)
-                );
-                if (empty($value['datatype'])) {
-                    unset($value['datatype']);
-                }
-            }
-            return $this->add($resource, $property, $value);
+        } elseif (!is_object($value) or !$value instanceof EasyRdf_Literal) {
+            $value = EasyRdf_Literal::create($value, $lang);
         }
+        return $this->add($resource, $property, $value);
     }
 
     /** Add a resource as a property of another resource

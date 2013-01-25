@@ -1137,6 +1137,29 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertStringEquals('foobar', $all[1]);
     }
 
+    public function testAddDateTime()
+    {
+        $dt = new DateTime("Fri 25 Jan 2013 19:43:19 GMT");
+        $count = $this->graph->add($this->uri, 'rdf:test2', $dt);
+        $this->assertSame(1, $count);
+
+        $literal = $this->graph->get($this->uri, 'rdf:test2');
+        $this->assertClass('EasyRdf_Literal_DateTime', $literal);
+        $this->assertStringEquals('2013-01-25T19:43:19Z', $literal);
+        $this->assertSame(null, $literal->getLang());
+        $this->assertSame('xsd:dateTime', $literal->getDataType());
+    }
+
+    public function testAddLiteralDateTime()
+    {
+        $dt = new DateTime("Fri 25 Jan 2013 19:43:19 GMT");
+        $this->graph->addLiteral($this->uri, 'rdf:test2', $dt);
+        $this->assertStringEquals(
+            '2013-01-25T19:43:19Z',
+            $this->graph->get($this->uri, 'rdf:test2')
+        );
+    }
+
     public function testAddNull()
     {
         $count = $this->graph->add($this->uri, 'rdf:test', null);
@@ -1177,8 +1200,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     public function testAddInvalidObject()
     {
         $this->setExpectedException(
-            'InvalidArgumentException',
-            '$value should respond to the method toArray()'
+            'PHPUnit_Framework_Error',
+            'Object of class EasyRdf_GraphTest could not be converted to string'
         );
         $this->graph->add($this->uri, 'rdf:foo', $this);
     }

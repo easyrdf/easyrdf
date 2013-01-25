@@ -706,8 +706,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     {
         $this->setupTestGraph();
         $this->setExpectedException(
-            'InvalidArgumentException',
-            '$value should respond to the method toArray()'
+            'PHPUnit_Framework_Error',
+            'Object of class EasyRdf_ResourceTest could not be converted to string'
         );
         $this->resource->add('rdf:foo', $this);
     }
