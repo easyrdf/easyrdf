@@ -91,8 +91,8 @@ class EasyRdf_Literal
             $value = isset($value['value']) ? $value['value'] : null;
         }
 
-        if (empty($datatype)) {
-            if (empty($lang)) {
+        if (is_null($datatype) or $datatype === '') {
+            if (is_null($lang) or $lang === '') {
                 // Automatic datatype selection
                 $datatype = self::getDatatypeForValue($value);
             }
