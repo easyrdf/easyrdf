@@ -25,6 +25,16 @@ class EasyRdf_Literal_DateTest extends EasyRdf_TestCase
         $this->assertSame('xsd:date', $literal->getDatatype());
     }
 
+    public function testConstructNoValue()
+    {
+        // Would be very unlucky if this ran at midnight and failed
+        // (but it is possible)
+        $today = new DateTime('today');
+        $literal = new EasyRdf_Literal_Date();
+        $this->assertEquals($today, $literal->getValue());
+        $this->assertRegExp('|^\d{4}-\d{2}-\d{2}$|', strval($literal));
+    }
+
     public function testParse()
     {
         $literal = EasyRdf_Literal_Date::parse('5th August 2011');

@@ -49,6 +49,7 @@ class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
     /** Constructor for creating a new date and time literal
      *
      * If the value is a DateTime object, then it will be converted to the xsd:dateTime format.
+     * If no value is given or is is null, then the current time is used.
      *
      * @see DateTime
      *
@@ -57,8 +58,13 @@ class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
      * @param  string $datatype  Optional datatype (default 'xsd:dateTime')
      * @return object EasyRdf_Literal_DateTime
      */
-    public function __construct($value, $lang = null, $datatype = null)
+    public function __construct($value = null, $lang = null, $datatype = null)
     {
+        // If $value is null, use 'now'
+        if (is_null($value)) {
+            $value = new DateTime('now');
+        }
+    
         // Convert DateTime objects into string
         if ($value instanceof DateTime) {
             $atom = $value->format(DateTime::ATOM);

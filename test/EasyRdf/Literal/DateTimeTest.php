@@ -15,6 +15,15 @@ class EasyRdf_Literal_DateTimeTest extends EasyRdf_TestCase
         $this->assertSame('xsd:dateTime', $literal->getDatatype());
     }
 
+    public function testConstructNoValue()
+    {
+        $now = new DateTime('now');
+        $literal = new EasyRdf_Literal_DateTime();
+        $diff = $now->diff($literal->getValue());
+        $one = new DateInterval('PT1S');
+        $this->assertTrue($diff <= $one);
+    }
+
     public function testConstructFromDateTimeBST()
     {
         $dt = new DateTime('2010-09-08T07:06:05+0100');
