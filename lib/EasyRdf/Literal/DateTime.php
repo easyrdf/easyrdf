@@ -61,8 +61,8 @@ class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
     {
         // Convert DateTime objects into string
         if ($value instanceof DateTime) {
-            $iso = $value->format(DateTime::ATOM);
-            $value = preg_replace('/[\+\-]00(\:?)00$/', 'Z', $iso);
+            $atom = $value->format(DateTime::ATOM);
+            $value = preg_replace('/[\+\-]00(\:?)00$/', 'Z', $atom);
         }
 
         EasyRdf_Literal::__construct($value, null, $datatype);
