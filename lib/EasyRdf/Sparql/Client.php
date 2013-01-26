@@ -83,7 +83,7 @@ class EasyRdf_Sparql_Client
      */
     public function query($query)
     {
-        # Add namespaces to the queryString
+        // Check for undefined prefixes
         $prefixes = '';
         foreach (EasyRdf_Namespace::namespaces() as $prefix => $uri) {
             if (strpos($query, "$prefix:") !== false and
@@ -94,9 +94,8 @@ class EasyRdf_Sparql_Client
 
         $client = EasyRdf_Http::getDefaultHttpClient();
         $client->resetParameters();
-        $client->setUri($this->uri);
-        $client->setMethod('GET');
 
+        // Tell the server which response formats we can parse
         $accept = EasyRdf_Format::getHttpAcceptHeader(
             array(
               'application/sparql-results+json' => 1.0,
@@ -104,7 +103,20 @@ class EasyRdf_Sparql_Client
             )
         );
         $client->setHeaders('Accept', $accept);
-        $client->setParameterGet('query', $prefixes . $query);
+
+        // Use GET if the query is less than 2kB
+        // 2046 = 2kB minus 1 for '?' and 1 for NULL-terminated string on server
+        $encodedQuery = 'query='.urlencode($prefixes . $query);
+        if (strlen($encodedQuery) + strlen($this->uri) <= 2046) {
+            $client->setMethod('GET');
+            $client->setUri($this->uri.'?'.$encodedQuery);
+        } else {
+            // Fall back to POST instead (which is un-cacheable)
+            $client->setMethod('POST');
+            $client->setUri($this->uri);
+            $client->setRawData($encodedQuery);
+            $client->setHeaders('Content-Type', 'application/x-www-form-urlencoded');
+        }
 
         $response = $client->request();
         if ($response->isSuccessful()) {

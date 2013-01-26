@@ -120,6 +120,31 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $result = $this->sparql->query("SELECT * WHERE {?s ?p ?o}");
     }
 
+    public function checkPost($client)
+    {
+        $this->assertRegExp('/^query=/', $client->getRawData());
+        $this->assertSame("application/x-www-form-urlencoded", $client->getHeader('Content-Type'));
+        return true;
+    }
+
+    public function testHugeQuerySelect()
+    {
+        $this->client->addMock(
+            'POST',
+            '/sparql',
+            readFixture('sparql_select_all.json'),
+            array(
+                'headers' => array('Content-Type' => 'application/sparql-results+json'),
+                'callback' => array($this, 'checkPost')
+            )
+        );
+
+        // Add extra 2k+ of comment to start of query
+        $padding = str_repeat("# comment 012345678901234567890123456789\n", 50);
+        $result = $this->sparql->query("$padding SELECT * WHERE {?s ?p ?o}");
+        $this->assertCount(14, $result);
+    }
+
     public function testQueryAddPrefix()
     {
         $this->client->addMock(
