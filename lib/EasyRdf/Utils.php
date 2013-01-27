@@ -171,8 +171,12 @@ class EasyRdf_Utils
             $text .= '@' . $literal['lang'];
         }
         if (isset($literal['datatype'])) {
-            $datatype = EasyRdf_Namespace::shorten($literal['datatype']);
-            $text .= "^^$datatype";
+            $short = EasyRdf_Namespace::shorten($literal['datatype']);
+            if ($short) {
+                $text .= "^^$short";
+            } else {
+                $text .= "^^<".$literal['datatype'].">";
+            }
         }
 
         if ($html) {

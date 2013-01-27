@@ -251,6 +251,24 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         );
     }
 
+    public function testDumpLiteralValueWithUriDatatype()
+    {
+        $literal = array(
+            'type' => 'literal',
+            'value' => '1',
+            'datatype' => 'http://example.com/datatypes/int'
+        );
+        $this->assertSame(
+            '"1"^^<http://example.com/datatypes/int>',
+            EasyRdf_Utils::dumpLiteralValue($literal, false)
+        );
+        $this->assertSame(
+            "<span style='color:black'>&quot;1&quot;^^".
+            "&lt;http://example.com/datatypes/int&gt;</span>",
+            EasyRdf_Utils::dumpLiteralValue($literal, true)
+        );
+    }
+
     public function testParseMimeTypeBasic()
     {
         list($type) = EasyRdf_Utils::parseMimeType('text/plain');
