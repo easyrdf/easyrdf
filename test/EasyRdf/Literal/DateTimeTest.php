@@ -17,11 +17,10 @@ class EasyRdf_Literal_DateTimeTest extends EasyRdf_TestCase
 
     public function testConstructNoValue()
     {
-        $now = new DateTime('now');
+        $now = strtotime('now');
         $literal = new EasyRdf_Literal_DateTime();
-        $diff = $now->diff($literal->getValue());
-        $one = new DateInterval('PT1S');
-        $this->assertTrue($diff <= $one);
+        $check = strtotime(strval($literal));
+        $this->assertLessThan(2, $check-$now);
     }
 
     public function testConstructFromDateTimeBST()
