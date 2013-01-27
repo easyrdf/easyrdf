@@ -67,5 +67,3 @@ class EasyRdf_Literal_Decimal extends EasyRdf_Literal
         return (double)$this->value;
     }
 }
-
-EasyRdf_Literal::setDatatypeMapping('xsd:decimal', 'EasyRdf_Literal_Decimal');

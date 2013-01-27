@@ -116,5 +116,3 @@ class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
         return (int)$this->format('s');
     }
 }
-
-EasyRdf_Literal::setDatatypeMapping('xsd:dateTime', 'EasyRdf_Literal_DateTime');

@@ -88,5 +88,3 @@ class EasyRdf_Literal_HexBinary extends EasyRdf_Literal
         return pack("H*", $this->value);
     }
 }
-
-EasyRdf_Literal::setDatatypeMapping('xsd:hexBinary', 'EasyRdf_Literal_HexBinary');

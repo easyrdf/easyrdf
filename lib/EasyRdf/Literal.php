@@ -313,3 +313,16 @@ class EasyRdf_Literal
         return EasyRdf_Utils::dumpLiteralValue($this, $html, $color);
     }
 }
+
+/*
+   Register default set of datatype classes
+*/
+
+EasyRdf_Literal::setDatatypeMapping('xsd:boolean', 'EasyRdf_Literal_Boolean');
+EasyRdf_Literal::setDatatypeMapping('xsd:date', 'EasyRdf_Literal_Date');
+EasyRdf_Literal::setDatatypeMapping('xsd:dateTime', 'EasyRdf_Literal_DateTime');
+EasyRdf_Literal::setDatatypeMapping('xsd:decimal', 'EasyRdf_Literal_Decimal');
+EasyRdf_Literal::setDatatypeMapping('xsd:hexBinary', 'EasyRdf_Literal_HexBinary');
+EasyRdf_Literal::setDatatypeMapping('rdf:HTML', 'EasyRdf_Literal_HTML');
+EasyRdf_Literal::setDatatypeMapping('xsd:integer', 'EasyRdf_Literal_Integer');
+EasyRdf_Literal::setDatatypeMapping('rdf:XMLLiteral', 'EasyRdf_Literal_XML');

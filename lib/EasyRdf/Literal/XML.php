@@ -70,5 +70,3 @@ class EasyRdf_Literal_XML extends EasyRdf_Literal
         return $dom;
     }
 }
-
-EasyRdf_Literal::setDatatypeMapping('rdf:XMLLiteral', 'EasyRdf_Literal_XML');

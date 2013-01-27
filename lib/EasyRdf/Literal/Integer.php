@@ -67,5 +67,3 @@ class EasyRdf_Literal_Integer extends EasyRdf_Literal
         return (int)$this->value;
     }
 }
-
-EasyRdf_Literal::setDatatypeMapping('xsd:integer', 'EasyRdf_Literal_Integer');

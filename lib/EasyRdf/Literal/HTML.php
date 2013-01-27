@@ -69,5 +69,3 @@ class EasyRdf_Literal_HTML extends EasyRdf_Literal
         return strip_tags($this->value, $allowableTags);
     }
 }
-
-EasyRdf_Literal::setDatatypeMapping('rdf:HTML', 'EasyRdf_Literal_HTML');

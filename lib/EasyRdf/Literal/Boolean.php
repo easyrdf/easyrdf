@@ -92,5 +92,3 @@ class EasyRdf_Literal_Boolean extends EasyRdf_Literal
         return strtolower($this->value) === 'false' or $this->value === '0';
     }
 }
-
-EasyRdf_Literal::setDatatypeMapping('xsd:boolean', 'EasyRdf_Literal_Boolean');
