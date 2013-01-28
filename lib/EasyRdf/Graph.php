@@ -1485,7 +1485,7 @@ class EasyRdf_Graph
         if ($resource) {
             return $this->get(
                 $resource,
-                'skos:prefLabel|rdfs:label|foaf:name|dc:title|dc11:title',
+                'skos:prefLabel|rdfs:label|foaf:name|rss:title|dc:title|dc11:title',
                 'literal',
                 $lang
             );
