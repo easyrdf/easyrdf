@@ -307,6 +307,14 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetDefaultMimeTypeNoDefault()
+    {
+        $format2 = EasyRdf_Format::register('my2', 'Other Format');
+        $this->assertNull(
+            $format2->getDefaultMimeType()
+        );
+    }
+
     public function testGetMimeTypes()
     {
         $this->assertSame(
@@ -346,6 +354,14 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->assertSame(
             'mext',
             $this->format->getDefaultExtension()
+        );
+    }
+
+    public function testGetExtensionNoDefault()
+    {
+        $format2 = EasyRdf_Format::register('my2', 'Other Format');
+        $this->assertNull(
+            $format2->getDefaultExtension()
         );
     }
 
