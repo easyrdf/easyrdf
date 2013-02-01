@@ -353,8 +353,9 @@ class EasyRdf_Format
     public function getDefaultMimeType()
     {
         $types = array_keys($this->mimeTypes);
-        if (isset($types[0]))
+        if (isset($types[0])) {
             return $types[0];
+        }
     }
 
     /** Get all the registered mime types for a format object
@@ -389,8 +390,9 @@ class EasyRdf_Format
      */
     public function getDefaultExtension()
     {
-        if (isset($this->extensions[0]))
+        if (isset($this->extensions[0])) {
             return $this->extensions[0];
+        }
     }
 
     /** Get all the registered file extensions (filename suffix) for a format object
