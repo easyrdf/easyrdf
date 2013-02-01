@@ -521,7 +521,11 @@ class EasyRdf_Format
 EasyRdf_Format::register(
     'php',
     'RDF/PHP',
-    'http://n2.talis.com/wiki/RDF_PHP_Specification'
+    'http://n2.talis.com/wiki/RDF_PHP_Specification',
+    array(
+        'application/x-httpd-php-source' => 1.0
+    ),
+    array('phps')
 );
 
 EasyRdf_Format::register(
