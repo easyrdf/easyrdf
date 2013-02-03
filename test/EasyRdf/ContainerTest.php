@@ -109,7 +109,7 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
         $this->assertClass('EasyRdf_Container', $favourites);
         
         $list = array();
-        foreach($favourites as $fruit) {
+        foreach ($favourites as $fruit) {
             $list[] = $fruit->getUri();
         }
 
