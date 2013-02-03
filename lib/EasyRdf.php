@@ -170,6 +170,11 @@ require_once "EasyRdf/Parser/Turtle.php";
 require_once "EasyRdf/Resource.php";
 
 /**
+ * @see EasyRdf_Container
+ */
+require_once "EasyRdf/Container.php";
+
+/**
  * @see EasyRdf_Serialiser
  */
 require_once "EasyRdf/Serialiser.php";
