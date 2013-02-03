@@ -83,18 +83,9 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
 
     public function testParseSeq()
     {
-        $data = "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>\n";
-        $data .= "  <rdf:Seq rdf:about='http://example.org/favourite-fruit'>\n";
-        $data .= "    <rdf:li rdf:resource='http://example.org/banana'/>\n";
-        $data .= "    <rdf:li rdf:resource='http://example.org/apple'/>\n";
-        $data .= "    <rdf:li rdf:resource='http://example.org/pear'/>\n";
-        $data .= "    <rdf:li rdf:resource='http://example.org/pear'/>\n";
-        $data .= "  </rdf:Seq>\n";
-        $data .= "</rdf:RDF>\n";
-
         $count = $this->parser->parse(
             $this->graph,
-            $data,
+            readFixture('rdf-seq.rdf'),
             'rdfxml',
             'http://www.w3.org/TR/REC-rdf-syntax/'
         );
