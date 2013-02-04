@@ -64,6 +64,8 @@ class EasyRdf_Container extends EasyRdf_Resource implements SeekableIterator
     /** Seek to a specific position in the container
      *
      * The first item is postion 1
+     *
+     * @param  integer  $position     The position in the container to seek to
      */
     public function seek($position)
     {
