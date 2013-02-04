@@ -47,7 +47,7 @@
  * @copyright  Copyright (c) 2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Container extends EasyRdf_Resource implements Iterator
+class EasyRdf_Container extends EasyRdf_Resource implements SeekableIterator
 {
     private $position;
 
@@ -59,6 +59,15 @@ class EasyRdf_Container extends EasyRdf_Resource implements Iterator
     {
         $this->position = 1;
         parent::__construct($uri, $graph);
+    }
+
+    /** Seek to a specific position in the container
+     *
+     * The first item is postion 1
+     */
+    public function seek($position)
+    {
+        $this->position = $position;
     }
 
     /** Rewind the iterator back to the start of the container (item 1)

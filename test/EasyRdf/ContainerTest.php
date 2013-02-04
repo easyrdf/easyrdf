@@ -96,18 +96,16 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
         $this->assertStringEquals('http://example.org/banana', $favourites->current());
     }
 
-    public function testIterator()
+    public function testForeach()
     {
-        $count = $this->graph->parse(
+        $this->graph->parse(
             readFixture('rdf-seq.rdf'),
             'rdfxml',
             'http://www.w3.org/TR/REC-rdf-syntax/'
         );
 
         $favourites = $this->graph->resource('ex:favourite-fruit');
-        $this->assertSame('rdf:Seq', $favourites->type());
-        $this->assertClass('EasyRdf_Container', $favourites);
-        
+
         $list = array();
         foreach ($favourites as $fruit) {
             $list[] = $fruit->getUri();
@@ -122,5 +120,38 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
             ),
             $list
         );
+    }
+    
+    public function testSeek()
+    {
+        $this->graph->parse(
+            readFixture('rdf-seq.rdf'),
+            'rdfxml',
+            'http://www.w3.org/TR/REC-rdf-syntax/'
+        );
+
+        $favourites = $this->graph->resource('ex:favourite-fruit');
+        
+        $favourites->seek(0);
+        $this->assertFalse($favourites->valid());
+        
+        $favourites->seek(1);
+        $this->assertTrue($favourites->valid());
+        $this->assertStringEquals('http://example.org/banana', $favourites->current());
+        
+        $favourites->seek(2);
+        $this->assertTrue($favourites->valid());
+        $this->assertStringEquals('http://example.org/apple', $favourites->current());
+        
+        $favourites->seek(3);
+        $this->assertTrue($favourites->valid());
+        $this->assertStringEquals('http://example.org/pear', $favourites->current());
+        
+        $favourites->seek(4);
+        $this->assertTrue($favourites->valid());
+        $this->assertStringEquals('http://example.org/pear', $favourites->current());
+        
+        $favourites->seek(5);
+        $this->assertFalse($favourites->valid());
     }
 }
