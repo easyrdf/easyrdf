@@ -114,4 +114,21 @@ class EasyRdf_Container extends EasyRdf_Resource implements SeekableIterator
     {
         return $this->hasProperty('rdf:_'.$this->position);
     }
+    
+    /** Append an item to the end of the container
+     *
+     * @param  mixed $value      The value to append
+     * @return integer           The number of values appended (1 or 0)
+     */
+    public function append($value)
+    {
+        // Find the end of the list
+        $pos = 1;
+        while ($this->hasProperty('rdf:_'.$pos)) {
+            $pos++;
+        }
+        
+        // Add the item
+        return $this->add('rdf:_'.$pos, $value);
+    }
 }

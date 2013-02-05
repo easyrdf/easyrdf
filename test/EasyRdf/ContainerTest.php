@@ -154,4 +154,25 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
         $favourites->seek(5);
         $this->assertFalse($favourites->valid());
     }
+
+    public function testAppend()
+    {
+        $animals = $this->graph->newBnode('rdf:Seq');
+        $this->assertSame('rdf:Seq', $animals->type());
+        $this->assertClass('EasyRdf_Container', $animals);
+    
+        $this->assertEquals(1, $animals->append('Cat'));
+        $this->assertEquals(1, $animals->append('Dog'));
+        $this->assertEquals(1, $animals->append('Rat'));
+        
+        $array = array();
+        foreach ($animals as $animal) {
+            $array[] = strval($animal);
+        }
+
+        $this->assertEquals(
+            array('Cat', 'Dog', 'Rat'),
+            $array
+        );
+    }
 }
