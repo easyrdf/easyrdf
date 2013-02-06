@@ -132,9 +132,6 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
 
         $favourites = $this->graph->resource('ex:favourite-fruit');
         
-        $favourites->seek(0);
-        $this->assertFalse($favourites->valid());
-        
         $favourites->seek(1);
         $this->assertTrue($favourites->valid());
         $this->assertStringEquals('http://example.org/banana', $favourites->current());
@@ -150,9 +147,232 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
         $favourites->seek(4);
         $this->assertTrue($favourites->valid());
         $this->assertStringEquals('http://example.org/pear', $favourites->current());
+    }
+
+    public function testSeekZero()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq->seek(0);
+    }
+
+    public function testSeekMinusOne()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq->seek(-1);
+    }
+
+    public function testSeekNonInteger()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq->seek('foo');
+    }
+
+    public function testArrayOffsetExists()
+    {
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq->add('rdf:_1', 'Item');
+
+        $this->assertTrue(isset($seq[1]));
+        $this->assertFalse(isset($seq[2]));
+    }
+
+    public function testArrayOffsetExistsZero()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        isset($seq[0]);
+    }
+
+    public function testArrayOffsetExistsMinusOne()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        isset($seq[-1]);
+    }
+
+    public function testArrayOffsetExistsNonInteger()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        isset($seq['foo']);
+    }
+
+    public function testArrayOffsetGet()
+    {
+        $this->graph->parse(
+            readFixture('rdf-seq.rdf'),
+            'rdfxml',
+            'http://www.w3.org/TR/REC-rdf-syntax/'
+        );
+
+        $favourites = $this->graph->resource('ex:favourite-fruit');
+        $this->assertStringEquals('http://example.org/banana', $favourites[1]);
+        $this->assertStringEquals('http://example.org/apple', $favourites[2]);
+        $this->assertStringEquals('http://example.org/pear', $favourites[3]);
+        $this->assertStringEquals('http://example.org/pear', $favourites[4]);
+    }
+
+    public function testArrayOffsetGetNonexistent()
+    {
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $this->assertNull($seq[5]);
+    }
+
+    public function testArrayOffsetGetZero()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq[0];
+    }
+
+    public function testArrayOffsetGetMinusOne()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq[-1];
+    }
+
+    public function testArrayOffsetGetNonInteger()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq['foo'];
+    }
+
+    public function testArrayOffsetSet()
+    {
+        $seq = $this->graph->newBnode('rdf:Seq');
+
+        $seq[1] = 'Item 1';
+        $this->assertStringEquals('Item 1', $seq->get('rdf:_1'));
         
-        $favourites->seek(5);
-        $this->assertFalse($favourites->valid());
+        $seq[2] = 'Item 2';
+        $this->assertStringEquals('Item 2', $seq->get('rdf:_2'));
+        
+        $seq[3] = 'Item 3';
+        $this->assertStringEquals('Item 3', $seq->get('rdf:_3'));
+    }
+
+    public function testArrayOffsetSetReplace()
+    {
+        $seq = $this->graph->newBnode('rdf:Seq');
+
+        $seq->add('rdf:_1', 'Item 1');
+        $seq[1] = 'Replace';
+        $this->assertStringEquals('Replace', $seq->get('rdf:_1'));
+    }
+
+    public function testArrayOffsetAppend()
+    {
+        $seq = $this->graph->newBnode('rdf:Seq');
+
+        $seq[] = 'Item 1';
+        $seq[] = 'Item 2';
+        $seq[] = 'Item 3';
+
+        $this->assertStringEquals('Item 1', $seq->get('rdf:_1'));
+        $this->assertStringEquals('Item 2', $seq->get('rdf:_2'));
+        $this->assertStringEquals('Item 3', $seq->get('rdf:_3'));
+    }
+
+    public function testArrayOffsetSetZero()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq[0] = 'Item 1';
+    }
+
+    public function testArrayOffsetSetMinusOne()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq[-1] = 'Item 1';
+    }
+
+    public function testArrayOffsetSetNonInteger()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq['foo'] = 'Item 1';
+    }
+
+    public function testArrayOffsetUnset()
+    {
+        $seq = $this->graph->newBnode('rdf:Seq');
+
+        $seq->add('rdf:_1', 'Item 1');
+        $this->assertStringEquals('Item 1', $seq->get('rdf:_1'));
+        unset($seq[1]);
+        $this->assertNull($seq->get('rdf:_1'));
+    }
+
+    public function testArrayOffsetUnsetZero()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        unset($seq[0]);
+    }
+
+    public function testArrayOffsetUnsetMinusOne()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        unset($seq[-1]);
+    }
+
+    public function testArrayOffsetUnsetNonInteger()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Container position must be a positive integer'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        unset($seq['foo']);
     }
 
     public function testAppend()
@@ -164,15 +384,9 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
         $this->assertEquals(1, $animals->append('Cat'));
         $this->assertEquals(1, $animals->append('Dog'));
         $this->assertEquals(1, $animals->append('Rat'));
-        
-        $array = array();
-        foreach ($animals as $animal) {
-            $array[] = strval($animal);
-        }
 
-        $this->assertEquals(
-            array('Cat', 'Dog', 'Rat'),
-            $array
-        );
+        $this->assertEquals('Cat', $animals[1]);
+        $this->assertEquals('Dog', $animals[2]);
+        $this->assertEquals('Rat', $animals[3]);
     }
 }

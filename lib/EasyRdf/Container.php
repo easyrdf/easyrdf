@@ -47,7 +47,7 @@
  * @copyright  Copyright (c) 2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Container extends EasyRdf_Resource implements SeekableIterator
+class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, SeekableIterator
 {
     private $position;
 
@@ -69,7 +69,13 @@ class EasyRdf_Container extends EasyRdf_Resource implements SeekableIterator
      */
     public function seek($position)
     {
-        $this->position = $position;
+        if (is_int($position) and $position > 0) {
+            $this->position = $position;
+        } else {
+            throw new EasyRdf_Exception(
+                "Container position must be a positive integer"
+            );
+        }
     }
 
     /** Rewind the iterator back to the start of the container (item 1)
@@ -130,5 +136,73 @@ class EasyRdf_Container extends EasyRdf_Resource implements SeekableIterator
         
         // Add the item
         return $this->add('rdf:_'.$pos, $value);
+    }
+
+    /** Array Access: check if a position exists in container using array syntax
+     * 
+     * Example: isset($seq[2])
+     */
+    public function offsetExists($offset)
+    {
+        if (is_int($offset) and $offset > 0) {
+            return $this->hasProperty('rdf:_'.$offset);
+        } else {
+            throw new EasyRdf_Exception(
+                "Container position must be a positive integer"
+            );
+        }
+    }
+
+    /** Array Access: get an item at a specified position in container using array syntax
+     * 
+     * Example: $item = $seq[2];
+     */
+    public function offsetGet($offset)
+    {
+        if (is_int($offset) and $offset > 0) {
+            return $this->get('rdf:_'.$offset);
+        } else {
+            throw new EasyRdf_Exception(
+                "Container position must be a positive integer"
+            );
+        }
+    }
+
+    /**
+     * Array Access: set an item at a positon in container using array syntax
+     * 
+     * Example: $seq[2] = $item;
+     *
+     * Warning: creating gaps in the sequence will result in unexpected behavior
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_int($offset) and $offset > 0) {
+            return $this->set('rdf:_'.$offset, $value);
+        } elseif (is_null($offset)) {
+            return $this->append($value);
+        } else {
+            throw new EasyRdf_Exception(
+                "Container position must be a positive integer"
+            );
+        }
+    }
+
+    /**
+     * Array Access: delete an item at a specific postion using array syntax
+     * 
+     * Example: unset($seq[2]);
+     *
+     * Warning: creating gaps in the sequence will result in unexpected behavior
+     */
+    public function offsetUnset($offset)
+    {
+        if (is_int($offset) and $offset > 0) {
+            return $this->delete('rdf:_'.$offset);
+        } else {
+            throw new EasyRdf_Exception(
+                "Container position must be a positive integer"
+            );
+        }
     }
 }
