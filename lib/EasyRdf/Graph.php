@@ -158,21 +158,27 @@ class EasyRdf_Graph
      */
     protected function classForResource($uri)
     {
-        $resClass = 'EasyRdf_Resource';
         $rdfType = EasyRdf_Namespace::expand('rdf:type');
         if (isset($this->index[$uri][$rdfType])) {
             foreach ($this->index[$uri][$rdfType] as $type) {
                 if ($type['type'] == 'uri' or $type['type'] == 'bnode') {
                     $class = EasyRdf_TypeMapper::get($type['value']);
                     if ($class != null) {
-                        $resClass = $class;
-                        break;
+                        return $class;
                     }
                 }
-
             }
         }
-        return $resClass;
+
+        // Parsers don't typically add a rdf:type to rdf:List, so we have to
+        // do a bit of 'inference' here using properties.
+        if ($uri == 'http://www.w3.org/1999/02/22-rdf-syntax-ns#nil' or
+            isset($this->index[$uri]['http://www.w3.org/1999/02/22-rdf-syntax-ns#first']) or
+            isset($this->index[$uri]['http://www.w3.org/1999/02/22-rdf-syntax-ns#rest'])
+        ) {
+            return 'EasyRdf_Collection';
+        }
+        return 'EasyRdf_Resource';
     }
 
     /**

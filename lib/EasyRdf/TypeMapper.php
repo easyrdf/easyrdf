@@ -122,4 +122,5 @@ class EasyRdf_TypeMapper
 
 EasyRdf_TypeMapper::set('rdf:Alt', 'EasyRdf_Container');
 EasyRdf_TypeMapper::set('rdf:Bag', 'EasyRdf_Container');
+EasyRdf_TypeMapper::set('rdf:List', 'EasyRdf_Collection');
 EasyRdf_TypeMapper::set('rdf:Seq', 'EasyRdf_Container');
