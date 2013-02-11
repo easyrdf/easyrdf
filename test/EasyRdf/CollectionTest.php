@@ -115,5 +115,4 @@ class EasyRdf_CollectionTest extends EasyRdf_TestCase
             $list
         );
     }
-
 }
