@@ -158,7 +158,7 @@ class EasyRdf_Graph
      */
     protected function classForResource($uri)
     {
-        $rdfType = EasyRdf_Namespace::expand('rdf:type');
+        $rdfType = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
         if (isset($this->index[$uri][$rdfType])) {
             foreach ($this->index[$uri][$rdfType] as $type) {
                 if ($type['type'] == 'uri' or $type['type'] == 'bnode') {
