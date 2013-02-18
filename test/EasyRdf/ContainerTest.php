@@ -183,8 +183,13 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
     {
         $seq = $this->graph->newBnode('rdf:Seq');
         $seq->add('rdf:_1', 'Item');
-
         $this->assertTrue(isset($seq[1]));
+    }
+
+    public function testArrayOffsetDoesntExist()
+    {
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq->add('rdf:_1', 'Item');
         $this->assertFalse(isset($seq[2]));
     }
 
