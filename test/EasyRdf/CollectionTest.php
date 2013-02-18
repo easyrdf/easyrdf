@@ -115,4 +115,25 @@ class EasyRdf_CollectionTest extends EasyRdf_TestCase
             $list
         );
     }
+
+    public function testAppend()
+    {
+        $animals = $this->graph->newBnode('rdf:List');
+        $this->assertSame('rdf:List', $animals->type());
+        $this->assertClass('EasyRdf_Collection', $animals);
+
+        $this->assertEquals(1, $animals->append('Rat'));
+        $this->assertEquals(1, $animals->append('Cat'));
+        $this->assertEquals(1, $animals->append('Dog'));
+
+        $list = array();
+        foreach ($animals as $animal) {
+            $list[] = strval($animal);
+        }
+
+        $this->assertEquals(
+            array('Rat', 'Cat', 'Dog'),
+            $list
+        );
+    }
 }

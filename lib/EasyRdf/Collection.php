@@ -124,4 +124,31 @@ class EasyRdf_Collection extends EasyRdf_Resource implements Iterator
             return false;
         }
     }
+
+    /** Append an item to the end of the collection
+     *
+     * @param  mixed $value      The value to append
+     * @return integer           The number of values appended (1 or 0)
+     */
+    public function append($value)
+    {
+        // Find the end of the collection
+        $cur = $this;
+        $nil = $this->graph->resource('rdf:nil');
+        while (($rest = $cur->get('rdf:rest')) and $rest !== $nil) {
+            $cur = $rest;
+        }
+
+        if ($cur === $this and is_null($rest)) {
+            $cur->set('rdf:first', $value);
+            $cur->set('rdf:rest', $nil);
+        } else {
+            $new = $this->graph->newBnode();
+            $cur->set('rdf:rest', $new);
+            $new->set('rdf:first', $value);
+            $new->set('rdf:rest', $nil);
+        }
+
+        return 1;
+    }
 }

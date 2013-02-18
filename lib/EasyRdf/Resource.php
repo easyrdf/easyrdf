@@ -46,10 +46,10 @@
 class EasyRdf_Resource
 {
     /** The URI for this resource */
-    private $uri = null;
+    protected $uri = null;
 
     /** The Graph that this resource belongs to */
-    private $graph = null;
+    protected $graph = null;
 
 
     /** Constructor
