@@ -55,7 +55,7 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Seekabl
      *
      * @ignore
      */
-    public function __construct($uri, $graph = null)
+    public function __construct($uri, $graph)
     {
         $this->position = 1;
         parent::__construct($uri, $graph);

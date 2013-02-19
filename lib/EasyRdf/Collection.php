@@ -57,7 +57,7 @@ class EasyRdf_Collection extends EasyRdf_Resource implements Iterator
      *
      * @ignore
      */
-    public function __construct($uri, $graph = null)
+    public function __construct($uri, $graph)
     {
         $this->position = 1;
         $this->current = null;
