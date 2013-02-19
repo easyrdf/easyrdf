@@ -167,11 +167,7 @@ class EasyRdf_Collection extends EasyRdf_Resource implements SeekableIterator, A
         $position = 1;
         $node = $this;
         $nil = $this->graph->resource('rdf:nil');
-        while (
-            ($rest = $node->get('rdf:rest'))
-            and $rest !== $nil
-            and (is_null($offset) or ($position < $offset))
-        ) {
+        while (($rest = $node->get('rdf:rest')) and $rest !== $nil and (is_null($offset) or ($position < $offset))) {
             $node = $rest;
             $position++;
         }
