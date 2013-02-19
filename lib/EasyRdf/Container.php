@@ -120,7 +120,7 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Seekabl
     {
         return $this->hasProperty('rdf:_'.$this->position);
     }
-    
+
     /** Append an item to the end of the container
      *
      * @param  mixed $value      The value to append
@@ -133,13 +133,13 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Seekabl
         while ($this->hasProperty('rdf:_'.$pos)) {
             $pos++;
         }
-        
+
         // Add the item
         return $this->add('rdf:_'.$pos, $value);
     }
 
     /** Array Access: check if a position exists in container using array syntax
-     * 
+     *
      * Example: isset($seq[2])
      */
     public function offsetExists($offset)
@@ -154,7 +154,7 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Seekabl
     }
 
     /** Array Access: get an item at a specified position in container using array syntax
-     * 
+     *
      * Example: $item = $seq[2];
      */
     public function offsetGet($offset)
@@ -170,7 +170,7 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Seekabl
 
     /**
      * Array Access: set an item at a positon in container using array syntax
-     * 
+     *
      * Example: $seq[2] = $item;
      *
      * Warning: creating gaps in the sequence will result in unexpected behavior
@@ -190,7 +190,7 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Seekabl
 
     /**
      * Array Access: delete an item at a specific postion using array syntax
-     * 
+     *
      * Example: unset($seq[2]);
      *
      * Warning: creating gaps in the sequence will result in unexpected behavior
