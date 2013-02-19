@@ -40,7 +40,7 @@
  * Sub-class of EasyRdf_Resource that represents an RDF collection (rdf:List)
  *
  * This class can be used to iterate through a collection of items.
- * 
+ *
  * Note that items are numbered from 1 (not 0) for consistency with RDF Containers.
  *
  * @package    EasyRdf
@@ -48,7 +48,7 @@
  * @copyright  Copyright (c) 2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Collection extends EasyRdf_Resource implements Iterator
+class EasyRdf_Collection extends EasyRdf_Resource implements Iterator, ArrayAccess
 {
     private $position;
     private $current;
@@ -125,6 +125,34 @@ class EasyRdf_Collection extends EasyRdf_Resource implements Iterator
         }
     }
 
+    /** Get a node for a particular offset into the collection
+     *
+     * This function may not return the item you requested, if
+     * it does not exist. Please check the $postion parameter
+     * returned.
+     *
+     * If the offset is null, then the last node in the 
+     * collection (before rdf:nil) will be returned.
+     *
+     * @param  integer $offset          The offset into the collection (or null)
+     * @return array   $node, $postion  The node object and postion of the node
+     */
+    public function getCollectionNode($offset)
+    {
+        $position = 1;
+        $node = $this;
+        $nil = $this->graph->resource('rdf:nil');
+        while (
+            ($rest = $node->get('rdf:rest'))
+            and $rest !== $nil
+            and (is_null($offset) or ($position < $offset))
+        ) {
+            $node = $rest;
+            $position++;
+        }
+        return array($node, $position);
+    }
+
     /** Append an item to the end of the collection
      *
      * @param  mixed $value      The value to append
@@ -133,22 +161,134 @@ class EasyRdf_Collection extends EasyRdf_Resource implements Iterator
     public function append($value)
     {
         // Find the end of the collection
-        $cur = $this;
-        $nil = $this->graph->resource('rdf:nil');
-        while (($rest = $cur->get('rdf:rest')) and $rest !== $nil) {
-            $cur = $rest;
-        }
+        list($node, $position) = $this->getCollectionNode(null);
+        $rest = $node->get('rdf:rest');
 
-        if ($cur === $this and is_null($rest)) {
-            $cur->set('rdf:first', $value);
-            $cur->set('rdf:rest', $nil);
+        if ($node === $this and is_null($rest)) {
+            $node->set('rdf:first', $value);
+            $node->addResource('rdf:rest', 'rdf:nil');
         } else {
             $new = $this->graph->newBnode();
-            $cur->set('rdf:rest', $new);
-            $new->set('rdf:first', $value);
-            $new->set('rdf:rest', $nil);
+            $node->set('rdf:rest', $new);
+            $new->add('rdf:first', $value);
+            $new->addResource('rdf:rest', 'rdf:nil');
         }
 
         return 1;
+    }
+
+    /** Array Access: check if a position exists in collection using array syntax
+     *
+     * Example: isset($list[2])
+     */
+    public function offsetExists($offset)
+    {
+        if (is_int($offset) and $offset > 0) {
+            list($node, $position) = $this->getCollectionNode($offset);
+            return ($node and $position === $offset and $node->hasProperty('rdf:first'));
+        } else {
+            throw new EasyRdf_Exception(
+                "Collection offset must be a positive integer"
+            );
+        }
+    }
+
+    /** Array Access: get an item at a specified position in collection using array syntax
+     *
+     * Example: $item = $list[2];
+     */
+    public function offsetGet($offset)
+    {
+        if (is_int($offset) and $offset > 0) {
+            list($node, $position) = $this->getCollectionNode($offset);
+            if ($node and $position === $offset) {
+                return $node->get('rdf:first');
+            }
+        } else {
+            throw new EasyRdf_Exception(
+                "Collection offset must be a positive integer"
+            );
+        }
+    }
+
+    /**
+     * Array Access: set an item at a positon in collection using array syntax
+     *
+     * Example: $list[2] = $item;
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            // No offset - append to end of collection
+            $this->append($value);
+        } elseif (is_int($offset) and $offset > 0) {
+            list($node, $position) = $this->getCollectionNode($offset);
+
+            // Create nodes, if they are missing
+            while ($position < $offset) {
+                $new = $this->graph->newBnode();
+                $node->set('rdf:rest', $new);
+                $new->addResource('rdf:rest', 'rdf:nil');
+                $node = $new;
+                $position++;
+            }
+
+            // Terminate the list
+            if (!$node->hasProperty('rdf:rest')) {
+                $node->addResource('rdf:rest', 'rdf:nil');
+            }
+
+            return $node->set('rdf:first', $value);
+        } else {
+            throw new EasyRdf_Exception(
+                "Collection offset must be a positive integer"
+            );
+        }
+    }
+
+    /**
+     * Array Access: delete an item at a specific postion using array syntax
+     *
+     * Example: unset($seq[2]);
+     */
+    public function offsetUnset($offset)
+    {
+        if (is_int($offset) and $offset > 0) {
+            list($node, $position) = $this->getCollectionNode($offset);
+        } else {
+            throw new EasyRdf_Exception(
+                "Collection offset must be a positive integer"
+            );
+        }
+
+        // Does the item exist?
+        if ($node and $position === $offset) {
+            $nil = $this->graph->resource('rdf:nil');
+            if ($position === 1) {
+                $rest = $node->get('rdf:rest');
+                if ($rest and $rest !== $nil) {
+                    // Move second value, so we can keep the head of list
+                    $node->set('rdf:first', $rest->get('rdf:first'));
+                    $node->set('rdf:rest', $rest->get('rdf:rest'));
+                    $rest->delete('rdf:first');
+                    $rest->delete('rdf:rest');
+                } else {
+                    // Just remove the value
+                    $node->delete('rdf:first');
+                    $node->delete('rdf:rest');
+                }
+            } else {
+                // Remove the value and re-link the list
+                $node->delete('rdf:first');
+                $rest = $node->get('rdf:rest');
+                $previous = $node->get('^rdf:rest');
+                if (is_null($rest)) {
+                    $rest = $nil;
+                }
+                if ($previous) {
+                    $previous->set('rdf:rest', $rest);
+                }
+            }
+        }
     }
 }

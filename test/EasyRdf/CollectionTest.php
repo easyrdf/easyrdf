@@ -116,6 +116,290 @@ class EasyRdf_CollectionTest extends EasyRdf_TestCase
         );
     }
 
+    public function testArrayOffsetExists()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $list->addLiteral('rdf:first', 'Item');
+        $list->addResource('rdf:rest', 'rdf:nil');
+
+        $this->assertTrue(isset($list[1]));
+    }
+
+    public function testArrayOffsetDoesntExist()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $list->addLiteral('rdf:first', 'Item');
+        $list->addResource('rdf:rest', 'rdf:nil');
+
+        $this->assertFalse(isset($list[2]));
+    }
+
+    public function testArrayOffsetDoesntExistEmpty()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $this->assertFalse(isset($list[1]));
+    }
+
+    public function testArrayOffsetExistsZero()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        isset($list[0]);
+    }
+
+    public function testArrayOffsetExistsMinusOne()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        isset($list[-1]);
+    }
+
+    public function testArrayOffsetExistsNonInteger()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        isset($list['foo']);
+    }
+
+
+    public function testArrayOffsetGet()
+    {
+        $count = $this->graph->parse(readFixture('rdf-collection.rdf'), 'rdfxml');
+
+        $owner = $this->graph->resource('ex:owner');
+        $pets = $owner->get('ex:pets');
+
+        $this->assertStringEquals('http://example.org/rat', $pets[1]);
+        $this->assertStringEquals('http://example.org/cat', $pets[2]);
+        $this->assertStringEquals('http://example.org/goat', $pets[3]);
+    }
+
+    public function testArrayOffsetGetNonexistent()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $list->append('foo');
+        $this->assertNull($list[2]);
+    }
+
+    public function testArrayOffsetGetEmptyNonexistent()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $this->assertNull($list[1]);
+    }
+
+    public function testArrayOffsetGetZero()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        $list[0];
+    }
+
+    public function testArrayOffsetGetMinusOne()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        $list[-1];
+    }
+
+    public function testArrayOffsetGetNonInteger()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        $list['foo'];
+    }
+
+    public function testArrayOffsetSet()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+
+        $list[1] = 'Item 1';
+        $list[2] = 'Item 2';
+        $list[3] = 'Item 3';
+
+        $strings = array();
+        foreach ($list as $item) {
+            $strings[] = strval($item);
+        }
+
+        $this->assertEquals(
+            array('Item 1', 'Item 2', 'Item 3'),
+            $strings
+        );
+    }
+
+    public function testArrayOffsetSetReplace()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $list->add('rdf:first', 'Item 1');
+        $list->addResource('rdf:rest', 'rdf:nil');
+
+        $this->assertStringEquals('Item 1', $list->get('rdf:first'));
+        $list[1] = 'Replace';
+        $this->assertStringEquals('Replace', $list->get('rdf:first'));
+    }
+
+    public function testArrayOffsetAppend()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+
+        $list[] = 'Item 1';
+        $list[] = 'Item 2';
+        $list[] = 'Item 3';
+
+        $cur = $list;
+        $this->assertStringEquals('Item 1', $cur->get('rdf:first'));
+        $cur = $cur->get('rdf:rest');
+        $this->assertStringEquals('Item 2', $cur->get('rdf:first'));
+        $cur = $cur->get('rdf:rest');
+        $this->assertStringEquals('Item 3', $cur->get('rdf:first'));
+    }
+
+    public function testArrayOffsetSetZero()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        $list[0] = 'Item 1';
+    }
+
+    public function testArrayOffsetSetMinusOne()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        $list[-1] = 'Item 1';
+    }
+
+    public function testArrayOffsetSetNonInteger()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        $list['foo'] = 'Item 1';
+    }
+
+    public function testArrayOffsetUnsetFirst()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+
+        $list->append('Item 1');
+        $list->append('Item 2');
+        $list->append('Item 3');
+        unset($list[1]);
+
+        $this->assertStringEquals('Item 2', $list[1]);
+        $this->assertStringEquals('Item 3', $list[2]);
+        $this->assertNull($list[3]);
+    }
+
+    public function testArrayOffsetUnsetSingle()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $list->addResource('rdf:first', 'Item 1');
+        unset($list[1]);
+
+        $this->assertNull($list[1]);
+    }
+
+    public function testArrayOffsetUnsetUnterminated()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $list->addResource('rdf:first', 'Item 1');
+        $next = $this->graph->newBnode();
+        $list->addResource('rdf:rest', $next);
+        $next->add('rdf:first', 'Item 2');
+
+        $this->assertStringEquals('Item 1', $list[1]);
+        $this->assertStringEquals('Item 2', $list[2]);
+
+        unset($list[2]);
+
+        $this->assertStringEquals('Item 1', $list[1]);
+        $this->assertNull($list[2]);
+    }
+
+    public function testArrayOffsetUnsetMiddle()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+
+        $list->append('Item 1');
+        $list->append('Item 2');
+        $list->append('Item 3');
+        unset($list[2]);
+
+        $this->assertStringEquals('Item 1', $list[1]);
+        $this->assertStringEquals('Item 3', $list[2]);
+        $this->assertNull($list[3]);
+    }
+
+    public function testArrayOffsetUnsetLast()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+
+        $list->append('Item 1');
+        $list->append('Item 2');
+        $list->append('Item 3');
+        unset($list[3]);
+
+        $this->assertStringEquals('Item 1', $list[1]);
+        $this->assertStringEquals('Item 2', $list[2]);
+        $this->assertNull($list[3]);
+    }
+
+    public function testArrayOffsetUnsetZero()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        unset($list[0]);
+    }
+
+    public function testArrayOffsetUnsetMinusOne()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        unset($list[-1]);
+    }
+
+    public function testArrayOffsetUnsetNonInteger()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection offset must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        unset($list['foo']);
+    }
+
     public function testAppend()
     {
         $animals = $this->graph->newBnode('rdf:List');
