@@ -96,7 +96,7 @@ class EasyRdf_CollectionTest extends EasyRdf_TestCase
 
     public function testForeach()
     {
-        $count = $this->graph->parse(readFixture('rdf-collection.rdf'), 'rdfxml');
+        $this->graph->parse(readFixture('rdf-collection.rdf'), 'rdfxml');
 
         $owner = $this->graph->resource('ex:owner');
         $pets = $owner->get('ex:pets');
@@ -114,6 +114,68 @@ class EasyRdf_CollectionTest extends EasyRdf_TestCase
             ),
             $list
         );
+    }
+    
+    public function testSeek()
+    {
+        $this->graph->parse(readFixture('rdf-collection.rdf'), 'rdfxml');
+
+        $owner = $this->graph->resource('ex:owner');
+        $pets = $owner->get('ex:pets');
+        
+        $pets->seek(1);
+        $this->assertTrue($pets->valid());
+        $this->assertStringEquals('http://example.org/rat', $pets->current());
+        
+        $pets->seek(2);
+        $this->assertTrue($pets->valid());
+        $this->assertStringEquals('http://example.org/cat', $pets->current());
+        
+        $pets->seek(3);
+        $this->assertTrue($pets->valid());
+        $this->assertStringEquals('http://example.org/goat', $pets->current());
+    }
+
+    public function testSeekInvalid()
+    {
+        $this->setExpectedException(
+            'OutOfBoundsException',
+            'Unable to seek to position 2 in the collection'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        $list->addLiteral('rdf:first', 'Item 1');
+        $list->addResource('rdf:rest', 'rdf:nil');
+        $list->seek(2);
+    }
+
+    public function testSeekZero()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection position must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        $list->seek(0);
+    }
+
+    public function testSeekMinusOne()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection position must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        $list->seek(-1);
+    }
+
+    public function testSeekNonInteger()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            'Collection position must be a positive integer'
+        );
+        $list = $this->graph->newBnode('rdf:List');
+        $list->seek('foo');
     }
 
     public function testArrayOffsetExists()

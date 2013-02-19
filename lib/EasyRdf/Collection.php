@@ -48,7 +48,7 @@
  * @copyright  Copyright (c) 2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Collection extends EasyRdf_Resource implements Iterator, ArrayAccess
+class EasyRdf_Collection extends EasyRdf_Resource implements SeekableIterator, ArrayAccess
 {
     private $position;
     private $current;
@@ -62,6 +62,31 @@ class EasyRdf_Collection extends EasyRdf_Resource implements Iterator, ArrayAcce
         $this->position = 1;
         $this->current = null;
         parent::__construct($uri, $graph);
+    }
+
+    /** Seek to a specific position in the container
+     *
+     * The first item is postion 1
+     *
+     * @param  integer  $position     The position in the container to seek to
+     */
+    public function seek($position)
+    {
+        if (is_int($position) and $position > 0) {
+            list($node, $actual) = $this->getCollectionNode($position);
+            if ($actual === $position) {
+                $this->position = $actual;
+                $this->current = $node;
+            } else {
+                throw new OutOfBoundsException(
+                    "Unable to seek to position $position in the collection"
+                );
+            }
+        } else {
+            throw new EasyRdf_Exception(
+                "Collection position must be a positive integer"
+            );
+        }
     }
 
     /** Rewind the iterator back to the start of the collection
