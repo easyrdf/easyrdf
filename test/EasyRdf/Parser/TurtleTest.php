@@ -80,6 +80,29 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
         $this->assertNotNull($foaf);
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
+    
+    public function testParseCollection()
+    {
+        $graph = new EasyRdf_Graph();
+        $count = $this->turtleParser->parse(
+            $graph,
+            "<http://example.com/s> <http://example.com/p> ('A' 'B' 'C' 'D') .",
+            'turtle',
+            $this->baseUri
+        );
+        $this->assertSame(9, $count);
+
+        $array = array();
+        $collection = $graph->resource('http://example.com/s')->get('<http://example.com/p>');
+        foreach ($collection as $item) {
+            $array[] = strval($item);
+        }
+
+        $this->assertEquals(
+            array('A', 'B', 'C', 'D'),
+            $array
+        );
+    }
 
     public function testParseUnsupportedFormat()
     {
