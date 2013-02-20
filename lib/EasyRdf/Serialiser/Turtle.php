@@ -208,6 +208,49 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     }
 
     /**
+     * @ignore
+     */
+    protected function serialiseSubjects($graph, $filterType)
+    {
+        $turtle = '';
+        foreach ($graph->resources() as $resource) {
+            // If the resource has no properties - don't serialise it
+            $properties = $resource->propertyUris();
+            if (count($properties) == 0) {
+                continue;
+            }
+
+            // Is this node of the right type?
+            $thisType = $resource->isBNode() ? 'bnode' : 'uri';
+            if ($thisType != $filterType) {
+                continue;
+            }
+
+            if ($thisType == 'bnode') {
+                $id = $resource->getBNodeId();
+                if (isset($this->outputtedBnodes[$id])) {
+                    // Already been serialised
+                    continue;
+                } else {
+                    $this->outputtedBnodes[$id] = true;
+                    $rpcount = $this->reversePropertyCount($resource);
+                    if ($rpcount == 0) {
+                        $turtle .= '[]';
+                    } else {
+                        $turtle .= $this->serialiseResource($resource);
+                    }
+                }
+            } else {
+                $turtle .= $this->serialiseResource($resource);
+            }
+
+            $turtle .= $this->serialiseProperties($resource);
+            $turtle .= "\n";
+        }
+        return $turtle;
+    }
+
+    /**
      * Serialise an EasyRdf_Graph to Turtle.
      *
      * @param object EasyRdf_Graph $graph   An EasyRdf_Graph object.
@@ -228,34 +271,8 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         $this->outputtedBnodes = array();
 
         $turtle = '';
-        foreach ($graph->resources() as $resource) {
-            // If the resource has no properties - don't serialise it
-            $properties = $resource->propertyUris();
-            if (count($properties) == 0) {
-                continue;
-            }
-
-            if ($resource->isBNode()) {
-                $id = $resource->getBNodeId();
-                $rpcount = $this->reversePropertyCount($resource);
-                if (isset($this->outputtedBnodes[$id])) {
-                    // Already been serialised
-                    continue;
-                } else {
-                    $this->outputtedBnodes[$id] = true;
-                    if ($rpcount == 0) {
-                        $turtle .= '[]';
-                    } else {
-                        $turtle .= $this->serialiseResource($resource);
-                    }
-                }
-            } else {
-                $turtle .= $this->serialiseResource($resource);
-            }
-
-            $turtle .= $this->serialiseProperties($resource);
-            $turtle .= "\n";
-        }
+        $turtle .= $this->serialiseSubjects($graph, 'uri');
+        $turtle .= $this->serialiseSubjects($graph, 'bnode');
 
         if (count($this->prefixes)) {
             return $this->serialisePrefixes() . "\n" . $turtle;
