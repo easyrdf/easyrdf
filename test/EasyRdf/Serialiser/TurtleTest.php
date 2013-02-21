@@ -80,6 +80,27 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSerialiseMultipleValues()
+    {
+        $joe = $this->graph->resource(
+            'http://example.com/joe#me',
+            'foaf:Person'
+        );
+        $joe->add('foaf:name', 'Joseph');
+        $joe->add('foaf:name', 'Joe');
+        $joe->add('foaf:name', 'Josh');
+
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
+        $this->assertSame(
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
+            "\n".
+            "<http://example.com/joe#me>\n".
+            "  a foaf:Person ;\n".
+            "  foaf:name \"Joseph\", \"Joe\", \"Josh\" .\n\n",
+            $turtle
+        );
+    }
+
     public function testSerialiseAnonymousSubject()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
