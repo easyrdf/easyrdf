@@ -72,6 +72,41 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     /**
      * @ignore
      */
+    protected function serialiseCollection($node, $indent)
+    {
+        $turtle = '(';
+        $count = 0;
+        while ($node) {
+            if ($id = $node->getBNodeId()) {
+                $this->outputtedBnodes[$id] = true;
+            }
+
+            $value = $node->get('rdf:first');
+            $node = $node->get('rdf:rest');
+            if ($node and $node->hasProperty('rdf:first')) {
+                $count++;
+            }
+
+            if ($value !== null) {
+                $serialised = $this->serialiseObject($value);
+                if ($count) {
+                    $turtle .= "\n$indent  $serialised";
+                } else {
+                    $turtle .= " ".$serialised;
+                }
+            }
+        }
+        if ($count) {
+            $turtle .= "\n$indent)";
+        } else {
+            $turtle .= " )";
+        }
+        return $turtle;
+    }
+
+    /**
+     * @ignore
+     */
     protected function quotedString($value)
     {
         if (preg_match("/[\t\n\r]/", $value)) {
@@ -161,7 +196,9 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                     $turtle .= ',';
                 }
 
-                if ($object instanceof EasyRdf_Resource and $object->isBNode()) {
+                if ($object instanceof EasyRdf_Collection) {
+                    $turtle .= ' ' . $this->serialiseCollection($object, $indent);
+                } elseif ($object instanceof EasyRdf_Resource and $object->isBNode()) {
                     $id = $object->getBNodeId();
                     $rpcount = $this->reversePropertyCount($object);
                     if ($rpcount <= 1 and !isset($this->outputtedBnodes[$id])) {

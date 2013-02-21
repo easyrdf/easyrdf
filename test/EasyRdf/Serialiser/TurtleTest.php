@@ -198,6 +198,56 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSerialiseCollection()
+    {
+        $joe =  $this->graph->resource('http://example.com/joe');
+        $pets =  $this->graph->newBnode('rdf:List');
+        $pets->append('Rat');
+        $pets->append('Cat');
+        $pets->append('Goat');
+        $joe->add('foaf:pets', $pets);
+        
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
+        $this->assertSame(
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
+            "<http://example.com/joe> foaf:pets (\n".
+            "   \"Rat\"\n".
+            "   \"Cat\"\n".
+            "   \"Goat\"\n".
+            " ) .\n",
+            $turtle
+        );
+    }
+
+    public function testSerialiseCollectionSingle()
+    {
+        $joe =  $this->graph->resource('http://example.com/joe');
+        $pets =  $this->graph->newBnode('rdf:List');
+        $pets->append('Rat');
+        $joe->add('foaf:pets', $pets);
+        
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
+        $this->assertSame(
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
+            "<http://example.com/joe> foaf:pets ( \"Rat\" ) .\n",
+            $turtle
+        );
+    }
+
+    public function testSerialiseCollectionEmpty()
+    {
+        $joe =  $this->graph->resource('http://example.com/joe');
+        $pets =  $this->graph->newBnode('rdf:List');
+        $joe->add('foaf:pets', $pets);
+        
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
+        $this->assertSame(
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
+            "<http://example.com/joe> foaf:pets ( ) .\n",
+            $turtle
+        );
+    }
+
     public function testSerialiseLang()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
