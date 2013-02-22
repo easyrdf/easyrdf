@@ -15,10 +15,11 @@
     require_once "EasyRdf.php";
     require_once "html_tag_helpers.php";
 
-    EasyRdf_Namespace::set('postcode', 'http://www.uk-postcodes.com/postcode/');
+    EasyRdf_Namespace::set('postcode', 'http://data.ordnancesurvey.co.uk/ontology/postcode/');
     EasyRdf_Namespace::set('sr', 'http://data.ordnancesurvey.co.uk/ontology/spatialrelations/');
     EasyRdf_Namespace::set('eg', 'http://statistics.data.gov.uk/def/electoral-geography/');
     EasyRdf_Namespace::set('ag', 'http://statistics.data.gov.uk/def/administrative-geography/');
+    EasyRdf_Namespace::set('osag', 'http://data.ordnancesurvey.co.uk/ontology/admingeo/');
 ?>
 <html>
 <head>
@@ -48,19 +49,23 @@
         $docuri = "http://www.uk-postcodes.com/postcode/$postcode.rdf";
         $graph = EasyRdf_Graph::newAndLoad($docuri);
 
-        $res = $graph->resource("postcode:$postcode");
-        $ll = $res->get('geo:lat').','.$res->get('geo:long');
-        print "<iframe id='map' width='500' height='250' frameborder='0' scrolling='no' src='http://maps.google.com/maps?f=q&amp;ll=$ll&amp;output=embed'></iframe>";
-        print "<table id='facts'>\n";
-        print "<tr><th>Easting:</th><td>" . $res->get('sr:easting') . "</td></tr>\n";
-        print "<tr><th>Northing:</th><td>" . $res->get('sr:northing') . "</td></tr>\n";
-        print "<tr><th>Longitude:</th><td>" . $res->get('geo:long') . "</td></tr>\n";
-        print "<tr><th>Latitude:</th><td>" . $res->get('geo:lat') . "</td></tr>\n";
-        print "<tr><th>Local Authority:</th><td>" . $res->get('ag:localAuthority')->label() . "</td></tr>\n";
-        print "<tr><th>Electoral Ward:</th><td>" . $res->get('eg:ward')->label() . "</td></tr>\n";
-        print "</table>\n";
 
-        print "<div style='clear: both'></div>\n";
+        // Get the first resource of type PostcodeUnit
+        $res = $graph->get('postcode:PostcodeUnit', '^rdf:type');
+        if ($res) {
+            $ll = $res->get('geo:lat').','.$res->get('geo:long');
+            print "<iframe id='map' width='500' height='250' frameborder='0' scrolling='no' src='http://maps.google.com/maps?f=q&amp;ll=$ll&amp;output=embed'></iframe>";
+            print "<table id='facts'>\n";
+            print "<tr><th>Easting:</th><td>" . $res->get('sr:easting') . "</td></tr>\n";
+            print "<tr><th>Northing:</th><td>" . $res->get('sr:northing') . "</td></tr>\n";
+            print "<tr><th>Longitude:</th><td>" . $res->get('geo:long') . "</td></tr>\n";
+            print "<tr><th>Latitude:</th><td>" . $res->get('geo:lat') . "</td></tr>\n";
+            print "<tr><th>Local Authority:</th><td>" . $res->get('ag:localAuthority')->label() . "</td></tr>\n";
+            print "<tr><th>Electoral Ward:</th><td>" . $res->get('eg:ward')->label() . "</td></tr>\n";
+            print "</table>\n";
+
+            print "<div style='clear: both'></div>\n";
+        }
 
         print $graph->dump();
     }
