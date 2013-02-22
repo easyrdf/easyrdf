@@ -412,6 +412,38 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $this->assertSame("Result: false", $text);
     }
 
+    public function testToStringBooleanTrue()
+    {
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('sparql_ask_true.xml'),
+            'application/sparql-results+xml'
+        );
+
+        $this->assertSame("true", strval($result));
+    }
+
+    public function testToStringBooleanFalse()
+    {
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('sparql_ask_false.xml'),
+            'application/sparql-results+xml'
+        );
+
+        $this->assertSame("false", strval($result));
+    }
+
+    public function testToStringSelectAll()
+    {
+        $result = new EasyRdf_Sparql_Result(
+            readFixture('sparql_select_all.xml'),
+            'application/sparql-results+xml'
+        );
+
+        $string = strval($result);
+        $this->assertContains('+-------------------------------------+', $string);
+        $this->assertContains('| http://www.example.com/joe#me       |', $string);
+    }
+
     public function testUnsupportedFormat()
     {
         $this->setExpectedException(
