@@ -152,13 +152,13 @@ class EasyRdf_Sparql_Result extends ArrayIterator
      * This method is intended to be a debugging aid and will
      * return a pretty-print view of the query result.
      *
-     * @param  bool  $html  Set to true to format the dump using HTML
+     * @param  string  $format  Either 'text' or 'html'
      */
-    public function dump($html = true)
+    public function dump($format = 'html')
     {
         if ($this->type == 'bindings') {
             $result = '';
-            if ($html) {
+            if ($format == 'html') {
                 $result .= "<table class='sparql-results' style='border-collapse:collapse'>";
                 $result .= "<tr>";
                 foreach ($this->fields as $field) {
@@ -173,7 +173,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
                         if (isset($row->$field)) {
                             $result .= "<td style='border:solid 1px #000;padding:4px;".
                                        "vertical-align:top'>".
-                                       $row->$field->dumpValue($html)."</td>";
+                                       $row->$field->dumpValue($format)."</td>";
                         } else {
                             $result .= "<td>&nbsp;</td>";
                         }
@@ -192,7 +192,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
                 foreach ($this as $row) {
                     $textRow = array();
                     foreach ($row as $k => $v) {
-                        $textRow[$k] = $v->dumpValue(false);
+                        $textRow[$k] = $v->dumpValue('text');
                         $width = strlen($textRow[$k]);
                         if ($colWidths[$k] < $width) {
                             $colWidths[$k] = $width;
@@ -228,7 +228,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
             return $result;
         } elseif ($this->type == 'boolean') {
             $str = ($this->boolean ? 'true' : 'false');
-            if ($html) {
+            if ($format == 'html') {
                 return "<p>Result: <span style='font-weight:bold'>$str</span></p>";
             } else {
                 return "Result: $str";
@@ -379,7 +379,7 @@ class EasyRdf_Sparql_Result extends ArrayIterator
         if ($this->type == 'boolean') {
             return $this->boolean ? 'true' : 'false';
         } else {
-            return $this->dump(false);
+            return $this->dump('text');
         }
     }
 }

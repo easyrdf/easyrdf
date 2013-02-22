@@ -304,13 +304,13 @@ class EasyRdf_Literal
 
     /** Return pretty-print view of the literal
      *
-     * @param  bool   $html  Set to true to format the dump using HTML
-     * @param  string $color The colour of the text
+     * @param  string $format Either 'html' or 'text'
+     * @param  string $color  The colour of the text
      * @return string
      */
-    public function dumpValue($html = true, $color = 'black')
+    public function dumpValue($format = 'html', $color = 'black')
     {
-        return EasyRdf_Utils::dumpLiteralValue($this, $html, $color);
+        return EasyRdf_Utils::dumpLiteralValue($this, $format, $color);
     }
 }
 

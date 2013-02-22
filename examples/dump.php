@@ -39,9 +39,9 @@
         $graph = EasyRdf_Graph::newAndLoad($_REQUEST['uri']);
         if ($graph) {
             if (isset($_REQUEST['format']) && $_REQUEST['format'] == 'text') {
-                print "<pre>".$graph->dump(false)."</pre>";
+                print "<pre>".$graph->dump('text')."</pre>";
             } else {
-                $dump = $graph->dump(true);
+                $dump = $graph->dump('html');
                 print preg_replace("/ href='([^#][^']*)'/e",'" href=\'?uri=".urlencode("$1")."#$1\'"', $dump);
             }
         } else {

@@ -157,13 +157,13 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         $res = new EasyRdf_Resource('http://www.example.com/');
         $this->assertSame(
             "http://www.example.com/",
-            EasyRdf_Utils::dumpResourceValue($res, false)
+            EasyRdf_Utils::dumpResourceValue($res, 'text')
         );
         $this->assertSame(
             "<a href='http://www.example.com/' ".
             "style='text-decoration:none;color:blue'>".
             "http://www.example.com/</a>",
-            EasyRdf_Utils::dumpResourceValue($res, true)
+            EasyRdf_Utils::dumpResourceValue($res, 'html')
         );
     }
 
@@ -172,13 +172,13 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         $res = array('type' => 'uri', 'value' => 'http://www.example.com/');
         $this->assertSame(
             "http://www.example.com/",
-            EasyRdf_Utils::dumpResourceValue($res, false)
+            EasyRdf_Utils::dumpResourceValue($res, 'text')
         );
         $this->assertSame(
             "<a href='http://www.example.com/' ".
             "style='text-decoration:none;color:blue'>".
             "http://www.example.com/</a>",
-            EasyRdf_Utils::dumpResourceValue($res, true)
+            EasyRdf_Utils::dumpResourceValue($res, 'html')
         );
     }
 
@@ -187,11 +187,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         $literal = new EasyRdf_Literal("hello & world");
         $this->assertSame(
             '"hello & world"',
-            EasyRdf_Utils::dumpLiteralValue($literal, false)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'text')
         );
         $this->assertSame(
             "<span style='color:black'>&quot;hello &amp; world&quot;</span>",
-            EasyRdf_Utils::dumpLiteralValue($literal, true)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'html')
         );
     }
 
@@ -200,11 +200,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         $literal = array('type' => 'literal', 'value' => 'Hot Sauce');
         $this->assertSame(
             '"Hot Sauce"',
-            EasyRdf_Utils::dumpLiteralValue($literal, false)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'text')
         );
         $this->assertSame(
             "<span style='color:black'>&quot;Hot Sauce&quot;</span>",
-            EasyRdf_Utils::dumpLiteralValue($literal, true)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'html')
         );
     }
 
@@ -213,11 +213,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         $literal = 'a string';
         $this->assertSame(
             '"a string"',
-            EasyRdf_Utils::dumpLiteralValue($literal, false)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'text')
         );
         $this->assertSame(
             "<span style='color:black'>&quot;a string&quot;</span>",
-            EasyRdf_Utils::dumpLiteralValue($literal, true)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'html')
         );
     }
 
@@ -226,11 +226,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         $literal = array('type' => 'literal', 'value' => 'Nick', 'lang' => 'en');
         $this->assertSame(
             '"Nick"@en',
-            EasyRdf_Utils::dumpLiteralValue($literal, false)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'text')
         );
         $this->assertSame(
             "<span style='color:black'>&quot;Nick&quot;@en</span>",
-            EasyRdf_Utils::dumpLiteralValue($literal, true)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'html')
         );
     }
 
@@ -243,11 +243,11 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         );
         $this->assertSame(
             '"1"^^xsd:integer',
-            EasyRdf_Utils::dumpLiteralValue($literal, false)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'text')
         );
         $this->assertSame(
             "<span style='color:black'>&quot;1&quot;^^xsd:integer</span>",
-            EasyRdf_Utils::dumpLiteralValue($literal, true)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'html')
         );
     }
 
@@ -260,12 +260,12 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         );
         $this->assertSame(
             '"1"^^<http://example.com/datatypes/int>',
-            EasyRdf_Utils::dumpLiteralValue($literal, false)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'text')
         );
         $this->assertSame(
             "<span style='color:black'>&quot;1&quot;^^".
             "&lt;http://example.com/datatypes/int&gt;</span>",
-            EasyRdf_Utils::dumpLiteralValue($literal, true)
+            EasyRdf_Utils::dumpLiteralValue($literal, 'html')
         );
     }
 

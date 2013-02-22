@@ -342,7 +342,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+xml'
         );
 
-        $html = $result->dump(true);
+        $html = $result->dump('html');
         $this->assertContains("<table class='sparql-results'", $html);
         $this->assertContains(">?s</th>", $html);
         $this->assertContains(">?p</th>", $html);
@@ -361,7 +361,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+xml'
         );
 
-        $text = $result->dump(false);
+        $text = $result->dump('text');
         $this->assertContains('+-------------------------------------+', $text);
         $this->assertContains('| ?s                                  |', $text);
         $this->assertContains('| http://www.example.com/joe#me       |', $text);
@@ -380,7 +380,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+xml'
         );
 
-        $html = $result->dump(true);
+        $html = $result->dump('html');
         $this->assertContains(">?person</th>", $html);
         $this->assertContains(">?name</th>", $html);
         $this->assertContains(">?foo</th>", $html);
@@ -397,7 +397,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+xml'
         );
 
-        $html = $result->dump(true);
+        $html = $result->dump('html');
         $this->assertContains(">false</span>", $html);
     }
 
@@ -408,7 +408,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
             'application/sparql-results+xml'
         );
 
-        $text = $result->dump(false);
+        $text = $result->dump('text');
         $this->assertSame("Result: false", $text);
     }
 

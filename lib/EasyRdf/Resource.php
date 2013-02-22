@@ -207,13 +207,13 @@ class EasyRdf_Resource
 
     /** Return pretty-print view of the resource
      *
-     * @param  bool   $html  Set to true to format the dump using HTML
+     * @param  string $format Either 'html' or 'text'
      * @param  string $color The colour of the text
      * @return string
      */
-    public function dumpValue($html = true, $color = 'blue')
+    public function dumpValue($format = 'html', $color = 'blue')
     {
-        return EasyRdf_Utils::dumpResourceValue($this, $html, $color);
+        return EasyRdf_Utils::dumpResourceValue($this, $format, $color);
     }
 
     /** Magic method to return URI of resource when casted to string
@@ -619,13 +619,13 @@ class EasyRdf_Resource
      * This method is intended to be a debugging aid and will
      * print a resource and its properties.
      *
-     * @param  bool  $html  Set to true to format the dump using HTML
+     * @param  string $format   Either 'html' or 'text'
      * @return string
      */
-    public function dump($html = true)
+    public function dump($format = 'html')
     {
         $this->checkHasGraph();
-        return $this->graph->dumpResource($this->uri, $html);
+        return $this->graph->dumpResource($this->uri, $format);
     }
 
     /** Magic method to get a property of a resource

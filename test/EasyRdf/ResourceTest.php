@@ -230,13 +230,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $res = new EasyRdf_Resource('http://www.example.com/');
         $this->assertSame(
             "http://www.example.com/",
-            $res->dumpValue(false)
+            $res->dumpValue('text')
         );
         $this->assertSame(
             "<a href='http://www.example.com/' ".
             "style='text-decoration:none;color:blue'>".
             "http://www.example.com/</a>",
-            $res->dumpValue(true)
+            $res->dumpValue('html')
         );
     }
 
@@ -247,7 +247,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             "<a href='http://www.example.com/' ".
             "style='text-decoration:none;color:red'>".
             "http://www.example.com/</a>",
-            $res->dumpValue(true, 'red')
+            $res->dumpValue('html', 'red')
         );
     }
 
@@ -1150,7 +1150,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testDump()
     {
         $this->setupTestGraph();
-        $text = $this->resource->dump(false);
+        $text = $this->resource->dump('text');
         $this->assertContains(
             "http://example.com/#me (EasyRdf_Resource)",
             $text
@@ -1164,7 +1164,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             $text
         );
 
-        $html = $this->resource->dump(true);
+        $html = $this->resource->dump();
         $this->assertContains("<div id='http://example.com/#me'", $html);
         $this->assertContains(
             "<a href='http://example.com/#me' ".

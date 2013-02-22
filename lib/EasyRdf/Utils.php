@@ -112,12 +112,12 @@ class EasyRdf_Utils
      * EasyRdf_Graph and EasyRdf_Sparql_Result to format a resource
      * for display.
      *
-     * @param  mixed $resource An EasyRdf_Resource object or an associative array
-     * @param  bool  $html     Set to true to format the dump using HTML
-     * @param  string $color   The colour of the text
+     * @param  mixed  $resource An EasyRdf_Resource object or an associative array
+     * @param  string $format   Either 'html' or 'text'
+     * @param  string $color    The colour of the text
      * @return string
      */
-    public static function dumpResourceValue($resource, $html = true, $color = 'blue')
+    public static function dumpResourceValue($resource, $format = 'html', $color = 'blue')
     {
         if (is_object($resource)) {
             $resource = strval($resource);
@@ -126,7 +126,7 @@ class EasyRdf_Utils
         }
 
         $short = EasyRdf_Namespace::shorten($resource);
-        if ($html) {
+        if ($format == 'html') {
             $escaped = htmlentities($resource);
             if (substr($resource, 0, 2) == '_:') {
                 $href = '#' . $escaped;
@@ -153,12 +153,12 @@ class EasyRdf_Utils
      * EasyRdf_Graph and EasyRdf_Sparql_Result to format a literal
      * for display.
      *
-     * @param  mixed $literal  An EasyRdf_Literal object or an associative array
-     * @param  bool  $html     Set to true to format the dump using HTML
-     * @param  string $color   The colour of the text
+     * @param  mixed  $literal  An EasyRdf_Literal object or an associative array
+     * @param  string $format   Either 'html' or 'text'
+     * @param  string $color    The colour of the text
      * @return string
      */
-    public static function dumpLiteralValue($literal, $html = true, $color = 'black')
+    public static function dumpLiteralValue($literal, $format = 'html', $color = 'black')
     {
         if (is_object($literal)) {
             $literal = $literal->toArray();
@@ -179,7 +179,7 @@ class EasyRdf_Utils
             }
         }
 
-        if ($html) {
+        if ($format == 'html') {
             return "<span style='color:$color'>".
                    htmlentities($text, ENT_COMPAT, "UTF-8").
                    "</span>";

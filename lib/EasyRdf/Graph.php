@@ -1270,13 +1270,13 @@ class EasyRdf_Graph
      * return a pretty-print view of all the resources and their
      * properties.
      *
-     * @param  boolean  $html  Set to true to format the dump using HTML
+     * @param  string  $format  Either 'html' or 'text'
      * @return string
      */
-    public function dump($html = true)
+    public function dump($format = 'html')
     {
         $result = '';
-        if ($html) {
+        if ($format == 'html') {
             $result .= "<div style='font-family:arial; font-weight: bold; padding:0.5em; ".
                    "color: black; background-color:lightgrey;border:dashed 1px grey;'>".
                    "Graph: ". $this->uri . "</div>\n";
@@ -1285,7 +1285,7 @@ class EasyRdf_Graph
         }
 
         foreach ($this->index as $resource => $properties) {
-            $result .= $this->dumpResource($resource, $html);
+            $result .= $this->dumpResource($resource, $format);
         }
         return $result;
     }
@@ -1296,10 +1296,10 @@ class EasyRdf_Graph
      * print a resource and its properties.
      *
      * @param  mixed    $resource  The resource to dump
-     * @param  boolean  $html      Set to true to format the dump using HTML
+     * @param  string   $format    Either 'html' or 'text'
      * @return string
      */
-    public function dumpResource($resource, $html = true)
+    public function dumpResource($resource, $format = 'html')
     {
         $this->checkResourceParam($resource, true);
 
@@ -1314,9 +1314,9 @@ class EasyRdf_Graph
             $olist = array();
             foreach ($values as $value) {
                 if ($value['type'] == 'literal') {
-                    $olist []= EasyRdf_Utils::dumpLiteralValue($value, $html, 'black');
+                    $olist []= EasyRdf_Utils::dumpLiteralValue($value, $format, 'black');
                 } else {
-                    $olist []= EasyRdf_Utils::dumpResourceValue($value['value'], $html, 'blue');
+                    $olist []= EasyRdf_Utils::dumpResourceValue($value['value'], $format, 'blue');
                 }
             }
 
@@ -1324,7 +1324,7 @@ class EasyRdf_Graph
             if ($pstr == null) {
                 $pstr = $property;
             }
-            if ($html) {
+            if ($format == 'html') {
                 $plist []= "<span style='font-size:130%'>&rarr;</span> ".
                            "<span style='text-decoration:none;color:green'>".
                            htmlentities($pstr) . "</span> ".
@@ -1335,11 +1335,11 @@ class EasyRdf_Graph
             }
         }
 
-        if ($html) {
+        if ($format == 'html') {
             return "<div id='".htmlentities($resource)."' " .
                    "style='font-family:arial; padding:0.5em; ".
                    "background-color:lightgrey;border:dashed 1px grey;'>\n".
-                   "<div>".EasyRdf_Utils::dumpResourceValue($resource, true, 'blue')." ".
+                   "<div>".EasyRdf_Utils::dumpResourceValue($resource, $format, 'blue')." ".
                    "<span style='font-size: 0.8em'>(".
                    $this->classForResource($resource).")</span></div>\n".
                    "<div style='padding-left: 3em'>\n".

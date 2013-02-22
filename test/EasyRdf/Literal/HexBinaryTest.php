@@ -71,7 +71,7 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
         $literal = new EasyRdf_Literal_HexBinary('48656C6C6F');
         $this->assertSame(
             '"48656C6C6F"^^xsd:hexBinary',
-            $literal->dumpValue(false)
+            $literal->dumpValue('text')
         );
     }
 

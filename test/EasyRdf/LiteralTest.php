@@ -364,11 +364,11 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $literal = EasyRdf_Literal::create("hello & world");
         $this->assertSame(
             '"hello & world"',
-            $literal->dumpValue(false)
+            $literal->dumpValue('text')
         );
         $this->assertSame(
             "<span style='color:black'>&quot;hello &amp; world&quot;</span>",
-            $literal->dumpValue(true)
+            $literal->dumpValue('html')
         );
     }
 
@@ -377,11 +377,11 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $literal = new EasyRdf_Literal('Nick', 'en');
         $this->assertSame(
             '"Nick"@en',
-            $literal->dumpValue(false)
+            $literal->dumpValue('text')
         );
         $this->assertSame(
             "<span style='color:black'>&quot;Nick&quot;@en</span>",
-            $literal->dumpValue(true)
+            $literal->dumpValue('html')
         );
     }
 
@@ -390,11 +390,11 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $literal = EasyRdf_Literal::create(1, null, 'xsd:integer');
         $this->assertSame(
             '"1"^^xsd:integer',
-            $literal->dumpValue(false)
+            $literal->dumpValue('text')
         );
         $this->assertSame(
             "<span style='color:black'>&quot;1&quot;^^xsd:integer</span>",
-            $literal->dumpValue(true)
+            $literal->dumpValue('html')
         );
     }
 
