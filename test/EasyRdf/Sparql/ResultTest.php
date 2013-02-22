@@ -53,6 +53,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $this->assertCount(14, $result);
         $this->assertSame(14, $result->numRows());
+        $this->assertSame(14, count($result));
         $this->assertEquals(
             new EasyRdf_Resource('_:genid1'),
             $result[0]->s
@@ -79,6 +80,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $this->assertCount(14, $result);
         $this->assertSame(14, $result->numRows());
+        $this->assertSame(14, count($result));
         $this->assertEquals(
             new EasyRdf_Resource('_:genid1'),
             $result[0]->s
@@ -105,6 +107,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $this->assertCount(14, $result);
         $this->assertSame(14, $result->numRows());
+        $this->assertSame(14, count($result));
         $this->assertEquals(
             new EasyRdf_Resource('_:genid1'),
             $result[0]->s
@@ -236,6 +239,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $this->assertSame(0, $result->numFields());
         $this->assertSame(0, $result->numRows());
+        $this->assertSame(0, count($result));
     }
 
     public function testAskFalseJson()
@@ -253,6 +257,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $this->assertSame(0, $result->numFields());
         $this->assertSame(0, $result->numRows());
+        $this->assertSame(0, count($result));
     }
 
     public function testAskTrueXml()
@@ -269,6 +274,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $this->assertSame(0, $result->numFields());
         $this->assertSame(0, $result->numRows());
+        $this->assertSame(0, count($result));
     }
 
     public function testAskFalseXml()
@@ -285,6 +291,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $this->assertSame(0, $result->numFields());
         $this->assertSame(0, $result->numRows());
+        $this->assertSame(0, count($result));
     }
 
     public function testInvalidXml()
