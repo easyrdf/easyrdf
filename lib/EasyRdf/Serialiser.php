@@ -63,7 +63,7 @@ class EasyRdf_Serialiser
      */
     protected function checkSerialiseParams(&$graph, &$format)
     {
-        if (is_null($graph) or !is_object($graph) or !is_a($graph, 'EasyRdf_Graph')) {
+        if (is_null($graph) or !is_object($graph) or !($graph instanceof EasyRdf_Graph)) {
             throw new InvalidArgumentException(
                 "\$graph should be an EasyRdf_Graph object and cannot be null"
             );
@@ -73,7 +73,7 @@ class EasyRdf_Serialiser
             throw new InvalidArgumentException(
                 "\$format cannot be null or empty"
             );
-        } elseif (is_object($format) and is_a($format, 'EasyRdf_Format')) {
+        } elseif (is_object($format) and ($format instanceof EasyRdf_Format)) {
             $format = $format->getName();
         } elseif (!is_string($format)) {
             throw new InvalidArgumentException(
