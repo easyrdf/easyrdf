@@ -411,7 +411,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $text = $result->dump('text');
         $this->assertSame("Result: false", $text);
     }
-    
+
     public function testDumpUnknownType()
     {
         $result = new EasyRdf_Sparql_Result(
@@ -421,8 +421,8 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
 
         $reflector = new ReflectionProperty('EasyRdf_Sparql_Result', 'type');
         $reflector->setAccessible(true);
-        $reflector->setValue($result, 'foobar'); 
-        
+        $reflector->setValue($result, 'foobar');
+
         $this->setExpectedException(
             'EasyRdf_Exception',
             'Failed to dump SPARQL Query Results format, unknown type: foobar'
