@@ -429,7 +429,7 @@ class EasyRdf_Sparql_ResultTest extends EasyRdf_TestCase
         $reflector = new ReflectionProperty('EasyRdf_Sparql_Result', 'type');
         if (!method_exists($reflector, 'setAccessible')) {
             $this->markTestSkipped(
-              'ReflectionProperty::setAccessible() is not available.'
+                'ReflectionProperty::setAccessible() is not available.'
             );
         } else {
             $reflector->setAccessible(true);
