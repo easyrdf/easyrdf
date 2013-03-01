@@ -438,10 +438,10 @@ class EasyRdf_Resource
      * @param  string  $lang     The language to filter by (e.g. en)
      * @return integer           The number of values associated with the property
      */
-    public function count($property, $type = null, $lang = null)
+    public function countValues($property, $type = null, $lang = null)
     {
         $this->checkHasGraph();
-        return $this->graph->count($this->uri, $property, $type, $lang);
+        return $this->graph->countValues($this->uri, $property, $type, $lang);
     }
 
     /** Concatenate all values for a property into a string.

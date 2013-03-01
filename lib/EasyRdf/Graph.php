@@ -870,7 +870,7 @@ class EasyRdf_Graph
         return $this->all($type, '^rdf:type');
     }
 
-    /** Count all values for a property of a resource
+    /** Count the number of values for a property of a resource
      *
      * @param  string  $resource The URI of the resource (e.g. http://example.com/joe#me)
      * @param  string  $property The name of the property (e.g. foaf:name)
@@ -878,7 +878,7 @@ class EasyRdf_Graph
      * @param  string  $lang     The language to filter by (e.g. en)
      * @return integer           The number of values for this property
      */
-    public function count($resource, $property, $type = null, $lang = null)
+    public function countValues($resource, $property, $type = null, $lang = null)
     {
         return count($this->all($resource, $property, $type, $lang));
     }

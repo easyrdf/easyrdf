@@ -942,45 +942,45 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertTrue($all[1]->isBNode());
     }
 
-    public function testCount()
+    public function testCountValues()
     {
-        $this->assertSame(2, $this->graph->count($this->uri, 'rdf:test'));
+        $this->assertSame(2, $this->graph->countValues($this->uri, 'rdf:test'));
     }
 
-    public function testCountWithUri()
+    public function testCountValuesWithUri()
     {
         $this->assertSame(
             2,
-            $this->graph->count(
+            $this->graph->countValues(
                 $this->uri,
                 '<http://www.w3.org/1999/02/22-rdf-syntax-ns#test>'
             )
         );
     }
 
-    public function testCountWithResource()
+    public function testCountValuesWithResource()
     {
         $prop = $this->graph->resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#test');
         $this->assertSame(
             2,
-            $this->graph->count($this->uri, $prop)
+            $this->graph->countValues($this->uri, $prop)
         );
     }
 
-    public function testCountWithType()
+    public function testCountValuesWithType()
     {
-        $this->assertSame(0, $this->graph->count($this->uri, 'rdf:test', 'uri'));
-        $this->assertSame(2, $this->graph->count($this->uri, 'rdf:test', 'literal'));
+        $this->assertSame(0, $this->graph->countValues($this->uri, 'rdf:test', 'uri'));
+        $this->assertSame(2, $this->graph->countValues($this->uri, 'rdf:test', 'literal'));
     }
 
-    public function testCountWithLang()
+    public function testCountValuesWithLang()
     {
-        $this->assertSame(1, $this->graph->count($this->uri, 'rdf:test', 'literal', 'en'));
+        $this->assertSame(1, $this->graph->countValues($this->uri, 'rdf:test', 'literal', 'en'));
     }
 
-    public function testCountNonExistantProperty()
+    public function testCountValuesNonExistantProperty()
     {
-        $this->assertSame(0, $this->graph->count($this->uri, 'foo:bar'));
+        $this->assertSame(0, $this->graph->countValues($this->uri, 'foo:bar'));
     }
 
     public function testJoinDefaultGlue()
@@ -1417,9 +1417,9 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
 
     public function testDeleteLiteralValue()
     {
-        $this->assertSame(2, $this->graph->count($this->uri, 'rdf:test'));
+        $this->assertSame(2, $this->graph->countValues($this->uri, 'rdf:test'));
         $this->assertSame(1, $this->graph->delete($this->uri, 'rdf:test', 'Test A'));
-        $this->assertSame(1, $this->graph->count($this->uri, 'rdf:test'));
+        $this->assertSame(1, $this->graph->countValues($this->uri, 'rdf:test'));
         $this->assertSame(
             1,
             $this->graph->delete(
@@ -1428,25 +1428,25 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
                 new EasyRdf_Literal('Test B', 'en')
             )
         );
-        $this->assertSame(0, $this->graph->count($this->uri, 'rdf:test'));
+        $this->assertSame(0, $this->graph->countValues($this->uri, 'rdf:test'));
     }
 
     public function testDeleteResourceValue()
     {
         $res = $this->graph->resource('http://www.example.com/');
         $this->graph->add($this->uri, 'foaf:homepage', $res);
-        $this->assertSame(1, $this->graph->count($this->uri, 'foaf:homepage'));
+        $this->assertSame(1, $this->graph->countValues($this->uri, 'foaf:homepage'));
         $this->assertSame(1, $this->graph->delete($this->uri, 'foaf:homepage', $res));
-        $this->assertSame(0, $this->graph->count($this->uri, 'foaf:homepage'));
+        $this->assertSame(0, $this->graph->countValues($this->uri, 'foaf:homepage'));
     }
 
     public function testDeleteLiteralArrayValue()
     {
         // Keys are deliberately in the wrong order
         $testa = array('value' => 'Test A', 'type' => 'literal');
-        $this->assertSame(2, $this->graph->count($this->uri, 'rdf:test'));
+        $this->assertSame(2, $this->graph->countValues($this->uri, 'rdf:test'));
         $this->assertSame(1, $this->graph->delete($this->uri, 'rdf:test', $testa));
-        $this->assertSame(1, $this->graph->count($this->uri, 'rdf:test'));
+        $this->assertSame(1, $this->graph->countValues($this->uri, 'rdf:test'));
     }
 
     public function testDeleteResourceArrayValue()
@@ -1454,41 +1454,41 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         // Keys are deliberately in the wrong order
         $res = array('value' => 'http://www.example.com/', 'type' => 'uri');
         $this->graph->addResource($this->uri, 'foaf:homepage', 'http://www.example.com/');
-        $this->assertSame(1, $this->graph->count($this->uri, 'foaf:homepage'));
+        $this->assertSame(1, $this->graph->countValues($this->uri, 'foaf:homepage'));
         $this->assertSame(1, $this->graph->delete($this->uri, 'foaf:homepage', $res));
-        $this->assertSame(0, $this->graph->count($this->uri, 'foaf:homepage'));
+        $this->assertSame(0, $this->graph->countValues($this->uri, 'foaf:homepage'));
     }
 
     public function testDeleteResource()
     {
         $res = $this->graph->resource('http://www.example.com/');
         $this->graph->addResource($this->uri, 'foaf:homepage', $res);
-        $this->assertSame(1, $this->graph->count($this->uri, 'foaf:homepage'));
+        $this->assertSame(1, $this->graph->countValues($this->uri, 'foaf:homepage'));
         $this->assertSame(1, $this->graph->deleteResource($this->uri, 'foaf:homepage', $res));
-        $this->assertSame(0, $this->graph->count($this->uri, 'foaf:homepage'));
+        $this->assertSame(0, $this->graph->countValues($this->uri, 'foaf:homepage'));
     }
 
     public function testDeleteResourceString()
     {
         $res = 'http://www.example.com/';
         $this->graph->addResource($this->uri, 'foaf:homepage', $res);
-        $this->assertSame(1, $this->graph->count($this->uri, 'foaf:homepage'));
+        $this->assertSame(1, $this->graph->countValues($this->uri, 'foaf:homepage'));
         $this->assertSame(1, $this->graph->deleteResource($this->uri, 'foaf:homepage', $res));
-        $this->assertSame(0, $this->graph->count($this->uri, 'foaf:homepage'));
+        $this->assertSame(0, $this->graph->countValues($this->uri, 'foaf:homepage'));
     }
 
     public function testDeleteLiteral()
     {
-        $this->assertSame(2, $this->graph->count($this->uri, 'rdf:test'));
+        $this->assertSame(2, $this->graph->countValues($this->uri, 'rdf:test'));
         $this->assertSame(1, $this->graph->deleteLiteral($this->uri, 'rdf:test', 'Test A'));
-        $this->assertSame(1, $this->graph->count($this->uri, 'rdf:test'));
+        $this->assertSame(1, $this->graph->countValues($this->uri, 'rdf:test'));
     }
 
     public function testDeleteLiteralWithLang()
     {
-        $this->assertSame(2, $this->graph->count($this->uri, 'rdf:test'));
+        $this->assertSame(2, $this->graph->countValues($this->uri, 'rdf:test'));
         $this->assertSame(1, $this->graph->deleteLiteral($this->uri, 'rdf:test', 'Test B', 'en'));
-        $this->assertSame(1, $this->graph->count($this->uri, 'rdf:test'));
+        $this->assertSame(1, $this->graph->countValues($this->uri, 'rdf:test'));
     }
 
     public function testGetType()

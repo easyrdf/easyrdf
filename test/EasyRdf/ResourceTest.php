@@ -861,16 +861,16 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
-    public function testCount()
+    public function testCountValues()
     {
         $this->setupTestGraph();
-        $this->assertSame(2, $this->resource->count('rdf:test'));
+        $this->assertSame(2, $this->resource->countValues('rdf:test'));
     }
 
-    public function testCountNonExistantProperty()
+    public function countValuesNonExistantProperty()
     {
         $this->setupTestGraph();
-        $this->assertSame(0, $this->resource->count('foo:bar'));
+        $this->assertSame(0, $this->resource->countValues('foo:bar'));
     }
 
     public function testJoinDefaultGlue()

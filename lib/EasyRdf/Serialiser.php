@@ -94,7 +94,7 @@ class EasyRdf_Serialiser
         $count = count($properties);
         if ($count == 1) {
             $property = $properties[0];
-            return $resource->count("^<$property>");
+            return $resource->countValues("^<$property>");
         } else {
             return $count;
         }
