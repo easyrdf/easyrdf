@@ -161,7 +161,7 @@ class EasyRdf_Utils
     public static function dumpLiteralValue($literal, $format = 'html', $color = 'black')
     {
         if (is_object($literal)) {
-            $literal = $literal->toArray();
+            $literal = $literal->toRdfPhp();
         } elseif (!is_array($literal)) {
             $literal = array('value' => $literal);
         }

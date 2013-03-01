@@ -1938,7 +1938,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertSame(4, $this->graph->countTriples());
     }
 
-    public function testToArray()
+    public function testToRdfPhp()
     {
         $this->assertSame(
             array(
@@ -1962,7 +1962,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
                     )
                 )
             ),
-            $this->graph->toArray()
+            $this->graph->toRdfPhp()
         );
     }
 

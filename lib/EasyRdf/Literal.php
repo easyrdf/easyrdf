@@ -275,7 +275,7 @@ class EasyRdf_Literal
      *
      * @return array  The properties of the literal
      */
-    public function toArray()
+    public function toRdfPhp()
     {
         $array = array(
             'type' => 'literal',

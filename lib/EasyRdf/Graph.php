@@ -497,11 +497,11 @@ class EasyRdf_Graph
     {
         if (isset($value)) {
             if (is_object($value)) {
-                if (!method_exists($value, 'toArray')) {
+                if (!method_exists($value, 'toRdfPhp')) {
                     // Convert to a literal object
                     $value = EasyRdf_Literal::create($value);
                 }
-                $value = $value->toArray();
+                $value = $value->toRdfPhp();
             } elseif (is_array($value)) {
                 if (!isset($value['type'])) {
                     throw new InvalidArgumentException(
@@ -1523,7 +1523,7 @@ class EasyRdf_Graph
      *
      * @return array The contents of the graph as an array.
      */
-    public function toArray()
+    public function toRdfPhp()
     {
         return $this->index;
     }

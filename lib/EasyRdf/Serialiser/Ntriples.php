@@ -190,7 +190,7 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
 
         if ($format == 'ntriples') {
             $nt = '';
-            foreach ($graph->toArray() as $resource => $properties) {
+            foreach ($graph->toRdfPhp() as $resource => $properties) {
                 foreach ($properties as $property => $values) {
                     foreach ($values as $value) {
                         $nt .= $this->ntriplesResource($resource)." ";

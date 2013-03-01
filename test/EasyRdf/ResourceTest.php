@@ -207,21 +207,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
-    public function testToArrayForUri()
+    public function testToRdfPhpForUri()
     {
         $uri = new EasyRdf_Resource('http://www.example.com/');
         $this->assertSame(
             array('type' => 'uri', 'value' => 'http://www.example.com/'),
-            $uri->toArray()
+            $uri->toRdfPhp()
         );
     }
 
-    public function testToArrayForBnode()
+    public function testToRdfPhpForBnode()
     {
         $bnode = new EasyRdf_Resource('_:foobar');
         $this->assertSame(
             array('type' => 'bnode', 'value' => '_:foobar'),
-            $bnode->toArray()
+            $bnode->toRdfPhp()
         );
     }
 

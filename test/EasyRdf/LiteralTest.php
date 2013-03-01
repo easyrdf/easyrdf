@@ -321,7 +321,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertSame('Rat', strval($literal));
     }
 
-    public function testToArray()
+    public function testToRdfPhp()
     {
         $literal = EasyRdf_Literal::create('Rat');
         $this->assertSame(
@@ -329,11 +329,11 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
                'type' => 'literal',
                'value' => 'Rat'
             ),
-            $literal->toArray()
+            $literal->toRdfPhp()
         );
     }
 
-    public function testToArrayWithLang()
+    public function testToRdfPhpWithLang()
     {
         $literal = new EasyRdf_Literal('Chat', 'fr');
         $this->assertSame(
@@ -342,11 +342,11 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
                'value' => 'Chat',
                'lang' => 'fr'
             ),
-            $literal->toArray()
+            $literal->toRdfPhp()
         );
     }
 
-    public function testToArrayWithDatatype()
+    public function testToRdfPhpWithDatatype()
     {
         $literal = EasyRdf_Literal::create(44);
         $this->assertSame(
@@ -355,7 +355,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
                'value' => '44',
                'datatype' => 'http://www.w3.org/2001/XMLSchema#integer'
             ),
-            $literal->toArray()
+            $literal->toRdfPhp()
         );
     }
 

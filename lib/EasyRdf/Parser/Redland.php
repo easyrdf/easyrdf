@@ -121,7 +121,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
      * Convert a node into an associate array
      * @ignore
      */
-    protected function nodeToArray($node)
+    protected function nodeToRdfPhp($node)
     {
         $object = array();
         $object['type'] = EasyRdf_Parser_Redland::nodeTypeString($node);
@@ -225,7 +225,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
                 $predicate = EasyRdf_Parser_Redland::nodeUriString(
                     librdf_statement_get_predicate($statement)
                 );
-                $object = EasyRdf_Parser_Redland::nodeToArray(
+                $object = EasyRdf_Parser_Redland::nodeToRdfPhp(
                     librdf_statement_get_object($statement)
                 );
 

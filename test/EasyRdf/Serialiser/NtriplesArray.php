@@ -76,7 +76,7 @@ class EasyRdf_Serialiser_NtriplesArray extends EasyRdf_Serialiser_Ntriples
         parent::checkSerialiseParams($graph, $format);
 
         $triples = array();
-        foreach ($graph->toArray() as $resource => $properties) {
+        foreach ($graph->toRdfPhp() as $resource => $properties) {
             foreach ($properties as $property => $values) {
                 foreach ($values as $value) {
                     array_push(

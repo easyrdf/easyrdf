@@ -189,14 +189,14 @@ class EasyRdf_Resource
         return $html;
     }
 
-    /** Returns the properties of the resource as an associative array
+    /** Returns the properties of the resource as an RDF/PHP associative array
      *
      * For example:
      * array('type' => 'uri', 'value' => 'http://www.example.com/')
      *
      * @return array  The properties of the resource
      */
-    public function toArray()
+    public function toRdfPhp()
     {
         if ($this->isBNode()) {
             return array('type' => 'bnode', 'value' => $this->uri);

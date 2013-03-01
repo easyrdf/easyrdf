@@ -53,7 +53,7 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
         );
     }
 
-    public function testToArray()
+    public function testToRdfPhp()
     {
         $literal = new EasyRdf_Literal_HexBinary('48656C6C6F');
         $this->assertSame(
@@ -62,7 +62,7 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
                 'value' => '48656C6C6F',
                 'datatype' => 'http://www.w3.org/2001/XMLSchema#hexBinary'
             ),
-            $literal->toArray()
+            $literal->toRdfPhp()
         );
     }
 
