@@ -198,8 +198,19 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         $this->outputtedResources = array();
 
         $xml = '';
+
+        // Serialise URIs first
         foreach ($graph->resources() as $resource) {
-            $xml .= $this->rdfxmlResource($resource, true, 1);
+            if (!$resource->isBnode()) {
+                $xml .= $this->rdfxmlResource($resource, true);
+            }
+        }
+
+        // Serialise bnodes afterwards
+        foreach ($graph->resources() as $resource) {
+            if ($resource->isBnode()) {
+                $xml .= $this->rdfxmlResource($resource, true);
+            }
         }
 
         // iterate through namepsaces array prefix and output a string.

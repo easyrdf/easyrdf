@@ -219,6 +219,32 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSerialiseBNodesLast()
+    {
+        $bnode = $this->graph->newBNode();
+        $bnode->add('rdf:label', 'This is a bnode');
+        $res1 = $this->graph->resource('http://example.com/1');
+        $res1->add('rdf:test', $bnode);
+        $res2 = $this->graph->resource('http://example.com/2');
+        $res2->add('rdf:test', $bnode);
+
+        $this->assertSame(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n\n".
+            "  <rdf:Description rdf:about=\"http://example.com/1\">\n".
+            "    <rdf:test rdf:nodeID=\"genid1\"/>\n".
+            "  </rdf:Description>\n\n".
+            "  <rdf:Description rdf:about=\"http://example.com/2\">\n".
+            "    <rdf:test rdf:nodeID=\"genid1\"/>\n".
+            "  </rdf:Description>\n\n".
+            "  <rdf:Description rdf:nodeID=\"genid1\">\n".
+            "    <rdf:label>This is a bnode</rdf:label>\n".
+            "  </rdf:Description>\n\n".
+            "</rdf:RDF>\n",
+            $this->serialiser->serialise($this->graph, 'rdfxml')
+        );
+    }
+
     public function testSerialiseRdfXmlWithLang()
     {
         $this->graph->add(
