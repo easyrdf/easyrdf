@@ -59,7 +59,7 @@ class Examples_GraphdirectTest extends EasyRdf_TestCase
             $output
         );
         $this->assertContains(
-            '<b>People:</b> http://example.com/joe, http://aelius.com/njh#me <br />',
+            '<b>People:</b> http://example.com/joe, http://njh.me/ <br />',
             $output
         );
         $this->assertContains('<b>Unknown:</b>  <br />', $output);
