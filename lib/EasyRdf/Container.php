@@ -47,7 +47,7 @@
  * @copyright  Copyright (c) 2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, SeekableIterator
+class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Countable, SeekableIterator
 {
     private $position;
 
@@ -119,6 +119,22 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Seekabl
     public function valid()
     {
         return $this->hasProperty('rdf:_'.$this->position);
+    }
+
+    /** Counts the number of items in the container
+     *
+     * Note that this is an slow method - it is more efficient to use
+     * the iterator interface, if you can.
+     *
+     * @return integer The number of items in the container
+     */
+    public function count()
+    {
+        $pos = 1;
+        while ($this->hasProperty('rdf:_'.$pos)) {
+            $pos++;
+        }
+        return $pos - 1;
     }
 
     /** Append an item to the end of the container

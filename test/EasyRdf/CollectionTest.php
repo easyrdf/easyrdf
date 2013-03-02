@@ -178,6 +178,36 @@ class EasyRdf_CollectionTest extends EasyRdf_TestCase
         $list->seek('foo');
     }
 
+    public function testCountEmpty()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $this->assertSame(0, count($list));
+    }
+
+    public function testCountOne()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $list->append('Item');
+        $this->assertSame(1, count($list));
+    }
+
+    public function testCountTwo()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $list->append('Item 1');
+        $list->append('Item 2');
+        $this->assertSame(2, count($list));
+    }
+
+    public function testCountThree()
+    {
+        $list = $this->graph->newBnode('rdf:List');
+        $list->append('Item 1');
+        $list->append('Item 2');
+        $list->append('Item 3');
+        $this->assertSame(3, count($list));
+    }
+
     public function testArrayOffsetExists()
     {
         $list = $this->graph->newBnode('rdf:List');

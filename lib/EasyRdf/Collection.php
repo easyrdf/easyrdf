@@ -48,7 +48,7 @@
  * @copyright  Copyright (c) 2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Collection extends EasyRdf_Resource implements SeekableIterator, ArrayAccess
+class EasyRdf_Collection extends EasyRdf_Resource implements ArrayAccess, Countable, SeekableIterator
 {
     private $position;
     private $current;
@@ -172,6 +172,24 @@ class EasyRdf_Collection extends EasyRdf_Resource implements SeekableIterator, A
             $position++;
         }
         return array($node, $position);
+    }
+
+    /** Counts the number of items in the collection
+     *
+     * Note that this is an slow method - it is more efficient to use
+     * the iterator interface, if you can.
+     *
+     * @return integer The number of items in the collection
+     */
+    public function count()
+    {
+        // Find the end of the collection
+        list($node, $position) = $this->getCollectionNode(null);
+        if (!$node->hasProperty('rdf:first')) {
+            return 0;
+        } else {
+            return $position;
+        }
     }
 
     /** Append an item to the end of the collection
