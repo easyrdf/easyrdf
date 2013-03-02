@@ -150,22 +150,28 @@ class EasyRdf_Serialiser_RdfXml extends EasyRdf_Serialiser
         }
         $xml .= ">\n";
 
-        foreach ($properties as $property) {
-            $short = EasyRdf_Namespace::shorten($property, true);
-            if ($short) {
-                $this->addPrefix($short);
-                $objects = $res->all("<$property>");
-                if ($short == 'rdf:type') {
-                    array_shift($objects);
+        if ($res instanceof EasyRdf_Container) {
+            foreach ($res as $item) {
+                $xml .= $this->rdfxmlObject('rdf:li', $item, $depth+1);
+            }
+        } else {
+            foreach ($properties as $property) {
+                $short = EasyRdf_Namespace::shorten($property, true);
+                if ($short) {
+                    $this->addPrefix($short);
+                    $objects = $res->all("<$property>");
+                    if ($short == 'rdf:type') {
+                        array_shift($objects);
+                    }
+                    foreach ($objects as $object) {
+                        $xml .= $this->rdfxmlObject($short, $object, $depth+1);
+                    }
+                } else {
+                    throw new EasyRdf_Exception(
+                        "It is not possible to serialse the property ".
+                        "'$property' to RDF/XML."
+                    );
                 }
-                foreach ($objects as $object) {
-                    $xml .= $this->rdfxmlObject($short, $object, $depth+1);
-                }
-            } else {
-                throw new EasyRdf_Exception(
-                    "It is not possible to serialse the property ".
-                    "'$property' to RDF/XML."
-                );
             }
         }
         $xml .= "$indent</$type>\n";

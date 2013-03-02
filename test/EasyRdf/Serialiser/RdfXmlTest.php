@@ -369,13 +369,41 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
-            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n" .
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
             "  <rdf:Description rdf:about=\"http://example.com/2\">\n".
             "    <rdf:label>label</rdf:label>\n".
             "  </rdf:Description>\n\n".
             "  <rdf:Description rdf:about=\"http://example.com/1\">\n".
             "    <foaf:homepage rdf:resource=\"http://example.com/2\"/>\n".
             "  </rdf:Description>\n\n".
+            "</rdf:RDF>\n",
+            $this->serialiser->serialise($graph, 'rdfxml')
+        );
+    }
+
+    public function testSerialiseContainer()
+    {
+        $graph = new EasyRdf_Graph();
+        $joe =  $graph->resource('http://example.com/joe', 'foaf:Person');
+        $pets =  $graph->newBnode('rdf:Seq');
+        $pets->append('Rat');
+        $pets->append('Cat');
+        $pets->append('Goat');
+        $joe->add('foaf:pets', $pets);
+
+        $this->assertSame(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
+            "  <foaf:Person rdf:about=\"http://example.com/joe\">\n".
+            "    <foaf:pets>\n".
+            "      <rdf:Seq>\n".
+            "        <rdf:li>Rat</rdf:li>\n".
+            "        <rdf:li>Cat</rdf:li>\n".
+            "        <rdf:li>Goat</rdf:li>\n".
+            "      </rdf:Seq>\n".
+            "    </foaf:pets>\n\n".
+            "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
             $this->serialiser->serialise($graph, 'rdfxml')
         );
