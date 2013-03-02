@@ -361,10 +361,8 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
      */
     public function testSerialiseReferenceAlreadyOutput()
     {
-        $graph = new EasyRdf_Graph();
-
-        $graph->addLiteral('http://example.com/2', 'rdf:label', 'label');
-        $graph->addResource('http://example.com/1', 'foaf:homepage', 'http://example.com/2');
+        $this->graph->addLiteral('http://example.com/2', 'rdf:label', 'label');
+        $this->graph->addResource('http://example.com/1', 'foaf:homepage', 'http://example.com/2');
 
         $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
@@ -377,15 +375,14 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "    <foaf:homepage rdf:resource=\"http://example.com/2\"/>\n".
             "  </rdf:Description>\n\n".
             "</rdf:RDF>\n",
-            $this->serialiser->serialise($graph, 'rdfxml')
+            $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
 
     public function testSerialiseContainer()
     {
-        $graph = new EasyRdf_Graph();
-        $joe =  $graph->resource('http://example.com/joe', 'foaf:Person');
-        $pets =  $graph->newBnode('rdf:Seq');
+        $joe =  $this->graph->resource('http://example.com/joe', 'foaf:Person');
+        $pets =  $this->graph->newBnode('rdf:Seq');
         $pets->append('Rat');
         $pets->append('Cat');
         $pets->append('Goat');
@@ -405,7 +402,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "    </foaf:pets>\n\n".
             "  </foaf:Person>\n\n".
             "</rdf:RDF>\n",
-            $this->serialiser->serialise($graph, 'rdfxml')
+            $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
 }
