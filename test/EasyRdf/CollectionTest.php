@@ -115,22 +115,22 @@ class EasyRdf_CollectionTest extends EasyRdf_TestCase
             $list
         );
     }
-    
+
     public function testSeek()
     {
         $this->graph->parse(readFixture('rdf-collection.rdf'), 'rdfxml');
 
         $owner = $this->graph->resource('ex:owner');
         $pets = $owner->get('ex:pets');
-        
+
         $pets->seek(1);
         $this->assertTrue($pets->valid());
         $this->assertStringEquals('http://example.org/rat', $pets->current());
-        
+
         $pets->seek(2);
         $this->assertTrue($pets->valid());
         $this->assertStringEquals('http://example.org/cat', $pets->current());
-        
+
         $pets->seek(3);
         $this->assertTrue($pets->valid());
         $this->assertStringEquals('http://example.org/goat', $pets->current());

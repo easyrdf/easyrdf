@@ -156,7 +156,7 @@ class EasyRdf_Collection extends EasyRdf_Resource implements ArrayAccess, Counta
      * it does not exist. Please check the $postion parameter
      * returned.
      *
-     * If the offset is null, then the last node in the 
+     * If the offset is null, then the last node in the
      * collection (before rdf:nil) will be returned.
      *
      * @param  integer $offset          The offset into the collection (or null)

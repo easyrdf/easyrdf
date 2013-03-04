@@ -121,7 +121,7 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
             $list
         );
     }
-    
+
     public function testSeek()
     {
         $this->graph->parse(
@@ -131,19 +131,19 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
         );
 
         $favourites = $this->graph->resource('ex:favourite-fruit');
-        
+
         $favourites->seek(1);
         $this->assertTrue($favourites->valid());
         $this->assertStringEquals('http://example.org/banana', $favourites->current());
-        
+
         $favourites->seek(2);
         $this->assertTrue($favourites->valid());
         $this->assertStringEquals('http://example.org/apple', $favourites->current());
-        
+
         $favourites->seek(3);
         $this->assertTrue($favourites->valid());
         $this->assertStringEquals('http://example.org/pear', $favourites->current());
-        
+
         $favourites->seek(4);
         $this->assertTrue($favourites->valid());
         $this->assertStringEquals('http://example.org/pear', $favourites->current());
@@ -178,20 +178,20 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
         $seq = $this->graph->newBnode('rdf:Seq');
         $seq->seek('foo');
     }
-    
+
     public function testCountEmpty()
     {
         $seq = $this->graph->newBnode('rdf:Seq');
         $this->assertSame(0, count($seq));
     }
-    
+
     public function testCountOne()
     {
         $seq = $this->graph->newBnode('rdf:Seq');
         $seq->add('rdf:_1', 'Item');
         $this->assertSame(1, count($seq));
     }
-    
+
     public function testCountTwo()
     {
         $seq = $this->graph->newBnode('rdf:Seq');
@@ -301,10 +301,10 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
 
         $seq[1] = 'Item 1';
         $this->assertStringEquals('Item 1', $seq->get('rdf:_1'));
-        
+
         $seq[2] = 'Item 2';
         $this->assertStringEquals('Item 2', $seq->get('rdf:_2'));
-        
+
         $seq[3] = 'Item 3';
         $this->assertStringEquals('Item 3', $seq->get('rdf:_3'));
     }
@@ -406,7 +406,7 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
         $animals = $this->graph->newBnode('rdf:Seq');
         $this->assertSame('rdf:Seq', $animals->type());
         $this->assertClass('EasyRdf_Container', $animals);
-    
+
         $this->assertEquals(1, $animals->append('Cat'));
         $this->assertEquals(1, $animals->append('Dog'));
         $this->assertEquals(1, $animals->append('Rat'));

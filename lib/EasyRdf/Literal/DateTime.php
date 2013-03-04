@@ -64,7 +64,7 @@ class EasyRdf_Literal_DateTime extends EasyRdf_Literal_Date
         if (is_null($value)) {
             $value = new DateTime('now');
         }
-    
+
         // Convert DateTime objects into string
         if ($value instanceof DateTime) {
             $atom = $value->format(DateTime::ATOM);

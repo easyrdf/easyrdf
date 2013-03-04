@@ -227,7 +227,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $pets->append('Cat');
         $pets->append('Goat');
         $joe->add('foaf:pets', $pets);
-        
+
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
@@ -246,7 +246,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $pets =  $this->graph->newBnode('rdf:List');
         $pets->append('Rat');
         $joe->add('foaf:pets', $pets);
-        
+
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
@@ -260,7 +260,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $joe =  $this->graph->resource('http://example.com/joe');
         $pets =  $this->graph->newBnode('rdf:List');
         $joe->add('foaf:pets', $pets);
-        
+
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
