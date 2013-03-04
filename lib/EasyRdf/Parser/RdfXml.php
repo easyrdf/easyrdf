@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2010-2011 Nicholas J Humfrey
+ * Copyright (c) 2010-2013 Nicholas J Humfrey
  * Copyright (c) 2004-2010 Benjamin Nowack (based on ARC2_RDFXMLParser.php)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2010-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  * @version    $Id$
  */
@@ -42,7 +42,7 @@
  * A pure-php class to parse RDF/XML.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  *             Copyright (c) 2004-2010 Benjamin Nowack (based on ARC2_RDFXMLParser.php)
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */

@@ -10,7 +10,7 @@
      * Zend's curl HTTP client adaptor is used to perform the HTTP requests.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
