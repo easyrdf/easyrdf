@@ -33,7 +33,6 @@
  * @package    EasyRdf
  * @copyright  Copyright (c) 2012-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 require_once dirname(dirname(dirname(__FILE__))).

@@ -35,7 +35,6 @@
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  *             Copyright (c) 1997-2006 Aduna (http://www.aduna-software.com/)
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 /**
