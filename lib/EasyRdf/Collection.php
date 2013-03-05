@@ -68,6 +68,7 @@ class EasyRdf_Collection extends EasyRdf_Resource implements ArrayAccess, Counta
      * The first item is postion 1
      *
      * @param  integer  $position     The position in the container to seek to
+     * @throws OutOfBoundsException
      */
     public function seek($position)
     {

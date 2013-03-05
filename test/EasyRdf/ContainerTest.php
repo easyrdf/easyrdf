@@ -148,6 +148,17 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
         $this->assertStringEquals('http://example.org/pear', $favourites->current());
     }
 
+    public function testSeekInvalid()
+    {
+        $this->setExpectedException(
+            'OutOfBoundsException',
+            'Unable to seek to position 2 in the container'
+        );
+        $seq = $this->graph->newBnode('rdf:Seq');
+        $seq->add('rdf:_1', 'Item 1');
+        $seq->seek(2);
+    }
+
     public function testSeekZero()
     {
         $this->setExpectedException(

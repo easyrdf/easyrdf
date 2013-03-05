@@ -65,11 +65,18 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Countab
      * The first item is postion 1
      *
      * @param  integer  $position     The position in the container to seek to
+     * @throws OutOfBoundsException
      */
     public function seek($position)
     {
         if (is_int($position) and $position > 0) {
-            $this->position = $position;
+            if ($this->hasProperty('rdf:_'.$position)) {
+                $this->position = $position;
+            } else {
+                throw new OutOfBoundsException(
+                    "Unable to seek to position $position in the container"
+                );
+            }
         } else {
             throw new InvalidArgumentException(
                 "Container position must be a positive integer"
