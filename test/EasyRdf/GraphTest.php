@@ -862,6 +862,14 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testAllPropertyPathNoMatch()
+    {
+        $this->assertEquals(
+            array(),
+            $this->graph->all('http://example.com/person', 'foaf:homepage/rdfs:label')
+        );
+    }
+
     public function testAllNonExistantResource()
     {
         $this->assertSame(
