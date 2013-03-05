@@ -850,6 +850,18 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testAllPropertyPathIgnoreLiterals()
+    {
+        $this->graph->addResource('http://example.com/person', 'foaf:homepage', 'http://example.com/');
+        $this->graph->addLiteral('http://example.com/person', 'foaf:homepage', 'http://literal.com/');
+        $this->graph->addLiteral('http://example.com/', 'rdfs:label', 'My Homepage');
+        $this->graph->addLiteral('http://literal.com/', 'rdfs:label', 'Not My Homepage');
+        $this->assertEquals(
+            array(new EasyRdf_Literal('My Homepage')),
+            $this->graph->all('http://example.com/person', 'foaf:homepage/rdfs:label')
+        );
+    }
+
     public function testAllNonExistantResource()
     {
         $this->assertSame(
