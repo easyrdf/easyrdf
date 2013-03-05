@@ -346,7 +346,9 @@ class EasyRdf_Graph
     public function resources()
     {
         foreach ($this->index as $subject => $properties) {
-            $this->resource($subject);
+            if (!isset($this->resources[$subject])) {
+                $this->resource($subject);
+            }
         }
 
         foreach ($this->revIndex as $object => $properties) {
