@@ -82,7 +82,7 @@ class EasyRdf_Collection extends EasyRdf_Resource implements ArrayAccess, Counta
                 );
             }
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "Collection position must be a positive integer"
             );
         }
@@ -225,7 +225,7 @@ class EasyRdf_Collection extends EasyRdf_Resource implements ArrayAccess, Counta
             list($node, $position) = $this->getCollectionNode($offset);
             return ($node and $position === $offset and $node->hasProperty('rdf:first'));
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "Collection offset must be a positive integer"
             );
         }
@@ -243,7 +243,7 @@ class EasyRdf_Collection extends EasyRdf_Resource implements ArrayAccess, Counta
                 return $node->get('rdf:first');
             }
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "Collection offset must be a positive integer"
             );
         }
@@ -278,7 +278,7 @@ class EasyRdf_Collection extends EasyRdf_Resource implements ArrayAccess, Counta
 
             return $node->set('rdf:first', $value);
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "Collection offset must be a positive integer"
             );
         }
@@ -294,7 +294,7 @@ class EasyRdf_Collection extends EasyRdf_Resource implements ArrayAccess, Counta
         if (is_int($offset) and $offset > 0) {
             list($node, $position) = $this->getCollectionNode($offset);
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "Collection offset must be a positive integer"
             );
         }

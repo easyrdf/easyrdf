@@ -71,7 +71,7 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Countab
         if (is_int($position) and $position > 0) {
             $this->position = $position;
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "Container position must be a positive integer"
             );
         }
@@ -162,7 +162,7 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Countab
         if (is_int($offset) and $offset > 0) {
             return $this->hasProperty('rdf:_'.$offset);
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "Container position must be a positive integer"
             );
         }
@@ -177,7 +177,7 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Countab
         if (is_int($offset) and $offset > 0) {
             return $this->get('rdf:_'.$offset);
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "Container position must be a positive integer"
             );
         }
@@ -197,7 +197,7 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Countab
         } elseif (is_null($offset)) {
             return $this->append($value);
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "Container position must be a positive integer"
             );
         }
@@ -215,7 +215,7 @@ class EasyRdf_Container extends EasyRdf_Resource implements ArrayAccess, Countab
         if (is_int($offset) and $offset > 0) {
             return $this->delete('rdf:_'.$offset);
         } else {
-            throw new EasyRdf_Exception(
+            throw new InvalidArgumentException(
                 "Container position must be a positive integer"
             );
         }
