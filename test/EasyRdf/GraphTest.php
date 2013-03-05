@@ -1757,12 +1757,14 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $graph->add('http://example.com/joe#me', 'foaf:age', EasyRdf_Literal::create(52));
         $deutschland = new EasyRdf_Literal('Deutschland', 'de');
         $graph->add('http://example.com/joe#me', 'foaf:birthPlace', $deutschland);
+        $graph->add('http://example.com/joe#me', '<http://v.example.com/foo>', 'bar');
 
         $text = $graph->dump('text');
         $this->assertContains('http://example.com/joe#me', $text);
         $this->assertContains('-> foaf:name -> "Joe"', $text);
         $this->assertContains('-> foaf:age -> "52"^^xsd:integer', $text);
         $this->assertContains('-> foaf:birthPlace -> "Deutschland"@de', $text);
+        $this->assertContains('-> <http://v.example.com/foo> -> "bar"', $text);
 
         $html = $graph->dump('html');
         $this->assertContains('http://example.com/joe#me', $html);
@@ -1772,6 +1774,8 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertContains('>&quot;52&quot;^^xsd:integer</span>', $html);
         $this->assertContains('>foaf:birthPlace</span>', $html);
         $this->assertContains('>&quot;Deutschland&quot;@de</span>', $html);
+        $this->assertContains('>&lt;http://v.example.com/foo&gt;</span>', $html);
+        $this->assertContains('>&quot;bar&quot;</span>', $html);
     }
 
     public function testDumpResource()
