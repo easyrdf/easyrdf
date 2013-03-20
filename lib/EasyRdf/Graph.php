@@ -784,7 +784,7 @@ class EasyRdf_Graph
             $objects = $results;
         }
 
-        return $objects;
+        return $results;
     }
 
     /** Get all values for a single property of a resource
