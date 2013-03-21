@@ -1036,12 +1036,43 @@ class EasyRdf_Graph
      */
     public function delete($resource, $property, $value = null)
     {
+       $this->checkResourceParam($resource);
+
+        if (is_object($property) and $property instanceof EasyRdf_Resource) {
+            return $this->deleteSingleProperty($resource, $property->getUri(), $value);
+        } elseif (is_string($property) and preg_match('|^(\^?)<(.+)>|', $property, $matches)) {
+            return $this->deleteSingleProperty($resource, "$matches[1]$matches[2]", $value);
+        } elseif ($property === null or !is_string($property)) {
+            throw new InvalidArgumentException(
+                "\$property should be a string or EasyRdf_Resource and cannot be null"
+            );
+        } elseif ($property === '') {
+            throw new InvalidArgumentException(
+                "\$property cannot be an empty string"
+            );
+        }
+
+        // FIXME: finish implementing property paths for delete
+        return $this->deleteSingleProperty($resource, $property, $value);
+    }
+
+
+    /** Delete a property (or optionally just a specific value)
+     *
+     * @param  mixed   $resource The resource to delete the property from
+     * @param  string  $property The name of the property (e.g. foaf:name)
+     * @param  mixed   $value The value to delete (null to delete all values)
+     * @return integer The number of values deleted
+     *
+     * @ignore
+     */
+    public function deleteSingleProperty($resource, $property, $value = null)
+    {
         $this->checkResourceParam($resource);
         $this->checkSinglePropertyParam($property, $inverse);
         $this->checkValueParam($value);
 
         $count = 0;
-        $property = EasyRdf_Namespace::expand($property);
         if (isset($this->index[$resource][$property])) {
             foreach ($this->index[$resource][$property] as $k => $v) {
                 if (!$value or $v == $value) {

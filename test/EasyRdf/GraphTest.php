@@ -1378,6 +1378,21 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertSame(array(), $this->graph->all($this->uri, 'rdf:test'));
     }
 
+    public function testDeleteWithPropertyUri()
+    {
+        $this->assertStringEquals('Test A', $this->graph->get($this->uri, 'rdf:test'));
+        $this->assertSame(2, $this->graph->delete($this->uri, '<http://www.w3.org/1999/02/22-rdf-syntax-ns#test>'));
+        $this->assertSame(array(), $this->graph->all($this->uri, 'rdf:test'));
+    }
+
+    public function testDeleteWithPropertyResource()
+    {
+        $prop = $this->graph->resource('http://www.w3.org/1999/02/22-rdf-syntax-ns#test');
+        $this->assertStringEquals('Test A', $this->graph->get($this->uri, 'rdf:test'));
+        $this->assertSame(2, $this->graph->delete($this->uri, $prop));
+        $this->assertSame(array(), $this->graph->all($this->uri, 'rdf:test'));
+    }
+
     public function testDeleteWithUri()
     {
         $this->assertStringEquals('Test A', $this->graph->get($this->uri, 'rdf:test'));
