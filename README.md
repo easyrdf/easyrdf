@@ -22,3 +22,6 @@ The examples are in the public domain, for more information see [UNLICENSE].
 [EasyRdf]:http://www.aelius.com/njh/easyrdf/
 [here]:https://github.com/njh/easyrdf/
 [Wikidata]:http://framework.zend.com/manual/en/zend.http.client.html
+
+[BSD-3-Clause]:http://www.opensource.org/licenses/BSD-3-Clause
+[UNLICENSE]:http://unlicense.org/
