@@ -1036,7 +1036,7 @@ class EasyRdf_Graph
      */
     public function delete($resource, $property, $value = null)
     {
-       $this->checkResourceParam($resource);
+        $this->checkResourceParam($resource);
 
         if (is_object($property) and $property instanceof EasyRdf_Resource) {
             return $this->deleteSingleProperty($resource, $property->getUri(), $value);
