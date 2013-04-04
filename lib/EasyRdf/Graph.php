@@ -946,6 +946,27 @@ class EasyRdf_Graph
         return 1;
     }
 
+    /** Merge data from another graph
+     *
+     * @param  mixed $graph      The graph to be merged
+     * @return integer           The number of values added
+     */
+    public function merge($graph)
+    {
+        $count = 0;
+        $resources = $graph->resources();
+        foreach($resources as $resource) {
+            foreach($graph->properties($resource) as $property) {
+                $values = $graph->all($resource, $property);
+                foreach($values as $value) {
+                    $this->add($resource, $property, $value);
+                    $count++;
+                }
+            }
+        }
+        return $count;
+    }
+
     /** Add a literal value as a property of a resource
      *
      * The resource can either be a resource or the URI of a resource.
