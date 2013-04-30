@@ -50,9 +50,10 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     private $outputtedBnodes = array();
 
     /**
-     * @ignore
+     * @param  EasyRdf_Resource $resource
+     * @return string
      */
-    protected function serialiseResource($resource)
+    public function serialiseResource($resource)
     {
         if ($resource->isBNode()) {
             return $resource->getUri();
@@ -104,9 +105,10 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     }
 
     /**
-     * @ignore
+     * @param  string $value
+     * @return string
      */
-    protected function quotedString($value)
+    public static function quotedString($value)
     {
         if (preg_match("/[\t\n\r]/", $value)) {
             $escaped = str_replace(array('\\', '"""'), array('\\\\', '\\"""'), $value);
@@ -118,15 +120,16 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     }
 
     /**
-     * @ignore
+     * @param  EasyRdf_Resource|EasyRdf_Literal $object
+     * @return string
      */
-    protected function serialiseObject($object)
+    public function serialiseObject($object)
     {
         if ($object instanceof EasyRdf_Resource) {
             return $this->serialiseResource($object);
-        } else {
+        } elseif ($object instanceof EasyRdf_Literal) {
             $value = strval($object);
-            $quoted = $this->quotedString($value);
+            $quoted = self::quotedString($value);
 
             if ($datatype = $object->getDatatypeUri()) {
                 $short = EasyRdf_Namespace::shorten($datatype, true);
@@ -250,6 +253,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     {
         $turtle = '';
         foreach ($graph->resources() as $resource) {
+            /** @var $resource EasyRdf_Resource */
             // If the resource has no properties - don't serialise it
             $properties = $resource->propertyUris();
             if (count($properties) == 0) {
