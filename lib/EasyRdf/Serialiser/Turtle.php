@@ -50,6 +50,16 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     private $outputtedBnodes = array();
 
     /**
+     * @param  string $resource_iri
+     * @return string
+     */
+    public static function encodeResourceIRI($resource_iri)
+    {
+        $escaped_iri = str_replace('>', '\\>', $resource_iri);
+        return "<{$escaped_iri}>";
+    }
+
+    /**
      * @param  EasyRdf_Resource $resource
      * @return string
      */
@@ -63,8 +73,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                 $this->addPrefix($short);
                 return $short;
             } else {
-                $uri = str_replace('>', '\\>', $resource->getUri());
-                return "<{$uri}>";
+                return self::encodeResourceIRI($resource->getUri());
             }
         }
     }
