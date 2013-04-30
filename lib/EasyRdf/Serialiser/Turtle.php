@@ -70,6 +70,41 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     }
 
     /**
+     * @param  EasyRdf_Literal $literal
+     * @return string
+     */
+    public function serialiseLiteral($literal)
+    {
+        $value = strval($literal);
+        $quoted = self::quotedString($value);
+
+        if ($datatype = $literal->getDatatypeUri()) {
+            $short = EasyRdf_Namespace::shorten($datatype, true);
+            if ($short) {
+                $this->addPrefix($short);
+                if ($short == 'xsd:integer') {
+                    return sprintf('%d', $value);
+                } elseif ($short == 'xsd:decimal') {
+                    return sprintf('%g', $value);
+                } elseif ($short == 'xsd:double') {
+                    return sprintf('%e', $value);
+                } elseif ($short == 'xsd:boolean') {
+                    return sprintf('%s', $value ? 'true' : 'false');
+                } else {
+                    return sprintf('%s^^%s', $quoted, $short);
+                }
+            } else {
+                $datatypeUri = str_replace('>', '\\>', $datatype);
+                return sprintf('%s^^<%s>', $quoted, $datatypeUri);
+            }
+        } elseif ($lang = $literal->getLang()) {
+            return $quoted . '@' . $lang;
+        } else {
+            return $quoted;
+        }
+    }
+
+    /**
      * @ignore
      */
     protected function serialiseCollection($node, $indent)
@@ -128,33 +163,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         if ($object instanceof EasyRdf_Resource) {
             return $this->serialiseResource($object);
         } elseif ($object instanceof EasyRdf_Literal) {
-            $value = strval($object);
-            $quoted = self::quotedString($value);
-
-            if ($datatype = $object->getDatatypeUri()) {
-                $short = EasyRdf_Namespace::shorten($datatype, true);
-                if ($short) {
-                    $this->addPrefix($short);
-                    if ($short == 'xsd:integer') {
-                        return sprintf('%d', $value);
-                    } elseif ($short == 'xsd:decimal') {
-                        return sprintf('%g', $value);
-                    } elseif ($short == 'xsd:double') {
-                        return sprintf('%e', $value);
-                    } elseif ($short == 'xsd:boolean') {
-                        return sprintf('%s', $value ? 'true' : 'false');
-                    } else {
-                        return sprintf('%s^^%s', $quoted, $short);
-                    }
-                } else {
-                    $datatypeUri = str_replace('>', '\\>', $datatype);
-                    return sprintf('%s^^<%s>', $quoted, $datatypeUri);
-                }
-            } elseif ($lang = $object->getLang()) {
-                return $quoted . '@' . $lang;
-            } else {
-                return $quoted;
-            }
+            return $this->serialiseLiteral($object);
         }
     }
 
