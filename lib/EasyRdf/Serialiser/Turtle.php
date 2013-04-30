@@ -103,8 +103,8 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                     return sprintf('%s^^%s', $quoted, $short);
                 }
             } else {
-                $datatypeUri = str_replace('>', '\\>', $datatype);
-                return sprintf('%s^^<%s>', $quoted, $datatypeUri);
+                $encoded_type_iri = self::encodeResourceIRI($datatype);
+                return sprintf('%s^^%s', $quoted, $encoded_type_iri);
             }
         } elseif ($lang = $literal->getLang()) {
             return $quoted . '@' . $lang;
@@ -201,7 +201,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                     $pStr = $short;
                 }
             } else {
-                $pStr = '<'.str_replace('>', '\\>', $property).'>';
+                $pStr = self::encodeResourceIRI($property);
             }
 
             if ($pCount) {
