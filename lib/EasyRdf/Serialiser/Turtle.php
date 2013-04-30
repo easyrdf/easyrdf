@@ -64,7 +64,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
                 return $short;
             } else {
                 $uri = str_replace('>', '\\>', $resource);
-                return "<$resource>";
+                return "<{$uri}>";
             }
         }
     }
