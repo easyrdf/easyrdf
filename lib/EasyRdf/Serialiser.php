@@ -46,6 +46,10 @@ class EasyRdf_Serialiser
 {
     protected $prefixes = array();
 
+    public function __construct()
+    {
+    }
+
     /**
      * Keep track of the prefixes used while serialising
      * @ignore
