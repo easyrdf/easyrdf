@@ -22,10 +22,14 @@
     "require": {
         "php": ">=5.2.8"
     },
+    "suggest": {
+        "ml/json-ld": "dev-master"
+    },
     "require-dev": {
         "phpunit/PHPUnit": ">=3.5.15",
         "squizlabs/php_codesniffer": ">=1.4.3",
-        "sami/sami": "dev-master"
+        "sami/sami": "dev-master",
+        "ml/json-ld": "dev-master"
     },
     "replace": {
         "njh/easyrdf": "self.version"
