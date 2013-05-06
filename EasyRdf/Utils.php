@@ -119,6 +119,12 @@ class EasyRdf_Utils
      */
     public static function dumpResourceValue($resource, $html=true, $color='blue')
     {
+        if (!preg_match('/^#?[-\w]+$/', $color)) {
+            throw new InvalidArgumentException(
+                "\$color must be a legal color code or name"
+            );
+        }
+
         if (is_object($resource)) {
             $resource = strval($resource);
         } else if (is_array($resource)) {
@@ -127,7 +133,7 @@ class EasyRdf_Utils
 
         $short = EasyRdf_Namespace::shorten($resource);
         if ($html) {
-            $escaped = htmlentities($resource);
+            $escaped = htmlentities($resource, ENT_QUOTES);
             if (substr($resource, 0, 2) == '_:') {
                 $href = '#' . $escaped;
             } else {
@@ -160,6 +166,12 @@ class EasyRdf_Utils
      */
     public static function dumpLiteralValue($literal, $html=true, $color='black')
     {
+        if (!preg_match('/^#?[-\w]+$/', $color)) {
+            throw new InvalidArgumentException(
+                "\$color must be a legal color code or name"
+            );
+        }
+
         if (is_object($literal)) {
             $literal = $literal->toArray();
         } else if (!is_array($literal)) {
