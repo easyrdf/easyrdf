@@ -1262,7 +1262,7 @@ class EasyRdf_Graph
         }
 
         if ($html) {
-            return "<div id='".htmlentities($resource)."' " .
+            return "<div id='".htmlentities($resource, ENT_QUOTES)."' " .
                    "style='font-family:arial; padding:0.5em; ".
                    "background-color:lightgrey;border:dashed 1px grey;'>\n".
                    "<div>".EasyRdf_Utils::dumpResourceValue($resource, true, 'blue')." ".
