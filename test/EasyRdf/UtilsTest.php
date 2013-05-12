@@ -184,7 +184,8 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
     public function testDumpResourceValueWithQuotes()
     {
         $this->assertSame(
-            "<a href='a&#039; onclick=&#039;alert(1)' style='text-decoration:none;color:blue'>a&#039; onclick=&#039;alert(1)</a>",
+            "<a href='a&#039; onclick=&#039;alert(1)' ".
+            "style='text-decoration:none;color:blue'>a&#039; onclick=&#039;alert(1)</a>",
             EasyRdf_Utils::dumpResourceValue("a' onclick='alert(1)")
         );
     }

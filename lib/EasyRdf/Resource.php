@@ -180,7 +180,7 @@ class EasyRdf_Resource
 
         $html = "<a";
         foreach ($options as $key => $value) {
-            if ( !preg_match('/^[-\w]+$/', $key)) {
+            if (!preg_match('/^[-\w]+$/', $key)) {
                 throw new InvalidArgumentException(
                     "\$options should use valid attribute names as keys"
                 );
