@@ -79,6 +79,16 @@ class EasyRdf_Resource
         }
     }
 
+    /**
+     * Return the graph that this resource belongs to
+     *
+     * @return EasyRdf_Graph
+     */
+    public function getGraph()
+    {
+        return $this->graph;
+    }
+
     /** Returns the URI for the resource.
      *
      * @return string  URI of this resource.
