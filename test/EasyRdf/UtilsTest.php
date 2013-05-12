@@ -181,6 +181,27 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
         );
     }
 
+    public function testDumpResourceValueWithQuotes()
+    {
+        $this->assertSame(
+            "<a href='a&#039; onclick=&#039;alert(1)' style='text-decoration:none;color:blue'>a&#039; onclick=&#039;alert(1)</a>",
+            EasyRdf_Utils::dumpResourceValue("a' onclick='alert(1)")
+        );
+    }
+
+    public function testDumpResourceValueWithIllegalColor()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$color must be a legal color code or name'
+        );
+        EasyRdf_Utils::dumpResourceValue(
+            'http://example.com/',
+            'html',
+            "blue'><script>alert(1);</script><!--"
+        );
+    }
+
     public function testDumpLiteralValue()
     {
         $literal = new EasyRdf_Literal("hello & world");
@@ -265,6 +286,19 @@ class EasyRdf_UtilsTest extends EasyRdf_TestCase
             "<span style='color:black'>&quot;1&quot;^^".
             "&lt;http://example.com/datatypes/int&gt;</span>",
             EasyRdf_Utils::dumpLiteralValue($literal, 'html')
+        );
+    }
+
+    public function testDumpLiteralValueWithIllegalColor()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$color must be a legal color code or name'
+        );
+        EasyRdf_Utils::dumpLiteralValue(
+            'literal',
+            'html',
+            "blue'><script>alert(1);</script><!--"
         );
     }
 

@@ -1843,6 +1843,17 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertSame('', $graph->dumpResource('http://example.com/empty', 'html'));
     }
 
+    public function testDumpResourceInjectJavascript()
+    {
+        $graph = new EasyRdf_Graph();
+        $graph->addType("wikibase_id:Q' onload='alert(1234)", 'foaf:Person');
+        $this->assertContains(
+            "<div id='wikibase_id:Q&#039; onload=&#039;alert(1234)' ".
+            "style='font-family:arial; padding:0.5em; background-color:lightgrey;border:dashed 1px grey;'>",
+            $graph->dumpResource("wikibase_id:Q' onload='alert(1234)")
+        );
+    }
+
     public function testTypes()
     {
         $types = $this->graph->types($this->uri);

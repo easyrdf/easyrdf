@@ -206,6 +206,17 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testHtmlLinkInjectJavascript()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$options should use valid attribute names as keys'
+        );
+
+        $res = new EasyRdf_Resource('http://example.com/');
+        $html = $res->htmlLink(null, array('onclick=alert(1) a' => 'b"'));
+    }
+
     public function testToRdfPhpForUri()
     {
         $uri = new EasyRdf_Resource('http://www.example.com/');
