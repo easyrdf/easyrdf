@@ -50,6 +50,8 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     private $outputtedBnodes = array();
 
     /**
+     * Given a IRI string, escape and enclose in angle brackets.
+     *
      * @param  string $resource_iri
      * @return string
      */
@@ -60,6 +62,29 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     }
 
     /**
+     * Given a string, enclose in quotes and escape any quotes in the string.
+     * Strings containing tabs, linefeeds or carriage returns will be 
+     * enclosed in three double quotes (""").
+     *
+     * @param  string $value
+     * @return string
+     */
+    public static function quotedString($value)
+    {
+        if (preg_match("/[\t\n\r]/", $value)) {
+            $escaped = str_replace(array('\\', '"""'), array('\\\\', '\\"""'), $value);
+            return '"""'.$escaped.'"""';
+        } else {
+            $escaped = str_replace(array('\\', '"'), array('\\\\', '\\"'), $value);
+            return '"'.$escaped.'"';
+        }
+    }
+
+    /**
+     * Given a an EasyRdf_Resource, convert it into a string, suitable to 
+     * be written to a Turtle document. URIs will be shortened into CURIES
+     * where possible.
+     *
      * @param  EasyRdf_Resource $resource
      * @return string
      */
@@ -79,6 +104,10 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     }
 
     /**
+     * Given an EasyRdf_Literal object, convert it into a string, suitable to 
+     * be written to a Turtle document. Supports multiline literals and literals with 
+     * datatypes or languages.
+     *
      * @param  EasyRdf_Literal $literal
      * @return string
      */
@@ -114,6 +143,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     }
 
     /**
+     * Protected method to serialise a RDF collection
      * @ignore
      */
     protected function serialiseCollection($node, $indent)
@@ -149,21 +179,9 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     }
 
     /**
-     * @param  string $value
-     * @return string
-     */
-    public static function quotedString($value)
-    {
-        if (preg_match("/[\t\n\r]/", $value)) {
-            $escaped = str_replace(array('\\', '"""'), array('\\\\', '\\"""'), $value);
-            return '"""'.$escaped.'"""';
-        } else {
-            $escaped = str_replace(array('\\', '"'), array('\\\\', '\\"'), $value);
-            return '"'.$escaped.'"';
-        }
-    }
-
-    /**
+     * Convert an EasyRdf object into a string suitable to 
+     * be written to a Turtle document.
+     *
      * @param  EasyRdf_Resource|EasyRdf_Literal $object
      * @return string
      */
