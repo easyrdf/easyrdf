@@ -42,11 +42,18 @@
                 print "<pre>".$graph->dump('text')."</pre>";
             } else {
                 $dump = $graph->dump('html');
-                print preg_replace("/ href='([^#][^']*)'/e",'" href=\'?uri=".urlencode("$1")."#$1\'"', $dump);
+                print preg_replace_callback("/ href='([^#][^']*)'/", 'makeLinkLocal', $dump);
             }
         } else {
             print "<p>Failed to create graph.</p>";
         }
+    }
+
+    # Callback function to re-write links in the dump to point back to this script
+    function makeLinkLocal($matches)
+    {
+        $href = $matches[1];
+        return " href='?uri=".urlencode($href)."#$href'";
     }
 ?>
 </body>
