@@ -55,6 +55,166 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         EasyRdf_Namespace::delete('example');
     }
 
+    public function testQuotedString()
+    {
+        $this->assertSame(
+            '"The man said \\"Hello\\""',
+            EasyRdf_Serialiser_Turtle::quotedString('The man said "Hello"')
+        );
+    }
+
+    public function testMultilineQuotedString()
+    {
+        $this->assertSame(
+            '"""Hello	World"""',
+            EasyRdf_Serialiser_Turtle::quotedString('Hello	World')
+        );
+    }
+
+    public function testSerialiseResource()
+    {
+        $res = $this->graph->resource('http://example.com/');
+        $this->assertSame(
+            '<http://example.com/>',
+            $this->serialiser->serialiseResource($res)
+        );
+    }
+
+    public function testSerialiseResourceShortenable()
+    {
+        $res = $this->graph->resource('http://xmlns.com/foaf/0.1/name');
+        $this->assertSame(
+            'foaf:name',
+            $this->serialiser->serialiseResource($res)
+        );
+    }
+
+    public function testSerialiseResourceBnode()
+    {
+        $res = $this->graph->newBnode();
+        $this->assertSame(
+            '_:genid1',
+            $this->serialiser->serialiseResource($res)
+        );
+    }
+
+    public function testSerialiseResourceAngleBracket()
+    {
+        $res = $this->graph->resource('http://google.com/search?q=<>');
+        $this->assertSame(
+            '<http://google.com/search?q=<\>>',
+            $this->serialiser->serialiseResource($res)
+        );
+    }
+
+    public function testSerialiseLiteral()
+    {
+        $literal = new EasyRdf_Literal('Hello World');
+        $this->assertSame(
+            '"Hello World"',
+            $this->serialiser->serialiseLiteral($literal)
+        );
+    }
+
+    public function testSerialiseLiteralMultiline()
+    {
+        $literal = new EasyRdf_Literal("Hello\nWorld");
+        $this->assertSame(
+            "\"\"\"Hello\nWorld\"\"\"",
+            $this->serialiser->serialiseLiteral($literal)
+        );
+    }
+
+    public function testSerialiseLiteralInteger()
+    {
+        $literal = new EasyRdf_Literal_Integer(1);
+        $this->assertSame(
+            '1',
+            $this->serialiser->serialiseLiteral($literal)
+        );
+    }
+
+    public function testSerialiseLiteralDecimal()
+    {
+        $literal = new EasyRdf_Literal_Decimal(1.01);
+        $this->assertSame(
+            '1.01',
+            $this->serialiser->serialiseLiteral($literal)
+        );
+    }
+
+    public function testSerialiseLiteralDouble()
+    {
+        $literal = EasyRdf_Literal::create(1, null, 'xsd:double');
+        $this->assertSame(
+            '1.000000e+0',
+            $this->serialiser->serialiseLiteral($literal)
+        );
+    }
+
+    public function testSerialiseLiteralBoolean()
+    {
+        $literal = EasyRdf_Literal::create(true);
+        $this->assertSame(
+            'true',
+            $this->serialiser->serialiseLiteral($literal)
+        );
+    }
+
+    public function testSerialiseLiteralOtherXsd()
+    {
+        $literal = EasyRdf_Literal::create('value', null, 'xsd:other');
+        $this->assertSame(
+            '"value"^^xsd:other',
+            $this->serialiser->serialiseLiteral($literal)
+        );
+    }
+
+    public function testSerialiseLiteralOtherDatatype()
+    {
+        $literal = EasyRdf_Literal::create('value', null, 'http://example.com/dt');
+        $this->assertSame(
+            '"value"^^ns0:dt',
+            $this->serialiser->serialiseLiteral($literal)
+        );
+    }
+
+    public function testSerialiseLiteralWithLang()
+    {
+        $literal = EasyRdf_Literal::create('valeur', 'fr');
+        $this->assertSame(
+            '"valeur"@fr',
+            $this->serialiser->serialiseLiteral($literal)
+        );
+    }
+
+    public function testSerialiseObjectLiteral()
+    {
+        $literal = new EasyRdf_Literal('Hello World');
+        $this->assertSame(
+            '"Hello World"',
+            $this->serialiser->serialiseObject($literal)
+        );
+    }
+
+    public function testSerialiseObjectResource()
+    {
+        $res = $this->graph->resource('http://example.com/');
+        $this->assertSame(
+            '<http://example.com/>',
+            $this->serialiser->serialiseObject($res)
+        );
+    }
+
+    public function testSerialiseObjectUnknown()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'serialiseObject() requires $object to be of type EasyRdf_Resource or EasyRdf_Literal'
+        );
+        $turtle = $this->serialiser->serialiseObject($this);
+    }
+
     public function testSerialise()
     {
         $joe = $this->graph->resource(
