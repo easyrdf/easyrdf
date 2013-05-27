@@ -50,6 +50,18 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     private $outputtedBnodes = array();
 
     /**
+     * Given a IRI string, escape and enclose in angle brackets.
+     *
+     * @param  string $resourceIri
+     * @return string
+     */
+    public static function escapeIri($resourceIri)
+    {
+        $escapedIri = str_replace('>', '\\>', $resourceIri);
+        return "<$escapedIri>";
+    }
+
+    /**
      * Given a string, enclose in quotes and escape any quotes in the string.
      * Strings containing tabs, linefeeds or carriage returns will be
      * enclosed in three double quotes (""").
@@ -92,8 +104,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
             $this->addPrefix($short);
             return $short;
         } else {
-            $escaped = str_replace('>', '\\>', $resource);
-            return "<$escaped>";
+            return self::escapeIri($resource);
         }
     }
 
