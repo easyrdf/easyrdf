@@ -1583,6 +1583,46 @@ class EasyRdf_Graph
     {
         return $this->uri == null ? '' : $this->uri;
     }
+    
+    /** Returns an array containing an array for each triple in this graph
+     * 
+     * Example result:
+     *  array (
+     *      array (
+     *          's' => 'http://foo.bar/s'
+     *          'p' => 'http://foo.bar/p'
+     *          'o' => 'http://foo.bar/o'
+     *      ),
+     *      array (
+     *          's' => 'http://foo.bar/s2'
+     *          'p' => 'http://foo.bar/p2'
+     *          'o' => 'http://foo.bar/o2'
+     *      )
+     * )
+     * 
+     * @return array List of all triples in this graph
+     */
+    public function toTripleList()
+    {
+        $tripleList = array();
+        
+        // go through all subjects
+        foreach ($this->index as $subject => $predicates) {
+            // predicates associated with the subject
+            foreach ($predicates as $property => $objects) {
+                // object(s)
+                foreach ($objects as $object) {                    
+                    $tripleList [] = array (
+                        's' => $subject,
+                        'p' => $property,
+                        'o' => $object['value']
+                    );
+                }
+            }
+        }
+        
+        return $tripleList;
+    }
 
     /** Magic method to get a property of the graph
      *
