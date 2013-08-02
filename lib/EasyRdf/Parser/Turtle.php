@@ -109,11 +109,11 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         if ($c == '@') {
             $this->parseDirective();
             $this->skipWSC();
-            $this->verifyCharacter($this->read(), ".");
+            $this->verifyCharacterOrFail($this->read(), ".");
         } else {
             $this->parseTriples();
             $this->skipWSC();
-            $this->verifyCharacter($this->read(), ".");
+            $this->verifyCharacterOrFail($this->read(), ".");
         }
     }
 
@@ -124,7 +124,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     protected function parseDirective()
     {
         // Verify that the first characters form the string "prefix"
-        $this->verifyCharacter($this->read(), "@");
+        $this->verifyCharacterOrFail($this->read(), "@");
 
         $directive = '';
 
@@ -177,7 +177,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
 
         $this->skipWSC();
-        $this->verifyCharacter($this->read(), ":");
+        $this->verifyCharacterOrFail($this->read(), ":");
         $this->skipWSC();
 
         // Read the namespace URI
@@ -350,7 +350,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function parseImplicitBlank()
     {
-        $this->verifyCharacter($this->read(), "[");
+        $this->verifyCharacterOrFail($this->read(), "[");
 
         $bnode = array(
             'type' => 'bnode',
@@ -376,7 +376,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $this->skipWSC();
 
             // Read closing bracket
-            $this->verifyCharacter($this->read(), "]");
+            $this->verifyCharacterOrFail($this->read(), "]");
 
             // Restore previous subject and predicate
             $this->subject = $oldSubject;
@@ -392,7 +392,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function parseCollection()
     {
-        $this->verifyCharacter($this->read(), "(");
+        $this->verifyCharacterOrFail($this->read(), "(");
 
         $c = $this->skipWSC();
         if ($c == ')') {
@@ -544,7 +544,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $this->read();
 
             // next character should be another '^'
-            $this->verifyCharacter($this->read(), "^");
+            $this->verifyCharacterOrFail($this->read(), "^");
 
             // Read datatype
             $datatype = $this->parseValue();
@@ -577,7 +577,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $result = null;
 
         // First character should be ' or "
-        $this->verifyCharacter($this->read(), $quote);
+        $this->verifyCharacterOrFail($this->read(), $quote);
 
         // Check for long-string, which starts and ends with three double quotes
         $c2 = $this->read();
@@ -774,7 +774,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $uri = '';
 
         // First character should be '<'
-        $this->verifyCharacter($this->read(), "<");
+        $this->verifyCharacterOrFail($this->read(), "<");
 
         // Read up to the next '>' character
         while (true) {
@@ -864,7 +864,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
                 }
             }
 
-            $this->verifyCharacter($c, ":");
+            $this->verifyCharacterOrFail($c, ":");
 
             if (isset($this->namespaces[$prefix])) {
                 $namespace = $this->namespaces[$prefix];
@@ -905,8 +905,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     protected function parseNodeID()
     {
         // Node ID should start with "_:"
-        $this->verifyCharacter($this->read(), "_");
-        $this->verifyCharacter($this->read(), ":");
+        $this->verifyCharacterOrFail($this->read(), "_");
+        $this->verifyCharacterOrFail($this->read(), ":");
 
         // Read the node ID
         $c = $this->read();
@@ -951,7 +951,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      * exception if this is not the case.
      * @ignore
      */
-    protected function verifyCharacter($c, $expected)
+    protected function verifyCharacterOrFail($c, $expected)
     {
         if ($c == -1) {
             throw new EasyRdf_Exception(
