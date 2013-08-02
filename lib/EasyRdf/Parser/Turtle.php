@@ -983,7 +983,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $c = $this->read();
         while (self::isWhitespace($c) || $c == '#') {
             if ($c == '#') {
-                $this->skipLine();
+                $this->processComment();
             }
 
             $c = $this->read();
@@ -997,10 +997,12 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      * Consumes characters from reader until the first EOL has been read.
      * @ignore
      */
-    protected function skipLine()
+    protected function processComment()
     {
+        $comment = '';
         $c = $this->read();
         while ($c != -1 && $c != "\r" && $c != "\n") {
+            $comment .= $c;
             $c = $this->read();
         }
 
