@@ -232,6 +232,9 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
             if ($c == '.' || $c == ']') {
                 break;
+            } elseif ($c == ';') {
+                // empty predicateObjectList, skip to next
+                continue;
             }
 
             $this->predicate = $this->parsePredicate();
