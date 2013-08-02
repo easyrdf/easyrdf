@@ -315,7 +315,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             return $predicate;
         } else {
             throw new EasyRdf_Exception(
-                "Turtle Parse Error: Illegal predicate value: " . $predicate
+                "Turtle Parse Error: Illegal predicate type: " . $predicate['type']
             );
         }
     }
@@ -558,7 +558,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
                 );
             } else {
                 throw new EasyRdf_Exception(
-                    "Turtle Parse Error: illegal datatype value: $datatype"
+                    "Turtle Parse Error: illegal datatype type: " . $datatype['type']
                 );
             }
         } else {
