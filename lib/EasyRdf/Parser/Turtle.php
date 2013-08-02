@@ -6,7 +6,7 @@
  * LICENSE
  *
  * Copyright (c) 2009-2013 Nicholas J Humfrey.
- * Copyright (c) 1997-2006 Aduna (http://www.aduna-software.com/)
+ * Copyright (c) 1997-2013 Aduna (http://www.aduna-software.com/)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- *             Copyright (c) 1997-2006 Aduna (http://www.aduna-software.com/)
+ *             Copyright (c) 1997-2013 Aduna (http://www.aduna-software.com/)
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
@@ -480,9 +480,9 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         } elseif ($c == '_') {
             // node ID, e.g. _:n1
             return $this->parseNodeID();
-        } elseif ($c == '"' or $c == "'") {
+        } elseif ($c == '"' || $c == "'") {
             // quoted literal, e.g. "foo" or """foo""" or 'foo' or '''foo'''
-            return $this->parseQuotedLiteral($c);
+            return $this->parseQuotedLiteral();
         } elseif (ctype_digit($c) || $c == '.' || $c == '+' || $c == '-') {
             // integer or double, e.g. 123 or 1.2e3
             return $this->parseNumber();
@@ -499,12 +499,11 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
     /**
      * Parses a quoted string, optionally followed by a language tag or datatype.
-     * @param string  $quote  The type of quote to use (either ' or ")
      * @ignore
      */
-    protected function parseQuotedLiteral($quote)
+    protected function parseQuotedLiteral()
     {
-        $label = $this->parseQuotedString($quote);
+        $label = $this->parseQuotedString();
 
         // Check for presence of a language tag or datatype
         $c = $this->peek();
@@ -569,29 +568,30 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
     /**
      * Parses a quoted string, which is either a "normal string" or a """long string""".
-     * @param string  $quote  The type of quote to use (either ' or ")
      * @ignore
      */
-    protected function parseQuotedString($quote)
+    protected function parseQuotedString()
     {
         $result = null;
 
+        $c1 = $this->read();
+
         // First character should be ' or "
-        $this->verifyCharacterOrFail($this->read(), $quote);
+        $this->verifyCharacterOrFail($c1, "\"\'");
 
         // Check for long-string, which starts and ends with three double quotes
         $c2 = $this->read();
         $c3 = $this->read();
 
-        if ($c2 == $quote && $c3 == $quote) {
+        if ($c2 == $c1 && $c3 == $c1) {
             // Long string
-            $result = $this->parseLongString($quote);
+            $result = $this->parseLongString($c2);
         } else {
             // Normal string
             $this->unread($c3);
             $this->unread($c2);
 
-            $result = $this->parseString($quote);
+            $result = $this->parseString($c1);
         }
 
         // Unescape any escape sequences
@@ -599,19 +599,19 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /**
-     * Parses a "normal string". This method assumes that the first double quote
+     * Parses a "normal string". This method requires that the opening character
      * has already been parsed.
-     * @param string  $quote  The type of quote to use (either ' or ")
+     * @param string  $closingCharacter  The type of quote to use (either ' or ")
      * @ignore
      */
-    protected function parseString($quote)
+    protected function parseString($closingCharacter)
     {
         $str = '';
 
         while (true) {
             $c = $this->read();
 
-            if ($c == $quote) {
+            if ($c == $closingCharacter) {
                 break;
             } elseif ($c == -1) {
                 throw new EasyRdf_Exception(
@@ -637,12 +637,12 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     }
 
     /**
-     * Parses a """long string""". This method assumes that the first three
-     * double quotes have already been parsed.
-     * @param string  $quote  The type of quote to use (either ' or ")
+     * Parses a """long string""". This method requires that the first three
+     * characters have already been parsed.
+     * @param string  $closingCharacter  The type of quote to use (either ' or ")
      * @ignore
      */
-    protected function parseLongString($quote)
+    protected function parseLongString($closingCharacter)
     {
         $str = '';
         $doubleQuoteCount = 0;
@@ -654,7 +654,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
                 throw new EasyRdf_Exception(
                     "Turtle Parse Error: unexpected end of file while reading long string"
                 );
-            } elseif ($c == $quote) {
+            } elseif ($c == $closingCharacter) {
                 $doubleQuoteCount++;
             } else {
                 $doubleQuoteCount = 0;
