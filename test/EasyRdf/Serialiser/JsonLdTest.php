@@ -78,9 +78,21 @@ class JsonLdTest extends EasyRdf_TestCase
         $graph = $doc->getGraph();
         $node = $graph->getNode('http://www.example.com/joe#me');
 
-        $this->assertEquals('http://xmlns.com/foaf/0.1/Person', $node->getProperty('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')->getId());
-        $this->assertEquals(59, $node->getProperty('http://xmlns.com/foaf/0.1/age'));
-        $this->assertEquals('Joe Bloggs', $node->getProperty('http://xmlns.com/foaf/0.1/name')->getValue());
-        $this->assertEquals('Project Name', $node->getProperty('http://xmlns.com/foaf/0.1/project')->getProperty('http://xmlns.com/foaf/0.1/name'));
+        $this->assertEquals(
+            'http://xmlns.com/foaf/0.1/Person',
+            $node->getProperty('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')->getId()
+        );
+        $this->assertEquals(
+            59,
+            $node->getProperty('http://xmlns.com/foaf/0.1/age')
+        );
+        $this->assertEquals(
+            'Joe Bloggs',
+            $node->getProperty('http://xmlns.com/foaf/0.1/name')->getValue()
+        );
+        $this->assertEquals(
+            'Project Name',
+            $node->getProperty('http://xmlns.com/foaf/0.1/project')->getProperty('http://xmlns.com/foaf/0.1/name')
+        );
     }
 }

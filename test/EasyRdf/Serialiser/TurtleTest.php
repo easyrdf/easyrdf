@@ -55,6 +55,22 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         EasyRdf_Namespace::delete('example');
     }
 
+    public function testEscapeIri()
+    {
+        $this->assertSame(
+            '<http://example.com/>',
+            EasyRdf_Serialiser_Turtle::escapeIri('http://example.com/')
+        );
+    }
+
+    public function testEscapeIriAngleBracket()
+    {
+        $this->assertSame(
+            '<http://google.com/search?q=<\>>',
+            EasyRdf_Serialiser_Turtle::escapeIri('http://google.com/search?q=<>')
+        );
+    }
+
     public function testQuotedString()
     {
         $this->assertSame(
