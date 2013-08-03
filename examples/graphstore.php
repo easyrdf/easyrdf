@@ -6,7 +6,7 @@
      * a local graph store. It then fetches the whole graph out
      * and displays the contents.
      *
-     * Note that you will a graph store, for example RedStore,
+     * Note that you will need a graph store, for example RedStore,
      * running on your local machine in order to test this example.
      *
      * @package    EasyRdf
