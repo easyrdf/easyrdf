@@ -882,11 +882,19 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $localName = '';
         $c = $this->read();
         if (self::isNameStartChar($c)) {
-            $localName .= $c;
+            if ($c == '\\') {
+                $localName .= $this->readLocalEscapedChar();
+            } else {
+                $localName .= $c;
+            }
 
             $c = $this->read();
             while (self::isNameChar($c)) {
-                $localName .= $c;
+                if ($c == '\\') {
+                    $localName .= $this->readLocalEscapedChar();
+                } else {
+                    $localName .= $c;
+                }
                 $c = $this->read();
             }
         }
@@ -899,6 +907,19 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             'type' => 'uri',
             'value' => $namespace . $localName
         );
+    }
+
+    protected function readLocalEscapedChar()
+    {
+        $c = $this->read();
+
+        if (self::isLocalEscapedChar($c)) {
+            return $c;
+        } else {
+            throw new EasyRdf_Exception(
+                "found '" . $c . "', expected one of: " . implode(', ', self::$localEscapedChars)
+            );
+        }
     }
 
     /**
@@ -1114,6 +1135,18 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $o == 0x00B7 ||
             $o >= 0x0300 && $o <= 0x036F ||
             $o >= 0x203F && $o <= 0x2040;
+    }
+
+    /** @ignore */
+    private static $localEscapedChars = array(
+        '_', '~', '.', '-', '!', '$', '&', '\'', '(', ')',
+        '*', '+', ',', ';', '=', '/', '?', '#', '@', '%'
+    );
+
+    /** @ignore */
+    public static function isLocalEscapedChar($c)
+    {
+        return in_array($c, self::$localEscapedChars);
     }
 
     /** @ignore */

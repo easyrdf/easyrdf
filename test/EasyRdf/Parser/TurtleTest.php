@@ -306,6 +306,21 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
         $this->turtleTestCase('test-27');
     }
 
+    public function testTurtleSyntaxPnameEsc01()
+    {
+        $this->turtleTestCase('turtle-syntax-pname-esc-01');
+    }
+
+    public function testTurtleSyntaxPnameEsc02()
+    {
+        $this->turtleTestCase('turtle-syntax-pname-esc-02');
+    }
+
+    public function testTurtleSyntaxPnameEsc03()
+    {
+        $this->turtleTestCase('turtle-syntax-pname-esc-03');
+    }
+
     public function testBase1()
     {
         # Resolution of a relative URI against an absolute base.
