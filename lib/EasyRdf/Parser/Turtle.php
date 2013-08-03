@@ -1067,7 +1067,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     public static function isWhitespace($c)
     {
         // Whitespace character are space, tab, newline and carriage return:
-        return $c == " " || $c == "\t" || $c == "\r" || $c == "\n";
+        return $c == "\x20" || $c == "\x09" || $c == "\x0A" || $c == "\x0D";
     }
 
     /** @ignore */
@@ -1094,7 +1094,13 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     /** @ignore */
     public static function isNameStartChar($c)
     {
-        return $c == '_' || self::isPrefixStartChar($c);
+        return
+            $c == '\\' ||
+            $c == '_' ||
+            $c == ':' ||
+            $c == '%' ||
+            ctype_digit($c) ||
+            self::isPrefixStartChar($c);
     }
 
     /** @ignore */
@@ -1103,8 +1109,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         $o = ord($c);
         return
             self::isNameStartChar($c) ||
+            $o >= 0x30 && $o <= 0x39 ||     # 0-9
             $c == '-' ||
-            $o >= 0x30 && $o <= 0x39 ||   # numeric
             $o == 0x00B7 ||
             $o >= 0x0300 && $o <= 0x036F ||
             $o >= 0x203F && $o <= 0x2040;
@@ -1113,7 +1119,15 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     /** @ignore */
     public static function isPrefixChar($c)
     {
-        return self::isNameChar($c);
+        $o = ord($c);
+        return
+            $c == '_' ||
+            $o >= 0x30 && $o <= 0x39 ||     # 0-9
+            self::isPrefixStartChar($c) ||
+            $c == '-' ||
+            $o == 0x00B7 ||
+            $c >= 0x0300 && $c <= 0x036F ||
+            $c >= 0x203F && $c <= 0x2040;
     }
 
     /** @ignore */
@@ -1121,8 +1135,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     {
         $o = ord($c);
         return
-            $o >= 0x41   && $o <= 0x5a ||
-            $o >= 0x61   && $o <= 0x7a;
+            $o >= 0x41 && $o <= 0x5a ||   # A-Z
+            $o >= 0x61 && $o <= 0x7a;     # a-z
     }
 
     /** @ignore */
@@ -1130,9 +1144,9 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     {
         $o = ord($c);
         return
-            $o >= 0x41   && $o <= 0x5a ||   # A-Z
-            $o >= 0x61   && $o <= 0x7a ||   # a-z
-            $o >= 0x30   && $o <= 0x39 ||   # 0-9
+            $o >= 0x41 && $o <= 0x5a ||   # A-Z
+            $o >= 0x61 && $o <= 0x7a ||   # a-z
+            $o >= 0x30 && $o <= 0x39 ||   # 0-9
             $c == '-';
     }
 }
