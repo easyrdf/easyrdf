@@ -352,10 +352,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     {
         $this->verifyCharacterOrFail($this->read(), "[");
 
-        $bnode = array(
-            'type' => 'bnode',
-            'value' => $this->graph->newBNodeId()
-        );
+        $bnode = $this->createBNode();
 
         $c = $this->read();
         if ($c != ']') {
@@ -403,10 +400,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
                 'value' => EasyRdf_Namespace::get('rdf') . 'nil'
             );
         } else {
-            $listRoot = array(
-                'type' => 'bnode',
-                'value' => $this->graph->newBNodeId()
-            );
+            $listRoot = $this->createBNode();
 
             // Remember current subject and predicate
             $oldSubject = $this->subject;
@@ -424,10 +418,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
             while ($this->skipWSC() != ')') {
                 // Create another list node and link it to the previous
-                $newNode = array(
-                    'type' => 'bnode',
-                    'value' => $this->graph->newBNodeId()
-                );
+                $newNode = $this->createBNode();
 
                 $this->addTriple(
                     $bNode['value'],
@@ -1073,6 +1064,14 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     {
         $this->data = $c . $this->data;
     }
+
+    /** @ignore */
+    protected function createBNode()
+    {
+        return array(
+            'type' => 'bnode',
+            'value' => $this->graph->newBNodeId()
+        );
     }
 
     /**
