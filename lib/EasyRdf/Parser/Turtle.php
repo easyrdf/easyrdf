@@ -202,9 +202,37 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function parseTriples()
     {
-        $this->parseSubject();
-        $this->skipWSC();
-        $this->parsePredicateObjectList();
+        $c = $this->peek();
+
+        // If the first character is an open bracket we need to decide which of
+        // the two parsing methods for blank nodes to use
+        if ($c == '[') {
+            $c = $this->read();
+            $this->skipWSC();
+            $c = $this->peek();
+            if ($c == ']') {
+                $c = $this->read();
+                $this->subject = $this->createBNode();
+                $this->skipWSC();
+                $this->parsePredicateObjectList();
+            } else {
+                $this->unread('[');
+                $this->subject = $this->parseImplicitBlank();
+            }
+            $this->skipWSC();
+            $c = $this->peek();
+
+            // if this is not the end of the statement, recurse into the list of
+            // predicate and objects, using the subject parsed above as the subject
+            // of the statement.
+            if ($c != '.') {
+                $this->parsePredicateObjectList();
+            }
+        } else {
+            $this->parseSubject();
+            $this->skipWSC();
+            $this->parsePredicateObjectList();
+        }
 
         $this->subject = null;
         $this->predicate = null;
