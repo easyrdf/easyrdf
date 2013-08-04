@@ -79,9 +79,6 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
 
         $this->data = $data;
-        $this->len = strlen($data);
-        $this->pos = 0;
-
         $this->namespaces = array();
         $this->subject = null;
         $this->predicate = null;
@@ -138,7 +135,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $this->parsePrefixID();
         } elseif ($directive == "base") {
             $this->parseBase();
-        } elseif (strlen($directive) == 0) {
+        } elseif (mb_strlen($directive) == 0) {
             throw new EasyRdf_Exception(
                 "Turtle Parse Error: directive name is missing, expected @prefix or @base"
             );
@@ -677,7 +674,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             }
         }
 
-        return substr($str, 0, -3);
+        return mb_substr($str, 0, -3);
     }
 
     /**
@@ -715,14 +712,14 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
                     $c = $this->read();
                 }
 
-                if (strlen($value) == 1) {
+                if (mb_strlen($value) == 1) {
                     // We've only parsed a '.'
                     throw new EasyRdf_Exception(
                         "Turtle Parse Error: object for statement missing"
                     );
                 }
             } else {
-                if (strlen($value) == 0) {
+                if (mb_strlen($value) == 0) {
                     // We've only parsed an 'e' or 'E'
                     throw new EasyRdf_Exception(
                         "Turtle Parse Error: object for statement missing"
@@ -1044,9 +1041,9 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function read()
     {
-        if ($this->pos < $this->len) {
-            $c = $this->data[$this->pos];
-            $this->pos++;
+        if (!empty($this->data)) {
+            $c = mb_substr($this->data, 0, 1);
+            $this->data = mb_substr($this->data, 1);
             return $c;
         } else {
             return -1;
@@ -1060,8 +1057,8 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function peek()
     {
-        if ($this->pos < $this->len) {
-            return $this->data[$this->pos];
+        if (!empty($this->data)) {
+            return mb_substr($this->data, 0, 1);
         } else {
             return -1;
         }
@@ -1072,13 +1069,10 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      * Steps back, restoring the previous character read() to the input buffer
      * @ignore
      */
-    protected function unread()
+    protected function unread($c)
     {
-        if ($this->pos > 0) {
-            $this->pos--;
-        } else {
-            throw new EasyRdf_Exception("Turtle Parse Error: unread error");
-        }
+        $this->data = $c . $this->data;
+    }
     }
 
     /**
