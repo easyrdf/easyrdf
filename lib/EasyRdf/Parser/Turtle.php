@@ -854,8 +854,9 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
         if ($c == ':') {
             // qname using default namespace
-            $namespace = $this->namespaces[""];
-            if ($namespace == null) {
+            if (isset($this->namespaces[''])) {
+                $namespace = $this->namespaces[''];
+            } else {
                 throw new EasyRdf_Exception(
                     "Turtle Parse Error: default namespace used but not defined"
                 );
