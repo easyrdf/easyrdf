@@ -730,23 +730,29 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
         }
 
         if ($c == '.' || $c == 'e' || $c == 'E') {
-            // We're parsing a decimal or a double
-            $datatype = EasyRdf_Namespace::get('xsd').'decimal';
-
             // read optional fractional digits
             if ($c == '.') {
-                $value .= $c;
-                $c = $this->read();
-                while (ctype_digit($c)) {
+
+                if (self::isWhitespace($this->peek())) {
+                    // We're parsing an integer that did not have a space before the
+                    // period to end the statement
+                } else {
                     $value .= $c;
                     $c = $this->read();
-                }
+                    while (ctype_digit($c)) {
+                        $value .= $c;
+                        $c = $this->read();
+                    }
 
-                if (mb_strlen($value) == 1) {
-                    // We've only parsed a '.'
-                    throw new EasyRdf_Exception(
-                        "Turtle Parse Error: object for statement missing"
-                    );
+                    if (mb_strlen($value) == 1) {
+                        // We've only parsed a '.'
+                        throw new EasyRdf_Exception(
+                            "Turtle Parse Error: object for statement missing"
+                        );
+                    }
+
+                    // We're parsing a decimal or a double
+                    $datatype = EasyRdf_Namespace::get('xsd').'decimal';
                 }
             } else {
                 if (mb_strlen($value) == 0) {
@@ -770,7 +776,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
 
                 if (!ctype_digit($c)) {
                     throw new EasyRdf_Exception(
-                        "Turtle Parse Error: Exponent value missing"
+                        "Turtle Parse Error: exponent value missing"
                     );
                 }
 
