@@ -103,14 +103,14 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
     protected function parseStatement()
     {
         $directive = '';
-        while(true) {
+        while (true) {
             $c = $this->read();
             if ($c == -1 || self::isWhitespace($c)) {
                 $this->unread($c);
                 break;
             } else {
                 $directive .= $c;
-            }   
+            }
         }
 
         if (preg_match("/^(@|prefix$|base$)/i", $directive)) {
