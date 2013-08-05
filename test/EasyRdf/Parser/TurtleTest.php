@@ -452,7 +452,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
         # @forAll is not in turtle
         $this->setExpectedException(
             'EasyRdf_Exception',
-            "Turtle Parse Error: unknown directive \"@forAll\""
+            "Turtle Parse Error: unknown directive \"@forall\""
         );
         $this->parseTurtle("turtle/bad-11.ttl");
     }
@@ -462,7 +462,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
         # @forSome is not in turtle
         $this->setExpectedException(
             'EasyRdf_Exception',
-            "Turtle Parse Error: unknown directive \"@forSome\""
+            "Turtle Parse Error: unknown directive \"@forsome\""
         );
         $this->parseTurtle("turtle/bad-12.ttl");
     }
