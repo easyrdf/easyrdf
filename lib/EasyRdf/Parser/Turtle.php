@@ -102,12 +102,26 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      */
     protected function parseStatement()
     {
-        $c = $this->peek();
-        if ($c == '@') {
-            $this->parseDirective();
+        $directive = '';
+        while(true) {
+            $c = $this->read();
+            if ($c == -1 || self::isWhitespace($c)) {
+                $this->unread($c);
+                break;
+            } else {
+                $directive .= $c;
+            }   
+        }
+
+        if (preg_match("/^(@|prefix$|base$)/i", $directive)) {
+            $this->parseDirective($directive);
             $this->skipWSC();
-            $this->verifyCharacterOrFail($this->read(), ".");
+            // SPARQL BASE and PREFIX lines do not end in .
+            if ($directive[0] == "@") {
+                $this->verifyCharacterOrFail($this->read(), ".");
+            }
         } else {
+            $this->unread($directive);
             $this->parseTriples();
             $this->skipWSC();
             $this->verifyCharacterOrFail($this->read(), ".");
@@ -118,22 +132,12 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
      * Parse a directive [3]
      * @ignore
      */
-    protected function parseDirective()
+    protected function parseDirective($directive)
     {
-        // Verify that the first characters form the string "prefix"
-        $this->verifyCharacterOrFail($this->read(), "@");
-
-        $directive = '';
-
-        $c = $this->read();
-        while ($c != -1 && !self::isWhitespace($c)) {
-            $directive .= $c;
-            $c = $this->read();
-        }
-
-        if ($directive == "prefix") {
+        $directive = strtolower($directive);
+        if ($directive == "prefix" || $directive == '@prefix') {
             $this->parsePrefixID();
-        } elseif ($directive == "base") {
+        } elseif ($directive == "base" || $directive == '@base') {
             $this->parseBase();
         } elseif (mb_strlen($directive) == 0) {
             throw new EasyRdf_Exception(
@@ -141,7 +145,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             );
         } else {
             throw new EasyRdf_Exception(
-                "Turtle Parse Error: unknown directive \"@$directive\""
+                "Turtle Parse Error: unknown directive \"$directive\""
             );
         }
     }
