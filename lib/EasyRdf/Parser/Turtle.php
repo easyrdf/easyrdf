@@ -550,8 +550,15 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             $lang .= $c;
 
             $c = $this->read();
-            while (self::isLanguageChar($c)) {
-                $lang .= $c;
+            while (!self::isWhitespace($c)) {
+                if ($c == '.' || $c == ';' || $c == ',' || $c == ')' || $c == ']' || $c == -1) {
+                    break;
+                }
+                if (self::isLanguageChar($c)) {
+                    $lang .= $c;
+                } else {
+                    throw new EasyRdf_Exception("Turtle Parse Error: illegal language tag char: '$c'");
+                }
                 $c = $this->read();
             }
 
