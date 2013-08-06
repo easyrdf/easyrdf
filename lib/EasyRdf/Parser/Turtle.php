@@ -41,8 +41,12 @@
 /**
  * Class to parse Turtle with no external dependancies.
  *
- * http://www.w3.org/TR/turtle/
- *
+ * It is a translation from Java to PHP of the Sesame Turtle Parser:
+ * https://bitbucket.org/openrdf/sesame/src/master/core/rio/turtle/src/main/java/org/openrdf/rio/turtle/TurtleParser.java
+ * 
+ * Lasted updated against version: 
+ * ecda6a15a200a2fc6a062e2e43081257c3ccd4e6   (Mon Jul 29 12:05:58 2013)
+ * 
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  *             Copyright (c) 1997-2013 Aduna (http://www.aduna-software.com/)
