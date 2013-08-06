@@ -549,7 +549,8 @@ EasyRdf_Format::register(
         'text/plain' => 1.0,
         'text/ntriples' => 0.9,
         'application/ntriples' => 0.9,
-        'application/x-ntriples' => 0.9
+        'application/n-triples' => 0.9,
+        'application/x-ntriples' => 0.9,
     ),
     array('nt')
 );
