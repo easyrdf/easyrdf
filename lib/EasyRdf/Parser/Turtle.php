@@ -42,7 +42,7 @@
  * Class to parse Turtle with no external dependancies.
  *
  * It is a translation from Java to PHP of the Sesame Turtle Parser:
- * https://bitbucket.org/openrdf/sesame/src/master/core/rio/turtle/src/main/java/org/openrdf/rio/turtle/TurtleParser.java
+ * http://bit.ly/TurtleParser
  * 
  * Lasted updated against version: 
  * ecda6a15a200a2fc6a062e2e43081257c3ccd4e6   (Mon Jul 29 12:05:58 2013)
