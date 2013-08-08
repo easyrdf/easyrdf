@@ -65,7 +65,7 @@ class FusekiTest extends EasyRdf_TestCase
         }
 
         // Fuseki needs a little bit of extra time before it can acctually recieve requests
-        sleep(3);    
+        sleep(3);
     }
 
     public static function tearDownAfterClass()
@@ -124,5 +124,18 @@ class FusekiTest extends EasyRdf_TestCase
             $labels
         );
     }
+    
+    public function testGraphStoreDelete()
+    {
+        $graph1 = new EasyRdf_Graph();
+        $graph1->set('http://example.com/test', 'rdfs:label', 'Test 4');
+        $result = $this->gs->insert($graph1, 'easyrdf-graphstore-test3.rdf');
+        $this->assertSame(201, $result->getStatus());
 
+        $graph2 = $this->gs->get('easyrdf-graphstore-test3.rdf');
+        $this->assertEquals(1, $graph2->countTriples());
+
+        $result = $this->gs->delete('easyrdf-graphstore-test3.rdf');
+        $this->assertSame(204, $result->getStatus());
+    }
 }
