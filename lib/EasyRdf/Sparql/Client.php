@@ -133,4 +133,16 @@ class EasyRdf_Sparql_Client
             );
         }
     }
+
+    /** Count the number of triples in a SPARQL 1.1 endpoint
+     *
+     * Performs a SELECT query to estriblish the total number of triples.
+     *
+     * @return integer The number of triples
+     */
+    public function countTriples()
+    {
+        $result = $this->query('SELECT (COUNT(*) AS ?count) { ?s ?p ?o }');
+        return $result[0]->count->getValue();
+    }
 }
