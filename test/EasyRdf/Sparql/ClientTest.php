@@ -119,7 +119,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $result = $this->sparql->query("SELECT * WHERE {?s ?p ?o}");
     }
 
-    public function checkPost($client)
+    public function checkHugeQuerySelect($client)
     {
         $this->assertRegExp('/^query=/', $client->getRawData());
         $this->assertSame("application/x-www-form-urlencoded", $client->getHeader('Content-Type'));
@@ -134,7 +134,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             readFixture('sparql_select_all.json'),
             array(
                 'headers' => array('Content-Type' => 'application/sparql-results+json'),
-                'callback' => array($this, 'checkPost')
+                'callback' => array($this, 'checkHugeQuerySelect')
             )
         );
 
