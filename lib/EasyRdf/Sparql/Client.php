@@ -133,13 +133,4 @@ class EasyRdf_Sparql_Client
             );
         }
     }
-
-    /** Magic method to return URI of the SPARQL endpoint when casted to string
-     *
-     * @return string The URI of the SPARQL endpoint
-     */
-    public function __toString()
-    {
-        return $this->uri == null ? '' : $this->uri;
-    }
 }

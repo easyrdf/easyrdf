@@ -249,12 +249,4 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         );
         $response = $this->sparql->query("FOOBAR");
     }
-
-    public function testToString()
-    {
-        $this->assertStringEquals(
-            'http://localhost:8080/sparql',
-            $this->sparql
-        );
-    }
 }
