@@ -48,11 +48,44 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $this->sparql = new EasyRdf_Sparql_Client('http://localhost:8080/sparql');
     }
 
+    # FIXME: this is deprecated
     public function testGetUri()
     {
         $this->assertSame(
             'http://localhost:8080/sparql',
             $this->sparql->getUri()
+        );
+    }
+
+    public function testGetQueryUri()
+    {
+        $this->assertSame(
+            'http://localhost:8080/sparql',
+            $this->sparql->getQueryUri()
+        );
+    }
+    
+    public function testGetUpdateUri()
+    {
+        $this->assertSame(
+            'http://localhost:8080/sparql',
+            $this->sparql->getUpdateUri()
+        );
+    }
+
+    public function testGetDifferentUpdateUri()
+    {
+        $sparql = new EasyRdf_Sparql_Client(
+            'http://localhost/query',
+            'http://localhost/update'
+        );
+        $this->assertSame(
+            'http://localhost/query',
+            $sparql->getQueryUri()
+        );
+        $this->assertSame(
+            'http://localhost/update',
+            $sparql->getUpdateUri()
         );
     }
 
@@ -262,5 +295,28 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         );
         $count = $this->sparql->countTriples();
         $this->assertSame(143, $count);
+    }
+
+    public function checkUpdate($client)
+    {
+        $this->assertSame('INSERT DATA { <a> <p> <b> }', $client->getRawData());
+        $this->assertSame("application/sparql-update", $client->getHeader('Content-Type'));
+        return true;
+    }
+    
+    public function testUpdate()
+    {
+        $this->client->addMock(
+            'POST',
+            '/sparql',
+            '',
+            array(
+                'status' => 204,
+                'callback' => array($this, 'checkUpdate')
+            )
+        );
+
+        $result = $this->sparql->update('INSERT DATA { <a> <p> <b> }');
+        $this->assertSame(204, $result->getStatus());
     }
 }

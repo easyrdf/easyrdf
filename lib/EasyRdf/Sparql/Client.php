@@ -44,29 +44,59 @@
  */
 class EasyRdf_Sparql_Client
 {
-    /** The address of the SPARQL Endpoint */
-    private $uri = null;
+    /** The query/read address of the SPARQL Endpoint */
+    private $queryUri = null;
+
+    /** The update/write address of the SPARQL Endpoint */
+    private $updateUri = null;
 
     /** Configuration settings */
     private $config = array();
 
 
     /** Create a new SPARQL endpoint client
+     * 
+     * If the query and update endpoints are the same, then you 
+     * only need to give a single URI.
      *
-     * @param string $uri The address of the SPARQL Endpoint
+     * @param string $queryUri The address of the SPARQL Query Endpoint
+     * @param string $updateUri Optional address of the SPARQL Update Endpoint
      */
-    public function __construct($uri)
+    public function __construct($queryUri, $updateUri=null)
     {
-        $this->uri = $uri;
+        $this->queryUri = $queryUri;
+        if ($updateUri) {
+            $this->updateUri = $updateUri;
+        } else {
+            $this->updateUri = $queryUri;
+        }
     }
 
-    /** Get the URI of the SPARQL endpoint
+    /** Get the URI of the SPARQL query endpoint
      *
-     * @return string The URI of the SPARQL endpoint
+     * @return string The query URI of the SPARQL endpoint
+     */
+    public function getQueryUri()
+    {
+        return $this->queryUri;
+    }
+
+    /** Get the URI of the SPARQL update endpoint
+     *
+     * @return string The query URI of the SPARQL endpoint
+     */
+    public function getUpdateUri()
+    {
+        return $this->updateUri;
+    }
+
+    /**
+     * @depredated
+     * @ignore
      */
     public function getUri()
     {
-        return $this->uri;
+        return $this->queryUri;
     }
 
     /** Make a query to the SPARQL endpoint
@@ -81,6 +111,42 @@ class EasyRdf_Sparql_Client
      * @return object EasyRdf_Sparql_Result|EasyRdf_Graph Result of the query.
      */
     public function query($query)
+    {
+        return $this->request('query', $query);
+    }
+
+    /** Count the number of triples in a SPARQL 1.1 endpoint
+     *
+     * Performs a SELECT query to estriblish the total number of triples.
+     *
+     * @return integer The number of triples
+     */
+    public function countTriples()
+    {
+        $result = $this->query('SELECT (COUNT(*) AS ?count) {?s ?p ?o}');
+        return $result[0]->count->getValue();
+    }
+
+    /** Make an update request to the SPARQL endpoint
+     *
+     * Successful responses will return the HTTP response object
+     *
+     * Unsuccessful responses will throw an exception
+     *
+     * @param string $query The update query string to be executed
+     * @return object EasyRdf_Http_Response HTTP response
+     */
+    public function update($query)
+    {
+        return $this->request('update', $query);
+    }
+
+    /*
+     * Internal function to make an HTTP request to SPARQL endpoint
+     *
+     * @ignore
+     */
+    protected function request($type, $query)
     {
         // Check for undefined prefixes
         $prefixes = '';
@@ -103,46 +169,44 @@ class EasyRdf_Sparql_Client
         );
         $client->setHeaders('Accept', $accept);
 
-        // Use GET if the query is less than 2kB
-        // 2046 = 2kB minus 1 for '?' and 1 for NULL-terminated string on server
-        $encodedQuery = 'query='.urlencode($prefixes . $query);
-        if (strlen($encodedQuery) + strlen($this->uri) <= 2046) {
-            $client->setMethod('GET');
-            $client->setUri($this->uri.'?'.$encodedQuery);
-        } else {
-            // Fall back to POST instead (which is un-cacheable)
+        if ($type == 'update') {
             $client->setMethod('POST');
-            $client->setUri($this->uri);
-            $client->setRawData($encodedQuery);
-            $client->setHeaders('Content-Type', 'application/x-www-form-urlencoded');
+            $client->setUri($this->updateUri);
+            $client->setRawData($prefixes . $query);
+            $client->setHeaders('Content-Type', 'application/sparql-update');
+        } elseif ($type == 'query') {
+            // Use GET if the query is less than 2kB
+            // 2046 = 2kB minus 1 for '?' and 1 for NULL-terminated string on server
+            $encodedQuery = 'query='.urlencode($prefixes . $query);
+            if (strlen($encodedQuery) + strlen($this->queryUri) <= 2046) {
+                $client->setMethod('GET');
+                $client->setUri($this->queryUri.'?'.$encodedQuery);
+            } else {
+                // Fall back to POST instead (which is un-cacheable)
+                $client->setMethod('POST');
+                $client->setUri($this->queryUri);
+                $client->setRawData($encodedQuery);
+                $client->setHeaders('Content-Type', 'application/x-www-form-urlencoded');
+            }
         }
 
         $response = $client->request();
-        if ($response->isSuccessful()) {
+        if ($response->getStatus() == 204) {
+            // No content
+            return $response;
+        } elseif ($response->isSuccessful()) {
             list($type, $params) = EasyRdf_Utils::parseMimeType(
                 $response->getHeader('Content-Type')
             );
             if (strpos($type, 'application/sparql-results') === 0) {
                 return new EasyRdf_Sparql_Result($response->getBody(), $type);
             } else {
-                return new EasyRdf_Graph($this->uri, $response->getBody(), $type);
+                return new EasyRdf_Graph($this->queryUri, $response->getBody(), $type);
             }
         } else {
             throw new EasyRdf_Exception(
                 "HTTP request for SPARQL query failed: ".$response->getBody()
             );
         }
-    }
-
-    /** Count the number of triples in a SPARQL 1.1 endpoint
-     *
-     * Performs a SELECT query to estriblish the total number of triples.
-     *
-     * @return integer The number of triples
-     */
-    public function countTriples()
-    {
-        $result = $this->query('SELECT (COUNT(*) AS ?count) { ?s ?p ?o }');
-        return $result[0]->count->getValue();
     }
 }
