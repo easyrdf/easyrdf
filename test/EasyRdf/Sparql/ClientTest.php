@@ -288,7 +288,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $this->client->addMock(
             'GET',
             '/sparql?query=SELECT+%28COUNT%28%2A%29+AS+%3Fcount%29+%7B%3Fs+%3Fp+%3Fo%7D',
-            readFixture('select_count.json'),
+            readFixture('sparql_select_count.json'),
             array(
                 'headers' => array('Content-Type' => 'application/sparql-results+json; charset=utf-8')
             )
