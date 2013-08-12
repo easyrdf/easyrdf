@@ -62,7 +62,7 @@ class EasyRdf_Sparql_Client
      * @param string $queryUri The address of the SPARQL Query Endpoint
      * @param string $updateUri Optional address of the SPARQL Update Endpoint
      */
-    public function __construct($queryUri, $updateUri=null)
+    public function __construct($queryUri, $updateUri = null)
     {
         $this->queryUri = $queryUri;
         if ($updateUri) {
@@ -125,7 +125,7 @@ class EasyRdf_Sparql_Client
      * @param string $condition Triple-pattern condition for the count query
      * @return integer The number of triples
      */
-    public function countTriples($condition='?s ?p ?o')
+    public function countTriples($condition = '?s ?p ?o')
     {
         $result = $this->query('SELECT (COUNT(*) AS ?count) {'.$condition.'}');
         return $result[0]->count->getValue();
