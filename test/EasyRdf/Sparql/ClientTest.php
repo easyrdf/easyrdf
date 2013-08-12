@@ -297,6 +297,21 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $this->assertSame(143, $count);
     }
 
+    public function testCountTriplesWithCondition()
+    {
+        $this->client->addMock(
+            'GET',
+            '/sparql?query=PREFIX+foaf%3A+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0A'.
+            'SELECT+%28COUNT%28%2A%29+AS+%3Fcount%29+%7B%3Fs+a+foaf%3APerson%7D',
+            readFixture('sparql_select_count_zero.json'),
+            array(
+                'headers' => array('Content-Type' => 'application/sparql-results+json; charset=utf-8')
+            )
+        );
+        $count = $this->sparql->countTriples('?s a foaf:Person');
+        $this->assertSame(0, $count);
+    }
+
     public function checkUpdate($client)
     {
         $this->assertSame('INSERT DATA { <a> <p> <b> }', $client->getRawData());

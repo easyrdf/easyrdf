@@ -119,11 +119,15 @@ class EasyRdf_Sparql_Client
      *
      * Performs a SELECT query to estriblish the total number of triples.
      *
+     * Counts total number of triples by default but a conditional triple pattern
+     * can be given to count of a subset of all triples.
+     *
+     * @param string $condition Triple-pattern condition for the count query
      * @return integer The number of triples
      */
-    public function countTriples()
+    public function countTriples($condition='?s ?p ?o')
     {
-        $result = $this->query('SELECT (COUNT(*) AS ?count) {?s ?p ?o}');
+        $result = $this->query('SELECT (COUNT(*) AS ?count) {'.$condition.'}');
         return $result[0]->count->getValue();
     }
 
