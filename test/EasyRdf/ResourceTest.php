@@ -311,6 +311,15 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetGraph()
+    {
+        $this->setupTestGraph();
+        $this->assertSame(
+            $this->graph,
+            $this->resource->getGraph()
+        );
+    }
+
     public function testGet()
     {
         $this->setupTestGraph();
