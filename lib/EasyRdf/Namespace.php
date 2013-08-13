@@ -333,8 +333,10 @@ class EasyRdf_Namespace
                 "\$shortUri should be a string and cannot be null or empty"
             );
         }
-
-        if (preg_match("/^(\w+?):([\w\-]+)$/", $shortUri, $matches)) {
+        
+        if ($shortUri === 'a') {
+            return self::$namespaces['rdf'] . 'type';
+        } elseif (preg_match("/^(\w+?):([\w\-]+)$/", $shortUri, $matches)) {
             $long = self::get($matches[1]);
             if ($long) {
                 return $long . $matches[2];

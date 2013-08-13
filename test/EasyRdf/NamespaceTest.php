@@ -528,6 +528,14 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testExpandA()
+    {
+        $this->assertSame(
+            'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+            EasyRdf_Namespace::expand('a')
+        );
+    }
+
     public function testExpandFoafDoapProgrammingLanguage()
     {
         $this->assertSame(
