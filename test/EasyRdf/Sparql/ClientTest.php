@@ -312,6 +312,40 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $this->assertSame(0, $count);
     }
 
+    public function testListNamedGraphs()
+    {
+        $this->client->addMock(
+            'GET',
+            '/sparql?query=SELECT+DISTINCT+%3Fg+WHERE+%7BGRAPH+%3Fg+%7B%3Fs+%3Fp+%3Fo%7D%7D',
+            readFixture('sparql_select_named_graphs.json'),
+            array(
+                'headers' => array('Content-Type' => 'application/sparql-results+json; charset=utf-8')
+            )
+        );
+        $list = $this->sparql->listNamedGraphs();
+        $this->assertCount(3, $list);
+        $this->assertEquals(new EasyRdf_Resource('http://example.org/0'), $list[0]);
+        $this->assertEquals(new EasyRdf_Resource('http://example.org/1'), $list[1]);
+        $this->assertEquals(new EasyRdf_Resource('http://example.org/2'), $list[2]);
+    }
+
+    public function testListNamedGraphsWithLimit()
+    {
+        $this->client->addMock(
+            'GET',
+            '/sparql?query=SELECT+DISTINCT+%3Fg+WHERE+%7BGRAPH+%3Fg+%7B%3Fs+%3Fp+%3Fo%7D%7D+LIMIT+10',
+            readFixture('sparql_select_named_graphs.json'),
+            array(
+                'headers' => array('Content-Type' => 'application/sparql-results+json; charset=utf-8')
+            )
+        );
+        $list = $this->sparql->listNamedGraphs(10);
+        $this->assertCount(3, $list);
+        $this->assertEquals(new EasyRdf_Resource('http://example.org/0'), $list[0]);
+        $this->assertEquals(new EasyRdf_Resource('http://example.org/1'), $list[1]);
+        $this->assertEquals(new EasyRdf_Resource('http://example.org/2'), $list[2]);
+    }
+
     public function checkUpdate($client)
     {
         $this->assertSame('INSERT DATA { <a> <p> <b> }', $client->getRawData());

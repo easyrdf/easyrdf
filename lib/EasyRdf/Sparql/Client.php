@@ -130,6 +130,29 @@ class EasyRdf_Sparql_Client
         $result = $this->query('SELECT (COUNT(*) AS ?count) {'.$condition.'}');
         return $result[0]->count->getValue();
     }
+    
+    /** Get a list of named graphs from a SPARQL 1.1 endpoint
+     *
+     * Performs a SELECT query to get a list of the named graphs
+     *
+     * @param string $limit Optional limit to the number of results
+     * @return array Array of EasyRdf_Resource objects for each named graph
+     */
+    public function listNamedGraphs($limit = null)
+    {
+        $query = "SELECT DISTINCT ?g WHERE {GRAPH ?g {?s ?p ?o}}";
+        if (!is_null($limit)) {
+            $query .= " LIMIT ".(int)$limit;
+        }
+        $result = $this->query($query);
+        
+        // Convert the result object into an array of resources
+        $graphs = array();
+        foreach ($result as $row) {
+            array_push($graphs, $row->g);
+        }
+        return $graphs;
+    }
 
     /** Make an update request to the SPARQL endpoint
      *
