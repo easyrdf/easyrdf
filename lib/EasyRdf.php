@@ -134,6 +134,11 @@ require_once "EasyRdf/ParsedUri.php";
 require_once "EasyRdf/Parser.php";
 
 /**
+ * @see EasyRdf_Parser_Exception
+ */
+require_once "EasyRdf/Parser/Exception.php";
+
+/**
  * @see EasyRdf_Parser_RdfPhp
  */
 require_once "EasyRdf/Parser/RdfPhp.php";
