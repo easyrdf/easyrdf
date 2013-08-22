@@ -145,7 +145,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->assertSame('xsd:integer', $int->getDatatype());
     }
 
-    public function testParseEscaped()
+    public function testParseEscapedTab()
     {
         $count = $this->parser->parse(
             $this->graph,
@@ -161,6 +161,96 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $b = $a->get('<http://example.com/b>');
         $this->assertNotNull($b);
         $this->assertSame("\t", $b->getValue());
+    }
+
+    public function testParseUnicode1()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            '<http://example.com/a> <http://example.com/b> "\u000A" .',
+            'ntriples',
+            null
+        );
+        $this->assertSame(1, $count);
+
+        $a = $this->graph->resource('http://example.com/a');
+        $b = $a->get('<http://example.com/b>');
+        $this->assertSame("\x0A", $b->getValue());
+    }
+
+    public function testParseUnicode2()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            '<http://example.com/a> <http://example.com/b> "Iv\u00E1n" .',
+            'ntriples',
+            null
+        );
+        $this->assertSame(1, $count);
+
+        $a = $this->graph->resource('http://example.com/a');
+        $b = $a->get('<http://example.com/b>');
+        $this->assertSame("Iván", $b->getValue());
+    }
+
+    public function testParseUnicode3()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            '<http://example.com/a> <http://example.com/b> "\u0394" .',
+            'ntriples',
+            null
+        );
+        $this->assertSame(1, $count);
+
+        $a = $this->graph->resource('http://example.com/a');
+        $b = $a->get('<http://example.com/b>');
+        $this->assertSame("Δ", $b->getValue());
+    }
+
+    public function testParseUnicode4()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            '<http://example.com/a> <http://example.com/b> "\u2603" .',
+            'ntriples',
+            null
+        );
+        $this->assertSame(1, $count);
+
+        $a = $this->graph->resource('http://example.com/a');
+        $b = $a->get('<http://example.com/b>');
+        $this->assertSame("☃", $b->getValue());
+    }
+
+    public function testParseUnicode5()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            '<http://example.com/a> <http://example.com/b> "\U0001F600" .',
+            'ntriples',
+            null
+        );
+        $this->assertSame(1, $count);
+
+        $a = $this->graph->resource('http://example.com/a');
+        $b = $a->get('<http://example.com/b>');
+        $this->assertSame("😀", $b->getValue());
+    }
+
+    public function testParseUnicode6()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            '<http://example.com/a> <http://example.com/b> "\UFFFFFFFF" .',
+            'ntriples',
+            null
+        );
+        $this->assertSame(1, $count);
+
+        $a = $this->graph->resource('http://example.com/a');
+        $b = $a->get('<http://example.com/b>');
+        $this->assertSame("", $b->getValue());
     }
 
     public function testParseComment()
