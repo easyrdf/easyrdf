@@ -141,7 +141,7 @@ class EasyRdf_Parser_Json extends EasyRdf_Parser_RdfPhp
 
         $decoded = @json_decode(strval($data), true);
         if ($decoded === null) {
-            throw new EasyRdf_Exception(
+            throw new EasyRdf_Parser_Exception(
                 $this->jsonLastErrorString()
             );
         }

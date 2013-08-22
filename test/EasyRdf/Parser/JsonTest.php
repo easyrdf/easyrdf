@@ -139,12 +139,12 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
     {
         if (version_compare(PHP_VERSION, "5.3.0") >= 0) {
             $this->setExpectedException(
-                'EasyRdf_Exception',
+                'EasyRdf_Parser_Exception',
                 'JSON Parse syntax error'
             );
         } else {
             $this->setExpectedException(
-                'EasyRdf_Exception',
+                'EasyRdf_Parser_Exception',
                 'JSON Parse error'
             );
         }
