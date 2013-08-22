@@ -230,31 +230,31 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         $svg = $this->serialiser->serialise($this->graph, 'svg');
 
         $this->assertContains(
-            '<g id="node1" class="node"><title>Rhttp://www.example.com/joe#me</title>',
+            'class="node"><title>Rhttp://www.example.com/joe#me</title>',
             $svg
         );
         $this->assertContains(
-            '<g id="node3" class="node"><title>LJoe Bloggs</title>',
+            'class="node"><title>LJoe Bloggs</title>',
             $svg
         );
         $this->assertContains(
-            '<g id="edge2" class="edge"><title>Rhttp://www.example.com/joe#me&#45;&gt;LJoe Bloggs</title>',
+            'class="edge"><title>Rhttp://www.example.com/joe#me&#45;&gt;LJoe Bloggs</title>',
             $svg
         );
         $this->assertContains(
-            '<g id="node5" class="node"><title>B_:genid1</title>',
+            'class="node"><title>B_:genid1</title>',
             $svg
         );
         $this->assertContains(
-            '<g id="edge4" class="edge"><title>Rhttp://www.example.com/joe#me&#45;&gt;B_:genid1</title>',
+            'class="edge"><title>Rhttp://www.example.com/joe#me&#45;&gt;B_:genid1</title>',
             $svg
         );
         $this->assertContains(
-            '<g id="node7" class="node"><title>LProject Name</title>',
+            'class="node"><title>LProject Name</title>',
             $svg
         );
         $this->assertContains(
-            '<g id="edge6" class="edge"><title>B_:genid1&#45;&gt;LProject Name</title>',
+            'class="edge"><title>B_:genid1&#45;&gt;LProject Name</title>',
             $svg
         );
     }
