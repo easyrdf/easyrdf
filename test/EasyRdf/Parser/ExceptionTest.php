@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2013 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
@@ -44,6 +44,24 @@ class EasyRdf_Parser_ExceptionTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'EasyRdf_Parser_Exception',
+            'Test'
+        );
+        throw new EasyRdf_Parser_Exception('Test');
+    }
+
+    public function testThrowExceptionWithLine()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Parser_Exception',
+            'Test on line 10'
+        );
+        throw new EasyRdf_Parser_Exception('Test', 10);
+    }
+
+    public function testThrowExceptionWithLineAndColumn()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Parser_Exception',
             'Test on line 10, column 22'
         );
         throw new EasyRdf_Parser_Exception('Test', 10, 22);
@@ -51,7 +69,7 @@ class EasyRdf_Parser_ExceptionTest extends EasyRdf_TestCase
 
     public function testGetParserLine()
     {
-        $exp = new EasyRdf_Parser_Exception('Test', 10, 22);
+        $exp = new EasyRdf_Parser_Exception('Test', 10);
         $this->assertSame(
             10,
             $exp->getParserLine()

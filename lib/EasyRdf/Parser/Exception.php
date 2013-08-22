@@ -49,11 +49,19 @@ class EasyRdf_Parser_Exception extends EasyRdf_Exception
     protected $parserLine;
     protected $parserColumn;
     
-    public function __construct($message, $line, $column)
+    public function __construct($message, $line = null, $column = null)
     {
         $this->parserLine = $line;
         $this->parserColumn = $column;
-        parent::__construct("$message on line $line, column $column");
+
+        if (!is_null($line)) {
+            $message .= " on line $line";
+            if (!is_null($column)) {
+                $message .= ", column $column";
+            }
+        }
+
+        parent::__construct($message);
     }
     
     public function getParserLine()
