@@ -102,7 +102,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
     /**
      * @ignore
      */
-    protected function parseNtriplesSubject($sub)
+    protected function parseNtriplesSubject($sub, $lineNum)
     {
         if (preg_match('/<([^<>]+)>/', $sub, $matches)) {
             return $this->unescapeString($matches[1]);
@@ -114,8 +114,9 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
                 return $this->remapBnode($nodeid);
             }
         } else {
-            throw new EasyRdf_Exception(
-                "Failed to parse subject: $sub"
+            throw new EasyRdf_Parser_Exception(
+                "Failed to parse subject: $sub",
+                $lineNum
             );
         }
     }
@@ -123,7 +124,7 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
     /**
      * @ignore
      */
-    protected function parseNtriplesObject($obj)
+    protected function parseNtriplesObject($obj, $lineNum)
     {
         if (preg_match('/"(.+)"\^\^<([^<>]+)>/', $obj, $matches)) {
             return array(
@@ -155,8 +156,9 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
                 );
             }
         } else {
-            throw new EasyRdf_Exception(
-                "Failed to parse object: $obj"
+            throw new EasyRdf_Parser_Exception(
+                "Failed to parse object: $obj",
+                $lineNum
             );
         }
     }
@@ -180,15 +182,25 @@ class EasyRdf_Parser_Ntriples extends EasyRdf_Parser
             );
         }
 
-        $lines = preg_split("/[\r\n]+/", strval($data));
-        foreach ($lines as $line) {
+        $lines = preg_split("/\x0D?\x0A/", strval($data));
+        foreach ($lines as $index => $line) {
+            $lineNum = $index + 1;
             if (preg_match("/^\s*#/", $line)) {
+                # Comment
                 continue;
-            } elseif (preg_match("/(.+)\s+<([^<>]+)>\s+(.+)\s*\./", $line, $matches)) {
+            } elseif (preg_match("/^\s*(.+?)\s+<([^<>]+?)>\s+(.+?)\s*\.\s*$/", $line, $matches)) {
                 $this->addTriple(
-                    $this->parseNtriplesSubject($matches[1]),
+                    $this->parseNtriplesSubject($matches[1], $lineNum),
                     $this->unescapeString($matches[2]),
-                    $this->parseNtriplesObject($matches[3])
+                    $this->parseNtriplesObject($matches[3], $lineNum)
+                );
+            } elseif (preg_match("/^\s*$/", $line)) {
+                # Blank line
+                continue;
+            } else {
+                throw new EasyRdf_Parser_Exception(
+                    "Failed to parse statement",
+                    $lineNum
                 );
             }
         }

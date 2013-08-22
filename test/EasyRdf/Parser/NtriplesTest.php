@@ -178,6 +178,23 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         $this->assertCount(2, $this->graph->resources());
     }
 
+    public function testParseBlankLines()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            "\n".
+            "<http://example.com/a> <http://example.com/a> \"Test 1\" .\n".
+            "  \r\n".
+            "\r\n".
+            "<http://example.com/c> <http://example.com/c> \"Test 2\" .\n".
+            "    ",
+            'ntriples',
+            null
+        );
+        $this->assertSame(2, $count);
+        $this->assertCount(2, $this->graph->resources());
+    }
+
     public function testParseEmpty()
     {
         $count = $this->parser->parse(
@@ -192,8 +209,8 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
     public function testParseInvalidSubject()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'Failed to parse subject: foobar'
+            'EasyRdf_Parser_Exception',
+            'Failed to parse subject: foobar on line 1'
         );
         $this->parser->parse(
             $this->graph,
@@ -203,15 +220,43 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
         );
     }
 
+    public function testParseInvalidPredicate()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Parser_Exception',
+            'Failed to parse statement on line 2'
+        );
+        $this->parser->parse(
+            $this->graph,
+            "\n<b> rdf:type <http://example.com/type> .\n",
+            'ntriples',
+            null
+        );
+    }
+
     public function testParseInvalidObject()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'Failed to parse object: foobar'
+            'EasyRdf_Parser_Exception',
+            'Failed to parse object: foobar on line 1'
         );
         $this->parser->parse(
             $this->graph,
             "<http://example.com/b> <http://example.com/a> foobar .\n",
+            'ntriples',
+            null
+        );
+    }
+
+    public function testParseInvalidStatement()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Parser_Exception',
+            'Failed to parse statement on line 3'
+        );
+        $this->parser->parse(
+            $this->graph,
+            "# line 1\n\nFoo .\n",
             'ntriples',
             null
         );
