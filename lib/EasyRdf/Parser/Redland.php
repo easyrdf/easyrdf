@@ -210,8 +210,8 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
 
         $stream = librdf_parser_parse_string_as_stream($parser, $data, $rdfUri);
         if (!$stream) {
-            throw new EasyRdf_Exception(
-                "Failed to parse RDF stream for: $rdfUri"
+            throw new EasyRdf_Parser_Exception(
+                "Failed to parse RDF stream"
             );
         }
 
@@ -234,7 +234,7 @@ class EasyRdf_Parser_Redland extends EasyRdf_Parser
 
         $errorCount = $this->parserErrorCount($parser);
         if ($errorCount) {
-            throw new EasyRdf_Exception("$errorCount errors while parsing.");
+            throw new EasyRdf_Parser_Exception("$errorCount errors while parsing.");
         }
 
         librdf_free_uri($rdfUri);
