@@ -98,6 +98,24 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         $this->assertStringEquals('http://example.org/pear', $favourites->get('rdf:_4'));
     }
 
+    public function testXMLParseError()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Parser_Exception',
+            'XML error: "Mismatched tag" on line 4, column 21'
+        );
+        $this->parser->parse(
+            $this->graph,
+            "<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>\n".
+            "  <rdf:Description rdf:about='http://example.org/foo'>\n".
+            "    <rdf:foo>Hello World\n".
+            "  </rdf:Description>\n".
+            "</rdf:RDF>",
+            'rdfxml',
+            'http://example.org/'
+        );
+    }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(

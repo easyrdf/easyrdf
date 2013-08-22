@@ -216,7 +216,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             case 6:
                 return $this->startState6($t, $a);
             default:
-                throw new EasyRdf_Exception(
+                throw new EasyRdf_Parser_Exception(
                     'startElementHandler() called at state ' . $this->state . ' in '.$t
                 );
         }
@@ -239,7 +239,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
             case 6:
                 return $this->endState6($t);
             default:
-                throw new EasyRdf_Exception(
+                throw new EasyRdf_Parser_Exception(
                     'endElementHandler() called at state ' . $this->state . ' in '.$t
                 );
         }
@@ -793,9 +793,11 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
 
         /* parse */
         if (!xml_parse($this->xmlParser, $data, false)) {
-            throw new EasyRdf_Exception(
-                'XML error: "' . xml_error_string(xml_get_error_code($this->xmlParser)) .
-                '" at line ' . xml_get_current_line_number($this->xmlParser)
+            $message = xml_error_string(xml_get_error_code($this->xmlParser));
+            throw new EasyRdf_Parser_Exception(
+                'XML error: "' . $message . '"',
+                xml_get_current_line_number($this->xmlParser),
+                xml_get_current_column_number($this->xmlParser)
             );
         }
 
