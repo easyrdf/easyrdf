@@ -134,7 +134,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             "<urn:subject> <urn:predicate> \"object\" .\n",
             $client->getRawData()
         );
-        $this->assertSame("text/plain", $client->getHeader('Content-Type'));
+        $this->assertSame("application/n-triples", $client->getHeader('Content-Type'));
         return true;
     }
 

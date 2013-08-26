@@ -544,13 +544,13 @@ EasyRdf_Format::register(
 EasyRdf_Format::register(
     'ntriples',
     'N-Triples',
-    'http://www.w3.org/TR/rdf-testcases/#ntriples',
+    'http://www.w3.org/TR/n-triples/',
     array(
-        'text/plain' => 1.0,
+        'application/n-triples' => 1.0,
+        'text/plain' => 0.9,
         'text/ntriples' => 0.9,
         'application/ntriples' => 0.9,
-        'application/n-triples' => 0.9,
-        'application/x-ntriples' => 0.9,
+        'application/x-ntriples' => 0.9
     ),
     array('nt')
 );
