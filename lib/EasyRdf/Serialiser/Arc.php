@@ -64,11 +64,13 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
     /**
      * Serialise an EasyRdf_Graph into RDF format of choice.
      *
-     * @param object EasyRdf_Graph $graph   An EasyRdf_Graph object.
-     * @param string               $format  The name of the format to convert to.
+     * @param EasyRdf_Graph $graph   An EasyRdf_Graph object.
+     * @param string        $format  The name of the format to convert to.
+     * @param array         $options
+     * @throws EasyRdf_Exception
      * @return string              The RDF in the new desired format.
      */
-    public function serialise($graph, $format)
+    public function serialise($graph, $format, array $options = array())
     {
         parent::checkSerialiseParams($graph, $format);
 

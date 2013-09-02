@@ -59,11 +59,12 @@ class EasyRdf_Serialiser_JsonLd extends EasyRdf_Serialiser
 
     /**
      * @param EasyRdf_Graph $graph
-     * @param string $format
+     * @param string        $format
+     * @param array         $options
      * @throws EasyRdf_Exception
      * @return string
      */
-    public function serialise($graph, $format)
+    public function serialise($graph, $format, array $options = array())
     {
         parent::checkSerialiseParams($graph, $format);
 

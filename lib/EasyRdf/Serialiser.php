@@ -107,7 +107,7 @@ class EasyRdf_Serialiser
      * Sub-classes must follow this protocol
      * @ignore
      */
-    public function serialise($graph, $format)
+    public function serialise($graph, $format, array $options = array())
     {
         throw new EasyRdf_Exception(
             "This method should be overridden by sub-classes."
