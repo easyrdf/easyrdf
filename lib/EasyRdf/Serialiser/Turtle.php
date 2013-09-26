@@ -122,16 +122,16 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
         $quoted = self::quotedString($value);
 
         if ($datatype = $literal->getDatatypeUri()) {
-            $escaped = $this->serialiseResource($datatype, true);
-            if ($escaped == 'xsd:integer') {
+            if ($datatype == 'http://www.w3.org/2001/XMLSchema#integer') {
                 return sprintf('%d', $value);
-            } elseif ($escaped == 'xsd:decimal') {
+            } elseif ($datatype == 'http://www.w3.org/2001/XMLSchema#decimal') {
                 return sprintf('%g', $value);
-            } elseif ($escaped == 'xsd:double') {
+            } elseif ($datatype == 'http://www.w3.org/2001/XMLSchema#double') {
                 return sprintf('%e', $value);
-            } elseif ($escaped == 'xsd:boolean') {
+            } elseif ($datatype == 'http://www.w3.org/2001/XMLSchema#boolean') {
                 return sprintf('%s', $value ? 'true' : 'false');
             } else {
+								$escaped = $this->serialiseResource($datatype, true);
                 return sprintf('%s^^%s', $quoted, $escaped);
             }
         } elseif ($lang = $literal->getLang()) {
