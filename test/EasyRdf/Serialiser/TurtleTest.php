@@ -150,6 +150,18 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSerialiseLiteralInteger2()
+    {
+        $this->graph->addLiteral('http://example.com/', 'schema:version', 72358096);
+
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
+        $this->assertSame(
+            "@prefix schema: <http://schema.org/> .\n\n".
+            "<http://example.com/> schema:version 72358096 .\n",
+            $turtle
+        );
+    }
+
     public function testSerialiseLiteralDecimal()
     {
         $literal = new EasyRdf_Literal_Decimal(1.01);
