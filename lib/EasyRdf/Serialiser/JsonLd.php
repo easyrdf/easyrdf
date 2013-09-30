@@ -59,11 +59,12 @@ class EasyRdf_Serialiser_JsonLd extends EasyRdf_Serialiser
 
     /**
      * @param EasyRdf_Graph $graph
-     * @param string $format
+     * @param string        $format
+     * @param array         $options
      * @throws EasyRdf_Exception
      * @return string
      */
-    public function serialise($graph, $format)
+    public function serialise($graph, $format, array $options = array())
     {
         parent::checkSerialiseParams($graph, $format);
 
@@ -111,6 +112,24 @@ class EasyRdf_Serialiser_JsonLd extends EasyRdf_Serialiser
             }
         }
 
-        return \ML\JsonLD\JsonLD::toString($ld_graph->toJsonLd());
+        // OPTIONS
+        $use_native_types = !(isset($options['expand_native_types']) and $options['expand_native_types'] == true);
+        $should_compact = (isset($options['compact']) and $options['compact'] == true);
+
+        // expanded form
+        $data = $ld_graph->toJsonLd($use_native_types);
+
+        if ($should_compact) {
+            // compact form
+            $compact_context = isset($options['context']) ? $options['context'] : null;
+            $compact_options = array(
+                'useNativeTypes' => $use_native_types,
+                'base' => $graph->getUri()
+            );
+
+            $data = \ML\JsonLD\JsonLD::compact($data, $compact_context, $compact_options);
+        }
+
+        return \ML\JsonLD\JsonLD::toString($data);
     }
 }
