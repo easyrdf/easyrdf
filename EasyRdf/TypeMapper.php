@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,22 +31,21 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 /**
  * Class to map between RDF Types and PHP Classes
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_TypeMapper
 {
     /** The type map registry */
-    private static $_map = array();
+    private static $map = array();
 
     /** Get the registered class for an RDF type
      *
@@ -64,8 +63,8 @@ class EasyRdf_TypeMapper
         }
 
         $type = EasyRdf_Namespace::expand($type);
-        if (array_key_exists($type, self::$_map)) {
-            return self::$_map[$type];
+        if (array_key_exists($type, self::$map)) {
+            return self::$map[$type];
         } else {
             return null;
         }
@@ -92,7 +91,7 @@ class EasyRdf_TypeMapper
         }
 
         $type = EasyRdf_Namespace::expand($type);
-        return self::$_map[$type] = $class;
+        return self::$map[$type] = $class;
     }
 
     /**
@@ -109,8 +108,18 @@ class EasyRdf_TypeMapper
         }
 
         $type = EasyRdf_Namespace::expand($type);
-        if (isset(self::$_map[$type])) {
-            unset(self::$_map[$type]);
+        if (isset(self::$map[$type])) {
+            unset(self::$map[$type]);
         }
     }
 }
+
+
+/*
+   Register default set of mapped types
+*/
+
+EasyRdf_TypeMapper::set('rdf:Alt', 'EasyRdf_Container');
+EasyRdf_TypeMapper::set('rdf:Bag', 'EasyRdf_Container');
+EasyRdf_TypeMapper::set('rdf:List', 'EasyRdf_Collection');
+EasyRdf_TypeMapper::set('rdf:Seq', 'EasyRdf_Container');

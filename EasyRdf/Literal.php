@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,34 +31,33 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 /**
  * Class that represents an RDF Literal
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Literal
 {
     /** @ignore a mapping from datatype uri to class name */
-    private static $_datatypeMap = array();
+    private static $datatypeMap = array();
 
     /** @ignore A mapping from class name to datatype URI */
-    private static $_classMap = array();
+    private static $classMap = array();
 
-    /** @ignore The value for this literal */
-    protected $_value = null;
+    /** @ignore The string value for this literal */
+    protected $value = null;
 
     /** @ignore The language of the literal (e.g. 'en') */
-    protected $_lang = null;
+    protected $lang = null;
 
     /** @ignore The datatype URI of the literal */
-    protected $_datatype = null;
+    protected $datatype = null;
 
 
     /** Create a new literal object
@@ -77,33 +76,35 @@ class EasyRdf_Literal
      * @param  string $datatype  The datatype of the literal or null (e.g. 'xsd:integer')
      * @return object EasyRdf_Literal (or subclass of EasyRdf_Literal)
      */
-    public static function create($value, $lang=null, $datatype=null)
+    public static function create($value, $lang = null, $datatype = null)
     {
         if (EasyRdf_Utils::isAssociativeArray($value)) {
             if (isset($value['xml:lang'])) {
-               $lang = $value['xml:lang'];
-            } else if (isset($value['lang'])) {
-               $lang = $value['lang'];
+                $lang = $value['xml:lang'];
+            } elseif (isset($value['lang'])) {
+                $lang = $value['lang'];
             }
             if (isset($value['datatype'])) {
-               $datatype = $value['datatype'];
+                $datatype = $value['datatype'];
             }
             $value = isset($value['value']) ? $value['value'] : null;
         }
 
-        if ($datatype == null) {
-            if ($lang == null) {
+        if (is_null($datatype) or $datatype === '') {
+            if (is_null($lang) or $lang === '') {
                 // Automatic datatype selection
                 $datatype = self::getDatatypeForValue($value);
             }
+        } elseif (is_object($datatype)) {
+            $datatype = strval($datatype);
         } else {
             // Expand shortened URIs (qnames)
             $datatype = EasyRdf_Namespace::expand($datatype);
         }
 
         // Work out what class to use for this datatype
-        if (isset(self::$_datatypeMap[$datatype])) {
-            $class = self::$_datatypeMap[$datatype];
+        if (isset(self::$datatypeMap[$datatype])) {
+            $class = self::$datatypeMap[$datatype];
         } else {
             $class = 'EasyRdf_Literal';
         }
@@ -139,8 +140,8 @@ class EasyRdf_Literal
         }
 
         $datatype = EasyRdf_Namespace::expand($datatype);
-        self::$_datatypeMap[$datatype] = $class;
-        self::$_classMap[$class] = $datatype;
+        self::$datatypeMap[$datatype] = $class;
+        self::$classMap[$class] = $datatype;
     }
 
     /** Remove the mapping between an RDF datatype and a PHP class name
@@ -156,10 +157,10 @@ class EasyRdf_Literal
         }
 
         $datatype = EasyRdf_Namespace::expand($datatype);
-        if (isset(self::$_datatypeMap[$datatype])) {
-            $class = self::$_datatypeMap[$datatype];
-            unset(self::$_datatypeMap[$datatype]);
-            unset(self::$_classMap[$class]);
+        if (isset(self::$datatypeMap[$datatype])) {
+            $class = self::$datatypeMap[$datatype];
+            unset(self::$datatypeMap[$datatype]);
+            unset(self::$classMap[$class]);
         }
     }
 
@@ -176,10 +177,12 @@ class EasyRdf_Literal
     {
         if (is_float($value)) {
             return 'http://www.w3.org/2001/XMLSchema#decimal';
-        } else if (is_int($value)) {
+        } elseif (is_int($value)) {
             return 'http://www.w3.org/2001/XMLSchema#integer';
-        } else if (is_bool($value)) {
+        } elseif (is_bool($value)) {
             return 'http://www.w3.org/2001/XMLSchema#boolean';
+        } elseif (is_object($value) and $value instanceof DateTime) {
+            return 'http://www.w3.org/2001/XMLSchema#dateTime';
         } else {
             return null;
         }
@@ -194,31 +197,34 @@ class EasyRdf_Literal
      * @param  string $datatype  The datatype of the literal or null (e.g. 'xsd:string')
      * @return object EasyRdf_Literal
      */
-    public function __construct($value, $lang=null, $datatype=null)
+    public function __construct($value, $lang = null, $datatype = null)
     {
-        $this->_value = $value;
-        $this->_lang = $lang ? $lang : null;
-        $this->_datatype = $datatype ? $datatype : null;
+        $this->value = $value;
+        $this->lang = $lang ? $lang : null;
+        $this->datatype = $datatype ? $datatype : null;
 
-        if ($this->_datatype) {
-            // Expand shortened URIs (qnames)
-            $this->_datatype = EasyRdf_Namespace::expand($this->_datatype);
+        if ($this->datatype) {
+            if (is_object($this->datatype)) {
+                // Convert objects to strings
+                $this->datatype = strval($this->datatype);
+            } else {
+                // Expand shortened URIs (CURIEs)
+                $this->datatype = EasyRdf_Namespace::expand($this->datatype);
+            }
 
             // Literals can not have both a language and a datatype
-            $this->_lang = null;
+            $this->lang = null;
         } else {
             // Set the datatype based on the subclass
             $class = get_class($this);
-            if (isset(self::$_classMap[$class])) {
-                $this->_datatype = self::$_classMap[$class];
-                $this->_lang = null;
+            if (isset(self::$classMap[$class])) {
+                $this->datatype = self::$classMap[$class];
+                $this->lang = null;
             }
         }
 
-        // Cast to string if it is a string
-        if ($this->_lang or !$this->_datatype or $this->_datatype == 'http://www.w3.org/2001/XMLSchema#string') {
-            settype($this->_value, 'string');
-        }
+        // Cast value to string
+        settype($this->value, 'string');
     }
 
     /** Returns the value of the literal.
@@ -227,7 +233,7 @@ class EasyRdf_Literal
      */
     public function getValue()
     {
-        return $this->_value;
+        return $this->value;
     }
 
     /** Returns the full datatype URI of the literal.
@@ -236,7 +242,7 @@ class EasyRdf_Literal
      */
     public function getDatatypeUri()
     {
-        return $this->_datatype;
+        return $this->datatype;
     }
 
     /** Returns the shortened datatype URI of the literal.
@@ -245,8 +251,8 @@ class EasyRdf_Literal
      */
     public function getDatatype()
     {
-        if ($this->_datatype) {
-            return EasyRdf_Namespace::shorten($this->_datatype);
+        if ($this->datatype) {
+            return EasyRdf_Namespace::shorten($this->datatype);
         } else {
             return null;
         }
@@ -258,7 +264,7 @@ class EasyRdf_Literal
      */
     public function getLang()
     {
-        return $this->_lang;
+        return $this->lang;
     }
 
     /** Returns the properties of the literal as an associative array
@@ -268,39 +274,54 @@ class EasyRdf_Literal
      *
      * @return array  The properties of the literal
      */
-    public function toArray()
+    public function toRdfPhp()
     {
         $array = array(
             'type' => 'literal',
-            'value' => strval($this)
+            'value' => $this->value
         );
 
-        if ($this->_datatype)
-            $array['datatype'] = $this->_datatype;
+        if ($this->datatype) {
+            $array['datatype'] = $this->datatype;
+        }
 
-        if ($this->_lang)
-            $array['lang'] = $this->_lang;
+        if ($this->lang) {
+            $array['lang'] = $this->lang;
+        }
 
         return $array;
     }
 
-    /** Magic method to return the value of a literal when casted to string
+    /** Magic method to return the value of a literal as a string
      *
      * @return string The value of the literal
      */
     public function __toString()
     {
-        return isset($this->_value) ? strval($this->_value) : '';
+        return isset($this->value) ? $this->value : '';
     }
 
     /** Return pretty-print view of the literal
      *
-     * @param  bool   $html  Set to true to format the dump using HTML
-     * @param  string $color The colour of the text
+     * @param  string $format Either 'html' or 'text'
+     * @param  string $color  The colour of the text
      * @return string
      */
-    public function dumpValue($html=true, $color='black')
+    public function dumpValue($format = 'html', $color = 'black')
     {
-        return EasyRdf_Utils::dumpLiteralValue($this, $html, $color);
+        return EasyRdf_Utils::dumpLiteralValue($this, $format, $color);
     }
 }
+
+/*
+   Register default set of datatype classes
+*/
+
+EasyRdf_Literal::setDatatypeMapping('xsd:boolean', 'EasyRdf_Literal_Boolean');
+EasyRdf_Literal::setDatatypeMapping('xsd:date', 'EasyRdf_Literal_Date');
+EasyRdf_Literal::setDatatypeMapping('xsd:dateTime', 'EasyRdf_Literal_DateTime');
+EasyRdf_Literal::setDatatypeMapping('xsd:decimal', 'EasyRdf_Literal_Decimal');
+EasyRdf_Literal::setDatatypeMapping('xsd:hexBinary', 'EasyRdf_Literal_HexBinary');
+EasyRdf_Literal::setDatatypeMapping('rdf:HTML', 'EasyRdf_Literal_HTML');
+EasyRdf_Literal::setDatatypeMapping('xsd:integer', 'EasyRdf_Literal_Integer');
+EasyRdf_Literal::setDatatypeMapping('rdf:XMLLiteral', 'EasyRdf_Literal_XML');

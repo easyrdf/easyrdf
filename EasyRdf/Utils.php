@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,9 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 
@@ -41,7 +40,7 @@
  * Class containing static utility functions
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Utils
@@ -112,12 +111,12 @@ class EasyRdf_Utils
      * EasyRdf_Graph and EasyRdf_Sparql_Result to format a resource
      * for display.
      *
-     * @param  mixed $resource An EasyRdf_Resource object or an associative array
-     * @param  bool  $html     Set to true to format the dump using HTML
-     * @param  string $color   The colour of the text
+     * @param  mixed  $resource An EasyRdf_Resource object or an associative array
+     * @param  string $format   Either 'html' or 'text'
+     * @param  string $color    The colour of the text
      * @return string
      */
-    public static function dumpResourceValue($resource, $html=true, $color='blue')
+    public static function dumpResourceValue($resource, $format = 'html', $color = 'blue')
     {
         if (!preg_match('/^#?[-\w]+$/', $color)) {
             throw new InvalidArgumentException(
@@ -127,12 +126,12 @@ class EasyRdf_Utils
 
         if (is_object($resource)) {
             $resource = strval($resource);
-        } else if (is_array($resource)) {
+        } elseif (is_array($resource)) {
             $resource = $resource['value'];
         }
 
         $short = EasyRdf_Namespace::shorten($resource);
-        if ($html) {
+        if ($format == 'html') {
             $escaped = htmlentities($resource, ENT_QUOTES);
             if (substr($resource, 0, 2) == '_:') {
                 $href = '#' . $escaped;
@@ -159,12 +158,12 @@ class EasyRdf_Utils
      * EasyRdf_Graph and EasyRdf_Sparql_Result to format a literal
      * for display.
      *
-     * @param  mixed $resource An EasyRdf_Literal object or an associative array
-     * @param  bool  $html     Set to true to format the dump using HTML
-     * @param  string $color   The colour of the text
+     * @param  mixed  $literal  An EasyRdf_Literal object or an associative array
+     * @param  string $format   Either 'html' or 'text'
+     * @param  string $color    The colour of the text
      * @return string
      */
-    public static function dumpLiteralValue($literal, $html=true, $color='black')
+    public static function dumpLiteralValue($literal, $format = 'html', $color = 'black')
     {
         if (!preg_match('/^#?[-\w]+$/', $color)) {
             throw new InvalidArgumentException(
@@ -173,8 +172,8 @@ class EasyRdf_Utils
         }
 
         if (is_object($literal)) {
-            $literal = $literal->toArray();
-        } else if (!is_array($literal)) {
+            $literal = $literal->toRdfPhp();
+        } elseif (!is_array($literal)) {
             $literal = array('value' => $literal);
         }
 
@@ -183,11 +182,15 @@ class EasyRdf_Utils
             $text .= '@' . $literal['lang'];
         }
         if (isset($literal['datatype'])) {
-            $datatype = EasyRdf_Namespace::shorten($literal['datatype']);
-            $text .= "^^$datatype";
+            $short = EasyRdf_Namespace::shorten($literal['datatype']);
+            if ($short) {
+                $text .= "^^$short";
+            } else {
+                $text .= "^^<".$literal['datatype'].">";
+            }
         }
 
-        if ($html) {
+        if ($format == 'html') {
             return "<span style='color:$color'>".
                    htmlentities($text, ENT_COMPAT, "UTF-8").
                    "</span>";
@@ -207,9 +210,9 @@ class EasyRdf_Utils
         $type = trim(array_shift($parts));
         $params = array();
         foreach ($parts as $part) {
-           if (preg_match("/^\s*(\w+)\s*=\s*(.+?)\s*$/", $part, $matches)) {
-              $params[$matches[1]] = $matches[2];
-           }
+            if (preg_match("/^\s*(\w+)\s*=\s*(.+?)\s*$/", $part, $matches)) {
+                $params[$matches[1]] = $matches[2];
+            }
         }
         return array($type, $params);
     }
@@ -227,7 +230,7 @@ class EasyRdf_Utils
      * @param  string $dir       Path to directory to run command in (defaults to /tmp)
      * @return string The result of the command, printed to STDOUT
      */
-    public static function execCommandPipe($command, $args=null, $input=null, $dir=null)
+    public static function execCommandPipe($command, $args = null, $input = null, $dir = null)
     {
         $descriptorspec = array(
             0 => array('pipe', 'r'),
@@ -242,26 +245,26 @@ class EasyRdf_Utils
 
         if (is_array($args)) {
             $fullCommand = implode(
-                ' ', array_map('escapeshellcmd', array_merge(array($command), $args))
+                ' ',
+                array_map('escapeshellcmd', array_merge(array($command), $args))
             );
         } else {
             $fullCommand = escapeshellcmd($command);
-            if ($args)
+            if ($args) {
                 $fullCommand .= ' '.escapeshellcmd($args);
+            }
         }
 
-        $process = proc_open(
-            $fullCommand, $descriptorspec, $pipes, $dir
-        );
-
+        $process = proc_open($fullCommand, $descriptorspec, $pipes, $dir);
         if (is_resource($process)) {
             // $pipes now looks like this:
             // 0 => writeable handle connected to child stdin
             // 1 => readable handle connected to child stdout
             // 2 => readable handle connected to child stderr
 
-            if ($input)
+            if ($input) {
                 fwrite($pipes[0], $input);
+            }
             fclose($pipes[0]);
 
             $output = stream_get_contents($pipes[1]);

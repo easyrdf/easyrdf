@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2011 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,9 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 /**
@@ -41,51 +40,54 @@
  *
  * @package    EasyRdf
  * @link       http://www.w3.org/TR/xmlschema-2/#boolean
- * @copyright  Copyright (c) 2009-2011 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Literal_Boolean extends EasyRdf_Literal
 {
     /** Constructor for creating a new boolean literal
      *
-     * Non-boolean values will be cast to boolean.
+     * If the value is not a string, then it will be converted to 'true' or 'false'.
      *
      * @param  mixed  $value     The value of the literal
      * @param  string $lang      Should be null (literals with a datatype can't have a language)
      * @param  string $datatype  Optional datatype (default 'xsd:boolean')
      * @return object EasyRdf_Literal_Boolean
      */
-    public function __construct($value, $lang=null, $datatype=null)
+    public function __construct($value, $lang = null, $datatype = null)
     {
-        parent::__construct((bool)$value, null, $datatype);
+        if (!is_string($value)) {
+            $value = $value ? 'true' : 'false';
+        }
+        parent::__construct($value, null, $datatype);
     }
 
-    /** Return true if the value of the literal is true
+    /** Return the value of the literal cast to a PHP bool
+     *
+     * If the value is 'true' or '1' return true, otherwise returns false.
+     *
+     * @return bool
+     */
+    public function getValue()
+    {
+        return strtolower($this->value) === 'true' or $this->value === '1';
+    }
+
+    /** Return true if the value of the literal is 'true' or '1'
      *
      * @return bool
      */
     public function isTrue()
     {
-        return $this->_value == true;
+        return strtolower($this->value) === 'true' or $this->value === '1';
     }
 
-    /** Return true if the value of the literal is false
+    /** Return true if the value of the literal is 'false' or '0'
      *
      * @return bool
      */
     public function isFalse()
     {
-        return $this->_value == false;
-    }
-
-    /** Magic method to return the value of a boolean when casted to string
-     *
-     * @return string The value of the boolean literal ('true' or 'false')
-     */
-    public function __toString()
-    {
-        return $this->_value ? 'true' : 'false';
+        return strtolower($this->value) === 'false' or $this->value === '0';
     }
 }
-
-EasyRdf_Literal::setDatatypeMapping('xsd:boolean', 'EasyRdf_Literal_Boolean');

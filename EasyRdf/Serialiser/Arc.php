@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,21 +31,20 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 /**
  * Class to serialise RDF using the ARC2 library.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
 {
-    private static $_supportedTypes = array(
+    private static $supportedTypes = array(
         'rdfxml' => 'RDFXML',
         'turtle' => 'Turtle',
         'ntriples' => 'NTriples',
@@ -73,8 +72,8 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
     {
         parent::checkSerialiseParams($graph, $format);
 
-        if (array_key_exists($format, self::$_supportedTypes)) {
-            $className = self::$_supportedTypes[$format];
+        if (array_key_exists($format, self::$supportedTypes)) {
+            $className = self::$supportedTypes[$format];
         } else {
             throw new EasyRdf_Exception(
                 "EasyRdf_Serialiser_Arc does not support: $format"
@@ -94,9 +93,4 @@ class EasyRdf_Serialiser_Arc extends EasyRdf_Serialiser_RdfPhp
     }
 }
 
-
 EasyRdf_Format::register('posh', 'poshRDF');
-EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Arc');
-EasyRdf_Format::registerSerialiser('posh', 'EasyRdf_Serialiser_Arc');
-EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Arc');
-EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Arc');

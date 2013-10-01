@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,47 +31,71 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 /**
  * A namespace registry and manipulation class.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Namespace
 {
-    /** Namespace registry */
-    private static $_namespaces = array(
+    /** Namespace registry
+     *
+     * List of default namespaces come from:
+     *  - http://www.w3.org/2011/rdfa-context/rdfa-1.1
+     *
+     * With a few extras added.
+     *
+     */
+    private static $namespaces = array(
       'bibo' => 'http://purl.org/ontology/bibo/',
       'cc' => 'http://creativecommons.org/ns#',
       'cert' => 'http://www.w3.org/ns/auth/cert#',
+      'ctag' => 'http://commontag.org/ns#',
       'dc' => 'http://purl.org/dc/terms/',
       'dc11' => 'http://purl.org/dc/elements/1.1/',
+      'dcterms' => 'http://purl.org/dc/terms/',
       'doap' => 'http://usefulinc.com/ns/doap#',
       'exif' => 'http://www.w3.org/2003/12/exif/ns#',
       'foaf' => 'http://xmlns.com/foaf/0.1/',
       'geo' => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
+      'gr' => 'http://purl.org/goodrelations/v1#',
+      'grddl' => 'http://www.w3.org/2003/g/data-view#',
+      'ical' => 'http://www.w3.org/2002/12/cal/icaltzd#',
+      'ma' => 'http://www.w3.org/ns/ma-ont#',
       'og' => 'http://ogp.me/ns#',
       'owl' => 'http://www.w3.org/2002/07/owl#',
       'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
       'rdfa' => 'http://www.w3.org/ns/rdfa#',
       'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
+      'rev' => 'http://purl.org/stuff/rev#',
+      'rif' => 'http://www.w3.org/2007/rif#',
       'rss' => 'http://purl.org/rss/1.0/',
+      'schema' => 'http://schema.org/',
       'sioc' => 'http://rdfs.org/sioc/ns#',
       'skos' => 'http://www.w3.org/2004/02/skos/core#',
+      'skosxl' => 'http://www.w3.org/2008/05/skos-xl#',
       'synd' => 'http://purl.org/rss/1.0/modules/syndication/',
+      'v' => 'http://rdf.data-vocabulary.org/#',
+      'vcard' => 'http://www.w3.org/2006/vcard/ns#',
+      'void' => 'http://rdfs.org/ns/void#',
+      'wdr' => 'http://www.w3.org/2007/05/powder#',
+      'wdrs' => 'http://www.w3.org/2007/05/powder-s#',
       'wot' => 'http://xmlns.com/wot/0.1/',
-      'xhtml' => 'http://www.w3.org/1999/xhtml/vocab#',
-      'xsd' => 'http://www.w3.org/2001/XMLSchema#'
+      'xhv' => 'http://www.w3.org/1999/xhtml/vocab#',
+      'xml' => 'http://www.w3.org/XML/1998/namespace',
+      'xsd' => 'http://www.w3.org/2001/XMLSchema#',
     );
 
+    private static $default = null;
+
     /** Counter for numbering anonymous namespaces */
-    private static $_anonymousNamespaceCount = 0;
+    private static $anonymousNamespaceCount = 0;
 
     /**
       * Return all the namespaces registered
@@ -80,7 +104,7 @@ class EasyRdf_Namespace
       */
     public static function namespaces()
     {
-        return self::$_namespaces;
+        return self::$namespaces;
     }
 
     /**
@@ -104,8 +128,8 @@ class EasyRdf_Namespace
         }
 
         $prefix = strtolower($prefix);
-        if (array_key_exists($prefix, self::$_namespaces)) {
-            return self::$_namespaces[$prefix];
+        if (array_key_exists($prefix, self::$namespaces)) {
+            return self::$namespaces[$prefix];
         } else {
             return null;
         }
@@ -138,7 +162,48 @@ class EasyRdf_Namespace
         }
 
         $prefix = strtolower($prefix);
-        self::$_namespaces[$prefix] = $long;
+        self::$namespaces[$prefix] = $long;
+    }
+
+    /**
+      * Get the default namespace
+      *
+      * Returns the URI of the default namespace or null
+      * if no default namespace is defined.
+      *
+      * @return string The URI of the default namespace
+      */
+    public static function getDefault()
+    {
+        return self::$default;
+    }
+
+    /**
+      * Set the default namespace
+      *
+      * Set the default namespace to either a URI or the prefix of
+      * an already defined namespace.
+      *
+      * Example:
+      *   EasyRdf_Namespace::setDefault('http://schema.org/');
+      *
+      * @param string $namespace The URI or prefix of a namespace (eg 'og')
+      */
+    public static function setDefault($namespace)
+    {
+        if (is_null($namespace) or $namespace === '') {
+            self::$default = null;
+        } elseif (preg_match("/^\w+$/", $namespace)) {
+            if (isset(self::$namespaces[$namespace])) {
+                self::$default = self::$namespaces[$namespace];
+            } else {
+                throw new InvalidArgumentException(
+                    "Unable to set default namespace to unknown prefix: $namespace"
+                );
+            }
+        } else {
+            self::$default = $namespace;
+        }
     }
 
     /**
@@ -155,8 +220,8 @@ class EasyRdf_Namespace
         }
 
         $prefix = strtolower($prefix);
-        if (isset(self::$_namespaces[$prefix])) {
-            unset(self::$_namespaces[$prefix]);
+        if (isset(self::$namespaces[$prefix])) {
+            unset(self::$namespaces[$prefix]);
         }
     }
 
@@ -165,9 +230,9 @@ class EasyRdf_Namespace
       */
     public static function reset()
     {
-        while (self::$_anonymousNamespaceCount > 0) {
-            self::delete('ns'.(self::$_anonymousNamespaceCount-1));
-            self::$_anonymousNamespaceCount--;
+        while (self::$anonymousNamespaceCount > 0) {
+            self::delete('ns'.(self::$anonymousNamespaceCount-1));
+            self::$anonymousNamespaceCount--;
         }
     }
 
@@ -184,7 +249,7 @@ class EasyRdf_Namespace
       * @param bool    $createNamespace If true, a new namespace will be created
       * @return array  The split URI (eg 'foaf', 'name') or null
       */
-    public static function splitUri($uri, $createNamespace=false)
+    public static function splitUri($uri, $createNamespace = false)
     {
         if ($uri === null or $uri === '') {
             throw new InvalidArgumentException(
@@ -194,13 +259,13 @@ class EasyRdf_Namespace
 
         if (is_object($uri) and ($uri instanceof EasyRdf_Resource)) {
             $uri = $uri->getUri();
-        } else if (!is_string($uri)) {
+        } elseif (!is_string($uri)) {
             throw new InvalidArgumentException(
                 "\$uri should be a string or EasyRdf_Resource"
             );
         }
 
-        foreach (self::$_namespaces as $prefix => $long) {
+        foreach (self::$namespaces as $prefix => $long) {
             if (substr($uri, 0, strlen($long)) == $long) {
                 return array($prefix, substr($uri, strlen($long)));
             }
@@ -210,7 +275,7 @@ class EasyRdf_Namespace
             // Try and create a new namespace
             # FIXME: check the valid characters for an XML element name
             if (preg_match("/^(.+?)([\w\-]+)$/", $uri, $matches)) {
-                $prefix = "ns".(self::$_anonymousNamespaceCount++);
+                $prefix = "ns".(self::$anonymousNamespaceCount++);
                 self::set($prefix, $matches[1]);
                 return array($prefix, $matches[2]);
             }
@@ -245,7 +310,7 @@ class EasyRdf_Namespace
       * @param bool    $createNamespace If true, a new namespace will be created
       * @return string The shortened URI (eg 'foaf:name') or null
       */
-    public static function shorten($uri, $createNamespace=false)
+    public static function shorten($uri, $createNamespace = false)
     {
         if ($parts = self::splitUri($uri, $createNamespace)) {
             return implode(':', $parts);
@@ -263,18 +328,23 @@ class EasyRdf_Namespace
       */
     public static function expand($shortUri)
     {
-        if (!is_string($shortUri) or $shortUri === null or $shortUri === '') {
+        if (!is_string($shortUri) or $shortUri === '') {
             throw new InvalidArgumentException(
                 "\$shortUri should be a string and cannot be null or empty"
             );
         }
-
-        if (preg_match("/^(\w+?):([\w\-]+)$/", $shortUri, $matches)) {
+        
+        if ($shortUri === 'a') {
+            return self::$namespaces['rdf'] . 'type';
+        } elseif (preg_match("/^(\w+?):([\w\-]+)$/", $shortUri, $matches)) {
             $long = self::get($matches[1]);
             if ($long) {
                 return $long . $matches[2];
             }
+        } elseif (preg_match("/^(\w+)$/", $shortUri) and isset(self::$default)) {
+            return self::$default . $shortUri;
         }
+
         return $shortUri;
     }
 }

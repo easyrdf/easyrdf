@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2010 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,21 +31,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 /**
  * Parent class for the EasyRdf serialiser
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2010 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Serialiser
 {
-    protected $_prefixes = array();
+    protected $prefixes = array();
+
+    public function __construct()
+    {
+    }
 
     /**
      * Keep track of the prefixes used while serialising
@@ -54,7 +57,7 @@ class EasyRdf_Serialiser
     protected function addPrefix($qname)
     {
         list ($prefix) = explode(':', $qname);
-        $this->_prefixes[$prefix] = true;
+        $this->prefixes[$prefix] = true;
     }
 
     /**
@@ -63,21 +66,19 @@ class EasyRdf_Serialiser
      */
     protected function checkSerialiseParams(&$graph, &$format)
     {
-        if ($graph == null or !is_object($graph) or
-            get_class($graph) != 'EasyRdf_Graph') {
+        if (is_null($graph) or !is_object($graph) or !($graph instanceof EasyRdf_Graph)) {
             throw new InvalidArgumentException(
                 "\$graph should be an EasyRdf_Graph object and cannot be null"
             );
         }
 
-        if ($format == null or $format == '') {
+        if (is_null($format) or $format == '') {
             throw new InvalidArgumentException(
                 "\$format cannot be null or empty"
             );
-        } else if (is_object($format) and
-                   get_class($format) == 'EasyRdf_Format') {
+        } elseif (is_object($format) and ($format instanceof EasyRdf_Format)) {
             $format = $format->getName();
-        } else if (!is_string($format)) {
+        } elseif (!is_string($format)) {
             throw new InvalidArgumentException(
                 "\$format should be a string or an EasyRdf_Format object"
             );
@@ -96,7 +97,7 @@ class EasyRdf_Serialiser
         $count = count($properties);
         if ($count == 1) {
             $property = $properties[0];
-            return $resource->count("^<$property>");
+            return $resource->countValues("^<$property>");
         } else {
             return $count;
         }

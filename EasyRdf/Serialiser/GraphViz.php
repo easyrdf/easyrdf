@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2012 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2012-2013 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,9 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 /**
@@ -44,15 +43,15 @@
  * See http://www.graphviz.org/ for more information.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2012 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2012-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
 {
-    private $_dotCommand = 'dot';
-    private $_useLabels = false;
-    private $_onlyLabelled = false;
-    private $_attributes = array('charset' => 'utf-8');
+    private $dotCommand = 'dot';
+    private $useLabels = false;
+    private $onlyLabelled = false;
+    private $attributes = array('charset' => 'utf-8');
 
     /**
      * Constructor
@@ -73,7 +72,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      */
     public function setDotCommand($cmd)
     {
-        $this->_dotCommand = $cmd;
+        $this->dotCommand = $cmd;
         return $this;
     }
 
@@ -86,7 +85,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      */
     public function getDotCommand()
     {
-        return $this->_dotCommand;
+        return $this->dotCommand;
     }
 
     /**
@@ -104,7 +103,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      */
     public function setUseLabels($useLabels)
     {
-        $this->_useLabels = $useLabels;
+        $this->useLabels = $useLabels;
         return $this;
     }
 
@@ -115,7 +114,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      */
     public function getUseLabels()
     {
-        return $this->_useLabels;
+        return $this->useLabels;
     }
 
     /**
@@ -128,12 +127,12 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      *
      * This option is turned off by default.
      *
-     * @param bool $useLabels   A boolean value to enable/display only labelled items
+     * @param bool $onlyLabelled   A boolean value to enable/display only labelled items
      * @return object EasyRdf_Serialiser_GraphViz
      */
     public function setOnlyLabelled($onlyLabelled)
     {
-        $this->_onlyLabelled = $onlyLabelled;
+        $this->onlyLabelled = $onlyLabelled;
         return $this;
     }
 
@@ -144,7 +143,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      */
     public function getOnlyLabelled()
     {
-        return $this->_onlyLabelled;
+        return $this->onlyLabelled;
     }
 
     /**
@@ -162,7 +161,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      */
     public function setAttribute($name, $value)
     {
-        $this->_attributes[$name] = $value;
+        $this->attributes[$name] = $value;
         return $this;
     }
 
@@ -174,7 +173,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      */
     public function getAttribute($name)
     {
-        return $this->_attributes[$name];
+        return $this->attributes[$name];
     }
 
     /**
@@ -185,7 +184,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
     protected function nodeName($entity)
     {
         if ($entity instanceof EasyRdf_Resource) {
-            if ($entity->isBnode()) {
+            if ($entity->isBNode()) {
                 return "B".$entity->getUri();
             } else {
                 return "R".$entity->getUri();
@@ -233,13 +232,15 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      *
      * @ignore
      */
-    protected function serialiseRow($node1, $node2=null, $attributes=array())
+    protected function serialiseRow($node1, $node2 = null, $attributes = array())
     {
         $result = '  '.$this->escape($node1);
-        if ($node2)
+        if ($node2) {
             $result .= ' -> '.$this->escape($node2);
-        if (count($attributes))
+        }
+        if (count($attributes)) {
             $result .= ' '.$this->escapeAttributes($attributes);
+        }
         return $result.";\n";
     }
 
@@ -253,7 +254,7 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
         $result = "digraph {\n";
 
         // Write the graph attributes
-        foreach ($this->_attributes as $k => $v) {
+        foreach ($this->attributes as $k => $v) {
             $result .= '  '.$this->escape($k).'='.$this->escape($v).";\n";
         }
 
@@ -264,20 +265,23 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
             $name1 = $this->nodeName($resource);
             foreach ($resource->propertyUris() as $property) {
                 $label = null;
-                if ($this->_useLabels)
+                if ($this->useLabels) {
                     $label = $graph->resource($property)->label();
+                }
                 if ($label === null) {
-                    if ($this->_onlyLabelled == true)
+                    if ($this->onlyLabelled == true) {
                         continue;
-                    else
+                    } else {
                         $label = EasyRdf_Namespace::shorten($property);
+                    }
                 }
                 foreach ($resource->all("<$property>") as $value) {
                     $name2 = $this->nodeName($value);
                     $nodes[$name1] = $resource;
                     $nodes[$name2] = $value;
                     $result .= $this->serialiseRow(
-                        $name1, $name2,
+                        $name1,
+                        $name2,
                         array('label' => $label)
                     );
                 }
@@ -291,35 +295,42 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
             $type = substr($name, 0, 1);
             $label = '';
             if ($type == 'R') {
-                if ($this->_useLabels)
+                if ($this->useLabels) {
                     $label = $node->label();
-                if (!$label)
+                }
+                if (!$label) {
                     $label = $node->shorten();
-                if (!$label)
+                }
+                if (!$label) {
                     $label = $node->getURI();
-                    $result .= $this->serialiseRow(
-                        $name, null,
-                        array(
-                            'URL'   => $node->getURI(),
-                            'label' => $label,
-                            'shape' => 'ellipse',
-                            'color' => 'blue'
-                        )
-                    );
+                }
+                $result .= $this->serialiseRow(
+                    $name,
+                    null,
+                    array(
+                        'URL'   => $node->getURI(),
+                        'label' => $label,
+                        'shape' => 'ellipse',
+                        'color' => 'blue'
+                    )
+                );
             } elseif ($type == 'B') {
-                if ($this->_useLabels)
+                if ($this->useLabels) {
                     $label = $node->label();
-                    $result .= $this->serialiseRow(
-                        $name, null,
-                        array(
-                            'label' => $label,
-                            'shape' => 'circle',
-                            'color' => 'green'
-                        )
-                    );
+                }
+                $result .= $this->serialiseRow(
+                    $name,
+                    null,
+                    array(
+                        'label' => $label,
+                        'shape' => 'circle',
+                        'color' => 'green'
+                    )
+                );
             } else {
                 $result .= $this->serialiseRow(
-                    $name, null,
+                    $name,
+                    null,
                     array(
                         'label' => strval($node),
                         'shape' => 'record',
@@ -339,12 +350,14 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
      *
      * @ignore
      */
-    public function renderImage($graph, $format='png')
+    public function renderImage($graph, $format = 'png')
     {
         $dot = $this->serialiseDot($graph);
 
         return EasyRdf_Utils::execCommandPipe(
-            $this->_dotCommand, array("-T$format"), $dot
+            $this->dotCommand,
+            array("-T$format"),
+            $dot
         );
     }
 
@@ -362,17 +375,16 @@ class EasyRdf_Serialiser_GraphViz extends EasyRdf_Serialiser
         parent::checkSerialiseParams($graph, $format);
 
         switch($format) {
-          case 'dot':
-              return $this->serialiseDot($graph);
-          case 'png':
-          case 'gif':
-          case 'svg':
-              return $this->renderImage($graph, $format);
-          default:
-              throw new EasyRdf_Exception(
-                  "EasyRdf_Serialiser_GraphViz does not support: $format"
-              );
+            case 'dot':
+                return $this->serialiseDot($graph);
+            case 'png':
+            case 'gif':
+            case 'svg':
+                return $this->renderImage($graph, $format);
+            default:
+                throw new EasyRdf_Exception(
+                    "EasyRdf_Serialiser_GraphViz does not support: $format"
+                );
         }
     }
-
 }

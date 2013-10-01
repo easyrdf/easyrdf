@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2012 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,9 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- * @version    $Id$
  */
 
 /**
@@ -43,12 +42,12 @@
  * Note: the built-in N-Triples serialiser is used to pass data to Rapper.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2012 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
 {
-    private $_rapperCmd = null;
+    private $rapperCmd = null;
 
     /**
      * Constructor
@@ -56,7 +55,7 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
      * @param string $rapperCmd Optional path to the rapper command to use.
      * @return object EasyRdf_Serialiser_Rapper
      */
-    public function __construct($rapperCmd='rapper')
+    public function __construct($rapperCmd = 'rapper')
     {
         $result = exec("$rapperCmd --version 2>/dev/null", $output, $status);
         if ($status != 0) {
@@ -64,7 +63,7 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
                 "Failed to execute the command '$rapperCmd': $result"
             );
         } else {
-            $this->_rapperCmd = $rapperCmd;
+            $this->rapperCmd = $rapperCmd;
         }
     }
 
@@ -82,10 +81,12 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
         $ntriples = parent::serialise($graph, 'ntriples');
 
         // Hack to produce more concise RDF/XML
-        if ($format == 'rdfxml') $format = 'rdfxml-abbrev';
+        if ($format == 'rdfxml') {
+            $format = 'rdfxml-abbrev';
+        }
 
         return EasyRdf_Utils::execCommandPipe(
-            $this->_rapperCmd,
+            $this->rapperCmd,
             array(
                 '--quiet',
                 '--input', 'ntriples',
@@ -96,9 +97,3 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
         );
     }
 }
-
-
-EasyRdf_Format::registerSerialiser('dot', 'EasyRdf_Serialiser_Rapper');
-EasyRdf_Format::registerSerialiser('json-triples', 'EasyRdf_Serialiser_Rapper');
-EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Rapper');
-EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Rapper');
