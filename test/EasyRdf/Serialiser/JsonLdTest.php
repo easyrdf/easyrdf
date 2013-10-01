@@ -114,7 +114,10 @@ class JsonLdTest extends EasyRdf_TestCase
         $this->assertArrayNotHasKey('@graph', $decoded);
         $this->assertInternalType('array', $decoded[1]["http://xmlns.com/foaf/0.1/age"][0]);
         $this->assertSame('59', $decoded[1]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
-        $this->assertSame('http://www.w3.org/2001/XMLSchema#integer', $decoded[1]["http://xmlns.com/foaf/0.1/age"][0]['@type']);
+        $this->assertSame(
+            'http://www.w3.org/2001/XMLSchema#integer',
+            $decoded[1]["http://xmlns.com/foaf/0.1/age"][0]['@type']
+        );
 
 
         // Compact form
@@ -126,12 +129,19 @@ class JsonLdTest extends EasyRdf_TestCase
 
 
         // Compact form + explicit types
-        $string = $this->serialiser->serialise($this->graph, 'jsonld', array('compact' => true, 'expand_native_types' => true));
+        $string = $this->serialiser->serialise(
+            $this->graph,
+            'jsonld',
+            array('compact' => true, 'expand_native_types' => true)
+        );
         $decoded = json_decode($string, true);
 
         $this->assertArrayHasKey('@graph', $decoded);
         $this->assertSame('59', $decoded['@graph'][1]["http://xmlns.com/foaf/0.1/age"]['@value']);
-        $this->assertSame('http://www.w3.org/2001/XMLSchema#integer', $decoded['@graph'][1]["http://xmlns.com/foaf/0.1/age"]['@type']);
+        $this->assertSame(
+            'http://www.w3.org/2001/XMLSchema#integer',
+            $decoded['@graph'][1]["http://xmlns.com/foaf/0.1/age"]['@type']
+        );
 
 
         // Compact form + explicit types + context
@@ -139,7 +149,11 @@ class JsonLdTest extends EasyRdf_TestCase
         $ctx->foaf = 'http://xmlns.com/foaf/0.1/';
         $ctx->xmls = 'http://www.w3.org/2001/XMLSchema#';
 
-        $string = $this->serialiser->serialise($this->graph, 'jsonld', array('compact' => true, 'expand_native_types' => true, 'context' => $ctx));
+        $string = $this->serialiser->serialise(
+            $this->graph,
+            'jsonld',
+            array('compact' => true, 'expand_native_types' => true, 'context' => $ctx)
+        );
         $decoded = json_decode($string, true);
 
         $this->assertArrayHasKey('@graph', $decoded);
