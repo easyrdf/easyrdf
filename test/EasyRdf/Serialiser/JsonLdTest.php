@@ -73,7 +73,10 @@ class JsonLdTest extends EasyRdf_TestCase
     {
         $serialised = $this->serialiser->serialise($this->graph, 'jsonld');
 
-        $doc = \ML\JsonLD\JsonLD::getDocument($serialised);
+        // hiding php-5.3+ syntax
+        $class = '\ML\JsonLD\JsonLD';
+        $doc = call_user_func(array($class, 'getDocument'), $serialised);
+
         $graph = $doc->getGraph();
         $node = $graph->getNode('http://www.example.com/joe#me');
 
