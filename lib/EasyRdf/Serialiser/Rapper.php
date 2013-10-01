@@ -70,11 +70,12 @@ class EasyRdf_Serialiser_Rapper extends EasyRdf_Serialiser_Ntriples
     /**
      * Serialise an EasyRdf_Graph to the RDF format of choice.
      *
-     * @param object EasyRdf_Graph $graph   An EasyRdf_Graph object.
-     * @param string  $format               The name of the format to convert to.
-     * @return string                       The RDF in the new desired format.
+     * @param EasyRdf_Graph $graph   An EasyRdf_Graph object.
+     * @param string        $format  The name of the format to convert to.
+     * @param array         $options
+     * @return string The RDF in the new desired format.
      */
-    public function serialise($graph, $format)
+    public function serialise($graph, $format, array $options = array())
     {
         parent::checkSerialiseParams($graph, $format);
 

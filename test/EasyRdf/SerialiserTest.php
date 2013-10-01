@@ -39,7 +39,7 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class MockSerialiser extends EasyRdf_Serialiser
 {
-    public function serialise($graph, $format)
+    public function serialise($graph, $format, array $options = array())
     {
         parent::checkSerialiseParams($graph, $format);
         // Serialising goes here

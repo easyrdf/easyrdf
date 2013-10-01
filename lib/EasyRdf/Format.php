@@ -675,6 +675,7 @@ EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Turtle');
 EasyRdf_Format::registerParser('rdfa', 'EasyRdf_Parser_Rdfa');
 
 EasyRdf_Format::registerSerialiser('json', 'EasyRdf_Serialiser_Json');
+EasyRdf_Format::registerSerialiser('jsonld', 'EasyRdf_Serialiser_JsonLd');
 EasyRdf_Format::registerSerialiser('n3', 'EasyRdf_Serialiser_Turtle');
 EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Ntriples');
 EasyRdf_Format::registerSerialiser('php', 'EasyRdf_Serialiser_RdfPhp');

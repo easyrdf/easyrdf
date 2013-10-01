@@ -1284,16 +1284,17 @@ class EasyRdf_Graph
      * Example:
      *   $turtle = $graph->serialise('turtle');
      *
-     * @param  mixed  $format  The format to serialise to
+     * @param  mixed $format  The format to serialise to
+     * @param  array $options Serialiser-specific options, for fine-tuning the output
      * @return mixed  The serialised graph
      */
-    public function serialise($format)
+    public function serialise($format, array $options = array())
     {
         if (!$format instanceof EasyRdf_Format) {
             $format = EasyRdf_Format::getFormat($format);
         }
         $serialiser = $format->newSerialiser();
-        return $serialiser->serialise($this, $format->getName());
+        return $serialiser->serialise($this, $format->getName(), $options);
     }
 
     /** Return a human readable view of all the resources in the graph
