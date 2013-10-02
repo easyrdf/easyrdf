@@ -131,7 +131,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
             } elseif ($datatype == 'http://www.w3.org/2001/XMLSchema#boolean') {
                 return sprintf('%s', $value ? 'true' : 'false');
             } else {
-								$escaped = $this->serialiseResource($datatype, true);
+                $escaped = $this->serialiseResource($datatype, true);
                 return sprintf('%s^^%s', $quoted, $escaped);
             }
         } elseif ($lang = $literal->getLang()) {
@@ -328,11 +328,13 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
     /**
      * Serialise an EasyRdf_Graph to Turtle.
      *
-     * @param object EasyRdf_Graph $graph   An EasyRdf_Graph object.
-     * @param string  $format               The name of the format to convert to.
-     * @return string                       The RDF in the new desired format.
+     * @param EasyRdf_Graph $graph   An EasyRdf_Graph object.
+     * @param string        $format  The name of the format to convert to.
+     * @param array         $options
+     * @throws EasyRdf_Exception
+     * @return string The RDF in the new desired format.
      */
-    public function serialise($graph, $format)
+    public function serialise($graph, $format, array $options = array())
     {
         parent::checkSerialiseParams($graph, $format);
 
