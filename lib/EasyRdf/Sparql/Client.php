@@ -127,6 +127,12 @@ class EasyRdf_Sparql_Client
      */
     public function countTriples($condition = '?s ?p ?o')
     {
+        // SELECT (COUNT(*) AS ?count)
+        // WHERE {
+        //   {?s ?p ?o}
+        //   UNION
+        //   {GRAPH ?g {?s ?p ?o}} 
+        // }
         $result = $this->query('SELECT (COUNT(*) AS ?count) {'.$condition.'}');
         return $result[0]->count->getValue();
     }
@@ -166,6 +172,49 @@ class EasyRdf_Sparql_Client
     public function update($query)
     {
         return $this->request('update', $query);
+    }
+
+    public function insert($data, $graphUri = null)
+    {
+        #$this->updateData('INSET', 
+        $query = 'INSERT DATA {';
+        if ($graphUri) {
+            $query .= "GRAPH <$graphUri> {";
+        }
+        $query .= $this->convertToTriples($data);
+        if ($graphUri) {
+            $query .= "}";
+        }
+        $query .= '}';
+        return $this->update($query);
+    }
+
+    protected function updateData($operation, $data, $graphUri = null)
+    {
+        $query = "$operation DATA {";
+        if ($graphUri) {
+            $query .= "GRAPH <$graphUri> {";
+        }
+        $query .= $this->convertToTriples($data);
+        if ($graphUri) {
+            $query .= "}";
+        }
+        $query .= '}';
+        return $this->update($query);
+    }
+
+    public function clear($graphUri, $silent = false)
+    {
+        $query = "CLEAR";
+        if ($silent) {
+            $query .= " SILENT";
+        }
+        if (preg_match("/^all|named|default$/i", $graphUri)) {
+            $query .= " $graphUri";
+        } else {
+            $query .= " GRAPH <$graphUri>";
+        }
+        return $this->update($query);
     }
 
     /*
@@ -233,6 +282,20 @@ class EasyRdf_Sparql_Client
         } else {
             throw new EasyRdf_Exception(
                 "HTTP request for SPARQL query failed: ".$response->getBody()
+            );
+        }
+    }
+    
+    protected function convertToTriples($data)
+    {
+        if (is_string($data)) {
+            return $data;
+        } elseif (is_object($data) and $data instanceof EasyRdf_Graph) {
+            # FIXME: insert Turtle when there is a way of seperateing out the prefixes
+            return $data->serialise('ntriples');
+        } else {
+            throw new EasyRdf_Exception(
+                "Don't know how to convert to triples for SPARQL query: ".$response->getBody()
             );
         }
     }

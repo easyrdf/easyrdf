@@ -29,7 +29,7 @@
 
 <?php
     if (isset($_REQUEST['id'])) {
-        $graph = EasyRdf_Graph::newAndLoad("http://dbpedialite.org/things/".$_REQUEST['id']);
+        $graph = EasyRdf_Graph::newAndLoad("http://www.dbpedialite.org/things/".$_REQUEST['id']);
 
         $village = $graph->primaryTopic();
         print content_tag('h2',$village->label());
@@ -51,12 +51,12 @@
         echo "<br /><br />";
         echo $graph->dump();
     } else {
-        $graph = EasyRdf_Graph::newAndLoad("http://dbpedialite.org/categories/".$CATEGORY_ID);
+        $graph = EasyRdf_Graph::newAndLoad("http://www.dbpedialite.org/categories/".$CATEGORY_ID);
         $category = $graph->primaryTopic();
 
         print "<ul>\n";
         foreach ($category->all('^rdf:type') as $resource) {
-            if (preg_match("|http://dbpedialite.org/things/(\d+)#id|", $resource, $matches)) {
+            if (preg_match("|http://www.dbpedialite.org/things/(\d+)#id|", $resource, $matches)) {
                 print '<li>'.link_to_self($resource->label(), "id=".$matches[1])."</li>\n";
             }
         }
