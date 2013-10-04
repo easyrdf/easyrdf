@@ -425,6 +425,9 @@ class EasyRdf_Http_Client
 
             // Write the request
             $path = $uri['path'];
+            if (empty($path)) {
+                $path = '/';
+            }
             if (isset($uri['query'])) {
                 $path .= '?' . $uri['query'];
             }
