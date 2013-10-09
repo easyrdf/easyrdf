@@ -141,7 +141,8 @@ class EasyRdf_Collection extends EasyRdf_Resource implements ArrayAccess, Counta
      */
     public function valid()
     {
-        return $this->hasProperty('rdf:first') && ($this->position === 1 || $this->current !== null);
+        return ($this->position === 1 && $this->hasProperty('rdf:first') ) || 
+               ($this->current !== null && $this->current->hasProperty('rdf:first');
     }
 
     /** Get a node for a particular offset into the collection
