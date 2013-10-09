@@ -55,8 +55,8 @@ class EasyRdf_Sparql_Client
 
 
     /** Create a new SPARQL endpoint client
-     * 
-     * If the query and update endpoints are the same, then you 
+     *
+     * If the query and update endpoints are the same, then you
      * only need to give a single URI.
      *
      * @param string $queryUri The address of the SPARQL Query Endpoint
@@ -131,12 +131,12 @@ class EasyRdf_Sparql_Client
         // WHERE {
         //   {?s ?p ?o}
         //   UNION
-        //   {GRAPH ?g {?s ?p ?o}} 
+        //   {GRAPH ?g {?s ?p ?o}}
         // }
         $result = $this->query('SELECT (COUNT(*) AS ?count) {'.$condition.'}');
         return $result[0]->count->getValue();
     }
-    
+
     /** Get a list of named graphs from a SPARQL 1.1 endpoint
      *
      * Performs a SELECT query to get a list of the named graphs
@@ -151,7 +151,7 @@ class EasyRdf_Sparql_Client
             $query .= " LIMIT ".(int)$limit;
         }
         $result = $this->query($query);
-        
+
         // Convert the result object into an array of resources
         $graphs = array();
         foreach ($result as $row) {
@@ -176,7 +176,7 @@ class EasyRdf_Sparql_Client
 
     public function insert($data, $graphUri = null)
     {
-        #$this->updateData('INSET', 
+        #$this->updateData('INSET',
         $query = 'INSERT DATA {';
         if ($graphUri) {
             $query .= "GRAPH <$graphUri> {";
@@ -285,7 +285,7 @@ class EasyRdf_Sparql_Client
             );
         }
     }
-    
+
     protected function convertToTriples($data)
     {
         if (is_string($data)) {
