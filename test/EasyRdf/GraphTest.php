@@ -1096,6 +1096,16 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         $this->assertStringEquals('Test C', $all[2]);
     }
 
+    public function testMerge()
+    {
+        $graph = new EasyRdf_Graph();
+        $graph->parseFile(fixturePath('foaf.rdf'));
+        $this->assertSame(3, $this->graph->countTriples());
+        $this->assertSame(14, $graph->countTriples());
+        $this->assertSame(14, $this->graph->merge($graph));
+        $this->assertSame(17, $this->graph->countTriples());
+    }
+
     public function testAddWithUri()
     {
         $count = $this->graph->add(
