@@ -82,7 +82,7 @@ class JsonLdTest extends EasyRdf_TestCase
 
         $this->assertEquals(
             'http://xmlns.com/foaf/0.1/Person',
-            $node->getProperty('http://www.w3.org/1999/02/22-rdf-syntax-ns#type')->getId()
+            $node->getProperty('@type')->getId()
         );
         $this->assertEquals(
             59,
