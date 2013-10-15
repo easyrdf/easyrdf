@@ -94,7 +94,10 @@ class JsonLdTest extends EasyRdf_TestCase
         );
         $this->assertEquals(
             'Project Name',
-            $node->getProperty('http://xmlns.com/foaf/0.1/project')->getProperty('http://xmlns.com/foaf/0.1/name')->getValue()
+            $node
+                ->getProperty('http://xmlns.com/foaf/0.1/project')
+                ->getProperty('http://xmlns.com/foaf/0.1/name')
+                ->getValue()
         );
     }
 

@@ -103,7 +103,7 @@ class EasyRdf_Serialiser_JsonLd extends EasyRdf_Serialiser
                         );
                     }
 
-                    if($property == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") {
+                    if ($property == "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") {
                         $node->addType($_value);
                     } else {
                         $node->addPropertyValue($property, $_value);
