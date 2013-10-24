@@ -426,15 +426,19 @@ class EasyRdf_Graph
     {
         $resource = $this->resource($uri);
         $resourceGraph = new \EasyRdf_Graph($resource->getUri());
-        $newResource = $resourceGraph->resource($resource->getUri());
+        $resClass = $this->classForResource($uri);
+        $newResource = new $resClass($uri, $resourceGraph);
 
         $copyProperties = function($resource, &$newResource) use ($resourceGraph, &$copyProperties) {
             foreach($resource->properties() as $property) {
-                $value = $resource->get($property);
-                $newResource->set($property, $value);
-                if($value instanceof \EasyRdf_Resource && $value->isBNode()) {
-                    $bnode = $resourceGraph->resource($value->getUri());
-                    $copyProperties($value, $bnode);
+                $values = $resource->all($property);
+                foreach($values as $value) {
+                    $newResource->add($property, $value);
+                    if($value instanceof \EasyRdf_Resource && $value->isBNode()) {
+                        $resClass = $this->classForResource($value->getUri());
+                        $bnode = new $resClass($value->getUri(), $resourceGraph);
+                        $copyProperties($value, $bnode);
+                    }
                 }
             }
         };
