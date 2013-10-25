@@ -74,6 +74,11 @@ require_once "EasyRdf/Http/Client.php";
 require_once "EasyRdf/Http/Response.php";
 
 /**
+ * @see EasyRdf_Isomorphic
+ */
+require_once "EasyRdf/Isomorphic.php";
+
+/**
  * @see EasyRdf_Namespace
  */
 require_once "EasyRdf/Namespace.php";

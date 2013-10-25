@@ -1,0 +1,3 @@
+_:testing789 <http://example.org/a> <http://example.org/resource> .
+_:testing456 <http://example.org/a> _:testing123 .
+_:testing456 <http://example.org/a> _:testing789  .

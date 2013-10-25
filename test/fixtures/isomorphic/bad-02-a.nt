@@ -1,0 +1,3 @@
+_:abc <http://example.org/a> _:def .
+_:def <http://example.org/a> _:hij .
+_:hij <http://example.org/a> <http://example.org/resource> .
