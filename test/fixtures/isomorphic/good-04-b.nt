@@ -1,0 +1,2 @@
+_:testing123 <http://example.org/a> _:testing456 .
+_:testing456 <http://example.org/a> _:testing123 .

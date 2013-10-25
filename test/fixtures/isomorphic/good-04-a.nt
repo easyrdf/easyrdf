@@ -1,0 +1,2 @@
+_:abc <http://example.org/a> _:def .
+_:def <http://example.org/a> _:abc .
