@@ -141,7 +141,7 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
     /**
      * @ignore
      */
-    protected function ntriplesResource($res)
+    protected function serialiseResource($res)
     {
         $escaped = $this->escapeString($res);
         if (substr($res, 0, 2) == '_:') {
@@ -152,12 +152,23 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
     }
 
     /**
-     * @ignore
+     * Serialise an RDF value into N-Triples
+     *
+     * The value can either be an array in RDF/PHP form, or
+     * an EasyRdf_Literal or EasyRdf_Resource object.
+     *
+     * @param array|object  $value   An associative array or an object
+     * @throws EasyRdf_Exception
+     * @return string The RDF value serialised to N-Triples
      */
-    protected function ntriplesValue($value)
+    public function serialiseValue($value)
     {
+        if (is_object($value)) {
+            $value = $value->toRdfPhp();
+        }
+
         if ($value['type'] == 'uri' or $value['type'] == 'bnode') {
-            return $this->ntriplesResource($value['value']);
+            return $this->serialiseResource($value['value']);
         } elseif ($value['type'] == 'literal') {
             $escaped = $this->escapeString($value['value']);
             if (isset($value['lang'])) {
@@ -171,7 +182,7 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
             }
         } else {
             throw new EasyRdf_Exception(
-                "Unable to serialise object to ntriples: ".$value['type']
+                "Unable to serialise object of type '".$value['type']."' to ntriples: "
             );
         }
     }
@@ -194,9 +205,9 @@ class EasyRdf_Serialiser_Ntriples extends EasyRdf_Serialiser
             foreach ($graph->toRdfPhp() as $resource => $properties) {
                 foreach ($properties as $property => $values) {
                     foreach ($values as $value) {
-                        $nt .= $this->ntriplesResource($resource)." ";
+                        $nt .= $this->serialiseResource($resource)." ";
                         $nt .= "<" . $this->escapeString($property) . "> ";
-                        $nt .= $this->ntriplesValue($value)." .\n";
+                        $nt .= $this->serialiseValue($value)." .\n";
                     }
                 }
             }
