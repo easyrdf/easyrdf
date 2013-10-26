@@ -49,6 +49,99 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         $this->serialiser = new EasyRdf_Serialiser_Ntriples();
     }
 
+    public function testSerialiseValueUriResource()
+    {
+        $this->assertSame(
+            "<http://example.com/>",
+            $this->serialiser->serialiseValue(
+                new EasyRdf_Resource("http://example.com/")
+            )
+        );
+    }
+
+    public function testSerialiseValueUriArray()
+    {
+        $this->assertSame(
+            "<http://example.com/>",
+            $this->serialiser->serialiseValue(
+                array('type' => 'uri', 'value' => 'http://example.com/')
+            )
+        );
+    }
+
+    public function testSerialiseValueBnodeArray()
+    {
+        $this->assertSame(
+            "_:one",
+            $this->serialiser->serialiseValue(
+                array('type' => 'bnode', 'value' => '_:one')
+            )
+        );
+    }
+
+    public function testSerialiseValueBnodeResource()
+    {
+        $this->assertSame(
+            "_:two",
+            $this->serialiser->serialiseValue(
+                new EasyRdf_Resource("_:two")
+            )
+        );
+    }
+
+    public function testSerialiseValueLiteralArray()
+    {
+        $this->assertSame(
+            '"foo"',
+            $this->serialiser->serialiseValue(
+                array('type' => 'literal', 'value' => 'foo')
+            )
+        );
+    }
+
+    public function testSerialiseValueLiteralObject()
+    {
+        $this->assertSame(
+            '"Hello"',
+            $this->serialiser->serialiseValue(
+                new EasyRdf_Literal("Hello")
+            )
+        );
+    }
+
+    public function testSerialiseValueLiteralObjectWithDatatype()
+    {
+        $this->assertSame(
+            '"10"^^<http://www.w3.org/2001/XMLSchema#integer>',
+            $this->serialiser->serialiseValue(
+                EasyRdf_Literal::create(10)
+            )
+        );
+    }
+
+    public function testSerialiseValueLiteralObjectWithLang()
+    {
+        $this->assertSame(
+            '"Hello World"@en',
+            $this->serialiser->serialiseValue(
+                new EasyRdf_Literal('Hello World', 'en')
+            )
+        );
+    }
+
+    public function testSerialiseBadValue()
+    {
+        $this->setExpectedException(
+            'EasyRdf_Exception',
+            "Unable to serialise object of type 'chipmonk' to ntriples"
+        );
+        $this->assertSame(
+            $this->serialiser->serialiseValue(
+                array('type' => 'chipmonk', 'value' => 'yes?')
+            )
+        );
+    }
+
     public function testSerialise()
     {
         $joe = $this->graph->resource(
