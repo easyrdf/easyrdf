@@ -518,20 +518,20 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $datatype = $this->processUri($node, $context, $datatype, true);
                 }
 
-                if ($node->nodeName === 'data' and $node->hasAttribute('value')) {
+                if ($content !== null) {
+                    $value['value'] = $content;
+                } elseif ($node->nodeName === 'data' and $node->hasAttribute('value')) {
                     $value['value'] = $node->getAttribute('value');
                 } elseif ($node->hasAttribute('datetime')) {
                     $value['value'] = $node->getAttribute('datetime');
                     $datetime = true;
-                } elseif ($datatype === '' && $content === null) {
+                } elseif ($datatype === '') {
                     $value['value'] = $node->textContent;
-                } elseif ($datatype === self::RDF_XML_LITERAL && $content === null) {
+                } elseif ($datatype === self::RDF_XML_LITERAL) {
                     $value['value'] = '';
                     foreach ($node->childNodes as $child) {
                         $value['value'] .= $child->C14N();
                     }
-                } elseif ($content !== null) {
-                    $value['value'] = $content;
                 } elseif (is_null($datatype) and empty($rel) and empty($rev)) {
                     $value['value'] = $this->getUriAttribute(
                         $node,
