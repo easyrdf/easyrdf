@@ -61,79 +61,80 @@ class EasyRdf_IsomorphicTest extends EasyRdf_TestCase
 
     public function testGood01()
     {
-        # One triple with renamed bnode
+        // One triple with renamed bnode
         $this->checkTestCase('good-01');
     }
 
     public function testGood02()
     {
-        # Two triples with renamed bnodes
+        // Two triples with renamed bnodes
         $this->checkTestCase('good-02');
     }
 
     public function testGood03()
     {
-        # Two related triples with renamed bnodes
+        // Two related triples with renamed bnodes
         $this->checkTestCase('good-03');
     }
 
     public function testGood04()
     {
-        # Circular bnode reference with renamed bnodes
+        // Circular bnode reference with renamed bnodes
         $this->checkTestCase('good-04');
     }
 
-    //     public function testGood05()
-    //     {
-    //         # Three triple chain with renamed bnodes
-    //         $this->checkTestCase('good-05');
-    //     }
+    public function testGood05()
+    {
+        $this->markTestSkipped("FIXME");
+        // Three triple chain with renamed bnodes
+        $this->checkTestCase('good-05');
+    }
 
     public function testGood06()
     {
-        # Single identical triple without bnodes
+        // Single identical triple without bnodes
         $this->checkTestCase('good-06');
     }
 
-    //     public function testGood07()
-    //     {
-    //         # 31 triple result-set with renamed bnodes
-    //         $this->checkTestCase('good-07');
-    //     }
+    public function testGood07()
+    {
+        // 31 triple result-set with renamed bnodes
+        $this->checkTestCase('good-07');
+    }
 
     public function testBad01()
     {
-        # Subject and object swapped with single bnode
+        // Subject and object swapped with single bnode
         $this->checkTestCase('bad-01', false);
     }
 
     public function testBad02()
     {
-        # Unequal bnode chain with single grounding
+        // Unequal bnode chain with single grounding
         $this->checkTestCase('bad-02', false);
     }
 
     public function testBad03()
     {
-        # Subject and object swapped with all URIs
+        // Subject and object swapped with all URIs
         $this->checkTestCase('bad-03', false);
     }
 
     public function testBad04()
     {
-        # Reversed subject and object as extra triple
+        // Reversed subject and object as extra triple
         $this->checkTestCase('bad-04', false);
     }
 
     public function testBad05()
     {
-        # URI changed to literal
+        // URI changed to literal
         $this->checkTestCase('bad-05', false);
     }
 
     public function testBad06()
     {
-        # Differing datatypes
+        // Differing datatypes
         $this->checkTestCase('bad-06', false);
     }
 }
