@@ -520,8 +520,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
 
                 if ($content !== null) {
                     $value['value'] = $content;
-                } elseif ($node->nodeName === 'data' and $node->hasAttribute('value')) {
-                    $value['value'] = $node->getAttribute('value');
                 } elseif ($node->hasAttribute('datetime')) {
                     $value['value'] = $node->getAttribute('datetime');
                     $datetime = true;
