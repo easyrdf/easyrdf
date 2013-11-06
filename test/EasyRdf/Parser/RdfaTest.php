@@ -138,11 +138,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0018', '@rel for predicate');
     }
 
-    public function testCase0019()
-    {
-        $this->rdfaTestCase('0019', '@about for subject');
-    }
-
     public function testCase0020()
     {
         $this->rdfaTestCase('0020', 'Inheriting @about for subject');
@@ -203,34 +198,14 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0034', 'simple img[@src] test');
     }
 
-    public function testCase0035()
-    {
-        $this->rdfaTestCase('0035', '@src/@href test');
-    }
-
     public function testCase0036()
     {
         $this->rdfaTestCase('0036', '@src/@resource test');
     }
 
-    public function testCase0037()
-    {
-        $this->rdfaTestCase('0037', '@src/@href/@resource test');
-    }
-
     public function testCase0038()
     {
         $this->rdfaTestCase('0038', '@rev - img[@src] test');
-    }
-
-    public function testCase0039()
-    {
-        $this->rdfaTestCase('0039', '@rev - @src/@href test');
-    }
-
-    public function testCase0041()
-    {
-        $this->rdfaTestCase('0041', '@rev - @src/@href/@resource test');
     }
 
     public function testCase0048()
@@ -358,11 +333,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0075', 'Reserved word \'license\' in @rel with no explicit @about');
     }
 
-    public function testCase0079()
-    {
-        $this->rdfaTestCase('0079', '@resource and @href in completing incomplete triples');
-    }
-
     public function testCase0080()
     {
         $this->rdfaTestCase('0080', '@about overrides @resource in incomplete triples');
@@ -376,16 +346,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     public function testCase0084()
     {
         $this->rdfaTestCase('0084', 'multiple ways of handling incomplete triples, this time with both @rel and @rev');
-    }
-
-    public function testCase0085()
-    {
-        $this->rdfaTestCase('0085', '@resource and @href in completing incomplete triples');
-    }
-
-    public function testCase0087()
-    {
-        $this->rdfaTestCase('0087', 'All reserved XHTML @rel values (with :xxx)');
     }
 
     public function testCase0088()
@@ -444,11 +404,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0112', 'plain literal with datatype=""');
     }
 
-    public function testCase0114()
-    {
-        $this->rdfaTestCase('0114', 'Relative URI dot-segment removal');
-    }
-
     public function testCase0115()
     {
         $this->rdfaTestCase('0115', 'XML Entities must be supported by RDFa parser');
@@ -487,11 +442,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     public function testCase0126()
     {
         $this->rdfaTestCase('0126', 'Multiple @typeof values');
-    }
-
-    public function testCase0131()
-    {
-        $this->rdfaTestCase('0131', 'Whitespace alternatives in attributes');
     }
 
     public function testCase0134()
@@ -537,11 +487,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     public function testCase0179()
     {
         $this->rdfaTestCase('0179', 'Test @prefix vs @xmlns priority');
-    }
-
-    public function testCase0180()
-    {
-        $this->rdfaTestCase('0180', 'Test @prefix with empty mapping');
     }
 
     public function testCase0181()
@@ -649,17 +594,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0221', '@inlist with hetrogenious membership');
     }
 
-    public function testCase0222()
-    {
-        $this->markTestSkipped("FIXME: Graph comparison isn't working");
-        $this->rdfaTestCase('0222', '@inlist with multi-level elements');
-    }
-
-    public function testCase0223()
-    {
-        $this->rdfaTestCase('0223', '@inlist with non-list property');
-    }
-
     public function testCase0224()
     {
         $this->markTestSkipped("FIXME: need to implement @inlist");
@@ -671,18 +605,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0225', '@inlist on different elements with same subject');
     }
 
-    public function testCase0226()
-    {
-        $this->markTestSkipped("FIXME: Graph comparison isn't working");
-        $this->rdfaTestCase('0226', 'confusion between multiple implicit collections (resource)');
-    }
-
-    public function testCase0227()
-    {
-        $this->markTestSkipped("FIXME: Graph comparison isn't working");
-        $this->rdfaTestCase('0227', 'confusion between multiple implicit collections (about)');
-    }
-
     public function testCase0228()
     {
         $this->rdfaTestCase('0228', '1.1 alternate for test 0040: @rev - @src/@resource test');
@@ -691,11 +613,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     public function testCase0229()
     {
         $this->rdfaTestCase('0229', 'img[@src] test with omitted @about');
-    }
-
-    public function testCase0230()
-    {
-        $this->rdfaTestCase('0230', '@src does not set a new subject (@rel/@href)');
     }
 
     public function testCase0231()
@@ -714,11 +631,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     public function testCase0233()
     {
         $this->rdfaTestCase('0233', '@typeof with @rel and @resource present, no @about (1.1 behavior of 0047)');
-    }
-
-    public function testCase0234()
-    {
-        $this->rdfaTestCase('0234', 'All defined HTML link relation values');
     }
 
     public function testCase0246()
@@ -787,11 +699,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
             '0257',
             'element with @property and no child nodes generates  empty plain literal (HTML5 version of 0113)'
         );
-    }
-
-    public function testCase0258()
-    {
-        $this->rdfaTestCase('0258', 'The underscore character is not allowed as a prefix or in xmlns');
     }
 
     public function testCase0259()
@@ -904,11 +811,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0279', '@datatype used with @datetime overrides default datatype');
     }
 
-    public function testCase0280()
-    {
-        $this->rdfaTestCase('0280', 'time element with @datetime an xsd:duration');
-    }
-
     public function testCase0281()
     {
         $this->rdfaTestCase('0281', 'time element with @datetime an xsd:gYear');
@@ -927,15 +829,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     public function testCase0284()
     {
         $this->rdfaTestCase('0284', 'time element not matching datatype but with explicit @datatype');
-    }
-
-    public function testCase0285()
-    {
-        $this->rdfaTestCase(
-            '0285',
-            'time element with @datetime an invalid datatype and in scope @lang generates plain literal '.
-            'with language'
-        );
     }
 
     public function testCase0287()
@@ -966,12 +859,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     public function testCase0293()
     {
         $this->rdfaTestCase('0293', 'Testing the \':\' character usage in a CURIE');
-    }
-
-    public function testCase0295()
-    {
-        $this->markTestSkipped("FIXME: Graph comparison isn't working");
-        $this->rdfaTestCase('0295', 'Benchmark test');
     }
 
     public function testCase0296()
@@ -1007,15 +894,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     public function testCase0302()
     {
         $this->rdfaTestCase('0302', '@typeof with different content types');
-    }
-
-    public function testCase0303()
-    {
-        $this->markTestSkipped("FIXME");
-        $this->rdfaTestCase(
-            '0303',
-            'For HTML+RDFa 1.1, remove term elements of @rel/@rev when on same element as @property'
-        );
     }
 
     public function testCase0311()
