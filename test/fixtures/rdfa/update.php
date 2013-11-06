@@ -13,7 +13,7 @@ require_once "EasyRdf.php";
 
 $RDFA_VERSION = 'rdfa1.1';
 $HOST_LANGUAGE = 'xhtml5';
-$REFERENCE_DISTILLER = 'http://rdf.greggkellogg.net/distiller?raw=true&fmt=ntriples&in_fmt=rdfa&uri=';
+$REFERENCE_DISTILLER = 'http://rdf.greggkellogg.net/distiller?format=ntriples&rdfagraph=output&uri=';
 $FIXTURE_DIR = dirname(__FILE__);
 
 EasyRdf_Namespace::set('test', 'http://www.w3.org/2006/03/test-description#');
