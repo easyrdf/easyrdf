@@ -641,7 +641,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0247()
     {
-        $this->markTestSkipped("FIXME: Graph comparison isn't working");
         $this->rdfaTestCase('0247', 'Multiple incomplete triples, RDFa 1.1version');
     }
 
@@ -803,7 +802,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0278()
     {
-        $this->rdfaTestCase('0278', '@datetime overrides @content');
+        $this->rdfaTestCase('0278', '@content overrides @datetime');
     }
 
     public function testCase0279()
