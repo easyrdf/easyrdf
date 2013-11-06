@@ -938,11 +938,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         );
     }
 
-    public function testCase0286()
-    {
-        $this->rdfaTestCase('0286', '@value attribute overrides @content');
-    }
-
     public function testCase0287()
     {
         $this->rdfaTestCase('0287', 'time element with @datetime an xsd:dateTime with TZ offset');
