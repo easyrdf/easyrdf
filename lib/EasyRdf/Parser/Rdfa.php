@@ -376,12 +376,15 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
             foreach (array('rel', 'rev') as $attr) {
                 if ($node->hasAttribute('property') and $node->hasAttribute($attr)) {
                     // Quick check in case there are no CURIEs to deal with.
-                    if (strpos($node->getAttribute($attr), ':') === FALSE) $node->removeAttribute($attr);
-                    else {
+                    if (strpos($node->getAttribute($attr), ':') === false) {
+                        $node->removeAttribute($attr);
+                    } else {
                         // Only keep CURIEs.
                         $curies = array();
                         foreach (preg_split("/\s+/", $node->getAttribute($attr)) as $token) {
-                            if (strpos($token, ':')) $curies[] = $token;
+                            if (strpos($token, ':')) {
+                                $curies[] = $token;
+                            }
                         }
                         $node->setAttribute($attr, implode(' ', $curies));
                     }
