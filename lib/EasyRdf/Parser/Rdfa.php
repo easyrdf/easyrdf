@@ -372,6 +372,25 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                 $lang = $node->getAttribute('lang');
             }
 
+            // HTML+RDFa 1.1: ignore rel and rev unless they contain CURIEs.
+            foreach (array('rel', 'rev') as $attr) {
+                if ($node->hasAttribute('property') and $node->hasAttribute($attr)) {
+                    // Quick check in case there are no CURIEs to deal with.
+                    if (strpos($node->getAttribute($attr), ':') === FALSE) $node->removeAttribute($attr);
+                    else {
+                        // Only keep CURIEs.
+                        $curies = array();
+                        foreach (preg_split("/\s+/", $node->getAttribute($attr)) as $token) {
+                            if (strpos($token, ':')) $curies[] = $token;
+                        }
+                        $node->setAttribute($attr, implode(' ', $curies));
+                    }
+                }
+            }
+
+            $rels = $this->processUriList($node, $context, $node->getAttribute('rel'));
+            $revs = $this->processUriList($node, $context, $node->getAttribute('rev'));
+
             if (!$node->hasAttribute('rel') and !$node->hasAttribute('rev')) {
                 // Step 5: Establish a new subject if no rel/rev
                 if ($property and is_null($content) and is_null($datatype)) {
@@ -438,8 +457,6 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     $subject = $context['object'];
                 }
 
-                $rels = $this->processUriList($node, $context, $node->getAttribute('rel'));
-                $revs = $this->processUriList($node, $context, $node->getAttribute('rev'));
             }
 
             # FIXME: better place for this?
@@ -530,7 +547,7 @@ class EasyRdf_Parser_Rdfa extends EasyRdf_Parser
                     foreach ($node->childNodes as $child) {
                         $value['value'] .= $child->C14N();
                     }
-                } elseif (is_null($datatype) and empty($rel) and empty($rev)) {
+                } elseif (is_null($datatype) and empty($rels) and empty($revs)) {
                     $value['value'] = $this->getUriAttribute(
                         $node,
                         $context,

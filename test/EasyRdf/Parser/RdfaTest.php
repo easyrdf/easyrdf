@@ -1011,7 +1011,6 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0303()
     {
-        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase(
             '0303',
             'For HTML+RDFa 1.1, remove term elements of @rel/@rev when on same element as @property'
