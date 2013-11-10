@@ -13,7 +13,7 @@ require_once "EasyRdf.php";
 
 $RDFA_VERSION = 'rdfa1.1';
 $HOST_LANGUAGE = 'xhtml5';
-$REFERENCE_DISTILLER = 'http://rdf.greggkellogg.net/distiller?format=ntriples&rdfagraph=output&uri=';
+$REFERENCE_DISTILLER = 'http://www.w3.org/2012/pyRdfa/extract?format=nt&rdfagraph=output&uri=';
 $FIXTURE_DIR = dirname(__FILE__);
 
 EasyRdf_Namespace::set('test', 'http://www.w3.org/2006/03/test-description#');
@@ -46,7 +46,13 @@ foreach ($manifest->allOfType('test:TestCase') as $test) {
     # Download the expected output
     $client->setUri($REFERENCE_DISTILLER . urlencode($inputUri));
     $response = $client->request();
-    file_put_contents("$FIXTURE_DIR/$id.nt", $response->getBody());
+    $lines = array_filter(preg_split("/[\r\n]+/", $response->getBody()));
+    if (count($lines)) {
+        $data = implode("\n", $lines)."\n";
+    } else {
+        $data = '';
+    }
+    file_put_contents("$FIXTURE_DIR/$id.nt", $data);
 
     # Output code for PHPUnit
     print "    public function testCase$id()\n";
