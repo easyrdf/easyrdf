@@ -55,7 +55,8 @@ foreach ($manifest->allOfType('test:TestCase') as $test) {
         print "        \$this->rdfaTestCase('$id', '$escapedTitle');\n";
     } else {
         print "        \$this->rdfaTestCase(\n";
-        print "            '$id', '$escapedTitle'\n";
+        print "            '$id',\n";
+        print "            '$escapedTitle'\n";
         print "        );\n";
     }
     print "    }\n\n";
