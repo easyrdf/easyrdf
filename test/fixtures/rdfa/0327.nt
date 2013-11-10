@@ -1,0 +1,6 @@
+_:a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/MusicGroup> .
+_:a <http://schema.org/name> "Jazz Band" .
+_:a <http://schema.org/size> "12" .
+_:b <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
+_:b <http://schema.org/band> _:a .
+_:b <http://schema.org/name> "Amanda" .

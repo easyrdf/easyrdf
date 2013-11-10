@@ -1,0 +1,6 @@
+_:a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+_:a <http://xmlns.com/foaf/0.1/name> "Amanda" .
+_:a <http://schema.org/name> "Amanda" .
+_:b <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
+_:b <http://xmlns.com/foaf/0.1/name> "Amanda" .
+_:b <http://schema.org/name> "Amanda" .

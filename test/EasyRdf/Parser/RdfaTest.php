@@ -921,6 +921,88 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
         $this->rdfaTestCase('0317', '@datatype inhibits new @property behavior');
     }
 
+    public function testCase0318()
+    {
+        $this->rdfaTestCase('0318', 'Setting @vocab to empty strings removes default vocabulary');
+    }
+
+    public function testCase0319()
+    {
+        $this->rdfaTestCase('0319', 'Relative @profile');
+    }
+
+    public function testCase0321()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0321', 'rdfa:copy to rdfa:Pattern');
+    }
+
+    public function testCase0322()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0322', 'rdfa:copy for additional property value');
+    }
+
+    public function testCase0323()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0323', 'Multiple references to rdfa:Pattern');
+    }
+
+    public function testCase0324()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0324', 'Multiple references to rdfa:Pattern');
+    }
+
+    public function testCase0325()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0325', 'Multiple references to rdfa:Pattern creating a resource');
+    }
+
+    public function testCase0326()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0326', 'rdfa:Pattern removed only if referenced');
+    }
+
+    public function testCase0327()
+    {
+        $this->markTestSkipped("FIXME");
+        $this->rdfaTestCase('0327', 'rdfa:Pattern chaining');
+    }
+
+    public function testCase0328()
+    {
+        $this->rdfaTestCase('0328', '@content overrides the content of the time element.');
+    }
+
+    public function testCase0329()
+    {
+        $this->rdfaTestCase('0329', 'Recursive triple generation ');
+    }
+
+    public function testCase0330()
+    {
+        $this->rdfaTestCase('0330', '@datatype overrides inherited @lang');
+    }
+
+    public function testCase0331()
+    {
+        $this->rdfaTestCase('0331', '@datatype overrides inherited @lang, with @content');
+    }
+
+    public function testCase0332()
+    {
+        $this->rdfaTestCase('0332', 'Empty @datatype doesn\'t override inherited @lang, with @content');
+    }
+
+    public function testCase0333()
+    {
+        $this->rdfaTestCase('0333', '@content overrides @datetime (with @datatype specified)');
+    }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
