@@ -1,0 +1,2 @@
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0318.xhtml> <http://www.w3.org/ns/rdfa#usesVocabulary> <http://xmlns.com/foaf/0.1/> .
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0318.xhtml#me> <http://xmlns.com/foaf/0.1/name> "Ivan Herman" .

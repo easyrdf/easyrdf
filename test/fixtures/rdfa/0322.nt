@@ -1,0 +1,4 @@
+<http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/0322.xhtml> <http://www.w3.org/ns/rdfa#usesVocabulary> <http://schema.org/> .
+_:a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
+_:a <http://schema.org/name> "Kellogg" .
+_:a <http://schema.org/name> "Gregg" .

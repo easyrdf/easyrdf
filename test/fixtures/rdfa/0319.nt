@@ -1,0 +1,2 @@
+<http://example.com/> <relative/iri#prop> "value" .
+<http://example.com/> <relative/uri#prop> "value" .

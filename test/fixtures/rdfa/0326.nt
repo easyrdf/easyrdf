@@ -1,0 +1,5 @@
+<http://example.com/#unreferenced> <http://schema.org/name> "Lola" .
+<http://example.com/#unreferenced> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/rdfa#Pattern> .
+<http://example.com/> <http://www.w3.org/ns/rdfa#usesVocabulary> <http://schema.org/> .
+<http://example.com/#referencing> <http://schema.org/name> "Bella" .
+<http://example.com/#referencing> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Person> .
