@@ -86,16 +86,6 @@ More Examples
 * [zend_framework.php](https://github.com/njh/easyrdf/blob/master/examples/zend_framework.php#slider) - Example of using Zend_Http_Client and Zend_Loader_Autoloader with EasyRdf
 
 
-Contributing to EasyRdf
--------------
-Contributions to the EasyRdf codebase are welcome using the usual Github pull request workflow. To run the code style checker:
-```
-make cs
-```
-You can run the PHP unit test suite with:
-```
-make test
-```
 
 Licensing
 ---------
