@@ -541,6 +541,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0198()
     {
+        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0198', 'datatype XMLLiteral with other embedded RDFa');
     }
 
@@ -641,6 +642,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0247()
     {
+        $this->markTestSkipped("FIXME");
         $this->rdfaTestCase('0247', 'Multiple incomplete triples, RDFa 1.1version');
     }
 
