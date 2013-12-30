@@ -10,6 +10,9 @@
     -->
     <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
     <exclude name="Squiz.Classes.ValidClassName"/>
+    
+    <!-- We implement more than one class per file in the tests -->
+    <exclude name="PSR1.Classes.ClassDeclaration.MultipleClasses" />
 
     <!-- FIXME: We currently use side-effects to register classes -->
     <exclude name="PSR1.Files.SideEffects.FoundWithSymbols" />
