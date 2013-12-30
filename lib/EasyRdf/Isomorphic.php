@@ -73,7 +73,7 @@ class EasyRdf_Isomorphic
      * @param  object EasyRdf_Graph  $graphB  The second graph to be compared
      * @return array bnode mapping from $graphA to $graphB
      */
-    public static function bijectionBetween($graphA, $graphB, $options = array())
+    public static function bijectionBetween($graphA, $graphB)
     {
         $bnodesA = array();
         $bnodesB = array();
