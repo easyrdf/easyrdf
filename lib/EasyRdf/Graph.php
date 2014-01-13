@@ -113,6 +113,17 @@ class EasyRdf_Graph
         return $graph;
     }
 
+    /**
+     * Change the Uri of the Graph
+     *
+     * @param  string  $uri     The new URI of the Graph
+     */
+    public function setGraphUri($uri)
+    {
+        $this->uri = $uri ;
+        $this->parsedUri = new EasyRdf_ParsedUri($uri);
+    }
+
     /** Get or create a resource stored in a graph
      *
      * If the resource did not previously exist, then a new resource will
