@@ -7,6 +7,9 @@
 				{
 						"name": "Anja Jentzsch",
 						"email": "anja@anjeve.de"
+				}, {
+						"name": "Daniel Kinzler",
+						"email": "daniel.kinzler@wikimedia.de"
 				}
 		],
 		"autoload": {
