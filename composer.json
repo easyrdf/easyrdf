@@ -3,15 +3,6 @@
 		"description": "EasyRdf Lite is a customized version of EasyRdf",
 		"homepage": "https://github.com/Wikidata/easyrdf_lite",
 		"license": "BSD",
-		"authors": [
-				{
-						"name": "Anja Jentzsch",
-						"email": "anja@anjeve.de"
-				}, {
-						"name": "Daniel Kinzler",
-						"email": "daniel.kinzler@wikimedia.de"
-				}
-		],
 		"autoload": {
 			"psr-0": {
 				"EasyRdf_": "./"
