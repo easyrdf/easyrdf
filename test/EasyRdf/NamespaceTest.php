@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2014 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
@@ -396,6 +396,31 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
     public function testShortenResource()
     {
         $this->assertSame('foaf:name', EasyRdf_Namespace::shorten($this->resource));
+    }
+
+    public function testShortenMostSpecific()
+    {
+        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');    
+        EasyRdf_Namespace::set('reptils', 'http://example.com/ns/animals/reptils/');    
+        EasyRdf_Namespace::set('snakes', 'http://example.com/ns/animals/reptils/snakes/');    
+
+        $this->assertSame(
+            'snakes:milksnake',
+            EasyRdf_Namespace::shorten('http://example.com/ns/animals/reptils/snakes/milksnake')
+        );
+    }
+
+    public function testShortenMostSpecific2()
+    {
+        EasyRdf_Namespace::set('snakes', 'http://example.com/ns/animals/reptils/snakes/');    
+        EasyRdf_Namespace::set('reptils', 'http://example.com/ns/animals/reptils/');    
+        EasyRdf_Namespace::set('cat', 'http://example.com/ns/animals/cat/');    
+        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');    
+
+        $this->assertSame(
+            'snakes:milksnake',
+            EasyRdf_Namespace::shorten('http://example.com/ns/animals/reptils/snakes/milksnake')
+        );
     }
 
     public function testShortenUnknown()

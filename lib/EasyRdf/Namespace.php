@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2014 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
@@ -39,7 +39,7 @@
  * A namespace registry and manipulation class.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 class EasyRdf_Namespace
@@ -96,6 +96,9 @@ class EasyRdf_Namespace
 
     /** Counter for numbering anonymous namespaces */
     private static $anonymousNamespaceCount = 0;
+
+    /** Keep track of is the namespaces need sorting */
+    private static $needsSorting = true;
 
     /**
       * Return all the namespaces registered
@@ -163,6 +166,7 @@ class EasyRdf_Namespace
 
         $prefix = strtolower($prefix);
         self::$namespaces[$prefix] = $long;
+        self::$needsSorting = true;
     }
 
     /**
@@ -234,6 +238,13 @@ class EasyRdf_Namespace
             self::delete('ns'.(self::$anonymousNamespaceCount-1));
             self::$anonymousNamespaceCount--;
         }
+
+        self::$needsSorting = true;
+    }
+
+    /** Private method to allow sorting by string length */
+    private static function compareStringLength($a, $b) {
+        return strlen($a) < strlen($b);
     }
 
     /**
@@ -263,6 +274,12 @@ class EasyRdf_Namespace
             throw new InvalidArgumentException(
                 "\$uri should be a string or EasyRdf_Resource"
             );
+        }
+
+        // Sort the namespaces, so that the longest (most secific) is used first
+        if (self::$needsSorting) {
+            uasort(self::$namespaces, array('self', 'compareStringLength'));
+            self::$needsSorting = false;
         }
 
         foreach (self::$namespaces as $prefix => $long) {
@@ -333,7 +350,7 @@ class EasyRdf_Namespace
                 "\$shortUri should be a string and cannot be null or empty"
             );
         }
-        
+
         if ($shortUri === 'a') {
             return self::$namespaces['rdf'] . 'type';
         } elseif (preg_match("/^(\w+?):([\w\-]+)$/", $shortUri, $matches)) {
