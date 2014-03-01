@@ -400,9 +400,9 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testShortenMostSpecific()
     {
-        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');    
-        EasyRdf_Namespace::set('reptils', 'http://example.com/ns/animals/reptils/');    
-        EasyRdf_Namespace::set('snakes', 'http://example.com/ns/animals/reptils/snakes/');    
+        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');
+        EasyRdf_Namespace::set('reptils', 'http://example.com/ns/animals/reptils/');
+        EasyRdf_Namespace::set('snakes', 'http://example.com/ns/animals/reptils/snakes/');
 
         $this->assertSame(
             'snakes:milksnake',
@@ -412,10 +412,10 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testShortenMostSpecific2()
     {
-        EasyRdf_Namespace::set('snakes', 'http://example.com/ns/animals/reptils/snakes/');    
-        EasyRdf_Namespace::set('reptils', 'http://example.com/ns/animals/reptils/');    
-        EasyRdf_Namespace::set('cat', 'http://example.com/ns/animals/cat/');    
-        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');    
+        EasyRdf_Namespace::set('snakes', 'http://example.com/ns/animals/reptils/snakes/');
+        EasyRdf_Namespace::set('reptils', 'http://example.com/ns/animals/reptils/');
+        EasyRdf_Namespace::set('cat', 'http://example.com/ns/animals/cat/');
+        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');
 
         $this->assertSame(
             'snakes:milksnake',

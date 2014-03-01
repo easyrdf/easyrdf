@@ -243,7 +243,8 @@ class EasyRdf_Namespace
     }
 
     /** Private method to allow sorting by string length */
-    private static function compareStringLength($a, $b) {
+    private static function compareStringLength($a, $b)
+    {
         return strlen($a) < strlen($b);
     }
 
