@@ -47,7 +47,7 @@ class JsonLdTest extends EasyRdf_TestCase
 
     public function setUp()
     {
-        if (PHP_MAJOR_VERSION < 5 or (PHP_MAJOR_VERSION >= 5 and PHP_MINOR_VERSION < 3)) {
+        if (PHP_MAJOR_VERSION < 5 or (PHP_MAJOR_VERSION == 5 and PHP_MINOR_VERSION < 3)) {
             $this->markTestSkipped("JSON-LD support requires PHP 5.3+");
         }
 
@@ -67,7 +67,24 @@ class JsonLdTest extends EasyRdf_TestCase
         $project->add('foaf:name', 'Project Name');
 
         $joe->add('foaf:project', $project);
+
+        EasyRdf_Namespace::set('dc', 'http://purl.org/dc/elements/1.1/');
+        EasyRdf_Namespace::set('ex', 'http://example.org/vocab#');
+        EasyRdf_Namespace::set('xsd', 'http://www.w3.org/2001/XMLSchema#');
+
+        $chapter=$this->graph->resource('http://example.org/library/the-republic#introduction', 'ex:Chapter');
+        $chapter->set('dc:description', new EasyRdf_Literal('An introductory chapter on The Republic.'));
+        $chapter->set('dc:title', new EasyRdf_Literal('The Introduction'));
+
+        $book=$this->graph->resource('http://example.org/library/the-republic','ex:Book');
+        $book->set('dc:creator', new EasyRdf_Literal( 'Plato'));
+        $book->set('dc:title', new EasyRdf_Literal( 'The Republic'));
+        $book->addResource('ex:contains', $chapter);
+
+        $library=$this->graph->resource('http://example.org/library','ex:Library');
+        $library->addResource('ex:contains', $book);
     }
+
 
     public function testSerialiseJsonLd()
     {
@@ -108,9 +125,9 @@ class JsonLdTest extends EasyRdf_TestCase
         $decoded = json_decode($string, true);
 
         $this->assertArrayNotHasKey('@graph', $decoded);
-        $this->assertInternalType('array', $decoded[1]["http://xmlns.com/foaf/0.1/age"][0]);
-        $this->assertSame(59, $decoded[1]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
-        $this->assertArrayNotHasKey('@type', $decoded[1]["http://xmlns.com/foaf/0.1/age"][0]);
+        $this->assertInternalType('array', $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]);
+        $this->assertSame(59, $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
+        $this->assertArrayNotHasKey('@type', $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]);
 
 
         // Expanded form + explicit types
@@ -118,11 +135,11 @@ class JsonLdTest extends EasyRdf_TestCase
         $decoded = json_decode($string, true);
 
         $this->assertArrayNotHasKey('@graph', $decoded);
-        $this->assertInternalType('array', $decoded[1]["http://xmlns.com/foaf/0.1/age"][0]);
-        $this->assertSame('59', $decoded[1]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
+        $this->assertInternalType('array', $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]);
+        $this->assertSame('59', $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
         $this->assertSame(
             'http://www.w3.org/2001/XMLSchema#integer',
-            $decoded[1]["http://xmlns.com/foaf/0.1/age"][0]['@type']
+            $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]['@type']
         );
 
 
@@ -131,7 +148,7 @@ class JsonLdTest extends EasyRdf_TestCase
         $decoded = json_decode($string, true);
 
         $this->assertArrayHasKey('@graph', $decoded);
-        $this->assertSame(59, $decoded['@graph'][1]["http://xmlns.com/foaf/0.1/age"]);
+        $this->assertSame(59, $decoded['@graph'][4]["http://xmlns.com/foaf/0.1/age"]);
 
 
         // Compact form + explicit types
@@ -143,17 +160,18 @@ class JsonLdTest extends EasyRdf_TestCase
         $decoded = json_decode($string, true);
 
         $this->assertArrayHasKey('@graph', $decoded);
-        $this->assertSame('59', $decoded['@graph'][1]["http://xmlns.com/foaf/0.1/age"]['@value']);
+        $this->assertSame('59', $decoded['@graph'][4]["http://xmlns.com/foaf/0.1/age"]['@value']);
         $this->assertSame(
             'http://www.w3.org/2001/XMLSchema#integer',
-            $decoded['@graph'][1]["http://xmlns.com/foaf/0.1/age"]['@type']
+            $decoded['@graph'][4]["http://xmlns.com/foaf/0.1/age"]['@type']
         );
 
 
         // Compact form + explicit types + context
         $ctx = new stdClass();
-        $ctx->foaf = 'http://xmlns.com/foaf/0.1/';
-        $ctx->xmls = 'http://www.w3.org/2001/XMLSchema#';
+        $ctx->{'@context'} = new stdClass();
+        $ctx->{'@context'}->foaf = 'http://xmlns.com/foaf/0.1/';
+        $ctx->{'@context'}->xmls = 'http://www.w3.org/2001/XMLSchema#';
 
         $string = $this->serialiser->serialise(
             $this->graph,
@@ -163,7 +181,33 @@ class JsonLdTest extends EasyRdf_TestCase
         $decoded = json_decode($string, true);
 
         $this->assertArrayHasKey('@graph', $decoded);
-        $this->assertSame('59', $decoded['@graph'][1]["foaf:age"]['@value']);
-        $this->assertSame('xmls:integer', $decoded['@graph'][1]["foaf:age"]['@type']);
+        $this->assertSame('59', $decoded['@graph'][4]["foaf:age"]['@value']);
+        $this->assertSame('xmls:integer', $decoded['@graph'][4]["foaf:age"]['@type']);
+
+        // Framing
+        // Maybe the context and original data could be packed in a fixture
+        $frame = (object) array(
+            '@context' => (object) array( 
+                'dc' => 'http://purl.org/dc/elements/1.1/',
+                'ex' => 'http://example.org/vocab#'
+            ),
+            '@type' => 'ex:Library',
+            'ex:contains' => (object) array(
+                '@type' => 'ex:Book',
+                'ex:contains' => (object) array(
+                    '@type' => 'ex:Chapter'
+                )
+            )
+        );
+        $string = $this->serialiser->serialise(
+            $this->graph,
+            'jsonld',
+            array('compact' => false, 'frame' => $frame)
+        );
+        $decoded = json_decode($string, true);
+        $this->assertArrayHasKey('@graph', $decoded);
+        $this->assertSame('http://example.org/library', $decoded['@graph'][0]['@id']);
+        $this->assertSame('http://example.org/library/the-republic', $decoded['@graph'][0]['ex:contains']['@id']);
+        $this->assertSame('http://example.org/library/the-republic#introduction', $decoded['@graph'][0]['ex:contains']['ex:contains']['@id']);
     }
 }
