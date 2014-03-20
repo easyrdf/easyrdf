@@ -20,10 +20,8 @@
         "irc": "irc://chat.freenode.net/easyrdf"
     },
     "require": {
-        "php": ">=5.2.8"
-    },
-    "suggest": {
-        "ml/json-ld": "dev-master"
+        "php": ">=5.2.8",
+        "ml/json-ld": "1.*"
     },
     "require-dev": {
         "phpunit/PHPUnit": ">=3.5.15",
