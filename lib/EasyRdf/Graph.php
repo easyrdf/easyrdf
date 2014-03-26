@@ -113,6 +113,17 @@ class EasyRdf_Graph
         return $graph;
     }
 
+    /**
+     * Change the Uri of the Graph
+     *
+     * @param  string  $uri     The new URI of the Graph
+     */
+    public function setGraphUri($uri)
+    {
+        $this->uri = $uri ;
+        $this->parsedUri = new EasyRdf_ParsedUri($uri);
+    }
+
     /** Get or create a resource stored in a graph
      *
      * If the resource did not previously exist, then a new resource will
@@ -414,6 +425,37 @@ class EasyRdf_Graph
     public function getUri()
     {
         return $this->uri;
+    }
+
+    /**
+     * Return a new graph containing the resource and associated bnodes
+     *
+     * @param  string  $uri      The URI of the resource
+     * @return EasyRdf_Graph
+     */
+    public function resourceGraph($uri)
+    {
+        $resource = $this->resource($uri);
+        $resourceGraph = new \EasyRdf_Graph($resource->getUri());
+        $resClass = $this->classForResource($uri);
+        $newResource = new $resClass($uri, $resourceGraph);
+
+        $copyProperties = function($resource, &$newResource) use ($resourceGraph, &$copyProperties) {
+            foreach($resource->properties() as $property) {
+                $values = $resource->all($property);
+                foreach($values as $value) {
+                    $newResource->add($property, $value);
+                    if($value instanceof \EasyRdf_Resource && $value->isBNode()) {
+                        $resClass = $this->classForResource($value->getUri());
+                        $bnode = new $resClass($value->getUri(), $resourceGraph);
+                        $copyProperties($value, $bnode);
+                    }
+                }
+            }
+        };
+
+        $copyProperties($resource, $newResource);
+        return $resourceGraph;
     }
 
     /** Check that a URI/resource parameter is valid, and convert it to a string

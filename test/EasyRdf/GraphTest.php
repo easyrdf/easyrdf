@@ -562,6 +562,24 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testResourceGraph()
+    {
+        $data = readFixture('foaf.ttl');
+        $graph = new EasyRdf_Graph('http://example.com/joe/foaf', $data);
+        $resourceGraph = $graph->resourceGraph('http://www.example.com/joe#me');
+        $matched = $resourceGraph->resourcesMatching('rdf:type');
+
+        $this->assertCount(2, $matched);
+        $this->assertSame(
+            'http://www.example.com/joe#me',
+            $matched[0]->getUri()
+        );
+        $this->assertSame(
+            '_:genid1',
+            $matched[1]->getUri()
+        );
+    }
+
     public function testGet()
     {
         $this->assertStringEquals(
