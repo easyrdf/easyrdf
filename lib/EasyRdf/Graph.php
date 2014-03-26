@@ -45,22 +45,22 @@
 class EasyRdf_Graph
 {
     /** The URI of the graph */
-    private $uri = null;
-    private $parsedUri = null;
+    protected $uri = null;
+    protected $parsedUri = null;
 
     /** Array of resources contained in the graph */
-    private $resources = array();
+    protected $resources = array();
 
-    private $index = array();
-    private $revIndex = array();
+    protected $index = array();
+    protected $revIndex = array();
 
     /** Counter for the number of bnodes */
-    private $bNodeCount = 0;
+    protected $bNodeCount = 0;
 
     /** Array of URLs that have been loaded into the graph */
-    private $loaded = array();
+    protected $loaded = array();
 
-    private $maxRedirects = 10;
+    protected $maxRedirects = 10;
 
 
     /**
