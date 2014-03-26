@@ -23,7 +23,7 @@
         "php": ">=5.2.8"
     },
     "suggest": {
-        "ml/json-ld": "dev-master"
+        "ml/json-ld": "~1.0"
     },
     "require-dev": {
         "phpunit/PHPUnit": "~3.5",

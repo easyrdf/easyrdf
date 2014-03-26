@@ -542,6 +542,16 @@ EasyRdf_Format::register(
 );
 
 EasyRdf_Format::register(
+    'jsonld',
+    'JSON-LD',
+    'http://www.w3.org/TR/json-ld/',
+    array(
+        'application/ld+json' => 1.0
+    ),
+    array('jsonld')
+);
+
+EasyRdf_Format::register(
     'ntriples',
     'N-Triples',
     'http://www.w3.org/TR/n-triples/',
@@ -668,6 +678,7 @@ EasyRdf_Format::register(
 */
 
 EasyRdf_Format::registerParser('json', 'EasyRdf_Parser_Json');
+EasyRdf_Format::registerParser('jsonld', 'EasyRdf_Parser_JsonLd');
 EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Ntriples');
 EasyRdf_Format::registerParser('php', 'EasyRdf_Parser_RdfPhp');
 EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_RdfXml');
