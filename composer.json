@@ -26,8 +26,8 @@
         "ml/json-ld": "dev-master"
     },
     "require-dev": {
-        "phpunit/PHPUnit": ">=3.5.15",
-        "squizlabs/php_codesniffer": ">=1.4.3",
+        "phpunit/PHPUnit": "~3.5",
+        "squizlabs/php_codesniffer": "~1.4.3",
         "sami/sami": "dev-master"
     },
     "replace": {
