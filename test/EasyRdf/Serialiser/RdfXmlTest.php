@@ -43,6 +43,12 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
     protected $serialiser = null;
     protected $graph = null;
 
+    public static function setUpBeforeClass()
+    {
+        EasyRdf_Namespace::resetNamespaces();
+        EasyRdf_Namespace::reset();
+    }
+
     public function setUp()
     {
         $this->graph = new EasyRdf_Graph();
@@ -51,6 +57,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
     public function tearDown()
     {
+        EasyRdf_Namespace::resetNamespaces();
         EasyRdf_Namespace::reset();
     }
 

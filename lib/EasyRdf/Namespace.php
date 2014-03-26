@@ -52,7 +52,7 @@ class EasyRdf_Namespace
      * With a few extras added.
      *
      */
-    private static $namespaces = array(
+    private static $initial_namespaces = array(
       'bibo' => 'http://purl.org/ontology/bibo/',
       'cc' => 'http://creativecommons.org/ns#',
       'cert' => 'http://www.w3.org/ns/auth/cert#',
@@ -92,6 +92,8 @@ class EasyRdf_Namespace
       'xsd' => 'http://www.w3.org/2001/XMLSchema#',
     );
 
+    private static $namespaces = null;
+
     private static $default = null;
 
     /** Counter for numbering anonymous namespaces */
@@ -104,7 +106,20 @@ class EasyRdf_Namespace
       */
     public static function namespaces()
     {
+        if (self::$namespaces === null) {
+            self::resetNamespaces();
+        }
+
         return self::$namespaces;
+    }
+
+    /**
+     * Resets list of namespaces to the one, which is provided by EasyRDF
+     * useful for tests, among other things
+     */
+    public static function resetNamespaces()
+    {
+        self::$namespaces = self::$initial_namespaces;
     }
 
     /**
@@ -128,8 +143,10 @@ class EasyRdf_Namespace
         }
 
         $prefix = strtolower($prefix);
-        if (array_key_exists($prefix, self::$namespaces)) {
-            return self::$namespaces[$prefix];
+        $namespaces = self::namespaces();
+
+        if (array_key_exists($prefix, $namespaces)) {
+            return $namespaces[$prefix];
         } else {
             return null;
         }
@@ -162,7 +179,11 @@ class EasyRdf_Namespace
         }
 
         $prefix = strtolower($prefix);
-        self::$namespaces[$prefix] = $long;
+
+        $namespaces = self::namespaces();
+        $namespaces[$prefix] = $long;
+
+        self::$namespaces = $namespaces;
     }
 
     /**
@@ -194,13 +215,15 @@ class EasyRdf_Namespace
         if (is_null($namespace) or $namespace === '') {
             self::$default = null;
         } elseif (preg_match("/^\w+$/", $namespace)) {
-            if (isset(self::$namespaces[$namespace])) {
-                self::$default = self::$namespaces[$namespace];
-            } else {
+            $namespaces = self::namespaces();
+
+            if (!isset($namespaces[$namespace])) {
                 throw new InvalidArgumentException(
                     "Unable to set default namespace to unknown prefix: $namespace"
                 );
             }
+
+            self::$default = $namespaces[$namespace];
         } else {
             self::$default = $namespace;
         }
@@ -220,6 +243,7 @@ class EasyRdf_Namespace
         }
 
         $prefix = strtolower($prefix);
+        self::namespaces();  // make sure, that self::$namespaces is initialized
         if (isset(self::$namespaces[$prefix])) {
             unset(self::$namespaces[$prefix]);
         }
@@ -265,7 +289,7 @@ class EasyRdf_Namespace
             );
         }
 
-        foreach (self::$namespaces as $prefix => $long) {
+        foreach (self::namespaces() as $prefix => $long) {
             if (substr($uri, 0, strlen($long)) == $long) {
                 return array($prefix, substr($uri, strlen($long)));
             }
@@ -335,7 +359,8 @@ class EasyRdf_Namespace
         }
         
         if ($shortUri === 'a') {
-            return self::$namespaces['rdf'] . 'type';
+            $namespaces = self::namespaces();
+            return $namespaces['rdf'] . 'type';
         } elseif (preg_match("/^(\w+?):([\w\-]+)$/", $shortUri, $matches)) {
             $long = self::get($matches[1]);
             if ($long) {
