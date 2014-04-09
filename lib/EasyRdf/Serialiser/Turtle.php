@@ -129,7 +129,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
             } elseif ($datatype == 'http://www.w3.org/2001/XMLSchema#double') {
                 return sprintf('%e', $value);
             } elseif ($datatype == 'http://www.w3.org/2001/XMLSchema#boolean') {
-                return sprintf('%s', $value ? 'true' : 'false');
+                return sprintf('%s', $value);
             } else {
                 $escaped = $this->serialiseResource($datatype, true);
                 return sprintf('%s^^%s', $quoted, $escaped);
