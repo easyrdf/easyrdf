@@ -187,6 +187,12 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
             'true',
             $this->serialiser->serialiseLiteral($literal)
         );
+
+        $literal = EasyRdf_Literal::create(false);
+        $this->assertSame(
+            'false',
+            $this->serialiser->serialiseLiteral($literal)
+        );
     }
 
     public function testSerialiseLiteralOtherXsd()
