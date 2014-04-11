@@ -70,4 +70,28 @@ class EasyRdf_Literal_DecimalTest extends EasyRdf_TestCase
             new EasyRdf_Literal_Decimal($literal);
         }
     }
+
+    public function testCanonicalisation()
+    {
+        $pairs = array(
+            "-1.23" => "-1.23",
+            "12678967.543233" => "12678967.543233",
+            "+100000.00" => "100000.0",
+            "210" => "210.0",
+            "3.0" => "3.0",
+            "-3.0" => "-3.0",
+            "+3.5" => "3.5",
+            "3" => "3.0",
+            ".3" => "0.3",
+            "3." => "3.0",
+            "0" => "0.0",
+            "-.3" => "-0.3",
+            "0003." => "3.0",
+            "3.000" => "3.0",
+        );
+
+        foreach ($pairs as $lexical => $canonical) {
+            $this->assertSame($canonical, EasyRdf_Literal_Decimal::canonicalise($lexical));
+        }
+    }
 }
