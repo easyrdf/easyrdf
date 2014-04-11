@@ -188,7 +188,7 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = EasyRdf_Literal::create(1.5);
         $this->assertClass('EasyRdf_Literal_Decimal', $literal);
-        $this->assertSame(1.5, $literal->getValue());
+        $this->assertSame('1.5', $literal->getValue());
         $this->assertSame('xsd:decimal', $literal->getDatatype());
         $this->assertSame(null, $literal->getLang());
     }
@@ -255,8 +255,8 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = EasyRdf_Literal::create('1', null, 'xsd:decimal');
         $this->assertClass('EasyRdf_Literal_Decimal', $literal);
-        $this->assertInternalType('float', $literal->getValue());
-        $this->assertSame(1.0, $literal->getValue());
+        $this->assertInternalType('string', $literal->getValue());
+        $this->assertSame('1.0', $literal->getValue());
         $this->assertSame('xsd:decimal', $literal->getDatatype());
         $this->assertSame(null, $literal->getLang());
     }
