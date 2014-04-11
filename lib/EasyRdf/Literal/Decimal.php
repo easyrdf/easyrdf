@@ -64,7 +64,8 @@ class EasyRdf_Literal_Decimal extends EasyRdf_Literal
         if (is_string($value)) {
             self::validate($value);
         } elseif (is_double($value) or is_int($value)) {
-            $value = strval($value);
+            $locale_data = localeconv();
+            $value = str_replace($locale_data['decimal_point'], '.', strval($value));
         } else {
             throw new UnexpectedValueException('EasyRdf_Literal_Decimal expects int/float/string as value');
         }

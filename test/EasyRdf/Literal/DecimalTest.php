@@ -49,6 +49,26 @@ class EasyRdf_Literal_DecimalTest extends EasyRdf_TestCase
         $this->assertSame('xsd:decimal', $literal->getDatatype());
     }
 
+    public function testConstruct15_bad_locale()
+    {
+        $current_locale = setlocale(LC_NUMERIC, 0);
+
+        setlocale(LC_NUMERIC, 'ru_RU');
+
+        try {
+            $literal = new EasyRdf_Literal_Decimal(1.5);
+            $this->assertInternalType('string', $literal->getValue());
+            $this->assertSame('1.5', $literal->getValue());
+            $this->assertSame(null, $literal->getLang());
+            $this->assertSame('xsd:decimal', $literal->getDatatype());
+
+            setlocale(LC_NUMERIC, 'ru_RU');
+        } catch (Exception $e) {
+            setlocale(LC_NUMERIC, 'ru_RU');
+            throw $e;
+        }
+    }
+
     public function testConstructString100()
     {
         $literal = new EasyRdf_Literal_Decimal('100.00');
