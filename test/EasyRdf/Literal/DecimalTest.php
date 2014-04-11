@@ -57,4 +57,17 @@ class EasyRdf_Literal_DecimalTest extends EasyRdf_TestCase
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:decimal', $literal->getDatatype());
     }
+
+    public function testValidStrings()
+    {
+        $valid_strings = array(
+            // examples taken from http://www.w3.org/TR/xmlschema-2/#decimal
+            "-1.23", "12678967.543233", "+100000.00", "210",
+            // examples taken from http://www.schemacentral.com/sc/xsd/t-xsd_decimal.html
+            "3.0", "-3.0", "+3.5", "3", ".3", "3.", "0", "-.3", "0003.", "3.000"
+        );
+        foreach ($valid_strings as $literal) {
+            new EasyRdf_Literal_Decimal($literal);
+        }
+    }
 }
