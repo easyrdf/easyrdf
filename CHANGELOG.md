@@ -1,3 +1,21 @@
+EasyRdf 0.x.x
+=============
+
+Major new features
+------------------
+* Framing support in `EasyRdf_Serialiser_JsonLd`
+* JSON-LD Parser
+
+API changes
+-----------
+* `EasyRdf_Literal_Decimal` returns strings, insted of floats to avoid losing precision (see issue #178)
+* `EasyRdf_Literal_Decimal` requires input-strings which conform to `xs:decimal` format
+
+Bug Fixes
+---------
+* Fix for Turtle serialisation of FALSE (see issue #179)
+
+
 EasyRdf 0.8.0
 =============
 
