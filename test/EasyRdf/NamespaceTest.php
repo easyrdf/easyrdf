@@ -116,15 +116,6 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         EasyRdf_Namespace::get(null);
     }
 
-    public function testGetEmptyNamespace()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$prefix should be a string and cannot be null or empty'
-        );
-        EasyRdf_Namespace::get('');
-    }
-
     public function testGetNonStringNamespace()
     {
         $this->setExpectedException(
@@ -172,10 +163,6 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testAddNamespaceShortEmpty()
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$prefix should be a string and cannot be null or empty'
-        );
         EasyRdf_Namespace::set('', 'http://purl.org/ontology/ko/');
     }
 
@@ -483,6 +470,20 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
             null,
             EasyRdf_Namespace::prefixOfUri('http://www.aelius.com/njh/')
         );
+    }
+
+    public function testGetEmptyNamespace()
+    {
+        EasyRdf_Namespace::set('', 'http://xmlns.com/foaf/0.1/name');
+
+        $url = EasyRdf_Namespace::get('');
+
+        $this->assertSame(
+            'http://xmlns.com/foaf/0.1/name',
+            $url
+        );
+
+
     }
 
     public function testPrefixOfUriNull()
