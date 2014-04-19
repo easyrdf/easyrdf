@@ -683,6 +683,35 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSerialiseEmptyPrefix()
+    {
+        \EasyRdf_Namespace::set('', 'http://foo/bar/');
+
+        $joe = $this->graph->resource(
+            'http://foo/bar/me',
+            'foaf:Person'
+        );
+
+        $joe->set('foaf:name', 'Joe Bloggs');
+        $joe->set(
+            'foaf:homepage',
+            $this->graph->resource('http://example.com/joe/')
+        );
+
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
+
+        $this->assertSame(
+            "@prefix : <http://foo/bar/> .\n".
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
+            "\n".
+            ":me\n".
+            "  a foaf:Person ;\n".
+            "  foaf:name \"Joe Bloggs\" ;\n".
+            "  foaf:homepage <http://example.com/joe/> .\n\n",
+            $turtle
+        );
+    }
+
     public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
