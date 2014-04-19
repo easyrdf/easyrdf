@@ -125,7 +125,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
             if ($datatype == 'http://www.w3.org/2001/XMLSchema#integer') {
                 return sprintf('%d', $value);
             } elseif ($datatype == 'http://www.w3.org/2001/XMLSchema#decimal') {
-                return sprintf('%g', $value);
+                return sprintf('%s', $value);
             } elseif ($datatype == 'http://www.w3.org/2001/XMLSchema#double') {
                 return sprintf('%e', $value);
             } elseif ($datatype == 'http://www.w3.org/2001/XMLSchema#boolean') {
