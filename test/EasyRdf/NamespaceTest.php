@@ -482,8 +482,6 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
             'http://xmlns.com/foaf/0.1/name',
             $url
         );
-
-
     }
 
     public function testPrefixOfUriNull()
