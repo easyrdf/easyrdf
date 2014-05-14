@@ -404,4 +404,42 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
+    
+    public function testSerialiseTriplesWithoutType()
+    {
+        $this->graph->add('http://example.com/joe', 'foaf:knows', 'http://example.com/bob');
+        $this->graph->addLiteral('http://example.com/joe', 'rdf:label', 'le Joe', 'fr-FR');
+        
+        $this->assertSame(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
+            "  <rdf:Description rdf:about=\"http://example.com/joe\">\n".
+            "    <foaf:knows>http://example.com/bob</foaf:knows>\n".
+            "    <rdf:label xml:lang=\"fr-FR\">le Joe</rdf:label>\n".
+            "  </rdf:Description>\n\n".
+            "</rdf:RDF>\n",
+            $this->serialiser->serialise($this->graph, 'rdfxml')
+        );
+    }
+    
+    public function testSerialiseTriplesWithType()
+    {
+        $this->graph->add('http://example.com/joe', 'rdf:type', 'foaf:Person');
+        $this->graph->add('http://example.com/joe', 'foaf:knows', 'http://example.com/bob');
+        $this->graph->addLiteral('http://example.com/joe', 'rdf:label', 'le Joe', 'fr-FR');
+        
+        $this->assertSame(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
+            "  <rdf:Description rdf:about=\"http://example.com/joe\">\n".
+            "    <rdf:type>foaf:Person</rdf:type>\n".
+            "    <foaf:knows>http://example.com/bob</foaf:knows>\n".
+            "    <rdf:label xml:lang=\"fr-FR\">le Joe</rdf:label>\n".
+            "  </rdf:Description>\n\n".
+            "</rdf:RDF>\n",
+            $this->serialiser->serialise($this->graph, 'rdfxml')
+        );
+    }
 }
