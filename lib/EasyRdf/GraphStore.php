@@ -107,7 +107,7 @@ class EasyRdf_GraphStore
         $mimeType = $formatObj->getDefaultMimeType();
 
         $graphUri = $this->parsedUri->resolve($uriRef)->toString();
-        $dataUrl = $this->urlForGraph($graphUri);
+        $dataUrl = $dataUrl==="default" ? $dataUrl : $this->urlForGraph($graphUri);
 
         $client = EasyRdf_Http::getDefaultHttpClient();
         $client->resetParameters(true);
