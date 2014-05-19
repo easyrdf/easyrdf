@@ -14,6 +14,7 @@ API changes
 Bug Fixes
 ---------
 * Fix for Turtle serialisation of FALSE (see issue #179)
+* Fix for edge-case in RDF/XML serialisation (see issue #186)
 
 
 EasyRdf 0.8.0
