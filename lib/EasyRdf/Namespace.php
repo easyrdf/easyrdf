@@ -214,7 +214,7 @@ class EasyRdf_Namespace
     {
         if (is_null($namespace) or $namespace === '') {
             self::$default = null;
-        } elseif (preg_match("/^\w+$/", $namespace)) {
+        } elseif (preg_match('/^\w+$/', $namespace)) {
             $namespaces = self::namespaces();
 
             if (!isset($namespaces[$namespace])) {
