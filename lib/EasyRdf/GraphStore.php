@@ -135,10 +135,10 @@ class EasyRdf_GraphStore
      * The $format parameter can be given to specify the serialisation
      * used to send the graph data to the graph store.
      *
-     * @param object EasyRdfGraph $graph The URI of graph desired
-     * @param string $uriRef The URI of graph to be replaced
-     * @param string $format The format of the data to send to the graph store
-     * @return object EasyRdf_Http_Response The response from the graph store
+     * @param EasyRdf_Graph|string $graph  The URI of graph desired
+     * @param string               $uriRef The URI of graph to be replaced
+     * @param string               $format The format of the data to send to the graph store
+     * @return EasyRdf_Http_Response The response from the graph store
      */
     public function replace($graph, $uriRef = null, $format = 'ntriples')
     {
@@ -156,9 +156,9 @@ class EasyRdf_GraphStore
      * The $format parameter can be given to specify the serialisation
      * used to send the graph data to the graph store.
      *
-     * @param object EasyRdfGraph $graph The URI of graph desired
-     * @param string $uriRef The URI of graph to be added to
-     * @param string $format The format of the data to send to the graph store
+     * @param EasyRdf_Graph|string $graph  The URI of graph desired
+     * @param string               $uriRef The URI of graph to be added to
+     * @param string               $format The format of the data to send to the graph store
      * @return object EasyRdf_Http_Response The response from the graph store
      */
     public function insert($graph, $uriRef = null, $format = 'ntriples')
@@ -172,7 +172,9 @@ class EasyRdf_GraphStore
      * a URI relative to the URI of the graph store.
      *
      * @param string $uriRef The URI of graph to be added to
-     * @return object EasyRdf_Http_Response The response from the graph store
+     *
+     * @throws EasyRdf_Exception
+     * @return EasyRdf_Http_Response The response from the graph store
      */
     public function delete($uriRef)
     {
