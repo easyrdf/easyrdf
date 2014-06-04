@@ -91,13 +91,35 @@ class EasyRdf_Format
      */
     public static function getHttpAcceptHeader($extraTypes = array())
     {
-        $accept = $extraTypes;
+        $accept = array();
         foreach (self::$formats as $format) {
             if ($format->parserClass and count($format->mimeTypes) > 0) {
                 $accept = array_merge($accept, $format->mimeTypes);
             }
         }
-        arsort($accept, SORT_NUMERIC);
+
+        // Merge the existing and $extraTypes, giving extraTypes priority
+        // when the quality factor (q) is equal.
+        $merge_function = function(array $a = array(), array $b = array()) {
+            $result = array();
+            arsort($a, SORT_NUMERIC);
+            arsort($b, SORT_NUMERIC);
+            while(!empty($a) || !empty($b)) {
+                if (empty($a)) {
+                    $result[key($b)] = array_shift($b);
+                } elseif (empty($b)) {
+                    $result[key($a)] = array_shift($a);
+                } else {
+                    if (current($a) < current($b)) {
+                        $result[key($b)] = array_shift($b);
+                    } else {
+                        $result[key($a)] = array_shift($a);
+                    }
+                }
+            }
+            return $result;
+        };
+        $accept = $merge_function($extraTypes, $accept);
 
         $acceptStr='';
         foreach ($accept as $type => $q) {
