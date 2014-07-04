@@ -44,6 +44,12 @@ require_once 'EasyRdf/Serialiser/NtriplesArray.php';
 class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
 {
     protected $parser = null;
+    /** @var EasyRdf_Parser_Turtle */
+    protected $turtleParser = null;
+    /** @var EasyRdf_Parser_Ntriples */
+    protected $ntriplesParser = null;
+
+    protected $baseUri;
 
     public function setUp()
     {
@@ -485,5 +491,23 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
             "Turtle Parse Error: unexpected end of file while reading long string on line 7, column 1"
         );
         $this->parseTurtle("turtle/bad-14.ttl");
+    }
+
+    /**
+     * https://github.com/njh/easyrdf/issues/195
+     */
+    public function testIssue195()
+    {
+        $filename = 'turtle/gh195-dbpedia-ja-gauguin.ttl';
+
+        $graph = new EasyRdf_Graph();
+        $triple_count = $this->turtleParser->parse(
+            $graph,
+            readFixture($filename),
+            'turtle',
+            $this->baseUri . basename($filename)
+        );
+
+        $this->assertEquals(6, $triple_count);
     }
 }
