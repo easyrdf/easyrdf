@@ -2,6 +2,3 @@
 @prefix dbpedia:    <http://dbpedia.org/resource/> .
 @prefix ns2:    <http://ja.dbpedia.org/resource/> .
 dbpedia:Paul_Gauguin    owl:sameAs  ns2:ポール・ゴーギャン .
-@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
-@prefix dbpedia-owl:    <http://dbpedia.org/ontology/> .
-dbpedia:Paul_Gauguin    dbpedia-owl:birthDate   "1848-06-06+02:00"^^xsd:date .

@@ -508,6 +508,6 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
             $this->baseUri . basename($filename)
         );
 
-        $this->assertEquals(6, $triple_count);
+        $this->assertEquals(1, $triple_count);
     }
 }
