@@ -18,6 +18,7 @@ Bug Fixes
 * Fix for Turtle serialisation of FALSE (see issue #179)
 * Fix for edge-case in RDF/XML serialisation (see issue #186)
 * SPARQL-queries against endpoints which have query-params in their URL (see issue #184)
+* Float values are properly handled if locale with "other" separator is active
 
 
 EasyRdf 0.8.0
