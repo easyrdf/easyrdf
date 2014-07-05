@@ -193,6 +193,22 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
         $this->assertSame(null, $literal->getLang());
     }
 
+    public function testCreateWithFloatInBadLocale()
+    {
+        $current_locale = setlocale(LC_NUMERIC, 0);
+        setlocale(LC_NUMERIC, 'ru_RU');
+
+        try {
+            $literal = EasyRdf_Literal::create(1.5);
+            $this->assertSame('1.5', $literal->getValue());
+
+            setlocale(LC_NUMERIC, $current_locale);
+        } catch (Exception $e) {
+            setlocale(LC_NUMERIC, $current_locale);
+            throw $e;
+        }
+    }
+
     public function testCreateWithBooleanTrue()
     {
         $literal = EasyRdf_Literal::create(true);
