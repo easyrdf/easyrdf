@@ -89,6 +89,8 @@ class EasyRdf_Literal_DecimalTest extends EasyRdf_TestCase
         foreach ($valid_strings as $literal) {
             new EasyRdf_Literal_Decimal($literal);
         }
+
+        $this->assertTrue(true);
     }
 
     public function testCanonicalisation()
