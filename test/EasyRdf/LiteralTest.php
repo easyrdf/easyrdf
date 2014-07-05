@@ -187,9 +187,9 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     public function testCreateWithFloat()
     {
         $literal = EasyRdf_Literal::create(1.5);
-        $this->assertClass('EasyRdf_Literal_Decimal', $literal);
+        $this->assertClass('EasyRdf_Literal', $literal);
         $this->assertSame('1.5', $literal->getValue());
-        $this->assertSame('xsd:decimal', $literal->getDatatype());
+        $this->assertSame('xsd:double', $literal->getDatatype());
         $this->assertSame(null, $literal->getLang());
     }
 

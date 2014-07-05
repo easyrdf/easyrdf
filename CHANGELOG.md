@@ -11,6 +11,7 @@ API changes
 * `EasyRdf_Literal_Decimal` returns strings, insted of floats to avoid losing precision (see issue #178)
 * `EasyRdf_Literal_Decimal` requires input-strings which conform to `xs:decimal` format
 * `EasyRdf_GraphStore` supports operations over default graph now
+* `EasyRdf_Literal` typed as `xs:double` is used for PHP-floats instead of `EasyRdf_Literal_Decimal`
 
 Bug Fixes
 ---------
