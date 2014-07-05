@@ -238,7 +238,7 @@ class EasyRdf_Format
         }
 
         // First try and identify by the filename
-        if ($filename and preg_match("/\.(\w+)$/", $filename, $matches)) {
+        if ($filename and preg_match('/\.(\w+)$/', $filename, $matches)) {
             foreach (self::$formats as $format) {
                 if (in_array($matches[1], $format->extensions)) {
                     return $format;
@@ -248,19 +248,19 @@ class EasyRdf_Format
 
         // Then try and guess by the first 1024 bytes of content
         $short = substr($data, 0, 1024);
-        if (preg_match("/^\s*\{/", $short)) {
+        if (preg_match('/^\s*\{/', $short)) {
             return self::getFormat('json');
-        } elseif (preg_match("/<rdf:/i", $short)) {
+        } elseif (preg_match('/<rdf:/i', $short)) {
             return self::getFormat('rdfxml');
-        } elseif (preg_match("/@prefix\s|@base\s/", $short)) {
+        } elseif (preg_match('/@prefix\s|@base\s/', $short)) {
             return self::getFormat('turtle');
-        } elseif (preg_match("/^\s*<.+> <.+>/m", $short)) {
+        } elseif (preg_match('/^\s*<.+> <.+>/m', $short)) {
             return self::getFormat('ntriples');
-        } elseif (preg_match("|http://www.w3.org/2005/sparql-results|", $short)) {
+        } elseif (preg_match('|http://www.w3.org/2005/sparql-results|', $short)) {
             return self::getFormat('sparql-xml');
-        } elseif (preg_match("/\WRDFa\W/i", $short)) {
+        } elseif (preg_match('/\WRDFa\W/i', $short)) {
             return self::getFormat('rdfa');
-        } elseif (preg_match("/<!DOCTYPE html|<html/i", $short)) {
+        } elseif (preg_match('/<!DOCTYPE html|<html/i', $short)) {
             # We don't support any other microformats embedded in HTML
             return self::getFormat('rdfa');
         } else {

@@ -758,7 +758,7 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
     protected function cdataState6($d)
     {
         if ($s = $this->getParentS()) {
-            if (isset($s['o_xml_data']) || preg_match("/[\n\r]/", $d) || trim($d)) {
+            if (isset($s['o_xml_data']) || preg_match('/[\n\r]/', $d) || trim($d)) {
                 $d = htmlspecialchars($d, ENT_NOQUOTES);
                 $s['o_xml_data'] = isset($s['o_xml_data']) ? $s['o_xml_data'] . $d : $d;
             }

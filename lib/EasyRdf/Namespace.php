@@ -298,7 +298,7 @@ class EasyRdf_Namespace
         if ($createNamespace) {
             // Try and create a new namespace
             # FIXME: check the valid characters for an XML element name
-            if (preg_match("/^(.+?)([\w\-]+)$/", $uri, $matches)) {
+            if (preg_match('/^(.+?)([\w\-]+)$/', $uri, $matches)) {
                 $prefix = "ns".(self::$anonymousNamespaceCount++);
                 self::set($prefix, $matches[1]);
                 return array($prefix, $matches[2]);
@@ -361,12 +361,12 @@ class EasyRdf_Namespace
         if ($shortUri === 'a') {
             $namespaces = self::namespaces();
             return $namespaces['rdf'] . 'type';
-        } elseif (preg_match("/^(\w+?):([\w\-]+)$/", $shortUri, $matches)) {
+        } elseif (preg_match('/^(\w+?):([\w\-]+)$/', $shortUri, $matches)) {
             $long = self::get($matches[1]);
             if ($long) {
                 return $long . $matches[2];
             }
-        } elseif (preg_match("/^(\w+)$/", $shortUri) and isset(self::$default)) {
+        } elseif (preg_match('/^(\w+)$/', $shortUri) and isset(self::$default)) {
             return self::$default . $shortUri;
         }
 

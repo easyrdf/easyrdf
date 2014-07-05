@@ -129,7 +129,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             }
         }
 
-        if (preg_match("/^(@|prefix$|base$)/i", $directive)) {
+        if (preg_match('/^(@|prefix$|base$)/i', $directive)) {
             $this->parseDirective($directive);
             $this->skipWSC();
             // SPARQL BASE and PREFIX lines do not end in .

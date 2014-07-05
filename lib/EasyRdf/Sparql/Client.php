@@ -214,7 +214,7 @@ class EasyRdf_Sparql_Client
         if ($silent) {
             $query .= " SILENT";
         }
-        if (preg_match("/^all|named|default$/i", $graphUri)) {
+        if (preg_match('/^all|named|default$/i', $graphUri)) {
             $query .= " $graphUri";
         } else {
             $query .= " GRAPH <$graphUri>";

@@ -71,7 +71,7 @@ class EasyRdf_Serialiser_Turtle extends EasyRdf_Serialiser
      */
     public static function quotedString($value)
     {
-        if (preg_match("/[\t\n\r]/", $value)) {
+        if (preg_match('/[\t\n\r]/', $value)) {
             $escaped = str_replace(array('\\', '"""'), array('\\\\', '\\"""'), $value);
             return '"""'.$escaped.'"""';
         } else {
