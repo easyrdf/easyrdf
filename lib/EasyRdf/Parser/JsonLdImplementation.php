@@ -87,7 +87,7 @@ class EasyRdf_Parser_JsonLd extends EasyRdf_Parser
 
             $predicate = (string) $quad->getProperty();
 
-            if ($quad->getObject() instanceof ML\IRI\IRI) {
+            if ($quad->getObject() instanceof \ML\IRI\IRI) {
                 $object = array(
                     'type' => 'uri',
                     'value' => (string) $quad->getObject()
