@@ -13,6 +13,10 @@ API changes
 * `EasyRdf_GraphStore` supports operations over default graph now
 * `EasyRdf_Literal` typed as `xs:double` is used for PHP-floats instead of `EasyRdf_Literal_Decimal`
 
+Enhancements
+------------
+* Synced list of default namespaces against [RDFa Core Initial Context](http://www.w3.org/2011/rdfa-context/rdfa-1.1) rev.2014-01-17
+
 Bug Fixes
 ---------
 * Fix for Turtle serialisation of FALSE (see issue #179)
