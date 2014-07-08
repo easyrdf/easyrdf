@@ -49,7 +49,7 @@ class EasyRdf_Literal_DecimalTest extends EasyRdf_TestCase
         $this->assertSame('xsd:decimal', $literal->getDatatype());
     }
 
-    public function testConstruct15_bad_locale()
+    public function testConstruct15BadLocale()
     {
         $current_locale = setlocale(LC_NUMERIC, 0);
 
