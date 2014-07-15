@@ -60,6 +60,10 @@ class EasyRdf_Parser_JsonLdTest extends EasyRdf_TestCase
             $this->markTestSkipped("JSON-LD support requires PHP 5.3+");
         }
 
+        if (!class_exists('\ML\JsonLD\JsonLD')) {
+            $this->markTestSkipped('"ml/json-ld" dependency is not installed');
+        }
+
         $this->graph = new EasyRdf_Graph();
         $this->parser = new EasyRdf_Parser_JsonLd();
     }
