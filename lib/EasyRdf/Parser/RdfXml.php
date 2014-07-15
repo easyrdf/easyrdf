@@ -270,6 +270,10 @@ class EasyRdf_Parser_RdfXml extends EasyRdf_Parser
         $this->state = 1;
         if ($t !== $this->rdf.'RDF') {
             $this->startState1($t, $a);
+        } else {
+            if (isset($a[$this->xml.'base'])) {
+                $this->xBase = $this->xBase->resolve($a[$this->xml.'base']);
+            }
         }
     }
 
