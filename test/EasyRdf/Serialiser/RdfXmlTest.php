@@ -449,4 +449,34 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
+
+    public function testSerialiseEmptyPrefix()
+    {
+        \EasyRdf_Namespace::set('', 'http://foo/bar/');
+
+        $joe = $this->graph->resource(
+            'http://foo/bar/me',
+            'foaf:Person'
+        );
+
+        $joe->set('foaf:name', 'Joe Bloggs');
+        $joe->set(
+            'foaf:homepage',
+            $this->graph->resource('http://example.com/joe/')
+        );
+
+        $rdf = $this->serialiser->serialise($this->graph, 'rdfxml');
+
+        $this->assertSame(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
+            "  <foaf:Person rdf:about=\"http://foo/bar/me\">\n".
+            "    <foaf:name>Joe Bloggs</foaf:name>\n".
+            "    <foaf:homepage rdf:resource=\"http://example.com/joe/\"/>\n".
+            "  </foaf:Person>\n\n".
+            "</rdf:RDF>\n",
+            $rdf
+        );
+    }
 }
