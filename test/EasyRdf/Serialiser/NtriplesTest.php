@@ -221,6 +221,29 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSerialiseEmptyPrefix()
+    {
+        \EasyRdf_Namespace::set('', 'http://foo/bar/');
+
+        $joe = $this->graph->resource(
+            'http://foo/bar/me'
+        );
+
+        $joe->set('foaf:name', 'Joe Bloggs');
+        $joe->set(
+            'foaf:homepage',
+            $this->graph->resource('http://example.com/joe/')
+        );
+
+        $ntriples = $this->serialiser->serialise($this->graph, 'ntriples');
+
+        $this->assertSame(
+            "<http://foo/bar/me> <http://xmlns.com/foaf/0.1/name> \"Joe Bloggs\" .\n" .
+            "<http://foo/bar/me> <http://xmlns.com/foaf/0.1/homepage> <http://example.com/joe/> .\n",
+            $ntriples
+        );
+    }
+
     public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(

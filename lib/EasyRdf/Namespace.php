@@ -136,7 +136,7 @@ class EasyRdf_Namespace
       */
     public static function get($prefix)
     {
-        if (!is_string($prefix) or $prefix === null or $prefix === '') {
+        if (!is_string($prefix) or $prefix === null) {
             throw new InvalidArgumentException(
                 "\$prefix should be a string and cannot be null or empty"
             );
@@ -166,7 +166,7 @@ class EasyRdf_Namespace
       */
     public static function set($prefix, $long)
     {
-        if (!is_string($prefix) or $prefix === null or $prefix === '') {
+        if (!is_string($prefix) or $prefix === null) {
             throw new InvalidArgumentException(
                 "\$prefix should be a string and cannot be null or empty"
             );
@@ -363,7 +363,7 @@ class EasyRdf_Namespace
                 "\$shortUri should be a string and cannot be null or empty"
             );
         }
-        
+
         if ($shortUri === 'a') {
             $namespaces = self::namespaces();
             return $namespaces['rdf'] . 'type';
