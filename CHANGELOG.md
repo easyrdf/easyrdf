@@ -16,6 +16,7 @@ API changes
 Enhancements
 ------------
 * Synced list of default namespaces against [RDFa Core Initial Context](http://www.w3.org/2011/rdfa-context/rdfa-1.1) rev.2014-01-17
+* Added support for empty prefixes (see issue #183)
 
 Bug Fixes
 ---------
