@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Http;
 
 /**
  * EasyRdf
@@ -38,18 +39,15 @@
 /**
  * Test helper
  */
-require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
+use EasyRdf\TestCase;
 
-/**
- * PHPUnit test case
- */
-require_once 'PHPUnit/Framework/TestCase.php';
+require_once realpath(__DIR__ . '/../../') . '/TestHelper.php';
 
-class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
+class EasyRdf_Http_ResponseTest extends TestCase
 {
     public function testGetVersion()
     {
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             readFixture('http_response_200')
         );
         $this->assertSame(
@@ -61,7 +59,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
 
     public function testGetMessage()
     {
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             readFixture('http_response_200')
         );
         $this->assertSame(
@@ -73,7 +71,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
 
     public function testGetBody()
     {
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             readFixture('http_response_200')
         );
         $this->assertSame(
@@ -85,26 +83,26 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
     public function testInvalidResponse()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             'Failed to parse HTTP response.'
         );
-        $response = EasyRdf_Http_Response::fromString('foobar');
+        $response = Response::fromString('foobar');
     }
 
     public function testInvalidStatusLine()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             'Failed to parse HTTP response status line.'
         );
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             "HTTP1.0 200 OK\r\nConnection: close\r\n\r\nBody"
         );
     }
 
     public function testGetBodyChunked()
     {
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             readFixture('http_response_200_chunked')
         );
         $this->assertSame(
@@ -116,10 +114,10 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
     public function testInvalidChunkedBody()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             'Failed to decode chunked body in HTTP response.'
         );
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\nINVALID"
         );
         $response->getBody();
@@ -127,7 +125,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
 
     public function test200Ok()
     {
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             readFixture('http_response_200')
         );
 
@@ -152,7 +150,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
 
     public function test404IsError()
     {
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             readFixture('http_response_404')
         );
 
@@ -177,7 +175,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
 
     public function test500isError()
     {
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             readFixture('http_response_500')
         );
 
@@ -202,7 +200,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
 
     public function test300isRedirect()
     {
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             readFixture('http_response_302')
         );
 
@@ -232,7 +230,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
 
     public function testGetHeaders()
     {
-        $response = EasyRdf_Http_Response::fromString(
+        $response = Response::fromString(
             readFixture('http_response_200')
         );
 
@@ -262,7 +260,7 @@ class EasyRdf_Http_ResponseTest extends EasyRdf_TestCase
     public function testAsString()
     {
         $responseStr = readFixture('http_response_404');
-        $response = EasyRdf_Http_Response::fromString($responseStr);
+        $response = Response::fromString($responseStr);
 
         $this->assertSame(
             strtolower($responseStr),
