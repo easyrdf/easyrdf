@@ -87,6 +87,12 @@ class JsonLdTest extends EasyRdf_TestCase
         $library->addResource('ex:contains', $book);
     }
 
+    public function tearDown()
+    {
+        parent::tearDown();
+        EasyRdf_Namespace::resetNamespaces();
+        EasyRdf_Namespace::reset();
+    }
 
     public function testSerialiseJsonLd()
     {

@@ -49,6 +49,13 @@ class EasyRdf_Serialiser_NtriplesTest extends EasyRdf_TestCase
         $this->serialiser = new EasyRdf_Serialiser_Ntriples();
     }
 
+    public function tearDown()
+    {
+        parent::tearDown();
+        EasyRdf_Namespace::resetNamespaces();
+        EasyRdf_Namespace::reset();
+    }
+
     public function testSerialiseValueUriResource()
     {
         $this->assertSame(

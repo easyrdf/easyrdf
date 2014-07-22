@@ -52,7 +52,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function tearDown()
     {
         EasyRdf_Namespace::reset();
-        EasyRdf_Namespace::delete('example');
+        EasyRdf_Namespace::resetNamespaces();
     }
 
     public function testEscapeIri()

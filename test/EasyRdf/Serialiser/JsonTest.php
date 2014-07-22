@@ -49,6 +49,13 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
         $this->serialiser = new EasyRdf_Serialiser_Json();
     }
 
+    public function tearDown()
+    {
+        parent::tearDown();
+        EasyRdf_Namespace::resetNamespaces();
+        EasyRdf_Namespace::reset();
+    }
+
     public function testSerialiseJson()
     {
         \EasyRdf_Namespace::set('', 'http://foo/bar/');
