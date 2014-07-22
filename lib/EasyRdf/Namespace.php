@@ -172,10 +172,36 @@ class EasyRdf_Namespace
             );
         }
 
-        if (preg_match('/\W/', $prefix)) {
-            throw new InvalidArgumentException(
-                "\$prefix should only contain alpha-numeric characters"
-            );
+        if ($prefix !== '') {
+            // prefix        ::= Name minus ":"                   // see: http://www.w3.org/TR/REC-xml-names/#NT-NCName
+            // Name          ::= NameStartChar (NameChar)*        // see: http://www.w3.org/TR/REC-xml/#NT-Name
+            // NameStartChar ::= ":" | [A-Z] | "_" | [a-z] | [#xC0-#xD6] | [#xD8-#xF6] | [#xF8-#x2FF] | [#x370-#x37D] |
+            //                   [#x37F-#x1FFF] | [#x200C-#x200D] | [#x2070-#x218F] | [#x2C00-#x2FEF] | [#x3001-#xD7FF] |
+            //                   [#xF900-#xFDCF] | [#xFDF0-#xFFFD] | [#x10000-#xEFFFF]
+            // NameChar      ::= NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]
+
+            $_name_start_char =
+                'A-Z_a-z\xc0-\xD6\xd8-\xf6\xf8-\xff\x{0100}-\x{02ff}\x{0370}-\x{037d}' .
+                '\x{037F}-\x{1FFF}\x{200C}-\x{200D}\x{2070}-\x{218F}\x{2C00}-\x{2FEF}\x{3001}-\x{D7FF}' .
+                '\x{F900}-\x{FDCF}\x{FDF0}-\x{FFFD}\x{10000}-\x{EFFFF}';
+
+            $_name_char =
+                $_name_start_char .
+                '\-.0-9\xb7\x{0300}-\x{036f}\x{203f}-\x{2040}';
+
+            $regex = "#^[{$_name_start_char}]{1}[{$_name_char}]{0,}$#u";
+
+            $match_result = preg_match($regex, $prefix);
+
+            if ($match_result === false) {
+                throw new LogicException('regexp error');
+            }
+
+            if ($match_result === 0) {
+                throw new InvalidArgumentException(
+                    "\$prefix should match RDFXML-QName specification. got: {$prefix}"
+                );
+            }
         }
 
         if (!is_string($long) or $long === null or $long === '') {

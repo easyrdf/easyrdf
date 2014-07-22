@@ -510,4 +510,33 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
 
         $this->assertEquals(1, $triple_count);
     }
+
+    /**
+     * https://github.com/njh/easyrdf/issues/185
+     */
+    public function testIssue185()
+    {
+        $filename = 'turtle/gh185-dash-in-prefix.ttl';
+
+        $graph = new EasyRdf_Graph();
+        $triple_count = $this->turtleParser->parse(
+            $graph,
+            readFixture($filename),
+            'turtle',
+            $this->baseUri . basename($filename)
+        );
+
+        $this->assertEquals(1, $triple_count);
+
+        $data = $graph->toRdfPhp();
+
+        foreach ($data as $resource => $properties) {
+            $this->assertEquals('http://example.org/foo-bar#example', $resource);
+
+            foreach ($properties as $k => $v) {
+                $this->assertEquals('http://example.org/foo-bar#baz', $k);
+                $this->assertEquals('test', $v[0]['value']);
+            }
+        }
+    }
 }

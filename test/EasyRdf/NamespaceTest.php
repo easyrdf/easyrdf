@@ -175,11 +175,11 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         EasyRdf_Namespace::set(array(), 'http://purl.org/ontology/ko/');
     }
 
-    public function testAddNamespaceShortNonAlphanumeric()
+    public function testAddNamespaceShortInvalid()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$prefix should only contain alpha-numeric characters'
+            'should match RDFXML-QName specification'
         );
         EasyRdf_Namespace::set('/K.O/', 'http://purl.org/ontology/ko/');
     }
@@ -620,5 +620,14 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
             '$shortUri should be a string and cannot be null or empty'
         );
         EasyRdf_Namespace::expand($this);
+    }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/185
+     */
+    public function testIssue185DashInPrefix()
+    {
+        EasyRdf_Namespace::set('foo-bar', 'http://example.org/dash#');
+        $this->assertSame('foo-bar:baz', EasyRdf_Namespace::shorten('http://example.org/dash#baz'));
     }
 }

@@ -26,6 +26,7 @@ Bug Fixes
 * SPARQL-queries against endpoints which have query-params in their URL (see issue #184)
 * Float values are properly handled if locale with "other" separator is active
 * Fixed parsing of Turtle-documents with higher utf-8 characters (see issue #195)
+* Namespace-prefixes are compliant with RDFXML QName spec (see issue #185)
 
 
 EasyRdf 0.8.0
