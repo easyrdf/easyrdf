@@ -27,6 +27,7 @@ Bug Fixes
 * Float values are properly handled if locale with "other" separator is active
 * Fixed parsing of Turtle-documents with higher utf-8 characters (see issue #195)
 * Namespace-prefixes are compliant with RDFXML QName spec (see issue #185)
+* `EasyRdf_Namespace` won't generate "short" names with "/" in them anymore (see issue #115)
 
 
 EasyRdf 0.8.0

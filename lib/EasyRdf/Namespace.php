@@ -322,9 +322,18 @@ class EasyRdf_Namespace
         }
 
         foreach (self::namespaces() as $prefix => $long) {
-            if (substr($uri, 0, strlen($long)) == $long) {
-                return array($prefix, substr($uri, strlen($long)));
+            if (substr($uri, 0, strlen($long)) !== $long) {
+                continue;
             }
+
+            $local_part = substr($uri, strlen($long));
+
+            if (strpos($local_part, '/') !== false) {
+                // we can't have '/' in local part
+                continue;
+            }
+
+            return array($prefix, $local_part);
         }
 
         if ($createNamespace) {
