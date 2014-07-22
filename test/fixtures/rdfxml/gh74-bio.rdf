@@ -1,0 +1,1869 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:dct="http://purl.org/dc/terms/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:ov="http://open.vocab.org/terms/"
+  xmlns:vann="http://purl.org/vocab/vann/"
+  xmlns:msg0="http://web.resource.org/cc/"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:status="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+  xmlns:label="http://purl.org/net/vocab/2004/03/label#">
+
+  <rdf:Description rdf:about="http://vocab.org/bio/0.1/.rdf">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+    <rdf:type rdf:resource="http://purl.org/dc/dcmitype/Text"/>
+    <foaf:primaryTopic rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <dct:hasFormat rdf:resource="http://vocab.org/bio/0.1/.html"/>
+    <dct:hasFormat rdf:resource="http://vocab.org/bio/0.1/.json"/>
+    <dct:hasFormat rdf:resource="http://vocab.org/bio/0.1/.turtle"/>
+    <foaf:topic rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://vocab.org/bio/0.1/.html">
+    <rdf:type rdf:resource="http://purl.org/dc/dcmitype/Text"/>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+    <dc:format>text/html</dc:format>
+    <rdfs:label>HTML</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://vocab.org/bio/0.1/.json">
+    <rdf:type rdf:resource="http://purl.org/dc/dcmitype/Text"/>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+    <dc:format>application/json</dc:format>
+    <rdfs:label>JSON</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://vocab.org/bio/0.1/.turtle">
+    <rdf:type rdf:resource="http://purl.org/dc/dcmitype/Text"/>
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Document"/>
+    <dc:format>text/plain</dc:format>
+    <rdfs:label>Turtle</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <dct:title xml:lang="en">BIO: A vocabulary for biographical information</dct:title>
+    <dct:date rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2010-05-10</dct:date>
+    <dct:abstract xml:lang="en">This document describes a vocabulary for describing biographical information about people, both living and dead. </dct:abstract>
+    <dct:description rdf:parseType="Literal"><div>
+        
+        <p>The BIO vocabulary contains terms useful for finding out more about people and their backgrounds and has some cross-over into genealogical information. 
+        The approach taken is to describe a person's life as a series of interconnected key events, around which other information can be woven. 
+        This vocabulary defines the event framework and supplies a set of core event types that cover many use cases, but it is expected that it 
+        will be extended in other vocabularies to suit their needs. The intention of this vocabulary is to describe biographical events of people 
+        and this intention carries through to the definitions of the properties and classes which are person-centric rather than neutral. For example 
+        the Employment event puts the person being employed as the principal agent in the event rather than the employer.</p>
+        <p>The BIO vocabulary defines a number of core classes and properties for describing biographical information: </p>
+        <p><figure><img src="/bio/core-classes.png"></img><br></br>Figure: Biography Vocabulary Core Classes (<a href="http://vocab.org/bio/core-classes.png">PNG version</a>, <a href="http://vocab.org/bio/core-classes.svg">SVG version</a>)</figure></p>
+        <p>At its heart the BIO vocabulary is concerned with people, their relationships and the events in their lives. Together these can be
+        used to build up a narrative of a person's life and their interactions with other people, organizations and the world around them. Events bound intervals
+        of time that may be associated with particular relationships between people and groups or organisations. Many different types of life event are
+        defined in this vocabulary including the obvious Birth, Marriage and Death but also Coronation, Performance and even Murder. These events are not intended
+        to be fully comprehensive but are representative of the types of events associated with biographical material. Currently the relationship segment of the
+        vocabulary is underspecified with only a generic Relationship class available. It is envisaged that many types of relationship such as families, employments
+        and ownerships will be specified in the future.</p>
+        <p>The sequence of events and intervals build a timeline of history against which people and their relationships can be placed. The aim is
+        to enable simple forms of genealogical reasoning such as determining whether a child was born out of wedlock or the location of a family
+        given the fact one of their children was attending a particular school. Events are ordered in time by relating them to one another and to abstract
+        intervals of time:</p>
+        <p><figure><img src="/bio/timelines.png"></img><br></br>Figure: Biography Vocabulary Timelines(<a href="http://vocab.org/bio/timelines.png">PNG version</a>, <a href="http://vocab.org/bio/timelines.svg">SVG version</a>)</figure></p>
+        <p>Please see <a href="https://github.com/iand/vocab-bio">https://github.com/iand/vocab-bio</a> for the master version of this vocabulary.</p>
+      </div></dct:description>
+    <dct:identifier>http://purl.org/vocab/bio/0.1/schema</dct:identifier>
+    <dct:creator rdf:resource="http://iandavis.com/id/me"/>
+    <dct:creator>David Galbraith</dct:creator>
+    <dct:rights>Copyright © 2002-2010 Ian Davis and David Galbraith</dct:rights>
+    <dct:issued rdf:datatype="http://www.w3.org/2001/XMLSchema#date">2003-03-07</dct:issued>
+    <skos:historyNote rdf:nodeID="mor53ce47ed48f54"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed49109"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4920b"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed49262"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed492b8"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4930f"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed49365"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed493bc"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed48fb1"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed49006"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed4905d"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed490b3"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed4915e"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed491b5"/>
+    <ov:discussionList rdf:resource="http://lists.foaf-project.org/mailman/listinfo/foaf-dev"/>
+    <vann:preferredNamespaceUri>http://purl.org/vocab/bio/0.1/</vann:preferredNamespaceUri>
+    <vann:preferredNamespacePrefix>bio</vann:preferredNamespacePrefix>
+    <vann:example rdf:resource="http://purl.org/vocab/bio/examples/1"/>
+    <vann:termGroup rdf:resource="http://purl.org/vocab/bio/0.1/termgroup1"/>
+    <vann:termGroup rdf:resource="http://purl.org/vocab/bio/0.1/termgroup2"/>
+    <vann:termGroup rdf:resource="http://purl.org/vocab/bio/0.1/termgroup3"/>
+    <vann:termGroup rdf:resource="http://purl.org/vocab/bio/0.1/termgroup4"/>
+    <vann:termGroup rdf:resource="http://purl.org/vocab/bio/0.1/termgroup5"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://iandavis.com/id/me">
+    <rdf:type rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <foaf:name>Ian Davis</foaf:name>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed48f54">
+    <rdf:value>Added keywords property</rdf:value>
+    <dct:date>2003-07-28</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed48fb1">
+    <rdf:value>Added Creative Commons license</rdf:value>
+    <dct:date>2004-03-05</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49006">
+    <rdf:value>Added examples</rdf:value>
+    <dct:date>2005-04-01</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4905d">
+    <rdf:value>Minor changes to improve publishing process</rdf:value>
+    <dct:date>2009-05-19</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed490b3">
+    <rdf:value>Added change history</rdf:value>
+    <dct:date>2010-04-20</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49109">
+    <rdf:value>Major expansion of properties and classes</rdf:value>
+    <dct:date>2010-05-10</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4915e">
+    <rdf:value>Batch of revisions based on community feedback</rdf:value>
+    <dct:date>2010-05-20</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed491b5">
+    <rdf:value>Expanded description and added diagrams</rdf:value>
+    <dct:date>2011-06-14</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4920b">
+    <rdf:value>Added biography property</rdf:value>
+    <dct:date>2010-06-05</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49262">
+    <rdf:value>Added subproperty and equivalent property relations for bio:father, bio:mother and bio:child</rdf:value>
+    <dct:date>2010-06-06</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed492b8">
+    <rdf:value>Added bio:Formation and bio:Disbanding events</rdf:value>
+    <dct:date>2011-06-10</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4930f">
+    <rdf:value>Added bio:Performance event</rdf:value>
+    <dct:date>2011-06-10</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49365">
+    <rdf:value>Added bio:Relationship class and properties</rdf:value>
+    <dct:date>2011-06-14</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed493bc">
+    <rdf:value>Added properties for Birth and Death Event types, motivated by JSON serialisations of RDF</rdf:value>
+    <dct:date>2011-06-14</dct:date>
+    <dct:creator>Alexandre Passant</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://lists.foaf-project.org/mailman/listinfo/foaf-dev">
+    <rdfs:label>FOAF-DEV mailing list</rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="file:///var/www/vocab.org/www/htdocs/bio/">
+    <rdf:type rdf:resource="http://web.resource.org/cc/Work"/>
+    <msg0:license rdf:resource="http://creativecommons.org/licenses/by/1.0/"/>
+    <dct:type rdf:resource="http://purl.org/dc/dcmitype/Text"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://creativecommons.org/licenses/by/1.0/">
+    <rdf:type rdf:resource="http://web.resource.org/cc/License"/>
+    <msg0:permits rdf:resource="http://web.resource.org/cc/Reproduction"/>
+    <msg0:permits rdf:resource="http://web.resource.org/cc/Distribution"/>
+    <msg0:permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/>
+    <msg0:requires rdf:resource="http://web.resource.org/cc/Notice"/>
+    <msg0:requires rdf:resource="http://web.resource.org/cc/Attribution"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://xmlns.com/foaf/0.1/Person">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:equivalentClass rdf:nodeID="mor53ce47ed4946c"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4946c">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <owl:intersectionOf rdf:nodeID="mor53ce47ed494b6"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed494b6">
+    <rdf:first rdf:nodeID="mor53ce47ed49507"/>
+    <rdf:rest rdf:nodeID="mor53ce47ed4955e"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49507">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    <owl:onProperty rdf:resource="http://purl.org/vocab/bio/0.1/father"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4955e">
+    <rdf:first rdf:nodeID="mor53ce47ed495a0"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed495a0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    <owl:onProperty rdf:resource="http://purl.org/vocab/bio/0.1/mother"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Event">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Event</rdfs:label>
+    <rdfs:comment xml:lang="en">An event is an occurrence that brings about a change in the state of affairs for one or more people and/or other agents. Events are assumed to occur over a period of time and may not have precise start and end points.</rdfs:comment>
+    <vann:usageNote xml:lang="en">This class is intended to describe biographical events, i.e. events in the life of a person.</vann:usageNote>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subClassOf rdf:resource="http://purl.org/NET/c4dm/event.owl#Event"/>
+    <rdfs:subClassOf rdf:resource="http://sw.opencyc.org/2009/04/07/concept/en/Event"/>
+    <rdfs:subClassOf rdf:resource="http://linkedevents.org/ontology/Event"/>
+    <rdfs:subClassOf rdf:resource="http://purl.org/dc/dcmitype/Event"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed49628"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed49730"/>
+    <status:term_status>testing</status:term_status>
+    <skos:changeNote rdf:nodeID="mor53ce47ed49683"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed496d8"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49628">
+    <rdf:value>Made equivalent to cyc:Event</rdf:value>
+    <dct:date>2010-05-04</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49683">
+    <rdf:value>Marked as a stable term</rdf:value>
+    <dct:date>2010-05-04</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed496d8">
+    <rdf:value>Marked as testing status</rdf:value>
+    <dct:date>2010-05-20</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49730">
+    <rdf:value>Removed subclass of owl-time ProperInteval</rdf:value>
+    <dct:date>2010-05-20</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/IndividualEvent">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Individual Event</rdfs:label>
+    <rdfs:comment xml:lang="en">A type of event that is principally about a single person, group or organization. Other agents may be involved but the event is most significant for the principal agent.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:subClassOf rdf:nodeID="mor53ce47ed497a2"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed497a2">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:cardinality>
+    <owl:onProperty rdf:resource="http://purl.org/vocab/bio/0.1/principal"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/GroupEvent">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Group Event</rdfs:label>
+    <rdfs:comment xml:lang="en">A type of event that is principally about one or more agents and their partnership. Other agents may be involved but the event is most significant for the partner agent.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:subClassOf rdf:nodeID="mor53ce47ed49813"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49813">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Restriction"/>
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:minCardinality>
+    <owl:onProperty rdf:resource="http://purl.org/vocab/bio/0.1/partner"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Birth">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Birth</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person entering into life.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>testing</status:term_status>
+    <skos:changeNote rdf:nodeID="mor53ce47ed49889"/>
+    <vann:example rdf:nodeID="mor53ce47ed498de"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49889">
+    <rdf:value>Marked as testing</rdf:value>
+    <dct:date>2010-05-04</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed498de">
+    <rdf:type rdf:resource="http://open.vocab.org/terms/SchemaExample"/>
+    <rdfs:label>The birth of Albert Einstein</rdfs:label>
+    <rdfs:comment rdf:parseType="Literal">
+        <pre><code>_:e a bio:Birth 
+    ; dc:date "1879-03-14"
+    ; bio:principal &lt;http://dbpedia.org/resource/Albert_Einstein&gt;
+    ; bio:parent &lt;http://dbpedia.org/resource/Pauline_Koch&gt;
+    ; bio:parent &lt;http://dbpedia.org/resource/Hermann_Einstein&gt;
+    ; bio:place &lt;http://dbpedia.org/resource/Ulm&gt;
+    .</code></pre>
+</rdfs:comment>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Marriage">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Marriage</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of creating uniting the participants into a new family unit, sometimes accompanied by a formal wedding ceremony. This is intended to cover a broad range of marriages including those given formal legal standing, common-law, or by convention. It is not restricted to marriages of two people of the opposite gender, but also includes polygamous and same-sex unions.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/GroupEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>stable</status:term_status>
+    <skos:changeNote rdf:nodeID="mor53ce47ed4994e"/>
+    <owl:equivalentClass rdf:resource="http://sw.opencyc.org/2009/04/07/concept/en/WeddingEvent_Generic"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed499a6"/>
+    <vann:example rdf:nodeID="mor53ce47ed499fc"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4994e">
+    <rdf:value>Marked as a stable term</rdf:value>
+    <dct:date>2010-05-04</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed499a6">
+    <rdf:value>Made equivalent to cyc:WeddingEvent_Generic</rdf:value>
+    <dct:date>2010-05-04</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed499fc">
+    <rdf:type rdf:resource="http://open.vocab.org/terms/SchemaExample"/>
+    <rdfs:label>The marriage of Albert Einstein and Mileva Marić</rdfs:label>
+    <rdfs:comment rdf:parseType="Literal">
+        <pre><code>_:e a bio:Marriage 
+    ; dc:date "1903"
+    ; bio:partner &lt;http://dbpedia.org/resource/Albert_Einstein&gt;
+    ; bio:partner &lt;http://dbpedia.org/resource/Mileva_Mari%C4%87&gt;
+    ; bio:place &lt;http://dbpedia.org/resource/Bern&gt;
+    .</code></pre>
+</rdfs:comment>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Death">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Death</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person's life ending.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>stable</status:term_status>
+    <skos:changeNote rdf:nodeID="mor53ce47ed49a6b"/>
+    <vann:example rdf:nodeID="mor53ce47ed49ac0"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49a6b">
+    <rdf:value>Marked as a stable term</rdf:value>
+    <dct:date>2010-05-04</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49ac0">
+    <rdf:type rdf:resource="http://open.vocab.org/terms/SchemaExample"/>
+    <rdfs:label>The death of Albert Einstein</rdfs:label>
+    <rdfs:comment rdf:parseType="Literal">
+        <pre><code>_:e a bio:Death 
+    ; dc:date "1955-04-18"
+    ; bio:principal &lt;http://dbpedia.org/resource/Albert_Einstein&gt;
+    ; bio:place &lt;http://dbpedia.org/resource/Princeton,_New_Jersey&gt;
+    .</code></pre>
+</rdfs:comment>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Annulment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Annulment</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of declaring a marriage void from the beginning as though it never existed.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/GroupEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Divorce">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Divorce</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of legally dissolving a marriage.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/GroupEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+    <vann:example rdf:nodeID="mor53ce47ed49b4d"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49b4d">
+    <rdf:type rdf:resource="http://open.vocab.org/terms/SchemaExample"/>
+    <rdfs:label>The divorce of Albert Einstein and Mileva Marić</rdfs:label>
+    <rdfs:comment rdf:parseType="Literal">
+        <pre><code>_:e a bio:Divorce 
+    ; dc:date "1919-02-14"
+    ; bio:partner &lt;http://dbpedia.org/resource/Albert_Einstein&gt;
+    ; bio:partner &lt;http://dbpedia.org/resource/Mileva_Mari%C4%87&gt;
+    ; bio:place &lt;http://dbpedia.org/resource/Zurich&gt;
+    .</code></pre>
+</rdfs:comment>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Funeral">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Funeral</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of marking a person's death with a ceremony.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Burial">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Burial</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of interring the remains of a person's body into the ground.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Cremation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Cremation</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of disposing of the remains of a person's body by fire.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+    <vann:example rdf:nodeID="mor53ce47ed49be4"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49be4">
+    <rdf:type rdf:resource="http://open.vocab.org/terms/SchemaExample"/>
+    <rdfs:label>The cremation of Albert Einstein</rdfs:label>
+    <rdfs:comment rdf:parseType="Literal">
+        <pre><code>_:e a bio:Cremation 
+    ; dc:date "1955-04-18"
+    ; bio:principal &lt;http://dbpedia.org/resource/Albert_Einstein&gt;
+    ; bio:place &lt;http://dbpedia.org/resource/Princeton,_New_Jersey&gt;
+    .</code></pre>
+</rdfs:comment>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Adoption">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Adoption</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of creating of a legal parent/child relationship that does not exist biologically.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Baptism">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Baptism</rdfs:label>
+    <rdfs:comment xml:lang="en">The ceremonial event held to admit a person to membership of a Christian church.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <skos:changeNote rdf:nodeID="mor53ce47ed49c70"/>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49c70">
+    <rdf:value>Revised comment, replacing 'the Christian church' with 'a Christian church' </rdf:value>
+    <dct:date>2010-05-20</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/BarMitzvah">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">BarMitzvah</rdfs:label>
+    <rdfs:comment xml:lang="en">The ceremonial event held when a Jewish boy reaches age 13.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/BasMitzvah">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">BasMitzvah</rdfs:label>
+    <rdfs:comment xml:lang="en">The ceremonial event held when a Jewish girl reaching age 13, also known as &quot;Bat Mitzvah.&quot;</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Execution">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Execution</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person being deliberately killed as punishment.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/Death"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Assassination">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Assassination</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person being deliberately targeted and killed.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/Murder"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Murder">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Murder</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person being killed unlawfully with intent by the killer.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/Death"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Ordination">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Ordination</rdfs:label>
+    <rdfs:comment xml:lang="en">The ceremonial event held when a person receives authority to act in religious matters.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Naturalization">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Naturalization</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person obtaining citizenship. Note that the place the naturalization event occurs at may be different from the state the person is obtaining citizenship of. </rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+    <vann:example rdf:nodeID="mor53ce47ed49d67"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49d67">
+    <rdf:type rdf:resource="http://open.vocab.org/terms/SchemaExample"/>
+    <rdfs:label>Albert Einstein becoming a citizen of the United States</rdfs:label>
+    <rdfs:comment rdf:parseType="Literal">
+        <pre><code>_:e a bio:Emigration 
+    ; dc:date "1940"
+    ; bio:principal &lt;http://dbpedia.org/resource/Albert_Einstein&gt;
+    ; bio:state &lt;http://dbpedia.org/resource/United_States&gt;
+    .</code></pre>
+</rdfs:comment>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Emigration">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Emigration</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person leaving their homeland with the intent of residing elsewhere.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+    <vann:example rdf:nodeID="mor53ce47ed49de7"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49de7">
+    <rdf:type rdf:resource="http://open.vocab.org/terms/SchemaExample"/>
+    <rdfs:label>Albert Einstein emigrating to the United States</rdfs:label>
+    <rdfs:comment rdf:parseType="Literal">
+        <pre><code>_:e a bio:Emigration 
+    ; dc:date "1933"^^xsd:gYear
+    ; bio:principal &lt;http://dbpedia.org/resource/Albert_Einstein&gt;
+    ; bio:state &lt;http://dbpedia.org/resource/United_States&gt;
+    .</code></pre>
+</rdfs:comment>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Enrolment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Enrolment</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person initiating attendence to a school or other place of learning.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Graduation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Graduation</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person being awarded educational diplomas or degrees.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+    <vann:example rdf:nodeID="mor53ce47ed49e77"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed49e77">
+    <rdf:type rdf:resource="http://open.vocab.org/terms/SchemaExample"/>
+    <rdfs:label>Albert Einstein receiving his Doctorate from the University of Zurich</rdfs:label>
+    <rdfs:comment rdf:parseType="Literal">
+        <pre><code>_:e a bio:Graduation 
+    ; dc:date "1905"^^xsd:gYear
+    ; bio:principal &lt;http://dbpedia.org/resource/Albert_Einstein&gt;
+    ; bio:organization &lt;http://dbpedia.org/resource/University_of_Zurich&gt;
+    .</code></pre>
+</rdfs:comment>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Imprisonment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Imprisonment</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person being detained in a jail or prison.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-04</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Employment">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Employment</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person entering an occupational relationship with an employer.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/PositionChange">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Change of Position</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person changing the position they hold with an employer.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/NameChange">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Change of Name</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person changing their name.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Promotion">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Promotion</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person changing the position they hold with an employer to one with more importance or responsibility.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/PositionChange"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Demotion">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Demotion</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person changing the position they hold with an employer to one with less importance or responsibility.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/PositionChange"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Retirement">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Retirement</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person exiting an occupational relationship with an employer after a qualifying time period. In many cultures retirement is expected and even required once the person reaches a particular age.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Resignation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Resignation</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person voluntarily giving up or quitting their office or position.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Dismissal">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Dismissal</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person involuntarily giving up their office or position. Dismissal is often perceived to be the employee's fault and may be considered disgraceful.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Redundancy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Redundancy</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person involuntarily giving up an office or position that is no longer needed. Redundancy is usually perceived to be the employer's fault and is usually due to conditions outside of the employee's control.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Investiture">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Investiture</rdfs:label>
+    <rdfs:comment xml:lang="en">The ceremonial event of a person taking a public office or honour.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Inauguration">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Inauguration</rdfs:label>
+    <rdfs:comment xml:lang="en">The ceremonial event marking the beginning of a person's term of office as a leader.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Accession">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Accession</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a person succeeding to the right to hold regal power. This event is often automatic on the death of the previous monarch and is usually followed by a coronation event.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Coronation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Coronation</rdfs:label>
+    <rdfs:comment xml:lang="en">The ceremonial event of a person being invested with regal power to become a monarch.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Formation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Formation</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a group or organization coming into being.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2011-06-10</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Disbanding">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Disbanding</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of a group or organization being disbanded.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2011-06-10</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Performance">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Performance</rdfs:label>
+    <rdfs:comment xml:lang="en">The event of an individual or a group of performers performing. Examples include concerts, plays, recitals, recordings, busking etc.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://purl.org/vocab/bio/0.1/GroupEvent"/>
+    <owl:equivalentClass rdf:resource="http://purl.org/ontology/mo/Performance"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2011-06-12</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Interval">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Interval</rdfs:label>
+    <rdfs:comment xml:lang="en">A extended interval of time related to a particular state of affairs, such as the lifespan of a person or a period of employment.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2006/time#ProperInterval"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/Relationship">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:label xml:lang="en">Agent Relationship</rdfs:label>
+    <rdfs:comment xml:lang="en">A particular type of connection existing between people, groups or organizations related to or having dealings with each other.</rdfs:comment>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <owl:equivalentClass rdf:resource="http://purl.org/vocab/relationship/Relationship"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2011-06-14</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/olb">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">One-line bio</rdfs:label>
+    <rdfs:comment xml:lang="en">A one-line biography of the person.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4a036"/>
+    <status:term_status>stable</status:term_status>
+    <skos:changeNote rdf:nodeID="mor53ce47ed4a095"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a036">
+    <rdf:value>Declared that this is a datatype property</rdf:value>
+    <dct:date>2010-05-03</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a095">
+    <rdf:value>Marked as a stable term</rdf:value>
+    <dct:date>2010-05-04</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/keywords">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:label xml:lang="en">Key Words</rdfs:label>
+    <rdfs:comment xml:lang="en">A comma delimited list of key words that describe a person.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/elements/1.1/subject"/>
+    <dct:issued>2003-07-28</dct:issued>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4a11c"/>
+    <status:term_status>stable</status:term_status>
+    <skos:changeNote rdf:nodeID="mor53ce47ed4a179"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a11c">
+    <rdf:value>Declared that this is a datatype property</rdf:value>
+    <dct:date>2010-05-03</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a179">
+    <rdf:value>Marked as a stable term</rdf:value>
+    <dct:date>2010-05-04</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/biography">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Biography</rdfs:label>
+    <rdfs:comment xml:lang="en">An extended description or account of someone's life.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-06-05</dct:issued>
+    <vann:usageNote rdf:parseType="Literal"><p>It is expected that the value of this property is either a literal formatted with HTML markup or a pointer to an HTML document.</p></vann:usageNote>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/date">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Date</rdfs:label>
+    <label:plural xml:lang="en">Dates</label:plural>
+    <rdfs:comment xml:lang="en">The date at which an event occurred.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/dc/elements/1.1/date"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <vann:usageNote rdf:parseType="Literal"><p>The date should be formatted as specified in <a href="http://www.w3.org/TR/NOTE-datetime">ISO8601</a>.
+    For example: 2003-03-15 corresponds to the 15th March 2003, and 2003-03-15T13:21-05:00 corresponds to 15th March 2003, 8:21 am, US Eastern Standard Time.</p></vann:usageNote>
+    <skos:changeNote rdf:nodeID="mor53ce47ed4a210"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed4a26d"/>
+    <status:term_status>stable</status:term_status>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a210">
+    <rdf:value>Added a plural label</rdf:value>
+    <dct:date>2010-05-03</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a26d">
+    <rdf:value>Marked as a stable term</rdf:value>
+    <dct:date>2010-05-04</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/place">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en">Place</rdfs:label>
+    <label:plural xml:lang="en">Places</label:plural>
+    <rdfs:comment xml:lang="en">The place at which an event occurred.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed4a2ec"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed4a34d"/>
+    <status:term_status>stable</status:term_status>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a2ec">
+    <rdf:value>Added a plural label</rdf:value>
+    <dct:date>2010-05-03</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a34d">
+    <rdf:value>Marked as a stable term</rdf:value>
+    <dct:date>2010-05-04</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/position">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Position</rdfs:label>
+    <label:plural xml:lang="en">Positions</label:plural>
+    <rdfs:comment xml:lang="en">The employment position or public office involved in an event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/eventInterval">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Event Interval</rdfs:label>
+    <rdfs:comment xml:lang="en">The interval during which the event occurs. This interval represents the exact interval of occurence for an event, it starts at the moment the event commences and finishes when the event concludes. In other words both the event and the interval start at the same instant of time and extend for the same duration.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Interval"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-06-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/father">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">Father</rdfs:label>
+    <rdfs:comment xml:lang="en">The biological father of a person, also known as the genitor.</rdfs:comment>
+    <vann:usageNote rdf:parseType="Literal">Note that this is a strict definition of father that does not include non-biological relationships. The <a href="http://purl.org/vocab/relationship">Relationship</a> vocabulary may be more suitable for broader types of parent/child relation.</vann:usageNote>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/relationship/childOf"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4a40c"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a40c">
+    <rdf:value>Made subproperty of rel:childOf on suggestion of Gautier Poupeau</rdf:value>
+    <dct:date>2010-06-06</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/mother">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    <rdfs:label xml:lang="en">Mother</rdfs:label>
+    <rdfs:comment xml:lang="en">The biological mother of a person, also known as the genetrix.</rdfs:comment>
+    <vann:usageNote rdf:parseType="Literal">Note that this is a strict definition of mother that does not include non-biological relationships. The <a href="http://purl.org/vocab/relationship">Relationship</a> vocabulary may be more suitable for broader types of parent/child relation.</vann:usageNote>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/relationship/childOf"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4a49a"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a49a">
+    <rdf:value>Made subproperty of rel:childOf on suggestion of Gautier Poupeau</rdf:value>
+    <dct:date>2010-06-06</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/child">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Child</rdfs:label>
+    <label:plural xml:lang="en">Children</label:plural>
+    <rdfs:comment xml:lang="en">A biological child of a person. </rdfs:comment>
+    <vann:usageNote rdf:parseType="Literal">Note that this is a strict definition of child that does not include adopted children, step-children or similar non-biological relationships. The <a href="http://purl.org/vocab/relationship">Relationship</a> vocabulary may be more suitable for broader types of parent/child relation.</vann:usageNote>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <owl:equivalentProperty rdf:resource="http://purl.org/vocab/relationship/parentOf"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-05-03</dct:issued>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4a52d"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a52d">
+    <rdf:value>Made equivalent to rel:parentOf on suggestion of Gautier Poupeau</rdf:value>
+    <dct:date>2010-06-06</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/precedingEvent">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    <rdfs:label xml:lang="en">Preceding Event</rdfs:label>
+    <label:plural xml:lang="en">Preceding Events</label:plural>
+    <rdfs:comment xml:lang="en">An event that occurs and concludes at some time before this event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <dct:issued>2010-05-06</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/immediatelyPrecedingEvent">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Immediately Preceding Event</rdfs:label>
+    <label:plural xml:lang="en">Immediately Preceding Events</label:plural>
+    <rdfs:comment xml:lang="en">An event that occurs and concludes immediately before this event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/precedingEvent"/>
+    <dct:issued>2010-05-06</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/followingEvent">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    <rdfs:label xml:lang="en">Following Event</rdfs:label>
+    <label:plural xml:lang="en">Following Events</label:plural>
+    <rdfs:comment xml:lang="en">An event that starts at some time after this event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <dct:issued>2010-05-06</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/immediatelyFollowingEvent">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Immediately Following Event</rdfs:label>
+    <label:plural xml:lang="en">Immediately Following Events</label:plural>
+    <rdfs:comment xml:lang="en">An event that starts immediately after this event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/followingEvent"/>
+    <dct:issued>2010-05-06</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/concurrentEvent">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+    <rdfs:label xml:lang="en">Concurrent Event</rdfs:label>
+    <label:plural xml:lang="en">Concurrent Events</label:plural>
+    <rdfs:comment xml:lang="en">An event that occurs while this event is occurring. The events need not start or conclude at the same times.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <dct:issued>2010-05-06</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/initiatingEvent">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Initiating Event</rdfs:label>
+    <label:plural xml:lang="en">Initiating Event</label:plural>
+    <rdfs:comment xml:lang="en">An event that marks the start of an interval and/or relationship. The event contributes to and/or causes of the state of affairs that hold during the interval. For example a period of study may be initiated by an Enrolment event.</rdfs:comment>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <dct:issued>2010-05-06</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/concludingEvent">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Concluding Event</rdfs:label>
+    <label:plural xml:lang="en">Concluding Event</label:plural>
+    <rdfs:comment xml:lang="en">An event that marks the end of an interval and/or relationship. The event changes of the state of affairs that held during the interval. For example a period of study may be concluded by a Graduation event.</rdfs:comment>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <dct:issued>2010-05-06</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/agent">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Agent</rdfs:label>
+    <label:plural xml:lang="en">Agents</label:plural>
+    <rdfs:comment xml:lang="en">A person, organization or group that plays a role in an event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <owl:inverseOf rdf:resource="http://purl.org/vocab/bio/0.1/event"/>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/employer">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Employer</rdfs:label>
+    <label:plural xml:lang="en">Employers</label:plural>
+    <rdfs:comment xml:lang="en">An agent that is involved in an event as an employer.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/state">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">State</rdfs:label>
+    <label:plural xml:lang="en">States</label:plural>
+    <rdfs:comment xml:lang="en">A country or independent territory that is involved in an event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/parent">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Parent</rdfs:label>
+    <label:plural xml:lang="en">Parents</label:plural>
+    <rdfs:comment xml:lang="en">A person that takes the parent role in an event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/principal">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Principal</rdfs:label>
+    <label:plural xml:lang="en">Principals</label:plural>
+    <rdfs:comment xml:lang="en">A person that takes the primary and most important role in an event. For example the principal in a Birth event would be the child being born and the principal in a Burial event would be the deceased person.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/partner">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Partner</rdfs:label>
+    <label:plural xml:lang="en">Partners</label:plural>
+    <rdfs:comment xml:lang="en">A person that is involved in a event as a partner in a relationship.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/officiator">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Officiator</rdfs:label>
+    <label:plural xml:lang="en">Officiators</label:plural>
+    <rdfs:comment xml:lang="en">A person that officiates at a ceremonial event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/witness">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Witness</rdfs:label>
+    <label:plural xml:lang="en">Witnesses</label:plural>
+    <rdfs:comment xml:lang="en">A person that witnesses and can bear testimony to the occurrence of an event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/spectator"/>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/spectator">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Spectator</rdfs:label>
+    <label:plural xml:lang="en">Spectators</label:plural>
+    <rdfs:comment xml:lang="en">A person that is present at and observes the occurrence of at least part of an event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/organization">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Organization</rdfs:label>
+    <label:plural xml:lang="en">Organizations</label:plural>
+    <rdfs:comment xml:lang="en">An organization that plays a role in an event.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+    <dct:issued>2010-05-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/event">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Life Event</rdfs:label>
+    <label:plural xml:lang="en">Life Events</label:plural>
+    <rdfs:comment xml:lang="en">An event associated with a person, group or organization.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4a756"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4a7b3"/>
+    <skos:changeNote rdf:nodeID="mor53ce47ed4a80a"/>
+    <owl:inverseOf rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a756">
+    <rdf:value>Made a subproperty of owl:differentFrom</rdf:value>
+    <dct:date>2010-05-03</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a7b3">
+    <rdf:value>Changed domain to foaf:Agent</rdf:value>
+    <dct:date>2011-06-14</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a80a">
+    <rdf:value>Added a plural label</rdf:value>
+    <dct:date>2010-05-03</dct:date>
+    <dct:creator>Ian Davis</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/birth">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/event"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <rdfs:label xml:lang="en">Birth Event</rdfs:label>
+    <label:plural xml:lang="en">Birth Events</label:plural>
+    <rdfs:comment xml:lang="en">An birth event associated with a person, group or organization.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Birth"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4a8a1"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a8a1">
+    <rdf:value>Proposed addition of the property</rdf:value>
+    <dct:date>2011-07-12</dct:date>
+    <dct:creator>Alexandre Passant</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/death">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://purl.org/vocab/bio/0.1/event"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <rdfs:label xml:lang="en">Death Event</rdfs:label>
+    <label:plural xml:lang="en">Death Events</label:plural>
+    <rdfs:comment xml:lang="en">An death event associated with a person, group or organization.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Death"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <skos:historyNote rdf:nodeID="mor53ce47ed4a91f"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:nodeID="mor53ce47ed4a91f">
+    <rdf:value>Proposed addition of the property</rdf:value>
+    <dct:date>2011-07-12</dct:date>
+    <dct:creator>Alexandre Passant</dct:creator>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/participant">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Participant</rdfs:label>
+    <label:plural xml:lang="en">Participants</label:plural>
+    <rdfs:comment xml:lang="en">A person, group or organization that participates in a relationship for some time.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Relationship"/>
+    <rdfs:range rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <owl:equivalentProperty rdf:resource="http://purl.org/vocab/relationship/participant"/>
+    <owl:inverseOf rdf:resource="http://purl.org/vocab/bio/0.1/relationship"/>
+    <dct:issued>2011-06-14</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/relationship">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Relationship</rdfs:label>
+    <label:plural xml:lang="en">Relationships</label:plural>
+    <rdfs:comment xml:lang="en">A relationship that a person, group or organization participates in for some time.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://xmlns.com/foaf/0.1/Agent"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Relationship"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#differentFrom"/>
+    <owl:equivalentProperty rdf:resource="http://purl.org/vocab/relationship/participantIn"/>
+    <owl:inverseOf rdf:resource="http://purl.org/vocab/bio/0.1/participant"/>
+    <dct:issued>2011-06-14</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/interval">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:label xml:lang="en">Relationship Interval</rdfs:label>
+    <rdfs:comment xml:lang="en">The interval during which the relationship persists.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://purl.org/vocab/bio/0.1/Relationship"/>
+    <rdfs:range rdf:resource="http://purl.org/vocab/bio/0.1/Interval"/>
+    <rdfs:isDefinedBy rdf:resource="http://purl.org/vocab/bio/0.1/"/>
+    <status:term_status>unstable</status:term_status>
+    <dct:issued>2010-06-05</dct:issued>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/termgroup1">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <rdfs:label xml:lang="en">Properties of a person</rdfs:label>
+    <rdf:_1 rdf:resource="http://purl.org/vocab/bio/0.1/olb"/>
+    <rdf:_2 rdf:resource="http://purl.org/vocab/bio/0.1/biography"/>
+    <rdf:_3 rdf:resource="http://purl.org/vocab/bio/0.1/keywords"/>
+    <rdf:_4 rdf:resource="http://purl.org/vocab/bio/0.1/father"/>
+    <rdf:_5 rdf:resource="http://purl.org/vocab/bio/0.1/mother"/>
+    <rdf:_6 rdf:resource="http://purl.org/vocab/bio/0.1/child"/>
+    <rdf:_7 rdf:resource="http://purl.org/vocab/bio/0.1/event"/>
+    <rdf:_8 rdf:resource="http://purl.org/vocab/bio/0.1/birth"/>
+    <rdf:_9 rdf:resource="http://purl.org/vocab/bio/0.1/death"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/termgroup2">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <rdfs:label xml:lang="en">Types of event</rdfs:label>
+    <rdf:_1 rdf:resource="http://purl.org/vocab/bio/0.1/Event"/>
+    <rdf:_2 rdf:resource="http://purl.org/vocab/bio/0.1/IndividualEvent"/>
+    <rdf:_3 rdf:resource="http://purl.org/vocab/bio/0.1/GroupEvent"/>
+    <rdf:_4 rdf:resource="http://purl.org/vocab/bio/0.1/Accession"/>
+    <rdf:_5 rdf:resource="http://purl.org/vocab/bio/0.1/Adoption"/>
+    <rdf:_6 rdf:resource="http://purl.org/vocab/bio/0.1/Annulment"/>
+    <rdf:_7 rdf:resource="http://purl.org/vocab/bio/0.1/Assassination"/>
+    <rdf:_8 rdf:resource="http://purl.org/vocab/bio/0.1/Baptism"/>
+    <rdf:_9 rdf:resource="http://purl.org/vocab/bio/0.1/BarMitzvah"/>
+    <rdf:_10 rdf:resource="http://purl.org/vocab/bio/0.1/BasMitzvah"/>
+    <rdf:_11 rdf:resource="http://purl.org/vocab/bio/0.1/Birth"/>
+    <rdf:_12 rdf:resource="http://purl.org/vocab/bio/0.1/Burial"/>
+    <rdf:_13 rdf:resource="http://purl.org/vocab/bio/0.1/PositionChange"/>
+    <rdf:_14 rdf:resource="http://purl.org/vocab/bio/0.1/Coronation"/>
+    <rdf:_15 rdf:resource="http://purl.org/vocab/bio/0.1/Cremation"/>
+    <rdf:_16 rdf:resource="http://purl.org/vocab/bio/0.1/Death"/>
+    <rdf:_17 rdf:resource="http://purl.org/vocab/bio/0.1/Demotion"/>
+    <rdf:_18 rdf:resource="http://purl.org/vocab/bio/0.1/Dismissal"/>
+    <rdf:_19 rdf:resource="http://purl.org/vocab/bio/0.1/Divorce"/>
+    <rdf:_20 rdf:resource="http://purl.org/vocab/bio/0.1/Emigration"/>
+    <rdf:_21 rdf:resource="http://purl.org/vocab/bio/0.1/Employment"/>
+    <rdf:_22 rdf:resource="http://purl.org/vocab/bio/0.1/Execution"/>
+    <rdf:_23 rdf:resource="http://purl.org/vocab/bio/0.1/Enrolment"/>
+    <rdf:_24 rdf:resource="http://purl.org/vocab/bio/0.1/Funeral"/>
+    <rdf:_25 rdf:resource="http://purl.org/vocab/bio/0.1/Graduation"/>
+    <rdf:_26 rdf:resource="http://purl.org/vocab/bio/0.1/Imprisonment"/>
+    <rdf:_27 rdf:resource="http://purl.org/vocab/bio/0.1/Inauguration"/>
+    <rdf:_28 rdf:resource="http://purl.org/vocab/bio/0.1/Investiture"/>
+    <rdf:_29 rdf:resource="http://purl.org/vocab/bio/0.1/Marriage"/>
+    <rdf:_30 rdf:resource="http://purl.org/vocab/bio/0.1/Murder"/>
+    <rdf:_31 rdf:resource="http://purl.org/vocab/bio/0.1/NameChange"/>
+    <rdf:_32 rdf:resource="http://purl.org/vocab/bio/0.1/Naturalization"/>
+    <rdf:_33 rdf:resource="http://purl.org/vocab/bio/0.1/Ordination"/>
+    <rdf:_34 rdf:resource="http://purl.org/vocab/bio/0.1/Promotion"/>
+    <rdf:_35 rdf:resource="http://purl.org/vocab/bio/0.1/Redundancy"/>
+    <rdf:_36 rdf:resource="http://purl.org/vocab/bio/0.1/Resignation"/>
+    <rdf:_37 rdf:resource="http://purl.org/vocab/bio/0.1/Retirement"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/termgroup3">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <rdfs:label xml:lang="en">Properties of an event</rdfs:label>
+    <rdf:_1 rdf:resource="http://purl.org/vocab/bio/0.1/date"/>
+    <rdf:_2 rdf:resource="http://purl.org/vocab/bio/0.1/place"/>
+    <rdf:_3 rdf:resource="http://purl.org/vocab/bio/0.1/state"/>
+    <rdf:_4 rdf:resource="http://purl.org/vocab/bio/0.1/position"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/termgroup4">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <rdfs:label xml:lang="en">Properties that relate an event to an agent</rdfs:label>
+    <rdf:_1 rdf:resource="http://purl.org/vocab/bio/0.1/agent"/>
+    <rdf:_2 rdf:resource="http://purl.org/vocab/bio/0.1/parent"/>
+    <rdf:_3 rdf:resource="http://purl.org/vocab/bio/0.1/employer"/>
+    <rdf:_4 rdf:resource="http://purl.org/vocab/bio/0.1/officiator"/>
+    <rdf:_5 rdf:resource="http://purl.org/vocab/bio/0.1/organization"/>
+    <rdf:_6 rdf:resource="http://purl.org/vocab/bio/0.1/principal"/>
+    <rdf:_7 rdf:resource="http://purl.org/vocab/bio/0.1/partner"/>
+    <rdf:_8 rdf:resource="http://purl.org/vocab/bio/0.1/witness"/>
+    <rdf:_9 rdf:resource="http://purl.org/vocab/bio/0.1/spectator"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/0.1/termgroup5">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"/>
+    <rdfs:label xml:lang="en">Properties that relate an event to another event</rdfs:label>
+    <rdf:_1 rdf:resource="http://purl.org/vocab/bio/0.1/concurrentEvent"/>
+    <rdf:_2 rdf:resource="http://purl.org/vocab/bio/0.1/followingEvent"/>
+    <rdf:_3 rdf:resource="http://purl.org/vocab/bio/0.1/precedingEvent"/>
+    <rdf:_4 rdf:resource="http://purl.org/vocab/bio/0.1/immediatelyFollowingEvent"/>
+    <rdf:_5 rdf:resource="http://purl.org/vocab/bio/0.1/immediatelyPrecedingEvent"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://purl.org/vocab/bio/examples/1">
+    <rdf:type rdf:resource="http://open.vocab.org/terms/SchemaExample"/>
+    <rdfs:label>A Biography of Henry VIII, King of England</rdfs:label>
+    <rdfs:comment rdf:parseType="Literal"><p>Based on information at <a href="http://en.wikipedia.org/wiki/Henry_VIII_of_England">Wikipedia</a> and <a href="http://www3.dcs.hull.ac.uk/cgi-bin/gedlkup/n=royal?royal00828">Hull University</a></p>
+<pre><code>@prefix bio: &lt;http://purl.org/vocab/bio/0.1/&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+
+_:henryviii
+  a foaf:Person
+  ; foaf:name "Henry VIII, King of England"
+  ; bio:father _:henryvii
+  ; bio:mother _:elizplantagenet
+  ; bio:child _:child1, _:child2, _:child3, _:child4, _:child5, _:child6, _:child7, _:child8
+  ; bio:birth _:birth
+  ; bio:death _:death
+  ; bio:event _:burial, _:accession, _:coronation, _:marriage1
+            , _:marriage2, _:marriage3, _:marriage4, _:marriage5, _:marriage6
+  .
+
+_:henryvii
+  a foaf:Person
+  ; foaf:name "Henry VII Tudor, King of England"
+  ; bio:child _:henryviii
+  .
+
+_:elizplantagenet
+  a foaf:Person
+  ; foaf:name "Elizabeth of York"
+  ; bio:child _:henryviii
+  .
+  
+_:birth
+  a bio:Birth
+  ; rdfs:label "The birth of Henry VIII to Henry VII and Elizabeth Plantagenet on 28 June 1491"
+  ; bio:date "1491-06-28"
+  ; bio:place &lt;http://dbpedia.org/resource/Palace_of_Placentia&gt;
+  ; bio:parent _:henryvii, _:elizplantagenet
+  ; bio:principal _:henryviii
+  .
+
+_:death
+  a bio:Death
+  ; rdfs:label "The death of Henry VIII on 28 January 1547"
+  ; bio:date "1547-01-28"
+  ; bio:place &lt;http://dbpedia.org/resource/Palace_of_Whitehall&gt;
+  ; bio:principal _:henryviii
+  .
+  
+
+_:accession
+  a bio:Accession
+  ; rdfs:label "The accession of Henry VIII to the throne of England on 21 April 1509"
+  ; bio:date "1509-06-24"
+  ; bio:principal _:henryviii
+  ; bio:state &lt;http://dbpedia.org/resource/Kingdom_of_England&gt;
+  ; bio:immediatelyPrecedingEvent [ a bio:Death
+                                    ; rdfs:label "The death of Henry VII on 9 May 1509"
+                                    ; bio:date "1509-05-09"
+                                    ; bio:place &lt;http://dbpedia.org/resource/Richmond_Palace&gt;
+                                    ; bio:principal _:henryvii
+                                  ]
+  .
+
+_:coronation
+  a bio:Coronation
+  ; rdfs:label "The coronation of Henry VIII as King of England on 24 June 1509"
+  ; bio:date "1509-06-24"
+  ; bio:place &lt;http://dbpedia.org/page/Westminster_Abbey&gt;
+  ; bio:principal _:henryviii
+  ; bio:precedingEvent _:accession
+  .
+
+_:burial
+  a bio:Burial
+  ; rdfs:label "The burial of Henry VII at St.George's Chapel, Windsor Castle,England"
+  ; bio:place &lt;http://dbpedia.org/resource/St_George%E2%80%99s_Chapel%2C_Windsor&gt;
+  ; bio:principal _:henryviii
+  ; bio:precedingEvent _:death
+  .
+
+_:marriage1
+  a bio:Marriage
+  ; rdfs:label "The marriage of Henry VIII and Catherine of Aragon"
+  ; bio:date "1509-06-11"
+  ; bio:place &lt;http://dbpedia.org/resource/Palace_of_Placentia&gt;
+  ; bio:partner _:henryvii, _:catharagon
+  .
+
+_:annulment1
+  a bio:Annulment
+  ; rdfs:label "The annulment of the marriage between Henry VIII and Catherine of Aragon"
+  ; bio:date "1533-05-23"
+  ; bio:partner _:henryvii, _:catharagon 
+  ; bio:officiator &lt;http://dbpedia.org/resource/Thomas_Cranmer&gt;
+  .
+
+_:catharagon
+  a foaf:Person
+  ; foaf:name "Anne Boleyn"
+  ; bio:child _:child1, _:child2, _:child3, _:child4, _:child5
+  ; bio:event _:marriage1, _:annulment1
+  .
+
+_:child1
+  a foaf:Person
+  ; rdfs:label "Unnamed daughter of Henry VIII and Catherine of Aragon"
+  ; bio:event [ a bio:Birth
+                ; bio:date "1510-01-31"
+                ; bio:principal _:child1
+                ; bio:parent _:henryviii, _:catharagon
+              ]
+  ; bio:event [ a bio:Death
+                ; bio:date "1510-02-02"
+                ; bio:principal _:child1
+              ]
+  .
+
+_:child2
+  a foaf:Person
+  ; foaf:name "Henry"
+  ; bio:event [ a bio:Birth
+                ; bio:date "1511-01-01"
+                ; bio:principal _:child2
+                ; bio:parent _:henryviii, _:catharagon
+              ]
+  ; bio:event [ a bio:Death
+                ; bio:date "1511-02-22"
+                ; bio:principal _:child2
+              ]
+  .
+  
+_:child3
+  a foaf:Person
+  ; foaf:name "Henry"
+  ; bio:event [ a bio:Birth
+                ; bio:date "1514-12"
+                ; bio:principal _:child3
+                ; bio:parent _:henryviii, _:catharagon
+              ]
+  ; bio:event [ a bio:Death
+                ; bio:principal _:child3
+              ]
+  .
+
+_:child4
+  a foaf:Person
+  ; foaf:name "Mary"
+  ; bio:event [ a bio:Birth
+                ; bio:date "1516-02-18"
+                ; bio:principal _:child4
+                ; bio:parent _:henryviii, _:catharagon
+              ]
+  ; bio:event [ a bio:Death
+                ; bio:date "1558-11-17"
+                ; bio:principal _:child4
+              ]
+  .
+
+
+_:child5
+  a foaf:Person
+  ; rdfs:label "Unnamed daughter of Henry VIII and Catherine of Aragon"
+  ; bio:event [ a bio:Birth
+                ; bio:date "1518-11"
+                ; bio:principal _:child5
+                ; bio:parent _:henryviii, _:catharagon
+              ]
+  ; bio:event [ a bio:Death
+                ; bio:principal _:child5
+              ]
+  .
+  
+
+_:marriage2
+  a bio:Marriage
+  ; rdfs:label "The marriage of Henry VIII and Anne Boleyn"
+  ; bio:date "1533-01-25"
+  ; bio:partner _:henryvii, _:anneboleyn
+  ; bio:place &lt;http://dbpedia.org/resource/Westminster_Abbey&gt;
+  .
+
+_:anneboleyn
+  a foaf:Person
+  ; foaf:name "Anne Boleyn"
+  ; bio:child _:child6
+  ; bio:event _:marriage2, _:annulment2, _:anneboleyn-death
+  .
+
+_:annulment2
+  a bio:Annulment
+  ; rdfs:label "The annulment of the marriage between Henry VIII and Anne Boleyn"
+  ; bio:date "1536-05-17"
+  ; bio:partner _:henryvii, _:anneboleyn 
+  .
+  
+_:anneboleyn-death
+  a bio:Execution
+  ; rdfs:label "The beheading of Anne Boleyn"
+  ; bio:date "1536-05-19"
+  ; bio:place &lt;http://dbpedia.org/resource/Tower_of_London&gt;
+  ; bio:principal _:anneboleyn
+  .
+
+_:child6
+  a foaf:Person
+  ; foaf:name "Elizabeth"
+  ; bio:event [ a bio:Birth
+                ; bio:date "1533-09-07"
+                ; bio:principal _:child6
+                ; bio:parent _:henryviii, _:anneboleyn
+              ]
+  ; bio:event [ a bio:Death
+                ; bio:date "1603-03-24"
+                ; bio:principal _:child6
+              ]
+  .
+
+_:marriage3
+  a bio:Marriage
+  ; bio:date "1536-05-20"
+  ; bio:partner _:henryviii, _:janeseymour
+  ; bio:place &lt;http://dbpedia.org/resource/York_Place&gt;
+  .
+
+_:janeseymour
+  a foaf:Person
+  ; foaf:name "Jane Seymour"
+  ; bio:event _:marriage3, _:janeseymour-death
+  ; bio:child _:child7
+  .
+
+_:janeseymour-death
+  a bio:Death
+  ; rdfs:label "The death of Jane Seymour on 24 October 1537"
+  ; bio:date "1537-10-24"
+  ; bio:principal _:janeseymour
+  ; bio:place &lt;http://dbpedia.org/resource/Hampton_Court_Palace&gt;
+  .
+  
+
+_:child7
+  a foaf:Person
+  ; foaf:name "Edward"
+  ; bio:event [ a bio:Birth
+                ; bio:date "1537-10-12"
+                ; bio:principal _:child7
+                ; bio:parent _:henryviii, _:janeseymour
+                ; bio:place &lt;http://dbpedia.org/resource/Hampton_Court_Palace&gt;
+              ]
+  ; bio:event [ a bio:Accession
+                ; bio:immediatelyPrecedingEvent _:death
+              ]
+  ; bio:event [ a bio:Death
+                ; bio:date "1553-07-06"
+                ; bio:principal _:child7
+                ; bio:place &lt;http://dbpedia.org/resource/Palace_of_Placentia&gt;
+              ]
+  .
+
+_:marriage4
+  a bio:Marriage
+  ; bio:date "1540-01-06"
+  ; bio:partner _:henryvii, _:annecleves
+  ; bio:place &lt;http://dbpedia.org/resource/Palace_of_Placentia&gt;
+  ; bio:officiator &lt;http://dbpedia.org/resource/Thomas_Cranmer&gt;
+  .
+    
+_:annulment3
+  a bio:Annulment
+  ; rdfs:label "The annulment of the marriage between Henry VIII and Anne of Cleves"
+  ; bio:date "1540-07-09"
+  ; bio:partner _:henryviii, _:annecleves
+  .
+
+_:annecleves
+  a foaf:Person
+  ; foaf:name "Anne of Cleves"
+  ; bio:event _:marriage4, _:annulment3
+  .
+
+_:marriage5
+  a bio:Marriage
+  ; bio:date "1540-07-28"
+  ; bio:partner _:henryviii, _:cathhoward
+  ; bio:place &lt;http://dbpedia.org/resource/Oatlands_Palace&gt;
+  .
+  
+_:cathhoward
+  a foaf:Person
+  ; foaf:name "Catherine Howard"
+  ; bio:event _:marriage5, _:cathhoward-death
+  .
+  
+_:cathhoward-death
+  a bio:Execution
+  ; rdfs:label "The beheading of Catherine Howard"
+  ; bio:date "1542-02-13"
+  ; bio:place &lt;http://dbpedia.org/resource/Tower_of_London&gt;
+  ; bio:principal _:cathhoward
+  .
+
+_:marriage6
+  a bio:Marriage
+  ; rdfs:label "The marriage between Henry VIII and Catherine Parr"
+  ; bio:date "1543-07-12"
+  ; bio:place &lt;http://dbpedia.org/resource/Hampton_Court_Palace&gt;
+  ; bio:partner _:henryviii, _:cathparr
+  .
+  
+_:cathparr
+  a foaf:Person
+  ; foaf:name "Catherine Parr"
+  ; bio:event _:marriage6
+  .
+
+
+_:elizblount
+  a foaf:Person
+  ; foaf:name "Elizabeth Blount"
+  ; bio:child _:child8
+  .
+  
+_:child8
+  a foaf:Person
+  ; foaf:name "Henry FitzRoy"
+  ; foaf:mother _:elizblount
+  ; foaf:father _:henryviii
+  ; bio:event [ a bio:Birth
+                ; bio:principal _:child8
+                ; bio:date "1519-06-15"
+                ; bio:parent _:henryviii, _:elizblount
+                ; bio:place &lt;http://dbpedia.org/resource/Blackmore&gt;
+                ]
+  .
+
+_:marriage1-interval
+  a bio:Interval
+  ; rdfs:label "The period of time during which Henry VIII and Catherine of Aragon were married"
+  ; bio:initiatingEvent _:marriage1
+  ; bio:concludingEvent _:annulment1
+  .
+
+_:marriage2-interval
+  a bio:Interval
+  ; rdfs:label "The period of time during which Henry VIII and Anne Boleyn were married"
+  ; bio:initiatingEvent _:marriage2
+  ; bio:concludingEvent _:annulment2
+  .
+  
+_:marriage3-interval
+  a bio:Interval
+  ; rdfs:label "The period of time during which Henry VIII and Jane Seymour were married"
+  ; bio:initiatingEvent _:marriage3
+  ; bio:concludingEvent _:janeseymour-death
+  .
+
+_:marriage4-interval
+  a bio:Interval
+  ; rdfs:label "The period of time during which Henry VIII and Anne of Cleves were married"
+  ; bio:initiatingEvent _:marriage4
+  ; bio:concludingEvent _:annulment3
+  .
+
+_:marriage5-interval
+  a bio:Interval
+  ; rdfs:label "The period of time during which Henry VIII and Catherine Howard were married"
+  ; bio:initiatingEvent _:marriage5
+  ; bio:terminatingEvent _:cathhoward-death
+  .
+
+_:marriage6-interval
+  a bio:Interval
+  ; rdfs:label "The period of time during which Henry VIII and Catherine Parr were married"
+  ; bio:initiatingEvent _:marriage6
+  ; bio:terminatingEvent _:henryviii-death
+  .
+</code></pre>
+</rdfs:comment>
+  </rdf:Description>
+
+</rdf:RDF>
