@@ -107,7 +107,7 @@ class Literal
         if (isset(self::$datatypeMap[$datatype])) {
             $class = self::$datatypeMap[$datatype];
         } else {
-            $class = 'EasyRdf_Literal';
+            $class = 'EasyRdf\Literal';
         }
         return new $class($value, $lang, $datatype);
     }

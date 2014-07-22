@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Sparql;
 
 /**
  * EasyRdf
@@ -35,23 +36,29 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
+use EasyRdf\Http;
+use EasyRdf\Http\MockClient;
+use EasyRdf\Literal;
+use EasyRdf\Resource;
+use EasyRdf\TestCase;
+
+require_once realpath(__DIR__ . '/../../') . '/TestHelper.php';
 
 
-class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
+class ClientTest extends TestCase
 {
-    /** @var  EasyRdf_Http_MockClient */
+    /** @var  MockClient */
     private $client;
 
-    /** @var  EasyRdf_Sparql_Client */
+    /** @var  Client */
     private $sparql;
 
     public function setUp()
     {
-        EasyRdf_Http::setDefaultHttpClient(
-            $this->client = new EasyRdf_Http_MockClient()
+        Http::setDefaultHttpClient(
+            $this->client = new MockClient()
         );
-        $this->sparql = new EasyRdf_Sparql_Client('http://localhost:8080/sparql');
+        $this->sparql = new Client('http://localhost:8080/sparql');
     }
 
     # FIXME: this is deprecated
@@ -81,7 +88,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
 
     public function testGetDifferentUpdateUri()
     {
-        $sparql = new EasyRdf_Sparql_Client(
+        $sparql = new Client(
             'http://localhost/query',
             'http://localhost/update'
         );
@@ -108,15 +115,15 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $result = $this->sparql->query("SELECT * WHERE {?s ?p ?o}");
         $this->assertCount(14, $result);
         $this->assertEquals(
-            new EasyRdf_Resource('_:genid1'),
+            new Resource('_:genid1'),
             $result[0]->s
         );
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'),
+            new Resource('http://xmlns.com/foaf/0.1/name'),
             $result[0]->p
         );
         $this->assertEquals(
-            new EasyRdf_Literal("Joe's Current Project"),
+            new Literal("Joe's Current Project"),
             $result[0]->o
         );
     }
@@ -136,7 +143,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $this->assertSame(3, $result->numFields());
         $this->assertSame(array('s','p','o'), $result->getFields());
         $this->assertEquals(
-            new EasyRdf_Literal("Joe's Current Project"),
+            new Literal("Joe's Current Project"),
             $result[0]->o
         );
     }
@@ -152,7 +159,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             'Format is not recognised: unsupported/format'
         );
         $result = $this->sparql->query("SELECT * WHERE {?s ?p ?o}");
@@ -198,15 +205,15 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $result = $this->sparql->query("SELECT ?t WHERE {?s rdf:type ?t}");
         $this->assertCount(3, $result);
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/Project'),
+            new Resource('http://xmlns.com/foaf/0.1/Project'),
             $result[0]->t
         );
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/PersonalProfileDocument'),
+            new Resource('http://xmlns.com/foaf/0.1/PersonalProfileDocument'),
             $result[1]->t
         );
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/Person'),
+            new Resource('http://xmlns.com/foaf/0.1/Person'),
             $result[2]->t
         );
     }
@@ -250,7 +257,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $graph = $this->sparql->query("CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
-        $this->assertClass('EasyRdf_Graph', $graph);
+        $this->assertClass('EasyRdf\Graph', $graph);
         $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
         $this->assertStringEquals('Joe Bloggs', $name);
     }
@@ -266,7 +273,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $graph = $this->sparql->query("CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}");
-        $this->assertClass('EasyRdf_Graph', $graph);
+        $this->assertClass('EasyRdf\Graph', $graph);
         $name = $graph->get('http://www.example.com/joe#me', 'foaf:name');
         $this->assertStringEquals('Joe Bloggs', $name);
     }
@@ -283,7 +290,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
             )
         );
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             'HTTP request for SPARQL query failed: There was an error while executing the query.'
         );
         $response = $this->sparql->query("FOOBAR");
@@ -330,9 +337,9 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         );
         $list = $this->sparql->listNamedGraphs();
         $this->assertCount(3, $list);
-        $this->assertEquals(new EasyRdf_Resource('http://example.org/0'), $list[0]);
-        $this->assertEquals(new EasyRdf_Resource('http://example.org/1'), $list[1]);
-        $this->assertEquals(new EasyRdf_Resource('http://example.org/2'), $list[2]);
+        $this->assertEquals(new Resource('http://example.org/0'), $list[0]);
+        $this->assertEquals(new Resource('http://example.org/1'), $list[1]);
+        $this->assertEquals(new Resource('http://example.org/2'), $list[2]);
     }
 
     public function testListNamedGraphsWithLimit()
@@ -347,12 +354,12 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         );
         $list = $this->sparql->listNamedGraphs(10);
         $this->assertCount(3, $list);
-        $this->assertEquals(new EasyRdf_Resource('http://example.org/0'), $list[0]);
-        $this->assertEquals(new EasyRdf_Resource('http://example.org/1'), $list[1]);
-        $this->assertEquals(new EasyRdf_Resource('http://example.org/2'), $list[2]);
+        $this->assertEquals(new Resource('http://example.org/0'), $list[0]);
+        $this->assertEquals(new Resource('http://example.org/1'), $list[1]);
+        $this->assertEquals(new Resource('http://example.org/2'), $list[2]);
     }
 
-    public function checkUpdate($client)
+    public function checkUpdate(Http\Client $client)
     {
         $this->assertSame('INSERT DATA { <a> <p> <b> }', $client->getRawData());
         $this->assertSame("application/sparql-update", $client->getHeader('Content-Type'));
@@ -377,7 +384,7 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
 
     public function testQueryEndpointWithParameters()
     {
-        $this->sparql = new EasyRdf_Sparql_Client('http://localhost:8080/sparql?a=b');
+        $this->sparql = new Client('http://localhost:8080/sparql?a=b');
 
         $this->client->addMock(
             'GET',
@@ -390,15 +397,15 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
         $result = $this->sparql->query("SELECT * WHERE {?s ?p ?o}");
         $this->assertCount(14, $result);
         $this->assertEquals(
-            new EasyRdf_Resource('_:genid1'),
+            new Resource('_:genid1'),
             $result[0]->s
         );
         $this->assertEquals(
-            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'),
+            new Resource('http://xmlns.com/foaf/0.1/name'),
             $result[0]->p
         );
         $this->assertEquals(
-            new EasyRdf_Literal("Joe's Current Project"),
+            new Literal("Joe's Current Project"),
             $result[0]->o
         );
     }
