@@ -153,7 +153,5 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
                 $this->assertStringStartsWith('<pre><code>', $comment);
             }
         }
-
-        $this->assertTrue(true);
     }
 }
