@@ -678,23 +678,23 @@ Format::register(
    Register default set of parsers and serialisers
 */
 
-Format::registerParser('json', 'EasyRdf_Parser_Json');
-Format::registerParser('jsonld', 'EasyRdf_Parser_JsonLd');
-Format::registerParser('ntriples', 'EasyRdf_Parser_Ntriples');
-Format::registerParser('php', 'EasyRdf_Parser_RdfPhp');
-Format::registerParser('rdfxml', 'EasyRdf_Parser_RdfXml');
-Format::registerParser('turtle', 'EasyRdf_Parser_Turtle');
-Format::registerParser('rdfa', 'EasyRdf_Parser_Rdfa');
+Format::registerParser('json',         'EasyRdf\Parser\Json');
+Format::registerParser('jsonld',       'EasyRdf\Parser\JsonLd');
+Format::registerParser('ntriples',     'EasyRdf\Parser\Ntriples');
+Format::registerParser('php',          'EasyRdf\Parser\RdfPhp');
+Format::registerParser('rdfxml',       'EasyRdf\Parser\RdfXml');
+Format::registerParser('turtle',       'EasyRdf\Parser\Turtle');
+Format::registerParser('rdfa',         'EasyRdf\Parser\Rdfa');
 
-Format::registerSerialiser('json', 'EasyRdf_Serialiser_Json');
-Format::registerSerialiser('jsonld', 'EasyRdf_Serialiser_JsonLd');
-Format::registerSerialiser('n3', 'EasyRdf_Serialiser_Turtle');
-Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Ntriples');
-Format::registerSerialiser('php', 'EasyRdf_Serialiser_RdfPhp');
-Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_RdfXml');
-Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Turtle');
+Format::registerSerialiser('json',     'EasyRdf\Serialiser\Json');
+Format::registerSerialiser('jsonld',   'EasyRdf\Serialiser\JsonLd');
+Format::registerSerialiser('n3',       'EasyRdf\Serialiser\Turtle');
+Format::registerSerialiser('ntriples', 'EasyRdf\Serialiser\Ntriples');
+Format::registerSerialiser('php',      'EasyRdf\Serialiser\RdfPhp');
+Format::registerSerialiser('rdfxml',   'EasyRdf\Serialiser\RdfXml');
+Format::registerSerialiser('turtle',   'EasyRdf\Serialiser\Turtle');
 
-Format::registerSerialiser('dot', 'EasyRdf_Serialiser_GraphViz');
-Format::registerSerialiser('gif', 'EasyRdf_Serialiser_GraphViz');
-Format::registerSerialiser('png', 'EasyRdf_Serialiser_GraphViz');
-Format::registerSerialiser('svg', 'EasyRdf_Serialiser_GraphViz');
+Format::registerSerialiser('dot',      'EasyRdf\Serialiser\GraphViz');
+Format::registerSerialiser('gif',      'EasyRdf\Serialiser\GraphViz');
+Format::registerSerialiser('png',      'EasyRdf\Serialiser\GraphViz');
+Format::registerSerialiser('svg',      'EasyRdf\Serialiser\GraphViz');
