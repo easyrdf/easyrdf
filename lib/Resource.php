@@ -75,7 +75,7 @@ class Resource
             $this->graph = $graph;
         } elseif (!is_null($graph)) {
             throw new \InvalidArgumentException(
-                "\$graph should be an EasyRdf_Graph object"
+                '$graph should be an EasyRdf\Graph object'
             );
         }
     }
@@ -250,7 +250,7 @@ class Resource
     {
         if (!$this->graph) {
             throw new Exception(
-                "EasyRdf_Resource is not part of a graph."
+                'EasyRdf\Resource is not part of a graph.'
             );
         }
     }

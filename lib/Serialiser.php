@@ -69,7 +69,7 @@ class Serialiser
     {
         if (is_null($graph) or !is_object($graph) or !($graph instanceof Graph)) {
             throw new \InvalidArgumentException(
-                "\$graph should be an EasyRdf_Graph object and cannot be null"
+                '$graph should be an EasyRdf\Graph object and cannot be null'
             );
         }
 

@@ -490,7 +490,7 @@ class Graph
 
         if ($property === null or !is_string($property)) {
             throw new \InvalidArgumentException(
-                "\$property should be a string or EasyRdf_Resource and cannot be null"
+                '$property should be a string or EasyRdf\Resource and cannot be null'
             );
         }
     }
@@ -579,7 +579,7 @@ class Graph
             return $this->getSingleProperty($resource, "$matches[1]$matches[2]", $type, $lang);
         } elseif ($propertyPath === null or !is_string($propertyPath)) {
             throw new \InvalidArgumentException(
-                "\$propertyPath should be a string or EasyRdf_Resource and cannot be null"
+                '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
             );
         } elseif ($propertyPath === '') {
             throw new \InvalidArgumentException(
@@ -751,7 +751,7 @@ class Graph
             return $this->allForSingleProperty($resource, "$matches[1]$matches[2]", $type, $lang);
         } elseif ($propertyPath === null or !is_string($propertyPath)) {
             throw new \InvalidArgumentException(
-                "\$propertyPath should be a string or EasyRdf_Resource and cannot be null"
+                '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
             );
         } elseif ($propertyPath === '') {
             throw new \InvalidArgumentException(
@@ -1048,7 +1048,7 @@ class Graph
             return $this->deleteSingleProperty($resource, "$matches[1]$matches[2]", $value);
         } elseif ($property === null or !is_string($property)) {
             throw new \InvalidArgumentException(
-                "\$property should be a string or EasyRdf_Resource and cannot be null"
+                '$property should be a string or EasyRdf\Resource and cannot be null'
             );
         } elseif ($property === '') {
             throw new \InvalidArgumentException(
