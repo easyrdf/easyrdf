@@ -539,4 +539,22 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
             }
         }
     }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/140
+     */
+    public function testIssue140()
+    {
+        $filename = 'turtle/gh140-freebase.ttl';
+
+        $graph = new EasyRdf_Graph();
+        $triple_count = $this->turtleParser->parse(
+            $graph,
+            readFixture($filename),
+            'turtle',
+            $this->baseUri . basename($filename)
+        );
+
+        $this->assertEquals(14, $triple_count);
+    }
 }
