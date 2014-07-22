@@ -12,6 +12,7 @@ API changes
 * `EasyRdf_Literal_Decimal` requires input-strings which conform to `xs:decimal` format
 * `EasyRdf_GraphStore` supports operations over default graph now
 * `EasyRdf_Literal` typed as `xs:double` is used for PHP-floats instead of `EasyRdf_Literal_Decimal`
+* Exceptions thrown from `EasyRdf_Graph::resource()` use different message-texts now (see issue #159)
 
 Enhancements
 ------------
