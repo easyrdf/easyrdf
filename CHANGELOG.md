@@ -28,6 +28,7 @@ Bug Fixes
 * Fixed parsing of Turtle-documents with higher utf-8 characters (see issue #195)
 * Namespace-prefixes are compliant with RDFXML QName spec (see issue #185)
 * `EasyRdf_Namespace` won't generate "short" names with "/" in them anymore (see issue #115)
+* `EasyRdf_Parser_RdfXml` respects "base" specified for the document (see issue #157) 
 
 
 EasyRdf 0.8.0
