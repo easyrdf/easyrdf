@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf;
 
 /**
  * EasyRdf
@@ -35,17 +36,25 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
+use EasyRdf\Http\MockClient;
 
-class EasyRdf_ResourceTest extends EasyRdf_TestCase
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
+
+class ResourceTest extends TestCase
 {
+    /** @var Graph */
+    private $graph;
+
+    /** @var \EasyRdf\Resource */
+    private $resource;
+
     /**
      * Set up the test suite before each test
      */
     public function setUp()
     {
         // Reset default namespace
-        EasyRdf_Namespace::setDefault(null);
+        RdfNamespace::setDefault(null);
     }
 
     public function testConstructNullUri()
@@ -54,7 +63,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$uri should be a string and cannot be null or empty'
         );
-        $res = new EasyRdf_Resource(null);
+        $res = new Resource(null);
     }
 
     public function testConstructEmptyUri()
@@ -63,7 +72,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$uri should be a string and cannot be null or empty'
         );
-        $res = new EasyRdf_Resource('');
+        $res = new Resource('');
     }
 
     public function testConstructNonStringUri()
@@ -72,21 +81,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             '$uri should be a string and cannot be null or empty'
         );
-        $res = new EasyRdf_Resource(array());
+        $res = new Resource(array());
     }
 
     public function testConstructBadGraph()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$graph should be an EasyRdf_Graph object'
+            '$graph should be an EasyRdf\Graph object'
         );
-        $res = new EasyRdf_Resource('http://www.example.com/', $this);
+        $res = new Resource('http://www.example.com/', $this);
     }
 
     public function testGetUri()
     {
-        $res = new EasyRdf_Resource('http://example.com/testGetUri');
+        $res = new Resource('http://example.com/testGetUri');
         $this->assertSame(
             'http://example.com/testGetUri',
             $res->getUri()
@@ -95,93 +104,93 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testIsBNode()
     {
-        $bnode = new EasyRdf_Resource('_:foobar');
+        $bnode = new Resource('_:foobar');
         $this->assertSame(true, $bnode->isBNode());
     }
 
     public function testIsNotBnode()
     {
-        $nonbnode = new EasyRdf_Resource('http://www.exaple.com/');
+        $nonbnode = new Resource('http://www.exaple.com/');
         $this->assertSame(false, $nonbnode->isBNode());
     }
 
     public function testGetBNodeId()
     {
-        $bnode = new EasyRdf_Resource('_:foobar');
+        $bnode = new Resource('_:foobar');
         $this->assertSame('foobar', $bnode->getBNodeId());
     }
 
     public function testGetBNodeIdForUri()
     {
-        $nonbnode = new EasyRdf_Resource('http://www.exaple.com/');
+        $nonbnode = new Resource('http://www.exaple.com/');
         $this->assertSame(null, $nonbnode->getBNodeId());
     }
 
     public function testPrefix()
     {
-        $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $foafName = new Resource('http://xmlns.com/foaf/0.1/name');
         $this->assertStringEquals('foaf', $foafName->prefix());
     }
 
     public function testUnknownPrefix()
     {
-        $unknown = new EasyRdf_Resource('http://example.com/foo');
+        $unknown = new Resource('http://example.com/foo');
         $this->assertNull($unknown->prefix());
     }
 
     public function testShorten()
     {
-        $foafName = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $foafName = new Resource('http://xmlns.com/foaf/0.1/name');
         $this->assertSame('foaf:name', $foafName->shorten());
     }
 
     public function testShortenUnknown()
     {
-        $unknown = new EasyRdf_Resource('http://example.com/foo');
+        $unknown = new Resource('http://example.com/foo');
         $this->assertSame(null, $unknown->shorten());
     }
 
     public function testLocalnameWithSlash()
     {
-        $res = new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name');
+        $res = new Resource('http://xmlns.com/foaf/0.1/name');
         $this->assertSame('name', $res->localName());
     }
 
     public function testLocalnameWithHash()
     {
-        $res = new EasyRdf_Resource('http://purl.org/vocab/aiiso/schema#College');
+        $res = new Resource('http://purl.org/vocab/aiiso/schema#College');
         $this->assertSame('College', $res->localName());
     }
 
     public function testLocalnameWithUrn()
     {
-        $res = new EasyRdf_Resource('urn:isbn:978-0300067156');
+        $res = new Resource('urn:isbn:978-0300067156');
         $this->assertSame('978-0300067156', $res->localName());
     }
 
     public function testLocalnameWithNoPath()
     {
-        $res = new EasyRdf_Resource('http://example.com/');
+        $res = new Resource('http://example.com/');
         $this->assertSame(null, $res->localName());
     }
 
     public function testParseUri()
     {
-        $res = new EasyRdf_Resource('http://example.com/foo/bar');
+        $res = new Resource('http://example.com/foo/bar');
         $uri = $res->parseUri();
-        $this->assertClass('EasyRdf_ParsedUri', $uri);
+        $this->assertClass('EasyRdf\ParsedUri', $uri);
         $this->assertSame('/foo/bar', $uri->getPath());
     }
 
     public function testHtmlLinkNoText()
     {
-        $res = new EasyRdf_Resource('http://example.com/');
+        $res = new Resource('http://example.com/');
         $this->assertSame('<a href="http://example.com/">http://example.com/</a>', $res->htmlLink());
     }
 
     public function testHtmlLinkWithText()
     {
-        $res = new EasyRdf_Resource('http://example.com/');
+        $res = new Resource('http://example.com/');
         $this->assertSame(
             '<a href="http://example.com/">Click Here</a>',
             $res->htmlLink('Click Here')
@@ -190,7 +199,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testHtmlLinkWithOptions()
     {
-        $res = new EasyRdf_Resource('http://example.com/');
+        $res = new Resource('http://example.com/');
         $this->assertSame(
             '<a href="http://example.com/" style="font-weight: bold">Click Here</a>',
             $res->htmlLink('Click Here', array('style' => 'font-weight: bold'))
@@ -199,7 +208,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testHtmlLinkWithEscaping()
     {
-        $res = new EasyRdf_Resource('http://example.com/');
+        $res = new Resource('http://example.com/');
         $this->assertSame(
             '<a href="http://example.com/">=&gt; Click Here &lt;=</a>',
             $res->htmlLink('=> Click Here <=')
@@ -213,13 +222,13 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
             '$options should use valid attribute names as keys'
         );
 
-        $res = new EasyRdf_Resource('http://example.com/');
+        $res = new Resource('http://example.com/');
         $html = $res->htmlLink(null, array('onclick=alert(1) a' => 'b"'));
     }
 
     public function testToRdfPhpForUri()
     {
-        $uri = new EasyRdf_Resource('http://www.example.com/');
+        $uri = new Resource('http://www.example.com/');
         $this->assertSame(
             array('type' => 'uri', 'value' => 'http://www.example.com/'),
             $uri->toRdfPhp()
@@ -228,7 +237,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testToRdfPhpForBnode()
     {
-        $bnode = new EasyRdf_Resource('_:foobar');
+        $bnode = new Resource('_:foobar');
         $this->assertSame(
             array('type' => 'bnode', 'value' => '_:foobar'),
             $bnode->toRdfPhp()
@@ -237,7 +246,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testDumpValue()
     {
-        $res = new EasyRdf_Resource('http://www.example.com/');
+        $res = new Resource('http://www.example.com/');
         $this->assertSame(
             "http://www.example.com/",
             $res->dumpValue('text')
@@ -252,7 +261,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testDumpValueWithColor()
     {
-        $res = new EasyRdf_Resource('http://www.example.com/');
+        $res = new Resource('http://www.example.com/');
         $this->assertSame(
             "<a href='http://www.example.com/' ".
             "style='text-decoration:none;color:red'>".
@@ -263,7 +272,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testToString()
     {
-        $res = new EasyRdf_Resource('http://example.com/testToString');
+        $res = new Resource('http://example.com/testToString');
         $this->assertStringEquals('http://example.com/testToString', $res);
     }
 
@@ -278,21 +287,21 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     protected function setupTestGraph()
     {
-        $this->graph = new EasyRdf_Graph();
+        $this->graph = new Graph();
         $this->type = $this->graph->resource('foaf:Person');
         $this->resource = $this->graph->resource('http://example.com/#me');
         $this->graph->set($this->resource, 'rdf:type', $this->type);
         $this->graph->add($this->resource, 'rdf:test', 'Test A');
-        $this->graph->add($this->resource, 'rdf:test', new EasyRdf_Literal('Test B', 'en'));
+        $this->graph->add($this->resource, 'rdf:test', new Literal('Test B', 'en'));
     }
 
     public function testLoad()
     {
-        EasyRdf_Http::setDefaultHttpClient(
-            $client = new EasyRdf_Http_MockClient()
+        Http::setDefaultHttpClient(
+            $client = new MockClient()
         );
         $client->addMock('GET', 'http://example.com/foaf.json', readFixture('foaf.json'));
-        $graph = new EasyRdf_Graph('http://example.com/');
+        $graph = new Graph('http://example.com/');
         $resource = $graph->resource('http://example.com/foaf.json');
         $resource->load();
         $this->assertStringEquals(
@@ -303,8 +312,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
 
     public function testGetUriWithGraph()
     {
-        $graph = new EasyRdf_Graph();
-        $res = new EasyRdf_Resource('http://example.com/testGetUriWithGraph', $graph);
+        $graph = new Graph();
+        $res = new Resource('http://example.com/testGetUriWithGraph', $graph);
         $this->assertSame(
             'http://example.com/testGetUriWithGraph',
             $res->getUri()
@@ -332,10 +341,10 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testGetWithoutGraph()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Resource is not part of a graph.'
+            'EasyRdf\Exception',
+            'EasyRdf\Resource is not part of a graph.'
         );
-        $res = new EasyRdf_Resource('http://example.com/');
+        $res = new Resource('http://example.com/');
         $res->get('rdf:test');
     }
 
@@ -362,7 +371,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testGetWithPropertyResource()
     {
         $this->setupTestGraph();
-        $test = new EasyRdf_Resource(
+        $test = new Resource(
             'http://www.w3.org/1999/02/22-rdf-syntax-ns#test',
             $this->graph
         );
@@ -384,7 +393,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testGetInverse()
     {
         $this->setupTestGraph();
-        $homepage = new EasyRdf_Resource('http://example.com/', $this->graph);
+        $homepage = new Resource('http://example.com/', $this->graph);
         $this->resource->add('foaf:homepage', $homepage);
         $this->assertSame($this->resource, $homepage->get('^foaf:homepage'));
     }
@@ -418,7 +427,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->get(null);
     }
@@ -438,7 +447,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->get($this);
     }
@@ -531,7 +540,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->all(null);
     }
@@ -551,7 +560,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->all(array());
     }
@@ -618,7 +627,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $count = $this->resource->addLiteral('rdf:foobar', 'testAddLiteral');
         $this->assertSame(1, $count);
-        $this->assertClass('EasyRdf_Literal', $this->resource->get('rdf:foobar'));
+        $this->assertClass('EasyRdf\Literal', $this->resource->get('rdf:foobar'));
         $this->assertStringEquals('testAddLiteral', $this->resource->get('rdf:foobar'));
     }
 
@@ -638,7 +647,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $count = $this->resource->addResource('rdf:foobar', 'http://testAddResource/');
         $this->assertSame(1, $count);
-        $this->assertClass('EasyRdf_Resource', $this->resource->get('rdf:foobar'));
+        $this->assertClass('EasyRdf\Resource', $this->resource->get('rdf:foobar'));
         $this->assertStringEquals('http://testAddResource/', $this->resource->get('rdf:foobar'));
     }
 
@@ -670,9 +679,9 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testAddLiteralDifferentLanguages()
     {
         $this->setupTestGraph();
-        $count = $this->resource->set('rdf:test', new EasyRdf_Literal('foobar', 'en'));
+        $count = $this->resource->set('rdf:test', new Literal('foobar', 'en'));
         $this->assertSame(1, $count);
-        $count = $this->resource->add('rdf:test', new EasyRdf_Literal('foobar', 'fr'));
+        $count = $this->resource->add('rdf:test', new Literal('foobar', 'fr'));
         $this->assertSame(1, $count);
         $all = $this->resource->all('rdf:test');
         $this->assertCount(2, $all);
@@ -696,7 +705,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$property should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->add(null, 'Test C');
     }
@@ -716,7 +725,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$property should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->add(array(), 'Test C');
     }
@@ -726,7 +735,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'PHPUnit_Framework_Error',
-            'Object of class EasyRdf_ResourceTest could not be converted to string'
+            'Object of class EasyRdf\ResourceTest could not be converted to string'
         );
         $this->resource->add('rdf:foo', $this);
     }
@@ -754,7 +763,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$property should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->delete(null);
     }
@@ -774,7 +783,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$property should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->delete(array());
     }
@@ -814,8 +823,8 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testSetInverse()
     {
         $this->setupTestGraph();
-        $homepage1 = new EasyRdf_Resource('http://example.com/1', $this->graph);
-        $homepage2 = new EasyRdf_Resource('http://example.com/2', $this->graph);
+        $homepage1 = new Resource('http://example.com/1', $this->graph);
+        $homepage2 = new Resource('http://example.com/2', $this->graph);
         $count = $this->resource->set('foaf:homepage', $homepage1);
         $this->assertSame(1, $count);
         $this->assertSame(
@@ -844,7 +853,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$property should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->set(null, 'Test C');
     }
@@ -864,7 +873,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$property should be a string or EasyRdf_Resource and cannot be null'
+            '$property should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->set(array(), 'Test C');
     }
@@ -951,7 +960,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->join(null, 'Test C');
     }
@@ -971,7 +980,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf_Resource and cannot be null'
+            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
         );
         $this->resource->join(array(), 'Test C');
     }
@@ -1161,7 +1170,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->resource->set('rdfs:label', 'Label Text');
         $this->resource->set(
             'dc:title',
-            new EasyRdf_Literal('Dc Title', 'en')
+            new Literal('Dc Title', 'en')
         );
         $this->assertStringEquals('Dc Title', $this->resource->label('en'));
     }
@@ -1171,7 +1180,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
         $this->setupTestGraph();
         $text = $this->resource->dump('text');
         $this->assertContains(
-            "http://example.com/#me (EasyRdf_Resource)",
+            'http://example.com/#me (EasyRdf\Resource)',
             $text
         );
         $this->assertContains(
@@ -1217,7 +1226,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testMagicGet()
     {
         $this->setupTestGraph();
-        EasyRdf_Namespace::setDefault('rdf');
+        RdfNamespace::setDefault('rdf');
         $this->assertStringEquals(
             'Test A',
             $this->resource->test
@@ -1227,7 +1236,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testMagicGetNonExistent()
     {
         $this->setupTestGraph();
-        EasyRdf_Namespace::setDefault('rdf');
+        RdfNamespace::setDefault('rdf');
         $this->assertStringEquals(
             null,
             $this->resource->foobar
@@ -1237,7 +1246,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testMagicSet()
     {
         $this->setupTestGraph();
-        EasyRdf_Namespace::setDefault('rdf');
+        RdfNamespace::setDefault('rdf');
         $this->resource->test = 'testMagicSet';
         $this->assertStringEquals(
             'testMagicSet',
@@ -1248,7 +1257,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testMagicIsSet()
     {
         $this->setupTestGraph();
-        EasyRdf_Namespace::setDefault('rdf');
+        RdfNamespace::setDefault('rdf');
         $this->assertFalse(isset($this->resource->testMagicIsSet));
         $this->resource->add('rdf:testMagicIsSet', 'testMagicIsSet');
         $this->assertTrue(isset($this->resource->testMagicIsSet));
@@ -1257,7 +1266,7 @@ class EasyRdf_ResourceTest extends EasyRdf_TestCase
     public function testMagicUnset()
     {
         $this->setupTestGraph();
-        EasyRdf_Namespace::setDefault('rdf');
+        RdfNamespace::setDefault('rdf');
         $this->resource->add('rdf:testMagicUnset', 'testMagicUnset');
         unset($this->resource->testMagicUnset);
         $this->assertStringEquals(

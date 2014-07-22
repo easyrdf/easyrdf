@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf;
 
 /**
  * EasyRdf
@@ -35,17 +36,22 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_IsomorphicTest extends EasyRdf_TestCase
+class IsomorphicTest extends TestCase
 {
+    /** @var Graph */
+    private $graphA;
+    /** @var Graph */
+    private $graphB;
+
     /**
      * Set up the test suite before each test
      */
     public function setUp()
     {
-        $this->graphA = new EasyRdf_Graph();
-        $this->graphB = new EasyRdf_Graph();
+        $this->graphA = new Graph();
+        $this->graphB = new Graph();
     }
 
     public function checkTestCase($filename, $successful = true)
@@ -53,9 +59,9 @@ class EasyRdf_IsomorphicTest extends EasyRdf_TestCase
         $this->graphA->parseFile(fixturePath("isomorphic/$filename-a.nt"));
         $this->graphB->parseFile(fixturePath("isomorphic/$filename-b.nt"));
         if ($successful) {
-            self::assertTrue(EasyRdf_Isomorphic::isomorphic($this->graphA, $this->graphB));
+            self::assertTrue(Isomorphic::isomorphic($this->graphA, $this->graphB));
         } else {
-            self::assertFalse(EasyRdf_Isomorphic::isomorphic($this->graphA, $this->graphB));
+            self::assertFalse(Isomorphic::isomorphic($this->graphA, $this->graphB));
         }
     }
 
