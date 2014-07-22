@@ -723,4 +723,29 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
             'unsupportedformat'
         );
     }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/115
+     */
+    public function testIssue115()
+    {
+        $triples  = '
+      <http://example.com/id/1> <http://www.w3.org/2000/01/rdf-schema#type> <http://example.com/ns/animals/dog> .
+      <http://example.com/id/2> <http://www.w3.org/2000/01/rdf-schema#type> <http://example.com/ns/animals/cat> .
+      <http://example.com/id/3> <http://www.w3.org/2000/01/rdf-schema#type> <http://example.com/ns/animals/bird> .
+      <http://example.com/id/4> <http://www.w3.org/2000/01/rdf-schema#type> <http://example.com/ns/animals/reptiles/snake> .
+    ';
+
+        EasyRdf_Namespace::set('id',      'http://example.com/id/');
+        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');
+
+        //  parse graph
+        $graph = new EasyRdf_Graph();
+        $graph->parse($triples, 'ntriples');
+
+        //  dump as text/turtle
+        $turtle = $graph->serialise('turtle');
+
+        $this->assertEquals(readFixture('turtle/gh115-nested-namespaces.ttl'), $turtle);
+    }
 }
