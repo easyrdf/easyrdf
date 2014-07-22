@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Literal;
 
 /**
  * EasyRdf
@@ -35,22 +36,26 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
+use EasyRdf\Format;
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once realpath(__DIR__ . '/../../') . '/TestHelper.php';
 
 
-class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
+class HexBinaryTest extends TestCase
 {
     public function setup()
     {
         // Reset to built-in parsers
-        EasyRdf_Format::registerParser('ntriples', 'EasyRdf_Parser_Ntriples');
-        EasyRdf_Format::registerParser('rdfxml', 'EasyRdf_Parser_RdfXml');
-        EasyRdf_Format::registerParser('turtle', 'EasyRdf_Parser_Turtle');
+        Format::registerParser('ntriples', 'EasyRdf\Parser\Ntriples');
+        Format::registerParser('rdfxml',   'EasyRdf\Parser\RdfXml');
+        Format::registerParser('turtle',   'EasyRdf\Parser\Turtle');
     }
 
     public function testConstruct()
     {
-        $literal = new EasyRdf_Literal_HexBinary('48656C6C6F');
+        $literal = new HexBinary('48656C6C6F');
         $this->assertStringEquals('48656C6C6F', $literal);
         $this->assertInternalType('string', $literal->getValue());
         $this->assertSame('48656C6C6F', $literal->getValue());
@@ -61,7 +66,7 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
 
     public function testConstructLowercase()
     {
-        $literal = new EasyRdf_Literal_HexBinary('48656c6C6f');
+        $literal = new HexBinary('48656c6C6f');
         $this->assertSame('48656C6C6F', $literal->getValue());
         $this->assertStringEquals('48656C6C6F', $literal);
         $this->assertSame('Hello', $literal->toBinary());
@@ -73,12 +78,12 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
             'InvalidArgumentException',
             'Literal of type xsd:hexBinary contains non-hexadecimal characters'
         );
-        $literal = new EasyRdf_Literal_HexBinary('48FZ');
+        $literal = new HexBinary('48FZ');
     }
 
     public function testFromBinary()
     {
-        $literal = EasyRdf_Literal_HexBinary::fromBinary(
+        $literal = HexBinary::fromBinary(
             '<?xml version="1.0" encoding="UTF-8"?>'
         );
         $this->assertSame('xsd:hexBinary', $literal->getDatatype());
@@ -90,7 +95,7 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
 
     public function testToRdfPhp()
     {
-        $literal = new EasyRdf_Literal_HexBinary('48656C6C6F');
+        $literal = new HexBinary('48656C6C6F');
         $this->assertSame(
             array(
                 'type' => 'literal',
@@ -103,7 +108,7 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
 
     public function testDumpValue()
     {
-        $literal = new EasyRdf_Literal_HexBinary('48656C6C6F');
+        $literal = new HexBinary('48656C6C6F');
         $this->assertSame(
             '"48656C6C6F"^^xsd:hexBinary',
             $literal->dumpValue('text')
@@ -112,7 +117,7 @@ class EasyRdf_Literal_HexBinaryTest extends EasyRdf_TestCase
 
     public function testParseWebId()
     {
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $graph->parseFile(fixturePath('webid.ttl'), 'turtle');
         $me = $graph->resource('http://www.example.com/myfoaf#me');
         $modulus = $me->get('cert:key')->get('cert:modulus');

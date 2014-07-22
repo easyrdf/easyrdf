@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Literal;
 
 /**
  * EasyRdf
@@ -35,15 +36,17 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
+use EasyRdf\TestCase;
+
+require_once realpath(__DIR__ . '/../../') . '/TestHelper.php';
 
 
-class EasyRdf_Literal_IntegerTest extends EasyRdf_TestCase
+class IntegerTest extends TestCase
 {
     public function testConstruct0()
     {
-        $literal = new EasyRdf_Literal_Integer(0);
-        $this->assertClass('EasyRdf_Literal_Integer', $literal);
+        $literal = new Integer(0);
+        $this->assertClass('EasyRdf\Literal\Integer', $literal);
         $this->assertStringEquals('0', $literal);
         $this->assertInternalType('int', $literal->getValue());
         $this->assertSame(0, $literal->getValue());
@@ -53,8 +56,8 @@ class EasyRdf_Literal_IntegerTest extends EasyRdf_TestCase
 
     public function testConstruct1()
     {
-        $literal = new EasyRdf_Literal_Integer(1);
-        $this->assertClass('EasyRdf_Literal_Integer', $literal);
+        $literal = new Integer(1);
+        $this->assertClass('EasyRdf\Literal\Integer', $literal);
         $this->assertStringEquals('1', $literal);
         $this->assertInternalType('int', $literal->getValue());
         $this->assertSame(1, $literal->getValue());
@@ -64,8 +67,8 @@ class EasyRdf_Literal_IntegerTest extends EasyRdf_TestCase
 
     public function testConstructString100()
     {
-        $literal = new EasyRdf_Literal_Integer('100');
-        $this->assertClass('EasyRdf_Literal_Integer', $literal);
+        $literal = new Integer('100');
+        $this->assertClass('EasyRdf\Literal\Integer', $literal);
         $this->assertStringEquals('100', $literal);
         $this->assertInternalType('int', $literal->getValue());
         $this->assertSame(100, $literal->getValue());
@@ -75,8 +78,8 @@ class EasyRdf_Literal_IntegerTest extends EasyRdf_TestCase
 
     public function testConstructString0100()
     {
-        $literal = new EasyRdf_Literal_Integer('0100');
-        $this->assertClass('EasyRdf_Literal_Integer', $literal);
+        $literal = new Integer('0100');
+        $this->assertClass('EasyRdf\Literal\Integer', $literal);
         $this->assertStringEquals('0100', $literal);
         $this->assertInternalType('int', $literal->getValue());
         $this->assertSame(100, $literal->getValue());
