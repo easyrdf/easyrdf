@@ -58,7 +58,7 @@ class Client
      */
     private $config = array(
         'maxredirects'    => 5,
-        'useragent'       => 'EasyRdf_Http_Client',
+        'useragent'       => 'EasyRdf HTTP Client',
         'timeout'         => 10
     );
 
@@ -377,7 +377,7 @@ class Client
     {
         if (!$this->uri) {
             throw new Exception(
-                "Set URI before calling EasyRdf_Http_Client->request()"
+                "Set URI before calling Client->request()"
             );
         }
 
