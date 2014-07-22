@@ -154,4 +154,24 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
             }
         }
     }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/157
+     */
+    public function testIssue157()
+    {
+        $filename = 'rdfxml/gh157-base.rdf';
+
+        $graph = new EasyRdf_Graph();
+        $triple_count = $this->parser->parse(
+            $graph,
+            readFixture($filename),
+            'rdfxml',
+            null
+        );
+
+        foreach ($graph->toRdfPhp() as $iri => $properies) {
+            $this->assertEquals('http://www.example.org/base#foo', $iri);
+        }
+    }
 }
