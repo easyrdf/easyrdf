@@ -42,6 +42,7 @@ require_once 'EasyRdf/Parser/RdfXml.php';
 
 class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
 {
+    /** @var EasyRdf_Parser_RdfXml */
     protected $parser = null;
     protected $graph = null;
     protected $data = null;
@@ -128,5 +129,31 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
             'unsupportedformat',
             null
         );
+    }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/74
+     */
+    public function testIssue74()
+    {
+        $filename = 'rdfxml/gh74-bio.rdf';
+
+        $graph = new EasyRdf_Graph();
+        $triple_count = $this->parser->parse(
+            $graph,
+            readFixture($filename),
+            'rdfxml',
+            'http://vocab.org/bio/0.1/'
+        );
+
+        foreach ($graph->resources() as $resource) {
+            /** @var EasyRdf_Resource $resource */
+            if ($resource->isBnode() and $resource->hasProperty('rdfs:comment')) {
+                $comment = trim($resource->getLiteral('rdfs:comment'));
+                $this->assertStringStartsWith('<pre><code>', $comment);
+            }
+        }
+
+        $this->assertTrue(true);
     }
 }
