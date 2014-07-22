@@ -323,11 +323,11 @@ class Literal
    Register default set of datatype classes
 */
 
-Literal::setDatatypeMapping('xsd:boolean', 'EasyRdf_Literal_Boolean');
-Literal::setDatatypeMapping('xsd:date', 'EasyRdf_Literal_Date');
-Literal::setDatatypeMapping('xsd:dateTime', 'EasyRdf_Literal_DateTime');
-Literal::setDatatypeMapping('xsd:decimal', 'EasyRdf_Literal_Decimal');
-Literal::setDatatypeMapping('xsd:hexBinary', 'EasyRdf_Literal_HexBinary');
-Literal::setDatatypeMapping('rdf:HTML', 'EasyRdf_Literal_HTML');
-Literal::setDatatypeMapping('xsd:integer', 'EasyRdf_Literal_Integer');
-Literal::setDatatypeMapping('rdf:XMLLiteral', 'EasyRdf_Literal_XML');
+Literal::setDatatypeMapping('xsd:boolean',    'EasyRdf\Literal\Boolean');
+Literal::setDatatypeMapping('xsd:date',       'EasyRdf\Literal\Date');
+Literal::setDatatypeMapping('xsd:dateTime',   'EasyRdf\Literal\DateTime');
+Literal::setDatatypeMapping('xsd:decimal',    'EasyRdf\Literal\Decimal');
+Literal::setDatatypeMapping('xsd:hexBinary',  'EasyRdf\Literal\HexBinary');
+Literal::setDatatypeMapping('rdf:HTML',       'EasyRdf\Literal\HTML');
+Literal::setDatatypeMapping('xsd:integer',    'EasyRdf\Literal\Integer');
+Literal::setDatatypeMapping('rdf:XMLLiteral', 'EasyRdf\Literal\XML');
