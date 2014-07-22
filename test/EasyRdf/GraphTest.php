@@ -60,6 +60,9 @@ class Mock_RdfSerialiser
 
 class EasyRdf_GraphTest extends EasyRdf_TestCase
 {
+    /** @var EasyRdf_Http_MockClient */
+    private $client;
+
     /**
      * Set up the test suite before each test
      */
@@ -352,6 +355,19 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
         );
+    }
+
+    public function testNewAndLoadError()
+    {
+        $this->client->addMockOnce('GET', 'http://www.example.com/missing', 'Error text', array('status' => 404));
+
+        try {
+            $graph = EasyRdf_Graph::newAndLoad('http://www.example.com/missing', 'turtle');
+            $this->fail('404 should lead to exception');
+        } catch (EasyRdf_Http_Exception $e) {
+            $this->assertEquals(404, $e->getCode());
+            $this->assertEquals('Error text', $e->getBody());
+        }
     }
 
     public function testGetResourceSameGraph()

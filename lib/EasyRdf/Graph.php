@@ -322,8 +322,11 @@ class EasyRdf_Graph
                 // If we didn't get any location, stop redirecting
                 break;
             } else {
-                throw new EasyRdf_Exception(
-                    "HTTP request for $requestUrl failed: ".$response->getMessage()
+                throw new EasyRdf_Http_Exception(
+                    "HTTP request for {$requestUrl} failed: ".$response->getMessage(),
+                    $response->getStatus(),
+                    null,
+                    $response->getBody()
                 );
             }
         } while ($redirectCounter < $this->maxRedirects);
