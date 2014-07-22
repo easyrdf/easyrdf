@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf;
 
 /**
  * EasyRdf
@@ -36,7 +37,7 @@
  */
 
 
-class EasyRdf_TestCase extends PHPUnit_Framework_TestCase
+class TestCase extends \PHPUnit_Framework_TestCase
 {
 
     public static function assertStringEquals($str1, $str2, $message = null)
@@ -48,15 +49,5 @@ class EasyRdf_TestCase extends PHPUnit_Framework_TestCase
     public static function assertClass($class, $object)
     {
         self::assertSame($class, get_class($object));
-    }
-
-    // PHPUnit 3.5 doesn't have assertCount()
-    public static function assertCount($expectedCount, $haystack, $message = '')
-    {
-        if (method_exists(get_parent_class(__CLASS__), 'assertCount')) {
-            parent::assertCount($expectedCount, $haystack, $message);
-        } else {
-            self::assertSame($expectedCount, count($haystack));
-        }
     }
 }

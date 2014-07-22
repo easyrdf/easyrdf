@@ -36,27 +36,9 @@
  */
 
 /*
- * Include PHPUnit dependencies
- */
-require_once 'PHPUnit/Framework/IncompleteTestError.php';
-require_once 'PHPUnit/Framework/TestCase.php';
-require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'PHPUnit/Runner/Version.php';
-require_once 'PHPUnit/TextUI/TestRunner.php';
-require_once 'PHPUnit/Util/Filter.php';
-
-/*
  * Set error reporting to the level to be stricter.
  */
 error_reporting(E_ALL | E_STRICT);
-
-/*
- * Check the version number of PHP Unit.
- */
-if (version_compare(PHPUnit_Runner_Version::id(), '3.5.15', '<')) {
-    error_log("PHPUnit version 3.5.15 or higher is required.");
-    exit();
-}
 
 // Set time zone to UTC for running tests
 date_default_timezone_set('UTC');
@@ -64,7 +46,7 @@ date_default_timezone_set('UTC');
 /*
  * Determine the root, lib, and test directories
  */
-$easyrdfRoot      = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..');
+$easyrdfRoot      = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
 $easyrdfLibDir    = $easyrdfRoot . DIRECTORY_SEPARATOR . 'lib';
 $easyrdfTestDir   = $easyrdfRoot . DIRECTORY_SEPARATOR . 'test';
 
@@ -83,13 +65,9 @@ set_include_path(implode(PATH_SEPARATOR, $path));
  */
 unset($easyrdfRoot, $easyrdfLibDir, $easyrdfTestDir, $path);
 
-/*
- * Load the core EasyRdf classes.
- */
-require_once 'EasyRdf.php';
 
-require_once 'EasyRdf/TestCase.php';
-require_once 'EasyRdf/Http/MockClient.php';
+require_once __DIR__.'/EasyRdf/TestCase.php';
+require_once __DIR__.'/EasyRdf/Http/MockClient.php';
 
 
 /**
@@ -100,7 +78,7 @@ require_once 'EasyRdf/Http/MockClient.php';
  */
 function fixturePath($name)
 {
-    return dirname(__FILE__) . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $name;
+    return __DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . $name;
 }
 
 /**
@@ -149,10 +127,12 @@ function requireExists($filename)
  * the PHP environment variable to the path of executable.
  *
  * @param string $name   the name of the example to run
- * @param string $params query string parameters to pass to the script
+ * @param array  $params query string parameters to pass to the script
+ *
+ * @throws Exception
  * @return string The resulting webpage (everything printed to STDOUT)
  */
-function executeExample($name, $params = array())
+function executeExample($name, array $params = array())
 {
     $phpBin = getenv('PHP');
     if (!$phpBin) {
@@ -160,7 +140,7 @@ function executeExample($name, $params = array())
     }
 
     // We use a wrapper to setup the environment
-    $wrapper = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'cli_example_wrapper.php';
+    $wrapper = __DIR__ . DIRECTORY_SEPARATOR . 'cli_example_wrapper.php';
 
     // Open a pipe to the new PHP process
     $descriptorspec = array(
