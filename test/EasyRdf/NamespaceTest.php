@@ -630,4 +630,15 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         EasyRdf_Namespace::set('foo-bar', 'http://example.org/dash#');
         $this->assertSame('foo-bar:baz', EasyRdf_Namespace::shorten('http://example.org/dash#baz'));
     }
+
+    /**
+     * Namespace which is too short shouldn't apply
+     */
+    public function testShortNamespace()
+    {
+        EasyRdf_Namespace::set('ex', 'http://example.org/');
+
+        $this->assertSame('ex:foo', EasyRdf_Namespace::shorten('http://example.org/foo'));
+        $this->assertNull(EasyRdf_Namespace::shorten('http://example.org/bar/baz'));
+    }
 }
