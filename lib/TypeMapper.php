@@ -120,7 +120,7 @@ class TypeMapper
    Register default set of mapped types
 */
 
-TypeMapper::set('rdf:Alt',  'EasyRdf\Container');
-TypeMapper::set('rdf:Bag',  'EasyRdf\Container');
+TypeMapper::set('rdf:Alt', 'EasyRdf\Container');
+TypeMapper::set('rdf:Bag', 'EasyRdf\Container');
 TypeMapper::set('rdf:List', 'EasyRdf\Collection');
-TypeMapper::set('rdf:Seq',  'EasyRdf\Container');
+TypeMapper::set('rdf:Seq', 'EasyRdf\Container');

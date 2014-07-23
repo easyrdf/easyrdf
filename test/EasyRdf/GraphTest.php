@@ -76,8 +76,8 @@ class GraphTest extends TestCase
     {
         // Reset to built-in parsers
         Format::registerParser('ntriples', 'EasyRdf\Parser\Ntriples');
-        Format::registerParser('rdfxml',   'EasyRdf\Parser\RdfXml');
-        Format::registerParser('turtle',   'EasyRdf\Parser\Turtle');
+        Format::registerParser('rdfxml', 'EasyRdf\Parser\RdfXml');
+        Format::registerParser('turtle', 'EasyRdf\Parser\Turtle');
 
         // Reset default namespace
         RdfNamespace::setDefault(null);
