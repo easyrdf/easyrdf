@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Examples;
 
 /**
  * EasyRdf
@@ -37,7 +38,7 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_ParseRssTest extends \EasyRdf\TestCase
+class ParseRssTest extends \EasyRdf\TestCase
 {
     public function testNoParams()
     {

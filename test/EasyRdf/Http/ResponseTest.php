@@ -43,7 +43,7 @@ use EasyRdf\TestCase;
 
 require_once realpath(__DIR__ . '/../../') . '/TestHelper.php';
 
-class EasyRdf_Http_ResponseTest extends TestCase
+class ResponseTest extends TestCase
 {
     public function testGetVersion()
     {

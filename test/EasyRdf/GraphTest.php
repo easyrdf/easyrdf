@@ -40,7 +40,7 @@ use EasyRdf\Http\MockClient;
 
 require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Mock_RdfParser
+class MockRdfParser
 {
     public function parse($graph, $data, $format, $baseUri)
     {
@@ -53,7 +53,7 @@ class Mock_RdfParser
     }
 }
 
-class Mock_RdfSerialiser
+class MockRdfSerialiser
 {
     public function serialise($graph, $format = null)
     {
@@ -182,7 +182,7 @@ class GraphTest extends TestCase
 
     public function testMockParser()
     {
-        Format::registerParser('mock', 'EasyRdf\Mock_RdfParser');
+        Format::registerParser('mock', 'EasyRdf\MockRdfParser');
 
         $graph = new Graph();
         $graph->parse('data', 'mock');
@@ -1585,14 +1585,14 @@ class GraphTest extends TestCase
 
     public function testSerialise()
     {
-        Format::registerSerialiser('mock', 'EasyRdf\Mock_RdfSerialiser');
+        Format::registerSerialiser('mock', 'EasyRdf\MockRdfSerialiser');
         $graph = new Graph();
         $this->assertSame("<rdf></rdf>", $graph->serialise('mock'));
     }
 
     public function testSerialiseByMime()
     {
-        Format::registerSerialiser('mock', 'EasyRdf\Mock_RdfSerialiser');
+        Format::registerSerialiser('mock', 'EasyRdf\MockRdfSerialiser');
         Format::register('mock', 'Mock', null, array('mock/mime' => 1.0));
         $graph = new Graph();
         $this->assertSame(
@@ -1604,7 +1604,7 @@ class GraphTest extends TestCase
     public function testSerialiseByFormatObject()
     {
         $format = Format::register('mock', 'Mock Format');
-        $format->setSerialiserClass('EasyRdf\Mock_RdfSerialiser');
+        $format->setSerialiserClass('EasyRdf\MockRdfSerialiser');
         $graph = new Graph();
         $this->assertSame("<rdf></rdf>", $graph->serialise($format));
     }
