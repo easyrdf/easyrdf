@@ -318,7 +318,7 @@ class RdfNamespace
             $uri = $uri->getUri();
         } elseif (!is_string($uri)) {
             throw new \InvalidArgumentException(
-                "\$uri should be a string or EasyRdf_Resource"
+                '$uri should be a string or EasyRdf\Resource'
             );
         }
 

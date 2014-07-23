@@ -60,7 +60,7 @@ class Http
             !($httpClient instanceof \Zend\Http\Client or
               $httpClient instanceof Http\Client)) {
             throw new \InvalidArgumentException(
-                "\$httpClient should be an object of class Zend_Http_Client or EasyRdf_Http_Client"
+                '$httpClient should be an object of class Zend\Http\Client or EasyRdf\Http\Client'
             );
         }
         return self::$defaultHttpClient = $httpClient;

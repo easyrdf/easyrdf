@@ -8,20 +8,19 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-set_include_path(get_include_path() . PATH_SEPARATOR . './lib/');
-require_once "EasyRdf.php";
+require_once realpath(__DIR__.'/../../..')."/vendor/autoload.php";
 
 $RDFA_VERSION = 'rdfa1.1';
 $HOST_LANGUAGE = 'xhtml5';
 $REFERENCE_DISTILLER = 'http://www.w3.org/2012/pyRdfa/extract?format=nt&rdfagraph=output&uri=';
 $FIXTURE_DIR = dirname(__FILE__);
 
-EasyRdf_Namespace::set('test', 'http://www.w3.org/2006/03/test-description#');
-EasyRdf_Namespace::set('rdfatest', 'http://rdfa.info/vocabs/rdfa-test#');
+\EasyRdf\RdfNamespace::set('test', 'http://www.w3.org/2006/03/test-description#');
+\EasyRdf\RdfNamespace::set('rdfatest', 'http://rdfa.info/vocabs/rdfa-test#');
 
-$client = new EasyRdf_Http_Client();
+$client = new \EasyRdf\Http\Client();
 
-$manifest = EasyRdf_Graph::newAndLoad('http://rdfa.info/test-suite/manifest.ttl');
+$manifest = \EasyRdf\Graph::newAndLoad('http://rdfa.info/test-suite/manifest.ttl');
 foreach ($manifest->allOfType('test:TestCase') as $test) {
     if (!in_array($RDFA_VERSION, $test->all('rdfatest:rdfaVersion'))) {
         continue;

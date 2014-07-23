@@ -135,7 +135,7 @@ class Client
 
         if (!preg_match('/^http(s?):/', $uri)) {
             throw new \InvalidArgumentException(
-                "EasyRdf_Http_Client only supports the 'http' and 'https' schemes."
+                "EasyRdf\\Http\\Client only supports the 'http' and 'https' schemes."
             );
         }
 

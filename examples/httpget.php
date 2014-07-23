@@ -24,7 +24,7 @@
 ?>
 <html>
 <head>
-  <title>Test EasyRdf_HTTP_Client Get</title>
+  <title>Test EasyRdf\HTTP\Client Get</title>
   <style type="text/css">
     .body
     {
@@ -35,7 +35,7 @@
   </style>
 </head>
 <body>
-<h1>Test EasyRdf_HTTP_Client Get</h1>
+<h1>Test EasyRdf\HTTP\Client Get</h1>
 <?= form_tag() ?>
 <?= text_field_tag('uri', 'http://tomheath.com/id/me', array('size'=>50)) ?><br />
 <?= label_tag('accept', 'Accept Header: ').select_tag('accept',$accept_options) ?>

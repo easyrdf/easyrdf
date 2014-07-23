@@ -377,7 +377,7 @@ class NamespaceTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$uri should be a string or EasyRdf_Resource'
+            '$uri should be a string or EasyRdf\Resource'
         );
         RdfNamespace::splitUri($this);
     }
@@ -479,7 +479,7 @@ class NamespaceTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$uri should be a string or EasyRdf_Resource'
+            '$uri should be a string or EasyRdf\Resource'
         );
         RdfNamespace::shorten($this);
     }
@@ -542,7 +542,7 @@ class NamespaceTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$uri should be a string or EasyRdf_Resource'
+            '$uri should be a string or EasyRdf\Resource'
         );
         RdfNamespace::prefixOfUri(array());
     }

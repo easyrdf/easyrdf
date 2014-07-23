@@ -43,7 +43,7 @@ class GraphdirectTest extends \EasyRdf\TestCase
     public function test()
     {
         $output = executeExample('graph_direct.php');
-        $this->assertContains('<title>Example of using EasyRdf_Graph directly</title>', $output);
+        $this->assertContains('<title>Example of using EasyRdf\\Graph directly</title>', $output);
 
         $this->assertContains('<b>Name:</b> Joe Bloggs <br />', $output);
         $this->assertContains('<b>Names:</b> Joe Bloggs Joseph Bloggs <br />', $output);

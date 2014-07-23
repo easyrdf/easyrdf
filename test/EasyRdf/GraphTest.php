@@ -439,7 +439,7 @@ class GraphTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$uri is null and EasyRdf_Graph object has no URI either.'
+            '$uri is null and EasyRdf\Graph object has no URI either.'
         );
         $graph = new Graph();
         $graph->resource(null);

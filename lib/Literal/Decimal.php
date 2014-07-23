@@ -68,7 +68,7 @@ class Decimal extends Literal
             $locale_data = localeconv();
             $value = str_replace($locale_data['decimal_point'], '.', strval($value));
         } else {
-            throw new \UnexpectedValueException('EasyRdf_Literal_Decimal expects int/float/string as value');
+            throw new \UnexpectedValueException('EasyRdf\Literal\Decimal expects int/float/string as value');
         }
 
         $value = self::canonicalise($value);

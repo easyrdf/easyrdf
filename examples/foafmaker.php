@@ -15,16 +15,16 @@
     require_once __DIR__."/html_tag_helpers.php";
 
     if (isset($_REQUEST['enable_arc']) && $_REQUEST['enable_arc']) {
-        \EasyRdf\Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Arc');
-        \EasyRdf\Format::registerSerialiser('posh', 'EasyRdf_Serialiser_Arc');
-        \EasyRdf\Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Arc');
-        \EasyRdf\Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Arc');
+        \EasyRdf\Format::registerSerialiser('ntriples', 'EasyRdf\Serialiser\Arc');
+        \EasyRdf\Format::registerSerialiser('posh', 'EasyRdf\Serialiser\Arc');
+        \EasyRdf\Format::registerSerialiser('rdfxml', 'EasyRdf\Serialiser\Arc');
+        \EasyRdf\Format::registerSerialiser('turtle', 'EasyRdf\Serialiser\Arc');
     }
 
     if (isset($_REQUEST['enable_rapper']) && $_REQUEST['enable_rapper']) {
-        \EasyRdf\Format::registerSerialiser('dot', 'EasyRdf_Serialiser_Rapper');
-        \EasyRdf\Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Rapper');
-        \EasyRdf\Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Rapper');
+        \EasyRdf\Format::registerSerialiser('dot', 'EasyRdf\Serialiser\Rapper');
+        \EasyRdf\Format::registerSerialiser('rdfxml', 'EasyRdf\Serialiser\Rapper');
+        \EasyRdf\Format::registerSerialiser('turtle', 'EasyRdf\Serialiser\Rapper');
     }
 
     $format_options = array();

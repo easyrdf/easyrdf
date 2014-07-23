@@ -14,7 +14,7 @@
 ?>
 <html>
 <head>
-  <title>Example of using EasyRdf_Graph directly</title>
+  <title>Example of using EasyRdf\Graph directly</title>
 </head>
 <body>
 
