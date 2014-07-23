@@ -40,7 +40,6 @@ use EasyRdf\Graph;
 use EasyRdf\ParsedUri;
 use EasyRdf\Parser;
 
-
 /**
  * A pure-php class to parse RDF/XML.
  *

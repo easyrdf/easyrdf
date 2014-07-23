@@ -1,5 +1,6 @@
 <?php
 namespace EasyRdf\Http;
+
 /**
  * EasyRdf
  *
