@@ -37,11 +37,14 @@
 
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class FusekiTest extends EasyRdf_TestCase
+class FusekiTest extends \EasyRdf\TestCase
 {
     private static $port = null;
     private static $proc = null;
-    
+
+    /** @var \EasyRdf\GraphStore */
+    private $gs;
+
     // Starting up Fuseki is slow - we re-use the same instance for every test
     public static function setUpBeforeClass()
     {
@@ -81,12 +84,12 @@ class FusekiTest extends EasyRdf_TestCase
     
     public function setUp()
     {
-        $this->gs = new EasyRdf_GraphStore("http://localhost:".self::$port."/ds/data");
+        $this->gs = new \EasyRdf\GraphStore("http://localhost:".self::$port."/ds/data");
     }
     
     public function testGraphStoreReplace()
     {
-        $graph1 = new EasyRdf_Graph();
+        $graph1 = new \EasyRdf\Graph();
         $graph1->set('http://example.com/test', 'rdfs:label', 'Test 0');
         $result = $this->gs->replace($graph1, 'easyrdf-graphstore-test.rdf');
         $this->assertSame(201, $result->getStatus());
@@ -97,14 +100,14 @@ class FusekiTest extends EasyRdf_TestCase
 
         $graph2 = $this->gs->get('easyrdf-graphstore-test.rdf');
         $this->assertEquals(
-            array(new EasyRdf_Literal('Test 1')),
+            array(new \EasyRdf\Literal('Test 1')),
             $graph2->all('http://example.com/test', 'rdfs:label')
         );
     }
     
     public function testGraphStoreInsert()
     {
-        $graph1 = new EasyRdf_Graph();
+        $graph1 = new \EasyRdf\Graph();
         $graph1->set('http://example.com/test', 'rdfs:label', 'Test 2');
         $result = $this->gs->insert($graph1, 'easyrdf-graphstore-test2.rdf');
         $this->assertSame(201, $result->getStatus());
@@ -118,8 +121,8 @@ class FusekiTest extends EasyRdf_TestCase
         sort($labels);
         $this->assertEquals(
             array(
-                new EasyRdf_Literal('Test 2'),
-                new EasyRdf_Literal('Test 3')
+                new \EasyRdf\Literal('Test 2'),
+                new \EasyRdf\Literal('Test 3')
             ),
             $labels
         );
@@ -127,7 +130,7 @@ class FusekiTest extends EasyRdf_TestCase
     
     public function testGraphStoreDelete()
     {
-        $graph1 = new EasyRdf_Graph();
+        $graph1 = new \EasyRdf\Graph();
         $graph1->set('http://example.com/test', 'rdfs:label', 'Test 4');
         $result = $this->gs->insert($graph1, 'easyrdf-graphstore-test3.rdf');
         $this->assertSame(201, $result->getStatus());
