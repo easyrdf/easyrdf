@@ -9,7 +9,7 @@
      * supported input and output formats. These options are then
      * displayed on the HTML form.
      *
-     * The input data is loaded or parsed into an EasyRdf_Graph.
+     * The input data is loaded or parsed into an EasyRdf\Graph.
      * That graph is than outputted again in the desired output format.
      *
      * @package    EasyRdf

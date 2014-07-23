@@ -9,7 +9,7 @@
      *
      * In RSS 1.0, the list of items in the feed are listed by relating
      * the rss:channel to the rss:items using an rdf:Seq. In EasyRdf
-     * this maps into an EasyRdf_Container object, which can be
+     * this maps into an EasyRdf\Container object, which can be
      * iterated over using a foreach() loop.
      *
      * Note that this example only works with RSS 1.0 and no

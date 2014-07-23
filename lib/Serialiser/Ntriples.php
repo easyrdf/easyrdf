@@ -40,7 +40,7 @@ use EasyRdf\Graph;
 use EasyRdf\Serialiser;
 
 /**
- * Class to serialise an EasyRdf_Graph to N-Triples
+ * Class to serialise an EasyRdf\Graph to N-Triples
  * with no external dependancies.
  *
  * @package    EasyRdf
@@ -159,10 +159,12 @@ class Ntriples extends Serialiser
      * Serialise an RDF value into N-Triples
      *
      * The value can either be an array in RDF/PHP form, or
-     * an EasyRdf_Literal or EasyRdf_Resource object.
+     * an EasyRdf\Literal or EasyRdf\Resource object.
      *
      * @param array|object  $value   An associative array or an object
+     *
      * @throws Exception
+     *
      * @return string The RDF value serialised to N-Triples
      */
     public function serialiseValue($value)
@@ -192,12 +194,14 @@ class Ntriples extends Serialiser
     }
 
     /**
-     * Serialise an EasyRdf_Graph into N-Triples
+     * Serialise an EasyRdf\Graph into N-Triples
      *
-     * @param Graph  $graph   An EasyRdf_Graph object.
+     * @param Graph  $graph   An EasyRdf\Graph object.
      * @param string $format  The name of the format to convert to.
      * @param array  $options
+     *
      * @throws Exception
+     *
      * @return string The RDF in the new desired format.
      */
     public function serialise($graph, $format, array $options = array())

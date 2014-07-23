@@ -1,6 +1,6 @@
 <?php
     /**
-     * No RDF, just test EasyRdf_Http_Client
+     * No RDF, just test EasyRdf\Http\Client
      *
      * This example does nothing but test EasyRdf's build in HTTP client.
      * It demonstrates setting Accept headers and displays the response

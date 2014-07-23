@@ -44,7 +44,7 @@ use EasyRdf\Resource;
 use EasyRdf\Serialiser;
 
 /**
- * Class to serialise an EasyRdf_Graph to Turtle
+ * Class to serialise an EasyRdf\Graph to Turtle
  * with no external dependancies.
  *
  * http://www.w3.org/TR/turtle/
@@ -89,12 +89,13 @@ class Turtle extends Serialiser
     }
 
     /**
-     * Given a an EasyRdf_Resource or URI, convert it into a string, suitable to
+     * Given a an EasyRdf\Resource or URI, convert it into a string, suitable to
      * be written to a Turtle document. URIs will be shortened into CURIES
      * where possible.
      *
-     * @param  Resource $resource   The resource to convert to a Turtle string
-     * @param  boolean $createNamespace     If true, a new namespace may be created
+     * @param  Resource $resource        The resource to convert to a Turtle string
+     * @param  boolean $createNamespace  If true, a new namespace may be created
+     *
      * @return string
      */
     public function serialiseResource($resource, $createNamespace = false)
@@ -118,11 +119,12 @@ class Turtle extends Serialiser
     }
 
     /**
-     * Given an EasyRdf_Literal object, convert it into a string, suitable to
+     * Given an EasyRdf\Literal object, convert it into a string, suitable to
      * be written to a Turtle document. Supports multiline literals and literals with
      * datatypes or languages.
      *
      * @param  Literal $literal
+     *
      * @return string
      */
     public function serialiseLiteral($literal)
@@ -337,12 +339,14 @@ class Turtle extends Serialiser
     }
 
     /**
-     * Serialise an EasyRdf_Graph to Turtle.
+     * Serialise an EasyRdf\Graph to Turtle.
      *
-     * @param Graph  $graph   An EasyRdf_Graph object.
+     * @param Graph  $graph   An EasyRdf\Graph object.
      * @param string $format  The name of the format to convert to.
      * @param array  $options
+     *
      * @throws Exception
+     *
      * @return string The RDF in the new desired format.
      */
     public function serialise($graph, $format, array $options = array())

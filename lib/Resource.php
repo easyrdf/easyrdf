@@ -54,7 +54,7 @@ class Resource
 
     /** Constructor
      *
-     * * Please do not call new EasyRdf_Resource() directly *
+     * * Please do not call new EasyRdf\Resource() directly *
      *
      * To create a new resource use the get method in a graph:
      * $resource = $graph->resource('http://www.example.com/');
@@ -70,7 +70,7 @@ class Resource
 
         $this->uri = $uri;
 
-        # Check that $graph is an EasyRdf_Graph object
+        // Check that $graph is an EasyRdf\Graph object
         if (is_object($graph) and $graph instanceof Graph) {
             $this->graph = $graph;
         } elseif (!is_null($graph)) {
@@ -376,7 +376,8 @@ class Resource
      *
      * @param  string|array $property The name of the property (e.g. foaf:name)
      * @param  string       $lang     The language to filter by (e.g. en)
-     * @return object EasyRdf_Literal Literal value associated with the property
+     *
+     * @return Literal  Literal value associated with the property
      */
     public function getLiteral($property, $lang = null)
     {
@@ -393,7 +394,8 @@ class Resource
      * property.
      *
      * @param  string|array $property The name of the property (e.g. foaf:name)
-     * @return object EasyRdf_Resource Resource associated with the property
+     *
+     * @return self  Resource associated with the property
      */
     public function getResource($property)
     {
@@ -556,7 +558,7 @@ class Resource
 
     /** Get a single type for a resource, as a resource.
      *
-     * The type will be returned as an EasyRdf_Resource.
+     * The type will be returned as an EasyRdf\Resource.
      * If the resource has multiple types then the type returned
      * may be arbitrary.
      * This method will return null if the resource has no type.
@@ -664,9 +666,11 @@ class Resource
      * Example:
      *   $value = $resource->title;
      *
-     * @see EasyRdf_Namespace::setDefault()
-     * @param  string $name The name of the property
-     * @return string       A single value for the named property
+     * @see EasyRdf\RdfNamespace::setDefault()
+     *
+     * @param  string $name  The name of the property
+     *
+     * @return string  A single value for the named property
      */
     public function __get($name)
     {
@@ -680,9 +684,12 @@ class Resource
      * Example:
      *   $resource->title = 'Title';
      *
-     * @see EasyRdf_Namespace::setDefault()
-     * @param  string $name The name of the property
+     * @see EasyRdf\RdfNamespace::setDefault()
+     *
+     * @param  string $name  The name of the property
      * @param  string $value The value for the property
+     *
+     * @return int
      */
     public function __set($name, $value)
     {
@@ -696,8 +703,11 @@ class Resource
      * Example:
      *   if (isset($resource->title)) { blah(); }
      *
-     * @see EasyRdf_Namespace::setDefault()
+     * @see EasyRdf\RdfNamespace::setDefault()
+     *
      * @param string $name The name of the property
+     *
+     * @return bool
      */
     public function __isset($name)
     {
@@ -711,8 +721,11 @@ class Resource
      * Example:
      *   unset($resource->title);
      *
-     * @see EasyRdf_Namespace::setDefault()
+     * @see EasyRdf\RdfNamespace::setDefault()
+     *
      * @param string $name The name of the property
+     *
+     * @return int
      */
     public function __unset($name)
     {

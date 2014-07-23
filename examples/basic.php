@@ -2,8 +2,8 @@
     /**
      * Basic "Hello World" type example
      *
-     * A new EasyRdf_Graph object is created and then the contents
-     * of my FOAF profile is loaded from the web. An EasyRdf_Resource for
+     * A new EasyRdf\Graph object is created and then the contents
+     * of my FOAF profile is loaded from the web. An EasyRdf\Resource for
      * the primary topic of the document (me, Nicholas Humfrey) is returned
      * and then used to display my name.
      *

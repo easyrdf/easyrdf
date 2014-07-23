@@ -76,10 +76,11 @@ class Date extends Literal
     /** Parses a string using DateTime and creates a new literal
      *
      * Example:
-     *   $date = EasyRdf_Literal_Date::parse('1 January 2011');
+     *   $date = EasyRdf\Literal\Date::parse('1 January 2011');
      *
      * @see DateTime
      * @param string $value The date to parse
+     *
      * @return self
      */
     public static function parse($value)

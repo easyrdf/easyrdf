@@ -37,7 +37,7 @@ namespace EasyRdf;
  */
 
 /**
- * Container for collection of EasyRdf_Resources.
+ * Container for collection of EasyRdf\Resource objects.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
@@ -78,7 +78,8 @@ class Graph
      * @param  string  $uri     The URI of the graph
      * @param  string  $data    Data for the graph
      * @param  string  $format  The document type of the data (e.g. rdfxml)
-     * @return object EasyRdf_Graph
+     *
+     * @return Graph
      */
     public function __construct($uri = null, $data = null, $format = null)
     {
@@ -97,15 +98,16 @@ class Graph
      * Create a new graph and load RDF data from a URI into it
      *
      * This static function is shorthand for:
-     *     $graph = new EasyRdf_Graph($uri);
+     *     $graph = new \EasyRdf\Graph($uri);
      *     $graph->load($uri, $format);
      *
      * The document type is optional but should be specified if it
      * can't be guessed or got from the HTTP headers.
      *
-     * @param  string  $uri     The URI of the data to load
-     * @param  string  $format  Optional format of the data (eg. rdfxml)
-     * @return object EasyRdf_Graph    The new the graph object
+     * @param  string       $uri     The URI of the data to load
+     * @param  string|null  $format  Optional format of the data (eg. rdfxml)
+     *
+     * @return Graph  The new the graph object
      */
     public static function newAndLoad($uri, $format = null)
     {
@@ -118,14 +120,15 @@ class Graph
      *
      * If the resource did not previously exist, then a new resource will
      * be created. If you provide an RDF type and that type is registered
-     * with the EasyRdf_TypeMapper, then the resource will be an instance
+     * with the EasyRdf\TypeMapper, then the resource will be an instance
      * of the class registered.
      *
      * If URI is null, then the URI of the graph is used.
      *
      * @param  string  $uri    The URI of the resource
      * @param  mixed   $types  RDF type of a new resource (e.g. foaf:Person)
-     * @return object EasyRdf_Resource
+     *
+     * @return \EasyRdf\Resource
      */
     public function resource($uri = null, $types = array())
     {
@@ -185,11 +188,12 @@ class Graph
      * Create a new blank node in the graph and return it.
      *
      * If you provide an RDF type and that type is registered
-     * with the EasyRdf_TypeMapper, then the resource will be an instance
+     * with the EasyRdf\TypeMapper, then the resource will be an instance
      * of the class registered.
      *
      * @param  mixed  $types  RDF type of a new blank node (e.g. foaf:Person)
-     * @return object EasyRdf_Resource The new blank node
+     *
+     * @return \EasyRdf\Resource The new blank node
      */
     public function newBNode($types = array())
     {
@@ -343,7 +347,7 @@ class Graph
     }
 
     /** Get an associative array of all the resources stored in the graph.
-     *  The keys of the array is the URI of the EasyRdf_Resource.
+     *  The keys of the array is the URI of the EasyRdf\Resource.
      *
      * @return Resource[]
      */
@@ -378,7 +382,7 @@ class Graph
      *
      * @param  string  $property   The property to check.
      * @param  mixed   $value      Optional, the value of the propery to check for.
-     * @return array   Array of EasyRdf_Resource
+     * @return Resource[]
      */
     public function resourcesMatching($property, $value = null)
     {
@@ -668,7 +672,8 @@ class Graph
      * @param  string       $resource The URI of the resource (e.g. http://example.com/joe#me)
      * @param  string|array $property The name of the property (e.g. foaf:name)
      * @param  string       $lang     The language to filter by (e.g. en)
-     * @return object EasyRdf_Literal Literal value associated with the property
+     *
+     * @return Literal  Literal value associated with the property
      */
     public function getLiteral($resource, $property, $lang = null)
     {
@@ -685,7 +690,8 @@ class Graph
      *
      * @param  string       $resource The URI of the resource (e.g. http://example.com/joe#me)
      * @param  string|array $property The name of the property (e.g. foaf:name)
-     * @return object EasyRdf_Resource Resource associated with the property
+     *
+     * @return \EasyRdf\Resource  Resource associated with the property
      */
     public function getResource($resource, $property)
     {
@@ -715,7 +721,7 @@ class Graph
         }
     }
 
-    /** Get an EasyRdf_Resource or EasyRdf_Literal object from an associative array.
+    /** Get an EasyRdf\Resource or EasyRdf\Literal object from an associative array.
      *  @ignore
      */
     protected function arrayToObject($data)
@@ -1282,7 +1288,7 @@ class Graph
 
     /** Serialise the graph into RDF
      *
-     * The $format parameter can be an EasyRdf_Format object, a
+     * The $format parameter can be an EasyRdf\Format object, a
      * format name, a mime type or a file extension.
      *
      * Example:
@@ -1408,13 +1414,15 @@ class Graph
         return null;
     }
 
-    /** Get the resource type of the graph as a EasyRdf_Resource
+    /** Get the resource type of the graph as a EasyRdf\Resource
      *
      * If the graph has multiple types then the type returned
      * may be arbitrary.
      * This method will return null if the resource has no type.
      *
-     * @return object EasyRdf_Resource  A type assocated with the resource
+     * @param mixed $resource
+     *
+     * @return \EasyRdf\Resource  A type associated with the resource
      */
     public function typeAsResource($resource = null)
     {
@@ -1550,7 +1558,9 @@ class Graph
 
     /** Get the primary topic of the graph
      *
-     * @return EasyRdf_Resource The primary topic of the document.
+     * @param mixed $resource
+     *
+     * @return \EasyRdf\Resource  The primary topic of the document.
      */
     public function primaryTopic($resource = null)
     {

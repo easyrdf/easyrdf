@@ -259,7 +259,7 @@ class Response
     }
 
     /**
-     * Create an EasyRdf_Http_Response object from a HTTP response string
+     * Create an EasyRdf\Http\Response object from a HTTP response string
      *
      * @param string $responseStr
      *

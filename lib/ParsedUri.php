@@ -65,7 +65,6 @@ class ParsedUri
      * scheme, authority, path, query, fragment
      *
      * @param  mixed $uri  The URI as a string or an array
-     * @return object EasyRdf_ParsedUri
      */
     public function __construct($uri = null)
     {
@@ -193,12 +192,12 @@ class ParsedUri
 
 
     /**
-     * Normalises the path of this URI if it has one. Normalising a path means
-     * that any unnecessary '.' and '..' segments are removed. For example, the
-     * URI http://example.com/a/b/../c/./d would be normalised to
-     * http://example.com/a/c/d
+     * Normalises the path of this URI if it has one.
      *
-     * @return object EasyRdf_ParsedUri
+     * Normalising a path means that any unnecessary '.' and '..' segments are removed. For example, the
+     * URI http://example.com/a/b/../c/./d would be normalised to http://example.com/a/c/d
+     *
+     * @return self
      */
     public function normalise()
     {

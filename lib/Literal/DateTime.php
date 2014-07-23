@@ -77,10 +77,11 @@ class DateTime extends Date
     /** Parses a string using DateTime and creates a new literal
      *
      * Example:
-     *   $dt = EasyRdf_Literal_DateTime::parse('Mon 18 Jul 2011 18:45:43 BST');
+     *   $dt = EasyRdf\Literal\DateTime::parse('Mon 18 Jul 2011 18:45:43 BST');
      *
      * @see DateTime
      * @param string $value The date and time to parse
+     *
      * @return self
      */
     public static function parse($value)

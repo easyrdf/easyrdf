@@ -2,7 +2,7 @@
     /**
      * GraphViz rendering example
      *
-     * This example demonstrates converting an EasyRdf_Graph into the
+     * This example demonstrates converting an EasyRdf\Graph into the
      * GraphViz graph file language. Using the 'Use Labels' option, you
      * can have resource URIs replaced with text based labels and using
      * 'Only Labelled' option, only the resources and properties with

@@ -69,7 +69,7 @@ class Http
     /** Get the HTTP Client object used to fetch RDF data
      *
      * If no HTTP Client has previously been set, then a new
-     * default (EasyRdf_Http_Client) client will be created.
+     * default (EasyRdf\Http\Client) client will be created.
      *
      * @return Http\Client|\Zend\Http\Client The HTTP client object
      */

@@ -160,7 +160,7 @@ class GraphStore
 
     /** Replace the contents of a graph in the graph store with new data
      *
-     * The $graph parameter is the EasyRdf_Graph object to be sent to the
+     * The $graph parameter is the EasyRdf\Graph object to be sent to the
      * graph store. Alternatively it can be a string, already serialised.
      *
      * The URI can either be a full absolute URI or
@@ -182,7 +182,7 @@ class GraphStore
     /**
      * Replace the contents of default graph in the graph store with new data
      *
-     * The $graph parameter is the EasyRdf_Graph object to be sent to the
+     * The $graph parameter is the EasyRdf\Graph object to be sent to the
      * graph store. Alternatively it can be a string, already serialised.
      *
      * The $format parameter can be given to specify the serialisation
@@ -199,7 +199,7 @@ class GraphStore
 
     /** Add data to a graph in the graph store
      *
-     * The $graph parameter is the EasyRdf_Graph object to be sent to the
+     * The $graph parameter is the EasyRdf\Graph object to be sent to the
      * graph store. Alternatively it can be a string, already serialised.
      *
      * The URI can either be a full absolute URI or
@@ -208,10 +208,11 @@ class GraphStore
      * The $format parameter can be given to specify the serialisation
      * used to send the graph data to the graph store.
      *
-     * @param Graph|string $graph  Data
-     * @param string       $uriRef The URI of graph to be added to
-     * @param string       $format The format of the data to send to the graph store
-     * @return object EasyRdf_Http_Response The response from the graph store
+     * @param Graph|string  $graph  Data
+     * @param string        $uriRef The URI of graph to be added to
+     * @param string        $format The format of the data to send to the graph store
+     *
+     * @return Http\Response  The response from the graph store
      */
     public function insert($graph, $uriRef = null, $format = 'ntriples')
     {
@@ -221,15 +222,16 @@ class GraphStore
     /**
      * Add data to default graph of the graph store
      *
-     * The $graph parameter is the EasyRdf_Graph object to be sent to the
+     * The $graph parameter is the EasyRdf\Graph object to be sent to the
      * graph store. Alternatively it can be a string, already serialised.
      *
      * The $format parameter can be given to specify the serialisation
      * used to send the graph data to the graph store.
      *
-     * @param Graph|string $graph  Data
-     * @param string       $format The format of the data to send to the graph store
-     * @return object EasyRdf_Http_Response The response from the graph store
+     * @param Graph|string  $graph  Data
+     * @param string        $format The format of the data to send to the graph store
+     *
+     * @return Http\Response  The response from the graph store
      */
     public function insertIntoDefault($graph, $format = 'ntriples')
     {

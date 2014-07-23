@@ -2,7 +2,7 @@
     /**
      * Display the contents of a graph
      *
-     * Data from the chosen URI is loaded into an EasyRdf_Graph object.
+     * Data from the chosen URI is loaded into an EasyRdf\Graph object.
      * Then the graph is dumped and printed to the page using the
      * $graph->dump() method.
      *

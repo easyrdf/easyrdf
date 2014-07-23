@@ -124,10 +124,12 @@ class Format
         return array_key_exists($name, self::$formats);
     }
 
-    /** Get a EasyRdf_Format from a name, uri or mime type
+    /** Get a EasyRdf\Format from a name, uri or mime type
      *
-     * @param string $query   a query string to search for
-     * @return object         the first EasyRdf_Format that matches the query
+     * @param string $query  a query string to search for
+     *
+     * @return self  the first object that matches the query
+     *
      * @throws Exception  if no format is found
      */
     public static function getFormat($query)
@@ -155,12 +157,13 @@ class Format
 
     /** Register a new format
      *
-     * @param  string  $name       The name of the format (e.g. ntriples)
-     * @param  string  $label      The label for the format (e.g. N-Triples)
-     * @param  string  $uri        The URI for the format
-     * @param  string  $mimeTypes  One or more mime types for the format
-     * @param  string  $extensions One or more extensions (file suffix)
-     * @return object              The new EasyRdf_Format object
+     * @param string       $name       The name of the format (e.g. ntriples)
+     * @param string       $label      The label for the format (e.g. N-Triples)
+     * @param string       $uri        The URI for the format
+     * @param array|string $mimeTypes  One or more mime types for the format
+     * @param array|string $extensions One or more extensions (file suffix)
+     *
+     * @return self  New Format object
      */
     public static function register(
         $name,
@@ -198,7 +201,7 @@ class Format
     /** Class method to register a parser class to a format name
      *
      * @param  string  $name   The name of the format (e.g. ntriples)
-     * @param  string  $class  The name of the class (e.g. EasyRdf_Parser_Ntriples)
+     * @param  string  $class  The name of the class (e.g. EasyRdf\Parser\Ntriples)
      */
     public static function registerParser($name, $class)
     {
@@ -211,7 +214,7 @@ class Format
     /** Class method to register a serialiser class to a format name
      *
      * @param  string  $name   The name of the format (e.g. ntriples)
-     * @param  string  $class  The name of the class (e.g. EasyRdf_Serialiser_Ntriples)
+     * @param  string  $class  The name of the class (e.g. EasyRdf\Serialiser\Ntriples)
      */
     public static function registerSerialiser($name, $class)
     {
@@ -227,9 +230,10 @@ class Format
      *
      * If the document format is not recognised, null is returned.
      *
-     * @param  string $data     The document data
-     * @param  string $filename Optional filename
-     * @return object EasyRdf_Format The format object
+     * @param string  $data     The document data
+     * @param string  $filename Optional filename
+     *
+     * @return self  New format object
      */
     public static function guessFormat($data, $filename = null)
     {
@@ -370,7 +374,7 @@ class Format
 
     /** Set the MIME Types for a format object
      *
-     * @param array $mimeTypes  One or more mime types
+     * @param string|array $mimeTypes  One or more mime types
      */
     public function setMimeTypes($mimeTypes)
     {

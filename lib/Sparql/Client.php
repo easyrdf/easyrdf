@@ -114,13 +114,14 @@ class Client
     /** Make a query to the SPARQL endpoint
      *
      * SELECT and ASK queries will return an object of type
-     * EasyRdf_Sparql_Result.
+     * EasyRdf\Sparql\Result.
      *
      * CONSTRUCT and DESCRIBE queries will return an object
-     * of type EasyRdf_Graph.
+     * of type EasyRdf\Graph.
      *
      * @param string $query The query string to be executed
-     * @return object EasyRdf_Sparql_Result|EasyRdf_Graph Result of the query.
+     *
+     * @return Result|\EasyRdf\Graph  Result of the query.
      */
     public function query($query)
     {
@@ -154,7 +155,8 @@ class Client
      * Performs a SELECT query to get a list of the named graphs
      *
      * @param string $limit Optional limit to the number of results
-     * @return array Array of EasyRdf_Resource objects for each named graph
+     *
+     * @return \EasyRdf\Resource[]  array of objects for each named graph
      */
     public function listNamedGraphs($limit = null)
     {
@@ -179,7 +181,8 @@ class Client
      * Unsuccessful responses will throw an exception
      *
      * @param string $query The update query string to be executed
-     * @return object EasyRdf_Http_Response HTTP response
+     *
+     * @return \EasyRdf\Http\Response HTTP response
      */
     public function update($query)
     {

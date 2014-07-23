@@ -4,7 +4,7 @@
      *
      * This example is similar in concept to Leigh Dodds' FOAF-a-Matic.
      * The fields in the HTML form are inserted into an empty
-     * EasyRdf_Graph and then serialised to the chosen format.
+     * EasyRdf\Graph and then serialised to the chosen format.
      *
      * @package    EasyRdf
      * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey

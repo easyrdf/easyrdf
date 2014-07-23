@@ -39,7 +39,7 @@ use EasyRdf\Exception;
 use EasyRdf\Utils;
 
 /**
- * Class to serialise an EasyRdf_Graph to RDF
+ * Class to serialise an EasyRdf\Graph to RDF
  * using the 'rapper' command line tool.
  *
  * Note: the built-in N-Triples serialiser is used to pass data to Rapper.
@@ -72,11 +72,12 @@ class Rapper extends Ntriples
     }
 
     /**
-     * Serialise an EasyRdf_Graph to the RDF format of choice.
+     * Serialise an EasyRdf\Graph to the RDF format of choice.
      *
-     * @param \EasyRdf\Graph $graph   An EasyRdf_Graph object.
+     * @param \EasyRdf\Graph $graph   An EasyRdf\Graph object.
      * @param string         $format  The name of the format to convert to.
      * @param array          $options
+     *
      * @return string The RDF in the new desired format.
      */
     public function serialise($graph, $format, array $options = array())

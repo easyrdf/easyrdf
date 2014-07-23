@@ -109,10 +109,10 @@ class Utils
     /** Return pretty-print view of a resource URI
      *
      * This method is mainly intended for internal use and is used by
-     * EasyRdf_Graph and EasyRdf_Sparql_Result to format a resource
+     * EasyRdf\Graph and EasyRdf\Sparql\Result to format a resource
      * for display.
      *
-     * @param  mixed  $resource An EasyRdf_Resource object or an associative array
+     * @param  mixed  $resource An EasyRdf\Resource object or an associative array
      * @param  string $format   Either 'html' or 'text'
      * @param  string $color    The colour of the text
      * @return string
@@ -156,10 +156,10 @@ class Utils
     /** Return pretty-print view of a literal
      *
      * This method is mainly intended for internal use and is used by
-     * EasyRdf_Graph and EasyRdf_Sparql_Result to format a literal
+     * EasyRdf\Graph and EasyRdf\Sparql\Result to format a literal
      * for display.
      *
-     * @param  mixed  $literal  An EasyRdf_Literal object or an associative array
+     * @param  mixed  $literal  An EasyRdf\Literal object or an associative array
      * @param  string $format   Either 'html' or 'text'
      * @param  string $color    The colour of the text
      * @return string

@@ -44,7 +44,7 @@ use EasyRdf\Resource;
 use EasyRdf\Serialiser;
 
 /**
- * Class to serialise an EasyRdf_Graph to RDF/XML
+ * Class to serialise an EasyRdf\Graph to RDF/XML
  * with no external dependancies.
  *
  * @package    EasyRdf
@@ -194,12 +194,14 @@ class RdfXml extends Serialiser
 
 
     /**
-     * Method to serialise an EasyRdf_Graph to RDF/XML
+     * Method to serialise an EasyRdf\Graph to RDF/XML
      *
-     * @param Graph  $graph   An EasyRdf_Graph object.
+     * @param Graph  $graph   An EasyRdf\Graph object.
      * @param string $format  The name of the format to convert to.
      * @param array  $options
+     *
      * @throws Exception
+     *
      * @return string The RDF in the new desired format.
      */
     public function serialise($graph, $format, array $options = array())

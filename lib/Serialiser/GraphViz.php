@@ -43,7 +43,7 @@ use EasyRdf\Serialiser;
 use EasyRdf\Utils;
 
 /**
- * Class to serialise an EasyRdf_Graph to GraphViz
+ * Class to serialise an EasyRdf\Graph to GraphViz
  *
  * Depends upon the GraphViz 'dot' command line tools to render images.
  *

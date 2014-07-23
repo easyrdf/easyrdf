@@ -39,7 +39,7 @@ use EasyRdf\Exception;
 use EasyRdf\Graph;
 
 /**
- * Class to serialise an EasyRdf_Graph to RDF/JSON
+ * Class to serialise an EasyRdf\Graph to RDF/JSON
  * with no external dependancies.
  *
  * @package    EasyRdf
@@ -57,7 +57,9 @@ class Json extends RdfPhp
      * @param Graph  $graph   An EasyRdf\Graph object.
      * @param string $format  The name of the format to convert to.
      * @param array  $options
+     *
      * @throws Exception
+     *
      * @return string The RDF in the new desired format.
      */
     public function serialise($graph, $format, array $options = array())

@@ -239,7 +239,7 @@ class RdfNamespace
       * an already defined namespace.
       *
       * Example:
-      *   EasyRdf_Namespace::setDefault('http://schema.org/');
+      *   EasyRdf\RdfNamespace::setDefault('http://schema.org/');
       *
       * @param string $namespace The URI or prefix of a namespace (eg 'og')
       */

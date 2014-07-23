@@ -40,7 +40,7 @@ use EasyRdf\Graph;
 use EasyRdf\Serialiser;
 
 /**
- * Class to serialise an EasyRdf_Graph to RDF/PHP
+ * Class to serialise an EasyRdf\Graph to RDF/PHP
  * with no external dependancies.
  *
  * @package    EasyRdf
@@ -50,12 +50,12 @@ use EasyRdf\Serialiser;
 class RdfPhp extends Serialiser
 {
     /**
-     * Method to serialise an EasyRdf_Graph to RDF/PHP
+     * Method to serialise an EasyRdf\Graph to RDF/PHP
      *
      * http://n2.talis.com/wiki/RDF_PHP_Specification
      * docs/appendix-a-rdf-formats-php.md
      *
-     * @param Graph  $graph   An EasyRdf_Graph object.
+     * @param Graph  $graph   An EasyRdf\Graph object.
      * @param string $format  The name of the format to convert to.
      * @param array  $options
      * @throws Exception
@@ -71,7 +71,7 @@ class RdfPhp extends Serialiser
             );
         }
 
-        // Graph is already stored as RDF/PHP resource-centric array internally within the EasyRdf_Graph object
+        // Graph is already stored as RDF/PHP resource-centric array internally within the EasyRdf\Graph object
         return $graph->toRdfPhp();
     }
 }

@@ -52,12 +52,13 @@ class Isomorphic
      * Check if one graph is isomorphic (equal) to another graph
      *
      * For example:
-     *    $graphA = EasyRdf_Graph::newAndLoad('http://example.com/a.ttl');
-     *    $graphB = EasyRdf_Graph::newAndLoad('http://example.com/b.ttl');
-     *    if (EasyRdf_Isomorphic::isomorphic($graphA, $graphB)) print "Equal!";
+     *    $graphA = EasyRdf\Graph::newAndLoad('http://example.com/a.ttl');
+     *    $graphB = EasyRdf\Graph::newAndLoad('http://example.com/b.ttl');
+     *    if (EasyRdf\Isomorphic::isomorphic($graphA, $graphB)) print "Equal!";
      *
      * @param  Graph  $graphA  The first graph to be compared
      * @param  Graph  $graphB  The second graph to be compared
+     *
      * @return boolean True if the two graphs are isomorphic
      */
     public static function isomorphic($graphA, $graphB)
@@ -67,12 +68,13 @@ class Isomorphic
 
     /**
      * Returns an associative array of bnode identifiers representing an isomorphic
-     * bijection of one EasyRdf_Graph to another EasyRdf_Graph's blank nodes or
+     * bijection of one EasyRdf\Graph to another EasyRdf\Graph's blank nodes or
      * null if a bijection cannot be found.
      *
      * @param  Graph  $graphA  The first graph to be compared
      * @param  Graph  $graphB  The second graph to be compared
-     * @return array bnode mapping from $graphA to $graphB
+     *
+     * @return array|null  bnode mapping from $graphA to $graphB
      */
     public static function bijectionBetween($graphA, $graphB)
     {

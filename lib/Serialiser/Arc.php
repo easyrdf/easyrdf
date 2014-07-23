@@ -66,12 +66,14 @@ class Arc extends RdfPhp
     }
 
     /**
-     * Serialise an EasyRdf_Graph into RDF format of choice.
+     * Serialise an EasyRdf\Graph into RDF format of choice.
      *
-     * @param Graph  $graph   An EasyRdf_Graph object.
+     * @param Graph  $graph   An EasyRdf\Graph object.
      * @param string $format  The name of the format to convert to.
      * @param array  $options
+     *
      * @throws Exception
+     *
      * @return string              The RDF in the new desired format.
      */
     public function serialise($graph, $format, array $options = array())

@@ -183,7 +183,7 @@ class Redland extends Parser
     }
 
     /**
-     * Parse an RDF document into an EasyRdf_Graph
+     * Parse an RDF document into an EasyRdf\Graph
      *
      * @param Graph  $graph   the graph to load the data into
      * @param string $data    the RDF document data

@@ -62,10 +62,12 @@ class Result extends \ArrayIterator
      *
      * You should not normally need to create a SPARQL result
      * object directly - it will be constructed automatically
-     * for you by EasyRdf_Sparql_Client.
+     * for you by EasyRdf\Sparql\_Client.
      *
-     * @param string $data      The SPARQL result body
-     * @param string $mimeType  The MIME type of the result
+     * @param string $data     The SPARQL result body
+     * @param string $mimeType The MIME type of the result
+     *
+     * @throws \EasyRdf\Exception
      */
     public function __construct($data, $mimeType)
     {
@@ -243,7 +245,7 @@ class Result extends \ArrayIterator
         }
     }
 
-    /** Create a new EasyRdf_Resource or EasyRdf_Literal depending
+    /** Create a new EasyRdf\Resource or EasyRdf\Literal depending
      *  on the type of data passed in.
      *
      * @ignore

@@ -5,7 +5,7 @@
      * This example presents a form that you can enter the URI
      * of a a SPARQL endpoint and a SPARQL query into. The
      * results are displayed using a call to dump() on what will be
-     * either a EasyRdf_Sparql_Result or EasyRdf_Graph object.
+     * either a EasyRdf\Sparql\Result or EasyRdf\Graph object.
      *
      * A list of registered namespaces is displayed above the query
      * box - any of these namespaces can be used in the query and PREFIX

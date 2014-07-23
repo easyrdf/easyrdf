@@ -66,7 +66,7 @@ class Literal
      * PHP values of type bool, int or float, will automatically be converted
      * to the corresponding datatype and PHP sub-class.
      *
-     * If a registered datatype is given, then the registered subclass of EasyRdf_Literal
+     * If a registered datatype is given, then the registered subclass of EasyRdf\Literal
      * will instantiated.
      *
      * Note that literals are not required to have a language or datatype.
@@ -75,7 +75,8 @@ class Literal
      * @param  mixed  $value     The value of the literal or an associative array
      * @param  string $lang      The natural language of the literal or null (e.g. 'en')
      * @param  string $datatype  The datatype of the literal or null (e.g. 'xsd:integer')
-     * @return object EasyRdf_Literal (or subclass of EasyRdf_Literal)
+     *
+     * @return self  (or subclass of EasyRdf\Literal)
      */
     public static function create($value, $lang = null, $datatype = null)
     {
@@ -121,7 +122,7 @@ class Literal
      * set the datatype in the RDF.
      *
      * Example:
-     * EasyRdf_Literal::registerDatatype('xsd:dateTime', 'My_DateTime_Class');
+     * EasyRdf\Literal::registerDatatype('xsd:dateTime', 'My_DateTime_Class');
      *
      * @param  string  $datatype   The RDF datatype (e.g. xsd:dateTime)
      * @param  string  $class      The PHP class name (e.g. My_DateTime_Class)
@@ -196,7 +197,8 @@ class Literal
      * @param  string $value     The value of the literal
      * @param  string $lang      The natural language of the literal or null (e.g. 'en')
      * @param  string $datatype  The datatype of the literal or null (e.g. 'xsd:string')
-     * @return object EasyRdf_Literal
+     *
+     * @return Literal
      */
     public function __construct($value, $lang = null, $datatype = null)
     {

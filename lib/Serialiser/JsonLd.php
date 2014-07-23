@@ -41,7 +41,7 @@ use EasyRdf\Serialiser;
 use ML\JsonLD as LD;
 
 /**
- * Class to serialise an EasyRdf_Graph to JSON-LD
+ * Class to serialise an EasyRdf\Graph to JSON-LD
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2013 Alexey Zakhlestin

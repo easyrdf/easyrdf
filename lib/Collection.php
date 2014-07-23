@@ -37,7 +37,7 @@ namespace EasyRdf;
  */
 
 /**
- * Sub-class of EasyRdf_Resource that represents an RDF collection (rdf:List)
+ * Sub-class of EasyRdf\Resource that represents an RDF collection (rdf:List)
  *
  * This class can be used to iterate through a collection of items.
  *
