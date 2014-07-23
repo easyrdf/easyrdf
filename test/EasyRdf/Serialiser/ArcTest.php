@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Serialiser;
 
 /**
  * EasyRdf
@@ -35,18 +36,24 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-require_once 'EasyRdf/Serialiser/Arc.php';
-
-class EasyRdf_Serialiser_ArcTest extends EasyRdf_TestCase
+class ArcTest extends TestCase
 {
+    /** @var Graph */
+    private $graph;
+    /** @var Arc */
+    private $serialiser;
+
     public function setUp()
     {
-        if (requireExists('arc/ARC2.php')) {
-            $this->graph = new EasyRdf_Graph();
-            $this->serialiser = new EasyRdf_Serialiser_Arc();
+        if (class_exists('ARC2')) {
+            $this->graph = new Graph();
+            $this->serialiser = new Arc();
             parent::setUp();
         } else {
             $this->markTestSkipped(
@@ -75,8 +82,8 @@ class EasyRdf_Serialiser_ArcTest extends EasyRdf_TestCase
     public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Serialiser_Arc does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Serialiser\Arc does not support: unsupportedformat'
         );
         $rdf = $this->serialiser->serialise(
             $this->graph,

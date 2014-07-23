@@ -35,7 +35,6 @@ namespace EasyRdf\Parser;
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-use EasyRdf\Exception;
 
 /**
  * Class to parse RDF using the ARC2 library.
@@ -58,7 +57,9 @@ class Arc extends RdfPhp
      */
     public function __construct()
     {
-        require_once 'arc/ARC2.php';
+        if (!class_exists('ARC2')) {
+            throw new \EasyRdf\Exception('ARC2 dependency is not installed');
+        }
     }
 
     /**
@@ -79,8 +80,8 @@ class Arc extends RdfPhp
         if (array_key_exists($format, self::$supportedTypes)) {
             $className = self::$supportedTypes[$format];
         } else {
-            throw new Exception(
-                "EasyRdf_Parser_Arc does not support: $format"
+            throw new \EasyRdf\Exception(
+                "EasyRdf\\Parser\\Arc does not support: {$format}"
             );
         }
 
@@ -90,7 +91,7 @@ class Arc extends RdfPhp
             $rdfphp = $parser->getSimpleIndex(false);
             return parent::parse($graph, $rdfphp, 'php', $baseUri);
         } else {
-            throw new Exception(
+            throw new \EasyRdf\Exception(
                 "ARC2 failed to get a $className parser."
             );
         }

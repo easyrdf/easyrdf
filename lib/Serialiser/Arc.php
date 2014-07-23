@@ -60,7 +60,9 @@ class Arc extends RdfPhp
      */
     public function __construct()
     {
-        require_once 'arc/ARC2.php';
+        if (!class_exists('ARC2')) {
+            throw new \EasyRdf\Exception('ARC2 dependency is not installed');
+        }
     }
 
     /**
@@ -80,7 +82,7 @@ class Arc extends RdfPhp
             $className = self::$supportedTypes[$format];
         } else {
             throw new Exception(
-                "EasyRdf_Serialiser_Arc does not support: $format"
+                "EasyRdf\\Serialiser\\Arc does not support: {$format}"
             );
         }
 

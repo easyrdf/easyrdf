@@ -52,7 +52,7 @@ class ArcTest extends TestCase
 
     public function setUp()
     {
-        if (requireExists('arc/ARC2.php')) {
+        if (class_exists('ARC2')) {
             $this->parser = new Arc();
             $this->graph = new Graph();
             $this->data = readFixture('foaf.rdf');
