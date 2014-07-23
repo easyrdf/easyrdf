@@ -81,7 +81,7 @@ class Serialiser
             $format = $format->getName();
         } elseif (!is_string($format)) {
             throw new \InvalidArgumentException(
-                "\$format should be a string or an EasyRdf_Format object"
+                '$format should be a string or an EasyRdf\Format object'
             );
         }
     }

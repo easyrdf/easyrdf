@@ -84,7 +84,7 @@ class SerialiserTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$graph should be an EasyRdf_Graph object and cannot be null'
+            '$graph should be an EasyRdf\Graph object and cannot be null'
         );
         $this->serialiser->serialise(null, 'php');
     }
@@ -93,7 +93,7 @@ class SerialiserTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$graph should be an EasyRdf_Graph object and cannot be null'
+            '$graph should be an EasyRdf\Graph object and cannot be null'
         );
         $this->serialiser->serialise('string', 'php');
     }
@@ -102,7 +102,7 @@ class SerialiserTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$graph should be an EasyRdf_Graph object and cannot be null'
+            '$graph should be an EasyRdf\Graph object and cannot be null'
         );
         $this->serialiser->serialise($this->resource, 'php');
     }
@@ -129,7 +129,7 @@ class SerialiserTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$format should be a string or an EasyRdf_Format object'
+            '$format should be a string or an EasyRdf\Format object'
         );
         $this->serialiser->serialise($this->graph, $this);
     }
@@ -138,7 +138,7 @@ class SerialiserTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$format should be a string or an EasyRdf_Format object'
+            '$format should be a string or an EasyRdf\Format object'
         );
         $this->serialiser->serialise($this->graph, 1);
     }

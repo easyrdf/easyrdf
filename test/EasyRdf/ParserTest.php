@@ -96,7 +96,7 @@ class ParserTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$graph should be an EasyRdf_Graph object and cannot be null'
+            '$graph should be an EasyRdf\Graph object and cannot be null'
         );
         $this->parser->parse(null, $this->foaf_data, 'json', null);
     }
@@ -105,7 +105,7 @@ class ParserTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$graph should be an EasyRdf_Graph object and cannot be null'
+            '$graph should be an EasyRdf\Graph object and cannot be null'
         );
         $this->parser->parse('string', $this->foaf_data, 'json', null);
     }
@@ -114,7 +114,7 @@ class ParserTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$graph should be an EasyRdf_Graph object and cannot be null'
+            '$graph should be an EasyRdf\Graph object and cannot be null'
         );
         $this->parser->parse($this->resource, $this->foaf_data, 'json', null);
     }
@@ -155,7 +155,7 @@ class ParserTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$format should be a string or an EasyRdf_Format object'
+            '$format should be a string or an EasyRdf\Format object'
         );
         $this->parser->parse($this->graph, $this->foaf_data, $this, null);
     }
@@ -164,7 +164,7 @@ class ParserTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$format should be a string or an EasyRdf_Format object'
+            '$format should be a string or an EasyRdf\Format object'
         );
         $this->parser->parse($this->graph, $this->foaf_data, 1, null);
     }
