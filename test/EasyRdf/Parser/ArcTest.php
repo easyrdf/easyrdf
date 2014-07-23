@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,22 +36,25 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-require_once 'EasyRdf/Parser/Arc.php';
-
-class EasyRdf_Parser_ArcTest extends EasyRdf_TestCase
+class ArcTest extends TestCase
 {
+    /** @var Arc */
     protected $parser = null;
+    /** @var Graph */
     protected $graph = null;
     protected $data = null;
 
     public function setUp()
     {
         if (requireExists('arc/ARC2.php')) {
-            $this->parser = new EasyRdf_Parser_Arc();
-            $this->graph = new EasyRdf_Graph();
+            $this->parser = new Arc();
+            $this->graph = new Graph();
             $this->data = readFixture('foaf.rdf');
         } else {
             $this->markTestSkipped(
@@ -71,12 +75,12 @@ class EasyRdf_Parser_ArcTest extends EasyRdf_TestCase
 
         $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertClass('EasyRdf\Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertClass('EasyRdf\Literal', $name);
         $this->assertStringEquals('Joe Bloggs', $name);
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
@@ -89,8 +93,8 @@ class EasyRdf_Parser_ArcTest extends EasyRdf_TestCase
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Parser_Arc does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Parser\Arc does not support: unsupportedformat'
         );
         $rdf = $this->parser->parse(
             $this->graph,

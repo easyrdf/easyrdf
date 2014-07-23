@@ -773,7 +773,7 @@ class RdfXml extends Parser
     }
 
     /**
-     * Parse an RDF/XML document into an EasyRdf_Graph
+     * Parse an RDF/XML document into an EasyRdf\Graph
      *
      * @param Graph  $graph   the graph to load the data into
      * @param string $data    the RDF document data
@@ -790,7 +790,7 @@ class RdfXml extends Parser
 
         if ($format != 'rdfxml') {
             throw new \EasyRdf\Exception(
-                "EasyRdf_Parser_RdfXml does not support: $format"
+                "EasyRdf\\Parser\\RdfXml does not support: $format"
             );
         }
 

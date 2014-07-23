@@ -122,7 +122,7 @@ class Json extends RdfPhp
     }
 
     /**
-     * Parse RDF/JSON into an EasyRdf_Graph
+     * Parse RDF/JSON into an EasyRdf\Graph
      *
      * @param Graph  $graph   the graph to load the data into
      * @param string $data    the RDF document data
@@ -139,7 +139,7 @@ class Json extends RdfPhp
 
         if ($format != 'json') {
             throw new \EasyRdf\Exception(
-                "EasyRdf_Parser_Json does not support: $format"
+                "EasyRdf\\Parser\\Json does not support: {$format}"
             );
         }
 

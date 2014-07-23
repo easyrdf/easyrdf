@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,35 +36,40 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
+class NtriplesTest extends TestCase
 {
+    /** @var Ntriples */
     protected $parser = null;
+    /** @var Graph */
     protected $graph = null;
-    protected $data = null;
+    protected $nt_data = null;
 
     public function setUp()
     {
-        $this->graph = new EasyRdf_Graph();
-        $this->parser = new EasyRdf_Parser_Ntriples();
-        $this->data = readFixture('foaf.nt');
+        $this->graph = new Graph();
+        $this->parser = new Ntriples();
+        $this->nt_data = readFixture('foaf.nt');
     }
 
     public function testParse()
     {
-        $count = $this->parser->parse($this->graph, $this->data, 'ntriples', null);
+        $count = $this->parser->parse($this->graph, $this->nt_data, 'ntriples', null);
         $this->assertSame(14, $count);
 
         $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertClass('EasyRdf\Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertClass('EasyRdf\Literal', $name);
         $this->assertSame('Joe Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
@@ -299,7 +305,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
     public function testParseInvalidSubject()
     {
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             'Failed to parse subject: foobar on line 1'
         );
         $this->parser->parse(
@@ -313,7 +319,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
     public function testParseInvalidPredicate()
     {
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             'Failed to parse statement on line 2'
         );
         $this->parser->parse(
@@ -327,7 +333,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
     public function testParseInvalidObject()
     {
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             'Failed to parse object: foobar on line 1'
         );
         $this->parser->parse(
@@ -341,7 +347,7 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
     public function testParseInvalidStatement()
     {
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             'Failed to parse statement on line 3'
         );
         $this->parser->parse(
@@ -355,12 +361,12 @@ class EasyRdf_Parser_NtriplesTest extends EasyRdf_TestCase
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Parser_Ntriples does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Parser\Ntriples does not support: unsupportedformat'
         );
         $rdf = $this->parser->parse(
             $this->graph,
-            $this->data,
+            $this->nt_data,
             'unsupportedformat',
             null
         );

@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,24 +36,27 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-require_once 'EasyRdf/Parser/Rapper.php';
-
-class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
+class RapperTest extends TestCase
 {
+    /** @var Rapper */
     protected $parser = null;
+    /** @var Graph */
     protected $graph = null;
-    protected $data = null;
+    protected $rdf_data = null;
 
     public function setUp()
     {
         exec('rapper --version 2>/dev/null', $output, $retval);
         if ($retval == 0) {
-            $this->parser = new EasyRdf_Parser_Rapper();
-            $this->graph = new EasyRdf_Graph();
-            $this->data = readFixture('foaf.rdf');
+            $this->parser = new Rapper();
+            $this->graph = new Graph();
+            $this->rdf_data = readFixture('foaf.rdf');
         } else {
             $this->markTestSkipped(
                 "The rapper command is not available on this system."
@@ -63,26 +67,26 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
     public function testRapperNotFound()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             "Failed to execute the command 'random_command_that_doesnt_exist'"
         );
-        new EasyRdf_Parser_Rapper('random_command_that_doesnt_exist');
+        new Rapper('random_command_that_doesnt_exist');
     }
 
     public function testRapperTooOld()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             "Version 1.4.17 or higher of rapper is required."
         );
-        new EasyRdf_Parser_Rapper('echo 1.0.0');
+        new Rapper('echo 1.0.0');
     }
 
     public function testParseRdfXml()
     {
         $count = $this->parser->parse(
             $this->graph,
-            $this->data,
+            $this->rdf_data,
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
@@ -90,12 +94,12 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
 
         $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertClass('EasyRdf\Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertClass('EasyRdf\Literal', $name);
         $this->assertStringEquals('Joe Bloggs', $name);
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
@@ -142,12 +146,12 @@ class EasyRdf_Parser_RapperTest extends EasyRdf_TestCase
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             'Error while executing command rapper'
         );
         $rdf = $this->parser->parse(
             $this->graph,
-            $this->data,
+            $this->rdf_data,
             'unsupportedformat',
             null
         );

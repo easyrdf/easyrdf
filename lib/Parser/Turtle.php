@@ -75,7 +75,7 @@ class Turtle extends Ntriples
     }
 
     /**
-     * Parse Turtle into an EasyRdf_Graph
+     * Parse Turtle into an Graph
      *
      * @param Graph  $graph   the graph to load the data into
      * @param string $data    the RDF document data
@@ -91,7 +91,7 @@ class Turtle extends Ntriples
 
         if ($format != 'turtle') {
             throw new \EasyRdf\Exception(
-                "EasyRdf_Parser_Turtle does not support: $format"
+                "EasyRdf\\Parser\\Turtle does not support: {$format}"
             );
         }
 

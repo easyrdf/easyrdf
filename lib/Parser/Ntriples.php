@@ -168,7 +168,7 @@ class Ntriples extends Parser
     }
 
     /**
-     * Parse an N-Triples document into an EasyRdf_Graph
+     * Parse an N-Triples document into an EasyRdf\Graph
      *
      * @param Graph  $graph   the graph to load the data into
      * @param string $data    the RDF document data
@@ -185,7 +185,7 @@ class Ntriples extends Parser
 
         if ($format != 'ntriples') {
             throw new \EasyRdf\Exception(
-                "EasyRdf_Parser_Ntriples does not support: $format"
+                "EasyRdf\\Parser\\Ntriples does not support: $format"
             );
         }
 

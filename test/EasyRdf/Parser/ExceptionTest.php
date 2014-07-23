@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,41 +36,43 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Parser_ExceptionTest extends EasyRdf_TestCase
+class ExceptionTest extends TestCase
 {
     public function testThrowException()
     {
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             'Test'
         );
-        throw new EasyRdf_Parser_Exception('Test');
+        throw new Exception('Test');
     }
 
     public function testThrowExceptionWithLine()
     {
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             'Test on line 10'
         );
-        throw new EasyRdf_Parser_Exception('Test', 10);
+        throw new Exception('Test', 10);
     }
 
     public function testThrowExceptionWithLineAndColumn()
     {
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             'Test on line 10, column 22'
         );
-        throw new EasyRdf_Parser_Exception('Test', 10, 22);
+        throw new Exception('Test', 10, 22);
     }
 
     public function testGetParserLine()
     {
-        $exp = new EasyRdf_Parser_Exception('Test', 10);
+        $exp = new Exception('Test', 10);
         $this->assertSame(
             10,
             $exp->getParserLine()
@@ -78,7 +81,7 @@ class EasyRdf_Parser_ExceptionTest extends EasyRdf_TestCase
 
     public function testGetParserColumn()
     {
-        $exp = new EasyRdf_Parser_Exception('Test', 10, 22);
+        $exp = new Exception('Test', 10, 22);
         $this->assertSame(
             22,
             $exp->getParserColumn()

@@ -35,7 +35,6 @@ namespace EasyRdf\Parser;
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-use EasyRdf\Exception;
 use EasyRdf\Graph;
 use EasyRdf\Parser;
 
@@ -59,7 +58,7 @@ class RdfPhp extends Parser
     }
 
     /**
-     * Parse RDF/PHP into an EasyRdf_Graph
+     * Parse RDF/PHP into an EasyRdf\Graph
      *
      * @param Graph  $graph   the graph to load the data into
      * @param string $data    the RDF document data
@@ -74,8 +73,8 @@ class RdfPhp extends Parser
         $this->checkParseParams($graph, $data, $format, $baseUri);
 
         if ($format != 'php') {
-            throw new Exception(
-                "EasyRdf_Parser_RdfPhp does not support: $format"
+            throw new \EasyRdf\Exception(
+                "EasyRdf\\Parser\\RdfPhp does not support: $format"
             );
         }
 

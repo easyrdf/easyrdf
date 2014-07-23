@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,30 +36,32 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-require_once 'EasyRdf/Parser/RdfXml.php';
-
-class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
+class RdfXmlTest extends TestCase
 {
-    /** @var EasyRdf_Parser_RdfXml */
+    /** @var RdfXml */
     protected $parser = null;
+    /** @var Graph */
     protected $graph = null;
-    protected $data = null;
+    protected $rdf_data = null;
 
     public function setUp()
     {
-        $this->graph = new EasyRdf_Graph();
-        $this->parser = new EasyRdf_Parser_RdfXml();
-        $this->data = readFixture('foaf.rdf');
+        $this->graph = new Graph();
+        $this->parser = new RdfXml();
+        $this->rdf_data = readFixture('foaf.rdf');
     }
 
     public function testParseRdfXml()
     {
         $count = $this->parser->parse(
             $this->graph,
-            $this->data,
+            $this->rdf_data,
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
@@ -66,12 +69,12 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
 
         $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertClass('EasyRdf\Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertClass('EasyRdf\Literal', $name);
         $this->assertStringEquals('Joe Bloggs', $name);
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
@@ -102,7 +105,7 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
     public function testXMLParseError()
     {
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             'XML error: "Mismatched tag" on line 4, column 21'
         );
         $this->parser->parse(
@@ -120,12 +123,12 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Parser_RdfXml does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Parser\RdfXml does not support: unsupportedformat'
         );
         $this->parser->parse(
             $this->graph,
-            $this->data,
+            $this->rdf_data,
             'unsupportedformat',
             null
         );
@@ -139,7 +142,7 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         $this->markTestIncomplete('fix for bug #74 is not implemented yet');
         $filename = 'rdfxml/gh74-bio.rdf';
 
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $triple_count = $this->parser->parse(
             $graph,
             readFixture($filename),
@@ -148,7 +151,7 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
         );
 
         foreach ($graph->resources() as $resource) {
-            /** @var EasyRdf_Resource $resource */
+            /** @var \EasyRdf\Resource $resource */
             if ($resource->isBnode() and $resource->hasProperty('rdfs:comment')) {
                 $comment = trim($resource->getLiteral('rdfs:comment'));
                 $this->assertStringStartsWith('<pre><code>', $comment);
@@ -163,7 +166,7 @@ class EasyRdf_Parser_RdfXmlTest extends EasyRdf_TestCase
     {
         $filename = 'rdfxml/gh157-base.rdf';
 
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $triple_count = $this->parser->parse(
             $graph,
             readFixture($filename),

@@ -40,7 +40,7 @@ use EasyRdf\Parser;
 use ML\JsonLD as LD;
 
 /**
- * Class to parse JSON-LD to an EasyRdf_Graph
+ * Class to parse JSON-LD to an EasyRdf\Graph
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2014 Markus Lanthaler
@@ -50,7 +50,7 @@ use ML\JsonLD as LD;
 class JsonLd extends Parser
 {
     /**
-     * Parse a JSON-LD document into an EasyRdf_Graph
+     * Parse a JSON-LD document into an EasyRdf\Graph
      *
      * Attention: Since JSON-LD supports datasets, a document may contain
      * multiple graphs and not just one. This parser returns only the
@@ -71,7 +71,7 @@ class JsonLd extends Parser
 
         if ($format != 'jsonld') {
             throw new \EasyRdf\Exception(
-                "EasyRdf_Parser_JsonLd does not support $format"
+                "EasyRdf\\Parser\\JsonLd does not support {$format}"
             );
         }
 

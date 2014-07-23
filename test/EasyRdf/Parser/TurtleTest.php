@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,32 +36,33 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-require_once 'EasyRdf/Parser/Turtle.php';
-require_once 'EasyRdf/Serialiser/NtriplesArray.php';
+require_once realpath(__DIR__.'/..').'/Serialiser/NtriplesArray.php';
 
-class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
+class TurtleTest extends TestCase
 {
-    protected $parser = null;
-    /** @var EasyRdf_Parser_Turtle */
+    /** @var Turtle */
     protected $turtleParser = null;
-    /** @var EasyRdf_Parser_Ntriples */
+    /** @var Ntriples */
     protected $ntriplesParser = null;
 
     protected $baseUri;
 
     public function setUp()
     {
-        $this->turtleParser = new EasyRdf_Parser_Turtle();
-        $this->ntriplesParser = new EasyRdf_Parser_Ntriples();
+        $this->turtleParser = new Turtle();
+        $this->ntriplesParser = new Ntriples();
         $this->baseUri = 'http://www.w3.org/2001/sw/DataAccess/df1/tests/';
     }
 
     public function testParseFoaf()
     {
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $count = $this->turtleParser->parse(
             $graph,
             readFixture('foaf.ttl'),
@@ -71,12 +73,12 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
 
         $joe = $graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertClass('EasyRdf\Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertClass('EasyRdf\Literal', $name);
         $this->assertStringEquals('Joe Bloggs', $name);
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
@@ -88,7 +90,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
 
     public function testParseCollection()
     {
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $count = $this->turtleParser->parse(
             $graph,
             "<http://example.com/s> <http://example.com/p> ('A' 'B' 'C' 'D') .",
@@ -112,11 +114,11 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Parser_Turtle does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Parser\Turtle does not support: unsupportedformat'
         );
         $this->turtleParser->parse(
-            new EasyRdf_Graph(),
+            new Graph(),
             'data',
             'unsupportedformat',
             null
@@ -130,7 +132,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
 
     protected function parseTurtle($filename)
     {
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $this->turtleParser->parse(
             $graph,
             readFixture($filename),
@@ -142,7 +144,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
 
     protected function parseNtriples($filename)
     {
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $this->ntriplesParser->parse(
             $graph,
             readFixture($filename),
@@ -347,7 +349,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # prefix name must end in a :
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: expected ':', found '<' on line 2, column 12"
         );
         $this->parseTurtle("turtle/bad-00.ttl");
@@ -357,7 +359,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # Forbidden by RDF - predicate cannot be blank
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: expected an RDF value here, found '[' on line 3, column 4"
         );
         $this->parseTurtle("turtle/bad-01.ttl");
@@ -367,7 +369,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # Forbidden by RDF - predicate cannot be blank
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: expected an RDF value here, found '[' on line 3, column 4"
         );
         $this->parseTurtle("turtle/bad-02.ttl");
@@ -377,7 +379,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # 'a' only allowed as a predicate
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: expected ':', found ' ' on line 3, column 3"
         );
         $this->parseTurtle("turtle/bad-03.ttl");
@@ -387,7 +389,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # No comma is allowed in collections
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: expected an RDF value here, found ',' on line 3, column 16"
         );
         $this->parseTurtle("turtle/bad-04.ttl");
@@ -397,7 +399,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # N3 {}s are not in Turtle
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: expected an RDF value here, found '{' on line 3, column 1"
         );
         $this->parseTurtle("turtle/bad-05.ttl");
@@ -407,7 +409,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # is and of are not in turtle
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: expected ':', found ' ' on line 3, column 7"
         );
         $this->parseTurtle("turtle/bad-06.ttl");
@@ -417,7 +419,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # paths are not in turtle
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: object for statement missing on line 3, column 5"
         );
         $this->parseTurtle("turtle/bad-07.ttl");
@@ -427,7 +429,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # @keywords is not in turtle
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             'Turtle Parse Error: unknown directive "@keywords" on line 1, column 10'
         );
         $this->parseTurtle("turtle/bad-08.ttl");
@@ -437,7 +439,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # implies is not in turtle
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: expected an RDF value here, found '=' on line 3, column 4"
         );
         $this->parseTurtle("turtle/bad-09.ttl");
@@ -447,7 +449,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # equivalence is not in turtle
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: expected an RDF value here, found '=' on line 3, column 4"
         );
         $this->parseTurtle("turtle/bad-10.ttl");
@@ -457,7 +459,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # @forAll is not in turtle
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: unknown directive \"@forall\" on line 3, column 8"
         );
         $this->parseTurtle("turtle/bad-11.ttl");
@@ -467,7 +469,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # @forSome is not in turtle
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: unknown directive \"@forsome\" on line 3, column 9"
         );
         $this->parseTurtle("turtle/bad-12.ttl");
@@ -477,7 +479,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # <= is not in turtle
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: unexpected end of file while reading URI on line 4, column 1"
         );
         $this->parseTurtle("turtle/bad-13.ttl");
@@ -487,7 +489,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         # Test long literals with missing end
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             "Turtle Parse Error: unexpected end of file while reading long string on line 7, column 1"
         );
         $this->parseTurtle("turtle/bad-14.ttl");
@@ -500,7 +502,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         $filename = 'turtle/gh195-dbpedia-ja-gauguin.ttl';
 
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $triple_count = $this->turtleParser->parse(
             $graph,
             readFixture($filename),
@@ -518,7 +520,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
     {
         $filename = 'turtle/gh185-dash-in-prefix.ttl';
 
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $triple_count = $this->turtleParser->parse(
             $graph,
             readFixture($filename),
@@ -548,7 +550,7 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
         $this->markTestIncomplete('fix for bug #140 is not implemented yet');
         $filename = 'turtle/gh140-freebase.ttl';
 
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
 
         $triple_count = $this->turtleParser->parse(
             $graph,

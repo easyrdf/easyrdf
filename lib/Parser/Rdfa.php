@@ -665,7 +665,7 @@ class Rdfa extends Parser
     }
 
     /**
-     * Parse RDFa 1.1 into an EasyRdf_Graph
+     * Parse RDFa 1.1 into an EasyRdf\Graph
      *
      * @param Graph  $graph   the graph to load the data into
      * @param string $data    the RDF document data
@@ -681,7 +681,7 @@ class Rdfa extends Parser
 
         if ($format != 'rdfa') {
             throw new \EasyRdf\Exception(
-                "EasyRdf_Parser_Rdfa does not support: $format"
+                "EasyRdf\\Parser\\Rdfa does not support: {$format}"
             );
         }
 
