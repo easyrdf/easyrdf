@@ -17,13 +17,12 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 
     $input_format_options = array('Guess' => 'guess');
     $output_format_options = array();
-    foreach (EasyRdf_Format::getFormats() as $format) {
+    foreach (\EasyRdf\Format::getFormats() as $format) {
         if ($format->getSerialiserClass()) {
             $output_format_options[$format->getLabel()] = $format->getName();
         }
@@ -66,7 +65,7 @@
 
     if (isset($_REQUEST['uri']) or isset($_REQUEST['data'])) {
         // Parse the input
-        $graph = new EasyRdf_Graph($_REQUEST['uri']);
+        $graph = new \EasyRdf\Graph($_REQUEST['uri']);
         if (empty($_REQUEST['data'])) {
             $graph->load($_REQUEST['uri'], $_REQUEST['input_format']);
         } else {
@@ -74,7 +73,7 @@
         }
 
         // Lookup the output format
-        $format = EasyRdf_Format::getFormat($_REQUEST['output_format']);
+        $format = \EasyRdf\Format::getFormat($_REQUEST['output_format']);
 
         // Serialise to the new output format
         $output = $graph->serialise($format);

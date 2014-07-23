@@ -11,27 +11,24 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 
     if (isset($_REQUEST['enable_arc']) && $_REQUEST['enable_arc']) {
-        require_once "EasyRdf/Serialiser/Arc.php";
-        EasyRdf_Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Arc');
-        EasyRdf_Format::registerSerialiser('posh', 'EasyRdf_Serialiser_Arc');
-        EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Arc');
-        EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Arc');
+        \EasyRdf\Format::registerSerialiser('ntriples', 'EasyRdf_Serialiser_Arc');
+        \EasyRdf\Format::registerSerialiser('posh', 'EasyRdf_Serialiser_Arc');
+        \EasyRdf\Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Arc');
+        \EasyRdf\Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Arc');
     }
 
     if (isset($_REQUEST['enable_rapper']) && $_REQUEST['enable_rapper']) {
-        require_once "EasyRdf/Serialiser/Rapper.php";
-        EasyRdf_Format::registerSerialiser('dot', 'EasyRdf_Serialiser_Rapper');
-        EasyRdf_Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Rapper');
-        EasyRdf_Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Rapper');
+        \EasyRdf\Format::registerSerialiser('dot', 'EasyRdf_Serialiser_Rapper');
+        \EasyRdf\Format::registerSerialiser('rdfxml', 'EasyRdf_Serialiser_Rapper');
+        \EasyRdf\Format::registerSerialiser('turtle', 'EasyRdf_Serialiser_Rapper');
     }
 
     $format_options = array();
-    foreach (EasyRdf_Format::getFormats() as $format) {
+    foreach (\EasyRdf\Format::getFormats() as $format) {
         if ($format->getSerialiserClass()) {
             $format_options[$format->getLabel()] = $format->getName();
         }
@@ -73,7 +70,7 @@ Enable Rapper? <?= check_box_tag('enable_rapper') ?><br />
 <?php
     if (isset($_REQUEST['uri'])) {
 
-        $graph = new EasyRdf_Graph();
+        $graph = new \EasyRdf\Graph();
 
         # 1st Technique
         $me = $graph->resource($_REQUEST['uri'], 'foaf:Person');

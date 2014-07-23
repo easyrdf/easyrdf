@@ -37,7 +37,7 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_BasicSparqlTest extends EasyRdf_TestCase
+class Examples_BasicSparqlTest extends \EasyRdf\TestCase
 {
     public function testCountries()
     {

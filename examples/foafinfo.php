@@ -15,9 +15,8 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 ?>
 <html>
 <head><title>EasyRdf FOAF Info Example</title></head>
@@ -31,7 +30,7 @@
 
 <?php
     if (isset($_REQUEST['uri'])) {
-        $graph = EasyRdf_Graph::newAndLoad($_REQUEST['uri']);
+        $graph = \EasyRdf\Graph::newAndLoad($_REQUEST['uri']);
         if ($graph->type() == 'foaf:PersonalProfileDocument') {
             $person = $graph->primaryTopic();
         } elseif ($graph->type() == 'foaf:Person') {

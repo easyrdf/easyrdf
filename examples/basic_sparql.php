@@ -15,17 +15,16 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 
     // Setup some additional prefixes for DBpedia
-    EasyRdf_Namespace::set('category', 'http://dbpedia.org/resource/Category:');
-    EasyRdf_Namespace::set('dbpedia', 'http://dbpedia.org/resource/');
-    EasyRdf_Namespace::set('dbo', 'http://dbpedia.org/ontology/');
-    EasyRdf_Namespace::set('dbp', 'http://dbpedia.org/property/');
+    \EasyRdf\RdfNamespace::set('category', 'http://dbpedia.org/resource/Category:');
+    \EasyRdf\RdfNamespace::set('dbpedia', 'http://dbpedia.org/resource/');
+    \EasyRdf\RdfNamespace::set('dbo', 'http://dbpedia.org/ontology/');
+    \EasyRdf\RdfNamespace::set('dbp', 'http://dbpedia.org/property/');
 
-    $sparql = new EasyRdf_Sparql_Client('http://dbpedia.org/sparql');
+    $sparql = new \EasyRdf\Sparql\Client('http://dbpedia.org/sparql');
 ?>
 <html>
 <head>

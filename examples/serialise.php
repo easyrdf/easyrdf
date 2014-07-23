@@ -10,10 +10,9 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
 
-    $graph = new EasyRdf_Graph();
+    $graph = new \EasyRdf\Graph();
     $me = $graph->resource('http://www.example.com/joe#me', 'foaf:Person');
     $me->set('foaf:name', 'Joseph Bloggs');
     $me->set('foaf:title', 'Mr');
@@ -21,7 +20,7 @@
     $me->add('foaf:homepage', $graph->resource('http://example.com/joe/'));
 
     // I made these up; they are not officially part of FOAF
-    $me->set('foaf:dateOfBirth', new EasyRdf_Literal_Date('1980-09-08'));
+    $me->set('foaf:dateOfBirth', new \EasyRdf\Literal\Date('1980-09-08'));
     $me->set('foaf:height', 1.82);
 
     $project = $graph->newBnode('foaf:Project');
@@ -29,7 +28,7 @@
     $me->set('foaf:currentProject', $project);
 
     if (isset($_REQUEST['format'])) {
-        $format = preg_replace("/[^\w\-]+/", '', strtolower($_REQUEST['format']));
+        $format = preg_replace('/[^\w\-]+/', '', strtolower($_REQUEST['format']));
     } else {
         $format = 'ntriples';
     }
@@ -41,7 +40,7 @@
 
 <ul>
 <?php
-    foreach (EasyRdf_Format::getFormats() as $f) {
+    foreach (\EasyRdf\Format::getFormats() as $f) {
         if ($f->getSerialiserClass()) {
             if ($f->getName() == $format) {
                 print "<li><b>".$f->getLabel()."</b></li>\n";

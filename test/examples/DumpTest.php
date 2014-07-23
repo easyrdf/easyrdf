@@ -37,7 +37,7 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_DumpTest extends EasyRdf_TestCase
+class Examples_DumpTest extends \EasyRdf\TestCase
 {
     public function testNoParams()
     {
@@ -76,7 +76,7 @@ class Examples_DumpTest extends EasyRdf_TestCase
         $this->assertContains('<title>EasyRdf Graph Dumper</title>', $output);
         $this->assertContains('<h1>EasyRdf Graph Dumper</h1>', $output);
         $this->assertContains('Graph: http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf', $output);
-        $this->assertContains('http://example/q?abc=1&def=2 (EasyRdf_Resource)', $output);
+        $this->assertContains('http://example/q?abc=1&def=2 (EasyRdf\Resource)', $output);
         $this->assertContains('-> rdf:value -> "xxx"', $output);
     }
 }

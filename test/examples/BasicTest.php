@@ -37,7 +37,7 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_BasicTest extends EasyRdf_TestCase
+class Examples_BasicTest extends \EasyRdf\TestCase
 {
     public function testPageRendersCorrectly()
     {

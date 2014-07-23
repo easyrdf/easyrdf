@@ -20,9 +20,8 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 ?>
 <html>
 <head>
@@ -39,7 +38,7 @@
 
 <?php
     if (isset($_REQUEST['uri'])) {
-        $graph = EasyRdf_Graph::newAndLoad($_REQUEST['uri'], 'rdfxml');
+        $graph = \EasyRdf\Graph::newAndLoad($_REQUEST['uri'], 'rdfxml');
         $channel = $graph->get('rss:channel', '^rdf:type');
 
         print "<p>Channel: ".link_to($channel->label(), $channel->get('rss:link'))."</p>\n";

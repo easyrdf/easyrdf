@@ -37,7 +37,7 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_SparqlqueryformTest extends EasyRdf_TestCase
+class Examples_SparqlqueryformTest extends \EasyRdf\TestCase
 {
     public function testNoParams()
     {

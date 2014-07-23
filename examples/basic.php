@@ -12,8 +12,7 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
 ?>
 <html>
 <head>
@@ -22,7 +21,7 @@
 <body>
 
 <?php
-  $foaf = EasyRdf_Graph::newAndLoad('http://njh.me/foaf.rdf');
+  $foaf = \EasyRdf\Graph::newAndLoad('http://njh.me/foaf.rdf');
   $me = $foaf->primaryTopic();
 ?>
 
