@@ -195,7 +195,7 @@ class RdfNamespace
             $match_result = preg_match($regex, $prefix);
 
             if ($match_result === false) {
-                throw new LogicException('regexp error');
+                throw new \LogicException('regexp error');
             }
 
             if ($match_result === 0) {
