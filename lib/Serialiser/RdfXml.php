@@ -208,7 +208,7 @@ class RdfXml extends Serialiser
 
         if ($format != 'rdfxml') {
             throw new Exception(
-                "EasyRdf_Serialiser_RdfXml does not support: $format"
+                "EasyRdf\\Serialiser\\RdfXml does not support: {$format}"
             );
         }
 

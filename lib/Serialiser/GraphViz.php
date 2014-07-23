@@ -104,7 +104,7 @@ class GraphViz extends Serialiser
      * This option is turned off by default.
      *
      * @param bool $useLabels   A boolean value to turn labels on and off
-     * @return object EasyRdf_Serialiser_GraphViz
+     * @return GraphViz
      */
     public function setUseLabels($useLabels)
     {
@@ -133,7 +133,7 @@ class GraphViz extends Serialiser
      * This option is turned off by default.
      *
      * @param bool $onlyLabelled   A boolean value to enable/display only labelled items
-     * @return object EasyRdf_Serialiser_GraphViz
+     * @return GraphViz
      */
     public function setOnlyLabelled($onlyLabelled)
     {
@@ -162,7 +162,7 @@ class GraphViz extends Serialiser
      *
      * @param string $name    The name of the attribute
      * @param string $value   The value for the attribute
-     * @return object EasyRdf_Serialiser_GraphViz
+     * @return GraphViz
      */
     public function setAttribute($name, $value)
     {
@@ -250,7 +250,7 @@ class GraphViz extends Serialiser
     }
 
     /**
-     * Internal function to serialise an EasyRdf_Graph into a DOT formatted string
+     * Internal function to serialise an EasyRdf\Graph into a DOT formatted string
      *
      * @ignore
      */
@@ -367,11 +367,11 @@ class GraphViz extends Serialiser
     }
 
     /**
-     * Serialise an EasyRdf_Graph into a GraphViz dot document.
+     * Serialise an EasyRdf\Graph into a GraphViz dot document.
      *
      * Supported output format names: dot, gif, png, svg
      *
-     * @param Graph  $graph  An EasyRdf_Graph object.
+     * @param Graph  $graph  An EasyRdf\Graph object.
      * @param string $format The name of the format to convert to.
      * @param array  $options
      * @throws Exception
@@ -390,7 +390,7 @@ class GraphViz extends Serialiser
                 return $this->renderImage($graph, $format);
             default:
                 throw new Exception(
-                    "EasyRdf_Serialiser_GraphViz does not support: $format"
+                    "EasyRdf\\Serialiser\\GraphViz does not support: {$format}"
                 );
         }
     }

@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Serialiser;
 
 /**
  * EasyRdf
@@ -35,31 +36,38 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
+use EasyRdf\Graph;
+use EasyRdf\Literal;
+use EasyRdf\RdfNamespace;
+use EasyRdf\TestCase;
+
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
+class TurtleTest extends TestCase
 {
+    /** @var Turtle */
     protected $serialiser = null;
+    /** @var Graph */
     protected $graph = null;
 
     public function setUp()
     {
-        $this->graph = new EasyRdf_Graph();
-        $this->serialiser = new EasyRdf_Serialiser_Turtle();
+        $this->graph = new Graph();
+        $this->serialiser = new Turtle();
     }
 
     public function tearDown()
     {
-        EasyRdf_Namespace::reset();
-        EasyRdf_Namespace::resetNamespaces();
+        RdfNamespace::reset();
+        RdfNamespace::resetNamespaces();
     }
 
     public function testEscapeIri()
     {
         $this->assertSame(
             '<http://example.com/>',
-            EasyRdf_Serialiser_Turtle::escapeIri('http://example.com/')
+            Turtle::escapeIri('http://example.com/')
         );
     }
 
@@ -67,7 +75,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     {
         $this->assertSame(
             '<http://google.com/search?q=<\>>',
-            EasyRdf_Serialiser_Turtle::escapeIri('http://google.com/search?q=<>')
+            Turtle::escapeIri('http://google.com/search?q=<>')
         );
     }
 
@@ -75,7 +83,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     {
         $this->assertSame(
             '"The man said \\"Hello\\""',
-            EasyRdf_Serialiser_Turtle::quotedString('The man said "Hello"')
+            Turtle::quotedString('The man said "Hello"')
         );
     }
 
@@ -83,7 +91,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     {
         $this->assertSame(
             '"""Hello	World"""',
-            EasyRdf_Serialiser_Turtle::quotedString('Hello	World')
+            Turtle::quotedString('Hello	World')
         );
     }
 
@@ -125,7 +133,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseLiteral()
     {
-        $literal = new EasyRdf_Literal('Hello World');
+        $literal = new Literal('Hello World');
         $this->assertSame(
             '"Hello World"',
             $this->serialiser->serialiseLiteral($literal)
@@ -134,7 +142,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseLiteralMultiline()
     {
-        $literal = new EasyRdf_Literal("Hello\nWorld");
+        $literal = new Literal("Hello\nWorld");
         $this->assertSame(
             "\"\"\"Hello\nWorld\"\"\"",
             $this->serialiser->serialiseLiteral($literal)
@@ -143,7 +151,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseLiteralInteger()
     {
-        $literal = new EasyRdf_Literal_Integer(1);
+        $literal = new Literal\Integer(1);
         $this->assertSame(
             '1',
             $this->serialiser->serialiseLiteral($literal)
@@ -164,7 +172,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseLiteralDecimal()
     {
-        $literal = new EasyRdf_Literal_Decimal(1.01);
+        $literal = new Literal\Decimal(1.01);
         $this->assertSame(
             '1.01',
             $this->serialiser->serialiseLiteral($literal)
@@ -173,7 +181,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseLiteralDouble()
     {
-        $literal = EasyRdf_Literal::create(1, null, 'xsd:double');
+        $literal = Literal::create(1, null, 'xsd:double');
         $this->assertSame(
             '1.000000e+0',
             $this->serialiser->serialiseLiteral($literal)
@@ -182,13 +190,13 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseLiteralBoolean()
     {
-        $literal = EasyRdf_Literal::create(true);
+        $literal = Literal::create(true);
         $this->assertSame(
             'true',
             $this->serialiser->serialiseLiteral($literal)
         );
 
-        $literal = EasyRdf_Literal::create(false);
+        $literal = Literal::create(false);
         $this->assertSame(
             'false',
             $this->serialiser->serialiseLiteral($literal)
@@ -197,7 +205,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseLiteralOtherXsd()
     {
-        $literal = EasyRdf_Literal::create('value', null, 'xsd:other');
+        $literal = Literal::create('value', null, 'xsd:other');
         $this->assertSame(
             '"value"^^xsd:other',
             $this->serialiser->serialiseLiteral($literal)
@@ -206,7 +214,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseLiteralOtherDatatype()
     {
-        $literal = EasyRdf_Literal::create('value', null, 'http://example.com/dt');
+        $literal = Literal::create('value', null, 'http://example.com/dt');
         $this->assertSame(
             '"value"^^ns0:dt',
             $this->serialiser->serialiseLiteral($literal)
@@ -215,7 +223,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseLiteralWithLang()
     {
-        $literal = EasyRdf_Literal::create('valeur', 'fr');
+        $literal = Literal::create('valeur', 'fr');
         $this->assertSame(
             '"valeur"@fr',
             $this->serialiser->serialiseLiteral($literal)
@@ -224,7 +232,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseObjectLiteral()
     {
-        $literal = new EasyRdf_Literal('Hello World');
+        $literal = new Literal('Hello World');
         $this->assertSame(
             '"Hello World"',
             $this->serialiser->serialiseObject($literal)
@@ -244,7 +252,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            'serialiseObject() requires $object to be of type EasyRdf_Resource or EasyRdf_Literal'
+            'serialiseObject() requires $object to be of type EasyRdf\Resource or EasyRdf\Literal'
         );
         $turtle = $this->serialiser->serialiseObject($this);
     }
@@ -465,7 +473,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function testSerialiseLang()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:name', new EasyRdf_Literal('Joe', 'en'));
+        $joe->set('foaf:name', new Literal('Joe', 'en'));
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
@@ -530,7 +538,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function testSerialiseBooleanDatatype()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:truth', EasyRdf_Literal::create(true));
+        $joe->set('foaf:truth', Literal::create(true));
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
@@ -543,7 +551,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function testSerialiseDecimalDatatype()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:age', new EasyRdf_Literal_Decimal(1.5));
+        $joe->set('foaf:age', new Literal\Decimal(1.5));
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
@@ -556,7 +564,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function testSerialiseDoubleDatatype()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:age', EasyRdf_Literal::create(1.5, null, 'xsd:double'));
+        $joe->set('foaf:age', Literal::create(1.5, null, 'xsd:double'));
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
@@ -569,7 +577,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function testSerialiseIntegerDatatype()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:age', new EasyRdf_Literal_Integer(49));
+        $joe->set('foaf:age', new Literal\Integer(49));
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
@@ -582,7 +590,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function testSerialiseDateTimeDatatype()
     {
         $doc = $this->graph->resource('http://example.com/');
-        $doc->set('dc:date', new EasyRdf_Literal_DateTime('2012-11-04T13:01:26+01:00'));
+        $doc->set('dc:date', new Literal\DateTime('2012-11-04T13:01:26+01:00'));
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
@@ -596,7 +604,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function testSerialiseOtherDatatype()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:foo', EasyRdf_Literal::create('foobar', null, 'xsd:other'));
+        $joe->set('foaf:foo', Literal::create('foobar', null, 'xsd:other'));
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
@@ -612,7 +620,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set(
             'foaf:foo',
-            EasyRdf_Literal::create('foobar', null, 'http://example.com/ns/type')
+            Literal::create('foobar', null, 'http://example.com/ns/type')
         );
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
@@ -626,7 +634,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseShortenableResource()
     {
-        EasyRdf_Namespace::set("example", 'http://example.com/');
+        RdfNamespace::set("example", 'http://example.com/');
         $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->add('rdf:type', 'foaf:Person');
 
@@ -643,7 +651,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $joe = $this->graph->resource('http://example.com/joe#me');
         $joe->set(
             'foaf:foo',
-            EasyRdf_Literal::create('foobar', null, 'http://example.com/datatype/')
+            Literal::create('foobar', null, 'http://example.com/datatype/')
         );
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
@@ -685,7 +693,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 
     public function testSerialiseEmptyPrefix()
     {
-        \EasyRdf_Namespace::set('', 'http://foo/bar/');
+        RdfNamespace::set('', 'http://foo/bar/');
 
         $joe = $this->graph->resource(
             'http://foo/bar/me',
@@ -715,8 +723,8 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Serialiser_Turtle does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Serialiser\Turtle does not support: unsupportedformat'
         );
         $rdf = $this->serialiser->serialise(
             $this->graph,
@@ -736,11 +744,11 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
 <http://example.com/id/4> <http://www.w3.org/2000/01/rdf-schema#type> <http://example.com/ns/animals/reptiles/snake> .
 RDF;
 
-        EasyRdf_Namespace::set('id', 'http://example.com/id/');
-        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');
+        RdfNamespace::set('id', 'http://example.com/id/');
+        RdfNamespace::set('animals', 'http://example.com/ns/animals/');
 
         //  parse graph
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $graph->parse($triples, 'ntriples');
 
         //  dump as text/turtle

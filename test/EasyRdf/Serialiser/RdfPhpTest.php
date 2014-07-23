@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Serialiser;
 
 /**
  * EasyRdf
@@ -35,18 +36,24 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
+use EasyRdf\Graph;
+use EasyRdf\Literal;
+use EasyRdf\TestCase;
+
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
+class RdfPhpTest extends TestCase
 {
+    /** @var RdfPhp */
     protected $serialiser = null;
+    /** @var Graph */
     protected $graph = null;
 
     public function setUp()
     {
-        $this->graph = new EasyRdf_Graph();
-        $this->serialiser = new EasyRdf_Serialiser_RdfPhp();
+        $this->graph = new Graph();
+        $this->serialiser = new RdfPhp();
     }
 
     public function testSerialisePhp()
@@ -55,7 +62,7 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
             'http://www.example.com/joe#me',
             'foaf:Person'
         );
-        $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
+        $joe->set('foaf:name', new Literal('Joe Bloggs', 'en'));
         $joe->set('foaf:age', 59);
         $project = $this->graph->newBNode();
         $project->add('foaf:name', 'Project Name');
@@ -95,8 +102,8 @@ class EasyRdf_Serialiser_RdfPhpTest extends EasyRdf_TestCase
     public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Serialiser_RdfPhp does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Serialiser\RdfPhp does not support: unsupportedformat'
         );
         $rdf = $this->serialiser->serialise(
             $this->graph,

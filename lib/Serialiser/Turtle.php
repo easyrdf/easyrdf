@@ -166,7 +166,7 @@ class Turtle extends Serialiser
         } else {
             throw new \InvalidArgumentException(
                 "serialiseObject() requires \$object to be ".
-                "of type EasyRdf_Resource or EasyRdf_Literal"
+                'of type EasyRdf\Resource or EasyRdf\Literal'
             );
         }
     }
@@ -351,7 +351,7 @@ class Turtle extends Serialiser
 
         if ($format != 'turtle' and $format != 'n3') {
             throw new Exception(
-                "EasyRdf_Serialiser_Turtle does not support: $format"
+                "EasyRdf\\Serialiser\\Turtle does not support: {$format}"
             );
         }
 

@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Serialiser;
 
 /**
  * EasyRdf
@@ -35,33 +36,40 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
+use EasyRdf\Graph;
+use EasyRdf\Literal;
+use EasyRdf\RdfNamespace;
+use EasyRdf\TestCase;
+
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
+class JsonTest extends TestCase
 {
+    /** @var Json */
     protected $serialiser = null;
+    /** @var Graph */
     protected $graph = null;
 
     public function setUp()
     {
-        $this->graph = new EasyRdf_Graph();
-        $this->serialiser = new EasyRdf_Serialiser_Json();
+        $this->graph = new Graph();
+        $this->serialiser = new Json();
     }
 
     public function tearDown()
     {
         parent::tearDown();
-        EasyRdf_Namespace::resetNamespaces();
-        EasyRdf_Namespace::reset();
+        RdfNamespace::resetNamespaces();
+        RdfNamespace::reset();
     }
 
     public function testSerialiseJson()
     {
-        \EasyRdf_Namespace::set('', 'http://foo/bar/');
+        RdfNamespace::set('', 'http://foo/bar/');
 
         $joe = $this->graph->resource('http://www.example.com/joe#me', 'foaf:Person');
-        $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
+        $joe->set('foaf:name', new Literal('Joe Bloggs', 'en'));
         $joe->set('foaf:homepage', $this->graph->resource('http://foo/bar/me'));
         $joe->set('foaf:age', 59);
         $project = $this->graph->newBNode();
@@ -91,8 +99,8 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
     public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Serialiser_Json does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Serialiser\Json does not support: unsupportedformat'
         );
         $rdf = $this->serialiser->serialise(
             $this->graph,

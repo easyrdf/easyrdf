@@ -49,12 +49,12 @@ use EasyRdf\Graph;
 class Json extends RdfPhp
 {
     /**
-     * Method to serialise an EasyRdf_Graph to RDF/JSON
+     * Method to serialise an EasyRdf\Graph to RDF/JSON
      *
      * http://n2.talis.com/wiki/RDF_JSON_Specification
      * docs/appendix-a-rdf-formats-json.md
      *
-     * @param Graph  $graph   An EasyRdf_Graph object.
+     * @param Graph  $graph   An EasyRdf\Graph object.
      * @param string $format  The name of the format to convert to.
      * @param array  $options
      * @throws Exception
@@ -66,7 +66,7 @@ class Json extends RdfPhp
 
         if ($format != 'json') {
             throw new Exception(
-                "EasyRdf_Serialiser_Json does not support: $format"
+                "EasyRdf\\Serialiser\\Json does not support: {$format}"
             );
         }
 

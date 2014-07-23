@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Serialiser;
 
 /**
  * EasyRdf
@@ -35,19 +36,25 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-require_once 'EasyRdf/Serialiser/Rapper.php';
-
-class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
+class RapperTest extends TestCase
 {
+    /** @var Graph */
+    private $graph;
+    /** @var Rapper */
+    private $serialiser;
+
     public function setUp()
     {
         exec('which rapper', $output, $retval);
         if ($retval == 0) {
-            $this->graph = new EasyRdf_Graph();
-            $this->serialiser = new EasyRdf_Serialiser_Rapper();
+            $this->graph = new Graph();
+            $this->serialiser = new Rapper();
             parent::setUp();
         } else {
             $this->markTestSkipped(
@@ -59,10 +66,10 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
     public function testRapperNotFound()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             "Failed to execute the command 'random_command_that_doesnt_exist'"
         );
-        new EasyRdf_Serialiser_Rapper('random_command_that_doesnt_exist');
+        new Rapper('random_command_that_doesnt_exist');
     }
 
     public function testSerialiseRdfXml()
@@ -85,7 +92,7 @@ class EasyRdf_Serialiser_RapperTest extends EasyRdf_TestCase
     public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             'Error while executing command rapper'
         );
         $rdf = $this->serialiser->serialise(
