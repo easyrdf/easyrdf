@@ -605,6 +605,12 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->assertStringEquals('rdfa', $format);
     }
 
+    public function testGuessFormatHtml5()
+    {
+        $data = readFixture('html5.html');
+        $this->assertStringEquals('rdfa', EasyRdf_Format::guessFormat($data));
+    }
+
     public function testGuessFormatXml()
     {
         # We support several different XML formats, don't know which one this is...
