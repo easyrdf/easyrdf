@@ -322,8 +322,11 @@ class EasyRdf_Graph
                 // If we didn't get any location, stop redirecting
                 break;
             } else {
-                throw new EasyRdf_Exception(
-                    "HTTP request for $requestUrl failed: ".$response->getMessage()
+                throw new EasyRdf_Http_Exception(
+                    "HTTP request for {$requestUrl} failed: ".$response->getMessage(),
+                    $response->getStatus(),
+                    null,
+                    $response->getBody()
                 );
             }
         } while ($redirectCounter < $this->maxRedirects);
@@ -431,7 +434,7 @@ class EasyRdf_Graph
             }
         } elseif ($resource === null) {
             throw new InvalidArgumentException(
-                "\$resource cannot be null"
+                "\$resource should be either IRI, blank-node identifier or EasyRdf_Resource. got null"
             );
         }
 
@@ -442,7 +445,7 @@ class EasyRdf_Graph
         } elseif (is_string($resource)) {
             if ($resource == '') {
                 throw new InvalidArgumentException(
-                    "\$resource cannot be an empty string"
+                    "\$resource should be either IRI, blank-node identifier or EasyRdf_Resource. got empty string"
                 );
             } elseif (preg_match("|^<(.+)>$|", $resource, $matches)) {
                 $resource = $matches[1];
@@ -451,7 +454,7 @@ class EasyRdf_Graph
             }
         } else {
             throw new InvalidArgumentException(
-                "\$resource should be a string or an EasyRdf_Resource"
+                "\$resource should be either IRI, blank-node identifier or EasyRdf_Resource"
             );
         }
     }

@@ -116,15 +116,6 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         EasyRdf_Namespace::get(null);
     }
 
-    public function testGetEmptyNamespace()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$prefix should be a string and cannot be null or empty'
-        );
-        EasyRdf_Namespace::get('');
-    }
-
     public function testGetNonStringNamespace()
     {
         $this->setExpectedException(
@@ -172,10 +163,6 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testAddNamespaceShortEmpty()
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$prefix should be a string and cannot be null or empty'
-        );
         EasyRdf_Namespace::set('', 'http://purl.org/ontology/ko/');
     }
 
@@ -188,11 +175,11 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         EasyRdf_Namespace::set(array(), 'http://purl.org/ontology/ko/');
     }
 
-    public function testAddNamespaceShortNonAlphanumeric()
+    public function testAddNamespaceShortInvalid()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$prefix should only contain alpha-numeric characters'
+            'should match RDFXML-QName specification'
         );
         EasyRdf_Namespace::set('/K.O/', 'http://purl.org/ontology/ko/');
     }
@@ -510,6 +497,18 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         );
     }
 
+    public function testGetEmptyNamespace()
+    {
+        EasyRdf_Namespace::set('', 'http://xmlns.com/foaf/0.1/name');
+
+        $url = EasyRdf_Namespace::get('');
+
+        $this->assertSame(
+            'http://xmlns.com/foaf/0.1/name',
+            $url
+        );
+    }
+
     public function testPrefixOfUriNull()
     {
         $this->setExpectedException(
@@ -646,5 +645,25 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
             '$shortUri should be a string and cannot be null or empty'
         );
         EasyRdf_Namespace::expand($this);
+    }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/185
+     */
+    public function testIssue185DashInPrefix()
+    {
+        EasyRdf_Namespace::set('foo-bar', 'http://example.org/dash#');
+        $this->assertSame('foo-bar:baz', EasyRdf_Namespace::shorten('http://example.org/dash#baz'));
+    }
+
+    /**
+     * Namespace which is too short shouldn't apply
+     */
+    public function testShortNamespace()
+    {
+        EasyRdf_Namespace::set('ex', 'http://example.org/');
+
+        $this->assertSame('ex:foo', EasyRdf_Namespace::shorten('http://example.org/foo'));
+        $this->assertNull(EasyRdf_Namespace::shorten('http://example.org/bar/baz'));
     }
 }

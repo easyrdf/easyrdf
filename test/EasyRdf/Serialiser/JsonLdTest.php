@@ -62,6 +62,7 @@ class JsonLdTest extends EasyRdf_TestCase
         $joe = $this->graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
         $joe->set('foaf:age', 59);
+        $joe->set('foaf:homepage', $this->graph->resource('http://foo/bar/me'));
 
         $project = $this->graph->newBNode();
         $project->add('foaf:name', 'Project Name');
@@ -71,6 +72,7 @@ class JsonLdTest extends EasyRdf_TestCase
         EasyRdf_Namespace::set('dc', 'http://purl.org/dc/elements/1.1/');
         EasyRdf_Namespace::set('ex', 'http://example.org/vocab#');
         EasyRdf_Namespace::set('xsd', 'http://www.w3.org/2001/XMLSchema#');
+        EasyRdf_Namespace::set('', 'http://foo/bar/');
 
         $chapter=$this->graph->resource('http://example.org/library/the-republic#introduction', 'ex:Chapter');
         $chapter->set('dc:description', new EasyRdf_Literal('An introductory chapter on The Republic.'));
@@ -85,6 +87,12 @@ class JsonLdTest extends EasyRdf_TestCase
         $library->addResource('ex:contains', $book);
     }
 
+    public function tearDown()
+    {
+        parent::tearDown();
+        EasyRdf_Namespace::resetNamespaces();
+        EasyRdf_Namespace::reset();
+    }
 
     public function testSerialiseJsonLd()
     {
@@ -116,6 +124,11 @@ class JsonLdTest extends EasyRdf_TestCase
                 ->getProperty('http://xmlns.com/foaf/0.1/name')
                 ->getValue()
         );
+
+        $this->assertEquals(
+            'http://foo/bar/me',
+            $node->getProperty('http://xmlns.com/foaf/0.1/homepage')->getId()
+        );
     }
 
     public function testSerialiseJsonLdOptions()
@@ -125,9 +138,9 @@ class JsonLdTest extends EasyRdf_TestCase
         $decoded = json_decode($string, true);
 
         $this->assertArrayNotHasKey('@graph', $decoded);
-        $this->assertInternalType('array', $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]);
-        $this->assertSame(59, $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
-        $this->assertArrayNotHasKey('@type', $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]);
+        $this->assertInternalType('array', $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]);
+        $this->assertSame(59, $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
+        $this->assertArrayNotHasKey('@type', $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]);
 
 
         // Expanded form + explicit types
@@ -135,11 +148,11 @@ class JsonLdTest extends EasyRdf_TestCase
         $decoded = json_decode($string, true);
 
         $this->assertArrayNotHasKey('@graph', $decoded);
-        $this->assertInternalType('array', $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]);
-        $this->assertSame('59', $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
+        $this->assertInternalType('array', $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]);
+        $this->assertSame('59', $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
         $this->assertSame(
             'http://www.w3.org/2001/XMLSchema#integer',
-            $decoded[7]["http://xmlns.com/foaf/0.1/age"][0]['@type']
+            $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]['@type']
         );
 
 

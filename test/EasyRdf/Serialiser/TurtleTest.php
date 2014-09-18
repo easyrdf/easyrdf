@@ -52,7 +52,7 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
     public function tearDown()
     {
         EasyRdf_Namespace::reset();
-        EasyRdf_Namespace::delete('example');
+        EasyRdf_Namespace::resetNamespaces();
     }
 
     public function testEscapeIri()
@@ -185,6 +185,12 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         $literal = EasyRdf_Literal::create(true);
         $this->assertSame(
             'true',
+            $this->serialiser->serialiseLiteral($literal)
+        );
+
+        $literal = EasyRdf_Literal::create(false);
+        $this->assertSame(
+            'false',
             $this->serialiser->serialiseLiteral($literal)
         );
     }
@@ -677,6 +683,35 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
         );
     }
 
+    public function testSerialiseEmptyPrefix()
+    {
+        \EasyRdf_Namespace::set('', 'http://foo/bar/');
+
+        $joe = $this->graph->resource(
+            'http://foo/bar/me',
+            'foaf:Person'
+        );
+
+        $joe->set('foaf:name', 'Joe Bloggs');
+        $joe->set(
+            'foaf:homepage',
+            $this->graph->resource('http://example.com/joe/')
+        );
+
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
+
+        $this->assertSame(
+            "@prefix : <http://foo/bar/> .\n".
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n".
+            "\n".
+            ":me\n".
+            "  a foaf:Person ;\n".
+            "  foaf:name \"Joe Bloggs\" ;\n".
+            "  foaf:homepage <http://example.com/joe/> .\n\n",
+            $turtle
+        );
+    }
+
     public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
@@ -687,5 +722,30 @@ class EasyRdf_Serialiser_TurtleTest extends EasyRdf_TestCase
             $this->graph,
             'unsupportedformat'
         );
+    }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/115
+     */
+    public function testIssue115()
+    {
+        $triples = <<<RDF
+<http://example.com/id/1> <http://www.w3.org/2000/01/rdf-schema#type> <http://example.com/ns/animals/dog> .
+<http://example.com/id/2> <http://www.w3.org/2000/01/rdf-schema#type> <http://example.com/ns/animals/cat> .
+<http://example.com/id/3> <http://www.w3.org/2000/01/rdf-schema#type> <http://example.com/ns/animals/bird> .
+<http://example.com/id/4> <http://www.w3.org/2000/01/rdf-schema#type> <http://example.com/ns/animals/reptiles/snake> .
+RDF;
+
+        EasyRdf_Namespace::set('id', 'http://example.com/id/');
+        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');
+
+        //  parse graph
+        $graph = new EasyRdf_Graph();
+        $graph->parse($triples, 'ntriples');
+
+        //  dump as text/turtle
+        $turtle = $graph->serialise('turtle');
+
+        $this->assertEquals(readFixture('turtle/gh115-nested-namespaces.ttl'), $turtle);
     }
 }

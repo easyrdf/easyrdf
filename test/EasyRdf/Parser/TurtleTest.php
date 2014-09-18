@@ -44,6 +44,12 @@ require_once 'EasyRdf/Serialiser/NtriplesArray.php';
 class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
 {
     protected $parser = null;
+    /** @var EasyRdf_Parser_Turtle */
+    protected $turtleParser = null;
+    /** @var EasyRdf_Parser_Ntriples */
+    protected $ntriplesParser = null;
+
+    protected $baseUri;
 
     public function setUp()
     {
@@ -485,5 +491,70 @@ class EasyRdf_Parser_TurtleTest extends EasyRdf_TestCase
             "Turtle Parse Error: unexpected end of file while reading long string on line 7, column 1"
         );
         $this->parseTurtle("turtle/bad-14.ttl");
+    }
+
+    /**
+     * https://github.com/njh/easyrdf/issues/195
+     */
+    public function testIssue195()
+    {
+        $filename = 'turtle/gh195-dbpedia-ja-gauguin.ttl';
+
+        $graph = new EasyRdf_Graph();
+        $triple_count = $this->turtleParser->parse(
+            $graph,
+            readFixture($filename),
+            'turtle',
+            $this->baseUri . basename($filename)
+        );
+
+        $this->assertEquals(1, $triple_count);
+    }
+
+    /**
+     * https://github.com/njh/easyrdf/issues/185
+     */
+    public function testIssue185()
+    {
+        $filename = 'turtle/gh185-dash-in-prefix.ttl';
+
+        $graph = new EasyRdf_Graph();
+        $triple_count = $this->turtleParser->parse(
+            $graph,
+            readFixture($filename),
+            'turtle',
+            $this->baseUri . basename($filename)
+        );
+
+        $this->assertEquals(1, $triple_count);
+
+        $data = $graph->toRdfPhp();
+
+        foreach ($data as $resource => $properties) {
+            $this->assertEquals('http://example.org/foo-bar#example', $resource);
+
+            foreach ($properties as $k => $v) {
+                $this->assertEquals('http://example.org/foo-bar#baz', $k);
+                $this->assertEquals('test', $v[0]['value']);
+            }
+        }
+    }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/140
+     */
+    public function testIssue140()
+    {
+        $filename = 'turtle/gh140-freebase.ttl';
+
+        $graph = new EasyRdf_Graph();
+        $triple_count = $this->turtleParser->parse(
+            $graph,
+            readFixture($filename),
+            'turtle',
+            $this->baseUri . basename($filename)
+        );
+
+        $this->assertEquals(14, $triple_count);
     }
 }

@@ -20,14 +20,16 @@
         "irc": "irc://chat.freenode.net/easyrdf"
     },
     "require": {
-        "php": ">=5.2.8"
+        "php": ">=5.2.8",
+        "ext-mbstring": "*",
+        "ext-pcre": "*"
     },
     "suggest": {
-        "ml/json-ld": "dev-master"
+        "ml/json-ld": "~1.0"
     },
     "require-dev": {
-        "phpunit/PHPUnit": ">=3.5.15",
-        "squizlabs/php_codesniffer": ">=1.4.3",
+        "phpunit/PHPUnit": "~3.5",
+        "squizlabs/php_codesniffer": "~1.4.3",
         "sami/sami": "dev-master"
     },
     "replace": {

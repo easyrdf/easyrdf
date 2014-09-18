@@ -187,10 +187,26 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     public function testCreateWithFloat()
     {
         $literal = EasyRdf_Literal::create(1.5);
-        $this->assertClass('EasyRdf_Literal_Decimal', $literal);
-        $this->assertSame(1.5, $literal->getValue());
-        $this->assertSame('xsd:decimal', $literal->getDatatype());
+        $this->assertClass('EasyRdf_Literal', $literal);
+        $this->assertSame('1.5', $literal->getValue());
+        $this->assertSame('xsd:double', $literal->getDatatype());
         $this->assertSame(null, $literal->getLang());
+    }
+
+    public function testCreateWithFloatInBadLocale()
+    {
+        $current_locale = setlocale(LC_NUMERIC, 0);
+        setlocale(LC_NUMERIC, 'ru_RU');
+
+        try {
+            $literal = EasyRdf_Literal::create(1.5);
+            $this->assertSame('1.5', $literal->getValue());
+
+            setlocale(LC_NUMERIC, $current_locale);
+        } catch (Exception $e) {
+            setlocale(LC_NUMERIC, $current_locale);
+            throw $e;
+        }
     }
 
     public function testCreateWithBooleanTrue()
@@ -255,8 +271,8 @@ class EasyRdf_LiteralTest extends EasyRdf_TestCase
     {
         $literal = EasyRdf_Literal::create('1', null, 'xsd:decimal');
         $this->assertClass('EasyRdf_Literal_Decimal', $literal);
-        $this->assertInternalType('float', $literal->getValue());
-        $this->assertSame(1.0, $literal->getValue());
+        $this->assertInternalType('string', $literal->getValue());
+        $this->assertSame('1.0', $literal->getValue());
         $this->assertSame('xsd:decimal', $literal->getDatatype());
         $this->assertSame(null, $literal->getLang());
     }

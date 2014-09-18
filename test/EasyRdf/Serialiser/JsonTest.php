@@ -49,14 +49,26 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
         $this->serialiser = new EasyRdf_Serialiser_Json();
     }
 
+    public function tearDown()
+    {
+        parent::tearDown();
+        EasyRdf_Namespace::resetNamespaces();
+        EasyRdf_Namespace::reset();
+    }
+
     public function testSerialiseJson()
     {
+        \EasyRdf_Namespace::set('', 'http://foo/bar/');
+
         $joe = $this->graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
+        $joe->set('foaf:homepage', $this->graph->resource('http://foo/bar/me'));
         $joe->set('foaf:age', 59);
         $project = $this->graph->newBNode();
         $project->add('foaf:name', 'Project Name');
         $joe->add('foaf:project', $project);
+
+        $json = $this->serialiser->serialise($this->graph, 'json');
 
         $this->assertSame(
             '{"http:\/\/www.example.com\/joe#me":{'.
@@ -64,6 +76,7 @@ class EasyRdf_Serialiser_JsonTest extends EasyRdf_TestCase
             '{"type":"uri","value":"http:\/\/xmlns.com\/foaf\/0.1\/Person"}],'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/name":['.
             '{"type":"literal","value":"Joe Bloggs","lang":"en"}],'.
+            '"http:\/\/xmlns.com\/foaf\/0.1\/homepage":[{"type":"uri","value":"http:\/\/foo\/bar\/me"}],'.
             '"http:\/\/xmlns.com\/foaf\/0.1\/age":['.
             '{"type":"literal","value":"59","datatype":'.
             '"http:\/\/www.w3.org\/2001\/XMLSchema#integer"}],'.

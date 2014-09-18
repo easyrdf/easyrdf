@@ -47,7 +47,7 @@
     if (isset($_REQUEST['postcode'])) {
         $postcode = str_replace(' ', '', strtoupper($_REQUEST['postcode']));
         $docuri = "http://www.uk-postcodes.com/postcode/$postcode.rdf";
-        $graph = EasyRdf_Graph::newAndLoad($docuri);
+        $graph = EasyRdf_Graph::newAndLoad($docuri, 'rdfxml');
 
 
         // Get the first resource of type PostcodeUnit
