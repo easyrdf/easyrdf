@@ -252,10 +252,6 @@ class EasyRdf_Format
             return self::getFormat('json');
         } elseif (preg_match("/<rdf:/i", $short)) {
             return self::getFormat('rdfxml');
-        } elseif (preg_match("/@prefix\s|@base\s/", $short)) {
-            return self::getFormat('turtle');
-        } elseif (preg_match("/^\s*<.+> <.+>/m", $short)) {
-            return self::getFormat('ntriples');
         } elseif (preg_match("|http://www.w3.org/2005/sparql-results|", $short)) {
             return self::getFormat('sparql-xml');
         } elseif (preg_match("/\WRDFa\W/i", $short)) {
@@ -263,6 +259,10 @@ class EasyRdf_Format
         } elseif (preg_match("/<!DOCTYPE html|<html/i", $short)) {
             # We don't support any other microformats embedded in HTML
             return self::getFormat('rdfa');
+        } elseif (preg_match("/@prefix\s|@base\s/", $short)) {
+            return self::getFormat('turtle');
+        } elseif (preg_match("/^\s*<.+> <.+>/m", $short)) {
+            return self::getFormat('ntriples');
         } else {
             return null;
         }

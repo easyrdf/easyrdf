@@ -4,7 +4,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2014 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -76,12 +76,12 @@ class JsonLdTest extends EasyRdf_TestCase
         $chapter->set('dc:description', new EasyRdf_Literal('An introductory chapter on The Republic.'));
         $chapter->set('dc:title', new EasyRdf_Literal('The Introduction'));
 
-        $book=$this->graph->resource('http://example.org/library/the-republic','ex:Book');
-        $book->set('dc:creator', new EasyRdf_Literal( 'Plato'));
-        $book->set('dc:title', new EasyRdf_Literal( 'The Republic'));
+        $book = $this->graph->resource('http://example.org/library/the-republic', 'ex:Book');
+        $book->set('dc:creator', new EasyRdf_Literal('Plato'));
+        $book->set('dc:title', new EasyRdf_Literal('The Republic'));
         $book->addResource('ex:contains', $chapter);
 
-        $library=$this->graph->resource('http://example.org/library','ex:Library');
+        $library = $this->graph->resource('http://example.org/library', 'ex:Library');
         $library->addResource('ex:contains', $book);
     }
 
@@ -187,7 +187,7 @@ class JsonLdTest extends EasyRdf_TestCase
         // Framing
         // Maybe the context and original data could be packed in a fixture
         $frame = (object) array(
-            '@context' => (object) array( 
+            '@context' => (object) array(
                 'dc' => 'http://purl.org/dc/elements/1.1/',
                 'ex' => 'http://example.org/vocab#'
             ),
@@ -206,8 +206,17 @@ class JsonLdTest extends EasyRdf_TestCase
         );
         $decoded = json_decode($string, true);
         $this->assertArrayHasKey('@graph', $decoded);
-        $this->assertSame('http://example.org/library', $decoded['@graph'][0]['@id']);
-        $this->assertSame('http://example.org/library/the-republic', $decoded['@graph'][0]['ex:contains']['@id']);
-        $this->assertSame('http://example.org/library/the-republic#introduction', $decoded['@graph'][0]['ex:contains']['ex:contains']['@id']);
+        $this->assertSame(
+            'http://example.org/library',
+            $decoded['@graph'][0]['@id']
+        );
+        $this->assertSame(
+            'http://example.org/library/the-republic',
+            $decoded['@graph'][0]['ex:contains']['@id']
+        );
+        $this->assertSame(
+            'http://example.org/library/the-republic#introduction',
+            $decoded['@graph'][0]['ex:contains']['ex:contains']['@id']
+        );
     }
 }
