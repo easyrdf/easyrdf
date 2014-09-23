@@ -49,6 +49,7 @@ class EasyRdf_Serialiser_Json extends EasyRdf_Serialiser_RdfPhp
      * Method to serialise an EasyRdf_Graph to RDF/JSON
      *
      * http://n2.talis.com/wiki/RDF_JSON_Specification
+     * docs/appendix-a-rdf-formats-json.md
      *
      * @param EasyRdf_Graph $graph   An EasyRdf_Graph object.
      * @param string        $format  The name of the format to convert to.
