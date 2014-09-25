@@ -105,9 +105,6 @@ class EasyRdf_Namespace
     /** Counter for numbering anonymous namespaces */
     private static $anonymousNamespaceCount = 0;
 
-    /** Keep track of is the namespaces need sorting */
-    private static $needsSorting = true;
-
     /**
       * Return all the namespaces registered
       *
@@ -214,9 +211,9 @@ class EasyRdf_Namespace
         }
 
         $prefix = strtolower($prefix);
+
         $namespaces = self::namespaces();
         $namespaces[$prefix] = $long;
-        self::$needsSorting = true;
 
         self::$namespaces = $namespaces;
     }
@@ -293,14 +290,6 @@ class EasyRdf_Namespace
             self::delete('ns'.(self::$anonymousNamespaceCount-1));
             self::$anonymousNamespaceCount--;
         }
-
-        self::$needsSorting = true;
-    }
-
-    /** Private method to allow sorting by string length */
-    private static function compareStringLength($a, $b)
-    {
-        return strlen($a) < strlen($b);
     }
 
     /**
@@ -332,15 +321,16 @@ class EasyRdf_Namespace
             );
         }
 
-        // Sort the namespaces, so that the longest (most secific) is used first
-        if (self::$needsSorting) {
-            uasort(self::$namespaces, array('self', 'compareStringLength'));
-            self::$needsSorting = false;
-        }
+        foreach (self::namespaces() as $prefix => $long) {
+            if (substr($uri, 0, strlen($long)) !== $long) {
+                continue;
+            }
 
-        foreach (self::$namespaces as $prefix => $long) {
-            if (substr($uri, 0, strlen($long)) == $long) {
-                return array($prefix, substr($uri, strlen($long)));
+            $local_part = substr($uri, strlen($long));
+
+            if (strpos($local_part, '/') !== false) {
+                // we can't have '/' in local part
+                continue;
             }
 
             return array($prefix, $local_part);

@@ -259,9 +259,9 @@ class EasyRdf_Format
         } elseif (preg_match('/<!DOCTYPE html|<html/i', $short)) {
             # We don't support any other microformats embedded in HTML
             return self::getFormat('rdfa');
-        } elseif (preg_match("/@prefix\s|@base\s/", $short)) {
+        } elseif (preg_match('/@prefix\s|@base\s/', $short)) {
             return self::getFormat('turtle');
-        } elseif (preg_match("/^\s*<.+> <.+>/m", $short)) {
+        } elseif (preg_match('/^\s*<.+> <.+>/m', $short)) {
             return self::getFormat('ntriples');
         } else {
             return null;
