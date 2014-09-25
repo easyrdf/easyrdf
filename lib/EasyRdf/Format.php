@@ -107,7 +107,7 @@ class EasyRdf_Format
             if ($q == 1.0) {
                 $acceptStr .= $type;
             } else {
-                $acceptStr .= sprintf("%s;q=%1.1f", $type, $q);
+                $acceptStr .= sprintf("%s;q=%1.1F", $type, $q);
             }
         }
         return $acceptStr;

@@ -31,6 +31,7 @@ Bug Fixes
 * `EasyRdf_Namespace` won't generate "short" names with "/" in them anymore (see issue #115)
 * `EasyRdf_Parser_RdfXml` respects "base" specified for the document (see issue #157)
 * HTML documents are correctly detected now, not as "n-triples" (see issue #206)
+* Accept-headers are formatted in locale-independent fashion now (see issue #208)
 
 
 EasyRdf 0.8.0
