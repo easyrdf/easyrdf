@@ -1398,13 +1398,10 @@ class EasyRdf_Graph
      */
     public function type($resource = null)
     {
-        $this->checkResourceParam($resource, true);
+        $type = $this->typeAsResource($resource);
 
-        if ($resource) {
-            $type = $this->get($resource, 'rdf:type', 'resource');
-            if ($type) {
-                return EasyRdf_Namespace::shorten($type);
-            }
+        if ($type) {
+            return EasyRdf_Namespace::shorten($type);
         }
 
         return null;
@@ -1440,16 +1437,30 @@ class EasyRdf_Graph
      */
     public function types($resource = null)
     {
-        $this->checkResourceParam($resource, true);
+        $resources = $this->typesAsResources($resource);
 
         $types = array();
-        if ($resource) {
-            foreach ($this->all($resource, 'rdf:type', 'resource') as $type) {
-                $types[] = EasyRdf_Namespace::shorten($type);
-            }
+        foreach ($resources as $type) {
+            $types[] = EasyRdf_Namespace::shorten($type);
         }
 
         return $types;
+    }
+
+    /**
+     * Get the resource types of the graph as a EasyRdf_Resource
+     *
+     * @return EasyRdf_Resource[]
+     */
+    public function typesAsResources($resource = null)
+    {
+        $this->checkResourceParam($resource, true);
+
+        if ($resource) {
+            return $this->all($resource, 'rdf:type', 'resource');
+        }
+
+        return array();
     }
 
     /** Check if a resource is of the specified type

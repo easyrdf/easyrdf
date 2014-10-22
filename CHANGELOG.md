@@ -19,6 +19,7 @@ Enhancements
 * Synced list of default namespaces against [RDFa Core Initial Context](http://www.w3.org/2011/rdfa-context/rdfa-1.1) rev.2014-01-17
 * Added support for empty prefixes (see issue #183)
 * `EasyRdf_Graph::newAndLoad` throws `EasyRdf_Http_Exception` in case of failure, which gives access to status and response-body. (see issue #149)
+* `EasyRdf_Graph` and `EasyRdf_Resource` have 'typesAsResources()' methods now
 
 Bug Fixes
 ---------
