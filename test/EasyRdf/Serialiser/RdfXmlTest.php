@@ -482,4 +482,24 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             $rdf
         );
     }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/209
+     */
+    public function testIssue209()
+    {
+        $g = new EasyRdf_Graph();
+        $g->add('http://example.com/resource', 'rdf:type', new EasyRdf_Resource('foaf:Person'));
+        $g->add('http://example.com/resource', 'rdf:type', new EasyRdf_Resource('http://example.com/TypeA'));
+        $xml = $g->serialise('rdfxml');
+
+        $g2 = new EasyRdf_Graph('http://example.com/', $xml, 'rdfxml');
+        $types = $g2->resource('http://example.com/resource')->typesAsResources();
+
+        $expected = array('http://example.com/TypeA', 'http://xmlns.com/foaf/0.1/Person');
+
+        $this->assertCount(2, $types);
+        $this->assertContains($types[0]->getUri(), $expected);
+        $this->assertContains($types[1]->getUri(), $expected);
+    }
 }
