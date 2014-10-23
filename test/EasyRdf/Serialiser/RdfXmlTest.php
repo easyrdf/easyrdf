@@ -38,6 +38,7 @@ namespace EasyRdf\Serialiser;
 
 use EasyRdf\Graph;
 use EasyRdf\Literal;
+use EasyRdf\Resource;
 use EasyRdf\RdfNamespace;
 use EasyRdf\TestCase;
 
@@ -496,12 +497,12 @@ class RdfXmlTest extends TestCase
      */
     public function testIssue209()
     {
-        $g = new EasyRdf_Graph();
-        $g->add('http://example.com/resource', 'rdf:type', new EasyRdf_Resource('foaf:Person'));
-        $g->add('http://example.com/resource', 'rdf:type', new EasyRdf_Resource('http://example.com/TypeA'));
+        $g = new Graph();
+        $g->add('http://example.com/resource', 'rdf:type', new Resource('foaf:Person'));
+        $g->add('http://example.com/resource', 'rdf:type', new Resource('http://example.com/TypeA'));
         $xml = $g->serialise('rdfxml');
 
-        $g2 = new EasyRdf_Graph('http://example.com/', $xml, 'rdfxml');
+        $g2 = new Graph('http://example.com/', $xml, 'rdfxml');
         $types = $g2->resource('http://example.com/resource')->typesAsResources();
 
         $expected = array('http://example.com/TypeA', 'http://xmlns.com/foaf/0.1/Person');

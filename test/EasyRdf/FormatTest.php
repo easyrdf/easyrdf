@@ -126,7 +126,7 @@ class FormatTest extends TestCase
         $current_locale = setlocale(LC_NUMERIC, 0);
         setlocale(LC_NUMERIC, 'fi_FI.UTF-8');
 
-        $accept = EasyRdf_Format::getHttpAcceptHeader(array('extra/header' => 0.5));
+        $accept = Format::getHttpAcceptHeader(array('extra/header' => 0.5));
         $this->assertContains('extra/header;q=0.5', $accept);
 
         setlocale(LC_NUMERIC, $current_locale);
@@ -623,7 +623,7 @@ class FormatTest extends TestCase
     public function testGuessFormatHtml5()
     {
         $data = readFixture('html5.html');
-        $this->assertStringEquals('rdfa', EasyRdf_Format::guessFormat($data));
+        $this->assertStringEquals('rdfa', Format::guessFormat($data));
     }
 
     public function testGuessFormatXml()
