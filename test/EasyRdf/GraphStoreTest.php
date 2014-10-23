@@ -40,6 +40,9 @@ require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
 {
+    /** @var  EasyRdf_GraphStore */
+    private $graphStore;
+
     public function setUp()
     {
         EasyRdf_Http::setDefaultHttpClient(
@@ -85,6 +88,22 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
         $graph = $this->graphStore->get('http://foo.com/bar.rdf');
         $this->assertClass('EasyRdf_Graph', $graph);
         $this->assertSame('http://foo.com/bar.rdf', $graph->getUri());
+        $this->assertStringEquals(
+            'Joe Bloggs',
+            $graph->get('http://www.example.com/joe#me', 'foaf:name')
+        );
+    }
+
+    public function testGetDefault()
+    {
+        $this->client->addMock(
+            'GET',
+            'http://localhost:8080/data/?default',
+            readFixture('foaf.json')
+        );
+        $graph = $this->graphStore->getDefault();
+        $this->assertClass('EasyRdf_Graph', $graph);
+        $this->assertSame(null, $graph->getUri());
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
@@ -165,6 +184,19 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
         $this->assertSame(200, $response->getStatus());
     }
 
+    public function testInsertIntoDefault()
+    {
+        $data = "<urn:subject> <urn:predicate> \"object\" .\n";
+        $this->client->addMock(
+            'POST',
+            '/data/?default',
+            'OK',
+            array('callback' => array($this, 'checkNtriplesRequest'))
+        );
+        $response = $this->graphStore->insertIntoDefault($data);
+        $this->assertSame(200, $response->getStatus());
+    }
+
     public function testInsertHttpError()
     {
         $data = "<urn:subject> <urn:predicate> \"object\" .\n";
@@ -194,7 +226,20 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
         $this->assertSame(200, $response->getStatus());
     }
 
-    public function checkTurtleRequest($client)
+    public function testReplaceDefault()
+    {
+        $data = "<urn:subject> <urn:predicate> \"object\" .\n";
+        $this->client->addMock(
+            'PUT',
+            '/data/?default',
+            'OK',
+            array('callback' => array($this, 'checkNtriplesRequest'))
+        );
+        $response = $this->graphStore->replaceDefault($data);
+        $this->assertSame(200, $response->getStatus());
+    }
+
+    public function checkJsonRequest($client)
     {
         $this->assertSame(
             '{"urn:subject":{"urn:predicate":[{"type":"literal","value":"object"}]}}',
@@ -212,7 +257,7 @@ class EasyRdf_GraphStoreTest extends EasyRdf_TestCase
             'PUT',
             '/data/?graph=http%3A%2F%2Ffoo.com%2Fbar.rdf',
             'OK',
-            array('callback' => array($this, 'checkTurtleRequest'))
+            array('callback' => array($this, 'checkJsonRequest'))
         );
         $response = $this->graphStore->replace($graph, "http://foo.com/bar.rdf", 'json');
         $this->assertSame(200, $response->getStatus());

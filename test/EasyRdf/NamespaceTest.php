@@ -5,7 +5,7 @@
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2014 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
@@ -116,15 +116,6 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         EasyRdf_Namespace::get(null);
     }
 
-    public function testGetEmptyNamespace()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$prefix should be a string and cannot be null or empty'
-        );
-        EasyRdf_Namespace::get('');
-    }
-
     public function testGetNonStringNamespace()
     {
         $this->setExpectedException(
@@ -172,10 +163,6 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testAddNamespaceShortEmpty()
     {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$prefix should be a string and cannot be null or empty'
-        );
         EasyRdf_Namespace::set('', 'http://purl.org/ontology/ko/');
     }
 
@@ -188,11 +175,11 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         EasyRdf_Namespace::set(array(), 'http://purl.org/ontology/ko/');
     }
 
-    public function testAddNamespaceShortNonAlphanumeric()
+    public function testAddNamespaceShortInvalid()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$prefix should only contain alpha-numeric characters'
+            'should match RDFXML-QName specification'
         );
         EasyRdf_Namespace::set('/K.O/', 'http://purl.org/ontology/ko/');
     }
@@ -398,6 +385,31 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         $this->assertSame('foaf:name', EasyRdf_Namespace::shorten($this->resource));
     }
 
+    public function testShortenMostSpecific()
+    {
+        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');
+        EasyRdf_Namespace::set('reptils', 'http://example.com/ns/animals/reptils/');
+        EasyRdf_Namespace::set('snakes', 'http://example.com/ns/animals/reptils/snakes/');
+
+        $this->assertSame(
+            'snakes:milksnake',
+            EasyRdf_Namespace::shorten('http://example.com/ns/animals/reptils/snakes/milksnake')
+        );
+    }
+
+    public function testShortenMostSpecific2()
+    {
+        EasyRdf_Namespace::set('snakes', 'http://example.com/ns/animals/reptils/snakes/');
+        EasyRdf_Namespace::set('reptils', 'http://example.com/ns/animals/reptils/');
+        EasyRdf_Namespace::set('cat', 'http://example.com/ns/animals/cat/');
+        EasyRdf_Namespace::set('animals', 'http://example.com/ns/animals/');
+
+        $this->assertSame(
+            'snakes:milksnake',
+            EasyRdf_Namespace::shorten('http://example.com/ns/animals/reptils/snakes/milksnake')
+        );
+    }
+
     public function testShortenUnknown()
     {
         $this->assertSame(
@@ -482,6 +494,18 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
         $this->assertSame(
             null,
             EasyRdf_Namespace::prefixOfUri('http://www.aelius.com/njh/')
+        );
+    }
+
+    public function testGetEmptyNamespace()
+    {
+        EasyRdf_Namespace::set('', 'http://xmlns.com/foaf/0.1/name');
+
+        $url = EasyRdf_Namespace::get('');
+
+        $this->assertSame(
+            'http://xmlns.com/foaf/0.1/name',
+            $url
         );
     }
 
@@ -621,5 +645,25 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
             '$shortUri should be a string and cannot be null or empty'
         );
         EasyRdf_Namespace::expand($this);
+    }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/185
+     */
+    public function testIssue185DashInPrefix()
+    {
+        EasyRdf_Namespace::set('foo-bar', 'http://example.org/dash#');
+        $this->assertSame('foo-bar:baz', EasyRdf_Namespace::shorten('http://example.org/dash#baz'));
+    }
+
+    /**
+     * Namespace which is too short shouldn't apply
+     */
+    public function testShortNamespace()
+    {
+        EasyRdf_Namespace::set('ex', 'http://example.org/');
+
+        $this->assertSame('ex:foo', EasyRdf_Namespace::shorten('http://example.org/foo'));
+        $this->assertNull(EasyRdf_Namespace::shorten('http://example.org/bar/baz'));
     }
 }

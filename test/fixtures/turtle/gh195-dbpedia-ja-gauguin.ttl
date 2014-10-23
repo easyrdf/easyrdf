@@ -1,0 +1,4 @@
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix dbpedia:    <http://dbpedia.org/resource/> .
+@prefix ns2:    <http://ja.dbpedia.org/resource/> .
+dbpedia:Paul_Gauguin    owl:sameAs  ns2:ポール・ゴーギャン .

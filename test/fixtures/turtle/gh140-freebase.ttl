@@ -1,0 +1,22 @@
+@prefix key: <http://rdf.freebase.com/key/>.
+@prefix ns: <http://rdf.freebase.com/ns/>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+
+ns:m.0j_gr
+    ns:award.award_nominee.award_nominations    ns:m.0k0tbjz;
+    ns:award.award_winner.awards_won    ns:m.0k0xnh1;
+    ns:base.websites.website.website    <http://www.cesaria-evora.com>;
+    ns:common.topic.alias    "Cesaria Evora"@en;
+    ns:common.topic.alias    "Césaria Évora"@en;
+    ns:common.topic.alias    "Evora, Cesaria"@en;
+    ns:common.topic.alias    "Cesária Évora"@ca;
+    ns:common.topic.alias    "סזריה אבורה"@he;
+    ns:common.topic.alias    "Évora, Cesária"@en;
+    ns:common.topic.article    ns:m.0279xxs;
+    ns:common.topic.image    ns:m.044nk93;
+    ns:common.topic.image    ns:m.04pyq_f;
+    ns:common.topic.official_website    <http://www.cesaria-evora.com/>;
+    ns:common.topic.topic_equivalent_webpage    <http://www.myspace.com/cesariaevora>;
+    .

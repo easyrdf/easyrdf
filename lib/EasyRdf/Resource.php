@@ -564,7 +564,14 @@ class EasyRdf_Resource
      */
     public function typeAsResource()
     {
+        $this->checkHasGraph();
         return $this->graph->typeAsResource($this->uri);
+    }
+
+    public function typesAsResources()
+    {
+        $this->checkHasGraph();
+        return $this->graph->typesAsResources($this->uri);
     }
 
     /** Check if a resource is of the specified type

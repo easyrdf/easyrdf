@@ -48,6 +48,7 @@ class Examples_ArtistinfoTest extends EasyRdf_TestCase
 
     public function testBruce()
     {
+        $this->markTestSkipped('BBC music removed this resource');
         $output = executeExample(
             'artistinfo.php',
             array(

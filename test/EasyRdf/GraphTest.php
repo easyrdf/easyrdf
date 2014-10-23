@@ -60,6 +60,9 @@ class Mock_RdfSerialiser
 
 class EasyRdf_GraphTest extends EasyRdf_TestCase
 {
+    /** @var EasyRdf_Http_MockClient */
+    private $client;
+
     /**
      * Set up the test suite before each test
      */
@@ -209,7 +212,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$resource cannot be an empty string'
+            'got empty string'
         );
         $graph = new EasyRdf_Graph();
         $graph->load('');
@@ -219,7 +222,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$resource should be a string or an EasyRdf_Resource'
+            '$resource should be either IRI, blank-node identifier or EasyRdf_Resource'
         );
         $graph = new EasyRdf_Graph();
         $graph->load(array());
@@ -354,6 +357,19 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
         );
     }
 
+    public function testNewAndLoadError()
+    {
+        $this->client->addMockOnce('GET', 'http://www.example.com/missing', 'Error text', array('status' => 404));
+
+        try {
+            $graph = EasyRdf_Graph::newAndLoad('http://www.example.com/missing', 'turtle');
+            $this->fail('404 should lead to exception');
+        } catch (EasyRdf_Http_Exception $e) {
+            $this->assertEquals(404, $e->getCode());
+            $this->assertEquals('Error text', $e->getBody());
+        }
+    }
+
     public function testGetResourceSameGraph()
     {
         $graph = new EasyRdf_Graph();
@@ -427,7 +443,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$resource cannot be an empty string'
+            'got empty string'
         );
         $graph = new EasyRdf_Graph();
         $graph->resource('');
@@ -437,7 +453,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$resource should be a string or an EasyRdf_Resource'
+            '$resource should be either IRI, blank-node identifier or EasyRdf_Resource'
         );
         $graph = new EasyRdf_Graph();
         $graph->resource(array());
@@ -741,7 +757,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$resource cannot be null'
+            'got null'
         );
         $this->graph->get(null, 'rdf:test');
     }
@@ -750,7 +766,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$resource cannot be an empty string'
+            'got empty string'
         );
         $this->graph->get('', 'rdf:test');
     }
@@ -1290,7 +1306,7 @@ class EasyRdf_GraphTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$resource should be a string or an EasyRdf_Resource'
+            '$resource should be either IRI, blank-node identifier or EasyRdf_Resource'
         );
         $graph = new EasyRdf_Graph();
         $invalidResource = new EasyRdf_Utils();

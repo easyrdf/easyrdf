@@ -43,6 +43,12 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
     protected $serialiser = null;
     protected $graph = null;
 
+    public static function setUpBeforeClass()
+    {
+        EasyRdf_Namespace::resetNamespaces();
+        EasyRdf_Namespace::reset();
+    }
+
     public function setUp()
     {
         $this->graph = new EasyRdf_Graph();
@@ -51,6 +57,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
     public function tearDown()
     {
+        EasyRdf_Namespace::resetNamespaces();
         EasyRdf_Namespace::reset();
     }
 
@@ -403,5 +410,96 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
             "</rdf:RDF>\n",
             $this->serialiser->serialise($this->graph, 'rdfxml')
         );
+    }
+    
+    public function testSerialiseTriplesWithoutType()
+    {
+        $this->graph->add('http://example.com/joe', 'foaf:knows', 'http://example.com/bob');
+        $this->graph->addLiteral('http://example.com/joe', 'rdf:label', 'le Joe', 'fr-FR');
+        
+        $this->assertSame(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
+            "  <rdf:Description rdf:about=\"http://example.com/joe\">\n".
+            "    <foaf:knows>http://example.com/bob</foaf:knows>\n".
+            "    <rdf:label xml:lang=\"fr-FR\">le Joe</rdf:label>\n".
+            "  </rdf:Description>\n\n".
+            "</rdf:RDF>\n",
+            $this->serialiser->serialise($this->graph, 'rdfxml')
+        );
+    }
+    
+    public function testSerialiseTriplesWithType()
+    {
+        $this->graph->add('http://example.com/joe', 'rdf:type', 'foaf:Person');
+        $this->graph->add('http://example.com/joe', 'foaf:knows', 'http://example.com/bob');
+        $this->graph->addLiteral('http://example.com/joe', 'rdf:label', 'le Joe', 'fr-FR');
+        
+        $this->assertSame(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\">\n\n".
+            "  <rdf:Description rdf:about=\"http://example.com/joe\">\n".
+            "    <rdf:type>foaf:Person</rdf:type>\n".
+            "    <foaf:knows>http://example.com/bob</foaf:knows>\n".
+            "    <rdf:label xml:lang=\"fr-FR\">le Joe</rdf:label>\n".
+            "  </rdf:Description>\n\n".
+            "</rdf:RDF>\n",
+            $this->serialiser->serialise($this->graph, 'rdfxml')
+        );
+    }
+
+    public function testSerialiseEmptyPrefix()
+    {
+        \EasyRdf_Namespace::set('', 'http://foo/bar/');
+
+        $joe = $this->graph->resource(
+            'http://foo/bar/me',
+            'foaf:Person'
+        );
+
+        $joe->set('foaf:name', 'Joe Bloggs');
+        $joe->set(
+            'foaf:homepage',
+            $this->graph->resource('http://example.com/joe/')
+        );
+        $joe->set('http://foo/bar/test', 'test');
+
+        $rdf = $this->serialiser->serialise($this->graph, 'rdfxml');
+
+        $this->assertSame(
+            "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
+            "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
+            "         xmlns:foaf=\"http://xmlns.com/foaf/0.1/\"\n".
+            "         xmlns=\"http://foo/bar/\">\n\n".
+            "  <foaf:Person rdf:about=\"http://foo/bar/me\">\n".
+            "    <foaf:name>Joe Bloggs</foaf:name>\n".
+            "    <foaf:homepage rdf:resource=\"http://example.com/joe/\"/>\n".
+            "    <test>test</test>\n".
+            "  </foaf:Person>\n\n".
+            "</rdf:RDF>\n",
+            $rdf
+        );
+    }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/209
+     */
+    public function testIssue209()
+    {
+        $g = new EasyRdf_Graph();
+        $g->add('http://example.com/resource', 'rdf:type', new EasyRdf_Resource('foaf:Person'));
+        $g->add('http://example.com/resource', 'rdf:type', new EasyRdf_Resource('http://example.com/TypeA'));
+        $xml = $g->serialise('rdfxml');
+
+        $g2 = new EasyRdf_Graph('http://example.com/', $xml, 'rdfxml');
+        $types = $g2->resource('http://example.com/resource')->typesAsResources();
+
+        $expected = array('http://example.com/TypeA', 'http://xmlns.com/foaf/0.1/Person');
+
+        $this->assertCount(2, $types);
+        $this->assertContains($types[0]->getUri(), $expected);
+        $this->assertContains($types[1]->getUri(), $expected);
     }
 }

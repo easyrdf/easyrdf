@@ -201,10 +201,10 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         );
 
         $this->assertSame('image/png', $info['mime']);
-        $this->assertTrue(500 > $info[0], 'Image width is less than 500');  # width=469
-        $this->assertTrue(350 < $info[0], 'Image width is greater than 350');
-        $this->assertTrue(350 > $info[1], 'Image height is less than 350');  # height=299
-        $this->assertTrue(250 < $info[1], 'Image height is greater than 250');
+        $this->assertLessThan(500, $info[0], 'Image width is less than 500');  # width=469
+        $this->assertGreaterThan(350, $info[0], 'Image width is greater than 350');
+        $this->assertLessThan(350, $info[1], 'Image height is less than 350');  # height=299
+        $this->assertGreaterThan(250, $info[1], 'Image height is greater than 250');
     }
 
     public function testSerialiseGif()
@@ -217,10 +217,10 @@ class EasyRdf_Serialiser_GraphVizTest extends EasyRdf_TestCase
         );
 
         $this->assertSame('image/gif', $info['mime']);
-        $this->assertTrue(500 > $info[0], 'Image width is less than 500');  # width=469
-        $this->assertTrue(350 < $info[0], 'Image width is greater than 350');
-        $this->assertTrue(350 > $info[1], 'Image height is less than 350');  # height=304
-        $this->assertTrue(250 < $info[1], 'Image height is greater than 250');
+        $this->assertLessThan(500, $info[0], 'Image width is less than 500');  # width=469
+        $this->assertGreaterThan(350, $info[0], 'Image width is greater than 350');
+        $this->assertLessThan(350, $info[1], 'Image height is less than 350');  # height=304
+        $this->assertGreaterThan(250, $info[1], 'Image height is greater than 250');
     }
 
     public function testSerialiseSvg()

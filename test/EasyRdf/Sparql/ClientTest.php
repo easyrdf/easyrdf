@@ -40,6 +40,12 @@ require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
 
 class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
 {
+    /** @var  EasyRdf_Http_MockClient */
+    private $client;
+
+    /** @var  EasyRdf_Sparql_Client */
+    private $sparql;
+
     public function setUp()
     {
         EasyRdf_Http::setDefaultHttpClient(
@@ -367,5 +373,33 @@ class EasyRdf_Sparql_ClientTest extends EasyRdf_TestCase
 
         $result = $this->sparql->update('INSERT DATA { <a> <p> <b> }');
         $this->assertSame(204, $result->getStatus());
+    }
+
+    public function testQueryEndpointWithParameters()
+    {
+        $this->sparql = new EasyRdf_Sparql_Client('http://localhost:8080/sparql?a=b');
+
+        $this->client->addMock(
+            'GET',
+            '/sparql?a=b&query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            readFixture('sparql_select_all.xml'),
+            array(
+                'headers' => array('Content-Type' => 'application/sparql-results+xml')
+            )
+        );
+        $result = $this->sparql->query("SELECT * WHERE {?s ?p ?o}");
+        $this->assertCount(14, $result);
+        $this->assertEquals(
+            new EasyRdf_Resource('_:genid1'),
+            $result[0]->s
+        );
+        $this->assertEquals(
+            new EasyRdf_Resource('http://xmlns.com/foaf/0.1/name'),
+            $result[0]->p
+        );
+        $this->assertEquals(
+            new EasyRdf_Literal("Joe's Current Project"),
+            $result[0]->o
+        );
     }
 }

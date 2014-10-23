@@ -117,6 +117,17 @@ class EasyRdf_FormatTest extends EasyRdf_TestCase
         $this->assertContains('extra/header;q=0.5', $accept);
     }
 
+    public function testGetHttpAcceptHeaderLocale()
+    {
+        $current_locale = setlocale(LC_NUMERIC, 0);
+        setlocale(LC_NUMERIC, 'fi_FI.UTF-8');
+
+        $accept = EasyRdf_Format::getHttpAcceptHeader(array('extra/header' => 0.5));
+        $this->assertContains('extra/header;q=0.5', $accept);
+
+        setlocale(LC_NUMERIC, $current_locale);
+    }
+
     public function testFormatExistsTrue()
     {
         $this->assertTrue(EasyRdf_Format::formatExists('my'));

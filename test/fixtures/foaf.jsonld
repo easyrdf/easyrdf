@@ -1,0 +1,26 @@
+{
+  "@context": {
+    "@vocab": "http://xmlns.com/foaf/0.1/",
+    "label": "http://www.w3.org/2000/01/rdf-schema#label",
+    "homepage": { "@type": "@id" },
+    "maker": { "@type": "@id" }
+  },
+  "@id": "http://www.example.com/joe/foaf.rdf",
+  "@type": "PersonalProfileDocument",
+  "label": "Joe Bloggs' FOAF File",
+  "maker": "http://www.example.com/joe#me",
+  "primaryTopic": {
+    "@id": "http://www.example.com/joe#me",
+    "@type": "Person",
+    "title": "Mr",
+    "firstName" : "Joe",
+    "family_name" : "Bloggs",
+    "name": { "@value": "Joe Bloggs", "@language": "en" },
+    "homepage": "http://www.example.com/joe/",
+    "currentProject" : {
+      "@type": "Project",
+      "homepage": "http://www.example.com/project",
+      "name": "Joe's Current Project"
+    }
+  }
+}

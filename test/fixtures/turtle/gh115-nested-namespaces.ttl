@@ -1,0 +1,8 @@
+@prefix id: <http://example.com/id/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix animals: <http://example.com/ns/animals/> .
+
+id:1 rdfs:type animals:dog .
+id:2 rdfs:type animals:cat .
+id:3 rdfs:type animals:bird .
+id:4 rdfs:type <http://example.com/ns/animals/reptiles/snake> .
