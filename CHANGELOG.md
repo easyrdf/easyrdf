@@ -1,5 +1,5 @@
-EasyRdf 0.x.x
-=============
+EasyRdf 0.9.0-rc.1
+==================
 
 Major new features
 ------------------
