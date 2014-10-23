@@ -1,3 +1,19 @@
+EasyRdf 0.10.x
+==============
+
+Major new features
+------------------
+
+* PHP 5.2 is not supported anymore. New composer.json mentions 5.3.0 as minimal compatible version. In practice, number is a bit higher because of dependencies.
+* Usage without composer is not supported anymore
+* Library is loaded via PSR-4 autoloader now
+
+API changes
+-----------
+
+* Classes are renamed like this: `EasyRdf_Parser_Turtle` → `EasyRdf\Parser\Turtle`. With a single exception: `EasyRdf_Namespace` → `EasyRdf\RdfNamespace` (because `namespace` is a keyword in PHP)
+* EasyRdf expects HTTP-client objects compatible with ZendFramework 2.x instead of 1.x now. (zend-http is added to require-dev so tests for it are always run)
+
 EasyRdf 0.9.0
 =============
 
