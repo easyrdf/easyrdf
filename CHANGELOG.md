@@ -1,3 +1,8 @@
+EasyRdf 0.9.0-rc.3
+==================
+
+* fixed documentation generation
+
 EasyRdf 0.9.0-rc.2
 ==================
 
