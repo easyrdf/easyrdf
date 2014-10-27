@@ -568,6 +568,12 @@ class EasyRdf_Resource
         return $this->graph->typeAsResource($this->uri);
     }
 
+    /**
+     * Get a list of types for a resource, as Resources.
+     *
+     * @return EasyRdf_Resource[]
+     * @throws EasyRdf_Exception
+     */
     public function typesAsResources()
     {
         $this->checkHasGraph();
