@@ -572,10 +572,10 @@ class Resource
     }
 
     /**
-     * Get a list of types for a resource, as Resources.
+     * Get a list of types for a resource, as EasyRdf\Resource
      *
-     * @return EasyRdf_Resource[]
-     * @throws EasyRdf_Exception
+     * @return Resource[]
+     * @throws Exception
      */
     public function typesAsResources()
     {

@@ -1457,9 +1457,9 @@ class Graph
     }
 
     /**
-     * Get the resource types of the graph as a EasyRdf_Resource
+     * Get the resource types of the graph as a EasyRdf\Resource
      *
-     * @return EasyRdf_Resource[]
+     * @return Resource[]
      */
     public function typesAsResources($resource = null)
     {
