@@ -35,7 +35,7 @@
     "require-dev": {
         "phpunit/PHPUnit": "~3.5",
         "squizlabs/php_codesniffer": "~1.4.3",
-        "sami/sami": "dev-master"
+        "sami/sami": "~1.4"
     },
     "autoload": {
         "psr-0": { "EasyRdf_": "lib/" }
