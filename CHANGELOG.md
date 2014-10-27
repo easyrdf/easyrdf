@@ -1,3 +1,8 @@
+EasyRdf 0.9.0-rc.2
+==================
+
+* tweaked unit-tests
+
 EasyRdf 0.9.0-rc.1
 ==================
 
