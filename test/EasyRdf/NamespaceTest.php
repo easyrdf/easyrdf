@@ -163,7 +163,12 @@ class EasyRdf_NamespaceTest extends EasyRdf_TestCase
 
     public function testAddNamespaceShortEmpty()
     {
-        EasyRdf_Namespace::set('', 'http://purl.org/ontology/ko/');
+        try {
+            EasyRdf_Namespace::set('', 'http://purl.org/ontology/ko/');
+            $this->assertTrue(true);  // this is here to avoid marking test as incomplete
+        } catch (LogicException $e) {
+            $this->fail($e->getMessage());
+        }
     }
 
     public function testAddNamespaceShortNonString()
