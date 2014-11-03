@@ -1165,7 +1165,7 @@ class EasyRdf_Parser_Turtle extends EasyRdf_Parser_Ntriples
             } else {
                 $this->column += 1;
             }
-            $this->data = mb_substr($this->data, 1, null, "UTF-8");
+            $this->data = mb_substr($this->data, 1, mb_strlen($this->data), "UTF-8");
             return $c;
         } else {
             return -1;
