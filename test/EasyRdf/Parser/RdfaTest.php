@@ -350,7 +350,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0088()
     {
-        $this->markTestSkipped("FIXME: Graph comparison isn't working");
+        $this->markTestIncomplete("FIXME: Graph comparison isn't working");
         $this->rdfaTestCase('0088', 'Interpretation of the CURIE "_:"');
     }
 
@@ -596,7 +596,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0224()
     {
-        $this->markTestSkipped("FIXME: need to implement @inlist");
+        $this->markTestIncomplete("FIXME: need to implement @inlist");
         $this->rdfaTestCase('0224', '@inlist hanging @rel');
     }
 
@@ -635,13 +635,13 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0246()
     {
-        $this->markTestSkipped("FIXME: Graph comparison isn't working");
+        $this->markTestIncomplete("FIXME: Graph comparison isn't working");
         $this->rdfaTestCase('0246', 'hanging @rel creates multiple triples, @typeof permutation; RDFa 1.1 version');
     }
 
     public function testCase0247()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestIncomplete("FIXME: Multiple incomplete triples, RDFa 1.1version");
         $this->rdfaTestCase('0247', 'Multiple incomplete triples, RDFa 1.1version');
     }
 
@@ -903,7 +903,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0312()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestIncomplete("FIXME: Mute plain @rel if @property is present");
         $this->rdfaTestCase('0312', 'Mute plain @rel if @property is present');
     }
 
@@ -934,43 +934,43 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     public function testCase0321()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestIncomplete("FIXME: rdfa:copy to rdfa:Pattern");
         $this->rdfaTestCase('0321', 'rdfa:copy to rdfa:Pattern');
     }
 
     public function testCase0322()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestIncomplete("FIXME: rdfa:copy for additional property value");
         $this->rdfaTestCase('0322', 'rdfa:copy for additional property value');
     }
 
     public function testCase0323()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestIncomplete("FIXME: Multiple references to rdfa:Pattern");
         $this->rdfaTestCase('0323', 'Multiple references to rdfa:Pattern');
     }
 
     public function testCase0324()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestIncomplete("FIXME: Multiple references to rdfa:Pattern");
         $this->rdfaTestCase('0324', 'Multiple references to rdfa:Pattern');
     }
 
     public function testCase0325()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestIncomplete("FIXME: Multiple references to rdfa:Pattern creating a resource");
         $this->rdfaTestCase('0325', 'Multiple references to rdfa:Pattern creating a resource');
     }
 
     public function testCase0326()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestIncomplete("FIXME: rdfa:Pattern removed only if referenced");
         $this->rdfaTestCase('0326', 'rdfa:Pattern removed only if referenced');
     }
 
     public function testCase0327()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestIncomplete("FIXME: rdfa:Pattern chaining");
         $this->rdfaTestCase('0327', 'rdfa:Pattern chaining');
     }
 
