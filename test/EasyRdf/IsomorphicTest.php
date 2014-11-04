@@ -85,7 +85,7 @@ class EasyRdf_IsomorphicTest extends EasyRdf_TestCase
 
     public function testGood05()
     {
-        $this->markTestSkipped("FIXME");
+        $this->markTestIncomplete("FIXME: Three triple chain with renamed bnodes is not implemented yet");
         // Three triple chain with renamed bnodes
         $this->checkTestCase('good-05');
     }

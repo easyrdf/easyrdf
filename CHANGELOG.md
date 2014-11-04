@@ -1,3 +1,9 @@
+EasyRdf 0.9.0-rc.4
+==================
+
+* fixed compatibility with php < 5.4.8 (see issue #212)
+* tweaked unit-tests
+
 EasyRdf 0.9.0-rc.3
 ==================
 
