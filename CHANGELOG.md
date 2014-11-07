@@ -1,5 +1,5 @@
-EasyRdf 0.9.0-rc.5
-==================
+EasyRdf 0.9.0
+=============
 
 * code-style fix
 
