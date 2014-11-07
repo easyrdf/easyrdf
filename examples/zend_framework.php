@@ -14,23 +14,18 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-
-    // require the Zend Autoloader
-    require_once 'Zend/Loader/Autoloader.php';
-    $autoloader = Zend_Loader_Autoloader::getInstance();
-    $autoloader->setFallbackAutoloader(true);
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
 
     // use the CURL based HTTP client adaptor
-    $client = new Zend_Http_Client(
+    $client = new \Zend\Http\Client(
         null,
         array(
-            'adapter' => 'Zend_Http_Client_Adapter_Curl',
+            'adapter' => 'Zend\Http\Client\Adapter\Curl',
             'keepalive' => true,
             'useragent' => "EasyRdf/zendtest"
         )
     );
-    EasyRdf_Http::setDefaultHttpClient($client);
+    \EasyRdf\Http::setDefaultHttpClient($client);
 ?>
 
 <html>
@@ -42,17 +37,17 @@
 
 <?php
     # Load some sample data into a graph
-    $graph = new EasyRdf_Graph('http://example.com/joe');
+    $graph = new \EasyRdf\Graph('http://example.com/joe');
     $joe = $graph->resource('http://example.com/joe#me', 'foaf:Person');
     $joe->add('foaf:name', 'Joe Bloggs');
     $joe->addResource('foaf:homepage', 'http://example.com/joe/');
 
     # Store it in a local graphstore
-    $store = new EasyRdf_GraphStore('http://localhost:8080/data/');
+    $store = new \EasyRdf\GraphStore('http://localhost:8080/data/');
     $store->replace($graph);
 
     # Now make a query to the graphstore
-    $sparql = new EasyRdf_Sparql_Client('http://localhost:8080/sparql/');
+    $sparql = new \EasyRdf\Sparql\Client('http://localhost:8080/sparql/');
     $result = $sparql->query('SELECT * WHERE {<http://example.com/joe#me> ?p ?o}');
     echo $result->dump();
 ?>

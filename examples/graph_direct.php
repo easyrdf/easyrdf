@@ -1,6 +1,6 @@
 <?php
     /**
-     * Using EasyRdf_Graph directly without EasyRdf_Resource
+     * Using EasyRdf\Graph directly without EasyRdf\Resource
      *
      * Triple data is inserted and retrieved directly from a graph object,
      * where it is stored internally as an associative array.
@@ -10,17 +10,16 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
 ?>
 <html>
 <head>
-  <title>Example of using EasyRdf_Graph directly</title>
+  <title>Example of using EasyRdf\Graph directly</title>
 </head>
 <body>
 
 <?php
-  $graph = new EasyRdf_Graph();
+  $graph = new \EasyRdf\Graph();
   $graph->addResource("http://example.com/joe", "rdf:type", "foaf:Person");
   $graph->addLiteral("http://example.com/joe", "foaf:name", "Joe Bloggs");
   $graph->addLiteral("http://example.com/joe", "foaf:name", "Joseph Bloggs");

@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Http;
 
 /**
  * EasyRdf
@@ -35,16 +36,20 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
-require_once 'EasyRdf/Http/MockClient.php';
+use EasyRdf\TestCase;
+
+require_once realpath(__DIR__ . '/../../') . '/TestHelper.php';
+require_once __DIR__.'/MockClient.php';
 
 
-class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
+class MockClientTest extends TestCase
 {
+    /** @var MockClient */
+    private $client;
 
     public function setUp()
     {
-        $this->client = new EasyRdf_Http_MockClient();
+        $this->client = new MockClient();
     }
 
     protected function get($uri)
@@ -105,7 +110,7 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
     public function testUnknownUrl()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             'Unexpected request: GET http://example.com/test'
         );
         $this->get('http://example.com/test');
@@ -114,7 +119,7 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
     public function testMethodUnknownMatch()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             'Unexpected request: GET http://example.com/test'
         );
         $this->client->addMock('PUT', '/test', '10');
@@ -152,7 +157,7 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function testSetResponse()
     {
-        $response = new EasyRdf_Http_Response(234, array('Foo' => 'bar'), 'x');
+        $response = new Response(234, array('Foo' => 'bar'), 'x');
         $this->client->addMock('GET', '/test', $response);
         $r = $this->get('http://example.com/test', array('throw' => false));
         $this->assertSame(234, $r->getStatus());
@@ -252,7 +257,7 @@ class EasyRdf_Http_MockClientTest extends EasyRdf_TestCase
 
     public function isMockHttp($value)
     {
-        return ($value instanceof EasyRdf_Http_MockClient);
+        return ($value instanceof MockClient);
     }
 
     public function testGuessJsonContentType()

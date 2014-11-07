@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,7 +36,11 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\Format;
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
 /**
@@ -46,26 +51,18 @@ require_once dirname(dirname(dirname(__FILE__))).
  * @author     Markus Lanthaler <mail@markus-lanthaler.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Parser_JsonLdTest extends EasyRdf_TestCase
+class JsonLdTest extends TestCase
 {
-    /** @var EasyRdf_Parser_JsonLd */
+    /** @var JsonLd */
     protected $parser = null;
 
-    /** @var EasyRdf_Graph */
+    /** @var Graph */
     protected $graph = null;
 
     public function setUp()
     {
-        if (PHP_MAJOR_VERSION < 5 or (PHP_MAJOR_VERSION == 5 and PHP_MINOR_VERSION < 3)) {
-            $this->markTestSkipped("JSON-LD support requires PHP 5.3+");
-        }
-
-        if (!class_exists('\ML\JsonLD\JsonLD')) {
-            $this->markTestSkipped('"ml/json-ld" dependency is not installed');
-        }
-
-        $this->graph = new EasyRdf_Graph();
-        $this->parser = new EasyRdf_Parser_JsonLd();
+        $this->graph = new Graph();
+        $this->parser = new JsonLd();
     }
 
     public function testParse()
@@ -76,26 +73,26 @@ class EasyRdf_Parser_JsonLdTest extends EasyRdf_TestCase
 
         $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertClass('EasyRdf\Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertClass('EasyRdf\Literal', $name);
         $this->assertSame('Joe Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
 
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);
-        $this->assertClass('EasyRdf_Resource', $project);
+        $this->assertClass('EasyRdf\Resource', $project);
         $this->assertSame('_:genid1', $project->getUri());
     }
 
     public function testParseWithFormatObject()
     {
         $data = readFixture('foaf.jsonld');
-        $format = EasyRdf_Format::getFormat('jsonld');
+        $format = Format::getFormat('jsonld');
         $count = $this->parser->parse($this->graph, $data, $format, null);
         $this->assertSame(14, $count);
 
@@ -106,7 +103,7 @@ class EasyRdf_Parser_JsonLdTest extends EasyRdf_TestCase
     public function testParseJsonSyntaxError()
     {
         $this->setExpectedException(
-            'EasyRdf_Parser_Exception',
+            'EasyRdf\Parser\Exception',
             'Syntax error, malformed JSON.'
         );
 
@@ -130,8 +127,8 @@ class EasyRdf_Parser_JsonLdTest extends EasyRdf_TestCase
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Parser_JsonLd does not support unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Parser\JsonLd does not support unsupportedformat'
         );
         $rdf = $this->parser->parse(
             $this->graph,

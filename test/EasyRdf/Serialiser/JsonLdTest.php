@@ -1,4 +1,6 @@
 <?php
+namespace EasyRdf\Serialiser;
+
 /**
  * EasyRdf
  *
@@ -34,33 +36,30 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
+use EasyRdf\Graph;
+use EasyRdf\Literal;
+use EasyRdf\RdfNamespace;
+use EasyRdf\TestCase;
+
 require_once dirname(dirname(dirname(__FILE__))).
     DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class JsonLdTest extends EasyRdf_TestCase
+class JsonLdTest extends TestCase
 {
-    /** @var EasyRdf_Serialiser_JsonLd */
+    /** @var JsonLd */
     protected $serialiser = null;
 
-    /** @var EasyRdf_Graph */
+    /** @var Graph */
     protected $graph = null;
 
     public function setUp()
     {
-        if (PHP_MAJOR_VERSION < 5 or (PHP_MAJOR_VERSION == 5 and PHP_MINOR_VERSION < 3)) {
-            $this->markTestSkipped("JSON-LD support requires PHP 5.3+");
-        }
-
-        if (!class_exists('\ML\JsonLD\JsonLD')) {
-            $this->markTestSkipped('"ml/json-ld" dependency is not installed');
-        }
-
-        $this->graph = new EasyRdf_Graph('http://example.com/');
-        $this->serialiser = new EasyRdf_Serialiser_JsonLd();
+        $this->graph = new Graph('http://example.com/');
+        $this->serialiser = new JsonLd();
 
 
         $joe = $this->graph->resource('http://www.example.com/joe#me', 'foaf:Person');
-        $joe->set('foaf:name', new EasyRdf_Literal('Joe Bloggs', 'en'));
+        $joe->set('foaf:name', new Literal('Joe Bloggs', 'en'));
         $joe->set('foaf:age', 59);
         $joe->set('foaf:homepage', $this->graph->resource('http://foo/bar/me'));
 
@@ -69,18 +68,18 @@ class JsonLdTest extends EasyRdf_TestCase
 
         $joe->add('foaf:project', $project);
 
-        EasyRdf_Namespace::set('dc', 'http://purl.org/dc/elements/1.1/');
-        EasyRdf_Namespace::set('ex', 'http://example.org/vocab#');
-        EasyRdf_Namespace::set('xsd', 'http://www.w3.org/2001/XMLSchema#');
-        EasyRdf_Namespace::set('', 'http://foo/bar/');
+        RdfNamespace::set('dc', 'http://purl.org/dc/elements/1.1/');
+        RdfNamespace::set('ex', 'http://example.org/vocab#');
+        RdfNamespace::set('xsd', 'http://www.w3.org/2001/XMLSchema#');
+        RdfNamespace::set('', 'http://foo/bar/');
 
         $chapter=$this->graph->resource('http://example.org/library/the-republic#introduction', 'ex:Chapter');
-        $chapter->set('dc:description', new EasyRdf_Literal('An introductory chapter on The Republic.'));
-        $chapter->set('dc:title', new EasyRdf_Literal('The Introduction'));
+        $chapter->set('dc:description', new Literal('An introductory chapter on The Republic.'));
+        $chapter->set('dc:title', new Literal('The Introduction'));
 
         $book = $this->graph->resource('http://example.org/library/the-republic', 'ex:Book');
-        $book->set('dc:creator', new EasyRdf_Literal('Plato'));
-        $book->set('dc:title', new EasyRdf_Literal('The Republic'));
+        $book->set('dc:creator', new Literal('Plato'));
+        $book->set('dc:title', new Literal('The Republic'));
         $book->addResource('ex:contains', $chapter);
 
         $library = $this->graph->resource('http://example.org/library', 'ex:Library');
@@ -90,17 +89,15 @@ class JsonLdTest extends EasyRdf_TestCase
     public function tearDown()
     {
         parent::tearDown();
-        EasyRdf_Namespace::resetNamespaces();
-        EasyRdf_Namespace::reset();
+        RdfNamespace::resetNamespaces();
+        RdfNamespace::reset();
     }
 
     public function testSerialiseJsonLd()
     {
         $serialised = $this->serialiser->serialise($this->graph, 'jsonld');
 
-        // hiding php-5.3+ syntax
-        $class = '\ML\JsonLD\JsonLD';
-        $doc = call_user_func(array($class, 'getDocument'), $serialised);
+        $doc = \ML\JsonLD\JsonLD::getDocument($serialised);
 
         $graph = $doc->getGraph();
         $node = $graph->getNode('http://www.example.com/joe#me');
@@ -181,8 +178,8 @@ class JsonLdTest extends EasyRdf_TestCase
 
 
         // Compact form + explicit types + context
-        $ctx = new stdClass();
-        $ctx->{'@context'} = new stdClass();
+        $ctx = new \stdClass();
+        $ctx->{'@context'} = new \stdClass();
         $ctx->{'@context'}->foaf = 'http://xmlns.com/foaf/0.1/';
         $ctx->{'@context'}->xmls = 'http://www.w3.org/2001/XMLSchema#';
 

@@ -16,9 +16,8 @@ TAR = $(shell which gtar || which gnutar || which tar)
 export COPYFILE_DISABLE=true
 
 EXAMPLE_FILES = examples/*.php
-SOURCE_FILES = lib/EasyRdf.php \
-               lib/EasyRdf/*.php \
-               lib/EasyRdf/*/*.php
+SOURCE_FILES = lib/*.php \
+               lib/*/*.php
 TEST_FILES = test/*/*Test.php \
              test/*/*/*Test.php
 TEST_SUPPORT = Makefile test/cli_example_wrapper.php \

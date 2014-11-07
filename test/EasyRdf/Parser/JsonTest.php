@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,19 +36,24 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\Format;
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
+class JsonTest extends TestCase
 {
+    /** @var Json */
     protected $parser = null;
+    /** @var Graph */
     protected $graph = null;
-    protected $data = null;
 
     public function setUp()
     {
-        $this->graph = new EasyRdf_Graph();
-        $this->parser = new EasyRdf_Parser_Json();
+        $this->graph = new Graph();
+        $this->parser = new Json();
     }
 
     public function testParse()
@@ -58,19 +64,19 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
 
         $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertClass('EasyRdf\Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertClass('EasyRdf\Literal', $name);
         $this->assertSame('Joe Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
 
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);
-        $this->assertClass('EasyRdf_Resource', $project);
+        $this->assertClass('EasyRdf\Resource', $project);
         $this->assertSame('_:genid1', $project->getUri());
     }
 
@@ -82,26 +88,26 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
 
         $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertClass('EasyRdf\Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertClass('EasyRdf\Literal', $name);
         $this->assertSame('Joe Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
 
         $project = $joe->get('foaf:currentProject');
         $this->assertNotNull($project);
-        $this->assertClass('EasyRdf_Resource', $project);
+        $this->assertClass('EasyRdf\Resource', $project);
         $this->assertSame('_:genid1', $project->getUri());
     }
 
     public function testParseWithFormatObject()
     {
         $data = readFixture('foaf.json');
-        $format = EasyRdf_Format::getFormat('json');
+        $format = Format::getFormat('json');
         $count = $this->parser->parse($this->graph, $data, $format, null);
         $this->assertSame(14, $count);
 
@@ -137,17 +143,11 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
 
     public function testParseJsonSyntaxError()
     {
-        if (version_compare(PHP_VERSION, "5.3.0") >= 0) {
-            $this->setExpectedException(
-                'EasyRdf_Parser_Exception',
-                'JSON Parse syntax error'
-            );
-        } else {
-            $this->setExpectedException(
-                'EasyRdf_Parser_Exception',
-                'JSON Parse error'
-            );
-        }
+        $this->setExpectedException(
+            'EasyRdf\Parser\Exception',
+            'JSON Parse syntax error'
+        );
+
         $this->parser->parse(
             $this->graph,
             '{ "foo":"bar"',
@@ -168,12 +168,12 @@ class EasyRdf_Parser_JsonTest extends EasyRdf_TestCase
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Parser_Json does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Parser\Json does not support: unsupportedformat'
         );
         $rdf = $this->parser->parse(
             $this->graph,
-            $this->data,
+            '',
             'unsupportedformat',
             null
         );

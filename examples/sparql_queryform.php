@@ -5,7 +5,7 @@
      * This example presents a form that you can enter the URI
      * of a a SPARQL endpoint and a SPARQL query into. The
      * results are displayed using a call to dump() on what will be
-     * either a EasyRdf_Sparql_Result or EasyRdf_Graph object.
+     * either a EasyRdf\Sparql\Result or EasyRdf\Graph object.
      *
      * A list of registered namespaces is displayed above the query
      * box - any of these namespaces can be used in the query and PREFIX
@@ -17,9 +17,8 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 
     // Stupid PHP :(
     if (get_magic_quotes_gpc() and isset($_REQUEST['query'])) {
@@ -48,7 +47,7 @@
     print label_tag('endpoint');
     print text_field_tag('endpoint', "http://dbpedia.org/sparql", array('size'=>80)).'<br />';
     print "<code>";
-    foreach(EasyRdf_Namespace::namespaces() as $prefix => $uri) {
+    foreach(\EasyRdf\RdfNamespace::namespaces() as $prefix => $uri) {
         print "PREFIX $prefix: &lt;".htmlspecialchars($uri)."&gt;<br />\n";
     }
     print "</code>";
@@ -61,7 +60,7 @@
 
 <?php
   if (isset($_REQUEST['endpoint']) and isset($_REQUEST['query'])) {
-      $sparql = new EasyRdf_Sparql_Client($_REQUEST['endpoint']);
+      $sparql = new \EasyRdf\Sparql\Client($_REQUEST['endpoint']);
       try {
           $results = $sparql->query($_REQUEST['query']);
           if (isset($_REQUEST['text'])) {

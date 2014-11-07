@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Serialiser;
 
 /**
  * EasyRdf
@@ -35,30 +36,38 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
+use EasyRdf\Graph;
+use EasyRdf\Literal;
+use EasyRdf\Resource;
+use EasyRdf\RdfNamespace;
+use EasyRdf\TestCase;
+
 require_once dirname(dirname(dirname(__FILE__))).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
+class RdfXmlTest extends TestCase
 {
+    /** @var RdfXml */
     protected $serialiser = null;
+    /** @var Graph */
     protected $graph = null;
 
     public static function setUpBeforeClass()
     {
-        EasyRdf_Namespace::resetNamespaces();
-        EasyRdf_Namespace::reset();
+        RdfNamespace::resetNamespaces();
+        RdfNamespace::reset();
     }
 
     public function setUp()
     {
-        $this->graph = new EasyRdf_Graph();
-        $this->serialiser = new EasyRdf_Serialiser_RdfXml();
+        $this->graph = new Graph();
+        $this->serialiser = new RdfXml();
     }
 
     public function tearDown()
     {
-        EasyRdf_Namespace::resetNamespaces();
-        EasyRdf_Namespace::reset();
+        RdfNamespace::resetNamespaces();
+        RdfNamespace::reset();
     }
 
     public function testSerialiseRdfXml()
@@ -256,7 +265,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->graph->add(
             'http://www.example.com/joe#me',
             'foaf:name',
-            new EasyRdf_Literal('Joe', 'en')
+            new Literal('Joe', 'en')
         );
 
         $xml = $this->serialiser->serialise($this->graph, 'rdfxml');
@@ -271,7 +280,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->graph->add(
             'http://www.example.com/joe#me',
             'foaf:age',
-            EasyRdf_Literal::create(59, null, 'xsd:int')
+            Literal::create(59, null, 'xsd:int')
         );
 
         $xml = $this->serialiser->serialise($this->graph, 'rdfxml');
@@ -304,7 +313,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         );
 
         $this->setExpectedException(
-            'EasyRdf_Exception',
+            'EasyRdf\Exception',
             'foo'
         );
         $this->serialiser->serialise($this->graph, 'rdfxml');
@@ -315,7 +324,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
         $this->graph->add(
             'http://www.example.com/joe#me',
             'foaf:bio',
-            EasyRdf_Literal::create("<b>html</b>", null, 'rdf:XMLLiteral')
+            Literal::create("<b>html</b>", null, 'rdf:XMLLiteral')
         );
 
         $xml = $this->serialiser->serialise($this->graph, 'rdfxml');
@@ -328,8 +337,8 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
     public function testSerialiseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Serialiser_RdfXml does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Serialiser\RdfXml does not support: unsupportedformat'
         );
         $rdf = $this->serialiser->serialise($this->graph, 'unsupportedformat');
     }
@@ -452,7 +461,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
 
     public function testSerialiseEmptyPrefix()
     {
-        \EasyRdf_Namespace::set('', 'http://foo/bar/');
+        RdfNamespace::set('', 'http://foo/bar/');
 
         $joe = $this->graph->resource(
             'http://foo/bar/me',
@@ -488,12 +497,12 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
      */
     public function testIssue209()
     {
-        $g = new EasyRdf_Graph();
-        $g->add('http://example.com/resource', 'rdf:type', new EasyRdf_Resource('foaf:Person'));
-        $g->add('http://example.com/resource', 'rdf:type', new EasyRdf_Resource('http://example.com/TypeA'));
+        $g = new Graph();
+        $g->add('http://example.com/resource', 'rdf:type', new Resource('foaf:Person'));
+        $g->add('http://example.com/resource', 'rdf:type', new Resource('http://example.com/TypeA'));
         $xml = $g->serialise('rdfxml');
 
-        $g2 = new EasyRdf_Graph('http://example.com/', $xml, 'rdfxml');
+        $g2 = new Graph('http://example.com/', $xml, 'rdfxml');
         $types = $g2->resource('http://example.com/resource')->typesAsResources();
 
         $expected = array('http://example.com/TypeA', 'http://xmlns.com/foaf/0.1/Person');

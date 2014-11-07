@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf;
 
 /**
  * EasyRdf
@@ -35,25 +36,27 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
+use EasyRdf\Http\MockClient;
 
-class EasyRdf_HttpTest extends EasyRdf_TestCase
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
+
+class HttpTest extends TestCase
 {
     // FIXME: this test needs to run before the first call to setDefaultHttpClient()
     //     public function testGetDefaultHttpClient()
     //     {
     //         $this->assertClass(
-    //             'EasyRdf_Http_Client',
-    //             EasyRdf_Http::getDefaultHttpClient()
+    //             'EasyRdf\Http\Client',
+    //             Http::getDefaultHttpClient()
     //         );
     //     }
 
     public function testSetDefaultHttpClient()
     {
-        EasyRdf_Http::setDefaultHttpClient(new EasyRdf_Http_MockClient());
+        Http::setDefaultHttpClient(new MockClient());
         $this->assertClass(
-            'EasyRdf_Http_MockClient',
-            EasyRdf_Http::getDefaultHttpClient()
+            'EasyRdf\Http\MockClient',
+            Http::getDefaultHttpClient()
         );
     }
 
@@ -61,17 +64,17 @@ class EasyRdf_HttpTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$httpClient should be an object of class Zend_Http_Client or EasyRdf_Http_Client'
+            '$httpClient should be an object of class Zend\Http\Client or EasyRdf\Http\Client'
         );
-        EasyRdf_Http::setDefaultHttpClient(null);
+        Http::setDefaultHttpClient(null);
     }
 
     public function testSetDefaultHttpClientString()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$httpClient should be an object of class Zend_Http_Client or EasyRdf_Http_Client'
+            '$httpClient should be an object of class Zend\Http\Client or EasyRdf\Http\Client'
         );
-        EasyRdf_Http::setDefaultHttpClient('foobar');
+        Http::setDefaultHttpClient('foobar');
     }
 }

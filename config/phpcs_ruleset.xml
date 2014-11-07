@@ -4,13 +4,6 @@
 
  <!-- Include the PSR-2 standard -->
  <rule ref="PSR2">
-    <!--
-      These two sniffs doesn't detect PHP 5.2 namespaces / class names correctly
-      See: https://pear.php.net/bugs/bug.php?id=19774
-    -->
-    <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
-    <exclude name="Squiz.Classes.ValidClassName"/>
-    
     <!-- We implement more than one class per file in the tests -->
     <exclude name="PSR1.Classes.ClassDeclaration.MultipleClasses" />
 

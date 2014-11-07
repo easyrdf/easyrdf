@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Examples;
 
 /**
  * EasyRdf
@@ -37,12 +38,12 @@
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class Examples_GraphdirectTest extends EasyRdf_TestCase
+class GraphdirectTest extends \EasyRdf\TestCase
 {
     public function test()
     {
         $output = executeExample('graph_direct.php');
-        $this->assertContains('<title>Example of using EasyRdf_Graph directly</title>', $output);
+        $this->assertContains('<title>Example of using EasyRdf\\Graph directly</title>', $output);
 
         $this->assertContains('<b>Name:</b> Joe Bloggs <br />', $output);
         $this->assertContains('<b>Names:</b> Joe Bloggs Joseph Bloggs <br />', $output);

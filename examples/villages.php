@@ -16,9 +16,8 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 
     $CATEGORY_ID = 4309010;
 ?>
@@ -29,7 +28,7 @@
 
 <?php
     if (isset($_REQUEST['id'])) {
-        $graph = EasyRdf_Graph::newAndLoad("http://www.dbpedialite.org/things/".$_REQUEST['id']);
+        $graph = \EasyRdf\Graph::newAndLoad("http://www.dbpedialite.org/things/".$_REQUEST['id']);
 
         $village = $graph->primaryTopic();
         print content_tag('h2',$village->label());
@@ -51,7 +50,7 @@
         echo "<br /><br />";
         echo $graph->dump();
     } else {
-        $graph = EasyRdf_Graph::newAndLoad("http://www.dbpedialite.org/categories/".$CATEGORY_ID);
+        $graph = \EasyRdf\Graph::newAndLoad("http://www.dbpedialite.org/categories/".$CATEGORY_ID);
         $category = $graph->primaryTopic();
 
         print "<ul>\n";

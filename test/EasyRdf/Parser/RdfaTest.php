@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,29 +36,34 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-require_once 'EasyRdf/Parser/Rdfa.php';
-require_once 'EasyRdf/Serialiser/NtriplesArray.php';
+require_once realpath(__DIR__.'/..').'/Serialiser/NtriplesArray.php';
 
-class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
+class RdfaTest extends TestCase
 {
-    protected $parser = null;
+    /** @var Rdfa */
+    protected $rdfaParser = null;
+    /** @var Ntriples */
+    protected $ntriplesParser = null;
+    protected $baseUri;
     protected $graph = null;
-    protected $data = null;
 
     public function setUp()
     {
-        $this->rdfaParser = new EasyRdf_Parser_Rdfa();
-        $this->ntriplesParser = new EasyRdf_Parser_Ntriples();
+        $this->rdfaParser = new Rdfa();
+        $this->ntriplesParser = new Ntriples();
         $this->baseUri = 'http://rdfa.info/test-suite/test-cases/rdfa1.1/xhtml5/';
     }
 
 
     protected function parseRdfa($filename)
     {
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $this->rdfaParser->parse(
             $graph,
             readFixture($filename),
@@ -69,7 +75,7 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
 
     protected function parseNtriples($filename)
     {
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $this->ntriplesParser->parse(
             $graph,
             readFixture($filename),
@@ -1007,10 +1013,10 @@ class EasyRdf_Parser_RdfaTest extends EasyRdf_TestCase
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Parser_Rdfa does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Parser\Rdfa does not support: unsupportedformat'
         );
-        $graph = new EasyRdf_Graph();
+        $graph = new Graph();
         $this->rdfaParser->parse(
             $graph,
             'data',

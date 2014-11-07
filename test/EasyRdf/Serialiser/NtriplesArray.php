@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Serialiser;
 
 /**
  * EasyRdf
@@ -34,15 +35,16 @@
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
+use EasyRdf\Format;
 
 /**
- * Class to serialise an EasyRdf_Graph to an array of triples.
+ * Class to serialise an EasyRdf\Graph to an array of triples.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class EasyRdf_Serialiser_NtriplesArray extends EasyRdf_Serialiser_Ntriples
+class NtriplesArray extends Ntriples
 {
 
     /**
@@ -64,11 +66,12 @@ class EasyRdf_Serialiser_NtriplesArray extends EasyRdf_Serialiser_Ntriples
     }
 
     /**
-     * Serialise an EasyRdf_Graph into an array of N-Triples objects
+     * Serialise an EasyRdf\Graph into an array of N-Triples objects
      *
-     * @param EasyRdf_Graph $graph   An EasyRdf_Graph object.
-     * @param string        $format  The name of the format to convert to.
-     * @param array         $options
+     * @param \EasyRdf\Graph  $graph   An EasyRdf\Graph object.
+     * @param string          $format  The name of the format to convert to.
+     * @param array           $options
+     *
      * @return string The RDF in the new desired format.
      */
     public function serialise($graph, $format, array $options = array())
@@ -98,5 +101,5 @@ class EasyRdf_Serialiser_NtriplesArray extends EasyRdf_Serialiser_Ntriples
     }
 }
 
-EasyRdf_Format::register('ntriples-array', 'PHP Array of Triples');
-EasyRdf_Format::registerSerialiser('ntriples-array', 'EasyRdf_Serialiser_NtriplesArray');
+Format::register('ntriples-array', 'PHP Array of Triples');
+Format::registerSerialiser('ntriples-array', 'EasyRdf\Serialiser\NtriplesArray');

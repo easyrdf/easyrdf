@@ -1,6 +1,6 @@
 <?php
     /**
-     * No RDF, just test EasyRdf_Http_Client
+     * No RDF, just test EasyRdf\Http\Client
      *
      * This example does nothing but test EasyRdf's build in HTTP client.
      * It demonstrates setting Accept headers and displays the response
@@ -11,9 +11,8 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 
     $accept_options = array(
       'text/html' => 'text/html',
@@ -25,7 +24,7 @@
 ?>
 <html>
 <head>
-  <title>Test EasyRdf_HTTP_Client Get</title>
+  <title>Test EasyRdf\HTTP\Client Get</title>
   <style type="text/css">
     .body
     {
@@ -36,7 +35,7 @@
   </style>
 </head>
 <body>
-<h1>Test EasyRdf_HTTP_Client Get</h1>
+<h1>Test EasyRdf\HTTP\Client Get</h1>
 <?= form_tag() ?>
 <?= text_field_tag('uri', 'http://tomheath.com/id/me', array('size'=>50)) ?><br />
 <?= label_tag('accept', 'Accept Header: ').select_tag('accept',$accept_options) ?>
@@ -45,7 +44,7 @@
 
 <?php
     if (isset($_REQUEST['uri'])) {
-        $client = new EasyRdf_Http_Client($_REQUEST['uri']);
+        $client = new \EasyRdf\Http\Client($_REQUEST['uri']);
         $client->setHeaders('Accept',$_REQUEST['accept']);
         $response = $client->request();
 

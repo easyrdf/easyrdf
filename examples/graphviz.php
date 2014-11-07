@@ -2,7 +2,7 @@
     /**
      * GraphViz rendering example
      *
-     * This example demonstrates converting an EasyRdf_Graph into the
+     * This example demonstrates converting an EasyRdf\Graph into the
      * GraphViz graph file language. Using the 'Use Labels' option, you
      * can have resource URIs replaced with text based labels and using
      * 'Only Labelled' option, only the resources and properties with
@@ -16,9 +16,8 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 
     $formats = array(
       'PNG' => 'png',
@@ -26,12 +25,12 @@
       'SVG' => 'svg'
     );
 
-    $format = EasyRdf_Format::getFormat(
+    $format = \EasyRdf\Format::getFormat(
         isset($_REQUEST['format']) ? $_REQUEST['format'] : 'png'
     );
 
     // Construct a graph of three people
-    $graph = new EasyRdf_Graph();
+    $graph = new \EasyRdf\Graph();
     $graph->set('foaf:knows', 'rdfs:label', 'knows');
     $bob = $graph->resource('http://www.example.com/bob', 'foaf:Person');
     $alice = $graph->resource('http://www.example.com/alice', 'foaf:Person');
@@ -45,7 +44,7 @@
     $alice->add('foaf:knows', $carol);
 
     // Create a GraphViz serialiser
-    $gv = new EasyRdf_Serialiser_GraphViz();
+    $gv = new \EasyRdf\Serialiser\GraphViz();
     $gv->setUseLabels(isset($_REQUEST['ul']));
     $gv->setOnlyLabelled(isset($_REQUEST['ol']));
 

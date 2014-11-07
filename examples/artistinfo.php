@@ -14,12 +14,10 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 
-
-    class Model_MusicArtist extends EasyRdf_Resource
+    class Model_MusicArtist extends \EasyRdf\Resource
     {
         function birthEvent()
         {
@@ -45,9 +43,9 @@
     }
 
     ## Add namespaces
-    EasyRdf_Namespace::set('mo', 'http://purl.org/ontology/mo/');
-    EasyRdf_Namespace::set('bio', 'http://purl.org/vocab/bio/0.1/');
-    EasyRdf_TypeMapper::set('mo:MusicArtist', 'Model_MusicArtist');
+    \EasyRdf\RdfNamespace::set('mo', 'http://purl.org/ontology/mo/');
+    \EasyRdf\RdfNamespace::set('bio', 'http://purl.org/vocab/bio/0.1/');
+    \EasyRdf\TypeMapper::set('mo:MusicArtist', 'Model_MusicArtist');
 ?>
 <html>
 <head><title>EasyRdf Artist Info Example</title></head>
@@ -61,7 +59,7 @@
 
 <?php
     if (isset($_REQUEST['uri'])) {
-        $graph = EasyRdf_Graph::newAndLoad($_REQUEST['uri']);
+        $graph = \EasyRdf\Graph::newAndLoad($_REQUEST['uri']);
         $artist = $graph->primaryTopic();
     }
 

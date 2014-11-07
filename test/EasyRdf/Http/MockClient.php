@@ -1,4 +1,8 @@
 <?php
+namespace EasyRdf\Http;
+
+use EasyRdf\Exception;
+use EasyRdf\Format;
 
 /**
  * EasyRdf
@@ -35,10 +39,16 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
+class MockClient extends Client
 {
     private $mocks = array();
 
+    /**
+     * @param null $method
+     *
+     * @return Response
+     * @throws \EasyRdf\Exception
+     */
     public function request($method = null)
     {
         if ($method) {
@@ -78,7 +88,7 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
         }
 
         # FIXME: change to a different type of exception?
-        throw new EasyRdf_Exception(
+        throw new Exception(
             'Unexpected request: ' . $this->getMethod() . ' ' . $this->getUri()
         );
     }
@@ -102,7 +112,7 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
             $match['uri'] = strval($uri);
         }
 
-        if ($body instanceof EasyRdf_Http_Response) {
+        if ($body instanceof Response) {
             $response = $body;
         } else {
             if (isset($options['status'])) {
@@ -114,7 +124,7 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
                 $headers = $options['headers'];
             } else {
                 $headers = array();
-                $format = EasyRdf_Format::guessFormat($body);
+                $format = Format::guessFormat($body);
                 if (isset($format)) {
                     $headers['Content-Type'] = $format->getDefaultMimeType();
                 }
@@ -122,7 +132,7 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
                     $headers['Content-Length'] = strlen($body);
                 }
             }
-            $response = new EasyRdf_Http_Response($status, $headers, $body);
+            $response = new Response($status, $headers, $body);
         }
         $once = isset($options['once']) ? $options['once'] : false;
 
@@ -132,14 +142,14 @@ class EasyRdf_Http_MockClient extends EasyRdf_Http_Client
     public function addMockOnce($method, $uri, $body, $options = array())
     {
         $options = array('once' => true) + $options;
-        return $this->addMock($method, $uri, $body, $options);
+        $this->addMock($method, $uri, $body, $options);
     }
 
     public function addMockRedirect($method, $uri, $location, $status = 302, $options = array())
     {
         $options = array('status' => $status, 'headers' => array('Location' => $location)) + $options;
         $body = "$status redirect to $location";
-        return $this->addMock($method, $uri, $body, $options);
+        $this->addMock($method, $uri, $body, $options);
     }
 
     protected function buildUrl($parts)

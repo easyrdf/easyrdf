@@ -11,15 +11,14 @@
      * @license    http://unlicense.org/
      */
 
-    set_include_path(get_include_path() . PATH_SEPARATOR . '../lib/');
-    require_once "EasyRdf.php";
-    require_once "html_tag_helpers.php";
+    require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
+    require_once __DIR__."/html_tag_helpers.php";
 
-    EasyRdf_Namespace::set('postcode', 'http://data.ordnancesurvey.co.uk/ontology/postcode/');
-    EasyRdf_Namespace::set('sr', 'http://data.ordnancesurvey.co.uk/ontology/spatialrelations/');
-    EasyRdf_Namespace::set('eg', 'http://statistics.data.gov.uk/def/electoral-geography/');
-    EasyRdf_Namespace::set('ag', 'http://statistics.data.gov.uk/def/administrative-geography/');
-    EasyRdf_Namespace::set('osag', 'http://data.ordnancesurvey.co.uk/ontology/admingeo/');
+    \EasyRdf\RdfNamespace::set('postcode', 'http://data.ordnancesurvey.co.uk/ontology/postcode/');
+    \EasyRdf\RdfNamespace::set('sr', 'http://data.ordnancesurvey.co.uk/ontology/spatialrelations/');
+    \EasyRdf\RdfNamespace::set('eg', 'http://statistics.data.gov.uk/def/electoral-geography/');
+    \EasyRdf\RdfNamespace::set('ag', 'http://statistics.data.gov.uk/def/administrative-geography/');
+    \EasyRdf\RdfNamespace::set('osag', 'http://data.ordnancesurvey.co.uk/ontology/admingeo/');
 ?>
 <html>
 <head>
@@ -47,7 +46,7 @@
     if (isset($_REQUEST['postcode'])) {
         $postcode = str_replace(' ', '', strtoupper($_REQUEST['postcode']));
         $docuri = "http://www.uk-postcodes.com/postcode/$postcode.rdf";
-        $graph = EasyRdf_Graph::newAndLoad($docuri, 'rdfxml');
+        $graph = \EasyRdf\Graph::newAndLoad($docuri, 'rdfxml');
 
 
         // Get the first resource of type PostcodeUnit

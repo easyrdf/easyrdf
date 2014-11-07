@@ -1,11 +1,11 @@
 <?php
-    require_once "vendor/autoload.php";
+    require_once __DIR__."/vendor/autoload.php";
 
     // Load some properties from the composer file
     $composer = json_decode(file_get_contents(__DIR__."/composer.json"));
 
     // Start building up a RDF graph
-    $doap = new EasyRdf_Graph($composer->homepage.'doap.rdf');
+    $doap = new \EasyRdf\Graph($composer->homepage.'doap.rdf');
     $easyrdf = $doap->resource('#easyrdf', 'doap:Project', 'foaf:Project');
     $easyrdf->addLiteral('doap:name',  'EasyRDF');
     $easyrdf->addLiteral('doap:shortname', 'easyrdf');

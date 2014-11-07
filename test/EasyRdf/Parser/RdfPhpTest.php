@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,20 +36,25 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
+class RdfPhpTest extends TestCase
 {
+    /** @var RdfPhp */
     protected $parser = null;
+    /** @var Graph */
     protected $graph = null;
-    protected $data = null;
+    protected $rdf_data = null;
 
     public function setUp()
     {
-        $this->graph = new EasyRdf_Graph();
-        $this->parser = new EasyRdf_Parser_RdfPhp();
-        $this->data = array(
+        $this->graph = new Graph();
+        $this->parser = new RdfPhp();
+        $this->rdf_data = array(
             'http://example.com/joe' => array(
                 'http://xmlns.com/foaf/0.1/name' => array(
                     array(
@@ -63,18 +69,18 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
 
     public function testParse()
     {
-        $count = $this->parser->parse($this->graph, $this->data, 'php', null);
+        $count = $this->parser->parse($this->graph, $this->rdf_data, 'php', null);
         $this->assertSame(1, $count);
 
         $joe = $this->graph->resource('http://example.com/joe');
         $this->assertNotNull($joe);
-        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertClass('EasyRdf\Resource', $joe);
         $this->assertSame('http://example.com/joe', $joe->getUri());
         $this->assertNull($joe->type());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertClass('EasyRdf\Literal', $name);
         $this->assertSame('Joseph Bloggs', $name->getValue());
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());
@@ -82,9 +88,9 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
 
     public function testParseTwice()
     {
-        $count = $this->parser->parse($this->graph, $this->data, 'php', null);
+        $count = $this->parser->parse($this->graph, $this->rdf_data, 'php', null);
         $this->assertSame(1, $count);
-        $count = $this->parser->parse($this->graph, $this->data, 'php', null);
+        $count = $this->parser->parse($this->graph, $this->rdf_data, 'php', null);
         $this->assertSame(0, $count);
     }
 
@@ -114,12 +120,12 @@ class EasyRdf_Parser_RdfPhpTest extends EasyRdf_TestCase
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'EasyRdf_Parser_RdfPhp does not support: unsupportedformat'
+            'EasyRdf\Exception',
+            'EasyRdf\Parser\RdfPhp does not support: unsupportedformat'
         );
         $rdf = $this->parser->parse(
             $this->graph,
-            $this->data,
+            $this->rdf_data,
             'unsupportedformat',
             null
         );

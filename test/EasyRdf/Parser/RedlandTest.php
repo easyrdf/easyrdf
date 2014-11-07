@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Parser;
 
 /**
  * EasyRdf
@@ -35,19 +36,26 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(dirname(__FILE__))).
+use EasyRdf\Graph;
+use EasyRdf\TestCase;
+
+require_once dirname(dirname(__DIR__)).
              DIRECTORY_SEPARATOR.'TestHelper.php';
 
-require_once 'EasyRdf/Parser/Redland.php';
-
-class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
+class RedlandTest extends TestCase
 {
+    /** @var Redland */
+    private $parser;
+    /** @var Graph */
+    private $graph;
+    private $rdf_data;
+
     public function setUp()
     {
         if (extension_loaded('redland')) {
-            $this->parser = new EasyRdf_Parser_Redland();
-            $this->graph = new EasyRdf_Graph();
-            $this->data = readFixture('foaf.rdf');
+            $this->parser = new Redland();
+            $this->graph = new Graph();
+            $this->rdf_data = readFixture('foaf.rdf');
         } else {
             $this->markTestSkipped("Redland PHP extension is not available.");
         }
@@ -57,7 +65,7 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
     {
         $count = $this->parser->parse(
             $this->graph,
-            $this->data,
+            $this->rdf_data,
             'rdfxml',
             'http://www.example.com/joe/foaf.rdf'
         );
@@ -65,12 +73,12 @@ class EasyRdf_Parser_RedlandTest extends EasyRdf_TestCase
 
         $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
-        $this->assertClass('EasyRdf_Resource', $joe);
+        $this->assertClass('EasyRdf\Resource', $joe);
         $this->assertSame('http://www.example.com/joe#me', $joe->getUri());
 
         $name = $joe->get('foaf:name');
         $this->assertNotNull($name);
-        $this->assertClass('EasyRdf_Literal', $name);
+        $this->assertClass('EasyRdf\Literal', $name);
         $this->assertStringEquals('Joe Bloggs', $name);
         $this->assertSame('en', $name->getLang());
         $this->assertSame(null, $name->getDatatype());

@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf;
 
 /**
  * EasyRdf
@@ -35,19 +36,19 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_CollectionTest extends EasyRdf_TestCase
+class CollectionTest extends TestCase
 {
     public function setUp()
     {
-        $this->graph = new EasyRdf_Graph();
-        EasyRdf_Namespace::set('ex', 'http://example.org/');
+        $this->graph = new Graph();
+        RdfNamespace::set('ex', 'http://example.org/');
     }
 
     public function tearDown()
     {
-        EasyRdf_Namespace::delete('ex');
+        RdfNamespace::delete('ex');
     }
 
     public function testParseCollection()
@@ -56,7 +57,7 @@ class EasyRdf_CollectionTest extends EasyRdf_TestCase
 
         $owner = $this->graph->resource('ex:owner');
         $pets = $owner->get('ex:pets');
-        $this->assertClass('EasyRdf_Collection', $pets);
+        $this->assertClass('EasyRdf\Collection', $pets);
 
         $this->assertTrue($pets->valid());
         $this->assertSame(1, $pets->key());
@@ -495,7 +496,7 @@ class EasyRdf_CollectionTest extends EasyRdf_TestCase
     {
         $animals = $this->graph->newBnode('rdf:List');
         $this->assertSame('rdf:List', $animals->type());
-        $this->assertClass('EasyRdf_Collection', $animals);
+        $this->assertClass('EasyRdf\Collection', $animals);
 
         $this->assertEquals(1, $animals->append('Rat'));
         $this->assertEquals(1, $animals->append('Cat'));

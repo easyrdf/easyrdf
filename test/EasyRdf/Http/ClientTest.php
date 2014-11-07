@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Http;
 
 /**
  * EasyRdf
@@ -35,15 +36,18 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
+use EasyRdf\Resource;
+use EasyRdf\TestCase;
+
 require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
 
 
-class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
+class ClientTest extends TestCase
 {
     /**
      * Common HTTP client
      *
-     * @var EasyRdf_Http_Client
+     * @var Client
      */
     protected $client = null;
 
@@ -53,16 +57,16 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
      */
     public function setUp()
     {
-        $this->client = new EasyRdf_Http_Client('http://www.example.com/');
+        $this->client = new Client('http://www.example.com/');
     }
 
     public function testConstructWithConfig()
     {
-        $client = new EasyRdf_Http_Client(
+        $client = new Client(
             'http://www.example.com/',
             array('foo' => 'bar')
         );
-        $this->assertClass('EasyRdf_Http_Client', $client);
+        $this->assertClass('EasyRdf\Http\Client', $client);
     }
 
     /**
@@ -109,7 +113,7 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            "EasyRdf_Http_Client only supports the 'http' and 'https' schemes."
+            "Client only supports the 'http' and 'https' schemes."
         );
         $uristr = 'gopher://g.example.com/';
         $this->client->setUri($uristr);
@@ -122,7 +126,7 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
     public function testSetGetUriObject()
     {
         $uristr = 'http://www.bbc.co.uk:80/';
-        $obj = new EasyRdf_Resource($uristr);
+        $obj = new Resource($uristr);
         $this->client->setUri($obj);
 
         $uri = $this->client->getUri();
@@ -132,7 +136,7 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
     public function testSetConfig()
     {
         $result = $this->client->setConfig(array('foo' => 'bar'));
-        $this->assertClass('EasyRdf_Http_Client', $result);
+        $this->assertClass('EasyRdf\Http\Client', $result);
     }
 
     public function testSetConfigNull()
@@ -236,10 +240,10 @@ class EasyRdf_Http_ClientTest extends EasyRdf_TestCase
 
     public function testRequestNoUri()
     {
-        $client = new EasyRdf_Http_Client();
+        $client = new Client();
         $this->setExpectedException(
-            'EasyRdf_Exception',
-            'Set URI before calling EasyRdf_Http_Client->request()'
+            'EasyRdf\Exception',
+            'Set URI before calling Client->request()'
         );
         $client->request();
     }

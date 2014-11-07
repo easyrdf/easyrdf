@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf;
 
 /**
  * EasyRdf
@@ -35,19 +36,19 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class EasyRdf_ContainerTest extends EasyRdf_TestCase
+class ContainerTest extends TestCase
 {
     public function setUp()
     {
-        $this->graph = new EasyRdf_Graph();
-        EasyRdf_Namespace::set('ex', 'http://example.org/');
+        $this->graph = new Graph();
+        RdfNamespace::set('ex', 'http://example.org/');
     }
 
     public function tearDown()
     {
-        EasyRdf_Namespace::delete('ex');
+        RdfNamespace::delete('ex');
     }
 
     public function testParseSeq()
@@ -60,7 +61,7 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
 
         $favourites = $this->graph->resource('ex:favourite-fruit');
         $this->assertSame('rdf:Seq', $favourites->type());
-        $this->assertClass('EasyRdf_Container', $favourites);
+        $this->assertClass('EasyRdf\Container', $favourites);
 
         $this->assertSame(true, $favourites->valid());
         $this->assertSame(1, $favourites->key());
@@ -415,7 +416,7 @@ class EasyRdf_ContainerTest extends EasyRdf_TestCase
     {
         $animals = $this->graph->newBnode('rdf:Seq');
         $this->assertSame('rdf:Seq', $animals->type());
-        $this->assertClass('EasyRdf_Container', $animals);
+        $this->assertClass('EasyRdf\Container', $animals);
 
         $this->assertEquals(1, $animals->append('Cat'));
         $this->assertEquals(1, $animals->append('Dog'));

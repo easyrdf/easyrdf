@@ -1,4 +1,5 @@
 <?php
+namespace EasyRdf\Literal;
 
 /**
  * EasyRdf
@@ -35,14 +36,16 @@
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once realpath(dirname(__FILE__) . '/../../') . '/TestHelper.php';
+use EasyRdf\TestCase;
+
+require_once realpath(__DIR__ . '/../../') . '/TestHelper.php';
 
 
-class EasyRdf_Literal_DecimalTest extends EasyRdf_TestCase
+class DecimalTest extends TestCase
 {
     public function testConstruct15()
     {
-        $literal = new EasyRdf_Literal_Decimal(1.5);
+        $literal = new Decimal(1.5);
         $this->assertInternalType('string', $literal->getValue());
         $this->assertSame('1.5', $literal->getValue());
         $this->assertSame(null, $literal->getLang());
@@ -56,14 +59,14 @@ class EasyRdf_Literal_DecimalTest extends EasyRdf_TestCase
         setlocale(LC_NUMERIC, 'ru_RU');
 
         try {
-            $literal = new EasyRdf_Literal_Decimal(1.5);
+            $literal = new Decimal(1.5);
             $this->assertInternalType('string', $literal->getValue());
             $this->assertSame('1.5', $literal->getValue());
             $this->assertSame(null, $literal->getLang());
             $this->assertSame('xsd:decimal', $literal->getDatatype());
 
             setlocale(LC_NUMERIC, $current_locale);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             setlocale(LC_NUMERIC, $current_locale);
             throw $e;
         }
@@ -71,7 +74,7 @@ class EasyRdf_Literal_DecimalTest extends EasyRdf_TestCase
 
     public function testConstructString100()
     {
-        $literal = new EasyRdf_Literal_Decimal('100.00');
+        $literal = new Decimal('100.00');
         $this->assertInternalType('string', $literal->getValue());
         $this->assertSame('100.0', $literal->getValue());
         $this->assertSame(null, $literal->getLang());
@@ -87,7 +90,7 @@ class EasyRdf_Literal_DecimalTest extends EasyRdf_TestCase
             "3.0", "-3.0", "+3.5", "3", ".3", "3.", "0", "-.3", "0003.", "3.000"
         );
         foreach ($valid_strings as $literal) {
-            new EasyRdf_Literal_Decimal($literal);
+            new Decimal($literal);
         }
 
         $this->assertTrue(true);
@@ -113,7 +116,7 @@ class EasyRdf_Literal_DecimalTest extends EasyRdf_TestCase
         );
 
         foreach ($pairs as $lexical => $canonical) {
-            $this->assertSame($canonical, EasyRdf_Literal_Decimal::canonicalise($lexical));
+            $this->assertSame($canonical, Decimal::canonicalise($lexical));
         }
     }
 }

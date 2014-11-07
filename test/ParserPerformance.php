@@ -1,10 +1,6 @@
 <?php
 
-set_include_path(
-    get_include_path() . PATH_SEPARATOR .
-    dirname(__FILE__) . '/../lib/'
-);
-require_once "EasyRdf.php";
+require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
 
 $parsers = array(
     'Arc',
@@ -45,13 +41,12 @@ foreach ($documents as $filename => $type) {
     print "File size: ".strlen($data)." bytes\n";
 
     foreach ($parsers as $parser_name) {
-        $class = "EasyRdf_Parser_$parser_name";
-        print "  Parsing using: $class\n";
+        $class = "EasyRdf\\Parser\\{$parser_name}";
+        print "  Parsing using: {$class}\n";
 
         try {
-            require_once "EasyRdf/Parser/$parser_name.php";
             $parser = new $class();
-            $graph = new EasyRdf_Graph();
+            $graph = new \EasyRdf\Graph();
 
             $start = microtime(true);
             $parser->parse($graph, $data, $type, $url);

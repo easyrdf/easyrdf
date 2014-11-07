@@ -1,11 +1,10 @@
 <?php
 
-set_include_path(get_include_path() . PATH_SEPARATOR . '../../lib/');
-require_once "EasyRdf.php";
+require_once realpath(__DIR__.'/../..').'/vendor/autoload.php';
 
 # Load the manifest
-EasyRdf_Namespace::set('test', 'http://www.w3.org/2000/10/rdf-tests/rdfcore/testSchema#');
-$manifest = parse_testdata("http://www.w3.org/2000/10/rdf-tests/rdfcore/Manifest.rdf");
+\EasyRdf\RdfNamespace::set('test', 'http://www.w3.org/2000/10/rdf-tests/rdfcore/testSchema#');
+$manifest = parseTestdata("http://www.w3.org/2000/10/rdf-tests/rdfcore/Manifest.rdf");
 
 $passCount = 0;
 $failCount = 0;
@@ -61,7 +60,7 @@ function testdataFilepath($uri)
 
 function parseTestdata($uri)
 {
-    $filepath = testdata_filepath($uri);
+    $filepath = testdataFilepath($uri);
     $data = file_get_contents($filepath);
-    return new EasyRdf_Graph("$uri", $data, 'rdfxml');
+    return new \EasyRdf\Graph("$uri", $data, 'rdfxml');
 }

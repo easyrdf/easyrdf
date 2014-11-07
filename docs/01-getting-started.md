@@ -12,12 +12,13 @@ First, install composer in your project:
 
 Create a composer.json file in your project root:
 
-    {
-        "require": {
-            "easyrdf/easyrdf": "*"
-        }
+```json
+{
+    "require": {
+        "easyrdf/easyrdf": "*"
     }
-
+}
+```
 
 Install EasyRdf (and any other dependencies) using:
 
@@ -26,8 +27,10 @@ Install EasyRdf (and any other dependencies) using:
 
 Then to start using EasyRdf in your project, add this to the top of your file:
 
-    <?php
-    require 'vendor/autoload.php';
+```php
+<?php
+require 'vendor/autoload.php';
+```
 
 This will load composer's autoloader and make the EasyRdf classes available to your 
 programme.
@@ -35,13 +38,14 @@ programme.
 
 A full basic example looks like this:
 
-    <?php
-    require 'vendor/autoload.php';
+```php
+<?php
+require 'vendor/autoload.php';
 
-    $foaf = new EasyRdf_Graph("http://njh.me/foaf.rdf");
-    $foaf->load();
-    $me = $foaf->primaryTopic();
-    echo "My name is: ".$me->get('foaf:name')."\n";
-
+$foaf = new \EasyRdf\Graph("http://njh.me/foaf.rdf");
+$foaf->load();
+$me = $foaf->primaryTopic();
+echo "My name is: ".$me->get('foaf:name')."\n";
+```
 
 [Composer]:http://getcomposer.org/
