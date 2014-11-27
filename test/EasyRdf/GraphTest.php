@@ -1923,15 +1923,22 @@ class GraphTest extends TestCase
         $this->assertNull($graph->typeAsResource());
     }
 
-    public function testIsA()
+    public function testIsAQNameNotation()
     {
         $this->assertTrue($this->graph->isA($this->uri, 'foaf:Person'));
     }
 
-    public function testIsAFullUri()
+    public function testIsAUriNotation()
     {
         $this->assertTrue(
             $this->graph->isA($this->uri, 'http://xmlns.com/foaf/0.1/Person')
+        );
+    }
+
+    public function testIsAResourceNotation()
+    {
+        $this->assertTrue(
+            $this->graph->isA($this->uri, '<http://xmlns.com/foaf/0.1/Person>')
         );
     }
 
