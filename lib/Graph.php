@@ -1481,8 +1481,8 @@ class Graph
     public function isA($resource, $type)
     {
         $this->checkResourceParam($resource, true);
+        $this->checkResourceParam($type, true);
 
-        $type = RdfNamespace::expand($type);
         foreach ($this->all($resource, 'rdf:type', 'resource') as $t) {
             if ($t->getUri() == $type) {
                 return true;
