@@ -8,6 +8,11 @@ Major new features
 * Usage without composer is not supported anymore
 * Library is loaded via PSR-4 autoloader now
 
+Enhancements
+------------
+
+* `$graph->isA()` can take full IRIs as second parameter (only qname was accepted earlier, see issue #215)
+
 API changes
 -----------
 
