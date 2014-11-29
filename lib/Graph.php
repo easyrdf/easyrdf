@@ -439,7 +439,7 @@ class Graph
             }
         } elseif ($resource === null) {
             throw new \InvalidArgumentException(
-                "\$resource should be either IRI, blank-node identifier or EasyRdf\Resource. got null"
+                '$resource should be either IRI, blank-node identifier or EasyRdf\Resource. got null'
             );
         }
 
@@ -450,7 +450,7 @@ class Graph
         } elseif (is_string($resource)) {
             if ($resource == '') {
                 throw new \InvalidArgumentException(
-                    "\$resource should be either IRI, blank-node identifier or EasyRdf\Resource. got empty string"
+                    '$resource should be either IRI, blank-node identifier or EasyRdf\Resource. got empty string'
                 );
             } elseif (preg_match("|^<(.+)>$|", $resource, $matches)) {
                 $resource = $matches[1];
@@ -459,7 +459,7 @@ class Graph
             }
         } else {
             throw new \InvalidArgumentException(
-                "\$resource should be either IRI, blank-node identifier or EasyRdf\Resource"
+                '$resource should be either IRI, blank-node identifier or EasyRdf\Resource'
             );
         }
     }
