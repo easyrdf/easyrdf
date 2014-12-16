@@ -1594,7 +1594,7 @@ class Graph
     {
         $count = 0;
         foreach ($this->index as $resource) {
-            foreach ($resource as $property => $values) {
+            foreach ($resource as $values) {
                 $count += count($values);
             }
         }
