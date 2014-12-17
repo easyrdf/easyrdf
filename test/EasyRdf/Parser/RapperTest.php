@@ -149,7 +149,7 @@ class RapperTest extends TestCase
             'EasyRdf\Exception',
             'Error while executing command rapper'
         );
-        $rdf = $this->parser->parse(
+        $this->parser->parse(
             $this->graph,
             $this->rdf_data,
             'unsupportedformat',

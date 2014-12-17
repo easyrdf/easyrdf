@@ -149,7 +149,7 @@ class GraphStoreTest extends TestCase
             'EasyRdf\Exception',
             'HTTP request to delete http://localhost:8080/data/filenotfound failed'
         );
-        $response = $this->graphStore->delete('filenotfound');
+        $this->graphStore->delete('filenotfound');
     }
 
     public function checkNtriplesRequest($client)
@@ -215,7 +215,7 @@ class GraphStoreTest extends TestCase
             'EasyRdf\Exception',
             'HTTP request for http://localhost:8080/data/new.rdf failed'
         );
-        $response = $this->graphStore->insert($data, 'new.rdf');
+        $this->graphStore->insert($data, 'new.rdf');
     }
 
     public function testReplaceIndirect()
@@ -281,7 +281,7 @@ class GraphStoreTest extends TestCase
             'EasyRdf\Exception',
             'HTTP request for http://localhost:8080/data/existing.rdf failed'
         );
-        $response = $this->graphStore->replace($data, 'existing.rdf');
+        $this->graphStore->replace($data, 'existing.rdf');
     }
 
     public function testToString()

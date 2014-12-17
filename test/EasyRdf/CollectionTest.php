@@ -53,7 +53,7 @@ class CollectionTest extends TestCase
 
     public function testParseCollection()
     {
-        $count = $this->graph->parse(readFixture('rdf-collection.rdf'), 'rdfxml');
+        $this->graph->parse(readFixture('rdf-collection.rdf'), 'rdfxml');
 
         $owner = $this->graph->resource('ex:owner');
         $pets = $owner->get('ex:pets');
@@ -265,7 +265,7 @@ class CollectionTest extends TestCase
 
     public function testArrayOffsetGet()
     {
-        $count = $this->graph->parse(readFixture('rdf-collection.rdf'), 'rdfxml');
+        $this->graph->parse(readFixture('rdf-collection.rdf'), 'rdfxml');
 
         $owner = $this->graph->resource('ex:owner');
         $pets = $owner->get('ex:pets');

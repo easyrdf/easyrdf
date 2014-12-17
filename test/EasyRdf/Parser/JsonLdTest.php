@@ -130,7 +130,7 @@ class JsonLdTest extends TestCase
             'EasyRdf\Exception',
             'EasyRdf\Parser\JsonLd does not support unsupportedformat'
         );
-        $rdf = $this->parser->parse(
+        $this->parser->parse(
             $this->graph,
             null,
             'unsupportedformat',

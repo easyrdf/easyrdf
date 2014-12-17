@@ -76,7 +76,7 @@ class JsonTest extends TestCase
         $project->add('foaf:name', 'Project Name');
         $joe->add('foaf:project', $project);
 
-        $json = $this->serialiser->serialise($this->graph, 'json');
+        $this->serialiser->serialise($this->graph, 'json');
 
         $this->assertSame(
             '{"http:\/\/www.example.com\/joe#me":{'.
@@ -102,7 +102,7 @@ class JsonTest extends TestCase
             'EasyRdf\Exception',
             'EasyRdf\Serialiser\Json does not support: unsupportedformat'
         );
-        $rdf = $this->serialiser->serialise(
+        $this->serialiser->serialise(
             $this->graph,
             'unsupportedformat'
         );

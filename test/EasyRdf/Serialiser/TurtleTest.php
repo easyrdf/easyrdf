@@ -254,7 +254,7 @@ class TurtleTest extends TestCase
             'InvalidArgumentException',
             'serialiseObject() requires $object to be of type EasyRdf\Resource or EasyRdf\Literal'
         );
-        $turtle = $this->serialiser->serialiseObject($this);
+        $this->serialiser->serialiseObject($this);
     }
 
     public function testSerialise()
@@ -304,7 +304,7 @@ class TurtleTest extends TestCase
 
     public function testSerialiseAnonymousSubject()
     {
-        $joe = $this->graph->resource('http://example.com/joe#me');
+        $this->graph->resource('http://example.com/joe#me');
         $anon =  $this->graph->newBnode();
         $anon->addLiteral('foaf:name', 'Anon');
 
@@ -726,7 +726,7 @@ class TurtleTest extends TestCase
             'EasyRdf\Exception',
             'EasyRdf\Serialiser\Turtle does not support: unsupportedformat'
         );
-        $rdf = $this->serialiser->serialise(
+        $this->serialiser->serialise(
             $this->graph,
             'unsupportedformat'
         );

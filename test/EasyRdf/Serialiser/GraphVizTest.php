@@ -284,7 +284,7 @@ class GraphVizTest extends TestCase
             'EasyRdf\Exception',
             'EasyRdf\Serialiser\GraphViz does not support: unsupportedformat'
         );
-        $rdf = $this->serialiser->serialise(
+        $this->serialiser->serialise(
             $this->graph,
             'unsupportedformat'
         );

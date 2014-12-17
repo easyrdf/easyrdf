@@ -105,7 +105,7 @@ class RdfPhpTest extends TestCase
             'EasyRdf\Exception',
             'EasyRdf\Serialiser\RdfPhp does not support: unsupportedformat'
         );
-        $rdf = $this->serialiser->serialise(
+        $this->serialiser->serialise(
             $this->graph,
             'unsupportedformat'
         );

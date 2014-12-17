@@ -237,11 +237,11 @@ class Turtle extends Ntriples
         // If the first character is an open bracket we need to decide which of
         // the two parsing methods for blank nodes to use
         if ($c == '[') {
-            $c = $this->read();
+            $this->read();
             $this->skipWSC();
             $c = $this->peek();
             if ($c == ']') {
-                $c = $this->read();
+                $this->read();
                 $this->subject = $this->createBNode();
                 $this->skipWSC();
                 $this->parsePredicateObjectList();

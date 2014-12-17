@@ -145,7 +145,7 @@ class ClientTest extends TestCase
             'InvalidArgumentException',
             '$config should be an array and cannot be null'
         );
-        $result = $this->client->setConfig(null);
+        $this->client->setConfig(null);
     }
 
     public function testSetConfigNonArray()
@@ -154,7 +154,7 @@ class ClientTest extends TestCase
             'InvalidArgumentException',
             '$config should be an array and cannot be null'
         );
-        $result = $this->client->setConfig('foo');
+        $this->client->setConfig('foo');
     }
 
     /**

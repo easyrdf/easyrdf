@@ -201,12 +201,12 @@ class Isomorphic
         // conflict, so we don't check them.  This is a little bit messy in the
         // middle of the method, and probably slows down isomorphic checks,  but
         // prevents almost-isomorphic cases from getting nutty.
-        foreach ($hashesA as $nodeA => $hashA) {
+        foreach ($hashesA as $hashA) {
             if (!in_array($hashA, $hashesB)) {
                 return null;
             }
         }
-        foreach ($hashesB as $nodeB => $hashB) {
+        foreach ($hashesB as $hashB) {
             if (!in_array($hashB, $hashesA)) {
                 return null;
             }

@@ -309,8 +309,6 @@ class Rdfa extends Parser
         $subject = null;
         $typedResource = null;
         $object = null;
-        $rels = array();
-        $revs = array();
         $lang = $context['lang'];
         $incompleteRels = array();
         $incompleteRevs = array();

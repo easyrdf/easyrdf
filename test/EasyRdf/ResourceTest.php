@@ -63,7 +63,7 @@ class ResourceTest extends TestCase
             'InvalidArgumentException',
             '$uri should be a string and cannot be null or empty'
         );
-        $res = new Resource(null);
+        new Resource(null);
     }
 
     public function testConstructEmptyUri()
@@ -72,7 +72,7 @@ class ResourceTest extends TestCase
             'InvalidArgumentException',
             '$uri should be a string and cannot be null or empty'
         );
-        $res = new Resource('');
+        new Resource('');
     }
 
     public function testConstructNonStringUri()
@@ -81,7 +81,7 @@ class ResourceTest extends TestCase
             'InvalidArgumentException',
             '$uri should be a string and cannot be null or empty'
         );
-        $res = new Resource(array());
+        new Resource(array());
     }
 
     public function testConstructBadGraph()
@@ -90,7 +90,7 @@ class ResourceTest extends TestCase
             'InvalidArgumentException',
             '$graph should be an EasyRdf\Graph object'
         );
-        $res = new Resource('http://www.example.com/', $this);
+        new Resource('http://www.example.com/', $this);
     }
 
     public function testGetUri()
@@ -223,7 +223,7 @@ class ResourceTest extends TestCase
         );
 
         $res = new Resource('http://example.com/');
-        $html = $res->htmlLink(null, array('onclick=alert(1) a' => 'b"'));
+        $res->htmlLink(null, array('onclick=alert(1) a' => 'b"'));
     }
 
     public function testToRdfPhpForUri()

@@ -51,8 +51,6 @@ class Result extends \ArrayIterator
     private $type = null;
     private $boolean = null;
 
-    private $ordered = null;
-    private $distinct = null;
     private $fields = array();
 
     /** A constant for the SPARQL Query Results XML Format namespace */
@@ -208,7 +206,7 @@ class Result extends \ArrayIterator
 
                 // Create a horizontal rule
                 $hr = "+";
-                foreach ($colWidths as $k => $v) {
+                foreach ($colWidths as $v) {
                     $hr .= "-".str_repeat('-', $v).'-+';
                 }
 

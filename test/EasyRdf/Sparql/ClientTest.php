@@ -162,7 +162,7 @@ class ClientTest extends TestCase
             'EasyRdf\Exception',
             'Format is not recognised: unsupported/format'
         );
-        $result = $this->sparql->query("SELECT * WHERE {?s ?p ?o}");
+        $this->sparql->query("SELECT * WHERE {?s ?p ?o}");
     }
 
     public function checkHugeQuerySelect($client)
@@ -293,7 +293,7 @@ class ClientTest extends TestCase
             'EasyRdf\Exception',
             'HTTP request for SPARQL query failed: There was an error while executing the query.'
         );
-        $response = $this->sparql->query("FOOBAR");
+        $this->sparql->query("FOOBAR");
     }
 
     public function testCountTriples()

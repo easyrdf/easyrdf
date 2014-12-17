@@ -337,7 +337,7 @@ class Graph
         } while ($redirectCounter < $this->maxRedirects);
 
         if (!$format or $format == 'guess') {
-            list($format, $params) = Utils::parseMimeType(
+            list($format, ) = Utils::parseMimeType(
                 $response->getHeader('Content-Type')
             );
         }
@@ -1594,7 +1594,7 @@ class Graph
     {
         $count = 0;
         foreach ($this->index as $resource) {
-            foreach ($resource as $property => $values) {
+            foreach ($resource as $values) {
                 $count += count($values);
             }
         }

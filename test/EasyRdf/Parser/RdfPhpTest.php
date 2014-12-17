@@ -123,7 +123,7 @@ class RdfPhpTest extends TestCase
             'EasyRdf\Exception',
             'EasyRdf\Parser\RdfPhp does not support: unsupportedformat'
         );
-        $rdf = $this->parser->parse(
+        $this->parser->parse(
             $this->graph,
             $this->rdf_data,
             'unsupportedformat',
