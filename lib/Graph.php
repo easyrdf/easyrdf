@@ -128,6 +128,7 @@ class Graph
      * @param  string  $uri    The URI of the resource
      * @param  mixed   $types  RDF type of a new resource (e.g. foaf:Person)
      *
+     * @throws \InvalidArgumentException
      * @return \EasyRdf\Resource
      */
     public function resource($uri = null, $types = array())
@@ -216,6 +217,8 @@ class Graph
      * @param  string  $data    Data to parse for the graph
      * @param  string  $format  Optional format of the data
      * @param  string  $uri     The URI of the data to load
+     *
+     * @throws Exception
      * @return integer          The number of triples added to the graph
      */
     public function parse($data, $format = null, $uri = null)
@@ -245,6 +248,7 @@ class Graph
      * @param  string  $filename The path of the file to load
      * @param  string  $format   Optional format of the file
      * @param  string  $uri      The URI of the file to load
+     *
      * @return integer           The number of triples added to the graph
      */
     public function parseFile($filename, $format = null, $uri = null)
@@ -270,6 +274,9 @@ class Graph
      *
      * @param  string  $uri     The URI of the data to load
      * @param  string  $format  Optional format of the data (eg. rdfxml)
+     *
+     * @throws Exception
+     * @throws Http\Exception
      * @return integer          The number of triples added to the graph
      */
     public function load($uri = null, $format = null)
@@ -382,6 +389,7 @@ class Graph
      *
      * @param  string  $property   The property to check.
      * @param  mixed   $value      Optional, the value of the propery to check for.
+     *
      * @return Resource[]
      */
     public function resourcesMatching($property, $value = null)
@@ -571,6 +579,8 @@ class Graph
      * @param  string    $propertyPath   A valid property path
      * @param  string    $type           The type of value to filter by (e.g. literal or resource)
      * @param  string    $lang           The language to filter by (e.g. en)
+     *
+     * @throws \InvalidArgumentException
      * @return mixed                     A value associated with the property
      */
     public function get($resource, $propertyPath, $type = null, $lang = null)
@@ -622,6 +632,7 @@ class Graph
      * @param  string    $property The name of the property (e.g. foaf:name)
      * @param  string    $type     The type of value to filter by (e.g. literal or resource)
      * @param  string    $lang     The language to filter by (e.g. en)
+     *
      * @return mixed               A value associated with the property
      *
      * @ignore
@@ -745,6 +756,8 @@ class Graph
      * @param  string  $propertyPath  A valid property path
      * @param  string  $type          The type of value to filter by (e.g. literal)
      * @param  string  $lang          The language to filter by (e.g. en)
+     *
+     * @throws \InvalidArgumentException
      * @return array                  An array of values associated with the property
      */
     public function all($resource, $propertyPath, $type = null, $lang = null)
@@ -803,6 +816,7 @@ class Graph
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $type     The type of value to filter by (e.g. literal)
      * @param  string  $lang     The language to filter by (e.g. en)
+     *
      * @return array             An array of values associated with the property
      *
      * @ignore
@@ -847,6 +861,7 @@ class Graph
      * @param  string  $resource The URI of the resource (e.g. http://example.com/joe#me)
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $lang     The language to filter by (e.g. en)
+     *
      * @return array             An array of values associated with the property
      */
     public function allLiterals($resource, $property, $lang = null)
@@ -861,6 +876,7 @@ class Graph
      *
      * @param  string  $resource The URI of the resource (e.g. http://example.com/joe#me)
      * @param  string  $property The name of the property (e.g. foaf:name)
+     *
      * @return array             An array of values associated with the property
      */
     public function allResources($resource, $property)
@@ -874,6 +890,7 @@ class Graph
      * array is returned.
      *
      * @param  string  $type   The type of the resource (e.g. foaf:Person)
+     *
      * @return array The array of resources
      */
     public function allOfType($type)
@@ -887,6 +904,7 @@ class Graph
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $type     The type of value to filter by (e.g. literal)
      * @param  string  $lang     The language to filter by (e.g. en)
+     *
      * @return integer           The number of values for this property
      */
     public function countValues($resource, $property, $type = null, $lang = null)
@@ -903,6 +921,7 @@ class Graph
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $glue     The string to glue the values together with.
      * @param  string  $lang     The language to filter by (e.g. en)
+     *
      * @return string            Concatenation of all the values.
      */
     public function join($resource, $property, $glue = ' ', $lang = null)
@@ -920,6 +939,7 @@ class Graph
      * @param  mixed $resource   The resource to add data to
      * @param  mixed $property   The property name
      * @param  mixed $value      The new value for the property
+     *
      * @return integer           The number of values added (1 or 0)
      */
     public function add($resource, $property, $value)
@@ -968,6 +988,7 @@ class Graph
      * @param  mixed  $property  The property name
      * @param  mixed  $value     The value or values for the property
      * @param  string $lang      The language of the literal
+     *
      * @return integer           The number of values added
      */
     public function addLiteral($resource, $property, $value, $lang = null)
@@ -997,6 +1018,7 @@ class Graph
      * @param  mixed $resource   The resource to add data to
      * @param  mixed $property   The property name
      * @param  mixed $resource2  The resource to be value of the property
+     *
      * @return integer           The number of values added
      */
     public function addResource($resource, $property, $resource2)
@@ -1022,6 +1044,7 @@ class Graph
      * @param  string  $resource The resource to set the property on
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  mixed   $value    The value for the property
+     *
      * @return integer           The number of values added (1 or 0)
      */
     public function set($resource, $property, $value)
@@ -1042,6 +1065,8 @@ class Graph
      * @param  mixed   $resource The resource to delete the property from
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  mixed   $value The value to delete (null to delete all values)
+     *
+     * @throws \InvalidArgumentException
      * @return integer The number of values deleted
      */
     public function delete($resource, $property, $value = null)
@@ -1072,6 +1097,7 @@ class Graph
      * @param  mixed   $resource The resource to delete the property from
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  mixed   $value The value to delete (null to delete all values)
+     *
      * @return integer The number of values deleted
      *
      * @ignore
@@ -1118,6 +1144,8 @@ class Graph
      * @param  mixed $resource   The resource to delete data from
      * @param  mixed $property   The property name
      * @param  mixed $resource2  The resource value of the property to be deleted
+     *
+     * @return integer
      */
     public function deleteResource($resource, $property, $resource2)
     {
@@ -1144,6 +1172,8 @@ class Graph
      * @param  mixed  $property  The property name
      * @param  mixed  $value     The value of the property
      * @param  string $lang      The language of the literal
+     *
+     * @return integer
      */
     public function deleteLiteral($resource, $property, $value, $lang = null)
     {
@@ -1194,6 +1224,8 @@ class Graph
      *
      * This method will return an empty array if the resource has no properties.
      *
+     * @param string $resource
+     *
      * @return array            Array of shortened URIs
      */
     public function properties($resource)
@@ -1216,6 +1248,8 @@ class Graph
      *
      * This method will return an empty array if the resource has no properties.
      *
+     * @param string $resource
+     *
      * @return array            Array of full URIs
      */
     public function propertyUris($resource)
@@ -1230,6 +1264,8 @@ class Graph
     }
 
     /** Get a list of the full URIs for the properties that point to a resource.
+     *
+     * @param string $resource
      *
      * @return array   Array of full property URIs
      */
@@ -1256,6 +1292,7 @@ class Graph
      * @param  mixed   $resource The resource to check
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  mixed   $value    An optional value of the property
+     *
      * @return boolean           True if value the property exists.
      */
     public function hasProperty($resource, $property, $value = null)
@@ -1296,6 +1333,7 @@ class Graph
      *
      * @param  mixed $format  The format to serialise to
      * @param  array $options Serialiser-specific options, for fine-tuning the output
+     *
      * @return mixed  The serialised graph
      */
     public function serialise($format, array $options = array())
@@ -1314,6 +1352,7 @@ class Graph
      * properties.
      *
      * @param  string  $format  Either 'html' or 'text'
+     *
      * @return string
      */
     public function dump($format = 'html')
@@ -1340,6 +1379,7 @@ class Graph
      *
      * @param  mixed    $resource  The resource to dump
      * @param  string   $format    Either 'html' or 'text'
+     *
      * @return string
      */
     public function dumpResource($resource, $format = 'html')
@@ -1401,6 +1441,8 @@ class Graph
      * may be arbitrary.
      * This method will return null if the resource has no type.
      *
+     * @param string|null $resource
+     *
      * @return string A type assocated with the resource (e.g. foaf:Document)
      */
     public function type($resource = null)
@@ -1442,6 +1484,8 @@ class Graph
      *
      * If $resource is null, then it will get the types for the URI of the graph.
      *
+     * @param string|null $resource
+     *
      * @return array All types assocated with the resource (e.g. foaf:Person)
      */
     public function types($resource = null)
@@ -1458,6 +1502,8 @@ class Graph
 
     /**
      * Get the resource types of the graph as a EasyRdf\Resource
+     *
+     * @param string|null $resource
      *
      * @return Resource[]
      */
@@ -1476,6 +1522,7 @@ class Graph
      *
      * @param  string  $resource The resource to check the type of
      * @param  string  $type     The type to check (e.g. foaf:Person)
+     *
      * @return boolean           True if resource is of specified type
      */
     public function isA($resource, $type)
@@ -1495,6 +1542,7 @@ class Graph
      *
      * @param  string  $resource The resource to add the type to
      * @param  string  $types    One or more types to add (e.g. foaf:Person)
+     *
      * @return integer           The number of types added
      */
     public function addType($resource, $types)
@@ -1521,6 +1569,7 @@ class Graph
      *
      * @param  string  $resource The resource to change the type of
      * @param  string  $type     The new type (e.g. foaf:Person)
+     *
      * @return integer           The number of types added
      */
     public function setType($resource, $type)
@@ -1537,6 +1586,9 @@ class Graph
      * (in the order: skos:prefLabel, rdfs:label, foaf:name, dc:title)
      * and return an approriate first that is available. If no label
      * is available then it will return null.
+     *
+     * @param string|null $resource
+     * @param string|null $lang
      *
      * @return string A label for the resource.
      */
@@ -1619,6 +1671,7 @@ class Graph
      *
      * @see RdfNamespace::setDefault()
      * @param  string $name The name of the property
+     *
      * @return string       A single value for the named property
      */
     public function __get($name)
@@ -1636,6 +1689,8 @@ class Graph
      * @see RdfNamespace::setDefault()
      * @param  string $name The name of the property
      * @param  string $value The value for the property
+     *
+     * @return integer
      */
     public function __set($name, $value)
     {
@@ -1651,6 +1706,8 @@ class Graph
      *
      * @see RdfNamespace::setDefault()
      * @param string $name The name of the property
+     *
+     * @return boolean
      */
     public function __isset($name)
     {
@@ -1666,6 +1723,8 @@ class Graph
      *
      * @see RdfNamespace::setDefault()
      * @param string $name The name of the property
+     *
+     * @return integer
      */
     public function __unset($name)
     {

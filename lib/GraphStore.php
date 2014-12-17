@@ -81,6 +81,7 @@ class GraphStore
      * a URI relative to the URI of the graph store.
      *
      * @param string $uriRef The URI of graph desired
+     *
      * @return Graph The graph requested
      */
     public function get($uriRef)
@@ -172,6 +173,7 @@ class GraphStore
      * @param Graph|string $graph  Data
      * @param string       $uriRef The URI of graph to be replaced
      * @param string       $format The format of the data to send to the graph store
+     *
      * @return Http\Response The response from the graph store
      */
     public function replace($graph, $uriRef = null, $format = 'ntriples')
@@ -190,6 +192,7 @@ class GraphStore
      *
      * @param Graph|string $graph  Data
      * @param string       $format The format of the data to send to the graph store
+     *
      * @return Http\Response The response from the graph store
      */
     public function replaceDefault($graph, $format = 'ntriples')

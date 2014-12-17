@@ -88,6 +88,7 @@ class Format
      * before constructing the string.
      *
      * @param array $extraTypes    extra MIME types to add
+     *
      * @return string              list of supported MIME types
      */
     public static function getHttpAcceptHeader($extraTypes = array())
@@ -117,6 +118,7 @@ class Format
     /** Check if a named graph exists
      *
      * @param string $name    the name of the format
+     *
      * @return boolean        true if the format exists
      */
     public static function formatExists($name)
@@ -129,7 +131,7 @@ class Format
      * @param string $query  a query string to search for
      *
      * @return self  the first object that matches the query
-     *
+     * @throws \InvalidArgumentException
      * @throws Exception  if no format is found
      */
     public static function getFormat($query)
@@ -163,6 +165,7 @@ class Format
      * @param array|string $mimeTypes  One or more mime types for the format
      * @param array|string $extensions One or more extensions (file suffix)
      *
+     * @throws \InvalidArgumentException
      * @return self  New Format object
      */
     public static function register(
@@ -308,6 +311,9 @@ class Format
     /** Set the label for a format object
      *
      * @param  string $label  The new label for the format
+     *
+     * @throws \InvalidArgumentException
+     * @return string|null
      */
     public function setLabel($label)
     {
@@ -335,6 +341,9 @@ class Format
     /** Set the URI for a format object
      *
      * @param string $uri  The new URI for the format
+     *
+     * @throws \InvalidArgumentException
+     * @return string|null
      */
     public function setUri($uri)
     {
@@ -427,6 +436,8 @@ class Format
     /** Set the parser to use for a format
      *
      * @param string $class  The name of the class
+     *
+     * @throws \InvalidArgumentException
      */
     public function setParserClass($class)
     {
@@ -453,6 +464,7 @@ class Format
 
     /** Create a new parser to parse this format
      *
+     * @throws Exception
      * @return object The new parser object
      */
     public function newParser()
@@ -469,6 +481,8 @@ class Format
     /** Set the serialiser to use for a format
      *
      * @param string $class  The name of the class
+     *
+     * @throws \InvalidArgumentException
      */
     public function setSerialiserClass($class)
     {
@@ -495,6 +509,7 @@ class Format
 
     /** Create a new serialiser to parse this format
      *
+     * @throws Exception
      * @return object The new serialiser object
      */
     public function newSerialiser()

@@ -53,6 +53,8 @@ class TypeMapper
      * If a type is not registered, then this method will return null.
      *
      * @param  string  $type   The RDF type (e.g. foaf:Person)
+     *
+     * @throws \InvalidArgumentException
      * @return string          The class name (e.g. Model_Foaf_Name)
      */
     public static function get($type)
@@ -75,6 +77,8 @@ class TypeMapper
      *
      * @param  string  $type   The RDF type (e.g. foaf:Person)
      * @param  string  $class  The PHP class name (e.g. Model_Foaf_Name)
+     *
+     * @throws \InvalidArgumentException
      * @return string          The PHP class name
      */
     public static function set($type, $class)
@@ -99,6 +103,8 @@ class TypeMapper
       * Delete an existing RDF type mapping.
       *
       * @param  string  $type   The RDF type (e.g. foaf:Person)
+      *
+      * @throws \InvalidArgumentException
       */
     public static function delete($type)
     {

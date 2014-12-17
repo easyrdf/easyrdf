@@ -126,6 +126,8 @@ class Literal
      *
      * @param  string  $datatype   The RDF datatype (e.g. xsd:dateTime)
      * @param  string  $class      The PHP class name (e.g. My_DateTime_Class)
+     *
+     * @throws \InvalidArgumentException
      */
     public static function setDatatypeMapping($datatype, $class)
     {
@@ -149,6 +151,8 @@ class Literal
     /** Remove the mapping between an RDF datatype and a PHP class name
      *
      * @param  string  $datatype   The RDF datatype (e.g. xsd:dateTime)
+     *
+     * @throws \InvalidArgumentException
      */
     public static function deleteDatatypeMapping($datatype)
     {
@@ -172,6 +176,8 @@ class Literal
      * Given a PHP value, it will return an XSD datatype
      * URI for that value, for example:
      * http://www.w3.org/2001/XMLSchema#integer
+     *
+     * @param mixed $value
      *
      * @return string  A URI for the datatype of $value.
      */
@@ -313,6 +319,7 @@ class Literal
      *
      * @param  string $format Either 'html' or 'text'
      * @param  string $color  The colour of the text
+     *
      * @return string
      */
     public function dumpValue($format = 'html', $color = 'black')

@@ -180,6 +180,8 @@ class Resource
      *
      * @param  string  $text    Text for the link.
      * @param  array   $options Associative array of attributes for the anchor tag
+     *
+     * @throws \InvalidArgumentException
      * @return string  The HTML link string
      */
     public function htmlLink($text = null, $options = array())
@@ -225,6 +227,7 @@ class Resource
      *
      * @param  string $format Either 'html' or 'text'
      * @param  string $color The colour of the text
+     *
      * @return string
      */
     public function dumpValue($format = 'html', $color = 'blue')
@@ -261,6 +264,8 @@ class Resource
      * can't be guessed or got from the HTTP headers.
      *
      * @param  string  $format  Optional format of the data (eg. rdfxml)
+     *
+     * @return integer
      */
     public function load($format = null)
     {
@@ -272,7 +277,8 @@ class Resource
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  object  $value The value to delete (null to delete all values)
-     * @return null
+     *
+     * @return integer
      */
     public function delete($property, $value = null)
     {
@@ -287,6 +293,7 @@ class Resource
      *
      * @param  mixed $property   The property name
      * @param  mixed $value      The value for the property
+     *
      * @return integer           The number of values added (1 or 0)
      */
     public function add($property, $value)
@@ -305,6 +312,7 @@ class Resource
      * @param  mixed  $property  The property name
      * @param  mixed  $values    The value or values for the property
      * @param  string $lang      The language of the literal
+     *
      * @return integer           The number of values added
      */
     public function addLiteral($property, $values, $lang = null)
@@ -320,6 +328,7 @@ class Resource
      *
      * @param  mixed $property   The property name
      * @param  mixed $resource2  The resource to be the value of the property
+     *
      * @return integer           The number of values added (1 or 0)
      */
     public function addResource($property, $resource2)
@@ -337,6 +346,7 @@ class Resource
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  mixed   $value    The value for the property.
+     *
      * @return integer           The number of values added (1 or 0)
      */
     public function set($property, $value)
@@ -358,6 +368,7 @@ class Resource
      * @param  string|array $property The name of the property (e.g. foaf:name)
      * @param  string       $type     The type of value to filter by (e.g. literal or resource)
      * @param  string       $lang     The language to filter by (e.g. en)
+     *
      * @return mixed                  A value associated with the property
      */
     public function get($property, $type = null, $lang = null)
@@ -410,6 +421,7 @@ class Resource
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $type     The type of value to filter by (e.g. literal)
      * @param  string  $lang     The language to filter by (e.g. en)
+     *
      * @return array             An array of values associated with the property
      */
     public function all($property, $type = null, $lang = null)
@@ -425,6 +437,7 @@ class Resource
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $lang     The language to filter by (e.g. en)
+     *
      * @return array             An array of values associated with the property
      */
     public function allLiterals($property, $lang = null)
@@ -439,6 +452,7 @@ class Resource
      * has any resources for that property.
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
+     *
      * @return array             An array of values associated with the property
      */
     public function allResources($property)
@@ -454,6 +468,7 @@ class Resource
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $type     The type of value to filter by (e.g. literal)
      * @param  string  $lang     The language to filter by (e.g. en)
+     *
      * @return integer           The number of values associated with the property
      */
     public function countValues($property, $type = null, $lang = null)
@@ -470,6 +485,7 @@ class Resource
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  string  $glue     The string to glue the values together with.
      * @param  string  $lang     The language to filter by (e.g. en)
+     *
      * @return string            Concatenation of all the values.
      */
     public function join($property, $glue = ' ', $lang = null)
@@ -520,6 +536,7 @@ class Resource
      *
      * @param  string  $property The name of the property (e.g. foaf:name)
      * @param  mixed   $value    An optional value of the property
+     *
      * @return bool              True if value the property exists.
      */
     public function hasProperty($property, $value = null)
@@ -586,6 +603,7 @@ class Resource
     /** Check if a resource is of the specified type
      *
      * @param  string  $type The type to check (e.g. foaf:Person)
+     *
      * @return boolean       True if resource is of specified type.
      */
     public function isA($type)
@@ -597,6 +615,7 @@ class Resource
     /** Add one or more rdf:type properties to the resource
      *
      * @param  string  $types    One or more types to add (e.g. foaf:Person)
+     *
      * @return integer           The number of types added
      */
     public function addType($types)
@@ -610,6 +629,7 @@ class Resource
      * Note that the PHP class of the resource will not change.
      *
      * @param  string  $type     The new type (e.g. foaf:Person)
+     *
      * @return integer           The number of types added
      */
     public function setType($type)
@@ -637,6 +657,8 @@ class Resource
      * and return an approriate first that is available. If no label
      * is available then it will return null.
      *
+     * @param string|null $lang
+     *
      * @return string A label for the resource.
      */
     public function label($lang = null)
@@ -651,6 +673,7 @@ class Resource
      * print a resource and its properties.
      *
      * @param  string $format   Either 'html' or 'text'
+     *
      * @return string
      */
     public function dump($format = 'html')

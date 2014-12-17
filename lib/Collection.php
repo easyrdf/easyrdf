@@ -69,7 +69,9 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      * The first item is postion 1
      *
      * @param  integer  $position     The position in the container to seek to
-     * @throws OutOfBoundsException
+     *
+     * @throws \OutOfBoundsException
+     * @throws \InvalidArgumentException
      */
     public function seek($position)
     {
@@ -161,6 +163,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      * collection (before rdf:nil) will be returned.
      *
      * @param  integer $offset          The offset into the collection (or null)
+     *
      * @return array   $node, $postion  The node object and postion of the node
      */
     public function getCollectionNode($offset)
@@ -196,6 +199,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
     /** Append an item to the end of the collection
      *
      * @param  mixed $value      The value to append
+     *
      * @return integer           The number of values appended (1 or 0)
      */
     public function append($value)

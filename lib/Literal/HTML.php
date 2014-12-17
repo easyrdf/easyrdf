@@ -62,6 +62,7 @@ class HTML extends Literal
      *
      * @link   http://php.net/manual/en/function.strip-tags.php
      * @param  string $allowableTags  Optional allowed tag, not be be removed
+     *
      * @return string The literal as plain text
      */
     public function stripTags($allowableTags = null)

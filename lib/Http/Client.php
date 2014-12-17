@@ -125,6 +125,8 @@ class Client
      * Set the URI for the next request
      *
      * @param  string $uri
+     *
+     * @throws \InvalidArgumentException
      * @return self
      */
     public function setUri($uri)
@@ -147,6 +149,8 @@ class Client
     /**
      * Get the URI for the next request
      *
+     * @param bool $asString
+     *
      * @return string
      */
     public function getUri($asString = true)
@@ -158,6 +162,7 @@ class Client
      * Set configuration parameters for this HTTP client
      *
      * @param  array $config
+     *
      * @return self
      * @throws \InvalidArgumentException
      */
@@ -181,6 +186,7 @@ class Client
      *
      * @param string $name Header name (e.g. 'Accept')
      * @param string $value Header value or null
+     *
      * @return self
      */
     public function setHeaders($name, $value = null)
@@ -204,6 +210,7 @@ class Client
      * Validated the passed method and sets it.
      *
      * @param string $method
+     *
      * @return self
      * @throws \InvalidArgumentException
      */
@@ -235,6 +242,7 @@ class Client
      * will be returned.
      *
      * @param string $key
+     *
      * @return string|array|null The header value or null if it is not set
      */
     public function getHeader($key)
@@ -252,6 +260,7 @@ class Client
      *
      * @param string $name
      * @param string $value
+     *
      * @return self
      */
     public function setParameterGet($name, $value = null)
@@ -271,6 +280,7 @@ class Client
      * Get a GET parameter for the request.
      *
      * @param string $name
+     *
      * @return string value
      */
     public function getParameterGet($name)
@@ -313,6 +323,7 @@ class Client
      * $data can also be stream (such as file) from which the data will be read.
      *
      * @param string|resource $data
+     *
      * @return self
      */
     public function setRawData($data)
@@ -341,6 +352,7 @@ class Client
      * headers
      *
      * @param bool $clearAll Should all data be cleared?
+     *
      * @return self
      */
     public function resetParameters($clearAll = false)

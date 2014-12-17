@@ -52,6 +52,8 @@ class Http
     /** Set the HTTP Client object used to fetch RDF data
      *
      * @param  Http\Client|\Zend\Http\Client $httpClient The new HTTP client object
+     *
+     * @throws \InvalidArgumentException
      * @return Http\Client|\Zend\Http\Client The new HTTP client object
      */
     public static function setDefaultHttpClient($httpClient)
