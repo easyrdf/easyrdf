@@ -340,7 +340,7 @@ class RdfXmlTest extends TestCase
             'EasyRdf\Exception',
             'EasyRdf\Serialiser\RdfXml does not support: unsupportedformat'
         );
-        $rdf = $this->serialiser->serialise($this->graph, 'unsupportedformat');
+        $this->serialiser->serialise($this->graph, 'unsupportedformat');
     }
 
     /**

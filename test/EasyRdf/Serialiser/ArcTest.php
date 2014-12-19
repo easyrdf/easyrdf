@@ -85,7 +85,7 @@ class ArcTest extends TestCase
             'EasyRdf\Exception',
             'EasyRdf\Serialiser\Arc does not support: unsupportedformat'
         );
-        $rdf = $this->serialiser->serialise(
+        $this->serialiser->serialise(
             $this->graph,
             'unsupportedformat'
         );

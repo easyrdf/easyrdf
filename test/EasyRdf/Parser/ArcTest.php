@@ -96,7 +96,7 @@ class ArcTest extends TestCase
             'EasyRdf\Exception',
             'EasyRdf\Parser\Arc does not support: unsupportedformat'
         );
-        $rdf = $this->parser->parse(
+        $this->parser->parse(
             $this->graph,
             $this->data,
             'unsupportedformat',

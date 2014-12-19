@@ -205,7 +205,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
     public function append($value)
     {
         // Find the end of the collection
-        list($node, $position) = $this->getCollectionNode(null);
+        list($node, ) = $this->getCollectionNode(null);
         $rest = $node->get('rdf:rest');
 
         if ($node === $this and is_null($rest)) {

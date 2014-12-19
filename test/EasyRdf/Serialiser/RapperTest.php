@@ -95,7 +95,7 @@ class RapperTest extends TestCase
             'EasyRdf\Exception',
             'Error while executing command rapper'
         );
-        $rdf = $this->serialiser->serialise(
+        $this->serialiser->serialise(
             $this->graph,
             'unsupportedformat'
         );

@@ -289,7 +289,7 @@ class Client
             // No content
             return $response;
         } elseif ($response->isSuccessful()) {
-            list($type, $params) = Utils::parseMimeType(
+            list($type, ) = Utils::parseMimeType(
                 $response->getHeader('Content-Type')
             );
             if (strpos($type, 'application/sparql-results') === 0) {

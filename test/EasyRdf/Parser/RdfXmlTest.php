@@ -143,7 +143,7 @@ class RdfXmlTest extends TestCase
         $filename = 'rdfxml/gh74-bio.rdf';
 
         $graph = new Graph();
-        $triple_count = $this->parser->parse(
+        $this->parser->parse(
             $graph,
             readFixture($filename),
             'rdfxml',
@@ -167,7 +167,7 @@ class RdfXmlTest extends TestCase
         $filename = 'rdfxml/gh157-base.rdf';
 
         $graph = new Graph();
-        $triple_count = $this->parser->parse(
+        $this->parser->parse(
             $graph,
             readFixture($filename),
             'rdfxml',

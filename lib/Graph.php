@@ -344,7 +344,7 @@ class Graph
         } while ($redirectCounter < $this->maxRedirects);
 
         if (!$format or $format == 'guess') {
-            list($format, $params) = Utils::parseMimeType(
+            list($format, ) = Utils::parseMimeType(
                 $response->getHeader('Content-Type')
             );
         }

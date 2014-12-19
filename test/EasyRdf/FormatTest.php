@@ -480,7 +480,7 @@ class FormatTest extends TestCase
             'No parser class available for format: my'
         );
         $this->format->setParserClass(null);
-        $parser = $this->format->newParser();
+        $this->format->newParser();
     }
 
     public function testSetSerialiserClass()
@@ -528,7 +528,7 @@ class FormatTest extends TestCase
             'No serialiser class available for format: my'
         );
         $this->format->setSerialiserClass(null);
-        $serialiser = $this->format->newSerialiser();
+        $this->format->newSerialiser();
     }
 
     public function testRegisterSerialiser()

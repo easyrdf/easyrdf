@@ -53,7 +53,7 @@ class ContainerTest extends TestCase
 
     public function testParseSeq()
     {
-        $count = $this->graph->parse(
+        $this->graph->parse(
             readFixture('rdf-seq.rdf'),
             'rdfxml',
             'http://www.w3.org/TR/REC-rdf-syntax/'

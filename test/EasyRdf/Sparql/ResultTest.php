@@ -304,7 +304,7 @@ class ResultTest extends TestCase
             'EasyRdf\Exception',
             'Failed to parse SPARQL XML Query Results format'
         );
-        $result = new Result(
+        new Result(
             readFixture('sparql_invalid.xml'),
             'application/sparql-results+xml'
         );
@@ -316,7 +316,7 @@ class ResultTest extends TestCase
             'EasyRdf\Exception',
             'Incorrect root node in SPARQL XML Query Results format'
         );
-        $result = new Result(
+        new Result(
             readFixture('not_sparql_result.xml'),
             'application/sparql-results+xml'
         );
@@ -328,7 +328,7 @@ class ResultTest extends TestCase
             'EasyRdf\Exception',
             'Failed to parse SPARQL JSON Query Results format'
         );
-        $result = new Result(
+        new Result(
             readFixture('sparql_invalid.json'),
             'application/sparql-results+json'
         );
@@ -340,7 +340,7 @@ class ResultTest extends TestCase
             'EasyRdf\Exception',
             'Failed to parse SPARQL Query Results format, unknown term type: newtype'
         );
-        $result = new Result(
+        new Result(
             readFixture('sparql_invalid_term.json'),
             'application/sparql-results+json'
         );
@@ -444,7 +444,7 @@ class ResultTest extends TestCase
             'EasyRdf\Exception',
             'Failed to dump SPARQL Query Results format, unknown type: foobar'
         );
-        $str = $result->dump();
+        $result->dump();
     }
 
     public function testToStringBooleanTrue()
@@ -485,6 +485,6 @@ class ResultTest extends TestCase
             'EasyRdf\Exception',
             'Unsupported SPARQL Query Results format: foo/bar'
         );
-        $result = new Result('foobar', 'foo/bar');
+        new Result('foobar', 'foo/bar');
     }
 }

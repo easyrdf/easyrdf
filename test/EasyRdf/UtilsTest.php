@@ -379,7 +379,7 @@ class UtilsTest extends TestCase
             'EasyRdf\Exception',
             'Error while executing command false'
         );
-        $output = Utils::execCommandPipe('false');
+        Utils::execCommandPipe('false');
     }
 
     public function testExecCommandPipeNotFound()
@@ -388,6 +388,6 @@ class UtilsTest extends TestCase
             'EasyRdf\Exception',
             'Error while executing command no_such_command'
         );
-        $output = Utils::execCommandPipe('no_such_command');
+        Utils::execCommandPipe('no_such_command');
     }
 }

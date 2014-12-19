@@ -368,7 +368,7 @@ class GraphTest extends TestCase
         $this->client->addMockOnce('GET', 'http://www.example.com/missing', 'Error text', array('status' => 404));
 
         try {
-            $graph = Graph::newAndLoad('http://www.example.com/missing', 'turtle');
+            Graph::newAndLoad('http://www.example.com/missing', 'turtle');
             $this->fail('404 should lead to exception');
         } catch (Http\Exception $e) {
             $this->assertEquals(404, $e->getCode());
@@ -468,7 +468,7 @@ class GraphTest extends TestCase
     public function testResourceWithType()
     {
         $graph = new Graph();
-        $resource = $graph->resource(
+        $graph->resource(
             'http://www.foo.com/bar',
             'foaf:Person'
         );
@@ -479,7 +479,7 @@ class GraphTest extends TestCase
     public function testResourceWithTypeUri()
     {
         $graph = new Graph();
-        $resource = $graph->resource(
+        $graph->resource(
             'http://www.foo.com/bar',
             'http://xmlns.com/foaf/0.1/Person'
         );

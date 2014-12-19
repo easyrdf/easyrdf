@@ -78,7 +78,7 @@ class HexBinaryTest extends TestCase
             'InvalidArgumentException',
             'Literal of type xsd:hexBinary contains non-hexadecimal characters'
         );
-        $literal = new HexBinary('48FZ');
+        new HexBinary('48FZ');
     }
 
     public function testFromBinary()

@@ -86,7 +86,7 @@ class ResponseTest extends TestCase
             'EasyRdf\Exception',
             'Failed to parse HTTP response.'
         );
-        $response = Response::fromString('foobar');
+        Response::fromString('foobar');
     }
 
     public function testInvalidStatusLine()
@@ -95,7 +95,7 @@ class ResponseTest extends TestCase
             'EasyRdf\Exception',
             'Failed to parse HTTP response status line.'
         );
-        $response = Response::fromString(
+        Response::fromString(
             "HTTP1.0 200 OK\r\nConnection: close\r\n\r\nBody"
         );
     }
