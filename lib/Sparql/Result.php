@@ -72,9 +72,9 @@ class Result extends \ArrayIterator
     public function __construct($data, $mimeType)
     {
         if ($mimeType == 'application/sparql-results+xml') {
-            return $this->parseXml($data);
+            $this->parseXml($data);
         } elseif ($mimeType == 'application/sparql-results+json') {
-            return $this->parseJson($data);
+            $this->parseJson($data);
         } else {
             throw new Exception(
                 "Unsupported SPARQL Query Results format: $mimeType"
@@ -332,7 +332,7 @@ class Result extends \ArrayIterator
                 }
                 $this[] = $t;
             }
-            return $this;
+            return;
         }
 
         throw new Exception(
