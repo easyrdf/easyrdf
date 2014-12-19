@@ -312,7 +312,7 @@ class Client
             return $data->serialise('ntriples');
         } else {
             throw new Exception(
-                "Don't know how to convert to triples for SPARQL query: ".$response->getBody()
+                "Don't know how to convert to triples for SPARQL query"
             );
         }
     }

@@ -61,7 +61,7 @@ class RdfPhp extends Parser
      * Parse RDF/PHP into an EasyRdf\Graph
      *
      * @param Graph  $graph   the graph to load the data into
-     * @param string $data    the RDF document data
+     * @param array[] $data   the RDF document data
      * @param string $format  the format of the input data
      * @param string $baseUri the base URI of the data being parsed
      *

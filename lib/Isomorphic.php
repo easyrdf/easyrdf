@@ -99,7 +99,7 @@ class Isomorphic
         if ($groundedStatementsMatch === false) {
             // The grounded statements do not match
             return null;
-        } elseif (count($bnodesA) > 0 or count($bnodesB > 0)) {
+        } elseif (count($bnodesA) > 0 or count($bnodesB) > 0) {
             // There are blank nodes - build a bi-jection
             return self::buildBijectionTo($statementsA, $bnodesA, $statementsB, $bnodesB);
         } else {
