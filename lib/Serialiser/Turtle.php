@@ -95,7 +95,7 @@ class Turtle extends Serialiser
      * be written to a Turtle document. URIs will be shortened into CURIES
      * where possible.
      *
-     * @param  Resource $resource        The resource to convert to a Turtle string
+     * @param  Resource|string $resource The resource to convert to a Turtle string
      * @param  boolean $createNamespace  If true, a new namespace may be created
      *
      * @return string
