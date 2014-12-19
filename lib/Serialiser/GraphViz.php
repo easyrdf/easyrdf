@@ -73,6 +73,7 @@ class GraphViz extends Serialiser
      * Default is to search PATH for the command 'dot'.
      *
      * @param string $cmd   The path to the 'dot' command.
+     *
      * @return self
      */
     public function setDotCommand($cmd)
@@ -104,6 +105,7 @@ class GraphViz extends Serialiser
      * This option is turned off by default.
      *
      * @param bool $useLabels   A boolean value to turn labels on and off
+     *
      * @return GraphViz
      */
     public function setUseLabels($useLabels)
@@ -133,6 +135,7 @@ class GraphViz extends Serialiser
      * This option is turned off by default.
      *
      * @param bool $onlyLabelled   A boolean value to enable/display only labelled items
+     *
      * @return GraphViz
      */
     public function setOnlyLabelled($onlyLabelled)
@@ -162,6 +165,7 @@ class GraphViz extends Serialiser
      *
      * @param string $name    The name of the attribute
      * @param string $value   The value for the attribute
+     *
      * @return GraphViz
      */
     public function setAttribute($name, $value)
@@ -174,6 +178,7 @@ class GraphViz extends Serialiser
      * Get an attribute of the GraphViz graph
      *
      * @param string $name    Attribute name
+     *
      * @return string The value of the graph attribute
      */
     public function getAttribute($name)
@@ -374,6 +379,7 @@ class GraphViz extends Serialiser
      * @param Graph  $graph  An EasyRdf\Graph object.
      * @param string $format The name of the format to convert to.
      * @param array  $options
+     *
      * @throws Exception
      * @return string The RDF in the new desired format.
      */

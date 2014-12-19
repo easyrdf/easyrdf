@@ -74,6 +74,7 @@ require_once __DIR__.'/EasyRdf/Http/MockClient.php';
  * Helper function: get path to a fixture file
  *
  * @param string $name fixture file name
+ *
  * @return string Path to the fixture file
  */
 function fixturePath($name)
@@ -85,6 +86,7 @@ function fixturePath($name)
  * Helper function: read fixture data from file
  *
  * @param string $name fixture file name
+ *
  * @return string Fixture data
  */
 function readFixture($name)
@@ -98,6 +100,7 @@ function readFixture($name)
  * Helper function: check to see if a required file exists
  *
  * @param string $filename the filename to check
+ *
  * @return boolean Returns true if the file exists
  */
 function requireExists($filename)

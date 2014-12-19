@@ -217,6 +217,7 @@ class Response
      * Get a specific header as string, or null if it is not set
      *
      * @param string$header
+     *
      * @return string|array|null
      */
     public function getHeader($header)
@@ -234,6 +235,7 @@ class Response
      *
      * @param boolean $statusLine Whether to return the first status line (ie "HTTP 200 OK")
      * @param string  $br         Line breaks (eg. "\n", "\r\n", "<br />")
+     *
      * @return string
      */
     public function getHeadersAsString($statusLine = true, $br = "\n")
@@ -346,6 +348,7 @@ class Response
      * Get the entire response as string
      *
      * @param string $br Line breaks (eg. "\n", "\r\n", "<br />")
+     *
      * @return string
      */
     public function asString($br = "\n")

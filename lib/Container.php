@@ -66,7 +66,9 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      * The first item is postion 1
      *
      * @param  integer  $position     The position in the container to seek to
+     *
      * @throws \OutOfBoundsException
+     * @throws \InvalidArgumentException
      */
     public function seek($position)
     {
@@ -147,6 +149,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
     /** Append an item to the end of the container
      *
      * @param  mixed $value      The value to append
+     *
      * @return integer           The number of values appended (1 or 0)
      */
     public function append($value)

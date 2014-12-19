@@ -58,6 +58,7 @@ class RdfPhp extends Serialiser
      * @param Graph  $graph   An EasyRdf\Graph object.
      * @param string $format  The name of the format to convert to.
      * @param array  $options
+     *
      * @throws Exception
      * @return string The RDF in the new desired format.
      */

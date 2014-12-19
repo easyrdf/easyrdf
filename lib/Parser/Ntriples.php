@@ -52,7 +52,8 @@ class Ntriples extends Parser
      * with their decoded value.
      *
      * @param  string $str An encoded N-Triples string.
-     * @return The unencoded string.
+     *
+     * @return string The unencoded string.
      **/
     protected function unescapeString($str)
     {

@@ -60,7 +60,7 @@ class Integer extends Literal
 
     /** Return the value of the literal cast to a PHP int
      *
-     * @return double
+     * @return int
      */
     public function getValue()
     {

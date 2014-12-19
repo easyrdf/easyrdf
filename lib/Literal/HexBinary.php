@@ -52,6 +52,8 @@ class HexBinary extends Literal
      * @param  mixed  $value     The value of the literal (already encoded as hexadecimal)
      * @param  string $lang      Should be null (literals with a datatype can't have a language)
      * @param  string $datatype  Optional datatype (default 'xsd:hexBinary')
+     *
+     * @throws \InvalidArgumentException
      */
     public function __construct($value, $lang = null, $datatype = null)
     {
@@ -72,6 +74,7 @@ class HexBinary extends Literal
     /** Constructor for creating a new literal object from a binary blob
      *
      * @param  string $binary  The binary data
+     *
      * @return self
      */
     public static function fromBinary($binary)

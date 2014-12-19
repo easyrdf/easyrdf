@@ -136,6 +136,7 @@ class Client
      * can be given to count of a subset of all triples.
      *
      * @param string $condition Triple-pattern condition for the count query
+     *
      * @return integer The number of triples
      */
     public function countTriples($condition = '?s ?p ?o')

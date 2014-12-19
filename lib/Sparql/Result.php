@@ -158,6 +158,9 @@ class Result extends \ArrayIterator
      * return a pretty-print view of the query result.
      *
      * @param  string  $format  Either 'text' or 'html'
+     *
+     * @throws Exception
+     * @return string
      */
     public function dump($format = 'html')
     {

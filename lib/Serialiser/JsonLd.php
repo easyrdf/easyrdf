@@ -62,6 +62,7 @@ class JsonLd extends Serialiser
      * @param \EasyRdf\Graph  $graph
      * @param string          $format
      * @param array           $options
+     *
      * @throws Exception
      * @return string
      */

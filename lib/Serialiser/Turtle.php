@@ -61,6 +61,7 @@ class Turtle extends Serialiser
      * Given a IRI string, escape and enclose in angle brackets.
      *
      * @param  string $resourceIri
+     *
      * @return string
      */
     public static function escapeIri($resourceIri)
@@ -75,6 +76,7 @@ class Turtle extends Serialiser
      * enclosed in three double quotes (""").
      *
      * @param  string $value
+     *
      * @return string
      */
     public static function quotedString($value)
@@ -157,6 +159,8 @@ class Turtle extends Serialiser
      * be written to a Turtle document.
      *
      * @param  Resource|Literal $object
+     *
+     * @throws \InvalidArgumentException
      * @return string
      */
     public function serialiseObject($object)

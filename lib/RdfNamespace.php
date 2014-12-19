@@ -133,6 +133,8 @@ class RdfNamespace
       * Return a namespace given its prefix.
       *
       * @param string $prefix The namespace prefix (eg 'foaf')
+      *
+      * @throws \InvalidArgumentException
       * @return string The namespace URI (eg 'http://xmlns.com/foaf/0.1/')
       */
     public static function get($prefix)
@@ -164,6 +166,9 @@ class RdfNamespace
       *
       * @param string $prefix The namespace prefix (eg 'foaf')
       * @param string $long The namespace URI (eg 'http://xmlns.com/foaf/0.1/')
+      *
+      * @throws \LogicException
+      * @throws \InvalidArgumentException
       */
     public static function set($prefix, $long)
     {
@@ -242,6 +247,8 @@ class RdfNamespace
       *   EasyRdf\RdfNamespace::setDefault('http://schema.org/');
       *
       * @param string $namespace The URI or prefix of a namespace (eg 'og')
+      *
+      * @throws \InvalidArgumentException
       */
     public static function setDefault($namespace)
     {
@@ -266,6 +273,8 @@ class RdfNamespace
       * Delete an existing namespace.
       *
       * @param string $prefix The namespace prefix (eg 'foaf')
+      *
+      * @throws \InvalidArgumentException
       */
     public static function delete($prefix)
     {
@@ -304,6 +313,8 @@ class RdfNamespace
       *
       * @param string  $uri The full URI (eg 'http://xmlns.com/foaf/0.1/name')
       * @param bool    $createNamespace If true, a new namespace will be created
+      *
+      * @throws \InvalidArgumentException
       * @return array  The split URI (eg 'foaf', 'name') or null
       */
     public static function splitUri($uri, $createNamespace = false)
@@ -354,6 +365,7 @@ class RdfNamespace
       * Return the prefix namespace that a URI belongs to.
       *
       * @param string $uri A full URI (eg 'http://xmlns.com/foaf/0.1/name')
+     *
       * @return string The prefix namespace that it is a part of(eg 'foaf')
       */
     public static function prefixOfUri($uri)
@@ -374,6 +386,7 @@ class RdfNamespace
       *
       * @param string  $uri The full URI (eg 'http://xmlns.com/foaf/0.1/name')
       * @param bool    $createNamespace If true, a new namespace will be created
+      *
       * @return string The shortened URI (eg 'foaf:name') or null
       */
     public static function shorten($uri, $createNamespace = false)
@@ -390,6 +403,8 @@ class RdfNamespace
       * isn't registered, then the original string will be returned.
       *
       * @param string $shortUri The short URI (eg 'foaf:name')
+      *
+      * @throws \InvalidArgumentException
       * @return string The full URI (eg 'http://xmlns.com/foaf/0.1/name')
       */
     public static function expand($shortUri)

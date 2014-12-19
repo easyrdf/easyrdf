@@ -103,6 +103,7 @@ class Date extends Literal
      *
      * @see DateTime::format
      * @param string $format
+     *
      * @return string
      */
     public function format($format)

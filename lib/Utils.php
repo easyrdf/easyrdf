@@ -57,6 +57,7 @@ class Utils
      * 'FOO//BAR' becomes FooBar
      *
      * @param string $str The input string
+     *
      * @return string The input string converted to CamelCase
      */
     public static function camelise($str)
@@ -74,6 +75,7 @@ class Utils
      * Note: this method only checks the key of the first value in the array.
      *
      * @param mixed $param The variable to check
+     *
      * @return bool true if the variable is an associative array
      */
     public static function isAssociativeArray($param)
@@ -94,6 +96,7 @@ class Utils
      * Remove the fragment from a URI (if it has one)
      *
      * @param mixed $uri A URI
+     *
      * @return string The same URI with the fragment removed
      */
     public static function removeFragmentFromUri($uri)
@@ -115,6 +118,8 @@ class Utils
      * @param  mixed  $resource An EasyRdf\Resource object or an associative array
      * @param  string $format   Either 'html' or 'text'
      * @param  string $color    The colour of the text
+     *
+     * @throws \InvalidArgumentException
      * @return string
      */
     public static function dumpResourceValue($resource, $format = 'html', $color = 'blue')
@@ -162,6 +167,8 @@ class Utils
      * @param  mixed  $literal  An EasyRdf\Literal object or an associative array
      * @param  string $format   Either 'html' or 'text'
      * @param  string $color    The colour of the text
+     *
+     * @throws \InvalidArgumentException
      * @return string
      */
     public static function dumpLiteralValue($literal, $format = 'html', $color = 'black')
@@ -203,6 +210,7 @@ class Utils
     /** Clean up and split a mime-type up into its parts
      *
      * @param  string $mimeType   A MIME Type, optionally with parameters
+     *
      * @return array  $type, $parameters
      */
     public static function parseMimeType($mimeType)
