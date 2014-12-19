@@ -269,4 +269,25 @@ class NtriplesTest extends TestCase
             'unsupportedformat'
         );
     }
+
+    /**
+     * @see https://github.com/njh/easyrdf/issues/219
+     * @see https://phabricator.wikimedia.org/T76854
+     */
+    public function testIssue219_unicode()
+    {
+        $pairs = array(
+            '位' => '"\u4F4D"',
+            "Дуглас Адамс" => '"\u0414\u0443\u0433\u043b\u0430\u0441 \u0410\u0434\u0430\u043c\u0441"',
+        );
+
+        $serializer = new Ntriples();
+
+        foreach ($pairs as $string => $expected) {
+            $literal = new Literal($string);
+            $actual = $serializer->serialiseValue($literal);
+
+            $this->assertEquals($expected, $actual);
+        }
+    }
 }
