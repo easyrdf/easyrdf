@@ -56,28 +56,27 @@ class Ntriples extends Serialiser
      */
     protected function escapeString($str)
     {
-        if (strpos(utf8_decode(str_replace('?', '', $str)), '?') === false) {
-            $str = utf8_decode($str);
-        }
-
         $result = '';
-        $strLen = strlen($str);
+        $strLen = mb_strlen($str, "UTF-8");
+
         for ($i = 0; $i < $strLen; $i++) {
-            $c = $str[$i];
+            $c = mb_substr($str, $i, 1, "UTF-8");
+
             if (!isset($this->escChars[$c])) {
                 $this->escChars[$c] = $this->escapedChar($c);
             }
+
             $result .= $this->escChars[$c];
         }
+
         return $result;
     }
 
     /**
      * @ignore
      */
-    protected function unicodeCharNo($c)
+    protected function unicodeCharNo($cUtf)
     {
-        $cUtf = utf8_encode($c);
         $bl = strlen($cUtf); /* binary length */
         $r = 0;
         switch ($bl) {

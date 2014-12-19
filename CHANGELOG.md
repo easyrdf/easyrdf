@@ -19,6 +19,11 @@ API changes
 * Classes are renamed like this: `EasyRdf_Parser_Turtle` → `EasyRdf\Parser\Turtle`. With a single exception: `EasyRdf_Namespace` → `EasyRdf\RdfNamespace` (because `namespace` is a keyword in PHP)
 * EasyRdf expects HTTP-client objects compatible with ZendFramework 2.x instead of 1.x now. (zend-http is added to require-dev so tests for it are always run)
 
+Bug Fixes
+---------
+
+* Unicode-strings are properly encoded in n-triples documents (see #219)
+
 EasyRdf 0.9.0
 =============
 
