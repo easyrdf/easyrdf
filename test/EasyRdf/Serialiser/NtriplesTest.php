@@ -274,7 +274,7 @@ class NtriplesTest extends TestCase
      * @see https://github.com/njh/easyrdf/issues/219
      * @see https://phabricator.wikimedia.org/T76854
      */
-    public function testIssue219_unicode()
+    public function testIssue219Unicode()
     {
         $pairs = array(
             '位' => '"\u4F4D"',
