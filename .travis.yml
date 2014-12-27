@@ -7,4 +7,7 @@ php:
   - hhvm
 
 install: make composer-install
-script: make test-lib
+script:
+  - make lint
+  - make cs
+  - make test-lib
