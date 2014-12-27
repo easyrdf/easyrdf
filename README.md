@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/njh/easyrdf.svg?branch=master)](https://travis-ci.org/njh/easyrdf)
+
 EasyRdf
 =======
 EasyRdf is a PHP library designed to make it easy to consume and produce [RDF].
@@ -54,7 +56,6 @@ Features
 
 * API documentation written in phpdoc
 * Extensive unit tests written using phpunit
-  * Automated testing against PHP 5.3 and 5.4
 * Built-in parsers and serialisers: RDF/JSON, N-Triples, RDF/XML, Turtle
 * Optional parsing support for: [ARC2], [Redland Bindings], [rapper]
 * Optional support for [Zend\Http\Client]
