@@ -52,7 +52,7 @@
         $res = $graph->get('postcode:PostcodeUnit', '^rdf:type');
         if ($res) {
             $ll = $res->get('geo:lat').','.$res->get('geo:long');
-            print "<iframe id='map' width='500' height='250' frameborder='0' scrolling='no' src='http://maps.google.com/maps?f=q&amp;ll=$ll&amp;output=embed'></iframe>";
+            print "<iframe id='map' width='500' height='250' frameborder='0' scrolling='no' src='http://maps.google.com/maps?q=$ll&amp;output=embed'></iframe>";
             print "<table id='facts'>\n";
             print "<tr><th>Longitude:</th><td>" . $res->get('geo:long') . "</td></tr>\n";
             print "<tr><th>Latitude:</th><td>" . $res->get('geo:lat') . "</td></tr>\n";

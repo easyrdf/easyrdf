@@ -60,7 +60,7 @@ class UkpostcodeTest extends \EasyRdf\TestCase
         $this->assertContains('<tr><th>District:</th><td>City of Westminster</td></tr>', $output);
         $this->assertContains('<tr><th>Ward:</th><td>West End</td></tr>', $output);
         $this->assertContains(
-            "src='http://maps.google.com/maps?f=q&amp;ll=51.518563,-0.143774&amp;output=embed'",
+            "src='http://maps.google.com/maps?q=51.518563,-0.143774&amp;output=embed'",
             $output
         );
     }
