@@ -45,9 +45,8 @@
 <?php
     if (isset($_REQUEST['postcode'])) {
         $postcode = str_replace(' ', '', strtoupper($_REQUEST['postcode']));
-        $docuri = "http://www.uk-postcodes.com/postcode/$postcode.rdf";
-        $graph = \EasyRdf\Graph::newAndLoad($docuri, 'rdfxml');
-
+        $docuri = "http://data.ordnancesurvey.co.uk/doc/postcodeunit/$postcode";
+        $graph = \EasyRdf\Graph::newAndLoad($docuri);
 
         // Get the first resource of type PostcodeUnit
         $res = $graph->get('postcode:PostcodeUnit', '^rdf:type');
@@ -55,12 +54,12 @@
             $ll = $res->get('geo:lat').','.$res->get('geo:long');
             print "<iframe id='map' width='500' height='250' frameborder='0' scrolling='no' src='http://maps.google.com/maps?f=q&amp;ll=$ll&amp;output=embed'></iframe>";
             print "<table id='facts'>\n";
-            print "<tr><th>Easting:</th><td>" . $res->get('sr:easting') . "</td></tr>\n";
-            print "<tr><th>Northing:</th><td>" . $res->get('sr:northing') . "</td></tr>\n";
             print "<tr><th>Longitude:</th><td>" . $res->get('geo:long') . "</td></tr>\n";
             print "<tr><th>Latitude:</th><td>" . $res->get('geo:lat') . "</td></tr>\n";
-            print "<tr><th>Local Authority:</th><td>" . $res->get('ag:localAuthority')->label() . "</td></tr>\n";
-            print "<tr><th>Electoral Ward:</th><td>" . $res->get('eg:ward')->label() . "</td></tr>\n";
+            print "<tr><th>Easting:</th><td>" . $res->get('sr:easting') . "</td></tr>\n";
+            print "<tr><th>Northing:</th><td>" . $res->get('sr:northing') . "</td></tr>\n";
+            print "<tr><th>District:</th><td>" . $res->get('postcode:district')->label() . "</td></tr>\n";
+            print "<tr><th>Ward:</th><td>" . $res->get('postcode:ward')->label() . "</td></tr>\n";
             print "</table>\n";
 
             print "<div style='clear: both'></div>\n";
