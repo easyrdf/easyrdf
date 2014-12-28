@@ -52,13 +52,14 @@ class Examples_UkpostcodeTest extends EasyRdf_TestCase
             'uk_postcode.php',
             array('postcode' => 'W1A 1AA')
         );
-        $this->assertContains('<tr><th>Easting:</th><td>528887</td></tr>', $output);
-        $this->assertContains('<tr><th>Northing:</th><td>181593</td></tr>', $output);
-        $this->assertContains('<tr><th>Longitude:</th><td>-0.143785</td></tr>', $output);
-        $this->assertContains('<tr><th>Latitude:</th><td>51.518562</td></tr>', $output);
-        $this->assertContains('<tr><th>Electoral Ward:</th><td>West End</td></tr>', $output);
+        $this->assertContains('<tr><th>Longitude:</th><td>-0.143774</td></tr>', $output);
+        $this->assertContains('<tr><th>Latitude:</th><td>51.518563</td></tr>', $output);
+        $this->assertContains('<tr><th>Easting:</th><td>528887.0</td></tr>', $output);
+        $this->assertContains('<tr><th>Northing:</th><td>181593.0</td></tr>', $output);
+        $this->assertContains('<tr><th>District:</th><td>City of Westminster</td></tr>', $output);
+        $this->assertContains('<tr><th>Ward:</th><td>West End</td></tr>', $output);
         $this->assertContains(
-            "src='http://maps.google.com/maps?f=q&amp;ll=51.518562,-0.143785&amp;output=embed'",
+            "src='http://maps.google.com/maps?f=q&amp;ll=51.518563,-0.143774&amp;output=embed'",
             $output
         );
     }
