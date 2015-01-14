@@ -240,68 +240,19 @@ class Client
      */
     protected function request($type, $query)
     {
-        // Check for undefined prefixes
-        $prefixes = '';
-        foreach (RdfNamespace::namespaces() as $prefix => $uri) {
-            if (strpos($query, "$prefix:") !== false and
-                strpos($query, "PREFIX $prefix:") === false) {
-                $prefixes .=  "PREFIX $prefix: <$uri>\n";
-            }
+        $processed_query = $this->preprocessQuery($query);
+        $response = $this->executeQuery($processed_query, $type);
+
+        if (!$response->isSuccessful()) {
+            throw new Http\Exception("HTTP request for SPARQL query failed", 0, null, $response->getBody());
         }
 
-        $client = Http::getDefaultHttpClient();
-        $client->resetParameters();
-
-        // Tell the server which response formats we can parse
-        $accept = Format::getHttpAcceptHeader(
-            array(
-              'application/sparql-results+json' => 1.0,
-              'application/sparql-results+xml' => 0.8
-            )
-        );
-        $client->setHeaders('Accept', $accept);
-
-        if ($type == 'update') {
-            $client->setMethod('POST');
-            $client->setUri($this->updateUri);
-            $client->setRawData($prefixes . $query);
-            $client->setHeaders('Content-Type', 'application/sparql-update');
-        } elseif ($type == 'query') {
-            // Use GET if the query is less than 2kB
-            // 2046 = 2kB minus 1 for '?' and 1 for NULL-terminated string on server
-            $encodedQuery = 'query='.urlencode($prefixes . $query);
-            if (strlen($encodedQuery) + strlen($this->queryUri) <= 2046) {
-                $delimiter = $this->queryUri_has_params ? '&' : '?';
-
-                $client->setMethod('GET');
-                $client->setUri($this->queryUri.$delimiter.$encodedQuery);
-            } else {
-                // Fall back to POST instead (which is un-cacheable)
-                $client->setMethod('POST');
-                $client->setUri($this->queryUri);
-                $client->setRawData($encodedQuery);
-                $client->setHeaders('Content-Type', 'application/x-www-form-urlencoded');
-            }
-        }
-
-        $response = $client->request();
         if ($response->getStatus() == 204) {
             // No content
             return $response;
-        } elseif ($response->isSuccessful()) {
-            list($type, ) = Utils::parseMimeType(
-                $response->getHeader('Content-Type')
-            );
-            if (strpos($type, 'application/sparql-results') === 0) {
-                return new Result($response->getBody(), $type);
-            } else {
-                return new Graph($this->queryUri, $response->getBody(), $type);
-            }
-        } else {
-            throw new Exception(
-                "HTTP request for SPARQL query failed: ".$response->getBody()
-            );
         }
+
+        return $this->parseResponseToQuery($response);
     }
 
     protected function convertToTriples($data)
@@ -315,6 +266,102 @@ class Client
             throw new Exception(
                 "Don't know how to convert to triples for SPARQL query"
             );
+        }
+    }
+
+    /**
+     * Adds missing prefix-definitions to the query
+     *
+     * Overriding classes may execute arbitrary query-alteration here
+     *
+     * @param string $query
+     * @return string
+     */
+    protected function preprocessQuery($query)
+    {
+        // Check for undefined prefixes
+        $prefixes = '';
+        foreach (RdfNamespace::namespaces() as $prefix => $uri) {
+            if (strpos($query, "{$prefix}:") !== false and
+                strpos($query, "PREFIX {$prefix}:") === false
+            ) {
+                $prefixes .= "PREFIX {$prefix}: <{$uri}>\n";
+            }
+        }
+
+        return $prefixes . $query;
+    }
+
+    /**
+     * Build http-client object, execute request and return a response
+     *
+     * @param string $processed_query
+     * @param string $type            Should be either "query" or "update"
+     *
+     * @return Http\Response|\Zend\Http\Response
+     * @throws Exception
+     */
+    protected function executeQuery($processed_query, $type)
+    {
+        $client = Http::getDefaultHttpClient();
+        $client->resetParameters();
+
+        // Tell the server which response formats we can parse
+        $accept = Format::getHttpAcceptHeader(
+            array(
+                'application/sparql-results+json' => 1.0,
+                'application/sparql-results+xml' => 0.8
+            )
+        );
+        $client->setHeaders('Accept', $accept);
+
+        if ($type == 'update') {
+            $client->setMethod('POST');
+            $client->setUri($this->updateUri);
+            $client->setRawData($processed_query);
+            $client->setHeaders('Content-Type', 'application/sparql-update');
+        } elseif ($type == 'query') {
+            $encodedQuery = 'query=' . urlencode($processed_query);
+
+            // Use GET if the query is less than 2kB
+            // 2046 = 2kB minus 1 for '?' and 1 for NULL-terminated string on server
+            if (strlen($encodedQuery) + strlen($this->queryUri) <= 2046) {
+                $delimiter = $this->queryUri_has_params ? '&' : '?';
+
+                $client->setMethod('GET');
+                $client->setUri($this->queryUri . $delimiter . $encodedQuery);
+            } else {
+                // Fall back to POST instead (which is un-cacheable)
+                $client->setMethod('POST');
+                $client->setUri($this->queryUri);
+                $client->setRawData($encodedQuery);
+                $client->setHeaders('Content-Type', 'application/x-www-form-urlencoded');
+            }
+        } else {
+            throw new Exception('unexpected request-type: '.$type);
+        }
+
+        return $client->request();
+    }
+
+    /**
+     * Parse HTTP-response object into a meaningful result-object.
+     *
+     * Can be overridden to do custom processing
+     *
+     * @param Http\Response|\Zend\Http\Response $response
+     * @return Graph|Result
+     */
+    protected function parseResponseToQuery($response)
+    {
+        list($content_type,) = Utils::parseMimeType($response->getHeader('Content-Type'));
+
+        if (strpos($content_type, 'application/sparql-results') === 0) {
+            $result = new Result($response->getBody(), $content_type);
+            return $result;
+        } else {
+            $result = new Graph($this->queryUri, $response->getBody(), $content_type);
+            return $result;
         }
     }
 }

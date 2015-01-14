@@ -280,20 +280,25 @@ class ClientTest extends TestCase
 
     public function testQueryInvalid()
     {
+        $body = "There was an error while executing the query.\nSPARQL syntax error at 'F', line 1";
+
         $this->client->addMock(
             'GET',
             '/sparql?query=FOOBAR',
-            "There was an error while executing the query.\nSPARQL syntax error at 'F', line 1",
+            $body,
             array(
                 'status' => 500,
                 'headers' => array('Content-Type' => 'text/plain')
             )
         );
-        $this->setExpectedException(
-            'EasyRdf\Exception',
-            'HTTP request for SPARQL query failed: There was an error while executing the query.'
-        );
-        $this->sparql->query("FOOBAR");
+
+        try {
+            $this->sparql->query("FOOBAR");
+            $this->fail('Invalid query should have resulted in an exception');
+        } catch (Http\Exception $e) {
+            $this->assertEquals('HTTP request for SPARQL query failed', $e->getMessage());
+            $this->assertEquals($body, $e->getBody());
+        }
     }
 
     public function testCountTriples()
