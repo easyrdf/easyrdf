@@ -82,32 +82,34 @@ class RdfPhp extends Parser
             throw new Exception('expected array, got '.gettype($data));
         }
 
-        foreach ($data as $subject => $properties) {
-            if (is_int($subject)) {
+        foreach ($data as $orig_subject => $properties) {
+            if (is_int($orig_subject)) {
                 throw new Exception('expected array indexed by IRIs, got list');
             }
 
-            if (substr($subject, 0, 2) === '_:') {
-                $subject = $this->remapBnode($subject);
-            } elseif (preg_match('/^\w+$/', $subject)) {
+            if (substr($orig_subject, 0, 2) === '_:') {
+                $subject = $this->remapBnode($orig_subject);
+            } elseif (preg_match('/^\w+$/', $orig_subject)) {
                 # Cope with invalid RDF/JSON serialisations that
                 # put the node name in, without the _: prefix
                 # (such as net.fortytwo.sesametools.rdfjson)
-                $subject = $this->remapBnode($subject);
+                $subject = $this->remapBnode($orig_subject);
+            } else {
+                $subject = $orig_subject;
             }
 
             if (!is_array($properties)) {
-                throw new Exception("expected array as value of '{$subject}' key, got ".gettype($properties));
+                throw new Exception("expected array as value of '{$orig_subject}' key, got ".gettype($properties));
             }
 
             foreach ($properties as $property => $objects) {
                 if (is_int($property)) {
-                    throw new Exception("expected 'array indexed by IRIs' as value of '{$subject}' key, got list");
+                    throw new Exception("expected 'array indexed by IRIs' as value of '{$orig_subject}' key, got list");
                 }
 
                 if (!is_array($objects)) {
                     throw new Exception(
-                        "expected list of objects as value of '{$subject}' -> '{$property}' node, got ".
+                        "expected list of objects as value of '{$orig_subject}' -> '{$property}' node, got ".
                         gettype($objects)
                     );
                 }
@@ -116,7 +118,7 @@ class RdfPhp extends Parser
                     if (!is_array($object) or !isset($object['type']) or !isset($object['value'])) {
                         throw new Exception(
                             "expected array with 'type' and 'value' keys as value of ".
-                            "'{$subject}' -> '{$property}' -> '{$i}' node"
+                            "'{$orig_subject}' -> '{$property}' -> '{$i}' node"
                         );
                     }
 
