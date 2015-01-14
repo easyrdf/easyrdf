@@ -78,7 +78,15 @@ class RdfPhp extends Parser
             );
         }
 
+        if (!is_array($data)) {
+            throw new Exception('expected array, got '.gettype($data));
+        }
+
         foreach ($data as $subject => $properties) {
+            if (is_int($subject)) {
+                throw new Exception('expected array indexed by IRIs, got list');
+            }
+
             if (substr($subject, 0, 2) === '_:') {
                 $subject = $this->remapBnode($subject);
             } elseif (preg_match('/^\w+$/', $subject)) {
@@ -88,8 +96,30 @@ class RdfPhp extends Parser
                 $subject = $this->remapBnode($subject);
             }
 
+            if (!is_array($properties)) {
+                throw new Exception("expected array as value of '{$subject}' key, got ".gettype($properties));
+            }
+
             foreach ($properties as $property => $objects) {
-                foreach ($objects as $object) {
+                if (is_int($property)) {
+                    throw new Exception("expected 'array indexed by IRIs' as value of '{$subject}' key, got list");
+                }
+
+                if (!is_array($objects)) {
+                    throw new Exception(
+                        "expected list of objects as value of '{$subject}' -> '{$property}' node, got ".
+                        gettype($objects)
+                    );
+                }
+
+                foreach ($objects as $i => $object) {
+                    if (!is_array($object) or !isset($object['type']) or !isset($object['value'])) {
+                        throw new Exception(
+                            "expected array with 'type' and 'value' keys as value of ".
+                            "'{$subject}' -> '{$property}' -> '{$i}' node"
+                        );
+                    }
+
                     if ($object['type'] === 'bnode') {
                         $object['value'] = $this->remapBnode($object['value']);
                     }

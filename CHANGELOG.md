@@ -23,6 +23,7 @@ Bug Fixes
 ---------
 
 * Unicode-strings are properly encoded in n-triples documents (see #219)
+* `RdfPhp` parser validates its input (see #227)
 
 EasyRdf 0.9.0
 =============

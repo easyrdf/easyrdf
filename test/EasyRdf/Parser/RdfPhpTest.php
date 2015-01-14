@@ -130,4 +130,49 @@ class RdfPhpTest extends TestCase
             null
         );
     }
+
+    /**
+     * 'foo' is not a valid input for RdfPhp
+     * @expectedException Exception
+     */
+    public function testParseInvalidInput1()
+    {
+        $this->parser->parse($this->graph, 'foo', 'php', null);
+    }
+
+    /**
+     * list of strings is not a valid input for RdfPhp
+     * @expectedException Exception
+     */
+    public function testParseInvalidInput2()
+    {
+        $this->parser->parse($this->graph, array('foo', 'bar'), 'php', null);
+    }
+
+    /**
+     * 1-level dictionary of strings is not a valid input for RdfPhp
+     * @expectedException Exception
+     */
+    public function testParseInvalidInput3()
+    {
+        $this->parser->parse($this->graph, array('foo' => 'bar'), 'php', null);
+    }
+
+    /**
+     * 2-level dictionary of strings is not a valid input for RdfPhp
+     * @expectedException Exception
+     */
+    public function testParseInvalidInput4()
+    {
+        $this->parser->parse($this->graph, array('foo' => array('bar' => 'baz')), 'php', null);
+    }
+
+    /**
+     * 2-level dictionary of incorrect arrays is not a valid input for RdfPhp
+     * @expectedException Exception
+     */
+    public function testParseInvalidInput5()
+    {
+        $this->parser->parse($this->graph, array('foo' => array('bar' => array('baz' => 'buzz'))), 'php', null);
+    }
 }
