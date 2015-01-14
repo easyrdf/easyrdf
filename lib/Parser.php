@@ -49,6 +49,7 @@ class Parser
     private $bnodeMap = array();
 
     /** The current graph to insert triples into */
+    /** @var Graph */
     protected $graph = null;
 
     /** The format of the document currently being parsed */
