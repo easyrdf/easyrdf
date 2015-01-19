@@ -307,20 +307,48 @@ class Client
         $client->resetParameters();
 
         // Tell the server which response formats we can parse
-        $accept = Format::getHttpAcceptHeader(
-            array(
-                'application/sparql-results+json' => 1.0,
-                'application/sparql-results+xml' => 0.8
-            )
+        $sparql_results_types = array(
+            'application/sparql-results+json' => 1.0,
+            'application/sparql-results+xml' => 0.8
         );
-        $client->setHeaders('Accept', $accept);
 
         if ($type == 'update') {
+            // accept anything, as "response body of a […] update request is implementation defined"
+            // @see http://www.w3.org/TR/sparql11-protocol/#update-success
+            $accept = Format::getHttpAcceptHeader($sparql_results_types);
+            $client->setHeaders('Accept', $accept);
+
             $client->setMethod('POST');
             $client->setUri($this->updateUri);
             $client->setRawData($processed_query);
             $client->setHeaders('Content-Type', 'application/sparql-update');
         } elseif ($type == 'query') {
+            $re = '(?:(?:\s*BASE\s*<.*?>\s*)|(?:\s*PREFIX\s+.+:\s*<.*?>\s*))*'.
+                '(CONSTRUCT|SELECT|ASK|DESCRIBE)[\W]';
+
+            $result = null;
+            $matched = mb_eregi($re, $processed_query, $result);
+
+            if (false === $matched or count($result) !== 2) {
+                // non-standard query. is this something non-standard?
+                $query_verb = null;
+            } else {
+                $query_verb = strtoupper($result[1]);
+            }
+
+            if ($query_verb === 'SELECT' or $query_verb === 'ASK') {
+                // only "results"
+                $accept = Format::formatAcceptHeader($sparql_results_types);
+            } elseif ($query_verb === 'CONSTRUCT' or $query_verb === 'DESCRIBE') {
+                // only "graph"
+                $accept = Format::getHttpAcceptHeader();
+            } else {
+                // both
+                $accept = Format::getHttpAcceptHeader($sparql_results_types);
+            }
+
+            $client->setHeaders('Accept', $accept);
+
             $encodedQuery = 'query=' . urlencode($processed_query);
 
             // Use GET if the query is less than 2kB
