@@ -91,7 +91,7 @@ class Format
      *
      * @return string              list of supported MIME types
      */
-    public static function getHttpAcceptHeader($extraTypes = array())
+    public static function getHttpAcceptHeader(array $extraTypes = array())
     {
         $accept = $extraTypes;
         foreach (self::$formats as $format) {
@@ -99,10 +99,21 @@ class Format
                 $accept = array_merge($accept, $format->mimeTypes);
             }
         }
-        arsort($accept, SORT_NUMERIC);
 
-        $acceptStr='';
-        foreach ($accept as $type => $q) {
+        return self::formatAcceptHeader($accept);
+    }
+
+    /**
+     * Convert array of types to Accept header value
+     * @param array $accepted_types
+     * @return string
+     */
+    public static function formatAcceptHeader(array $accepted_types)
+    {
+        arsort($accepted_types, SORT_NUMERIC);
+
+        $acceptStr = '';
+        foreach ($accepted_types as $type => $q) {
             if ($acceptStr) {
                 $acceptStr .= ',';
             }
@@ -112,6 +123,7 @@ class Format
                 $acceptStr .= sprintf("%s;q=%1.1F", $type, $q);
             }
         }
+
         return $acceptStr;
     }
 
