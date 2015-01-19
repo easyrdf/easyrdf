@@ -12,6 +12,7 @@ Enhancements
 ------------
 
 * `$graph->isA()` can take full IRIs as second parameter (only qname was accepted earlier, see issue #215)
+* `Accept` HTTP-header depends on SPARQL-query type (see issues #231, #226)
 
 API changes
 -----------
