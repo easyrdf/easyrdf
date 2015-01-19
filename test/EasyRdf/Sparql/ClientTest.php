@@ -414,4 +414,64 @@ class ClientTest extends TestCase
             $result[0]->o
         );
     }
+
+    /**
+     * Make sure, that different queries have different Accept headers
+     * This is important for compatibility with real-world triplestores
+     * @see https://github.com/njh/easyrdf/issues/226
+     * @see https://github.com/njh/easyrdf/issues/231
+     */
+    public function testAcceptHeaders()
+    {
+        // Graph queries
+        $this->client->addMock(null, null, null);  // we do not care about request-details here
+        $this->sparql->query('CONSTRUCT {?s ?p ?o} WHERE {?s ?p ?o}');
+
+        $types = self::parseAcceptHeader($this->client->getHeader('Accept'));
+        $this->assertContains('text/turtle', $types);
+        $this->assertNotContains('application/sparql-results+json', $types);
+
+        $this->client->addMock(null, null, null);  // we do not care about request-details here
+        $this->sparql->query('DESCRIBE <http://www.example.org/example>');
+
+        $types = self::parseAcceptHeader($this->client->getHeader('Accept'));
+        $this->assertContains('text/turtle', $types);
+        $this->assertNotContains('application/sparql-results+json', $types);
+
+        // Tabular queries
+        $this->client->addMock(null, null, null);  // we do not care about request-details here
+        $this->sparql->query('SELECT * WHERE {?s ?p ?o}');
+
+        $types = self::parseAcceptHeader($this->client->getHeader('Accept'));
+        $this->assertContains('application/sparql-results+json', $types);
+        $this->assertNotContains('text/turtle', $types);
+
+        $this->client->addMock(null, null, null);  // we do not care about request-details here
+        $this->sparql->query('ASK {<http://example.com/foo> <http://example.com/bar> true}');
+
+        $types = self::parseAcceptHeader($this->client->getHeader('Accept'));
+        $this->assertContains('application/sparql-results+json', $types);
+        $this->assertNotContains('text/turtle', $types);
+
+        // Update requests
+        $this->client->addMock(null, null, null);  // we do not care about request-details here
+        $this->sparql->update('INSERT DATA {<http://example.com/foo> <http://example.com/bar> true}');
+
+        $types = self::parseAcceptHeader($this->client->getHeader('Accept'));
+        $this->assertContains('application/sparql-results+json', $types);
+        $this->assertContains('text/turtle', $types);
+    }
+
+    private static function parseAcceptHeader($accept_str)
+    {
+        $types = array();
+
+        $pieces = explode(',', $accept_str);
+        foreach ($pieces as $piece) {
+            list($type,) = explode(';', $piece, 2);
+            $types[] = $type;
+        }
+
+        return $types;
+    }
 }
