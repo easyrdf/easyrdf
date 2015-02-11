@@ -1,3 +1,11 @@
+EasyRdf 0.9.x
+=============
+
+Bug Fixes
+---------
+
+* Timeout is applied to response-times, not only connection-times (see #202)
+
 EasyRdf 0.9.0
 =============
 
