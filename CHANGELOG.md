@@ -1,4 +1,4 @@
-EasyRdf 0.9.x
+EasyRdf 0.9.1
 =============
 
 Bug Fixes
