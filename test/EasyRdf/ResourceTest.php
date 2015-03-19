@@ -1296,8 +1296,8 @@ class ResourceTest extends TestCase
         $this->setupTestGraph();
         $this->resource['rdf:testOffsetSet'] = 'testOffsetSet';
         $this->assertStringEquals(
-          'testOffsetSet',
-          $this->resource->get('rdf:testOffsetSet')
+            'testOffsetSet',
+            $this->resource->get('rdf:testOffsetSet')
         );
     }
 
@@ -1307,8 +1307,8 @@ class ResourceTest extends TestCase
         $this->resource->add('rdf:testOffsetUnset', 'testOffsetUnset');
         unset($this->resource['rdf:testMagicUnset']);
         $this->assertStringEquals(
-          null,
-          $this->resource->get('rdf:testMagicUnset')
+            null,
+            $this->resource->get('rdf:testMagicUnset')
         );
     }
 }
