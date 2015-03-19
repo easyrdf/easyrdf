@@ -43,7 +43,7 @@ namespace EasyRdf;
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class Resource
+class Resource implements \ArrayAccess
 {
     /** The URI for this resource */
     protected $uri = null;
@@ -753,5 +753,76 @@ class Resource
     public function __unset($name)
     {
         return $this->graph->delete($this->uri, $name);
+    }
+
+    /**
+     * Whether a offset exists
+     *
+     * The return value will be casted to boolean if non-boolean was returned.
+     *
+     * Example:
+     *   if(isset($resource['rdfs:label'])) { }
+     *
+     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
+     *
+     * @param mixed $offset An offset to check for.
+     *
+     * @return boolean true on success or false on failure.
+     */
+    public function offsetExists($offset)
+    {
+        return $this->__isset($offset);
+    }
+
+    /**
+     * Offset to retrieve
+     *
+     * Example:
+     *   $label = $resource['rdfs:label'];
+     *
+     * @link http://php.net/manual/en/arrayaccess.offsetget.php
+     *
+     * @param mixed $offset The offset to retrieve.
+     *
+     * @return mixed Can return all value types.
+     */
+    public function offsetGet($offset)
+    {
+        return $this->__get($offset);
+    }
+
+    /**
+     * Offset to set
+     *
+     * Example:
+     *   $resource['rdfs:label'] = 'label';
+     *
+     * @link http://php.net/manual/en/arrayaccess.offsetset.php
+     *
+     * @param mixed The offset to assign the value to.
+     * @param mixed $value The value to set.
+     *
+     * @return void
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->__set($offset, $value);
+    }
+
+    /**
+     * Offset to unset
+     *
+     * Example:
+     *   unset($resource['rdfs:label']);
+     *
+     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
+     *
+     * @param mixed $offset  The offset to unset.
+     *
+     * @return void
+     */
+    public function offsetUnset($offset)
+    {
+        $this->__unset($offset);
     }
 }
