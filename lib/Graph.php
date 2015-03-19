@@ -1110,20 +1110,24 @@ class Graph
 
         $count = 0;
         if (isset($this->index[$resource][$property])) {
+            $newValues = array();
             foreach ($this->index[$resource][$property] as $k => $v) {
                 if (!$value or $v == $value) {
-                    unset($this->index[$resource][$property][$k]);
                     $count++;
                     if ($v['type'] == 'uri' or $v['type'] == 'bnode') {
                         $this->deleteInverse($v['value'], $property, $resource);
                     }
+                } else {
+                    $newValues[] = $v;
                 }
             }
 
             // Clean up the indexes - remove empty properties and resources
             if ($count) {
-                if (count($this->index[$resource][$property]) == 0) {
+                if (count($newValues) == 0) {
                     unset($this->index[$resource][$property]);
+                } else {
+                    $this->index[$resource][$property] = $newValues;
                 }
                 if (count($this->index[$resource]) == 0) {
                     unset($this->index[$resource]);
