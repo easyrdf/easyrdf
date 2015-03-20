@@ -1274,4 +1274,50 @@ class ResourceTest extends TestCase
             $this->resource->get('rdf:testMagicUnset')
         );
     }
+
+    public function testOffsetExists()
+    {
+        $this->setupTestGraph();
+        $this->assertFalse(isset($this->resource['rdf:testOffsetExists']));
+        $this->resource->add('rdf:testOffsetExists', 'testOffsetExists');
+        $this->assertTrue(isset($this->resource['rdf:testOffsetExists']));
+    }
+
+    public function testOffsetGet()
+    {
+        $this->setupTestGraph();
+        $this->assertStringEquals(null, $this->resource['rdf:testOffsetGet']);
+        $this->resource->add('rdf:testOffsetGet', 'testOffsetGet');
+        $this->assertStringEquals('testOffsetGet', $this->resource['rdf:testOffsetGet']);
+    }
+
+    public function testOffsetGetNonExistent()
+    {
+        $this->setupTestGraph();
+        $this->assertStringEquals(
+            null,
+            $this->resource['rdf:foobar']
+        );
+    }
+
+    public function testOffsetSet()
+    {
+        $this->setupTestGraph();
+        $this->resource['rdf:testOffsetSet'] = 'testOffsetSet';
+        $this->assertStringEquals(
+            'testOffsetSet',
+            $this->resource->get('rdf:testOffsetSet')
+        );
+    }
+
+    public function testOffsetUnset()
+    {
+        $this->setupTestGraph();
+        $this->resource->add('rdf:testOffsetUnset', 'testOffsetUnset');
+        unset($this->resource['rdf:testMagicUnset']);
+        $this->assertStringEquals(
+            null,
+            $this->resource->get('rdf:testMagicUnset')
+        );
+    }
 }
