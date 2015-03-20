@@ -140,10 +140,10 @@ composer.phar:
 	curl -s -z composer.phar -o composer.phar http://getcomposer.org/composer.phar
 
 composer-install: composer.phar
-	$(PHP) composer.phar $(COMPOSER_FLAGS) install --dev
+	$(PHP) composer.phar $(COMPOSER_FLAGS) install
 
 composer-update: clean composer.phar
-	$(PHP) composer.phar $(COMPOSER_FLAGS) update --dev
+	$(PHP) composer.phar $(COMPOSER_FLAGS) update
 
 vendor/autoload.php: composer-install
 vendor/bin/phpunit: composer-install
