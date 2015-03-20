@@ -1278,36 +1278,38 @@ class ResourceTest extends TestCase
     public function testOffsetExists()
     {
         $this->setupTestGraph();
-        $this->assertFalse(isset($this->resource['rdf:testOffsetExists']));
+        $this->assertArrayNotHasKey('rdf:testOffsetExists', $this->resource);
+
         $this->resource->add('rdf:testOffsetExists', 'testOffsetExists');
-        $this->assertTrue(isset($this->resource['rdf:testOffsetExists']));
+        $this->assertArrayHasKey('rdf:testOffsetExists', $this->resource);
     }
 
     public function testOffsetGet()
     {
         $this->setupTestGraph();
-        $this->assertStringEquals(null, $this->resource['rdf:testOffsetGet']);
+        $this->assertNull($this->resource['rdf:testOffsetGet']);
+
         $this->resource->add('rdf:testOffsetGet', 'testOffsetGet');
         $this->assertStringEquals('testOffsetGet', $this->resource['rdf:testOffsetGet']);
+
+        $this->resource->add('rdf:testOffsetGet', 'testOffsetGet2');
+        $this->assertStringEquals('testOffsetGet', $this->resource['rdf:testOffsetGet']);
+
+        $this->resource->delete('rdf:testOffsetGet', 'testOffsetGet');
+        $this->assertStringEquals('testOffsetGet2', $this->resource['rdf:testOffsetGet']);
     }
 
     public function testOffsetGetNonExistent()
     {
         $this->setupTestGraph();
-        $this->assertStringEquals(
-            null,
-            $this->resource['rdf:foobar']
-        );
+        $this->assertNull($this->resource['rdf:foobar']);
     }
 
     public function testOffsetSet()
     {
         $this->setupTestGraph();
         $this->resource['rdf:testOffsetSet'] = 'testOffsetSet';
-        $this->assertStringEquals(
-            'testOffsetSet',
-            $this->resource->get('rdf:testOffsetSet')
-        );
+        $this->assertStringEquals('testOffsetSet', $this->resource->get('rdf:testOffsetSet'));
     }
 
     public function testOffsetUnset()
@@ -1315,9 +1317,6 @@ class ResourceTest extends TestCase
         $this->setupTestGraph();
         $this->resource->add('rdf:testOffsetUnset', 'testOffsetUnset');
         unset($this->resource['rdf:testMagicUnset']);
-        $this->assertStringEquals(
-            null,
-            $this->resource->get('rdf:testMagicUnset')
-        );
+        $this->assertNull($this->resource->get('rdf:testMagicUnset'));
     }
 }
