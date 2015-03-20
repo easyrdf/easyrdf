@@ -1308,7 +1308,7 @@ class GraphTest extends TestCase
         $this->assertStringEquals('Joe', $graph->get('http://www.example.com/joe#me', 'foaf:name'));
     }
 
-    public function testAddPropertriesInvalidResourceClass()
+    public function testAddPropertiesInvalidResourceClass()
     {
         $this->setExpectedException(
             'InvalidArgumentException',
