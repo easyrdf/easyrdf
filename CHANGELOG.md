@@ -26,6 +26,7 @@ Bug Fixes
 * Unicode-strings are properly encoded in n-triples documents (see #219)
 * `RdfPhp` parser validates its input (see #227)
 * Timeout is applied to response-times, not only connection-times (see #202)
+* `$graph->get()` is reliable after `$graph->delete()` now (see #239, #241)
 
 EasyRdf 0.9.0
 =============

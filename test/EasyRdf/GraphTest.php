@@ -1319,6 +1319,30 @@ class GraphTest extends TestCase
         $graph->add($invalidResource, 'foaf:name', 'value');
     }
 
+    /**
+     * @see https://github.com/njh/easyrdf/issues/239
+     */
+    public function testDeleteAndGetProperty()
+    {
+        $graph = new Graph();
+        $graph->add('http://www.example.com/joe#me', 'rdf:test', 'Test A');
+        $graph->add('http://www.example.com/joe#me', 'rdf:test', 'Test B');
+        $graph->add('http://www.example.com/joe#me', 'rdf:test', 'Test C');
+        $graph->add('http://www.example.com/joe#me', 'rdf:test', 'Test D');
+
+        $graph->delete('http://www.example.com/joe#me', 'rdf:test', 'Test A');
+        $result = $graph->get('http://www.example.com/joe#me', 'rdf:test');
+        $this->assertStringEquals("Test B", $result);
+
+        $graph->delete('http://www.example.com/joe#me', 'rdf:test', 'Test B');
+        $result = $graph->get('http://www.example.com/joe#me', 'rdf:test');
+        $this->assertStringEquals("Test C", $result);
+
+        $graph->delete('http://www.example.com/joe#me', 'rdf:test');
+        $result = $graph->get('http://www.example.com/joe#me', 'rdf:test');
+        $this->assertEmpty($result);
+    }
+
     public function testAddZero()
     {
         $this->assertNull($this->graph->get($this->uri, 'rdf:test2'));
