@@ -1295,8 +1295,8 @@ class ResourceTest extends TestCase
     {
         $this->setupTestGraph();
         $this->assertStringEquals(
-          null,
-          $this->resource['rdf:foobar']
+            null,
+            $this->resource['rdf:foobar']
         );
     }
 
