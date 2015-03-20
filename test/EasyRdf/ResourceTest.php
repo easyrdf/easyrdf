@@ -1291,6 +1291,15 @@ class ResourceTest extends TestCase
         $this->assertStringEquals('testOffsetGet', $this->resource['rdf:testOffsetGet']);
     }
 
+    public function testOffsetGetNonExistent()
+    {
+        $this->setupTestGraph();
+        $this->assertStringEquals(
+          null,
+          $this->resource['rdf:foobar']
+        );
+    }
+
     public function testOffsetSet()
     {
         $this->setupTestGraph();
