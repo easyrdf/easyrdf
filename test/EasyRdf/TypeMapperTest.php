@@ -275,5 +275,15 @@ class TypeMapperTest extends TestCase
         $joe = $graph->resource('http://www.example.com/joe#me');
         $this->assertClass('EasyRdf\MyTypeClass', $joe);
         $this->assertTrue($joe->myMethod());
+
+        $fooCompany = $graph->resource('http://www.example.com/fooCompany');
+        
+        $this->assertClass('EasyRdf\Resource', $fooCompany);
+        
+        TypeMapper::setDefaultResourceClass('EasyRdf\MyTypeClass');
+        
+        $joesFoaf = $graph->resource('http://www.example.com/joe#me');
+        $this->assertClass('EasyRdf\MyTypeClass', $joesFoaf);
+        $this->assertTrue($joesFoaf->myMethod());
     }
 }
