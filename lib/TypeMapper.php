@@ -151,7 +151,7 @@ class TypeMapper
         }
 
         $ancestors = class_parents($class);
-        if ( ($class != 'EasyRdf\Resource') && (empty($ancestors) || !in_array('EasyRdf\Resource', $ancestors))) {
+        if (($class != 'EasyRdf\Resource') && (empty($ancestors) || !in_array('EasyRdf\Resource', $ancestors))) {
             throw new \InvalidArgumentException(
                 "Given class should have EasyRdf\\Resource as an ancestor"
             );
