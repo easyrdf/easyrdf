@@ -182,7 +182,7 @@ class Graph
         ) {
             return 'EasyRdf\Collection';
         }
-        return 'EasyRdf\Resource';
+        return TypeMapper::getDefaultResourceClass();
     }
 
     /**

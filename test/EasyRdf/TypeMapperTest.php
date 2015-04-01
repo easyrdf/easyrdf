@@ -212,6 +212,57 @@ class TypeMapperTest extends TestCase
         TypeMapper::delete(array());
     }
 
+    public function testSetNonExtendingDefaultResourceClass()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Given class should have EasyRdf\Resource as an ancestor'
+        );
+        TypeMapper::setDefaultResourceClass('EasyRdf\Graph');
+    }
+
+    public function testSetBaseDefaultResourceClass()
+    {
+        TypeMapper::setDefaultResourceClass('EasyRdf\Resource');
+        $this->assertEquals('EasyRdf\Resource', TypeMapper::getDefaultResourceClass());
+    }
+
+    public function testSetDefaultResourceClass()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Given class should be an existing class'
+        );
+        TypeMapper::setDefaultResourceClass('FooBar\Resource');
+    }
+
+    public function testSetDefaultResourceClassEmptyString()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string and cannot be null or empty'
+        );
+        TypeMapper::setDefaultResourceClass('');
+    }
+
+    public function testSetDefaultResourceClassNull()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string and cannot be null or empty'
+        );
+        TypeMapper::setDefaultResourceClass(null);
+    }
+
+    public function testSetDefaultResourceClassNonString()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string and cannot be null or empty'
+        );
+        TypeMapper::setDefaultResourceClass(array());
+    }
+
     public function testInstantiate()
     {
         TypeMapper::set('foaf:Person', 'EasyRdf\MyTypeClass');
