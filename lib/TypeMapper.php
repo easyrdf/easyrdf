@@ -48,6 +48,9 @@ class TypeMapper
     /** The type map registry */
     private static $map = array();
 
+    /** Default resource class */
+    private static $defaultResourceClass = 'EasyRdf\Resource';
+
     /** Get the registered class for an RDF type
      *
      * If a type is not registered, then this method will return null.
