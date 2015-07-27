@@ -127,10 +127,10 @@ class RdfNamespace
         $lb = strlen($b);
         if ($la == $lb) {
             // same length, sort where "#" comes before "/"
-            if (substr($a,-1) == '#') {
+            if (substr($a, -1) == '#') {
                 return 1;
             }
-            if (substr($b,-1) == '#') {
+            if (substr($b, -1) == '#') {
                 return -1;
             }
             return 0;
