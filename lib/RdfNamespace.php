@@ -106,6 +106,40 @@ class RdfNamespace
     /** Counter for numbering anonymous namespaces */
     private static $anonymousNamespaceCount = 0;
 
+
+    /**
+      * User-defined sort function to sort order namespaces by length
+      * This fixes the following bug:
+      *    xmlns:ns0 = "http://example.com/foo/"
+      *    xmlns:ns1 = "http://example.com/foo/bar#"
+      *
+      *   "<ns1:bug>" will expand into 
+      *   "http://example.com/foo/bar#bug" that will shorten into
+      *   "<ns0:bar#bug>" wich is non-compliant XML!!!
+      *
+      *   See https://github.com/njh/easyrdf/issues/115
+      * 
+      * @return <-1,0,1> to sort namespaces using uasort()
+      */
+    private static function sortNamespaces($a, $b)
+    {
+        $la = strlen($a);
+        $lb = strlen($b);
+        if ($la == $lb) {
+            // same length, sort where "#" comes before "/"
+            if (substr($a,-1) == '#') {
+                return 1;
+            }
+            if (substr($b,-1) == '#') {
+                return -1;
+            }
+            return 0;
+        } else {
+            // sort by length
+            return $lb - $la;
+        }
+    }
+
     /**
       * Return all the namespaces registered
       *
@@ -127,6 +161,7 @@ class RdfNamespace
     public static function resetNamespaces()
     {
         self::$namespaces = self::$initial_namespaces;
+        uasort(self::$namespaces, array('self','sortNamespaces'));
     }
 
     /**
@@ -221,6 +256,7 @@ class RdfNamespace
         $namespaces = self::namespaces();
         $namespaces[$prefix] = $long;
 
+        uasort($namespaces, array('self','sortNamespaces'));
         self::$namespaces = $namespaces;
     }
 
@@ -300,6 +336,7 @@ class RdfNamespace
             self::delete('ns'.(self::$anonymousNamespaceCount-1));
             self::$anonymousNamespaceCount--;
         }
+        uasort(self::$namespaces, array('self','sortNamespaces'));
     }
 
     /**
