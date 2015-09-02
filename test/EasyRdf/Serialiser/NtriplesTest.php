@@ -193,6 +193,18 @@ class NtriplesTest extends TestCase
         );
     }
 
+    public function testSerialiseBackslash()
+    {
+        $joe = $this->graph->resource('http://www.example.com/joe#me');
+        $joe->set('foaf:nick', '\\backslash');
+        $this->assertSame(
+            "<http://www.example.com/joe#me> ".
+            "<http://xmlns.com/foaf/0.1/nick> ".
+            '"\\\\backslash" .'."\n",
+            $this->serialiser->serialise($this->graph, 'ntriples')
+        );
+    }
+
     public function testSerialiseBNode()
     {
         $joe = $this->graph->resource('http://www.example.com/joe#me');

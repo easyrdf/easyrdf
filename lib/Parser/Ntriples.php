@@ -146,7 +146,7 @@ class Ntriples extends Parser
         } elseif (preg_match('/"(.*)"/', $obj, $matches)) {
             return array('type' => 'literal', 'value' => $this->unescapeString($matches[1]));
         } elseif (preg_match('/<([^<>]+)>/', $obj, $matches)) {
-            return array('type' => 'uri', 'value' => $matches[1]);
+            return array('type' => 'uri', 'value' => $this->unescapeString($matches[1]));
         } elseif (preg_match('/_:([A-Za-z0-9]*)/', $obj, $matches)) {
             if (empty($matches[1])) {
                 return array(
