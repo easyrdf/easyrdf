@@ -184,6 +184,35 @@ class NtriplesTest extends TestCase
         $this->assertSame("\x0A", $b->getValue());
     }
 
+    public function testParseUnicodeObjectUri()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            '<http://example.com/a> <http://example.com/b> <http://example.com/Iv\u00E1n> .',
+            'ntriples',
+            null
+        );
+        $this->assertSame(1, $count);
+
+        $a = $this->graph->resource('http://example.com/a');
+        $b = $a->get('<http://example.com/b>');
+        $this->assertSame("http://example.com/Iván", $b->getUri());
+    }
+
+    public function testParseUnicodeSubjectUri()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            '<http://example.com/Iv\u00E1n> <http://example.com/b> <http://example.com/c> .',
+            'ntriples',
+            null
+        );
+        $this->assertSame(1, $count);
+
+        $a = $this->graph->resource('http://example.com/Iván');
+        $this->assertNotNull($a);
+    }
+
     public function testParseUnicode2()
     {
         $count = $this->parser->parse(
