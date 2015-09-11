@@ -83,6 +83,16 @@ class Turtle extends Serialiser
     {
         if (preg_match('/[\t\n\r]/', $value)) {
             $escaped = str_replace(array('\\', '"""'), array('\\\\', '\\"""'), $value);
+
+            // Check if the last character is a trailing double quote, if so, escape it.
+            $pos = strrpos($escaped, '"');
+
+            if ($pos !== false && $pos + 1 == strlen($escaped)) {
+                $escaped = substr($escaped, 0, -1);
+
+                $escaped .= '\"';
+            }
+
             return '"""'.$escaped.'"""';
         } else {
             $escaped = str_replace(array('\\', '"'), array('\\\\', '\\"'), $value);
