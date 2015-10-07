@@ -535,6 +535,19 @@ class TurtleTest extends TestCase
         );
     }
 
+    public function testSerialiseMultiLineEscaped3()
+    {
+        $joe = $this->graph->resource('http://example.com/joe#me');
+        $joe->set('foaf:name', "\t".'""Doe"');
+
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
+        $this->assertSame(
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
+            "<http://example.com/joe#me> foaf:name \"\"\"\t\"\"Doe\\\"\"\"\" .\n",
+            $turtle
+        );
+    }
+
     public function testSerialiseBooleanDatatype()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
