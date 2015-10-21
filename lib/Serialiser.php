@@ -88,7 +88,7 @@ abstract class Serialiser
      * property is returned instead.
      * @ignore
      */
-    protected function reversePropertyCount($resource)
+    protected function reversePropertyCount(Resource $resource)
     {
         $properties = $resource->reversePropertyUris();
         $count = count($properties);
