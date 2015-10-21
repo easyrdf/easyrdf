@@ -61,13 +61,6 @@ class GraphViz extends Serialiser
     private $attributes = array('charset' => 'utf-8');
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * Set the path to the GraphViz 'dot' command
      *
      * Default is to search PATH for the command 'dot'.
