@@ -43,7 +43,7 @@ namespace EasyRdf;
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class Serialiser
+abstract class Serialiser
 {
     protected $prefixes = array();
 
@@ -108,10 +108,5 @@ class Serialiser
      * Sub-classes must follow this protocol
      * @ignore
      */
-    public function serialise($graph, $format, array $options = array())
-    {
-        throw new Exception(
-            "This method should be overridden by sub-classes."
-        );
-    }
+    abstract public function serialise($graph, $format, array $options = array());
 }
