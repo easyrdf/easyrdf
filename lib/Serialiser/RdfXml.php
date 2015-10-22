@@ -205,7 +205,7 @@ class RdfXml extends Serialiser
      */
     public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
 
         if ($format != 'rdfxml') {
             throw new Exception(

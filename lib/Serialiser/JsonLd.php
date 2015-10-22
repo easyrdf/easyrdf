@@ -70,7 +70,7 @@ class JsonLd extends Serialiser
      */
     public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
 
         if ($format != 'jsonld') {
             throw new Exception(__CLASS__.' does not support: '.$format);

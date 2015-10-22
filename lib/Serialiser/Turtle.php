@@ -365,7 +365,7 @@ class Turtle extends Serialiser
      */
     public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
 
         if ($format != 'turtle' and $format != 'n3') {
             throw new Exception(
