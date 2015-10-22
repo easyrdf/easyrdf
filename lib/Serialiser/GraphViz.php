@@ -252,7 +252,7 @@ class GraphViz extends Serialiser
      *
      * @ignore
      */
-    protected function serialiseDot($graph)
+    protected function serialiseDot(Graph $graph)
     {
         $result = "digraph {\n";
 
@@ -353,7 +353,7 @@ class GraphViz extends Serialiser
      *
      * @ignore
      */
-    public function renderImage($graph, $format = 'png')
+    public function renderImage(Graph $graph, $format = 'png')
     {
         $dot = $this->serialiseDot($graph);
 
