@@ -61,7 +61,7 @@ class Arc extends RdfPhp
     public function __construct()
     {
         if (!class_exists('ARC2')) {
-            throw new \EasyRdf\Exception('ARC2 dependency is not installed');
+            throw new Exception('ARC2 dependency is not installed');
         }
     }
 
