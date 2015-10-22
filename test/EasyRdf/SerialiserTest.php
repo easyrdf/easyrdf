@@ -52,7 +52,7 @@ class SerialiserTest extends TestCase
 {
     private $graph;
     private $resource;
-    /** @var MockSerialiser */
+    /** @var Serialiser */
     private $serialiser;
 
     /**
