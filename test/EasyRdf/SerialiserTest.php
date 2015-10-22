@@ -40,7 +40,7 @@ require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class MockSerialiser extends Serialiser
 {
-    public function serialise($graph, $format, array $options = array())
+    public function serialise(Graph $graph, $format, array $options = array())
     {
         parent::checkSerialiseParams($graph, $format);
         // Serialising goes here
@@ -78,33 +78,6 @@ class SerialiserTest extends TestCase
         $this->assertTrue(
             $this->serialiser->serialise($this->graph, $format)
         );
-    }
-
-    public function testSerialiseNullGraph()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$graph should be an EasyRdf\Graph object and cannot be null'
-        );
-        $this->serialiser->serialise(null, 'php');
-    }
-
-    public function testSerialiseNonObjectGraph()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$graph should be an EasyRdf\Graph object and cannot be null'
-        );
-        $this->serialiser->serialise('string', 'php');
-    }
-
-    public function testSerialiseNonGraph()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$graph should be an EasyRdf\Graph object and cannot be null'
-        );
-        $this->serialiser->serialise($this->resource, 'php');
     }
 
     public function testSerialiseNullFormat()

@@ -364,6 +364,7 @@ class GraphViz extends Serialiser
         );
     }
 
+
     /**
      * Serialise an EasyRdf\Graph into a GraphViz dot document.
      *
@@ -373,10 +374,10 @@ class GraphViz extends Serialiser
      * @param string $format The name of the format to convert to.
      * @param array  $options
      *
-     * @throws Exception
      * @return string The RDF in the new desired format.
+     * @throws Exception
      */
-    public function serialise($graph, $format, array $options = array())
+    public function serialise(Graph $graph, $format, array $options = array())
     {
         parent::checkSerialiseParams($graph, $format);
 
