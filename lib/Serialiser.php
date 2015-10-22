@@ -61,14 +61,8 @@ abstract class Serialiser
      * Check and cleanup parameters passed to serialise() method
      * @ignore
      */
-    protected function checkSerialiseParams(&$graph, &$format)
+    protected function checkSerialiseParams(&$format)
     {
-        if (is_null($graph) or !is_object($graph) or !($graph instanceof Graph)) {
-            throw new \InvalidArgumentException(
-                '$graph should be an EasyRdf\Graph object and cannot be null'
-            );
-        }
-
         if (is_null($format) or $format == '') {
             throw new \InvalidArgumentException(
                 "\$format cannot be null or empty"

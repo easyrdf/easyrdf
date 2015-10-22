@@ -63,7 +63,7 @@ class Json extends RdfPhp
      */
     public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
 
         if ($format != 'json') {
             throw new Exception(

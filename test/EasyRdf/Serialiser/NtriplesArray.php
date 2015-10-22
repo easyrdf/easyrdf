@@ -80,7 +80,7 @@ class NtriplesArray extends Ntriples
      */
     public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
 
         $triples = array();
         foreach ($graph->toRdfPhp() as $resource => $properties) {

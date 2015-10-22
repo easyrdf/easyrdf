@@ -42,7 +42,7 @@ class MockSerialiser extends Serialiser
 {
     public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
         // Serialising goes here
         return true;
     }
