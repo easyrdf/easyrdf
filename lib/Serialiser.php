@@ -71,7 +71,7 @@ abstract class Serialiser
 
         if (is_null($format) or $format == '') {
             throw new \InvalidArgumentException(
-                "\$format cannot be null or empty"
+                '$format cannot be null or empty'
             );
         } elseif (is_object($format) and ($format instanceof Format)) {
             $format = $format->getName();
