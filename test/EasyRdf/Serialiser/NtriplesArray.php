@@ -35,7 +35,9 @@ namespace EasyRdf\Serialiser;
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
+use EasyRdf\Exception;
 use EasyRdf\Format;
+use EasyRdf\Graph;
 
 /**
  * Class to serialise an EasyRdf\Graph to an array of triples.
@@ -65,16 +67,18 @@ class NtriplesArray extends Ntriples
         }
     }
 
+
     /**
      * Serialise an EasyRdf\Graph into an array of N-Triples objects
      *
-     * @param \EasyRdf\Graph  $graph   An EasyRdf\Graph object.
-     * @param string          $format  The name of the format to convert to.
-     * @param array           $options
+     * @param Graph  $graph  An EasyRdf\Graph object.
+     * @param string $format The name of the format to convert to.
+     * @param array  $options
      *
      * @return string The RDF in the new desired format.
+     * @throws Exception
      */
-    public function serialise($graph, $format, array $options = array())
+    public function serialise(Graph $graph, $format, array $options = array())
     {
         parent::checkSerialiseParams($graph, $format);
 
