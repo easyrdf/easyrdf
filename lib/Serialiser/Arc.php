@@ -88,6 +88,7 @@ class Arc extends RdfPhp
             );
         }
 
+        /** @var \ARC2_RDFSerializer $serialiser */
         $serialiser = \ARC2::getSer($className);
         if ($serialiser) {
             return $serialiser->getSerializedIndex(
