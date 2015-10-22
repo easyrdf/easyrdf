@@ -50,7 +50,9 @@ class MockSerialiser extends Serialiser
 
 class SerialiserTest extends TestCase
 {
+    /** @var Graph */
     private $graph;
+    /** @var Resource */
     private $resource;
     /** @var Serialiser */
     private $serialiser;
