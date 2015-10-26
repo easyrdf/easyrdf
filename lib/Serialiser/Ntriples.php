@@ -129,7 +129,7 @@ class Ntriples extends Serialiser
         } elseif ($no < 92) {
             return $c;                            /* #x23-#x5B (35-91) */
         } elseif ($no == 92) {
-            return '\\';                          /* #x5C (92) */
+            return '\\\\'; // double backslash    /* #x5C (92) */
         } elseif ($no < 127) {
             return $c;                            /* #x5D-#x7E (93-126) */
         } elseif ($no < 65536) {
