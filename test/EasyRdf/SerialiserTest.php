@@ -142,14 +142,4 @@ class SerialiserTest extends TestCase
         );
         $this->serialiser->serialise($this->graph, 1);
     }
-
-    public function testSerialiseUndefined()
-    {
-        $this->setExpectedException(
-            'EasyRdf\Exception',
-            'This method should be overridden by sub-classes.'
-        );
-        $serialiser = new Serialiser();
-        $serialiser->serialise($this->graph, 'format');
-    }
 }

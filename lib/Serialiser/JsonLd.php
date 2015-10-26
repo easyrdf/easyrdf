@@ -54,8 +54,6 @@ class JsonLd extends Serialiser
         if (!class_exists('\ML\JsonLD\JsonLD')) {
             throw new \LogicException('Please install "ml/json-ld" dependency to use JSON-LD serialisation');
         }
-
-        parent::__construct();
     }
 
     /**
