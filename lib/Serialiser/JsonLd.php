@@ -36,6 +36,7 @@ namespace EasyRdf\Serialiser;
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Exception;
+use EasyRdf\Graph;
 use EasyRdf\Serialiser;
 
 use ML\JsonLD as LD;
@@ -54,21 +55,22 @@ class JsonLd extends Serialiser
         if (!class_exists('\ML\JsonLD\JsonLD')) {
             throw new \LogicException('Please install "ml/json-ld" dependency to use JSON-LD serialisation');
         }
-
-        parent::__construct();
     }
 
+
     /**
-     * @param \EasyRdf\Graph  $graph
-     * @param string          $format
-     * @param array           $options
+     * Serialise an EasyRdf\Graph into a JSON-LD document.
      *
+     * @param Graph  $graph  An EasyRdf\Graph object.
+     * @param string $format The name of the format to convert to.
+     * @param array  $options
+     *
+     * @return string The RDF in the new desired format.
      * @throws Exception
-     * @return string
      */
-    public function serialise($graph, $format, array $options = array())
+    public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
 
         if ($format != 'jsonld') {
             throw new Exception(__CLASS__.' does not support: '.$format);

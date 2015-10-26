@@ -40,9 +40,9 @@ require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class MockSerialiser extends Serialiser
 {
-    public function serialise($graph, $format, array $options = array())
+    public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
         // Serialising goes here
         return true;
     }
@@ -50,9 +50,11 @@ class MockSerialiser extends Serialiser
 
 class SerialiserTest extends TestCase
 {
+    /** @var Graph */
     private $graph;
+    /** @var Resource */
     private $resource;
-    /** @var MockSerialiser */
+    /** @var Serialiser */
     private $serialiser;
 
     /**
@@ -78,33 +80,6 @@ class SerialiserTest extends TestCase
         $this->assertTrue(
             $this->serialiser->serialise($this->graph, $format)
         );
-    }
-
-    public function testSerialiseNullGraph()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$graph should be an EasyRdf\Graph object and cannot be null'
-        );
-        $this->serialiser->serialise(null, 'php');
-    }
-
-    public function testSerialiseNonObjectGraph()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$graph should be an EasyRdf\Graph object and cannot be null'
-        );
-        $this->serialiser->serialise('string', 'php');
-    }
-
-    public function testSerialiseNonGraph()
-    {
-        $this->setExpectedException(
-            'InvalidArgumentException',
-            '$graph should be an EasyRdf\Graph object and cannot be null'
-        );
-        $this->serialiser->serialise($this->resource, 'php');
     }
 
     public function testSerialiseNullFormat()
@@ -141,15 +116,5 @@ class SerialiserTest extends TestCase
             '$format should be a string or an EasyRdf\Format object'
         );
         $this->serialiser->serialise($this->graph, 1);
-    }
-
-    public function testSerialiseUndefined()
-    {
-        $this->setExpectedException(
-            'EasyRdf\Exception',
-            'This method should be overridden by sub-classes.'
-        );
-        $serialiser = new Serialiser();
-        $serialiser->serialise($this->graph, 'format');
     }
 }

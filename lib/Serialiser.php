@@ -43,13 +43,9 @@ namespace EasyRdf;
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
-class Serialiser
+abstract class Serialiser
 {
     protected $prefixes = array();
-
-    public function __construct()
-    {
-    }
 
     /**
      * Keep track of the prefixes used while serialising
@@ -65,17 +61,11 @@ class Serialiser
      * Check and cleanup parameters passed to serialise() method
      * @ignore
      */
-    protected function checkSerialiseParams(&$graph, &$format)
+    protected function checkSerialiseParams(&$format)
     {
-        if (is_null($graph) or !is_object($graph) or !($graph instanceof Graph)) {
-            throw new \InvalidArgumentException(
-                '$graph should be an EasyRdf\Graph object and cannot be null'
-            );
-        }
-
         if (is_null($format) or $format == '') {
             throw new \InvalidArgumentException(
-                "\$format cannot be null or empty"
+                '$format cannot be null or empty'
             );
         } elseif (is_object($format) and ($format instanceof Format)) {
             $format = $format->getName();
@@ -92,7 +82,7 @@ class Serialiser
      * property is returned instead.
      * @ignore
      */
-    protected function reversePropertyCount($resource)
+    protected function reversePropertyCount(Resource $resource)
     {
         $properties = $resource->reversePropertyUris();
         $count = count($properties);
@@ -104,14 +94,15 @@ class Serialiser
         }
     }
 
+
     /**
-     * Sub-classes must follow this protocol
-     * @ignore
+     * Serialise an EasyRdf\Graph into desired format.
+     *
+     * @param Graph         $graph  An EasyRdf\Graph object.
+     * @param Format|string $format The name of the format to convert to.
+     * @param array         $options
+     *
+     * @return string The RDF in the new desired format.
      */
-    public function serialise($graph, $format, array $options = array())
-    {
-        throw new Exception(
-            "This method should be overridden by sub-classes."
-        );
-    }
+    abstract public function serialise(Graph $graph, $format, array $options = array());
 }
