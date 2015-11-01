@@ -61,14 +61,8 @@ abstract class Serialiser
      * Check and cleanup parameters passed to serialise() method
      * @ignore
      */
-    protected function checkSerialiseParams(&$graph, &$format)
+    protected function checkSerialiseParams(&$format)
     {
-        if (is_null($graph) or !is_object($graph) or !($graph instanceof Graph)) {
-            throw new \InvalidArgumentException(
-                '$graph should be an EasyRdf\Graph object and cannot be null'
-            );
-        }
-
         if (is_null($format) or $format == '') {
             throw new \InvalidArgumentException(
                 '$format cannot be null or empty'
@@ -100,9 +94,15 @@ abstract class Serialiser
         }
     }
 
+
     /**
-     * Sub-classes must follow this protocol
-     * @ignore
+     * Serialise an EasyRdf\Graph into desired format.
+     *
+     * @param Graph         $graph  An EasyRdf\Graph object.
+     * @param Format|string $format The name of the format to convert to.
+     * @param array         $options
+     *
+     * @return string The RDF in the new desired format.
      */
-    abstract public function serialise($graph, $format, array $options = array());
+    abstract public function serialise(Graph $graph, $format, array $options = array());
 }

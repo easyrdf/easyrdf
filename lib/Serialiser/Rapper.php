@@ -36,6 +36,7 @@ namespace EasyRdf\Serialiser;
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Exception;
+use EasyRdf\Graph;
 use EasyRdf\Utils;
 
 /**
@@ -71,18 +72,20 @@ class Rapper extends Ntriples
         }
     }
 
+
     /**
      * Serialise an EasyRdf\Graph to the RDF format of choice.
      *
-     * @param \EasyRdf\Graph $graph   An EasyRdf\Graph object.
-     * @param string         $format  The name of the format to convert to.
+     * @param \EasyRdf\Graph $graph  An EasyRdf\Graph object.
+     * @param string         $format The name of the format to convert to.
      * @param array          $options
      *
      * @return string The RDF in the new desired format.
+     * @throws Exception
      */
-    public function serialise($graph, $format, array $options = array())
+    public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
 
         $ntriples = parent::serialise($graph, 'ntriples');
 

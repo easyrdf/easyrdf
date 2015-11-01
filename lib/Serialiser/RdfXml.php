@@ -196,17 +196,16 @@ class RdfXml extends Serialiser
     /**
      * Method to serialise an EasyRdf\Graph to RDF/XML
      *
-     * @param Graph  $graph   An EasyRdf\Graph object.
-     * @param string $format  The name of the format to convert to.
+     * @param Graph  $graph  An EasyRdf\Graph object.
+     * @param string $format The name of the format to convert to.
      * @param array  $options
      *
-     * @throws Exception
-     *
      * @return string The RDF in the new desired format.
+     * @throws Exception
      */
-    public function serialise($graph, $format, array $options = array())
+    public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
 
         if ($format != 'rdfxml') {
             throw new Exception(

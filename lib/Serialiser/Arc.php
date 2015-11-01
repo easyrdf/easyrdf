@@ -65,20 +65,20 @@ class Arc extends RdfPhp
         }
     }
 
+
     /**
      * Serialise an EasyRdf\Graph into RDF format of choice.
      *
-     * @param Graph  $graph   An EasyRdf\Graph object.
-     * @param string $format  The name of the format to convert to.
+     * @param Graph  $graph  An EasyRdf\Graph object.
+     * @param string $format The name of the format to convert to.
      * @param array  $options
      *
+     * @return string The RDF in the new desired format.
      * @throws Exception
-     *
-     * @return string              The RDF in the new desired format.
      */
-    public function serialise($graph, $format, array $options = array())
+    public function serialise(Graph $graph, $format, array $options = array())
     {
-        parent::checkSerialiseParams($graph, $format);
+        parent::checkSerialiseParams($format);
 
         if (array_key_exists($format, self::$supportedTypes)) {
             $className = self::$supportedTypes[$format];
@@ -88,6 +88,7 @@ class Arc extends RdfPhp
             );
         }
 
+        /** @var \ARC2_RDFSerializer $serialiser */
         $serialiser = \ARC2::getSer($className);
         if ($serialiser) {
             return $serialiser->getSerializedIndex(
