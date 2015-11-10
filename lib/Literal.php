@@ -191,6 +191,8 @@ class Literal
             return 'http://www.w3.org/2001/XMLSchema#boolean';
         } elseif (is_object($value) and $value instanceof \DateTime) {
             return 'http://www.w3.org/2001/XMLSchema#dateTime';
+        } elseif (is_string($value)) {
+            return 'http://www.w3.org/2001/XMLSchema#string';
         } else {
             return null;
         }
