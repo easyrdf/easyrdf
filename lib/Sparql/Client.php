@@ -205,6 +205,20 @@ class Client
         return $this->update($query);
     }
 
+ public function delete($data, $graphUri = null)
+    {
+        $query = 'DELETE DATA {';
+        if ($graphUri) {
+            $query .= "GRAPH <$graphUri> {";
+        }
+        $query .= $this->convertToTriples($data);
+        if ($graphUri) {
+            $query .= "}";
+        }
+        $query .= '}';
+        return $this->update($query);
+    }
+
     protected function updateData($operation, $data, $graphUri = null)
     {
         $query = "$operation DATA {";
