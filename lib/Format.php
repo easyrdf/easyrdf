@@ -284,6 +284,17 @@ class Format
         } elseif (preg_match('/^\s*<.+> <.+>/m', $short)) {
             return self::getFormat('ntriples');
         } else {
+            // in case you have a DOCTYPE element with many ENTITY elements, you should check further parts of the file
+            // first make sure that we have XML
+            if (preg_match('/\<\?xml.*?\?\>/si', $short)) {
+                // get the next portion of the data
+                $short = substr($data, 1024, 2024);
+                // check again for <rdf:
+                if (preg_match('/<rdf:/i', $short)) {
+                    return self::getFormat('rdfxml');
+                }
+            }
+            
             return null;
         }
     }
