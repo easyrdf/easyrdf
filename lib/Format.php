@@ -288,7 +288,7 @@ class Format
             // first make sure that we have XML
             if (preg_match('/\<\?xml.*?\?\>/si', $short)) {
                 // get the next portion of the data
-                $short = substr($data, 1024, 2024);
+                $short = substr($data, 1024, 10000);
                 // check again for <rdf:
                 if (preg_match('/<rdf:/i', $short)) {
                     return self::getFormat('rdfxml');
