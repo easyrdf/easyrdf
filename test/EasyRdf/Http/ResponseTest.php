@@ -100,6 +100,44 @@ class ResponseTest extends TestCase
         );
     }
 
+    public function testGzipResponse()
+    {
+        $res = Response::fromString(readFixture('response_gzip'));
+
+        $this->assertEquals('gzip', strtolower($res->getHeader('content-encoding')));
+        $this->assertEquals('0b13cb193de9450aa70a6403e2c9902f', md5($res->getBody()));
+        $this->assertEquals('f24dd075ba2ebfb3bf21270e3fdc5303', md5($res->getRawBody()));
+    }
+
+    public function testDeflateResponse()
+    {
+        $res = Response::fromString(readFixture('response_deflate'));
+
+        $this->assertEquals('deflate', strtolower($res->getHeader('content-encoding')));
+        $this->assertEquals('0b13cb193de9450aa70a6403e2c9902f', md5($res->getBody()));
+        $this->assertEquals('ad62c21c3aa77b6a6f39600f6dd553b8', md5($res->getRawBody()));
+    }
+
+    /**
+     * Make sure wer can handle non-RFC complient "deflate" responses.
+     *
+     * Unlike stanrdard 'deflate' response, those do not contain the zlib header
+     * and trailer. Unfortunately some buggy servers (read: IIS) send those and
+     * we need to support them.
+     *
+     * @link http://framework.zend.com/issues/browse/ZF-6040
+     */
+    public function testNonStandardDeflateResponseZF6040()
+    {
+        $this->markTestSkipped('Not correctly handling non-RFC complient "deflate" responses');
+
+        $res = Response::fromString(readFixture('response_deflate_iis'));
+
+        $this->assertEquals('deflate', strtolower($res->getHeader('content-encoding')));
+        $this->assertEquals('d82c87e3d5888db0193a3fb12396e616', md5($res->getBody()));
+        $this->assertEquals('c830dd74bb502443cf12514c185ff174', md5($res->getRawBody()));
+    }
+
     public function testGetBodyChunked()
     {
         $response = Response::fromString(
@@ -115,7 +153,7 @@ class ResponseTest extends TestCase
     {
         $this->setExpectedException(
             'EasyRdf\Exception',
-            'Failed to decode chunked body in HTTP response.'
+            'Error parsing body - doesn\'t seem to be a chunked message'
         );
         $response = Response::fromString(
             "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\nINVALID"
