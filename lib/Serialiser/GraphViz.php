@@ -223,7 +223,7 @@ class GraphViz extends Serialiser
      */
     protected function escapeAttributes($array)
     {
-        $items = '';
+        $items = array();
         foreach ($array as $k => $v) {
             $items[] = $this->escape($k).'='.$this->escape($v);
         }
