@@ -11,6 +11,9 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq graphviz
 
+before_install:
+- sudo apt-get update -qq
+- sudo apt-get install -qq graphviz
 install: make composer-install
 script:
   - make lint
