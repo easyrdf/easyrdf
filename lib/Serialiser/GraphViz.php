@@ -225,7 +225,7 @@ class GraphViz extends Serialiser
     {
         $items = array();
         foreach ($array as $k => $v) {
-            $items[] = $this->escape($k).'='.$this->escape($v);
+            array_push($items, $this->escape($k).'='.$this->escape($v));
         }
         return '['.implode(',', $items).']';
     }
