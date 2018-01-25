@@ -386,6 +386,16 @@ class GraphTest extends TestCase
         $this->assertTrue($resource1 === $resource2);
     }
 
+    public function testGetResourcePropertyWithSlash()
+    {
+        $graph = new Graph();
+        $resource1 = $graph->resource('http://example.com/');
+        $resource2 = $graph->resource('bar');
+        $graph->addResource($resource1, 'http://example.org/foo', $resource2);
+        $value = $resource1->get('http://example.org/foo');
+        $this->assertTrue($value === $resource2);
+    }
+
     public function testGetResourceDifferentGraph()
     {
         $graph1 = new Graph();

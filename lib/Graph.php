@@ -601,6 +601,7 @@ class Graph
             );
         }
 
+        $originalResource = $resource;
         // Loop through each component in the path
         foreach (explode('/', $propertyPath) as $part) {
             // Stop if we come to a literal
@@ -621,6 +622,11 @@ class Graph
             if (!$resource) {
                 break;
             }
+        }
+
+        // Try an exact path if nothing else works
+        if (is_null($resource)) {
+            $resource = $this->getSingleProperty($originalResource, $propertyPath, $type, $lang);
         }
 
         return $resource;
