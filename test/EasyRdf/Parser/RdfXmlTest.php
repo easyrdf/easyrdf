@@ -57,6 +57,22 @@ class RdfXmlTest extends TestCase
         $this->rdf_data = readFixture('foaf.rdf');
     }
 
+    public function testParseLargeRdfXml()
+    {
+        // Add about 10MBs of empty space
+        $data = substr($this->rdf_data, 0, -11) . str_repeat(str_repeat(' ', 100) . "\n", 100000) .
+            substr($this->rdf_data, -11);
+
+        $count = $this->parser->parse(
+            $this->graph,
+            $data,
+            'rdfxml',
+            'http://www.example.com/joe/foaf.rdf'
+        );
+
+        $this->assertSame(14, $count);
+    }
+
     public function testParseRdfXml()
     {
         $count = $this->parser->parse(

@@ -800,15 +800,25 @@ class RdfXml extends Parser
         $this->initXMLParser();
 
         /* parse */
-        if (!xml_parse($this->xmlParser, $data, false)) {
-            $message = xml_error_string(xml_get_error_code($this->xmlParser));
-            throw new Exception(
-                'XML error: "' . $message . '"',
-                xml_get_current_line_number($this->xmlParser),
-                xml_get_current_column_number($this->xmlParser)
-            );
+        $lines = explode("\n", $data); // avoids xml parser memory error for large $data
+
+        foreach ($lines as $val) {
+            if (trim($val) === '') {
+                continue;
+            }
+
+            $data = $val . "\n";
+            if (!xml_parse($this->xmlParser, $data, false)) {
+                $message = xml_error_string(xml_get_error_code($this->xmlParser));
+                throw new Exception(
+                    'XML error: "' . $message . '"',
+                    xml_get_current_line_number($this->xmlParser),
+                    xml_get_current_column_number($this->xmlParser)
+                );
+            }
         }
 
+        xml_parse($this->xmlParser, '\n', true);
         xml_parser_free($this->xmlParser);
 
         return $this->tripleCount;
