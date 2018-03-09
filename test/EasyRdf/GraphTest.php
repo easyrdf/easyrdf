@@ -163,7 +163,7 @@ class GraphTest extends TestCase
 	{
 		$graph = new Graph();
 		$count = $graph->parseFile(fixturePath('stw.rdf'));
-		$this->assertSame(109356, $count);
+		$this->assertSame(109340, $count);
 	}
 
     public function testParseFileRelativeUri()
