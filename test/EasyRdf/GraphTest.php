@@ -159,6 +159,13 @@ class GraphTest extends TestCase
         $this->assertSame(null, $name->getDatatype());
     }
 
+	public function testParseLargeFile()
+	{
+		$graph = new Graph();
+		$count = $graph->parseFile(fixturePath('stw.rdf'));
+		$this->assertSame(109356, $count);
+	}
+
     public function testParseFileRelativeUri()
     {
         $graph = new Graph();
