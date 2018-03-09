@@ -800,13 +800,19 @@ class RdfXml extends Parser
         $this->initXMLParser();
 
         /* parse */
-        if (!xml_parse($this->xmlParser, $data, false)) {
-            $message = xml_error_string(xml_get_error_code($this->xmlParser));
-            throw new Exception(
-                'XML error: "' . $message . '"',
-                xml_get_current_line_number($this->xmlParser),
-                xml_get_current_column_number($this->xmlParser)
-            );
+
+        $resource = fopen('data://text/plain,' . $data, 'r');
+
+        while ($data = fread($resource, 1024 * 1024)) {
+            if (!xml_parse($this->xmlParser, $data, feof($resource))) {
+                $message = xml_error_string(xml_get_error_code($this->xmlParser));
+                
+                throw new Exception(
+                    sprintf('XML error: "%s"', $message),
+                    xml_get_current_line_number($this->xmlParser),
+                    xml_get_current_column_number($this->xmlParser)
+                );
+            }
         }
 
         xml_parser_free($this->xmlParser);
