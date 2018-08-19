@@ -43,7 +43,7 @@ use EasyRdf\ParsedUri;
 use EasyRdf\RdfNamespace;
 
 /**
- * Class to parse Turtle with no external dependancies.
+ * Class to parse Turtle with no external dependencies.
  *
  * It is a translation from Java to PHP of the Sesame Turtle Parser:
  * http://bit.ly/TurtleParser

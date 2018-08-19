@@ -41,7 +41,7 @@ use EasyRdf\Serialiser;
 
 /**
  * Class to serialise an EasyRdf\Graph to RDF/PHP
- * with no external dependancies.
+ * with no external dependencies.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
