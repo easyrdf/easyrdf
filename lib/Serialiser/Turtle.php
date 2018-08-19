@@ -45,7 +45,7 @@ use EasyRdf\Serialiser;
 
 /**
  * Class to serialise an EasyRdf\Graph to Turtle
- * with no external dependancies.
+ * with no external dependencies.
  *
  * http://www.w3.org/TR/turtle/
  *

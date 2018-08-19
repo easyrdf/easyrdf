@@ -38,7 +38,7 @@ namespace EasyRdf\Parser;
 use EasyRdf\Graph;
 
 /**
- * A pure-php class to parse RDF/JSON with no dependancies.
+ * A pure-php class to parse RDF/JSON with no dependencies.
  *
  * http://n2.talis.com/wiki/RDF_JSON_Specification
  * docs/appendix-a-rdf-formats-json.md

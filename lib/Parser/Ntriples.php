@@ -39,7 +39,7 @@ use EasyRdf\Graph;
 use EasyRdf\Parser;
 
 /**
- * A pure-php class to parse N-Triples with no dependancies.
+ * A pure-php class to parse N-Triples with no dependencies.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
