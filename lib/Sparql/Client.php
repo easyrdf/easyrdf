@@ -51,6 +51,20 @@ use EasyRdf\Utils;
  */
 class Client
 {
+    /**
+     * A list of configuration to be used by the Http Client.
+     *
+     * @var array
+     */
+    private $client_config = array();
+
+    /**
+     * The http client that will be used for the requests.
+     *
+     * @var \EasyRdf\Http\Client
+     */
+    private $client;
+
     /** The query/read address of the SPARQL Endpoint */
     private $queryUri = null;
 
@@ -66,8 +80,9 @@ class Client
      *
      * @param string $queryUri The address of the SPARQL Query Endpoint
      * @param string $updateUri Optional address of the SPARQL Update Endpoint
+     * @param array $client_config An array of configuration for the Client.
      */
-    public function __construct($queryUri, $updateUri = null)
+    public function __construct($queryUri, $updateUri = null, $client_config = array())
     {
         $this->queryUri = $queryUri;
 
@@ -82,6 +97,8 @@ class Client
         } else {
             $this->updateUri = $queryUri;
         }
+
+        $this->client_config = $client_config;
     }
 
     /** Get the URI of the SPARQL query endpoint
@@ -293,6 +310,21 @@ class Client
     }
 
     /**
+     * Returns an http client.
+     */
+    protected function getHttpClient()
+    {
+        if (empty($this->client)) {
+            $this->client = Http::getDefaultHttpClient();
+            $this->client->resetParameters();
+            if (!empty($this->client_config)) {
+                $this->client->setConfig($this->client_config);
+            }
+        }
+        return $this->client;
+    }
+
+    /**
      * Build http-client object, execute request and return a response
      *
      * @param string $processed_query
@@ -303,8 +335,7 @@ class Client
      */
     protected function executeQuery($processed_query, $type)
     {
-        $client = Http::getDefaultHttpClient();
-        $client->resetParameters();
+        $client = $this->getHttpClient();
 
         // Tell the server which response formats we can parse
         $sparql_results_types = array(
