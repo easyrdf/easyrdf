@@ -312,15 +312,16 @@ class Client
     /**
      * Returns an http client.
      */
-    protected function getHttpClient() {
-      if (empty($this->client)) {
-        $this->client = Http::getDefaultHttpClient();
-        $this->client->resetParameters();
-        if (!empty($this->client_config)) {
-          $this->client->setConfig($this->client_config);
+    protected function getHttpClient()
+    {
+        if (empty($this->client)) {
+            $this->client = Http::getDefaultHttpClient();
+            $this->client->resetParameters();
+            if (!empty($this->client_config)) {
+                $this->client->setConfig($this->client_config);
+            }
         }
-      }
-      return $this->client;
+        return $this->client;
     }
 
     /**
