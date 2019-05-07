@@ -589,7 +589,7 @@ class FormatTest extends TestCase
         $format = Format::guessFormat(
             '@base <http://one.example/> .'
         );
-        $this->assertSame('turtle', $format);
+        $this->assertStringEquals('turtle', $format);
     }
 
     public function testGuessFormatTurtleSparqlBase()
@@ -597,7 +597,7 @@ class FormatTest extends TestCase
         $format = Format::guessFormat(
             'BASE <http://one.example/>'
         );
-        $this->assertSame('turtle', $format);
+        $this->assertStringEquals('turtle', $format);
     }
 
     public function testGuessFormatTurtlePrefix()
@@ -605,7 +605,7 @@ class FormatTest extends TestCase
         $format = Format::guessFormat(
             '@prefix p: <http://two.example/> .'
         );
-        $this->assertSame('turtle', $format);
+        $this->assertStringEquals('turtle', $format);
     }
 
     public function testGuessFormatTurtleSparqlPrefix()
@@ -613,7 +613,7 @@ class FormatTest extends TestCase
         $format = Format::guessFormat(
             'PREFIX p: <http://two.example/>'
         );
-        $this->assertSame('turtle', $format);
+        $this->assertStringEquals('turtle', $format);
     }
 
     public function testGuessFormatNtriples()
