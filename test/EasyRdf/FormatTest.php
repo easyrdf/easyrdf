@@ -584,6 +584,38 @@ class FormatTest extends TestCase
         $this->assertStringEquals('turtle', Format::guessFormat($data));
     }
 
+    public function testGuessFormatTurtleBase()
+    {
+        $format = Format::guessFormat(
+            '@base <http://one.example/> .'
+        );
+        $this->assertStringEquals('turtle', $format);
+    }
+
+    public function testGuessFormatTurtleSparqlBase()
+    {
+        $format = Format::guessFormat(
+            'BASE <http://one.example/>'
+        );
+        $this->assertStringEquals('turtle', $format);
+    }
+
+    public function testGuessFormatTurtlePrefix()
+    {
+        $format = Format::guessFormat(
+            '@prefix p: <http://two.example/> .'
+        );
+        $this->assertStringEquals('turtle', $format);
+    }
+
+    public function testGuessFormatTurtleSparqlPrefix()
+    {
+        $format = Format::guessFormat(
+            'PREFIX p: <http://two.example/>'
+        );
+        $this->assertStringEquals('turtle', $format);
+    }
+
     public function testGuessFormatNtriples()
     {
         $data = readFixture('foaf.nt');

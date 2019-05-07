@@ -281,6 +281,8 @@ class Format
             return self::getFormat('rdfa');
         } elseif (preg_match('/@prefix\s|@base\s/', $short)) {
             return self::getFormat('turtle');
+        } elseif (preg_match('/prefix\s|base\s/i', $short)) {
+            return self::getFormat('turtle');
         } elseif (preg_match('/^\s*<.+> <.+>/m', $short)) {
             return self::getFormat('ntriples');
         } else {
