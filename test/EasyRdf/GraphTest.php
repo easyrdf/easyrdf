@@ -1241,7 +1241,7 @@ class GraphTest extends TestCase
     public function testAddInvalidObject()
     {
         $this->setExpectedException(
-            'PHPUnit_Framework_Error',
+            '\PHPUnit\Framework\Error\Error',
             'Object of class EasyRdf\GraphTest could not be converted to string'
         );
         $this->graph->add($this->uri, 'rdf:foo', $this);

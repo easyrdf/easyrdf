@@ -734,7 +734,7 @@ class ResourceTest extends TestCase
     {
         $this->setupTestGraph();
         $this->setExpectedException(
-            'PHPUnit_Framework_Error',
+            '\PHPUnit\Framework\Error\Error',
             'Object of class EasyRdf\ResourceTest could not be converted to string'
         );
         $this->resource->add('rdf:foo', $this);
