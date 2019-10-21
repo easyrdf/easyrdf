@@ -733,8 +733,14 @@ class ResourceTest extends TestCase
     public function testAddInvalidObject()
     {
         $this->setupTestGraph();
+        if (version_compare(PHP_VERSION, '7.4.x-dev', '>')) {
+          $class = '\Error';
+        }
+        else {
+          $class = '\PHPUnit\Framework\Error\Error';
+        }
         $this->setExpectedException(
-            '\PHPUnit\Framework\Error\Error',
+            $class,
             'Object of class EasyRdf\ResourceTest could not be converted to string'
         );
         $this->resource->add('rdf:foo', $this);
