@@ -1242,8 +1242,7 @@ class GraphTest extends TestCase
     {
         if (version_compare(PHP_VERSION, '7.4.x-dev', '>')) {
             $class = '\Error';
-        }
-        else {
+        } else {
             $class = '\PHPUnit\Framework\Error\Error';
         }
         $this->setExpectedException(

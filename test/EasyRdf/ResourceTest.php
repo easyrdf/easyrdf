@@ -734,10 +734,9 @@ class ResourceTest extends TestCase
     {
         $this->setupTestGraph();
         if (version_compare(PHP_VERSION, '7.4.x-dev', '>')) {
-          $class = '\Error';
-        }
-        else {
-          $class = '\PHPUnit\Framework\Error\Error';
+            $class = '\Error';
+        } else {
+            $class = '\PHPUnit\Framework\Error\Error';
         }
         $this->setExpectedException(
             $class,
