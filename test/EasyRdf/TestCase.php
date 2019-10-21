@@ -37,8 +37,8 @@ namespace EasyRdf;
  */
 
 // Backward compatibility layer for PHPUnit 4
-if (!class_exists('\PHPUnit\Framework\Error\Error', TRUE)) {
-  class_alias('PHPUnit_Framework_Error', '\PHPUnit\Framework\Error\Error');
+if (!class_exists('\PHPUnit\Framework\Error\Error', true)) {
+    class_alias('PHPUnit_Framework_Error', '\PHPUnit\Framework\Error\Error');
 }
 
 class TestCase extends \PHPUnit\Framework\TestCase
@@ -56,15 +56,15 @@ class TestCase extends \PHPUnit\Framework\TestCase
     }
 
     // Forward compatibility layer for PHPUnit 6/7
-    public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = NULL) {
-      if (method_exists($this, 'expectException')) {
-        $this->expectException($exceptionName);
-        if ($exceptionMessage) {
-          $this->expectExceptionMessage($exceptionMessage);
+    public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = null)
+    {
+        if (method_exists($this, 'expectException')) {
+            $this->expectException($exceptionName);
+            if ($exceptionMessage) {
+                $this->expectExceptionMessage($exceptionMessage);
+            }
+        } else {
+            parent::setExpectedException($exceptionName, $exceptionMessage);
         }
-      }
-      else {
-        parent::setExpectedException($exceptionName, $exceptionMessage);
-      }
     }
 }
