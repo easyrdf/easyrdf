@@ -36,7 +36,7 @@
     },
     "require-dev": {
         "ml/json-ld": "~1.0",
-        "phpunit/PHPUnit": "~4.1",
+        "phpunit/phpunit": "~4.8.36|^6|^7",
         "sami/sami": "~2.0",
         "semsol/arc2": "~2.2",
         "squizlabs/php_codesniffer": "~1.4.3",
