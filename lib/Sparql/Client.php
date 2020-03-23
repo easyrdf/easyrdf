@@ -48,11 +48,6 @@ use EasyRdf\Utils;
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
- *         
- *         
- *          ---- History
- *          2017-12-06 F. Michel - Add the queryRaw method
- *         
  */
 class Client
 {
@@ -274,7 +269,6 @@ class Client
         }
     }
 
-
     /**
      * Adds missing prefix-definitions to the query
      *
@@ -352,7 +346,7 @@ class Client
                 // both
                 $accept = Format::getHttpAcceptHeader($sparql_results_types);
             }
-            
+
             $client->setHeaders('Accept', $accept);
 
             $encodedQuery = 'query=' . urlencode($processed_query);
@@ -377,7 +371,7 @@ class Client
 
         return $client->request();
     }
-    
+
     /**
      * Parse HTTP-response object into a meaningful result-object.
      *
@@ -398,6 +392,7 @@ class Client
             return $result;
         }
     }
+}
 
     /**
      * This is a low-level version of the query() function where the Accept header is
