@@ -32,7 +32,7 @@
     },
     "suggest": {
         "ml/json-ld": "~1.0",
-        "semsol/arc2": "~2.2"
+        "semsol/arc2": "~2.5"
     },
     "require-dev": {
         "ml/json-ld": "~1.0",
