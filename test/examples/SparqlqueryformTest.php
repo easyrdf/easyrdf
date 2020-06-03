@@ -59,7 +59,7 @@ class SparqlqueryformTest extends \EasyRdf\TestCase
                     'SELECT * WHERE {'.
                     '  ?country rdf:type dbo:Country . '.
                     '  ?country rdfs:label ?label .'.
-                    '  ?country dc:subject category:Member_states_of_the_United_Nations .'.
+                    '  ?country dct:subject dbc:Member_states_of_the_United_Nations .'.
                     '  FILTER ( lang(?label) = "en" ) '.
                     '} ORDER BY ?label LIMIT 100'
             )
@@ -79,7 +79,7 @@ class SparqlqueryformTest extends \EasyRdf\TestCase
                     'SELECT * WHERE {'.
                     '  ?country rdf:type dbo:Country . '.
                     '  ?country rdfs:label ?label .'.
-                    '  ?country dc:subject category:Member_states_of_the_United_Nations .'.
+                    '  ?country dct:subject dbc:Member_states_of_the_United_Nations .'.
                     '  FILTER ( lang(?label) = "en" ) '.
                     '} ORDER BY ?label LIMIT 100',
                 'text' => 1
