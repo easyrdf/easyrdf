@@ -42,24 +42,29 @@ class VillagesTest extends \EasyRdf\TestCase
 {
     public function testIndex()
     {
-        $output = executeExample('villages.php');
+        $output = executeExample('wikidata_villages.php');
         $this->assertContains('<title>EasyRdf Village Info Example</title>', $output);
         $this->assertContains('<h1>EasyRdf Village Info Example</h1>', $output);
-        $this->assertContains('?id=934787">Ceres, Fife</a></li>', $output);
-        $this->assertContains('?id=13953312">Strathkinness</a></li>', $output);
+        $this->assertContains('?id=Q33980">Ceres</a></li>', $output);
+        $this->assertContains('?id=Q1011990">Strathkinness</a></li>', $output);
     }
 
     public function testCeres()
     {
         $output = executeExample(
-            'villages.php',
-            array('id' => '934787')
+            'wikidata_villages.php',
+            array('id' => 'Q33980')
         );
-        $this->assertContains('<h2>Ceres, Fife</h2>', $output);
-        $this->assertContains('<p>Ceres is a village in Fife, Scotland', $output);
+        $this->assertContains('<h2>Ceres</h2>', $output);
+        $this->assertContains('<p>village in Fife, Scotland', $output);
         $this->assertContains(
-            "src='http://maps.google.com/maps?f=q&amp;ll=56.29205,-2.971445&amp;output=embed'>",
+            '<img src="http://commons.wikimedia.org/wiki/Special:FilePath/Ceres%20in%20Fife.JPG"',
             $output
         );
+        $this->assertContains(
+            "src='http://www.openlinkmap.org/small.php?lat=56.29205&lon=-2.971445",
+            $output
+        );
+        $this->assertContains('<a href="https://en.wikipedia.org/wiki/Ceres,_Fife">', $output);
     }
 }

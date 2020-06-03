@@ -85,7 +85,7 @@ List of Examples
 * [`serialise.php`](/examples/serialise.php#slider) - Basic serialisation example
 * [`sparql_queryform.php`](/examples/sparql_queryform.php#slider) - Form to submit SPARQL queries and display the result
 * [`uk_postcode.php`](/examples/uk_postcode.php#slider) - Example of resolving UK postcodes using uk-postcodes.com
-* [`villages.php`](/examples/villages.php#slider) - Fetch and information about villages in Fife from dbpedialite.org
+* [`wikidata_villages.php`](/examples/wikidata_villages.php#slider) - Fetch and information about villages in Fife from Wikidata
 * [`zend_framework.php`](/examples/zend_framework.php#slider) - Example of using `Zend\Http\Client` with EasyRdf
 
 
