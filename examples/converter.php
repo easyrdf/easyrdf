@@ -54,7 +54,7 @@
         print "<div style='margin: 10px'>\n";
         print form_tag();
         print label_tag('data', 'Input Data: ').'<br />'.text_area_tag('data', '', array('cols'=>80, 'rows'=>10)) . "<br />\n";
-        print label_tag('uri', 'or Uri: ').text_field_tag('uri', 'http://www.dajobe.org/foaf.rdf', array('size'=>80)) . "<br />\n";
+        print label_tag('uri', 'or Uri: ').text_field_tag('uri', 'http://danbri.org/foaf.rdf#danbri', array('size'=>80)) . "<br />\n";
         print label_tag('input_format', 'Input Format: ').select_tag('input_format', $input_format_options) . "<br />\n";
         print label_tag('output_format', 'Output Format: ').select_tag('output_format', $output_format_options) . "<br />\n";
         print label_tag('raw', 'Raw Output: ').check_box_tag('raw') . "<br />\n";
