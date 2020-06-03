@@ -67,26 +67,26 @@ Features
 * Comes with a number of examples
 
 
-More Examples
--------------
+List of Examples
+----------------
 
-* [`artistinfo.php`](https://github.com/njh/easyrdf/blob/master/examples/artistinfo.php#slider) - Example of mapping an RDF class type to a PHP Class
-* [`basic.php`](https://github.com/njh/easyrdf/blob/master/examples/basic.php#slider) - Basic "Hello World" type example
-* [`basic_sparql.php`](https://github.com/njh/easyrdf/blob/master/examples/basic_sparql.php#slider) - Example of making a SPARQL `SELECT` query
-* [`converter.php`](https://github.com/njh/easyrdf/blob/master/examples/converter.php#slider) - Convert RDF from one format to another
-* [`dump.php`](https://github.com/njh/easyrdf/blob/master/examples/dump.php#slider) - Display the contents of a graph
-* [`foafinfo.php`](https://github.com/njh/easyrdf/blob/master/examples/foafinfo.php#slider) - Display the basic information in a FOAF document
-* [`foafmaker.php`](https://github.com/njh/easyrdf/blob/master/examples/foafmaker.php#slider) - Construct a FOAF document with a choice of serialisations
-* [`graph_direct.php`](https://github.com/njh/easyrdf/blob/master/examples/graph_direct.php#slider) - Example of using `EasyRdf\Graph` directly without `EasyRdf\Resource`
-* [`graphstore.php`](https://github.com/njh/easyrdf/blob/master/examples/graphstore.php#slider) - Store and retrieve data from a SPARQL 1.1 Graph Store
-* [`graphviz.php`](https://github.com/njh/easyrdf/blob/master/examples/graphviz.php#slider) - GraphViz rendering example
-* [`html_tag_helpers.php`](https://github.com/njh/easyrdf/blob/master/examples/html_tag_helpers.php#slider) - Rails Style html tag helpers to make the EasyRdf examples simpler
-* [`httpget.php`](https://github.com/njh/easyrdf/blob/master/examples/httpget.php#slider) - No RDF, just test `EasyRdf\Http\Client`
-* [`serialise.php`](https://github.com/njh/easyrdf/blob/master/examples/serialise.php#slider) - Basic serialisation example
-* [`sparql_queryform.php`](https://github.com/njh/easyrdf/blob/master/examples/sparql_queryform.php#slider) - Form to submit SPARQL queries and display the result
-* [`uk_postcode.php`](https://github.com/njh/easyrdf/blob/master/examples/uk_postcode.php#slider) - Example of resolving UK postcodes using uk-postcodes.com
-* [`villages.php`](https://github.com/njh/easyrdf/blob/master/examples/villages.php#slider) - Fetch and information about villages in Fife from dbpedialite.org
-* [`zend_framework.php`](https://github.com/njh/easyrdf/blob/master/examples/zend_framework.php#slider) - Example of using `Zend\Http\Client` with EasyRdf
+* [`artistinfo.php`](/examples/artistinfo.php#slider) - Example of mapping an RDF class type to a PHP Class
+* [`basic.php`](/examples/basic.php#slider) - Basic "Hello World" type example
+* [`basic_sparql.php`](/examples/basic_sparql.php#slider) - Example of making a SPARQL `SELECT` query
+* [`converter.php`](/examples/converter.php#slider) - Convert RDF from one format to another
+* [`dump.php`](/examples/dump.php#slider) - Display the contents of a graph
+* [`foafinfo.php`](/examples/foafinfo.php#slider) - Display the basic information in a FOAF document
+* [`foafmaker.php`](/examples/foafmaker.php#slider) - Construct a FOAF document with a choice of serialisations
+* [`graph_direct.php`](/examples/graph_direct.php#slider) - Example of using `EasyRdf\Graph` directly without `EasyRdf\Resource`
+* [`graphstore.php`](/examples/graphstore.php#slider) - Store and retrieve data from a SPARQL 1.1 Graph Store
+* [`graphviz.php`](/examples/graphviz.php#slider) - GraphViz rendering example
+* [`html_tag_helpers.php`](/examples/html_tag_helpers.php#slider) - Rails Style html tag helpers to make the EasyRdf examples simpler
+* [`httpget.php`](/examples/httpget.php#slider) - No RDF, just test `EasyRdf\Http\Client`
+* [`serialise.php`](/examples/serialise.php#slider) - Basic serialisation example
+* [`sparql_queryform.php`](/examples/sparql_queryform.php#slider) - Form to submit SPARQL queries and display the result
+* [`uk_postcode.php`](/examples/uk_postcode.php#slider) - Example of resolving UK postcodes using uk-postcodes.com
+* [`villages.php`](/examples/villages.php#slider) - Fetch and information about villages in Fife from dbpedialite.org
+* [`zend_framework.php`](/examples/zend_framework.php#slider) - Example of using `Zend\Http\Client` with EasyRdf
 
 
 
