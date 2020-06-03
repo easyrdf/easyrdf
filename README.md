@@ -49,7 +49,7 @@ Links
 Requirements
 ------------
 
-* PHP 5.3 or higher
+* PHP 7.1 or higher
 
 
 Features
