@@ -51,8 +51,9 @@
         // Get the first resource of type PostcodeUnit
         $res = $graph->get('postcode:PostcodeUnit', '^rdf:type');
         if ($res) {
-            $ll = $res->get('geo:lat').','.$res->get('geo:long');
-            print "<iframe id='map' width='500' height='250' frameborder='0' scrolling='no' src='http://maps.google.com/maps?q=$ll&amp;output=embed'></iframe>";
+            $lat = $res->get('geo:lat');
+            $long = $res->get('geo:long');
+            print "<iframe width='500' height='350' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='https://www.openlinkmap.org/small.php?lat=$lat&lon=$long&zoom=14' style='border: 1px solid black'></iframe>";
             print "<table id='facts'>\n";
             print "<tr><th>Longitude:</th><td>" . $res->get('geo:long') . "</td></tr>\n";
             print "<tr><th>Latitude:</th><td>" . $res->get('geo:lat') . "</td></tr>\n";
