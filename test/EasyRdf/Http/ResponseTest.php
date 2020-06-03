@@ -186,6 +186,35 @@ class ResponseTest extends TestCase
         );
     }
 
+    public function test200OkNoMessage()
+    {
+        $response = Response::fromString(
+            readFixture('http_response_200_message')
+        );
+
+        $this->assertSame(
+            200,
+            $response->getStatus(),
+            'Response code is expected to be 200, but it\'s not.'
+        );
+        $this->assertNull(
+            $response->getMessage(),
+            'Response message is expected to be null, but it\'s not.'
+        );
+        $this->assertFalse(
+            $response->isError(),
+            'Response is OK, but isError() returned true'
+        );
+        $this->assertTrue(
+            $response->isSuccessful(),
+            'Response is OK, but isSuccessful() returned false'
+        );
+        $this->assertFalse(
+            $response->isRedirect(),
+            'Response is OK, but isRedirect() returned true'
+        );
+    }
+
     public function test404IsError()
     {
         $response = Response::fromString(
