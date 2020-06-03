@@ -8,8 +8,6 @@
     convertWarningsToExceptions="true"
     processIsolation="false"
     stopOnFailure="false"
-    strict="true"
-    syntaxCheck="false"
     verbose="false">
 
     <php>
@@ -37,7 +35,6 @@
     </filter>
 
     <logging>
-        <log type="text" target="php://stdout" />
         <log type="junit" target="../reports/test-results.xml" />
     </logging>
 </phpunit>
