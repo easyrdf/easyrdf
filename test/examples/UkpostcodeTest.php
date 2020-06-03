@@ -53,8 +53,8 @@ class UkpostcodeTest extends \EasyRdf\TestCase
             'uk_postcode.php',
             array('postcode' => 'W1A 1AA')
         );
-        $this->assertContains('<tr><th>Longitude:</th><td>-0.143774</td></tr>', $output);
-        $this->assertContains('<tr><th>Latitude:</th><td>51.518563</td></tr>', $output);
+        $this->assertContains('<tr><th>Longitude:</th><td>-0.143799</td></tr>', $output);
+        $this->assertContains('<tr><th>Latitude:</th><td>51.518561</td></tr>', $output);
         $this->assertContains('<tr><th>Easting:</th><td>528887.0</td></tr>', $output);
         $this->assertContains('<tr><th>Northing:</th><td>181593.0</td></tr>', $output);
         $this->assertContains('<tr><th>District:</th><td>City of Westminster</td></tr>', $output);
