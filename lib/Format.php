@@ -602,7 +602,7 @@ Format::register(
 Format::register(
     'turtle',
     'Turtle Terse RDF Triple Language',
-    'http://www.dajobe.org/2004/01/turtle',
+    'https://www.w3.org/TR/turtle/',
     array(
         'text/turtle' => 0.8,
         'application/turtle' => 0.7,
