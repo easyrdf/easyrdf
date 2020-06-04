@@ -487,7 +487,6 @@ class Client
             if ($response->isRedirect() &&
                    ($location = $response->getHeader('location'))
                ) {
-
                 // Avoid problems with buggy servers that add whitespace at the
                 // end of some headers (See ZF-11283)
                 $location = trim($location);
@@ -514,13 +513,10 @@ class Client
                     );
                 }
                 ++$this->redirectCounter;
-
             } else {
                 // If we didn't get any location, stop redirecting
                 break;
             }
-
-
         } while ($this->redirectCounter < $this->config['maxredirects']);
 
         return $response;

@@ -229,7 +229,6 @@ class Result extends \ArrayIterator
                     $result .= "\n";
                 }
                 $result .= "$hr\n";
-
             }
             return $result;
         } elseif ($this->type == 'boolean') {
@@ -253,7 +252,7 @@ class Result extends \ArrayIterator
      */
     protected function newTerm($data)
     {
-        switch($data['type']) {
+        switch ($data['type']) {
             case 'bnode':
                 return new Resource('_:'.$data['value']);
             case 'uri':

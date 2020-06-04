@@ -100,7 +100,6 @@ class UtilsTest extends TestCase
     {
         $arr = array('foo' => 'bar');
         $this->assertTrue(Utils::isAssociativeArray($arr));
-
     }
 
     public function testIsAssocNonArray()

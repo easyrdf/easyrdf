@@ -176,8 +176,7 @@ class Isomorphic
      *
      * @ignore
      */
-    private static function buildBijectionTo
-    (
+    private static function buildBijectionTo(
         $statementsA,
         $nodesA,
         $statementsB,
@@ -248,7 +247,6 @@ class Isomorphic
             $bijection = null;
 
             foreach ($nodesA as $nodeA) {
-
                 // We don't replace grounded nodes' hashes
                 if (isset($hashesA[$nodeA])) {
                     continue;

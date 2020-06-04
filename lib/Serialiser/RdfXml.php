@@ -96,7 +96,6 @@ class RdfXml extends Serialiser
             } else {
                 return $tag."/>\n";
             }
-
         } elseif (is_object($obj) and $obj instanceof Literal) {
             $atrributes = "";
             $datatype = $obj->getDatatypeUri();

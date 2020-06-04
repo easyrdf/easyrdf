@@ -203,7 +203,7 @@ class RdfXml extends Parser
     /** @ignore */
     protected function startElementHandler($p, $t, $a)
     {
-        switch($this->state) {
+        switch ($this->state) {
             case 0:
                 return $this->startState0($t, $a);
             case 1:
@@ -226,7 +226,7 @@ class RdfXml extends Parser
     /** @ignore */
     protected function endElementHandler($p, $t)
     {
-        switch($this->state){
+        switch ($this->state) {
             case 1:
                 return $this->endState1($t);
             case 2:
@@ -249,7 +249,7 @@ class RdfXml extends Parser
     /** @ignore */
     protected function cdataHandler($p, $d)
     {
-        switch($this->state){
+        switch ($this->state) {
             case 4:
                 return $this->cdataState4($d);
             case 6:
@@ -328,7 +328,6 @@ class RdfXml extends Parser
                 $this->add($supS['value'], $supS['p'], $coll['value'], $supS['type'], $coll['type']);
                 $this->add($coll['value'], $this->rdf.'first', $s['value'], $coll['type'], $s['type']);
                 $this->pushS($coll);
-
             } elseif (isset($supS['is_coll']) && $supS['is_coll']) {
                 /* new entry in existing coll */
                 $coll = array(

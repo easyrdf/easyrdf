@@ -116,7 +116,7 @@ class Rdfa extends Parser
     {
         $indent = str_repeat('  ', $depth);
         print $indent;
-        switch($node->nodeType) {
+        switch ($node->nodeType) {
             case XML_ELEMENT_NODE:
                 print 'node';
                 break;
@@ -434,7 +434,6 @@ class Rdfa extends Parser
                         $subject = $context['object'];
                     }
                 }
-
             } else {
                 // Step 6
                 // If the current element does contain a @rel or @rev attribute, then the next step is to
@@ -460,7 +459,6 @@ class Rdfa extends Parser
                 if (!$subject) {
                     $subject = $context['object'];
                 }
-
             }
 
             # FIXME: better place for this?

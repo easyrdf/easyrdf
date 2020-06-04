@@ -782,7 +782,6 @@ class Graph
 
         // Loop through each component in the path
         foreach (explode('/', $propertyPath) as $part) {
-
             $results = array();
             foreach (explode('|', $part) as $p) {
                 foreach ($objects as $o) {

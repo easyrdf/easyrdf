@@ -130,7 +130,6 @@ class JsonLd extends Serialiser
 
         if ($should_frame) {
             $data = LD\JsonLD::frame($data, $options['frame'], $options);
-
         }
 
         if ($should_compact) {

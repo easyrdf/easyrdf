@@ -288,7 +288,6 @@ class RdfXmlTest extends TestCase
             "<foaf:age rdf:datatype=\"http://www.w3.org/2001/XMLSchema#int\">59</foaf:age>",
             $xml
         );
-
     }
 
     public function testSerialiseRdfXmlWithUnknownProperty()

@@ -79,7 +79,7 @@ class HexBinary extends Literal
      */
     public static function fromBinary($binary)
     {
-        return new self( bin2hex($binary) );
+        return new self(bin2hex($binary));
     }
 
     /** Decode the hexadecimal string into a binary blob

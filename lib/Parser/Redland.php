@@ -75,7 +75,7 @@ class Redland extends Parser
      */
     protected function nodeTypeString($node)
     {
-        switch(librdf_node_get_type($node)) {
+        switch (librdf_node_get_type($node)) {
             case 1:
                 return 'uri';
                 break;

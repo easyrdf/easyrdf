@@ -340,7 +340,6 @@ class GraphViz extends Serialiser
                     )
                 );
             }
-
         }
 
         $result .= "}\n";
@@ -381,7 +380,7 @@ class GraphViz extends Serialiser
     {
         parent::checkSerialiseParams($format);
 
-        switch($format) {
+        switch ($format) {
             case 'dot':
                 return $this->serialiseDot($graph);
             case 'png':
