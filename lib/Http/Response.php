@@ -218,7 +218,7 @@ class Response
     /**
      * Get a specific header as string, or null if it is not set
      *
-     * @param string$header
+     * @param string $header
      *
      * @return string|array|null
      */
