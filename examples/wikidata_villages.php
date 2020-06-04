@@ -25,7 +25,7 @@
     \EasyRdf\RdfNamespace::set('wikibase', 'http://wikiba.se/ontology#');
 
     // SPARQL Query to get a list of villages in Fife
-    define(SPARQL_QUERY, '
+    $SPARQL_QUERY = '
       SELECT ?item ?itemLabel
       WHERE {
         ?item wdt:P31 wd:Q532 .       # Instance of Village
@@ -33,11 +33,11 @@
         SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
       }
       ORDER BY ?itemLabel
-    ');
-    define(SPARQL_ENDPOINT, 'https://query.wikidata.org/sparql');
+    ';
+    $SPARQL_ENDPOINT = 'https://query.wikidata.org/sparql';
     
-    define(WIKIDATA_IMAGE, 'wdt:P18');
-    define(WIKIDATA_POINT, 'wdt:P625');    
+    $WIKIDATA_IMAGE = 'wdt:P18';
+    $WIKIDATA_POINT = 'wdt:P625';    
 ?>
 <html>
 <head><title>EasyRdf Village Info Example</title></head>
@@ -52,16 +52,16 @@
 
         $village = $graph->resource("wd:$id");
 
-        if ($village->get(WIKIDATA_IMAGE)) {
+        if ($village->get($WIKIDATA_IMAGE)) {
             print image_tag(
-                $village->get(WIKIDATA_IMAGE),
+                $village->get($WIKIDATA_IMAGE),
                 array('style'=>'max-width:400px;max-height:250px;margin:10px;float:right')
             );
         }
         print content_tag('h2',$village->label('en'));
         print content_tag('p', $village->get('schema:description', null, 'en'));
 
-        if (preg_match("/Point\((\S+) (\S+)\)/", $village->get(WIKIDATA_POINT), $matches)) {
+        if (preg_match("/Point\((\S+) (\S+)\)/", $village->get($WIKIDATA_POINT), $matches)) {
             $long = $matches[1];
             $lat = $matches[2];
             print "<iframe width='420' height='350' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://www.openlinkmap.org/small.php?lat=$lat&lon=$long&zoom=14' style='border: 1px solid black'></iframe>";
@@ -78,8 +78,8 @@
         echo $village->dump();
     } else {
         print "<p>List of villages in Fife.</p>";
-        $sparql = new \EasyRdf\Sparql\Client(SPARQL_ENDPOINT);
-        $results = $sparql->query(SPARQL_QUERY);
+        $sparql = new \EasyRdf\Sparql\Client($SPARQL_ENDPOINT);
+        $results = $sparql->query($SPARQL_QUERY);
 
         print "<ul>\n";
         foreach ($results as $row) {
