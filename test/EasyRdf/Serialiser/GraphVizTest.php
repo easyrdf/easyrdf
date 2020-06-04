@@ -238,32 +238,32 @@ class GraphVizTest extends TestCase
         $this->serialiser->setOnlyLabelled(false);
         $svg = $this->serialiser->serialise($this->graph, 'svg');
 
-        $this->assertContains(
-            'class="node"><title>Rhttp://www.example.com/joe#me</title>',
+        $this->assertRegExp(
+            '|class="node">\s*<title>Rhttp://www.example.com/joe#me</title>|',
             $svg
         );
-        $this->assertContains(
-            'class="node"><title>LJoe Bloggs</title>',
+        $this->assertRegExp(
+            '|class="node">\s*<title>LJoe Bloggs</title>|',
             $svg
         );
-        $this->assertContains(
-            'class="edge"><title>Rhttp://www.example.com/joe#me&#45;&gt;LJoe Bloggs</title>',
+        $this->assertRegExp(
+            '|class="edge">\s*<title>Rhttp://www.example.com/joe#me&#45;&gt;LJoe Bloggs</title>|',
             $svg
         );
-        $this->assertContains(
-            'class="node"><title>B_:genid1</title>',
+        $this->assertRegExp(
+            '|class="node">\s*<title>B_:genid1</title>|',
             $svg
         );
-        $this->assertContains(
-            'class="edge"><title>Rhttp://www.example.com/joe#me&#45;&gt;B_:genid1</title>',
+        $this->assertRegExp(
+            '|class="edge">\s*<title>Rhttp://www.example.com/joe#me&#45;&gt;B_:genid1</title>|',
             $svg
         );
-        $this->assertContains(
-            'class="node"><title>LProject Name</title>',
+        $this->assertRegExp(
+            '|class="node">\s*<title>LProject Name</title>|',
             $svg
         );
-        $this->assertContains(
-            'class="edge"><title>B_:genid1&#45;&gt;LProject Name</title>',
+        $this->assertRegExp(
+            '|class="edge">\s*<title>B_:genid1&#45;&gt;LProject Name</title>|',
             $svg
         );
     }
