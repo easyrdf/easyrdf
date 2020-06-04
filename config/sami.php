@@ -13,10 +13,8 @@ $iterator = Finder::create()
 
 return new Sami($iterator, array(
     'title'               => 'EasyRdf API Documentation',
-    'theme'               => 'enhanced',
     'build_dir'           => "$root/docs/api",
     'cache_dir'           => "$root/samicache",
     'include_parent_data' => true,
-    'simulate_namespaces' => true,
     'default_opened_level' => 1,
 ));

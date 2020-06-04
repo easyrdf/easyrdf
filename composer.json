@@ -36,7 +36,7 @@
     "require-dev": {
         "ml/json-ld": "~1.0",
         "phpunit/phpunit": "^7",
-        "sami/sami": "~2.0",
+        "sami/sami": "^4",
         "semsol/arc2": "~2.2",
         "squizlabs/php_codesniffer": "~1.4.3",
         "zendframework/zend-http": "~2.3"
