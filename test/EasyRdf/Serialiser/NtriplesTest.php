@@ -283,7 +283,7 @@ class NtriplesTest extends TestCase
     }
 
     /**
-     * @see https://github.com/njh/easyrdf/issues/219
+     * @see https://github.com/easyrdf/easyrdf/issues/219
      * @see https://phabricator.wikimedia.org/T76854
      */
     public function testIssue219Unicode()

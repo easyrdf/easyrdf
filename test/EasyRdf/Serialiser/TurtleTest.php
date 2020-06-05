@@ -746,7 +746,7 @@ class TurtleTest extends TestCase
     }
 
     /**
-     * @see https://github.com/njh/easyrdf/issues/115
+     * @see https://github.com/easyrdf/easyrdf/issues/115
      */
     public function testIssue115()
     {

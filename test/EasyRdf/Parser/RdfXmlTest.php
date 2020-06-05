@@ -135,7 +135,7 @@ class RdfXmlTest extends TestCase
     }
 
     /**
-     * @see https://github.com/njh/easyrdf/issues/74
+     * @see https://github.com/easyrdf/easyrdf/issues/74
      */
     public function testIssue74()
     {
@@ -160,7 +160,7 @@ class RdfXmlTest extends TestCase
     }
 
     /**
-     * @see https://github.com/njh/easyrdf/issues/157
+     * @see https://github.com/easyrdf/easyrdf/issues/157
      */
     public function testIssue157()
     {

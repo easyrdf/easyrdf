@@ -659,7 +659,7 @@ class NamespaceTest extends TestCase
     }
 
     /**
-     * @see https://github.com/njh/easyrdf/issues/185
+     * @see https://github.com/easyrdf/easyrdf/issues/185
      */
     public function testIssue185DashInPrefix()
     {

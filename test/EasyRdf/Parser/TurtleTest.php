@@ -496,7 +496,7 @@ class TurtleTest extends TestCase
     }
 
     /**
-     * https://github.com/njh/easyrdf/issues/195
+     * https://github.com/easyrdf/easyrdf/issues/195
      */
     public function testIssue195()
     {
@@ -514,7 +514,7 @@ class TurtleTest extends TestCase
     }
 
     /**
-     * https://github.com/njh/easyrdf/issues/185
+     * https://github.com/easyrdf/easyrdf/issues/185
      */
     public function testIssue185()
     {
@@ -543,7 +543,7 @@ class TurtleTest extends TestCase
     }
 
     /**
-     * @see https://github.com/njh/easyrdf/issues/140
+     * @see https://github.com/easyrdf/easyrdf/issues/140
      */
     public function testIssue140()
     {

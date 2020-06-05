@@ -418,8 +418,8 @@ class ClientTest extends TestCase
     /**
      * Make sure, that different queries have different Accept headers
      * This is important for compatibility with real-world triplestores
-     * @see https://github.com/njh/easyrdf/issues/226
-     * @see https://github.com/njh/easyrdf/issues/231
+     * @see https://github.com/easyrdf/easyrdf/issues/226
+     * @see https://github.com/easyrdf/easyrdf/issues/231
      */
     public function testAcceptHeaders()
     {

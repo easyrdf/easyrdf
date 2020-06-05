@@ -22,7 +22,7 @@
     ],
     "support": {
         "forum": "http://groups.google.com/group/easyrdf/",
-        "issues": "http://github.com/njh/easyrdf/issues"
+        "issues": "http://github.com/easyrdf/easyrdf/issues"
     },
     "require": {
         "php": ">=7.1.0",
