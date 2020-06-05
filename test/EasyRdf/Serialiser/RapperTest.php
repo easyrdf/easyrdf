@@ -51,7 +51,7 @@ class RapperTest extends TestCase
 
     public function setUp()
     {
-        exec('which rapper', $output, $retval);
+        exec('which rapper 2>&1', $output, $retval);
         if ($retval == 0) {
             $this->graph = new Graph();
             $this->serialiser = new Rapper();

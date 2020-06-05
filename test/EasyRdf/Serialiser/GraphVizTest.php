@@ -51,7 +51,7 @@ class GraphVizTest extends TestCase
 
     public function setUp()
     {
-        exec('which dot', $output, $retval);
+        exec('which dot 2>&1', $output, $retval);
         if ($retval == 0) {
             $this->graph = new Graph();
             $this->serialiser = new GraphViz();
