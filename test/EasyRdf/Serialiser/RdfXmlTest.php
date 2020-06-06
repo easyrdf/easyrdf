@@ -484,7 +484,7 @@ class EasyRdf_Serialiser_RdfXmlTest extends EasyRdf_TestCase
     }
 
     /**
-     * @see https://github.com/njh/easyrdf/issues/209
+     * @see https://github.com/easyrdf/easyrdf/issues/209
      */
     public function testIssue209()
     {
