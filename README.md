@@ -70,7 +70,6 @@ Features
 List of Examples
 ----------------
 
-* [`artistinfo.php`](/examples/artistinfo.php#slider) - Example of mapping an RDF class type to a PHP Class
 * [`basic.php`](/examples/basic.php#slider) - Basic "Hello World" type example
 * [`basic_sparql.php`](/examples/basic_sparql.php#slider) - Example of making a SPARQL `SELECT` query
 * [`converter.php`](/examples/converter.php#slider) - Convert RDF from one format to another
