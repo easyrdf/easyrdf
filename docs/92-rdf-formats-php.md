@@ -104,7 +104,7 @@ Can be represented as the following RDF/PHP structure:
     );
 
 [Up]: appendix-a-rdf-formats.md
-[RDF/JSON Specification]: appendix-a-rdf-formats-json.md
+[RDF/JSON Specification]: 90-rdf-formats-json.md
 
 ----
 

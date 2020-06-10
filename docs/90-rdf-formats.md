@@ -32,8 +32,8 @@ the following locations:
 
 The last edit of the RDF_JSON wiki page was to take in updates from an RDF_JSON 0.3.0 schema edited by Toby Inkster.
 
-[RDF/PHP Specification]: appendix-a-rdf-formats-php.md
-[RDF/JSON Specification]: appendix-a-rdf-formats-json.md
+[RDF/PHP Specification]: 91-rdf-formats-json.md
+[RDF/JSON Specification]: 92-rdf-formats-php.md
 [LICENSE.md]: ../LICENSE.md
 
 [archive.org N2 Wiki User:Iand]: http://web.archive.org/web/20091121013123/http://n2.talis.com/wiki/User:Iand

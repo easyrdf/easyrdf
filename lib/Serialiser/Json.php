@@ -51,8 +51,7 @@ class Json extends RdfPhp
     /**
      * Serialise an EasyRdf\Graph into a to RDF/JSON document.
      *
-     * http://n2.talis.com/wiki/RDF_JSON_Specification
-     * docs/appendix-a-rdf-formats-json.md
+     * https://www.easyrdf.org/docs/rdf-formats-json
      *
      * @param Graph  $graph  An EasyRdf\Graph object.
      * @param string $format The name of the format to convert to.
