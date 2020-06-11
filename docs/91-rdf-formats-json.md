@@ -164,7 +164,7 @@ Refer to [JSON] for definitions of terminology.
 
 ## Publishing RDF/JSON on the web
 
-If doing content-negotiation, respond to, and send the content-type as application/json. An empty graph (ie: no triples)
+If doing content-negotiation, respond to, and send the content-type as `application/json`. An empty graph (ie: no triples)
 should be served as an empty object: `{}`.
 
 
@@ -175,7 +175,7 @@ This document was originally retrieved from `http://n2.talis.com/wiki/RDF_JSON_S
 1. [Tags for the Identification of Languages](http://web.archive.org/web/20100801085122/http://www.ietf.org/rfc/rfc3066.txt)
 2. [RDF/JSON Brainstorming](http://web.archive.org/web/20100801085122/http://n2.talis.com/wiki/RDF_JSON_Brainstorming)
 3. [Uniform Resource Identifier (URI): Generic Syntax](http://web.archive.org/web/20100801085122/http://www.ietf.org/rfc/rfc3986.txt)
-4. [RDF/JSON schema]: https://web.archive.org/web/20110827125353/http://soapjr.org/schemas/RDF_JSON
+4. [RDF/JSON schema](https://web.archive.org/web/20110827125353/http://soapjr.org/schemas/RDF_JSON)
 
 
 [JSON]: http://json.org/
