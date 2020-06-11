@@ -60,12 +60,12 @@ class Rapper extends Json
      */
     public function __construct($rapperCmd = 'rapper')
     {
-        $result = exec("$rapperCmd --version 2>/dev/null", $output, $status);
+        exec("$rapperCmd --version 2>/dev/null", $output, $status);
         if ($status != 0) {
             throw new \EasyRdf\Exception(
-                "Failed to execute the command '$rapperCmd': $result"
+                "Failed to execute the command '$rapperCmd': " . join("\n", $output)
             );
-        } elseif (version_compare($result, self::MINIMUM_RAPPER_VERSION) < 0) {
+        } elseif (version_compare($output[0], self::MINIMUM_RAPPER_VERSION) < 0) {
             throw new \EasyRdf\Exception(
                 "Version ".self::MINIMUM_RAPPER_VERSION." or higher of rapper is required."
             );

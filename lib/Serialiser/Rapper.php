@@ -62,10 +62,10 @@ class Rapper extends Ntriples
      */
     public function __construct($rapperCmd = 'rapper')
     {
-        $result = exec("$rapperCmd --version 2>/dev/null", $output, $status);
+        exec("$rapperCmd --version 2>/dev/null", $output, $status);
         if ($status != 0) {
             throw new Exception(
-                "Failed to execute the command '$rapperCmd': $result"
+                "Failed to execute the command '$rapperCmd': " . join("\n", $output)
             );
         } else {
             $this->rapperCmd = $rapperCmd;
