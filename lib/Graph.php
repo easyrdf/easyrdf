@@ -104,7 +104,7 @@ class Graph
      * The document format is optional but should be specified if it
      * can't be guessed or got from the HTTP headers.
      *
-     * If the document format is given, then the HTTP Accept header is 
+     * If the document format is given, then the HTTP Accept header is
      * set to the MIME type of the requested format.
      *
      * @param  string       $uri     The URI of the data to load
@@ -275,7 +275,7 @@ class Graph
      * The document format is optional but should be specified if it
      * can't be guessed or got from the HTTP headers.
      *
-     * If the document format is given, then the HTTP Accept header is 
+     * If the document format is given, then the HTTP Accept header is
      * set to the MIME type of the requested format.
      *
      * @param  string  $uri     The URI of the data to load
