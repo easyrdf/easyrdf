@@ -6,7 +6,7 @@ namespace EasyRdf;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -274,11 +274,18 @@ class GraphTest extends TestCase
 
     public function testLoadWithContentType()
     {
+        $checkRequest = function ($client) {
+            $this->assertContains(",application/json,", $client->getHeader('Accept'));
+            return true;
+        };
         $this->client->addMockOnce(
             'GET',
             'http://www.example.com/',
             readFixture('foaf.json'),
-            array('headers' => array('Content-Type' => 'application/json'))
+            array(
+                'headers' => array('Content-Type' => 'application/json'),
+                'callback' => $checkRequest
+            )
         );
         $graph = new Graph('http://www.example.com/');
         $this->assertSame(14, $graph->load());
@@ -286,6 +293,38 @@ class GraphTest extends TestCase
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')
         );
+    }
+
+    public function testLoadWithFormat()
+    {
+        $checkRequest = function ($client) {
+            $this->assertSame("text/turtle", $client->getHeader('Accept'));
+            return true;
+        };
+        $this->client->addMock(
+            'GET',
+            'http://www.example.com/',
+            readFixture('foaf.ttl'),
+            array('callback' => $checkRequest)
+        );
+        $graph = new Graph();
+        $this->assertSame(14, $graph->load('http://www.example.com/', 'turtle'));
+    }
+
+    public function testLoadWithMimeType()
+    {
+        $checkRequest = function ($client) {
+            $this->assertSame("application/x-turtle", $client->getHeader('Accept'));
+            return true;
+        };
+        $this->client->addMock(
+            'GET',
+            'http://www.example.com/',
+            readFixture('foaf.ttl'),
+            array('callback' => $checkRequest)
+        );
+        $graph = new Graph();
+        $this->assertSame(14, $graph->load('http://www.example.com/', 'application/x-turtle'));
     }
 
     public function testLoadWithContentTypeAndCharset()

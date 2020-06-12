@@ -47,8 +47,7 @@
 <?php
     if (isset($_REQUEST['id'])) {
         $id = $_REQUEST['id'];
-        $doc = "https://www.wikidata.org/wiki/Special:EntityData/$id.ttl";
-        $graph = \EasyRdf\Graph::newAndLoad($doc, 'turtle');
+        $graph = \EasyRdf\Graph::newAndLoad("wd:$id", 'turtle');
 
         $village = $graph->resource("wd:$id");
 
