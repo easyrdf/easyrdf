@@ -407,12 +407,30 @@ class ResourceTest extends TestCase
         );
     }
 
+    public function testGetMultiplePropertiesArray()
+    {
+        $this->setupTestGraph();
+        $this->assertStringEquals(
+            'Test A',
+            $this->resource->get(['rdf:test','rdf:foobar'])
+        );
+    }
+
     public function testGetMultipleProperties2()
     {
         $this->setupTestGraph();
         $this->assertStringEquals(
             'Test A',
             $this->resource->get('rdf:foobar|rdf:test')
+        );
+    }
+
+    public function testGetMultiplePropertiesArray2()
+    {
+        $this->setupTestGraph();
+        $this->assertStringEquals(
+            'Test A',
+            $this->resource->get(['rdf:foobar','rdf:test'])
         );
     }
 
@@ -427,7 +445,7 @@ class ResourceTest extends TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
+            '$propertyPath should be a string, array or EasyRdf\Resource and cannot be null'
         );
         $this->resource->get(null);
     }
@@ -447,7 +465,7 @@ class ResourceTest extends TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
+            '$propertyPath should be a string, array or EasyRdf\Resource and cannot be null'
         );
         $this->resource->get($this);
     }
