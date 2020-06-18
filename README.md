@@ -58,7 +58,7 @@ Features
 * API documentation written in `phpdoc`
 * Extensive unit tests written using `phpunit`
 * Built-in parsers and serialisers: RDF/JSON, N-Triples, RDF/XML, Turtle
-* Optional parsing support for: [ARC2], [Redland Bindings], [rapper]
+* Optional parsing support for: [ARC2], [rapper]
 * Optional support for [`Zend\Http\Client`]
 * No required external dependancies upon other libraries (PEAR, Zend, etc...)
 * Complies with Zend Framework coding style.
@@ -121,7 +121,6 @@ The examples are in the public domain, for more information see [UNLICENSE].
 [GraphViz]:http://www.graphviz.org/
 [rapper]:http://librdf.org/raptor/rapper.html
 [RDF]:http://en.wikipedia.org/wiki/Resource_Description_Framework
-[Redland Bindings]:http://librdf.org/bindings/
 [SPARQL 1.1 query language]:http://www.w3.org/TR/sparql11-query/
 [UNLICENSE]:http://unlicense.org/
 [`Zend\Http\Client`]:http://framework.zend.com/manual/2.3/en/modules/zend.http.client.html
