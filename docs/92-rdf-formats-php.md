@@ -116,8 +116,6 @@ The content of this specification has been taken from the following locations:
 
  - [archive.org N2 Wiki RDF_PHP_Specification](http://web.archive.org/web/20100801084904/http://n2.talis.com/wiki/RDF_PHP_Specification)
  - [archive.org N2 Wiki RDF_PHP_Specification History](http://web.archive.org/web/20100702043345/http://n2.talis.com/mediawiki/index.php?title=RDF_PHP_Specification&action=history)
- - [archive.org N2 Wiki User:Iand]
- - [archive.org N2 Wiki User:Keithalexander]
 
 This specification is a work of its own right and is licensed under [Creative Commons Attribution-ShareAlike 3.0 Unported (CC-BY-SA-3.0)](https://creativecommons.org/licenses/by-sa/3.0/).
 
