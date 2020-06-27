@@ -29,6 +29,14 @@ Bug Fixes
 * `RdfPhp` parser validates its input (see #227)
 * Timeout is applied to response-times, not only connection-times (see #202)
 * `$graph->get()` is reliable after `$graph->delete()` now (see #239, #241)
+EasyRdf 0.9.1
+=============
+
+Bug Fixes
+---------
+* Support timeouts for HTTP requests where the server takes a long time to answer. Fixes #202
+* Fixed Google Map on UK Postcode example
+
 
 EasyRdf 0.9.0
 =============
