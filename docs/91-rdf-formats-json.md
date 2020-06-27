@@ -23,7 +23,7 @@ In general, a triple (subject **S**, predicate **P**, object **O**) is encoded i
 
 The object of the triple **O** is a further object with the following keys:
 
- - **type** one of 'uri', 'literal' or 'bnode' (**required** and must be lowercase)
+ - **type** one of `uri`, `literal` or `bnode` (**required** and must be lowercase)
  - **value** the lexical value of the object (**required**, full URIs should be used, not qnames)
  - **lang** the language of a literal value (**optional** but if supplied it must not be empty)
  - **datatype** the datatype URI of the literal value (**optional**)
@@ -162,20 +162,34 @@ Refer to [JSON] for definitions of terminology.
 4. Add a key/value pair to the root object with the key being the URI or blank node identifier of the subject and the
    value being the subject object created in the previous step
 
-## Publishing RDF/JSON on the web
+### Publishing RDF/JSON on the web
 
 If doing content-negotiation, respond to, and send the content-type as `application/json`. An empty graph (ie: no triples)
 should be served as an empty object: `{}`.
 
 
-### References
-
-This document was originally retrieved from `http://n2.talis.com/wiki/RDF_JSON_Specification`.
+## References
 
 1. [Tags for the Identification of Languages](http://web.archive.org/web/20100801085122/http://www.ietf.org/rfc/rfc3066.txt)
 2. [RDF/JSON Brainstorming](http://web.archive.org/web/20100801085122/http://n2.talis.com/wiki/RDF_JSON_Brainstorming)
 3. [Uniform Resource Identifier (URI): Generic Syntax](http://web.archive.org/web/20100801085122/http://www.ietf.org/rfc/rfc3986.txt)
 4. [RDF/JSON schema](https://web.archive.org/web/20110827125353/http://soapjr.org/schemas/RDF_JSON)
+
+
+## History
+
+The RDF/JSON Specification was written/edited 2007, 2008 by Keith Alexander, Danny Ayers, Sam Tunnicliffe, Fellahst, Ian
+Davis and Robman; originally published at `http://n2.talis.com/wiki/RDF_JSON_Specification`, which is no-longer available.
+
+The content of this specification has been taken from the following locations:
+
+- [archive.org N2 Wiki RDF_JSON_Specification](http://web.archive.org/web/20100801085122/http://n2.talis.com/wiki/RDF_JSON_Specification)
+- [archive.org N2 Wiki RDF_JSON_Specification History 1](http://web.archive.org/web/20080503095136/http://n2.talis.com/mediawiki/index.php?title=RDF_JSON_Specification&action=history)
+- [archive.org N2 Wiki RDF_JSON_Specification History 2](http://web.archive.org/web/20090930113957/http://n2.talis.com/mediawiki/index.php?title=RDF_JSON_Specification&action=history)
+
+The last edit of the `RDF_JSON` wiki page was to take in updates from an `RDF_JSON` 0.3.0 schema edited by Toby Inkster.
+
+This specification is a work of its own right and is licensed under [Creative Commons Attribution-ShareAlike 3.0 Unported (CC-BY-SA-3.0)](https://creativecommons.org/licenses/by-sa/3.0/).
 
 
 [JSON]: http://json.org/
