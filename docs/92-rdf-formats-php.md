@@ -33,12 +33,12 @@ For example, the following triple:
 can be encoded in RDF/PHP as:
 
 ```php
+array(
+  "http://example.org/about" =>
     array(
-      "http://example.org/about" =>
-        array(
-           "http://purl.org/dc/elements/1.1/title" =>  array( array( "type" => "literal" , "value" => "Anna's Homepage." ), ),
-        )
-    );
+       "http://purl.org/dc/elements/1.1/title" =>  array( array( "type" => "literal" , "value" => "Anna's Homepage." ), ),
+    )
+);
 ```
 
 ## Examples
