@@ -89,6 +89,13 @@ List of Examples
 * [`zend_framework.php`](/examples/zend_framework.php#slider) - Example of using `Zend\Http\Client` with EasyRdf
 
 
+Contributing
+------------
+
+We welcome any contributions. For further information please read [CONSTRIBUTING.md](CONSTRIBUTING.md).
+
+For further information about extending / hack EasyRdf please read [DEVELOPER.md](DEVELOPER.md).
+
 Running Examples
 ----------------
 
