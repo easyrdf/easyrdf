@@ -1324,4 +1324,26 @@ class ResourceTest extends TestCase
         unset($this->resource['rdf:testMagicUnset']);
         $this->assertNull($this->resource->get('rdf:testMagicUnset'));
     }
+
+    /**
+     * @see https://github.com/sweetyrdf/easyrdf/issues/17
+     */
+    public function testPropertyUrisMatchProperties()
+    {
+        $g = new Graph();
+        $r = $g->resource('http://sample/resource');
+        $r->addLiteral('dc:title', 'sample title');
+        $r->addLiteral('http://unknown.namespace/property', 'sample value');
+
+        $uris = $r->propertyUris();
+        $props = $r->properties();
+        $this->assertEquals(count($uris), count($props));
+
+        sort($uris);
+        $exProps = array_map(function ($x) {
+            return RdfNamespace::expand($x);
+        }, $props);
+        sort($exProps);
+        $this->assertEquals($uris, $exProps);
+    }
 }
