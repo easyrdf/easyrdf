@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:dct="http://purl.org/dc/terms/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <rdf:Description rdf:about="https://vocabs.acdh.oeaw.ac.at/archeoaisets/clarin-vlo">
+    <dct:created rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2019-10-07T11:15:48.188959+00:00</dct:created>
+  </rdf:Description>
+</rdf:RDF>
