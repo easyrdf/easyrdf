@@ -66,7 +66,7 @@ class XML extends Literal
     public function domParse()
     {
         $dom = new \DOMDocument();
-        $dom->loadXML($this->value, LIBXML_PARSEHUGE);
+        $dom->loadXML($this->value);
         return $dom;
     }
 }

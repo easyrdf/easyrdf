@@ -191,7 +191,7 @@ class RdfXmlTest extends TestCase
         $graph = new Graph();
         $this->parser->parse($graph, readFixture('rdfxml/issue15.rdf'), 'rdfxml', null);
         $resource = $graph->resource('https://vocabs.acdh.oeaw.ac.at/archeoaisets/clarin-vlo');
-        $value = $resource->getLiteral('http://purl.org/dc/terms/created');
+        $value = $resource->getLiteral('<http://purl.org/dc/terms/created>');
         $this->assertEquals('2019-10-07T11:15:48.188959+00:00', (string) $value);
     }
 }
