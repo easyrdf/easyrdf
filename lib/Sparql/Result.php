@@ -275,7 +275,7 @@ class Result extends \ArrayIterator
     protected function parseXml($data)
     {
         $doc = new \DOMDocument();
-        $doc->loadXML($data);
+        $doc->loadXML($data, LIBXML_PARSEHUGE);
 
         # Check for valid root node.
         if ($doc->hasChildNodes() == false or
