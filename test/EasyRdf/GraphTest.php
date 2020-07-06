@@ -324,7 +324,7 @@ class GraphTest extends TestCase
             array('callback' => $checkRequest)
         );
         $graph = new Graph();
-        $this->assertSame(15, $graph->load('http://www.example.com/', 'application/x-turtle'));
+        $this->assertSame(14, $graph->load('http://www.example.com/', 'application/x-turtle'));
     }
 
     public function testLoadWithContentTypeAndCharset()
@@ -336,7 +336,7 @@ class GraphTest extends TestCase
             array('headers' => array('Content-Type' => 'text/plain; charset=utf8'))
         );
         $graph = new Graph('http://www.example.com/');
-        $this->assertSame(14, $graph->load());
+        $this->assertSame(15, $graph->load());
         $this->assertStringEquals(
             'Joe Bloggs',
             $graph->get('http://www.example.com/joe#me', 'foaf:name')

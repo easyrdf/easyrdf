@@ -363,7 +363,7 @@ class NtriplesTest extends TestCase
     {
         $this->setExpectedException(
             'EasyRdf\Parser\Exception',
-            'Failed to parse statement: on line 1'
+            'Failed to parse statement on line 1'
         );
         $this->parser->parse(
             $this->graph,
