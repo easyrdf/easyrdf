@@ -479,7 +479,9 @@ class ClientTest extends TestCase
         $response->method('isSuccessful')->willReturn(true);
 
         // client
-        $easyRdfHttpClient = $this->getMockBuilder(\EasyRdf\Http\Client::class)->disableOriginalConstructor()->getMock();
+        $easyRdfHttpClient = $this->getMockBuilder(\EasyRdf\Http\Client::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $easyRdfHttpClient->method('request')->willReturn($response);
         $easyRdfHttpClient
             ->expects($this->exactly(1))
@@ -519,7 +521,8 @@ class ClientTest extends TestCase
             ->expects($this->exactly(1))
             ->method('setHeaders')
             /*
-             * we only check if an array with 'Accept' as key was given. ignore the value, because it may vary between PHP versions.
+             * we only check if an array with 'Accept' as key was given. ignore the value, 
+             * because it may vary between PHP versions.
              * FYI: https://github.com/sweetyrdf/easyrdf/pull/10/commits/aab3af54aa0064203f61f0046f0e16cafaeacdc7
              */
             ->with($this->callback(function ($acceptHeaders) {
