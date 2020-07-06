@@ -80,10 +80,8 @@ class Ntriples extends Parser
             return $str;
         }
 
-        while (
-            preg_match('/\\\\U([0-9A-F]{8})/', $str, $matches) ||
-            preg_match('/\\\\u([0-9A-F]{4})/', $str, $matches)
-        ) {
+        while (preg_match('/\\\\U([0-9A-F]{8})/', $str, $matches)
+            || preg_match('/\\\\u([0-9A-F]{4})/', $str, $matches)) {
             //TODO - lines 87-105 can be replaced with mb_chr() in PHP >=7.2
             $no = hexdec($matches[1]);
             if ($no < 128) {                // 0x80
@@ -214,10 +212,14 @@ class Ntriples extends Parser
         $lines = preg_split('/\x0D?\x0A/', strval($data));
         foreach ($lines as $index => $line) {
             $lineNum = $index + 1;
+
+            $regex = '/^\s*(.+?)\s+<([^<>]+?)>\s+(<[^>]+>|_:[^\s]*|"(\\\\"|[^"])*")(\\^\\^<[^>]+>)?(@[-a-zA-Z0-9]+)?\s*\./';
+            $pregResult2 = preg_match($regex, $line, $matches);
+
             if (preg_match('/^\s*#/', $line)) {
                 # Comment
                 continue;
-            } elseif (preg_match('/^\s*(.+?)\s+<([^<>]+?)>\s+(<[^>]+>|_:[^\s]*|"(\\\\"|[^"])*")(\\^\\^<[^>]+>)?(@[-a-zA-Z0-9]+)?\s*\./', $line, $matches)) {
+            } elseif ($pregResult2) {
                 $this->addTriple(
                     $this->parseNtriplesSubject($matches[1], $lineNum),
                     $this->unescapeString($matches[2]),

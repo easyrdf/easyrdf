@@ -56,7 +56,7 @@ class Ntriples extends Serialiser
      *
      * @var string[]
      */
-    static private $iriEscapeMap = array(
+    private static $iriEscapeMap = array(
         "<" => "\\u003C",
         ">" => "\\u003E",
         '"' => "\\u0022",
@@ -106,7 +106,7 @@ class Ntriples extends Serialiser
      * https://www.w3.org/TR/n-triples/#grammar-production-STRING_LITERAL_QUOTE
      * @var string[]
      */
-    static private $literalEscapeMap = array(
+    private static $literalEscapeMap = array(
         "\n" => '\\n',
         "\r" => '\\r',
         '"' => '\\"',

@@ -795,7 +795,6 @@ class Turtle extends Ntriples
         if ($c == '.' || $c == 'e' || $c == 'E') {
             // read optional fractional digits
             if ($c == '.') {
-
                 if (self::isWhitespace($this->peek())) {
                     // We're parsing an integer that did not have a space before the
                     // period to end the statement
