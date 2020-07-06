@@ -213,7 +213,8 @@ class Ntriples extends Parser
         foreach ($lines as $index => $line) {
             $lineNum = $index + 1;
 
-            $regex = '/^\s*(.+?)\s+<([^<>]+?)>\s+(<[^>]+>|_:[^\s]*|"(\\\\"|[^"])*")(\\^\\^<[^>]+>)?(@[-a-zA-Z0-9]+)?\s*\./';
+            $regex = '/^\s*(.+?)\s+<([^<>]+?)>\s+(<[^>]+>|_:[^\s]*|"(\\\\"|[^"])*")'
+                .'(\\^\\^<[^>]+>)?(@[-a-zA-Z0-9]+)?\s*\./';
             $pregResult2 = preg_match($regex, $line, $matches);
 
             if (preg_match('/^\s*#/', $line)) {
