@@ -289,8 +289,8 @@ class NtriplesTest extends TestCase
     public function testIssue219Unicode()
     {
         $pairs = array(
-            '位' => '"\u4F4D"',
-            "Дуглас Адамс" => '"\u0414\u0443\u0433\u043B\u0430\u0441 \u0410\u0434\u0430\u043C\u0441"',
+            '位' => '"位"',
+            "Дуглас Адамс" => '"Дуглас Адамс"',
         );
 
         $serializer = new Ntriples();

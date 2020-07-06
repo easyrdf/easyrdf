@@ -74,7 +74,7 @@ class TurtleTest extends TestCase
     public function testEscapeIriAngleBracket()
     {
         $this->assertSame(
-            '<http://google.com/search?q=<\>>',
+            '<http://google.com/search?q=\u003C\u003E>',
             Turtle::escapeIri('http://google.com/search?q=<>')
         );
     }
@@ -90,7 +90,7 @@ class TurtleTest extends TestCase
     public function testMultilineQuotedString()
     {
         $this->assertSame(
-            '"""Hello	World"""',
+            '"Hello	World"',
             Turtle::quotedString('Hello	World')
         );
     }
@@ -126,7 +126,7 @@ class TurtleTest extends TestCase
     {
         $res = $this->graph->resource('http://google.com/search?q=<>');
         $this->assertSame(
-            '<http://google.com/search?q=<\>>',
+            '<http://google.com/search?q=\u003C\u003E>',
             $this->serialiser->serialiseResource($res)
         );
     }
@@ -144,7 +144,7 @@ class TurtleTest extends TestCase
     {
         $literal = new Literal("Hello\nWorld");
         $this->assertSame(
-            "\"\"\"Hello\nWorld\"\"\"",
+            "\"Hello\\nWorld\"",
             $this->serialiser->serialiseLiteral($literal)
         );
     }
@@ -516,8 +516,8 @@ class TurtleTest extends TestCase
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
-            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
-            "<http://example.com/joe#me> foaf:name \"\"\"Line 1\nLine 2\"\"\" .\n",
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n" .
+                "<http://example.com/joe#me> foaf:name \"Line 1\\nLine 2\" .\n",
             $turtle
         );
     }
@@ -525,12 +525,12 @@ class TurtleTest extends TestCase
     public function testSerialiseMultiLineEscaped2()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:name', "\t".'"""'."\t");
+        $joe->set('foaf:name', "\t" . '"""' . "\t");
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
-            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
-            "<http://example.com/joe#me> foaf:name \"\"\"\t\\\"\"\"\t\"\"\" .\n",
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n" .
+                "<http://example.com/joe#me> foaf:name \"\t\\\"\\\"\\\"\t\" .\n",
             $turtle
         );
     }
@@ -538,12 +538,12 @@ class TurtleTest extends TestCase
     public function testSerialiseMultiLineEscaped3()
     {
         $joe = $this->graph->resource('http://example.com/joe#me');
-        $joe->set('foaf:name', "\t".'""Doe"');
+        $joe->set('foaf:name', "\t" . '""Doe"');
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
-            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n".
-            "<http://example.com/joe#me> foaf:name \"\"\"\t\"\"Doe\\\"\"\"\" .\n",
+            "@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n\n" .
+                "<http://example.com/joe#me> foaf:name \"\t\\\"\\\"Doe\\\"\" .\n",
             $turtle
         );
     }

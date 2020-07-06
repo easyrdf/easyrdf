@@ -1,6 +1,7 @@
 <http://www.example.com/joe/foaf.rdf> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/PersonalProfileDocument> .
 <http://www.example.com/joe/foaf.rdf> <http://www.w3.org/2000/01/rdf-schema#label> "Joe Bloggs' FOAF File" .
-<http://www.example.com/joe/foaf.rdf> <http://xmlns.com/foaf/0.1/maker> <http://www.example.com/joe#me> .
+# full line comment
+<http://www.example.com/joe/foaf.rdf> <http://xmlns.com/foaf/0.1/maker> <http://www.example.com/joe#me> . # end of line comment
 <http://www.example.com/joe/foaf.rdf> <http://xmlns.com/foaf/0.1/primaryTopic> <http://www.example.com/joe#me> .
 <http://www.example.com/joe#me> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
 <http://www.example.com/joe#me> <http://xmlns.com/foaf/0.1/title> "Mr" .
@@ -8,6 +9,7 @@
 <http://www.example.com/joe#me> <http://xmlns.com/foaf/0.1/firstName> "Joe" .
 <http://www.example.com/joe#me> <http://xmlns.com/foaf/0.1/family_name> "Bloggs" .
 <http://www.example.com/joe#me> <http://xmlns.com/foaf/0.1/homepage> <http://www.example.com/joe/> .
+<http://www.example.com/joe#me> <http://xmlns.com/foaf/0.1/age> "34"^^<http://www.w3.org/2001/XMLSchema#integer> .
 _:genid1 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Project> .
 _:genid1 <http://xmlns.com/foaf/0.1/name> "Joe's Current Project" .
 _:genid1 <http://xmlns.com/foaf/0.1/homepage> <http://www.example.com/project> .

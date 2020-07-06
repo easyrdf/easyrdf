@@ -7,6 +7,7 @@ namespace EasyRdf\Parser;
  * LICENSE
  *
  * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2020 Austrian Centre for Digital Humanities.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,11 +36,12 @@ namespace EasyRdf\Parser;
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
  * @license    http://www.opensource.org/licenses/bsd-license.php
  */
+
 use EasyRdf\Graph;
 use EasyRdf\Parser;
 
 /**
- * A pure-php class to parse N-Triples with no dependencies.
+ * A pure-php class to parse N-Triples with no dependancies.
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
@@ -61,45 +63,48 @@ class Ntriples extends Parser
             return $str;
         }
 
+        // https://www.w3.org/TR/n-triples/#n-triples-grammar
         $mappings = array(
-            't' => chr(0x09),
-            'b' => chr(0x08),
-            'n' => chr(0x0A),
-            'r' => chr(0x0D),
-            'f' => chr(0x0C),
-            '\"' => chr(0x22),
-            '\'' => chr(0x27)
+            '\\b' => chr(8),
+            '\\t' => "\t",
+            '\\n' => "\n",
+            '\\f' => chr(12),
+            '\\r' => "\r",
+            '\\"' => '"',
+            "\\'" => "'",
+            '\\\\' => "\\"
         );
-        foreach ($mappings as $in => $out) {
-            $str = preg_replace('/\x5c([' . $in . '])/', $out, $str);
-        }
+        $str = str_replace(array_keys($mappings), array_values($mappings), $str);
 
-        if (stripos($str, '\u') === false) {
+        if (stripos($str, '\\u') === false) {
             return $str;
         }
 
-        while (preg_match('/\\\(U)([0-9A-F]{8})/', $str, $matches) ||
-               preg_match('/\\\(u)([0-9A-F]{4})/', $str, $matches)) {
-            $no = hexdec($matches[2]);
+        while (
+            preg_match('/\\\\U([0-9A-F]{8})/', $str, $matches) ||
+            preg_match('/\\\\u([0-9A-F]{4})/', $str, $matches)
+        ) {
+            //TODO - lines 87-105 can be replaced with mb_chr() in PHP >=7.2
+            $no = hexdec($matches[1]);
             if ($no < 128) {                // 0x80
                 $char = chr($no);
             } elseif ($no < 2048) {         // 0x800
                 $char = chr(($no >> 6) + 192) .
-                        chr(($no & 63) + 128);
+                    chr(($no & 63) + 128);
             } elseif ($no < 65536) {        // 0x10000
                 $char = chr(($no >> 12) + 224) .
-                        chr((($no >> 6) & 63) + 128) .
-                        chr(($no & 63) + 128);
+                    chr((($no >> 6) & 63) + 128) .
+                    chr(($no & 63) + 128);
             } elseif ($no < 2097152) {      // 0x200000
                 $char = chr(($no >> 18) + 240) .
-                        chr((($no >> 12) & 63) + 128) .
-                        chr((($no >> 6) & 63) + 128) .
-                        chr(($no & 63) + 128);
+                    chr((($no >> 12) & 63) + 128) .
+                    chr((($no >> 6) & 63) + 128) .
+                    chr(($no & 63) + 128);
             } else {
                 # FIXME: throw an exception instead?
                 $char = '';
             }
-            $str = str_replace('\\' . $matches[1] . $matches[2], $char, $str);
+            $str = str_replace($matches[0], $char, $str);
         }
         return $str;
     }
@@ -127,44 +132,60 @@ class Ntriples extends Parser
     }
 
     /**
+     * Parses the RDF triple's object.
+     *
+     * Extracted to a separate method only for better code readability of the
+     * parse() method.
+     *
+     * For performance reasons (avoiding unnecessary memory copying) takes the
+     * $matches parameter by reference and assumes its values follow the regex
+     * used in the parse() method (which ends up with a pretty ugly API - see
+     * the $matches parameter description).
+     *
+     * @param array $matches an array providing the RDF triple object value
+     *   in the fourth element, datatype in sixth element and lang tag in
+     *   seventh element
+     * @param type $lineNum
+     * @return array
+     * @throws Exception
      * @ignore
      */
-    protected function parseNtriplesObject($obj, $lineNum)
+    private function parseNtriplesObject(&$matches, $lineNum)
     {
-        if (preg_match('/"(.+)"\^\^<([^<>]+)>/', $obj, $matches)) {
-            return array(
-                'type' => 'literal',
-                'value' => $this->unescapeString($matches[1]),
-                'datatype' => $this->unescapeString($matches[2])
-            );
-        } elseif (preg_match('/"(.+)"@([\w\-]+)/', $obj, $matches)) {
-            return array(
-                'type' => 'literal',
-                'value' => $this->unescapeString($matches[1]),
-                'lang' => $this->unescapeString($matches[2])
-            );
-        } elseif (preg_match('/"(.*)"/', $obj, $matches)) {
-            return array('type' => 'literal', 'value' => $this->unescapeString($matches[1]));
-        } elseif (preg_match('/<([^<>]+)>/', $obj, $matches)) {
-            return array('type' => 'uri', 'value' => $this->unescapeString($matches[1]));
-        } elseif (preg_match('/_:([A-Za-z0-9]*)/', $obj, $matches)) {
-            if (empty($matches[1])) {
+        if (!is_array($matches) || !isset($matches[3])) {
+            throw new Exception('Invalid $matches parameter provided');
+        }
+        switch (substr($matches[3], 0, 1)) {
+            case '"':
+                $ret = array(
+                    'type' => 'literal',
+                    'value' => $this->unescapeString(substr($matches[3], 1, -1))
+                );
+                if (count($matches) === 7) {
+                    $ret['lang'] = substr($matches[6], 1);
+                } elseif (count($matches) === 6) {
+                    $ret['datatype'] = $this->unescapeString(substr($matches[5], 3, -1));
+                }
+                return $ret;
+            case '_':
+                if (strlen($matches[3]) === 2) {
+                    // empty bnode id is not in line with https://www.w3.org/TR/n-triples/#n-triples-grammar
+                    // but examples exist in tests so let's leave it
+                    $bnode = $this->graph->newBNodeId();
+                } else {
+                    $bnode = $this->remapBnode(substr($matches[3], 2));
+                }
                 return array(
                     'type' => 'bnode',
-                    'value' => $this->graph->newBNodeId()
+                    'value' => $bnode
                 );
-            } else {
-                $nodeid = $this->unescapeString($matches[1]);
+            case '<':
                 return array(
-                    'type' => 'bnode',
-                    'value' => $this->remapBnode($nodeid)
+                    'type' => 'uri',
+                    'value' => $this->unescapeString(substr($matches[3], 1, -1))
                 );
-            }
-        } else {
-            throw new Exception(
-                "Failed to parse object: $obj",
-                $lineNum
-            );
+            default:
+                throw new Exception("Failed to parse triple's object value: " . $matches[3], $lineNum);
         }
     }
 
@@ -196,11 +217,11 @@ class Ntriples extends Parser
             if (preg_match('/^\s*#/', $line)) {
                 # Comment
                 continue;
-            } elseif (preg_match('/^\s*(.+?)\s+<([^<>]+?)>\s+(.+?)\s*\.\s*$/', $line, $matches)) {
+            } elseif (preg_match('/^\s*(.+?)\s+<([^<>]+?)>\s+(<[^>]+>|_:[^\s]*|"(\\\\"|[^"])*")(\\^\\^<[^>]+>)?(@[-a-zA-Z0-9]+)?\s*\./', $line, $matches)) {
                 $this->addTriple(
                     $this->parseNtriplesSubject($matches[1], $lineNum),
                     $this->unescapeString($matches[2]),
-                    $this->parseNtriplesObject($matches[3], $lineNum)
+                    $this->parseNtriplesObject($matches, $lineNum)
                 );
             } elseif (preg_match('/^\s*$/', $line)) {
                 # Blank line

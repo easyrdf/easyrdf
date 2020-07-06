@@ -66,8 +66,7 @@ class Turtle extends Serialiser
      */
     public static function escapeIri($resourceIri)
     {
-        $escapedIri = str_replace('>', '\\>', $resourceIri);
-        return "<$escapedIri>";
+        return '<' . Ntriples::escapeIri($resourceIri) . '>';
     }
 
     /**
@@ -81,23 +80,7 @@ class Turtle extends Serialiser
      */
     public static function quotedString($value)
     {
-        if (preg_match('/[\t\n\r]/', $value)) {
-            $escaped = str_replace(array('\\', '"""'), array('\\\\', '\\"""'), $value);
-
-            // Check if the last character is a trailing double quote, if so, escape it.
-            $pos = strrpos($escaped, '"');
-
-            if ($pos !== false && $pos + 1 == strlen($escaped)) {
-                $escaped = substr($escaped, 0, -1);
-
-                $escaped .= '\"';
-            }
-
-            return '"""'.$escaped.'"""';
-        } else {
-            $escaped = str_replace(array('\\', '"'), array('\\\\', '\\"'), $value);
-            return '"'.$escaped.'"';
-        }
+        return '"' . Ntriples::escapeLiteral($value) . '"';
     }
 
     /**
@@ -181,8 +164,8 @@ class Turtle extends Serialiser
             return $this->serialiseLiteral($object);
         } else {
             throw new \InvalidArgumentException(
-                "serialiseObject() requires \$object to be ".
-                'of type EasyRdf\Resource or EasyRdf\Literal'
+                "serialiseObject() requires \$object to be " .
+                    'of type EasyRdf\Resource or EasyRdf\Literal'
             );
         }
     }
@@ -212,7 +195,7 @@ class Turtle extends Serialiser
                 if ($count) {
                     $turtle .= "\n$indent  $serialised";
                 } else {
-                    $turtle .= " ".$serialised;
+                    $turtle .= " " . $serialised;
                 }
             }
         }
@@ -231,7 +214,7 @@ class Turtle extends Serialiser
     protected function serialiseProperties($res, $depth = 1)
     {
         $properties = $res->propertyUris();
-        $indent = str_repeat(' ', ($depth*2)-1);
+        $indent = str_repeat(' ', ($depth * 2) - 1);
 
         $turtle = '';
         if (count($properties) > 1) {
@@ -267,7 +250,7 @@ class Turtle extends Serialiser
                         // Nested unlabelled Blank Node
                         $this->outputtedBnodes[$id] = true;
                         $turtle .= ' [';
-                        $turtle .= $this->serialiseProperties($object, $depth+1);
+                        $turtle .= $this->serialiseProperties($object, $depth + 1);
                         $turtle .= ' ]';
                     } else {
                         // Multiple properties pointing to this blank node
@@ -287,7 +270,7 @@ class Turtle extends Serialiser
                 $turtle .= "\n";
             }
         } elseif ($pCount > 1) {
-            $turtle .= "\n" . str_repeat(' ', (($depth-1)*2)-1);
+            $turtle .= "\n" . str_repeat(' ', (($depth - 1) * 2) - 1);
         }
 
         return $turtle;

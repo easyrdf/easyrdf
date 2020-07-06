@@ -60,7 +60,7 @@ class NtriplesTest extends TestCase
     public function testParse()
     {
         $count = $this->parser->parse($this->graph, $this->nt_data, 'ntriples', null);
-        $this->assertSame(14, $count);
+        $this->assertSame(15, $count);
 
         $joe = $this->graph->resource('http://www.example.com/joe#me');
         $this->assertNotNull($joe);
@@ -363,7 +363,7 @@ class NtriplesTest extends TestCase
     {
         $this->setExpectedException(
             'EasyRdf\Parser\Exception',
-            'Failed to parse object: foobar on line 1'
+            'Failed to parse statement: on line 1'
         );
         $this->parser->parse(
             $this->graph,

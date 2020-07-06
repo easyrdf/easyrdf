@@ -49,96 +49,78 @@ use EasyRdf\Serialiser;
  */
 class Ntriples extends Serialiser
 {
-    private $escChars = array();   // Character encoding cache
 
     /**
-     * @ignore
+     * Characters forbidden in n-triples literals according to
+     * https://www.w3.org/TR/n-triples/#grammar-production-IRIREF
+     *
+     * @var string[]
      */
-    protected function escapeString($str)
+    static private $iriEscapeMap = array(
+        "<" => "\\u003C",
+        ">" => "\\u003E",
+        '"' => "\\u0022",
+        "{" => "\\u007B",
+        "}" => "\\u007D",
+        "|" => "\\u007C",
+        "^" => "\\u005E",
+        "`" => "\\u0060",
+        "\\" => "\\u005C",
+        "\x00" => "\\u0030",
+        "\x01" => "\\u0031",
+        "\x02" => "\\u0032",
+        "\x03" => "\\u0033",
+        "\x04" => "\\u0034",
+        "\x05" => "\\u0035",
+        "\x06" => "\\u0036",
+        "\x07" => "\\u0037",
+        "\x08" => "\\u0038",
+        "\x09" => "\\u0039",
+        "\x0A" => "\\u0031",
+        "\x0B" => "\\u0031",
+        "\x0C" => "\\u0031",
+        "\x0D" => "\\u0031",
+        "\x0E" => "\\u0031",
+        "\x0F" => "\\u0031",
+        "\x10" => "\\u0031",
+        "\x11" => "\\u0031",
+        "\x12" => "\\u0031",
+        "\x13" => "\\u0031",
+        "\x14" => "\\u0032",
+        "\x15" => "\\u0032",
+        "\x16" => "\\u0032",
+        "\x17" => "\\u0032",
+        "\x18" => "\\u0032",
+        "\x19" => "\\u0032",
+        "\x1A" => "\\u0032",
+        "\x1B" => "\\u0032",
+        "\x1C" => "\\u0032",
+        "\x1D" => "\\u0032",
+        "\x1E" => "\\u0033",
+        "\x1F" => "\\u0033",
+        "\x20" => "\\u0033"
+    );
+
+    /**
+     * Characters forbidden in n-triples literals according to
+     * https://www.w3.org/TR/n-triples/#grammar-production-STRING_LITERAL_QUOTE
+     * @var string[]
+     */
+    static private $literalEscapeMap = array(
+        "\n" => '\\n',
+        "\r" => '\\r',
+        '"' => '\\"',
+        '\\' => '\\\\'
+    );
+
+    public static function escapeLiteral($str)
     {
-        $result = '';
-        $strLen = mb_strlen($str, "UTF-8");
-
-        for ($i = 0; $i < $strLen; $i++) {
-            $c = mb_substr($str, $i, 1, "UTF-8");
-
-            if (!isset($this->escChars[$c])) {
-                $this->escChars[$c] = $this->escapedChar($c);
-            }
-
-            $result .= $this->escChars[$c];
-        }
-
-        return $result;
+        return strtr($str, self::$literalEscapeMap);
     }
 
-    /**
-     * @ignore
-     */
-    protected function unicodeCharNo($cUtf)
+    public static function escapeIri($str)
     {
-        $bl = strlen($cUtf); /* binary length */
-        $r = 0;
-        switch ($bl) {
-            case 1: /* 0####### (0-127) */
-                $r = ord($cUtf);
-                break;
-            case 2: /* 110##### 10###### = 192+x 128+x */
-                $r = ((ord($cUtf[0]) - 192) * 64) +
-                     (ord($cUtf[1]) - 128);
-                break;
-            case 3: /* 1110#### 10###### 10###### = 224+x 128+x 128+x */
-                $r = ((ord($cUtf[0]) - 224) * 4096) +
-                     ((ord($cUtf[1]) - 128) * 64) +
-                     (ord($cUtf[2]) - 128);
-                break;
-            case 4: /* 1111#### 10###### 10###### 10###### = 240+x 128+x 128+x 128+x */
-                $r = ((ord($cUtf[0]) - 240) * 262144) +
-                     ((ord($cUtf[1]) - 128) * 4096) +
-                     ((ord($cUtf[2]) - 128) * 64) +
-                     (ord($cUtf[3]) - 128);
-                break;
-        }
-        return $r;
-    }
-
-    /**
-     * @ignore
-     */
-    protected function escapedChar($c)
-    {
-        $no = $this->unicodeCharNo($c);
-
-        /* see http://www.w3.org/TR/rdf-testcases/#ntrip_strings */
-        if ($no < 9) {
-            return "\\u" . sprintf('%04X', $no);  /* #x0-#x8 (0-8) */
-        } elseif ($no == 9) {
-            return '\t';                          /* #x9 (9) */
-        } elseif ($no == 10) {
-            return '\n';                          /* #xA (10) */
-        } elseif ($no < 13) {
-            return "\\u" . sprintf('%04X', $no);  /* #xB-#xC (11-12) */
-        } elseif ($no == 13) {
-            return '\r';                          /* #xD (13) */
-        } elseif ($no < 32) {
-            return "\\u" . sprintf('%04X', $no);  /* #xE-#x1F (14-31) */
-        } elseif ($no < 34) {
-            return $c;                            /* #x20-#x21 (32-33) */
-        } elseif ($no == 34) {
-            return '\"';                          /* #x22 (34) */
-        } elseif ($no < 92) {
-            return $c;                            /* #x23-#x5B (35-91) */
-        } elseif ($no == 92) {
-            return '\\\\'; // double backslash    /* #x5C (92) */
-        } elseif ($no < 127) {
-            return $c;                            /* #x5D-#x7E (93-126) */
-        } elseif ($no < 65536) {
-            return "\\u" . sprintf('%04X', $no);  /* #x7F-#xFFFF (128-65535) */
-        } elseif ($no < 1114112) {
-            return "\\U" . sprintf('%08X', $no);  /* #x10000-#x10FFFF (65536-1114111) */
-        } else {
-            return '';                            /* not defined => ignore */
-        }
+        return strtr($str, self::$iriEscapeMap);
     }
 
     /**
@@ -146,7 +128,7 @@ class Ntriples extends Serialiser
      */
     protected function serialiseResource($res)
     {
-        $escaped = $this->escapeString($res);
+        $escaped = self::escapeIri($res);
         if (substr($res, 0, 2) == '_:') {
             return $escaped;
         } else {
@@ -175,23 +157,22 @@ class Ntriples extends Serialiser
         if ($value['type'] == 'uri' or $value['type'] == 'bnode') {
             return $this->serialiseResource($value['value']);
         } elseif ($value['type'] == 'literal') {
-            $escaped = $this->escapeString($value['value']);
+            $escaped = self::escapeLiteral($value['value']);
             if (isset($value['lang'])) {
-                $lang = $this->escapeString($value['lang']);
+                $lang = $value['lang'];
                 return '"' . $escaped . '"' . '@' . $lang;
             } elseif (isset($value['datatype'])) {
-                $datatype = $this->escapeString($value['datatype']);
+                $datatype = self::escapeIri($value['datatype']);
                 return '"' . $escaped . '"' . "^^<$datatype>";
             } else {
                 return '"' . $escaped . '"';
             }
         } else {
             throw new Exception(
-                "Unable to serialise object of type '".$value['type']."' to ntriples: "
+                "Unable to serialise object of type '" . $value['type'] . "' to ntriples: "
             );
         }
     }
-
 
     /**
      * Serialise an EasyRdf\Graph into N-Triples
@@ -212,16 +193,16 @@ class Ntriples extends Serialiser
             foreach ($graph->toRdfPhp() as $resource => $properties) {
                 foreach ($properties as $property => $values) {
                     foreach ($values as $value) {
-                        $nt .= $this->serialiseResource($resource)." ";
-                        $nt .= "<" . $this->escapeString($property) . "> ";
-                        $nt .= $this->serialiseValue($value)." .\n";
+                        $nt .= $this->serialiseResource($resource) . " ";
+                        $nt .= "<" . self::escapeIri($property) . "> ";
+                        $nt .= $this->serialiseValue($value) . " .\n";
                     }
                 }
             }
             return $nt;
         } else {
             throw new Exception(
-                __CLASS__." does not support: $format"
+                __CLASS__ . " does not support: $format"
             );
         }
     }

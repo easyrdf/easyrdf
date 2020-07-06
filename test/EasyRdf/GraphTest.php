@@ -324,7 +324,7 @@ class GraphTest extends TestCase
             array('callback' => $checkRequest)
         );
         $graph = new Graph();
-        $this->assertSame(14, $graph->load('http://www.example.com/', 'application/x-turtle'));
+        $this->assertSame(15, $graph->load('http://www.example.com/', 'application/x-turtle'));
     }
 
     public function testLoadWithContentTypeAndCharset()
