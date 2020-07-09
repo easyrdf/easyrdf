@@ -1,6 +1,5 @@
 {
     "name": "easyrdf/easyrdf",
-    "version": "1.0.0-alpha.1",
     "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
     "type": "library",
     "keywords": ["RDF", "Semantic Web", "Linked Data", "Turtle", "RDFa", "SPARQL"],
