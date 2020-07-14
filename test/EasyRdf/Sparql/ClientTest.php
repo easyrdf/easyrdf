@@ -77,7 +77,7 @@ class ClientTest extends TestCase
             $this->sparql->getQueryUri()
         );
     }
-    
+
     public function testGetUpdateUri()
     {
         $this->assertSame(
@@ -370,7 +370,7 @@ class ClientTest extends TestCase
         $this->assertSame("application/sparql-update", $client->getHeader('Content-Type'));
         return true;
     }
-    
+
     public function testUpdate()
     {
         $this->client->addMock(

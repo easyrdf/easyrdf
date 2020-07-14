@@ -32,7 +32,7 @@ Then to start using EasyRdf in your project, add this to the top of your file:
 require 'vendor/autoload.php';
 ```
 
-This will load composer's autoloader and make the EasyRdf classes available to your 
+This will load composer's autoloader and make the EasyRdf classes available to your
 programme.
 
 

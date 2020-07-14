@@ -49,7 +49,7 @@ class Exception extends \EasyRdf\Exception
 {
     protected $parserLine;
     protected $parserColumn;
-    
+
     public function __construct($message, $line = null, $column = null)
     {
         $this->parserLine = $line;
@@ -64,12 +64,12 @@ class Exception extends \EasyRdf\Exception
 
         parent::__construct($message);
     }
-    
+
     public function getParserLine()
     {
         return $this->parserLine;
     }
-    
+
     public function getParserColumn()
     {
         return $this->parserColumn;

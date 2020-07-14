@@ -54,13 +54,13 @@ class FusekiTest extends \EasyRdf\TestCase
             1 => array('pipe', 'w'),
             2 => array('pipe', 'w')
         );
-    
+
         # Start fuseki on a random port number
         self::$port = rand(10000, 60000);
         $cmd = "fuseki-server --port=".self::$port." --update --mem /ds";
         $dir = sys_get_temp_dir();
         self::$proc = proc_open($cmd, $descriptorspec, $pipes, $dir);
-    
+
         # FIXME: timeout
         while ($line = fgets($pipes[1])) {
             if (preg_match('/Started (.+) on port (\d+)/', $line, $matches)) {
@@ -77,17 +77,17 @@ class FusekiTest extends \EasyRdf\TestCase
         if (self::$proc) {
             // Cause the fuseki server process to terminate
             proc_terminate(self::$proc);
-    
+
             // Close the process resource
             proc_close(self::$proc);
         }
     }
-    
+
     public function setUp()
     {
         $this->gs = new \EasyRdf\GraphStore("http://localhost:".self::$port."/ds/data");
     }
-    
+
     public function testGraphStoreReplace()
     {
         $graph1 = new \EasyRdf\Graph();
@@ -105,7 +105,7 @@ class FusekiTest extends \EasyRdf\TestCase
             $graph2->all('http://example.com/test', 'rdfs:label')
         );
     }
-    
+
     public function testGraphStoreInsert()
     {
         $graph1 = new \EasyRdf\Graph();
@@ -128,7 +128,7 @@ class FusekiTest extends \EasyRdf\TestCase
             $labels
         );
     }
-    
+
     public function testGraphStoreDelete()
     {
         $graph1 = new \EasyRdf\Graph();

@@ -63,7 +63,7 @@ class Turtle extends Ntriples
     protected $subject;
     protected $predicate;
     protected $object;
-    
+
     protected $line;
     protected $column;
 
@@ -103,7 +103,7 @@ class Turtle extends Ntriples
         $this->subject = null;
         $this->predicate = null;
         $this->object = null;
-        
+
         $this->line = 1;
         $this->column = 1;
 

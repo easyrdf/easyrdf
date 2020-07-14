@@ -3,7 +3,7 @@ VERSION = $(shell php -r "print json_decode(file_get_contents('composer.json'))-
 distdir = $(PACKAGE)-$(VERSION)
 PHP = $(shell which php)
 COMPOSER_FLAGS=--no-ansi --no-interaction
-PHPUNIT = vendor/bin/phpunit 
+PHPUNIT = vendor/bin/phpunit
 PHPUNIT_FLAGS = -c config/phpunit.xml
 PHPCS = vendor/bin/phpcs
 PHPCS_FLAGS = --standard=./config/phpcs_ruleset.xml --encoding=utf8 --extensions=php

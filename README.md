@@ -92,8 +92,8 @@ List of Examples
 Running Examples
 ----------------
 
-The easiest way of trying out some of the examples is to use the PHP command to 
-run a local web server on your computer. 
+The easiest way of trying out some of the examples is to use the PHP command to
+run a local web server on your computer.
 
 ```
 php -S localhost:8080 -t examples
