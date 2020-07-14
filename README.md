@@ -110,10 +110,10 @@ The examples are in the public domain, for more information see [UNLICENSE].
 
 
 
-[`EasyRdf\Graph`]:http://www.easyrdf.org/docs/api/EasyRdf_Graph.html
-[`EasyRdf\GraphStore`]:http://www.easyrdf.org/docs/api/EasyRdf_GraphStore.html
-[`EasyRdf\Sparql\Client`]:http://www.easyrdf.org/docs/api/EasyRdf_Sparql_Client.html
-[`EasyRdf\Sparql\Result`]:http://www.easyrdf.org/docs/api/EasyRdf_Sparql_Result.html
+[`EasyRdf\Graph`]:https://www.easyrdf.org/docs/api/EasyRdf\Graph.html
+[`EasyRdf\GraphStore`]:https://www.easyrdf.org/docs/api/EasyRdf\GraphStore.html
+[`EasyRdf\Sparql\Client`]:https://www.easyrdf.org/docs/api/EasyRdf\Sparql\Client.html
+[`EasyRdf\Sparql\Result`]:https://www.easyrdf.org/docs/api/EasyRdf\Sparql\Result.html
 
 [ARC2]:https://github.com/semsol/arc2/
 [BSD-3-Clause]:https://www.opensource.org/licenses/BSD-3-Clause
