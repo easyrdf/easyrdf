@@ -556,7 +556,7 @@ class Format
 Format::register(
     'php',
     'RDF/PHP',
-    'http://n2.talis.com/wiki/RDF_PHP_Specification',
+    'https://www.easyrdf.org/docs/rdf-formats-php',
     array(
         'application/x-httpd-php-source' => 1.0
     ),
@@ -566,7 +566,7 @@ Format::register(
 Format::register(
     'json',
     'RDF/JSON Resource-Centric',
-    'http://n2.talis.com/wiki/RDF_JSON_Specification',
+    'https://www.easyrdf.org/docs/rdf-formats-json',
     array(
         'application/json' => 1.0,
         'text/json' => 0.9,
