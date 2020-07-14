@@ -33,7 +33,7 @@ namespace EasyRdf;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2016 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
@@ -41,7 +41,7 @@ namespace EasyRdf;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2016 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 abstract class Serialiser
 {

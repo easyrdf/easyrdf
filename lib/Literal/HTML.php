@@ -33,7 +33,7 @@ namespace EasyRdf\Literal;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Literal;
 
@@ -43,7 +43,7 @@ use EasyRdf\Literal;
  * @package    EasyRdf
  * @link       http://www.w3.org/TR/rdf11-concepts/#section-html
  * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class HTML extends Literal
 {

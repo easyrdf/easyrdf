@@ -36,7 +36,7 @@ namespace EasyRdf\Http;
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc.
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Exception;
 
@@ -46,7 +46,7 @@ use EasyRdf\Exception;
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
  *             Copyright (c) 2005-2009 Zend Technologies USA Inc.
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Response
 {

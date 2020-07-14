@@ -33,7 +33,7 @@ namespace EasyRdf\Sparql;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Exception;
 use EasyRdf\Literal;
@@ -44,7 +44,7 @@ use EasyRdf\Resource;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Result extends \ArrayIterator
 {

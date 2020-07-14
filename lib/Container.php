@@ -33,7 +33,7 @@ namespace EasyRdf;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2013-2014 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
@@ -45,7 +45,7 @@ namespace EasyRdf;
  * @package    EasyRdf
  * @link       http://www.w3.org/TR/xmlschema-2/#date
  * @copyright  Copyright (c) 2013-2014 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Container extends Resource implements \ArrayAccess, \Countable, \SeekableIterator
 {

@@ -34,7 +34,7 @@ namespace EasyRdf\Parser;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2010-2020 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Graph;
 use EasyRdf\ParsedUri;
@@ -46,7 +46,7 @@ use EasyRdf\Parser;
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
  *             Copyright (c) 2004-2010 Benjamin Nowack (based on ARC2_RDFXMLParser.php)
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class RdfXml extends Parser
 {

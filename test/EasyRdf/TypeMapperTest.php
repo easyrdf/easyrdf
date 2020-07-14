@@ -33,7 +33,7 @@ namespace EasyRdf;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2015 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';

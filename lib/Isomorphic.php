@@ -33,7 +33,7 @@ namespace EasyRdf;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2013-2020 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
@@ -44,7 +44,7 @@ namespace EasyRdf;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2013-2020 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Isomorphic
 {

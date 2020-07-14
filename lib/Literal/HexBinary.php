@@ -33,7 +33,7 @@ namespace EasyRdf\Literal;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Literal;
 
@@ -43,7 +43,7 @@ use EasyRdf\Literal;
  * @package    EasyRdf
  * @link       http://www.w3.org/TR/xmlschema-2/#hexBinary
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class HexBinary extends Literal
 {

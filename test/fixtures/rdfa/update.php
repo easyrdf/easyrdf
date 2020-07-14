@@ -5,7 +5,7 @@
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2012-2014 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 require_once realpath(__DIR__.'/../../..')."/vendor/autoload.php";

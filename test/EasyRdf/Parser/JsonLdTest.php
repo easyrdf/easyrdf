@@ -33,7 +33,7 @@ namespace EasyRdf\Parser;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 use EasyRdf\Format;
@@ -49,7 +49,7 @@ require_once dirname(dirname(__DIR__)).
  * @package    EasyRdf
  * @copyright  Copyright (c) 2014 Markus Lanthaler
  * @author     Markus Lanthaler <mail@markus-lanthaler.com>
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class JsonLdTest extends TestCase
 {

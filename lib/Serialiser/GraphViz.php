@@ -33,7 +33,7 @@ namespace EasyRdf\Serialiser;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Exception;
 use EasyRdf\Graph;
@@ -51,7 +51,7 @@ use EasyRdf\Utils;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2012-2020 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class GraphViz extends Serialiser
 {

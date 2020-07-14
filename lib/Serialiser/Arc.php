@@ -33,7 +33,7 @@ namespace EasyRdf\Serialiser;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2016 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Exception;
 use EasyRdf\Format;
@@ -44,7 +44,7 @@ use EasyRdf\Graph;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2016 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Arc extends RdfPhp
 {

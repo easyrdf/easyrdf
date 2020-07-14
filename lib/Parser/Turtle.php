@@ -36,7 +36,7 @@ namespace EasyRdf\Parser;
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
  *             Copyright (c) 1997-2006 Aduna (http://www.aduna-software.com/)
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Graph;
 use EasyRdf\ParsedUri;
@@ -54,7 +54,7 @@ use EasyRdf\RdfNamespace;
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
  *             Copyright (c) 1997-2013 Aduna (http://www.aduna-software.com/)
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Turtle extends Ntriples
 {
