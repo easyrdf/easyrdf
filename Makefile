@@ -1,5 +1,5 @@
 PACKAGE = easyrdf
-VERSION = $(shell php -r "print json_decode(file_get_contents('composer.json'))->version;")
+VERSION = $(shell php -r "print json_decode(file_get_contents('composer.json'))->version ?? 'dev';")
 distdir = $(PACKAGE)-$(VERSION)
 PHP = $(shell which php)
 COMPOSER_FLAGS=--no-ansi --no-interaction
