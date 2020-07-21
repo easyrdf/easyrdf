@@ -46,6 +46,6 @@ class OpenGraphProtocolTest extends \EasyRdf\TestCase
         $this->assertContains('<dd><a href="https://www.rottentomatoes.com/m/oceans_eleven"', $output);
         $this->assertContains('<dt>Title:</dt> <dd>Ocean\'s Eleven (2001)</dd>', $output);
         $this->assertContains('<dt>Description:</dt> <dd>A rag-tag group of con artists and ex-cons', $output);
-        $this->assertContains('src="https://resizing.flixster.com/DjVRv9J4roj7G', $output);
+        $this->assertContains('src="https://resizing.flixster.com/', $output);
     }
 }
