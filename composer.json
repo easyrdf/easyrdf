@@ -37,7 +37,7 @@
         "ml/json-ld": "~1.0",
         "phpunit/phpunit": "^7",
         "sami/sami": "^4",
-        "semsol/arc2": "~2.2",
+        "semsol/arc2": "^2.4",
         "squizlabs/php_codesniffer": "3.*",
         "zendframework/zend-http": "~2.3"
     },
