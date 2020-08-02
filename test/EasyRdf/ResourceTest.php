@@ -999,6 +999,21 @@ class ResourceTest extends TestCase
         );
     }
 
+    /**
+    * @see https://github.com/easyrdf/easyrdf/issues/349
+    */
+    public function testPropertiesWithUnknownNamespace()
+    {
+        $g = new Graph();
+        $r = $g->resource('http://sample/resource');
+        $r->addLiteral('dc:title', 'sample title');
+        $r->addLiteral('http://unknown.namespace/property', 'sample value');
+        $this->assertSame(
+            array('dc:title', 'ns0:property'),
+            $r->properties()
+        );
+    }
+
     public function testPropertyUris()
     {
         $this->setupTestGraph();
