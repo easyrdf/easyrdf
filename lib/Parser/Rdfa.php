@@ -43,7 +43,7 @@ use EasyRdf\Parser;
 use EasyRdf\RdfNamespace;
 
 /**
- * Class to parse RDFa 1.1 with no external dependancies.
+ * Class to parse RDFa 1.1 with no external dependencies.
  *
  * http://www.w3.org/TR/rdfa-core/
  *
