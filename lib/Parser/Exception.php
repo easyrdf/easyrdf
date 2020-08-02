@@ -6,7 +6,7 @@ namespace EasyRdf\Parser;
  *
  * LICENSE
  *
- * Copyright (c) 2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2013-2014 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf\Parser;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
@@ -42,14 +42,14 @@ namespace EasyRdf\Parser;
  * All exceptions thrown by EasyRdf are an instance of this class.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2013-2014 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Exception extends \EasyRdf\Exception
 {
     protected $parserLine;
     protected $parserColumn;
-    
+
     public function __construct($message, $line = null, $column = null)
     {
         $this->parserLine = $line;
@@ -64,12 +64,12 @@ class Exception extends \EasyRdf\Exception
 
         parent::__construct($message);
     }
-    
+
     public function getParserLine()
     {
         return $this->parserLine;
     }
-    
+
     public function getParserColumn()
     {
         return $this->parserColumn;
