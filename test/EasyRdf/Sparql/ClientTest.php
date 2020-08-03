@@ -463,12 +463,12 @@ class ClientTest extends TestCase
     }
 
     /**
-     * Test for issue https://github.com/sweetyrdf/easyrdf/issues/9
+     * Test for issue https://github.com/easyrdf/easyrdf/issues/305
      *
      * Sparql\Client calls $client->setHeaders with a name-value pair, regardless of
      * whether $client is of type EasyRdf\Http\Client or Zend\Http\Client.
      */
-    public function testIssue9EasyRdfHttpClient()
+    public function testIssue305EasyRdfHttpClient()
     {
         /*
          * setup mocks
@@ -499,12 +499,12 @@ class ClientTest extends TestCase
     }
 
     /**
-     * Test for issue https://github.com/sweetyrdf/easyrdf/issues/9
+     * Test for issue https://github.com/easyrdf/easyrdf/issues/305
      *
      * Sparql\Client calls $client->setHeaders with a name-value pair, regardless of
      * whether $client is of type EasyRdf\Http\Client or Zend\Http\Client.
      */
-    public function testIssue9ZendHttpClient()
+    public function testIssue305ZendHttpClient()
     {
         /*
          * setup mocks
@@ -523,7 +523,6 @@ class ClientTest extends TestCase
             /*
              * we only check if an array with 'Accept' as key was given. ignore the value,
              * because it may vary between PHP versions.
-             * FYI: https://github.com/sweetyrdf/easyrdf/pull/10/commits/aab3af54aa0064203f61f0046f0e16cafaeacdc7
              */
             ->with($this->callback(function ($acceptHeaders) {
                 return \is_array($acceptHeaders)
