@@ -2,6 +2,7 @@ PACKAGE = easyrdf
 VERSION = $(shell php -r "print json_decode(file_get_contents('composer.json'))->version ?? 'dev';")
 distdir = $(PACKAGE)-$(VERSION)
 PHP = $(shell which php)
+PHP_FLAGS = -d memory_limit=1G
 COMPOSER_FLAGS=--no-ansi --no-interaction
 PHPUNIT = vendor/bin/phpunit
 PHPUNIT_FLAGS = -c config/phpunit.xml
@@ -45,25 +46,25 @@ all: help
 .PHONY: test
 test: $(PHPUNIT)
 	mkdir -p reports
-	$(PHP) $(PHPUNIT) $(PHPUNIT_FLAGS)
+	$(PHP) $(PHP_FLAGS) $(PHPUNIT) $(PHPUNIT_FLAGS)
 
 # TARGET:test-examples       Run PHPUnit tests for each of the examples
 .PHONY: test-examples
 test-examples: $(PHPUNIT)
 	mkdir -p reports
-	$(PHP) $(PHPUNIT) $(PHPUNIT_FLAGS) --testsuite "EasyRdf Examples"
+	$(PHP) $(PHP_FLAGS) $(PHPUNIT) $(PHPUNIT_FLAGS) --testsuite "EasyRdf Examples"
 
 # TARGET:test-lib            Run PHPUnit tests for the library
 .PHONY: test-lib
 test-lib: $(PHPUNIT)
 	mkdir -p reports
-	$(PHP) $(PHPUNIT) $(PHPUNIT_FLAGS) --testsuite "EasyRdf Library"
+	$(PHP) $(PHP_FLAGS) $(PHPUNIT) $(PHPUNIT_FLAGS) --testsuite "EasyRdf Library"
 
 # TARGET:coverage            Run library tests and generate coverage report
 .PHONY: coverage
 coverage: $(PHPUNIT)
 	mkdir -p reports/coverage
-	$(PHP) $(PHPUNIT) $(PHPUNIT_FLAGS) --coverage-html ./reports/coverage --testsuite "EasyRdf Library"
+	$(PHP) $(PHP_FLAGS) $(PHPUNIT) $(PHPUNIT_FLAGS) --coverage-html ./reports/coverage --testsuite "EasyRdf Library"
 
 # TARGET:apidocs             Generate HTML API documentation
 .PHONY: apidocs
