@@ -13,7 +13,7 @@
      * That graph is than outputted again in the desired output format.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 

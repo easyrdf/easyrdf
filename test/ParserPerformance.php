@@ -8,7 +8,6 @@ $parsers = array(
     'Ntriples',
     'RdfXml',
     'Rapper',
-    'Redland',
     'Turtle',
 );
 
