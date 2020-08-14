@@ -39,11 +39,11 @@ The latest _stable_ version of EasyRdf can be [downloaded from the EasyRdf websi
 Links
 -----
 
-* [EasyRdf Homepage](http://www.easyrdf.org/)
-* [API documentation](http://www.easyrdf.org/docs/api)
-* [Change Log](http://github.com/easyrdf/easyrdf/blob/master/CHANGELOG.md)
-* [Source Code](http://github.com/easyrdf/easyrdf)
-* [Issue Tracker](http://github.com/easyrdf/easyrdf/issues)
+* [EasyRdf Homepage](https://www.easyrdf.org/)
+* [API documentation](https://www.easyrdf.org/docs/api)
+* [Change Log](https://github.com/easyrdf/easyrdf/blob/master/CHANGELOG.md)
+* [Source Code](https://github.com/easyrdf/easyrdf)
+* [Issue Tracker](https://github.com/easyrdf/easyrdf/issues)
 
 
 Requirements
@@ -60,7 +60,7 @@ Features
 * Built-in parsers and serialisers: RDF/JSON, N-Triples, RDF/XML, Turtle
 * Optional parsing support for: [ARC2], [rapper]
 * Optional support for [`Zend\Http\Client`]
-* No required external dependancies upon other libraries (PEAR, Zend, etc...)
+* No required external dependencies upon other libraries (PEAR, Zend, etc...)
 * Complies with Zend Framework coding style.
 * Type mapper - resources of type `foaf:Person` can be mapped into PHP object of class `Foaf_Person`
 * Support for visualisation of graphs using [GraphViz]
@@ -92,8 +92,8 @@ List of Examples
 Running Examples
 ----------------
 
-The easiest way of trying out some of the examples is to use the PHP command to 
-run a local web server on your computer. 
+The easiest way of trying out some of the examples is to use the PHP command to
+run a local web server on your computer.
 
 ```
 php -S localhost:8080 -t examples
@@ -110,17 +110,17 @@ The examples are in the public domain, for more information see [UNLICENSE].
 
 
 
-[`EasyRdf\Graph`]:http://www.easyrdf.org/docs/api/EasyRdf_Graph.html
-[`EasyRdf\GraphStore`]:http://www.easyrdf.org/docs/api/EasyRdf_GraphStore.html
-[`EasyRdf\Sparql\Client`]:http://www.easyrdf.org/docs/api/EasyRdf_Sparql_Client.html
-[`EasyRdf\Sparql\Result`]:http://www.easyrdf.org/docs/api/EasyRdf_Sparql_Result.html
+[`EasyRdf\Graph`]:https://www.easyrdf.org/docs/api/EasyRdf\Graph.html
+[`EasyRdf\GraphStore`]:https://www.easyrdf.org/docs/api/EasyRdf\GraphStore.html
+[`EasyRdf\Sparql\Client`]:https://www.easyrdf.org/docs/api/EasyRdf\Sparql\Client.html
+[`EasyRdf\Sparql\Result`]:https://www.easyrdf.org/docs/api/EasyRdf\Sparql\Result.html
 
-[ARC2]:http://github.com/semsol/arc2/
-[BSD-3-Clause]:http://www.opensource.org/licenses/BSD-3-Clause
-[downloaded from the EasyRdf website]:http://www.easyrdf.org/downloads
-[GraphViz]:http://www.graphviz.org/
+[ARC2]:https://github.com/semsol/arc2/
+[BSD-3-Clause]:https://www.opensource.org/licenses/BSD-3-Clause
+[downloaded from the EasyRdf website]:https://www.easyrdf.org/downloads
+[GraphViz]:https://www.graphviz.org/
 [rapper]:http://librdf.org/raptor/rapper.html
-[RDF]:http://en.wikipedia.org/wiki/Resource_Description_Framework
-[SPARQL 1.1 query language]:http://www.w3.org/TR/sparql11-query/
-[UNLICENSE]:http://unlicense.org/
-[`Zend\Http\Client`]:http://framework.zend.com/manual/2.3/en/modules/zend.http.client.html
+[RDF]:https://en.wikipedia.org/wiki/Resource_Description_Framework
+[SPARQL 1.1 query language]:https://www.w3.org/TR/sparql11-query/
+[UNLICENSE]:https://unlicense.org/
+[`Zend\Http\Client`]:https://docs.zendframework.com/zend-http/client/intro/

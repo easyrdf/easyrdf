@@ -6,7 +6,7 @@ namespace EasyRdf\Sparql;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf\Sparql;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 use EasyRdf\Http;
@@ -77,7 +77,7 @@ class ClientTest extends TestCase
             $this->sparql->getQueryUri()
         );
     }
-    
+
     public function testGetUpdateUri()
     {
         $this->assertSame(
@@ -370,7 +370,7 @@ class ClientTest extends TestCase
         $this->assertSame("application/sparql-update", $client->getHeader('Content-Type'));
         return true;
     }
-    
+
     public function testUpdate()
     {
         $this->client->addMock(

@@ -4,8 +4,8 @@
  * Script to update test cases from rdfa.info
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2012-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2012-2014 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 require_once realpath(__DIR__.'/../../..')."/vendor/autoload.php";

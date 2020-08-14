@@ -6,7 +6,7 @@ namespace EasyRdf\Serialiser;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf\Serialiser;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 use EasyRdf\Graph;
@@ -419,12 +419,12 @@ class RdfXmlTest extends TestCase
             $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
-    
+
     public function testSerialiseTriplesWithoutType()
     {
         $this->graph->add('http://example.com/joe', 'foaf:knows', 'http://example.com/bob');
         $this->graph->addLiteral('http://example.com/joe', 'rdf:label', 'le Joe', 'fr-FR');
-        
+
         $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
@@ -437,13 +437,13 @@ class RdfXmlTest extends TestCase
             $this->serialiser->serialise($this->graph, 'rdfxml')
         );
     }
-    
+
     public function testSerialiseTriplesWithType()
     {
         $this->graph->add('http://example.com/joe', 'rdf:type', 'foaf:Person');
         $this->graph->add('http://example.com/joe', 'foaf:knows', 'http://example.com/bob');
         $this->graph->addLiteral('http://example.com/joe', 'rdf:label', 'le Joe', 'fr-FR');
-        
+
         $this->assertSame(
             "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n".
             "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n".
