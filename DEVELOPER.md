@@ -37,11 +37,6 @@ To run all tests, open your terminal and run:
 
 > make test-lib
 
-### Local development
-
-**Note:** There are a few tests which need some time to finish, especially `test/EasyRdf/GraphTest::testParseLargeFile`.
-If it hinders your flow, use `phpunit` with `--filter` to avoid running these tests at all.
-
 ### Travis
 
 We use Travis to run tests automatically after new code is being received by Github (library and examples):
