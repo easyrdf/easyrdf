@@ -1,12 +1,12 @@
 default:
-	docker build ./Docker -t easyrdf \
+	docker build . -t easyrdf \
 	&& \
 	docker run -it \
-				-v $(PWD)/../:/var/www/html \
-				--name easyrdf \
-				--user easyrdf \
-				easyrdf \
-				/bin/bash
+			   -v $(PWD)/../:/var/www/html \
+			   --name easyrdf \
+			   --user easyrdf \
+			   easyrdf \
+			   /bin/bash
 
 clean:
 	-@docker ps -a -q | xargs docker stop
