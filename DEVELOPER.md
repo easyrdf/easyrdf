@@ -35,7 +35,7 @@ Make sure you ran `composer update`, if you want to execute the test suite ([Get
 
 To run all tests, open your terminal and run:
 
-> vendor/bin/phpunit
+> make test-lib
 
 ### Local development
 
