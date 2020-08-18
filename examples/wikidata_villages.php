@@ -3,10 +3,10 @@
      * Consuming Linked Data from Wikidata.
      *
      * This example demonstrates fetching information about villages in Fife
-     * from Wikidata. The list of villages is fetched by running a SPARQL query. 
+     * from Wikidata. The list of villages is fetched by running a SPARQL query.
      *
      * If you click on an village, then it fetched by getting the Turtle formatted
-     * RDF from Wikidata for that village. It then parses the result and 
+     * RDF from Wikidata for that village. It then parses the result and
      * displays a page about that village with a title, synopsis and Open Street Map.
      *
      * @package    EasyRdf
@@ -35,9 +35,9 @@
       ORDER BY ?itemLabel
     ';
     $SPARQL_ENDPOINT = 'https://query.wikidata.org/sparql';
-    
+
     $WIKIDATA_IMAGE = 'wdt:P18';
-    $WIKIDATA_POINT = 'wdt:P625';    
+    $WIKIDATA_POINT = 'wdt:P625';
 ?>
 <html>
 <head><title>EasyRdf Village Info Example</title></head>
@@ -65,7 +65,7 @@
             $lat = $matches[2];
             print "<iframe width='420' height='350' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='http://www.openlinkmap.org/small.php?lat=$lat&lon=$long&zoom=14' style='border: 1px solid black'></iframe>";
         }
-        
+
         print content_tag('h3', "Pages about " . $village->label('en'));
         print "<ul>\n";
         foreach ($graph->all($village, "^schema:about") as $doc) {

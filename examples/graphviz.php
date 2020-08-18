@@ -12,7 +12,7 @@
      * GraphViz 'dot' command installed.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2012-2013 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2012-2014 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
