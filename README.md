@@ -60,7 +60,7 @@ Features
 * Built-in parsers and serialisers: RDF/JSON, N-Triples, RDF/XML, Turtle
 * Optional parsing support for: [ARC2], [rapper]
 * Optional support for [`Zend\Http\Client`]
-* No required external dependancies upon other libraries (PEAR, Zend, etc...)
+* No required external dependencies upon other libraries (PEAR, Zend, etc...)
 * Complies with Zend Framework coding style.
 * Type mapper - resources of type `foaf:Person` can be mapped into PHP object of class `Foaf_Person`
 * Support for visualisation of graphs using [GraphViz]
