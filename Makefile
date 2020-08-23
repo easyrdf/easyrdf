@@ -7,7 +7,7 @@ PHPUNIT = vendor/bin/phpunit
 PHPUNIT_FLAGS = -c config/phpunit.xml
 PHPCS = vendor/bin/phpcs
 PHPCS_FLAGS = --standard=./config/phpcs_ruleset.xml --encoding=utf8 --extensions=php
-SAMI = vendor/bin/sami.php
+DOCTUM = vendor/bin/doctum.php
 
 # Composer doesn't work with bsdtar - try and use GNU tar
 TAR = $(shell which gtar || which gnutar || which tar)
@@ -67,8 +67,8 @@ coverage: $(PHPUNIT)
 
 # TARGET:apidocs             Generate HTML API documentation
 .PHONY: apidocs
-apidocs: $(SAMI)
-	$(PHP) $(SAMI) update config/sami.php -n -v --force
+apidocs: $(DOCTUM)
+	$(PHP) $(DOCTUM) update config/doctum.php -n -v --force
 
 docs/api: apidocs
 
@@ -112,7 +112,7 @@ endef
 clean:
 	find . -name '.DS_Store' -type f -delete
 	-rm -Rf $(distdir) reports vendor
-	-rm -Rf docs/api samicache
+	-rm -Rf docs/api doctumcache
 	-rm -f composer.phar composer.lock
 	-rm -f doap.rdf
 
@@ -148,4 +148,4 @@ composer-update: clean composer.phar
 vendor/autoload.php: composer-install
 vendor/bin/phpunit: composer-install
 vendor/bin/phpcs: composer-install
-vendor/bin/sami.php: composer-install
+vendor/bin/doctum.php: composer-install
