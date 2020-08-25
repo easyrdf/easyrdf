@@ -81,21 +81,6 @@ class RdfXml extends Parser
     }
 
     /** @ignore */
-    protected function initXMLParser()
-    {
-        if (!isset($this->xmlParser)) {
-            $parser = xml_parser_create_ns('UTF-8', '');
-            xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
-            xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
-            xml_set_element_handler($parser, 'startElementHandler', 'endElementHandler');
-            xml_set_character_data_handler($parser, 'cdataHandler');
-            xml_set_start_namespace_decl_handler($parser, 'newNamespaceHandler');
-            xml_set_object($parser, $this);
-            $this->xmlParser = $parser;
-        }
-    }
-
-    /** @ignore */
     protected function pushS(&$s)
     {
         $s['pos'] = $this->sCount;
@@ -201,8 +186,18 @@ class RdfXml extends Parser
     }
 
     /** @ignore */
-    protected function startElementHandler($p, $t, $a)
+    protected function startElementHandler($t, $a)
     {
+        foreach ($a as $key => $uri) {
+            $xmlns = 'http://www.w3.org/2000/xmlns/';
+            if (strpos($key, $xmlns) === 0) {
+                $local = substr($key, strlen($xmlns));
+                if (!isset($this->nsp[$uri])) {
+                    $this->nsp[$uri] = $local;
+                }
+            }
+        }
+
         switch ($this->state) {
             case 0:
                 return $this->startState0($t, $a);
@@ -224,7 +219,7 @@ class RdfXml extends Parser
     }
 
     /** @ignore */
-    protected function endElementHandler($p, $t)
+    protected function endElementHandler($t)
     {
         switch ($this->state) {
             case 1:
@@ -247,7 +242,7 @@ class RdfXml extends Parser
     }
 
     /** @ignore */
-    protected function cdataHandler($p, $d)
+    protected function cdataHandler($d)
     {
         switch ($this->state) {
             case 4:
@@ -257,12 +252,6 @@ class RdfXml extends Parser
             default:
                 return false;
         }
-    }
-
-    /** @ignore */
-    protected function newNamespaceHandler($p, $prf, $uri)
-    {
-        $this->nsp[$uri] = isset($this->nsp[$uri]) ? $this->nsp[$uri] : $prf;
     }
 
     /** @ignore */
@@ -770,6 +759,41 @@ class RdfXml extends Parser
         }
     }
 
+    protected function handleNode()
+    {
+        switch ($this->xmlReader->nodeType) {
+            case \XMLReader::ELEMENT:
+                $name = $this->xmlReader->namespaceURI . $this->xmlReader->localName;
+                $attributes = array();
+                if ($this->xmlReader->hasAttributes) {
+                    while ($this->xmlReader->moveToNextAttribute()) {
+                        $attrName = $this->xmlReader->namespaceURI . $this->xmlReader->localName;
+                        $attributes[$attrName] = $this->xmlReader->value;
+                    }
+                }
+
+                $this->startElementHandler($name, $attributes);
+                break;
+
+            case \XMLReader::END_ELEMENT:
+                $this->endElementHandler($this->xmlReader->name);
+                break;
+
+            case \XMLReader::TEXT:
+                $this->cdataHandler($this->xmlReader->value);
+                break;
+
+            case \XMLReader::COMMENT:
+            case \XMLReader::SIGNIFICANT_WHITESPACE:
+                // Ignore whitespace and comments
+                break;
+
+            default:
+                error_log("Unexpected XML node type: " . $this->xmlReader->nodeType);
+                break;
+        }
+    }
+
     /**
      * Parse an RDF/XML document into an EasyRdf\Graph
      *
@@ -795,20 +819,23 @@ class RdfXml extends Parser
         $this->init($graph, $baseUri);
         $this->resetBnodeMap();
 
-        /* xml parser */
-        $this->initXMLParser();
+        $this->xmlReader = new \XMLReader();
+        libxml_use_internal_errors(true);
+        $this->xmlReader->xml($data);
 
-        /* parse */
-        if (!xml_parse($this->xmlParser, $data, false)) {
-            $message = xml_error_string(xml_get_error_code($this->xmlParser));
+        while ($this->xmlReader->read()) {
+            $this->handleNode();
+        }
+
+        if ($error = libxml_get_last_error()) {
             throw new Exception(
-                'XML error: "' . $message . '"',
-                xml_get_current_line_number($this->xmlParser),
-                xml_get_current_column_number($this->xmlParser)
+                'XML error: "' . $error->message . '"',
+                $error->line,
+                $error->column
             );
         }
 
-        xml_parser_free($this->xmlParser);
+        $this->xmlReader->close();
 
         return $this->tripleCount;
     }

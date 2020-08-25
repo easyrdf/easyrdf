@@ -122,7 +122,7 @@ class RdfXmlTest extends TestCase
     {
         $this->setExpectedException(
             'EasyRdf\Parser\Exception',
-            'XML error: "Mismatched tag" on line 4, column 21'
+            'XML error: "Opening and ending tag mismatch: foo'
         );
         $this->parser->parse(
             $this->graph,
