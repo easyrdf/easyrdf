@@ -84,6 +84,22 @@ class RdfXmlTest extends TestCase
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
 
+    public function testParseRdfXmlwithCustomNS()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            readFixture('rdfxml/with-custom-ns.rdf'),
+            'rdfxml',
+            'http://www.example.com/with-custom-ns.rdf'
+        );
+        $this->assertSame(2, $count);
+
+        $owner = $this->graph->resource('http://example.org/owner');
+        $this->assertNotNull($owner);
+        $this->assertStringEquals('Foo Bar', $owner->get('<http://example.org/name>'));
+        $this->assertStringEquals('Owner', $owner->get('<http://example.org/type>'));
+    }
+
     public function testParseSeq()
     {
         $count = $this->parser->parse(
