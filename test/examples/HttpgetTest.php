@@ -6,7 +6,7 @@ namespace EasyRdf\Examples;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf\Examples;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
@@ -43,8 +43,8 @@ class HttpgetTest extends \EasyRdf\TestCase
     public function testNoParams()
     {
         $output = executeExample('httpget.php');
-        $this->assertContains('<title>Test EasyRdf\\HTTP\\Client Get</title>', $output);
-        $this->assertContains('<h1>Test EasyRdf\\HTTP\\Client Get</h1>', $output);
+        $this->assertContains('<title>Test EasyRdf HTTP Client Get</title>', $output);
+        $this->assertContains('<h1>Test EasyRdf HTTP Client Get</h1>', $output);
         $this->assertContains(
             '<input type="text" name="uri" id="uri" value="http://tomheath.com/id/me" size="50" />',
             $output
@@ -68,9 +68,9 @@ class HttpgetTest extends \EasyRdf\TestCase
                 'accept' => 'text/html'
             )
         );
-        $this->assertContains('<title>Test EasyRdf\\HTTP\\Client Get</title>', $output);
-        $this->assertContains('<h1>Test EasyRdf\\HTTP\\Client Get</h1>', $output);
-        $this->assertContains('<b>Content-type</b>: text/html<br />', $output);
+        $this->assertContains('<title>Test EasyRdf HTTP Client Get</title>', $output);
+        $this->assertContains('<h1>Test EasyRdf HTTP Client Get</h1>', $output);
+        $this->assertContains('<b>Content-type</b>: text/html', $output);
         $this->assertContains('&lt;h1&gt;Home - Tom Heath&lt;/h1&gt;', $output);
     }
 
@@ -83,11 +83,11 @@ class HttpgetTest extends \EasyRdf\TestCase
                 'accept' => 'application/rdf+xml'
             )
         );
-        $this->assertContains('<title>Test EasyRdf\\HTTP\\Client Get</title>', $output);
-        $this->assertContains('<h1>Test EasyRdf\\HTTP\\Client Get</h1>', $output);
-        $this->assertContains('<b>Content-type</b>: application/rdf+xml<br />', $output);
+        $this->assertContains('<title>Test EasyRdf HTTP Client Get</title>', $output);
+        $this->assertContains('<h1>Test EasyRdf HTTP Client Get</h1>', $output);
+        $this->assertContains('<b>Content-type</b>: application/rdf+xml', $output);
         $this->assertContains(
-            '&lt;foaf:Person rdf:about=&quot;http://tomheath.com/id/me&quot;&gt;<br />',
+            '&lt;foaf:Person rdf:about=&quot;http://tomheath.com/id/me&quot;&gt;',
             $output
         );
     }

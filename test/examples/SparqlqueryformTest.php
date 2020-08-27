@@ -6,7 +6,7 @@ namespace EasyRdf\Examples;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf\Examples;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
@@ -59,7 +59,7 @@ class SparqlqueryformTest extends \EasyRdf\TestCase
                     'SELECT * WHERE {'.
                     '  ?country rdf:type dbo:Country . '.
                     '  ?country rdfs:label ?label .'.
-                    '  ?country dc:subject category:Member_states_of_the_United_Nations .'.
+                    '  ?country dct:subject dbc:Member_states_of_the_United_Nations .'.
                     '  FILTER ( lang(?label) = "en" ) '.
                     '} ORDER BY ?label LIMIT 100'
             )
@@ -79,7 +79,7 @@ class SparqlqueryformTest extends \EasyRdf\TestCase
                     'SELECT * WHERE {'.
                     '  ?country rdf:type dbo:Country . '.
                     '  ?country rdfs:label ?label .'.
-                    '  ?country dc:subject category:Member_states_of_the_United_Nations .'.
+                    '  ?country dct:subject dbc:Member_states_of_the_United_Nations .'.
                     '  FILTER ( lang(?label) = "en" ) '.
                     '} ORDER BY ?label LIMIT 100',
                 'text' => 1

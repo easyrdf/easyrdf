@@ -6,7 +6,7 @@ namespace EasyRdf;
  *
  * LICENSE
  *
- * Copyright (c) 2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2013-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2013-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
@@ -43,8 +43,8 @@ namespace EasyRdf;
  * https://github.com/ruby-rdf/rdf-isomorphic
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2013-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Isomorphic
 {
@@ -176,8 +176,7 @@ class Isomorphic
      *
      * @ignore
      */
-    private static function buildBijectionTo
-    (
+    private static function buildBijectionTo(
         $statementsA,
         $nodesA,
         $statementsB,
@@ -248,7 +247,6 @@ class Isomorphic
             $bijection = null;
 
             foreach ($nodesA as $nodeA) {
-
                 // We don't replace grounded nodes' hashes
                 if (isset($hashesA[$nodeA])) {
                     continue;

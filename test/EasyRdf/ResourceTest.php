@@ -6,7 +6,7 @@ namespace EasyRdf;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 use EasyRdf\Http\MockClient;
@@ -733,8 +733,13 @@ class ResourceTest extends TestCase
     public function testAddInvalidObject()
     {
         $this->setupTestGraph();
+        if (version_compare(PHP_VERSION, '7.4.x-dev', '>')) {
+            $class = '\Error';
+        } else {
+            $class = '\PHPUnit\Framework\Error\Error';
+        }
         $this->setExpectedException(
-            'PHPUnit_Framework_Error',
+            $class,
             'Object of class EasyRdf\ResourceTest could not be converted to string'
         );
         $this->resource->add('rdf:foo', $this);

@@ -7,7 +7,7 @@
      * headers and body.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
@@ -24,7 +24,7 @@
 ?>
 <html>
 <head>
-  <title>Test EasyRdf\HTTP\Client Get</title>
+  <title>Test EasyRdf HTTP Client Get</title>
   <style type="text/css">
     .body
     {
@@ -35,7 +35,7 @@
   </style>
 </head>
 <body>
-<h1>Test EasyRdf\HTTP\Client Get</h1>
+<h1>Test EasyRdf HTTP Client Get</h1>
 <?= form_tag() ?>
 <?= text_field_tag('uri', 'http://tomheath.com/id/me', array('size'=>50)) ?><br />
 <?= label_tag('accept', 'Accept Header: ').select_tag('accept',$accept_options) ?>

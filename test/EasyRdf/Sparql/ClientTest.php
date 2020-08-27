@@ -6,7 +6,7 @@ namespace EasyRdf\Sparql;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf\Sparql;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 use EasyRdf\Http;
@@ -77,7 +77,7 @@ class ClientTest extends TestCase
             $this->sparql->getQueryUri()
         );
     }
-    
+
     public function testGetUpdateUri()
     {
         $this->assertSame(
@@ -370,7 +370,7 @@ class ClientTest extends TestCase
         $this->assertSame("application/sparql-update", $client->getHeader('Content-Type'));
         return true;
     }
-    
+
     public function testUpdate()
     {
         $this->client->addMock(
@@ -418,8 +418,8 @@ class ClientTest extends TestCase
     /**
      * Make sure, that different queries have different Accept headers
      * This is important for compatibility with real-world triplestores
-     * @see https://github.com/njh/easyrdf/issues/226
-     * @see https://github.com/njh/easyrdf/issues/231
+     * @see https://github.com/easyrdf/easyrdf/issues/226
+     * @see https://github.com/easyrdf/easyrdf/issues/231
      */
     public function testAcceptHeaders()
     {
@@ -460,6 +460,81 @@ class ClientTest extends TestCase
         $types = self::parseAcceptHeader($this->client->getHeader('Accept'));
         $this->assertContains('application/sparql-results+json', $types);
         $this->assertContains('text/turtle', $types);
+    }
+
+    /**
+     * Test for issue https://github.com/easyrdf/easyrdf/issues/305
+     *
+     * Sparql\Client calls $client->setHeaders with a name-value pair, regardless of
+     * whether $client is of type EasyRdf\Http\Client or Zend\Http\Client.
+     */
+    public function testIssue305EasyRdfHttpClient()
+    {
+        /*
+         * setup mocks
+         */
+        // response
+        $response = $this->getMockBuilder(\EasyRdf\Http\Response::class)->disableOriginalConstructor()->getMock();
+        $response->method('getStatus')->willReturn(204); // no content
+        $response->method('isSuccessful')->willReturn(true);
+
+        // client
+        $easyRdfHttpClient = $this->getMockBuilder(\EasyRdf\Http\Client::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $easyRdfHttpClient->method('request')->willReturn($response);
+        $easyRdfHttpClient
+            ->expects($this->exactly(1))
+            ->method('setHeaders')
+            // we only check first parameter, which has to be 'Accept'
+            ->with($this->callback(function ($firstParam) {
+                return 'Accept' == $firstParam;
+            }));
+
+        Http::setDefaultHttpClient($easyRdfHttpClient);
+
+        $this->sparql = new Client('http://localhost:8080/sparql');
+
+        $this->sparql->query('test');
+    }
+
+    /**
+     * Test for issue https://github.com/easyrdf/easyrdf/issues/305
+     *
+     * Sparql\Client calls $client->setHeaders with a name-value pair, regardless of
+     * whether $client is of type EasyRdf\Http\Client or Zend\Http\Client.
+     */
+    public function testIssue305ZendHttpClient()
+    {
+        /*
+         * setup mocks
+         */
+        // response
+        $response = $this->getMockBuilder(\EasyRdf\Http\Response::class)->disableOriginalConstructor()->getMock();
+        $response->method('getStatus')->willReturn(204); // no content
+        $response->method('isSuccessful')->willReturn(true);
+
+        // client
+        $easyRdfHttpClient = $this->getMockBuilder(\Zend\Http\Client::class)->disableOriginalConstructor()->getMock();
+        $easyRdfHttpClient->method('send')->willReturn($response);
+        $easyRdfHttpClient
+            ->expects($this->exactly(1))
+            ->method('setHeaders')
+            /*
+             * we only check if an array with 'Accept' as key was given. ignore the value,
+             * because it may vary between PHP versions.
+             */
+            ->with($this->callback(function ($acceptHeaders) {
+                return \is_array($acceptHeaders)
+                    && isset($acceptHeaders['Accept'])
+                    && 1 == \count($acceptHeaders);
+            }));
+
+        Http::setDefaultHttpClient($easyRdfHttpClient);
+
+        $this->sparql = new Client('http://localhost:8080/sparql');
+
+        $this->sparql->query('test');
     }
 
     private static function parseAcceptHeader($accept_str)

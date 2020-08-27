@@ -6,7 +6,7 @@ namespace EasyRdf;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
@@ -44,8 +44,8 @@ namespace EasyRdf;
  * format.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Format
 {
@@ -280,6 +280,8 @@ class Format
             # We don't support any other microformats embedded in HTML
             return self::getFormat('rdfa');
         } elseif (preg_match('/@prefix\s|@base\s/', $short)) {
+            return self::getFormat('turtle');
+        } elseif (preg_match('/prefix\s|base\s/i', $short)) {
             return self::getFormat('turtle');
         } elseif (preg_match('/^\s*<.+> <.+>/m', $short)) {
             return self::getFormat('ntriples');
@@ -554,7 +556,7 @@ class Format
 Format::register(
     'php',
     'RDF/PHP',
-    'http://n2.talis.com/wiki/RDF_PHP_Specification',
+    'https://www.easyrdf.org/docs/rdf-formats-php',
     array(
         'application/x-httpd-php-source' => 1.0
     ),
@@ -564,7 +566,7 @@ Format::register(
 Format::register(
     'json',
     'RDF/JSON Resource-Centric',
-    'http://n2.talis.com/wiki/RDF_JSON_Specification',
+    'https://www.easyrdf.org/docs/rdf-formats-json',
     array(
         'application/json' => 1.0,
         'text/json' => 0.9,
@@ -600,7 +602,7 @@ Format::register(
 Format::register(
     'turtle',
     'Turtle Terse RDF Triple Language',
-    'http://www.dajobe.org/2004/01/turtle',
+    'https://www.w3.org/TR/turtle/',
     array(
         'text/turtle' => 0.8,
         'application/turtle' => 0.7,
@@ -612,9 +614,11 @@ Format::register(
 Format::register(
     'rdfxml',
     'RDF/XML',
-    'http://www.w3.org/TR/rdf-syntax-grammar',
+    'http://www.w3.org/TR/rdf-syntax-grammar/',
     array(
-        'application/rdf+xml' => 0.8
+        'application/rdf+xml' => 0.8,
+        'text/xml' => 0.5,
+        'application/xml' => 0.5
     ),
     array('rdf', 'xrdf')
 );

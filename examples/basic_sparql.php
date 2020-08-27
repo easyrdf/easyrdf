@@ -11,7 +11,7 @@
      * added to the query.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+     * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
@@ -19,7 +19,7 @@
     require_once __DIR__."/html_tag_helpers.php";
 
     // Setup some additional prefixes for DBpedia
-    \EasyRdf\RdfNamespace::set('category', 'http://dbpedia.org/resource/Category:');
+    \EasyRdf\RdfNamespace::set('dbc', 'http://dbpedia.org/resource/Category:');
     \EasyRdf\RdfNamespace::set('dbpedia', 'http://dbpedia.org/resource/');
     \EasyRdf\RdfNamespace::set('dbo', 'http://dbpedia.org/ontology/');
     \EasyRdf\RdfNamespace::set('dbp', 'http://dbpedia.org/property/');
@@ -41,7 +41,7 @@
         'SELECT * WHERE {'.
         '  ?country rdf:type dbo:Country .'.
         '  ?country rdfs:label ?label .'.
-        '  ?country dc:subject category:Member_states_of_the_United_Nations .'.
+        '  ?country dct:subject dbc:Member_states_of_the_United_Nations .'.
         '  FILTER ( lang(?label) = "en" )'.
         '} ORDER BY ?label'
     );

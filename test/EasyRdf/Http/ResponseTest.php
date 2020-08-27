@@ -6,7 +6,7 @@ namespace EasyRdf\Http;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf\Http;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
@@ -171,6 +171,35 @@ class ResponseTest extends TestCase
             200,
             $response->getStatus(),
             'Response code is expected to be 200, but it\'s not.'
+        );
+        $this->assertFalse(
+            $response->isError(),
+            'Response is OK, but isError() returned true'
+        );
+        $this->assertTrue(
+            $response->isSuccessful(),
+            'Response is OK, but isSuccessful() returned false'
+        );
+        $this->assertFalse(
+            $response->isRedirect(),
+            'Response is OK, but isRedirect() returned true'
+        );
+    }
+
+    public function test200OkNoMessage()
+    {
+        $response = Response::fromString(
+            readFixture('http_response_200_message')
+        );
+
+        $this->assertSame(
+            200,
+            $response->getStatus(),
+            'Response code is expected to be 200, but it\'s not.'
+        );
+        $this->assertNull(
+            $response->getMessage(),
+            'Response message is expected to be null, but it\'s not.'
         );
         $this->assertFalse(
             $response->isError(),

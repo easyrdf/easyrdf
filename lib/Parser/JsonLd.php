@@ -6,7 +6,7 @@ namespace EasyRdf\Parser;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2014 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf\Parser;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Graph;
 use EasyRdf\Parser;
@@ -45,7 +45,7 @@ use ML\JsonLD as LD;
  * @package    EasyRdf
  * @copyright  Copyright (c) 2014 Markus Lanthaler
  * @author     Markus Lanthaler <mail@markus-lanthaler.com>
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class JsonLd extends Parser
 {

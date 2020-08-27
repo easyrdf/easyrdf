@@ -8,7 +8,6 @@ $parsers = array(
     'Ntriples',
     'RdfXml',
     'Rapper',
-    'Redland',
     'Turtle',
 );
 
@@ -28,7 +27,6 @@ $documents = array(
 );
 
 foreach ($documents as $filename => $type) {
-
     print "Input file: $filename\n";
     $filepath = dirname(__FILE__) . "/performance/$filename";
     if (!file_exists($filepath)) {

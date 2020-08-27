@@ -6,7 +6,7 @@ namespace EasyRdf;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2014 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,16 +32,16 @@ namespace EasyRdf;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
  * A namespace registry and manipulation class.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class RdfNamespace
 {
@@ -54,22 +54,30 @@ class RdfNamespace
      *
      */
     private static $initial_namespaces = array(
+        'as'      => 'https://www.w3.org/ns/activitystreams#',
         'bibo'    => 'http://purl.org/ontology/bibo/',
         'cc'      => 'http://creativecommons.org/ns#',
         'cert'    => 'http://www.w3.org/ns/auth/cert#',
+        'csvw'    => 'http://www.w3.org/ns/csvw#',
         'ctag'    => 'http://commontag.org/ns#',
         'dc'      => 'http://purl.org/dc/terms/',
         'dc11'    => 'http://purl.org/dc/elements/1.1/',
         'dcat'    => 'http://www.w3.org/ns/dcat#',
         'dcterms' => 'http://purl.org/dc/terms/',
         'doap'    => 'http://usefulinc.com/ns/doap#',
+        'dqv'     => 'http://www.w3.org/ns/dqv#',
+        'duv'     => 'https://www.w3.org/ns/duv#',
         'exif'    => 'http://www.w3.org/2003/12/exif/ns#',
         'foaf'    => 'http://xmlns.com/foaf/0.1/',
         'geo'     => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
         'gr'      => 'http://purl.org/goodrelations/v1#',
         'grddl'   => 'http://www.w3.org/2003/g/data-view#',
         'ical'    => 'http://www.w3.org/2002/12/cal/icaltzd#',
+        'jsonld'  => 'http://www.w3.org/ns/json-ld#',
+        'ldp'     => 'http://www.w3.org/ns/ldp#',
         'ma'      => 'http://www.w3.org/ns/ma-ont#',
+        'oa'      => 'http://www.w3.org/ns/oa#',
+        'odrl'    => 'http://www.w3.org/ns/odrl/2/',
         'og'      => 'http://ogp.me/ns#',
         'org'     => 'http://www.w3.org/ns/org#',
         'owl'     => 'http://www.w3.org/2002/07/owl#',
@@ -87,7 +95,10 @@ class RdfNamespace
         'sioc'    => 'http://rdfs.org/sioc/ns#',
         'skos'    => 'http://www.w3.org/2004/02/skos/core#',
         'skosxl'  => 'http://www.w3.org/2008/05/skos-xl#',
+        'sosa'    => 'http://www.w3.org/ns/sosa/',
+        'ssn'     => 'http://www.w3.org/ns/ssn/',
         'synd'    => 'http://purl.org/rss/1.0/modules/syndication/',
+        'time'    => 'http://www.w3.org/2006/time#',
         'v'       => 'http://rdf.data-vocabulary.org/#',
         'vcard'   => 'http://www.w3.org/2006/vcard/ns#',
         'void'    => 'http://rdfs.org/ns/void#',

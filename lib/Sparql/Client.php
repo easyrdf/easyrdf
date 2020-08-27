@@ -6,7 +6,7 @@ namespace EasyRdf\Sparql;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2015 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf\Sparql;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2015 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Exception;
 use EasyRdf\Format;
@@ -46,8 +46,8 @@ use EasyRdf\Utils;
  * Class for making SPARQL queries using the SPARQL 1.1 Protocol
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2015 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Client
 {
@@ -316,12 +316,12 @@ class Client
             // accept anything, as "response body of a […] update request is implementation defined"
             // @see http://www.w3.org/TR/sparql11-protocol/#update-success
             $accept = Format::getHttpAcceptHeader($sparql_results_types);
-            $client->setHeaders('Accept', $accept);
+            $this->setHeaders($client, 'Accept', $accept);
 
             $client->setMethod('POST');
             $client->setUri($this->updateUri);
             $client->setRawData($processed_query);
-            $client->setHeaders('Content-Type', 'application/sparql-update');
+            $this->setHeaders($client, 'Content-Type', 'application/sparql-update');
         } elseif ($type == 'query') {
             $re = '(?:(?:\s*BASE\s*<.*?>\s*)|(?:\s*PREFIX\s+.+:\s*<.*?>\s*))*'.
                 '(CONSTRUCT|SELECT|ASK|DESCRIBE)[\W]';
@@ -347,7 +347,7 @@ class Client
                 $accept = Format::getHttpAcceptHeader($sparql_results_types);
             }
 
-            $client->setHeaders('Accept', $accept);
+            $this->setHeaders($client, 'Accept', $accept);
 
             $encodedQuery = 'query=' . urlencode($processed_query);
 
@@ -363,13 +363,17 @@ class Client
                 $client->setMethod('POST');
                 $client->setUri($this->queryUri);
                 $client->setRawData($encodedQuery);
-                $client->setHeaders('Content-Type', 'application/x-www-form-urlencoded');
+                $this->setHeaders($client, 'Content-Type', 'application/x-www-form-urlencoded');
             }
         } else {
             throw new Exception('unexpected request-type: '.$type);
         }
 
-        return $client->request();
+        if ($client instanceof \Zend\Http\Client) {
+            return $client->send();
+        } else {
+            return $client->request();
+        }
     }
 
     /**
@@ -390,6 +394,24 @@ class Client
         } else {
             $result = new Graph($this->queryUri, $response->getBody(), $content_type);
             return $result;
+        }
+    }
+
+    /**
+     * Proxy function to allow usage of our Client as well as Zend\Http v2.
+     *
+     * Zend\Http\Client only accepts an array as first parameter, but our Client wants a name-value pair.
+     *
+     * @see https://framework.zend.com/apidoc/2.4/classes/Zend.Http.Client.html#method_setHeaders
+     *
+     * @todo Its only a temporary fix, should be replaced or refined in the future.
+     */
+    protected function setHeaders($client, $name, $value)
+    {
+        if ($client instanceof \Zend\Http\Client) {
+            $client->setHeaders([$name => $value]);
+        } else {
+            $client->setHeaders($name, $value);
         }
     }
 }

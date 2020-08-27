@@ -6,7 +6,7 @@ namespace EasyRdf\Parser;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf\Parser;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Graph;
 use EasyRdf\Utils;
@@ -42,8 +42,8 @@ use EasyRdf\Utils;
  * Class to parse RDF using the 'rapper' command line tool.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Rapper extends Json
 {
@@ -60,12 +60,12 @@ class Rapper extends Json
      */
     public function __construct($rapperCmd = 'rapper')
     {
-        $result = exec("$rapperCmd --version 2>/dev/null", $output, $status);
+        exec("$rapperCmd --version 2>/dev/null", $output, $status);
         if ($status != 0) {
             throw new \EasyRdf\Exception(
-                "Failed to execute the command '$rapperCmd': $result"
+                "Failed to execute the command '$rapperCmd': " . join("\n", $output)
             );
-        } elseif (version_compare($result, self::MINIMUM_RAPPER_VERSION) < 0) {
+        } elseif (version_compare($output[0], self::MINIMUM_RAPPER_VERSION) < 0) {
             throw new \EasyRdf\Exception(
                 "Version ".self::MINIMUM_RAPPER_VERSION." or higher of rapper is required."
             );

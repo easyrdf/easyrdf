@@ -6,7 +6,7 @@ namespace EasyRdf\Http;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  * Copyright (c) 2005-2009 Zend Technologies USA Inc.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,9 +33,9 @@ namespace EasyRdf\Http;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
  *             Copyright (c) 2005-2009 Zend Technologies USA Inc.
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Exception;
 use EasyRdf\ParsedUri;
@@ -46,8 +46,8 @@ use EasyRdf\ParsedUri;
  * implementation try Zend_Http_Client.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Client
 {
@@ -487,7 +487,6 @@ class Client
             if ($response->isRedirect() &&
                    ($location = $response->getHeader('location'))
                ) {
-
                 // Avoid problems with buggy servers that add whitespace at the
                 // end of some headers (See ZF-11283)
                 $location = trim($location);
@@ -514,13 +513,10 @@ class Client
                     );
                 }
                 ++$this->redirectCounter;
-
             } else {
                 // If we didn't get any location, stop redirecting
                 break;
             }
-
-
         } while ($this->redirectCounter < $this->config['maxredirects']);
 
         return $response;

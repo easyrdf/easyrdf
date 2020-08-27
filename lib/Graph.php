@@ -6,7 +6,7 @@ namespace EasyRdf;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,16 +32,16 @@ namespace EasyRdf;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
  * Container for collection of EasyRdf\Resource objects.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Graph
 {
@@ -101,11 +101,14 @@ class Graph
      *     $graph = new \EasyRdf\Graph($uri);
      *     $graph->load($uri, $format);
      *
-     * The document type is optional but should be specified if it
+     * The document format is optional but should be specified if it
      * can't be guessed or got from the HTTP headers.
      *
+     * If the document format is given, then the HTTP Accept header is
+     * set to the MIME type of the requested format.
+     *
      * @param  string       $uri     The URI of the data to load
-     * @param  string|null  $format  Optional format of the data (eg. rdfxml)
+     * @param  string|null  $format  Optional format of the data (eg. rdfxml or text/turtle)
      *
      * @return Graph  The new the graph object
      */
@@ -269,11 +272,14 @@ class Graph
      *
      * If no URI is given, then the URI of the graph will be used.
      *
-     * The document type is optional but should be specified if it
+     * The document format is optional but should be specified if it
      * can't be guessed or got from the HTTP headers.
      *
+     * If the document format is given, then the HTTP Accept header is
+     * set to the MIME type of the requested format.
+     *
      * @param  string  $uri     The URI of the data to load
-     * @param  string  $format  Optional format of the data (eg. rdfxml)
+     * @param  string  $format  Optional format of the data (eg. rdfxml or text/turtle)
      *
      * @throws Exception
      * @throws Http\Exception
@@ -294,7 +300,18 @@ class Graph
         $client->resetParameters(true);
         $client->setConfig(array('maxredirects' => 0));
         $client->setMethod('GET');
-        $client->setHeaders('Accept', Format::getHttpAcceptHeader());
+
+        if ($format && $format !== 'guess') {
+            if (strpos($format, '/') !== false) {
+                $client->setHeaders('Accept', $format);
+            } else {
+                $formatObj = Format::getFormat($format);
+                $client->setHeaders('Accept', $formatObj->getDefaultMimeType());
+            }
+        } else {
+            // Send a list of all the formats we can parse
+            $client->setHeaders('Accept', Format::getHttpAcceptHeader());
+        }
 
         $requestUrl = $uri;
         $response = null;
@@ -788,7 +805,6 @@ class Graph
 
         // Loop through each component in the path
         foreach (explode('/', $propertyPath) as $part) {
-
             $results = array();
             foreach (explode('|', $part) as $p) {
                 foreach ($objects as $o) {

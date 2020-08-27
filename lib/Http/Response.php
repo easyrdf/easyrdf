@@ -6,7 +6,7 @@ namespace EasyRdf\Http;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.
  * Copyright (c) 2005-2009 Zend Technologies USA Inc.
  * All rights reserved.
  *
@@ -34,9 +34,9 @@ namespace EasyRdf\Http;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc.
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Exception;
 
@@ -44,9 +44,9 @@ use EasyRdf\Exception;
  * Class that represents an HTTP 1.0 / 1.1 response message.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
  *             Copyright (c) 2005-2009 Zend Technologies USA Inc.
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Response
 {
@@ -218,7 +218,7 @@ class Response
     /**
      * Get a specific header as string, or null if it is not set
      *
-     * @param string$header
+     * @param string $header
      *
      * @return string|array|null
      */
@@ -285,10 +285,10 @@ class Response
         // Split headers part to lines
         $headerLines = preg_split('|[\r\n]+|m', $headerLines);
         $status = array_shift($headerLines);
-        if (preg_match("|^HTTP/([\d\.x]+) (\d+) ([^\r\n]+)|", $status, $m)) {
+        if (preg_match("|^HTTP\/([\d\.x]+) (\d+) ?([^\r\n]*)|", $status, $m)) {
             $version = $m[1];
             $status = $m[2];
-            $message = $m[3];
+            $message = $m[3] ? $m[3] : null;
         } else {
             throw new Exception(
                 "Failed to parse HTTP response status line."
