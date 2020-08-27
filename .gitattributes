@@ -10,3 +10,6 @@ test export-ignore
 
 # The Makefile is pretty pointless without the above directories
 Makefile export-ignore
+
+# ignore Docker files
+docker export-ignore

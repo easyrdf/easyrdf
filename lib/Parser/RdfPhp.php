@@ -39,7 +39,7 @@ use EasyRdf\Graph;
 use EasyRdf\Parser;
 
 /**
- * Class to parse RDF with no external dependancies.
+ * Class to parse RDF with no external dependencies.
  *
  * https://www.easyrdf.org/docs/rdf-formats-php
  *
