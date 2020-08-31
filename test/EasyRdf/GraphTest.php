@@ -830,7 +830,7 @@ class GraphTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
+            '$propertyPath should be a string, array or EasyRdf\Resource and cannot be null'
         );
         $this->graph->get($this->uri, null);
     }
@@ -848,7 +848,7 @@ class GraphTest extends TestCase
     {
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
+            '$propertyPath should be a string, array or EasyRdf\Resource and cannot be null'
         );
         $this->graph->get($this->uri, $this);
     }
