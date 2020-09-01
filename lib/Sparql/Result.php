@@ -274,70 +274,72 @@ class Result extends \ArrayIterator
      */
     protected function parseXml($data)
     {
-        $doc = new \DOMDocument();
-        $doc->loadXML($data, LIBXML_PARSEHUGE);
+        $reader = new \XMLReader;
+        $reader->xml($data);
 
-        # Check for valid root node.
-        if ($doc->hasChildNodes() == false or
-            $doc->childNodes->length != 1 or
-            $doc->firstChild->nodeName != 'sparql' or
-            $doc->firstChild->namespaceURI != self::SPARQL_XML_RESULTS_NS) {
+        $isSparql = false;
+
+        while ($reader->read()) {
+            if ($reader->nodeType == \XMLReader::ELEMENT) {
+                if ($reader->name == 'boolean') {
+                    $type = 'boolean';
+                } elseif ($reader->name == 'uri') {
+                    $type = 'uri';
+                } elseif ($reader->name == 'bnode') {
+                    $type = 'bnode';
+                } elseif ($reader->name == 'literal') {
+                    $type = 'literal';
+                    $lang = $reader->getAttribute('xml:lang');
+                    $datatype = $reader->getAttribute('datatype');
+                } elseif ($reader->name == 'variable') {
+                    $this->fields[] = $reader->getAttribute('name');
+                } elseif ($reader->name == 'binding') {
+                    $key = $reader->getAttribute('name');
+                    $text = '';
+                    $type = null;
+                    $lang = null;
+                    $datatype = null;
+                } elseif ($reader->name == 'result') {
+                    $result = new \stdClass();
+                } elseif ($reader->name == 'results') {
+                    $this->type = 'bindings';
+                } elseif ($reader->name == 'sparql') {
+                    $isSparql = true;
+                }
+            } elseif ($reader->nodeType == \XMLReader::END_ELEMENT) {
+                if ($reader->name == 'boolean') {
+                    $this->type = 'boolean';
+                    $this->boolean = $text == 'true' ? true : false;
+                } elseif ($reader->name == 'uri') {
+                    $uri = $text;
+                } elseif ($reader->name == 'binding') {
+                    $result->$key = $this->newTerm([
+                        'type' => $type,
+                        'value' => $text,
+                        'lang' => $lang,
+                        'datatype' => $datatype
+                    ]);
+                } elseif ($reader->name == 'result') {
+                    $this[] = $result;
+                }
+            } elseif ($reader->nodeType == \XMLReader::TEXT || $reader->nodeType == \XMLReader::CDATA) {
+                $text = $reader->value;
+            } elseif ($reader->nodeType == \XMLReader::SIGNIFICANT_WHITESPACE) {
+                # Ignore whitespace
+            }
+        }
+
+        $reader->close();
+
+        if (!$isSparql) {
             throw new Exception(
                 "Incorrect root node in SPARQL XML Query Results format"
             );
+        } elseif (!$this->type) {
+            throw new Exception(
+                "Failed to parse SPARQL XML Query Results format"
+            );
         }
-
-        # Is it the result of an ASK query?
-        $boolean = $doc->getElementsByTagName('boolean');
-        if ($boolean->length) {
-            $this->type = 'boolean';
-            $value = $boolean->item(0)->nodeValue;
-            $this->boolean = $value == 'true' ? true : false;
-            return;
-        }
-
-        # Get a list of variables from the header
-        $head = $doc->getElementsByTagName('head');
-        if ($head->length) {
-            $variables = $head->item(0)->getElementsByTagName('variable');
-            foreach ($variables as $variable) {
-                $this->fields[] = $variable->getAttribute('name');
-            }
-        }
-
-        # Is it the result of a SELECT query?
-        $resultstag = $doc->getElementsByTagName('results');
-        if ($resultstag->length) {
-            $this->type = 'bindings';
-            $results = $resultstag->item(0)->getElementsByTagName('result');
-            foreach ($results as $result) {
-                $bindings = $result->getElementsByTagName('binding');
-                $t = new \stdClass();
-                foreach ($bindings as $binding) {
-                    $key = $binding->getAttribute('name');
-                    foreach ($binding->childNodes as $node) {
-                        if ($node->nodeType != XML_ELEMENT_NODE) {
-                            continue;
-                        }
-                        $t->$key = $this->newTerm(
-                            array(
-                                'type' => $node->nodeName,
-                                'value' => $node->nodeValue,
-                                'lang' => $node->getAttribute('xml:lang'),
-                                'datatype' => $node->getAttribute('datatype')
-                            )
-                        );
-                        break;
-                    }
-                }
-                $this[] = $t;
-            }
-            return;
-        }
-
-        throw new Exception(
-            "Failed to parse SPARQL XML Query Results format"
-        );
     }
 
     /** Parse a SPARQL result in the JSON format into the object.
