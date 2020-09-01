@@ -228,6 +228,29 @@ class ResultTest extends TestCase
         $this->assertStringEquals('Rose', $first->label);
     }
 
+    public function testSelectHugeXml()
+    {
+        $huge = "<sparql xmlns=\"http://www.w3.org/2005/sparql-results#\">\n";
+        $huge .= "<head><variable name=\"s\"/><variable name=\"p\"/><variable name=\"o\"/></head>\n";
+        $huge .= "<results>\n";
+        for ($i = 0; $i < 50000; $i++) {
+            $huge .= "<result>\n";
+            $huge .= "<binding name=\"s\"><uri>http://www.example.com/person/$i</uri></binding>\n";
+            $huge .= "<binding name=\"p\"><uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</uri></binding>\n";
+            $huge .= "<binding name=\"o\"><uri>http://xmlns.com/foaf/0.1/Person</uri></binding>\n";
+            $huge .= "</result>\n";
+        }
+        $huge .= "</results>\n</sparql>\n";
+
+        // Check it is more than 10Mb
+        $this->assertGreaterThan(10485760, strlen($huge));
+
+        $result = new Result($huge, 'application/sparql-results+xml');
+
+        $this->assertCount(50000, $result);
+        $this->assertSame(50000, $result->numRows());
+    }
+
     public function testAskTrueJson()
     {
         $result = new Result(
