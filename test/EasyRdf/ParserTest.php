@@ -184,7 +184,8 @@ class ParserTest extends TestCase
             'EasyRdf\Exception',
             'This method should be overridden by sub-classes.'
         );
-        $parser = new Parser();
+
+        $parser = $this->getMockForAbstractClass(Parser::class);
         $parser->parse($this->graph, 'data', 'format', 'baseUri');
     }
 }
