@@ -32,8 +32,8 @@ namespace EasyRdf;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
@@ -41,7 +41,7 @@ namespace EasyRdf;
  *
  * @package    EasyRdf
  * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Graph
 {
@@ -592,10 +592,10 @@ class Graph
      *
      * This method will return null if the property does not exist.
      *
-     * @param  string    $resource       The URI of the resource (e.g. http://example.com/joe#me)
-     * @param  string    $propertyPath   A valid property path
-     * @param  string    $type           The type of value to filter by (e.g. literal or resource)
-     * @param  string    $lang           The language to filter by (e.g. en)
+     * @param  string        $resource       The URI of the resource (e.g. http://example.com/joe#me)
+     * @param  string|array  $propertyPath   A valid property path
+     * @param  string        $type           The type of value to filter by (e.g. literal or resource)
+     * @param  string        $lang           The language to filter by (e.g. en)
      *
      * @throws \InvalidArgumentException
      * @return mixed                     A value associated with the property
@@ -608,9 +608,11 @@ class Graph
             return $this->getSingleProperty($resource, $propertyPath->getUri(), $type, $lang);
         } elseif (is_string($propertyPath) and preg_match('|^(\^?)<(.+)>|', $propertyPath, $matches)) {
             return $this->getSingleProperty($resource, "$matches[1]$matches[2]", $type, $lang);
+        } elseif (is_array($propertyPath)) {
+            $propertyPath = implode('|', $propertyPath); // convert to path expression
         } elseif ($propertyPath === null or !is_string($propertyPath)) {
             throw new \InvalidArgumentException(
-                '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
+                '$propertyPath should be a string, array or EasyRdf\Resource and cannot be null'
             );
         } elseif ($propertyPath === '') {
             throw new \InvalidArgumentException(

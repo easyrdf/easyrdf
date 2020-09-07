@@ -6,7 +6,7 @@ namespace EasyRdf;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 /**
@@ -44,8 +44,8 @@ namespace EasyRdf;
  * format.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Format
 {
@@ -556,7 +556,7 @@ class Format
 Format::register(
     'php',
     'RDF/PHP',
-    'http://n2.talis.com/wiki/RDF_PHP_Specification',
+    'https://www.easyrdf.org/docs/rdf-formats-php',
     array(
         'application/x-httpd-php-source' => 1.0
     ),
@@ -566,7 +566,7 @@ Format::register(
 Format::register(
     'json',
     'RDF/JSON Resource-Centric',
-    'http://n2.talis.com/wiki/RDF_JSON_Specification',
+    'https://www.easyrdf.org/docs/rdf-formats-json',
     array(
         'application/json' => 1.0,
         'text/json' => 0.9,

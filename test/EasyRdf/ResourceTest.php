@@ -6,7 +6,7 @@ namespace EasyRdf;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2013 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) 2009-2020 Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,8 @@ namespace EasyRdf;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2013 Nicholas J Humfrey
- * @license    http://www.opensource.org/licenses/bsd-license.php
+ * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
 use EasyRdf\Http\MockClient;
@@ -407,12 +407,30 @@ class ResourceTest extends TestCase
         );
     }
 
+    public function testGetMultiplePropertiesArray()
+    {
+        $this->setupTestGraph();
+        $this->assertStringEquals(
+            'Test A',
+            $this->resource->get(['rdf:test','rdf:foobar'])
+        );
+    }
+
     public function testGetMultipleProperties2()
     {
         $this->setupTestGraph();
         $this->assertStringEquals(
             'Test A',
             $this->resource->get('rdf:foobar|rdf:test')
+        );
+    }
+
+    public function testGetMultiplePropertiesArray2()
+    {
+        $this->setupTestGraph();
+        $this->assertStringEquals(
+            'Test A',
+            $this->resource->get(['rdf:foobar','rdf:test'])
         );
     }
 
@@ -427,7 +445,7 @@ class ResourceTest extends TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
+            '$propertyPath should be a string, array or EasyRdf\Resource and cannot be null'
         );
         $this->resource->get(null);
     }
@@ -447,7 +465,7 @@ class ResourceTest extends TestCase
         $this->setupTestGraph();
         $this->setExpectedException(
             'InvalidArgumentException',
-            '$propertyPath should be a string or EasyRdf\Resource and cannot be null'
+            '$propertyPath should be a string, array or EasyRdf\Resource and cannot be null'
         );
         $this->resource->get($this);
     }

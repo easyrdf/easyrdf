@@ -1,3 +1,10 @@
+EasyRdf 1.1.0
+=============
+
+Enhancements
+------------------
+* Replace abandonned Sami by Doctum
+
 EasyRdf 1.0.0
 =============
 
