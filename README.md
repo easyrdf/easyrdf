@@ -92,7 +92,7 @@ List of Examples
 Contributing
 ------------
 
-We welcome any contributions. For further information please read [CONSTRIBUTING.md](CONSTRIBUTING.md).
+We welcome any contributions. For further information please read [CONTRIBUTING.md](CONTRIBUTING.md).
 
 For further information about extending / hack EasyRdf please read [DEVELOPER.md](DEVELOPER.md).
 
