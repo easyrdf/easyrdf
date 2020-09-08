@@ -43,7 +43,7 @@ namespace EasyRdf;
  * @copyright  Copyright (c) 2009-2015 Nicholas J Humfrey
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
-class Parser
+abstract class Parser
 {
     /** Mapping from source to graph bnode identifiers */
     private $bnodeMap = array();
