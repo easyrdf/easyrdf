@@ -60,7 +60,7 @@ Features
 * Built-in parsers and serialisers: RDF/JSON, N-Triples, RDF/XML, Turtle
 * Optional parsing support for: [ARC2], [rapper]
 * Optional support for [`Zend\Http\Client`]
-* No required external dependancies upon other libraries (PEAR, Zend, etc...)
+* No required external dependencies upon other libraries (PEAR, Zend, etc...)
 * Complies with Zend Framework coding style.
 * Type mapper - resources of type `foaf:Person` can be mapped into PHP object of class `Foaf_Person`
 * Support for visualisation of graphs using [GraphViz]
@@ -88,6 +88,13 @@ List of Examples
 * [`wikidata_villages.php`](/examples/wikidata_villages.php#slider) - Fetch and information about villages in Fife from Wikidata
 * [`zend_framework.php`](/examples/zend_framework.php#slider) - Example of using `Zend\Http\Client` with EasyRdf
 
+
+Contributing
+------------
+
+We welcome any contributions. For further information please read [CONTRIBUTING.md](CONTRIBUTING.md).
+
+For further information about extending / hack EasyRdf please read [DEVELOPER.md](DEVELOPER.md).
 
 Running Examples
 ----------------
