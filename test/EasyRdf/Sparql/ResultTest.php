@@ -349,7 +349,7 @@ class ResultTest extends TestCase
     {
         $this->setExpectedException(
             'EasyRdf\Exception',
-            'Incorrect root node in SPARQL XML Query Results format'
+            'Root node in XML Query Results format is not <sparql>'
         );
         new Result(
             readFixture('not_sparql_result.xml'),

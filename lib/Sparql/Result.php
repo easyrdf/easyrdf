@@ -48,10 +48,18 @@ use EasyRdf\Resource;
  */
 class Result extends \ArrayIterator
 {
+    /** The SPARQL Results type (either 'boolean' or 'bindings') */
     private $type = null;
+
+    /** The value of a boolean result */
     private $boolean = null;
 
+    /** Keep track of the XML parser state */
     private $fields = array();
+
+    /** Keep track of the XML parser state */
+    private $parseState = array();
+
 
     /** A constant for the SPARQL Query Results XML Format namespace */
     const SPARQL_XML_RESULTS_NS = 'http://www.w3.org/2005/sparql-results#';
@@ -268,76 +276,109 @@ class Result extends \ArrayIterator
         }
     }
 
+    /** XML Result Parser: this function is called when an XML element starts
+     *
+     * @ignore
+     */
+    public function startElementHandler($parser)
+    {
+        if ($parser->depth() == 1) {
+            if ($parser->name != 'sparql') {
+                throw new Exception(
+                    "Root node in XML Query Results format is not <sparql>"
+                );
+            } elseif ($parser->namespaceURI != self::SPARQL_XML_RESULTS_NS) {
+                throw new Exception(
+                    "Root node namespace is not " . self::SPARQL_XML_RESULTS_NS
+                );
+            }
+        } else {
+            switch ($parser->path()) {
+                case 'sparql/boolean':
+                    $this->type = 'boolean';
+                    break;
+                case 'sparql/head/variable':
+                    $this->fields[] = $parser->getAttribute('name');
+                    break;
+                case 'sparql/results':
+                    $this->type = 'bindings';
+                    break;
+                case 'sparql/results/result':
+                    $this->parseState['result'] = new \stdClass();
+                    break;
+                case 'sparql/results/result/binding':
+                    $this->parseState['key'] = $parser->getAttribute('name');
+                    $this->parseState['bindingType'] = null;
+                    $this->parseState['text'] = null;
+                    $this->parseState['lang'] = null;
+                    $this->parseState['datatype'] = null;
+                    break;
+                case 'sparql/results/result/binding/bnode':
+                    $this->parseState['bindingType'] = 'bnode';
+                    break;
+                case 'sparql/results/result/binding/literal':
+                    $this->parseState['bindingType'] = 'literal';
+                    $this->parseState['lang'] = $parser->getAttribute('xml:lang');
+                    $this->parseState['datatype'] = $parser->getAttribute('datatype');
+                    break;
+                case 'sparql/results/result/binding/uri':
+                    $this->parseState['bindingType'] = 'uri';
+                    break;
+            }
+        }
+    }
+
+    /** XML Result Parser: this function is called when text is encountered
+     *
+     * @ignore
+     */
+    public function textHandler($parser)
+    {
+        $this->parseState['text'] = $parser->value;
+    }
+
+    /** XML Result Parser: this function is called when an XML element ends
+     *
+     * @ignore
+     */
+    public function endElementHandler($parser)
+    {
+        switch ($parser->path()) {
+            case 'sparql/boolean':
+                $this->boolean = ($this->parseState['text'] == 'true') ? true : false;
+                break;
+            case 'sparql/results/result/binding':
+                $key = $this->parseState['key'];
+                $this->parseState['result']->$key = $this->newTerm([
+                    'type' => $this->parseState['bindingType'],
+                    'value' => $this->parseState['text'],
+                    'lang' => $this->parseState['lang'],
+                    'datatype' => $this->parseState['datatype']
+                ]);
+                break;
+            case 'sparql/results/result':
+                $this[] = $this->parseState['result'];
+                break;
+        }
+    }
+
     /** Parse a SPARQL result in the XML format into the object.
      *
      * @ignore
      */
     protected function parseXml($data)
     {
-        $reader = new \XMLReader;
-        $reader->xml($data);
+        $this->parseState = array();
+        $this->type = null;
+        $parser = new \EasyRdf\XMLParser($this);
+        $parser->startElementCallback = [$this, 'startElementHandler'];
+        $parser->textCallback = [$this, 'textHandler'];
+        $parser->endElementCallback = [$this, 'endElementHandler'];
+        $parser->parse($data);
 
-        $isSparql = false;
-
-        while ($reader->read()) {
-            if ($reader->nodeType == \XMLReader::ELEMENT) {
-                if ($reader->name == 'boolean') {
-                    $type = 'boolean';
-                } elseif ($reader->name == 'uri') {
-                    $type = 'uri';
-                } elseif ($reader->name == 'bnode') {
-                    $type = 'bnode';
-                } elseif ($reader->name == 'literal') {
-                    $type = 'literal';
-                    $lang = $reader->getAttribute('xml:lang');
-                    $datatype = $reader->getAttribute('datatype');
-                } elseif ($reader->name == 'variable') {
-                    $this->fields[] = $reader->getAttribute('name');
-                } elseif ($reader->name == 'binding') {
-                    $key = $reader->getAttribute('name');
-                    $text = '';
-                    $type = null;
-                    $lang = null;
-                    $datatype = null;
-                } elseif ($reader->name == 'result') {
-                    $result = new \stdClass();
-                } elseif ($reader->name == 'results') {
-                    $this->type = 'bindings';
-                } elseif ($reader->name == 'sparql') {
-                    $isSparql = true;
-                }
-            } elseif ($reader->nodeType == \XMLReader::END_ELEMENT) {
-                if ($reader->name == 'boolean') {
-                    $this->type = 'boolean';
-                    $this->boolean = $text == 'true' ? true : false;
-                } elseif ($reader->name == 'uri') {
-                    $uri = $text;
-                } elseif ($reader->name == 'binding') {
-                    $result->$key = $this->newTerm([
-                        'type' => $type,
-                        'value' => $text,
-                        'lang' => $lang,
-                        'datatype' => $datatype
-                    ]);
-                } elseif ($reader->name == 'result') {
-                    $this[] = $result;
-                }
-            } elseif ($reader->nodeType == \XMLReader::TEXT || $reader->nodeType == \XMLReader::CDATA) {
-                $text = $reader->value;
-            } elseif ($reader->nodeType == \XMLReader::SIGNIFICANT_WHITESPACE) {
-                # Ignore whitespace
-            }
-        }
-
-        $reader->close();
-
-        if (!$isSparql) {
+        if (!$this->type) {
             throw new Exception(
-                "Incorrect root node in SPARQL XML Query Results format"
-            );
-        } elseif (!$this->type) {
-            throw new Exception(
-                "Failed to parse SPARQL XML Query Results format"
+                "Failed to parse SPARQL XML Query Results format: unknown type"
             );
         }
     }
