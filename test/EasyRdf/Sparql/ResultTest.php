@@ -333,6 +333,18 @@ class ResultTest extends TestCase
         );
     }
 
+    public function testIncorrectSparqlNamespaceXml()
+    {
+        $this->setExpectedException(
+            'EasyRdf\Exception',
+            'Root node namespace is not http://www.w3.org/2005/sparql-results#'
+        );
+        new Result(
+            readFixture('sparql_wrong_ns.xml'),
+            'application/sparql-results+xml'
+        );
+    }
+
     public function testNotSparqlXml()
     {
         $this->setExpectedException(
