@@ -110,7 +110,7 @@ class XMLParser extends \XMLReader
      */
     public function path()
     {
-        return implode($this->path, '/');
+        return implode('/', $this->path);
     }
 
     /** Returns the current element depth of the path in the XML document
