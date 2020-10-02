@@ -248,7 +248,7 @@ class Result extends \ArrayIterator
             }
         } else {
             throw new Exception(
-                "Failed to dump SPARQL Query Results format, unknown type: ". $this->type
+                "Failed to dump SPARQL Query Results format, unknown type: ".$this->type
             );
         }
     }
@@ -289,7 +289,7 @@ class Result extends \ArrayIterator
                 );
             } elseif ($parser->namespaceURI != self::SPARQL_XML_RESULTS_NS) {
                 throw new Exception(
-                    "Root node namespace is not " . self::SPARQL_XML_RESULTS_NS
+                    "Root node namespace is not ".self::SPARQL_XML_RESULTS_NS
                 );
             }
         } else {
@@ -370,7 +370,7 @@ class Result extends \ArrayIterator
     {
         $this->parseState = array();
         $this->type = null;
-        $parser = new \EasyRdf\XMLParser($this);
+        $parser = new \EasyRdf\XMLParser();
         $parser->startElementCallback = [$this, 'startElementHandler'];
         $parser->textCallback = [$this, 'textHandler'];
         $parser->endElementCallback = [$this, 'endElementHandler'];
