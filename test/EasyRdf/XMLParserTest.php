@@ -1,12 +1,12 @@
 <?php
-namespace EasyRdf\Literal;
+namespace EasyRdf;
 
 /**
  * EasyRdf
  *
  * LICENSE
  *
- * Copyright (c) 2009-2014 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,41 +32,61 @@ namespace EasyRdf\Literal;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
+ * @copyright  Copyright (c) Nicholas J Humfrey
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
-use EasyRdf\Literal;
 
-/**
- * Class that represents an RDF Literal of datatype rdf:XMLLiteral
- *
- * @package    EasyRdf
- * @link       http://www.w3.org/TR/REC-rdf-syntax/#section-Syntax-XML-literals
- * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
- * @license    https://www.opensource.org/licenses/bsd-license.php
- */
-class XML extends Literal
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
+
+
+class XMLParserTest extends TestCase
 {
-    /** Constructor for creating a new rdf:XMLLiteral literal
-     *
-     * @param  mixed  $value     The XML fragment
-     * @param  string $lang      Should be null (literals with a datatype can't have a language)
-     * @param  string $datatype  Optional datatype (default 'rdf:XMLLiteral')
-     */
-    public function __construct($value, $lang = null, $datatype = null)
+    public $result = array();
+
+    public function testParseNoop()
     {
-        parent::__construct($value, null, $datatype);
+        $parser = new XMLParser();
+        $parser->parse('<html><body>Body Text</body></html>');
+        $this->assertTrue(true, "Sucessfully parsed XML");
     }
 
-    /** Parse the XML literal into a DOMDocument
-     *
-     * @link   http://php.net/manual/en/domdocument.loadxml.php
-     * @return \DOMDocument
-     */
-    public function domParse()
+    public function testElementDepth()
     {
-        $dom = new \DOMDocument();
-        $dom->loadXML($this->value, LIBXML_PARSEHUGE);
-        return $dom;
+        $parser = new XMLParser();
+        $this->result = array();
+        $parser->startElementCallback = function ($parser) {
+            $this->result[$parser->path()] = $parser->depth();
+        };
+        $parser->parse('<html><head /><body>Body <b>Text</b></body><tail /></html>');
+        $this->assertSame(
+            array(
+                'html' => 1,
+                'html/head' => 2,
+                'html/body' => 2,
+                'html/body/b' => 3,
+                'html/tail' => 2
+            ),
+            $this->result
+        );
+    }
+
+    public function testTextArray()
+    {
+        $parser = new XMLParser();
+        $this->result = array();
+        $parser->textCallback = function ($parser) {
+            if ($parser->depth() == 2) {
+                $name = end($parser->path);
+                $this->result[$name] = $parser->value;
+            }
+        };
+        $parser->parse('<root><a>Hello</a><b>World</b></root>');
+        $this->assertSame(
+            array(
+                'a' => 'Hello',
+                'b' => 'World'
+            ),
+            $this->result
+        );
     }
 }

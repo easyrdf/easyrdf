@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sparql xmlns="http://www.example.com/notsparql">
+  <head>
+  </head>
+  <boolean>true</boolean>
+</sparql>
