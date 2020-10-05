@@ -25,8 +25,11 @@
     },
     "require": {
         "php": ">=7.1.0",
+        "ext-dom" : "*",
         "ext-mbstring": "*",
-        "ext-pcre": "*"
+        "ext-pcre": "*",
+        "ext-xmlreader" : "*",
+        "lib-libxml" : "*"
     },
     "suggest": {
         "ml/json-ld": "~1.0",
