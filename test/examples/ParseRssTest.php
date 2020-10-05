@@ -47,7 +47,7 @@ class ParseRssTest extends \EasyRdf\TestCase
         $this->assertContains('<h1>EasyRdf RSS 1.0 Parsing example</h1>', $output);
     }
 
-    public function testCeres()
+    public function testPlanetRdf()
     {
         $output = executeExample(
             'parse_rss.php',
@@ -61,7 +61,7 @@ class ParseRssTest extends \EasyRdf\TestCase
             "<p>Description: It's triples all the way down</p>",
             $output
         );
-        $this->assertContains('<li><a href="http://', $output);
+        $this->assertContains('<li><a href="https://', $output);
         $this->assertContains('</a></li>', $output);
     }
 }
