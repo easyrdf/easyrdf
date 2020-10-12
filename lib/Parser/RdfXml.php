@@ -188,12 +188,12 @@ class RdfXml extends Parser
     /** @ignore */
     public function startElementHandler($parser)
     {
-        $t = $parser->namespaceURI . $parser->localName;
+        $t = $parser->namespaceURI.$parser->localName;
 
         $a = array();
         if ($parser->hasAttributes) {
             while ($parser->moveToNextAttribute()) {
-                $attrName = $parser->namespaceURI . $parser->localName;
+                $attrName = $parser->namespaceURI.$parser->localName;
                 $a[$attrName] = $parser->value;
             }
         }
@@ -223,7 +223,7 @@ class RdfXml extends Parser
                 return $this->startState6($t, $a);
             default:
                 throw new Exception(
-                    'startElementHandler() called at state ' . $this->state . ' in '.$t
+                    'startElementHandler() called at state '.$this->state.' in '.$t
                 );
         }
     }
@@ -231,7 +231,7 @@ class RdfXml extends Parser
     /** @ignore */
     public function endElementHandler($parser)
     {
-        $t = $parser->namespaceURI . $parser->localName;
+        $t = $parser->namespaceURI.$parser->localName;
 
         switch ($this->state) {
             case 1:
@@ -248,7 +248,7 @@ class RdfXml extends Parser
                 return $this->endState6($t);
             default:
                 throw new Exception(
-                    'endElementHandler() called at state ' . $this->state . ' in '.$t
+                    'endElementHandler() called at state '.$this->state.' in '.$t
                 );
         }
     }
@@ -560,7 +560,7 @@ class RdfXml extends Parser
             }
 
             $nsp = isset($this->nsp[$nsUri]) ? $this->nsp[$nsUri] : '';
-            $data .= $nsp ? '<' . $nsp . ':' . $name : '<' . $name;
+            $data .= $nsp ? '<'.$nsp.':'.$name : '<'.$name;
             /* ns */
             if (!isset($ns[$nsp.'='.$nsUri]) || !$ns[$nsp.'='.$nsUri]) {
                 $data .= $nsp ? ' xmlns:'.$nsp.'="'.$nsUri.'"' : ' xmlns="'.$nsUri.'"';
@@ -756,7 +756,7 @@ class RdfXml extends Parser
     protected function cdataState4($d)
     {
         if ($s = $this->getParentS()) {
-            $s['o_cdata'] = isset($s['o_cdata']) ? $s['o_cdata'] . $d : $d;
+            $s['o_cdata'] = isset($s['o_cdata']) ? $s['o_cdata'].$d : $d;
             $this->updateS($s);
         }
     }
@@ -767,7 +767,7 @@ class RdfXml extends Parser
         if ($s = $this->getParentS()) {
             if (isset($s['o_xml_data']) || preg_match('/[\n\r]/', $d) || trim($d)) {
                 $d = htmlspecialchars($d, ENT_NOQUOTES);
-                $s['o_xml_data'] = isset($s['o_xml_data']) ? $s['o_xml_data'] . $d : $d;
+                $s['o_xml_data'] = isset($s['o_xml_data']) ? $s['o_xml_data'].$d : $d;
             }
             $this->updateS($s);
         }
