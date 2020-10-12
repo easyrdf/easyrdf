@@ -97,7 +97,7 @@ class XMLParser extends \XMLReader
 
                 case \XMLReader::SIGNIFICANT_WHITESPACE:
                     if ($this->whitespaceCallback) {
-                        call_user_func($this->whitespaceCallback);
+                        call_user_func($this->whitespaceCallback, $this);
                     }
                     break;
             }
