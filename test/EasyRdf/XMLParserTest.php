@@ -1,12 +1,12 @@
 <?php
-namespace EasyRdf\Examples;
+namespace EasyRdf;
 
 /**
  * EasyRdf
  *
  * LICENSE
  *
- * Copyright (c) 2013-2014 Nicholas J Humfrey.  All rights reserved.
+ * Copyright (c) Nicholas J Humfrey.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,36 +32,61 @@ namespace EasyRdf\Examples;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
+ * @copyright  Copyright (c) Nicholas J Humfrey
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'TestHelper.php';
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
 
-class ParseRssTest extends \EasyRdf\TestCase
+
+class XMLParserTest extends TestCase
 {
-    public function testNoParams()
+    public $result = array();
+
+    public function testParseNoop()
     {
-        $output = executeExample('parse_rss.php');
-        $this->assertContains('<title>EasyRdf RSS 1.0 Parsing example</title>', $output);
-        $this->assertContains('<h1>EasyRdf RSS 1.0 Parsing example</h1>', $output);
+        $parser = new XMLParser();
+        $parser->parse('<html><body>Body Text</body></html>');
+        $this->assertTrue(true, "Sucessfully parsed XML");
     }
 
-    public function testPlanetRdf()
+    public function testElementDepth()
     {
-        $output = executeExample(
-            'parse_rss.php',
-            array('uri' => 'http://planetrdf.com/index.rdf')
+        $parser = new XMLParser();
+        $this->result = array();
+        $parser->startElementCallback = function ($parser) {
+            $this->result[$parser->path()] = $parser->depth();
+        };
+        $parser->parse('<html><head /><body>Body <b>Text</b></body><tail /></html>');
+        $this->assertSame(
+            array(
+                'html' => 1,
+                'html/head' => 2,
+                'html/body' => 2,
+                'html/body/b' => 3,
+                'html/tail' => 2
+            ),
+            $this->result
         );
-        $this->assertContains(
-            '<p>Channel: <a href="http://planetrdf.com/">Planet RDF</a></p>',
-            $output
+    }
+
+    public function testTextArray()
+    {
+        $parser = new XMLParser();
+        $this->result = array();
+        $parser->textCallback = function ($parser) {
+            if ($parser->depth() == 2) {
+                $name = end($parser->path);
+                $this->result[$name] = $parser->value;
+            }
+        };
+        $parser->parse('<root><a>Hello</a><b>World</b></root>');
+        $this->assertSame(
+            array(
+                'a' => 'Hello',
+                'b' => 'World'
+            ),
+            $this->result
         );
-        $this->assertContains(
-            "<p>Description: It's triples all the way down</p>",
-            $output
-        );
-        $this->assertContains('<li><a href="https://', $output);
-        $this->assertContains('</a></li>', $output);
     }
 }

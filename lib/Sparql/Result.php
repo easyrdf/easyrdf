@@ -48,10 +48,18 @@ use EasyRdf\Resource;
  */
 class Result extends \ArrayIterator
 {
+    /** The SPARQL Results type (either 'boolean' or 'bindings') */
     private $type = null;
+
+    /** The value of a boolean result */
     private $boolean = null;
 
+    /** Keep track of the XML parser state */
     private $fields = array();
+
+    /** Keep track of the XML parser state */
+    private $parseState = array();
+
 
     /** A constant for the SPARQL Query Results XML Format namespace */
     const SPARQL_XML_RESULTS_NS = 'http://www.w3.org/2005/sparql-results#';
@@ -240,7 +248,7 @@ class Result extends \ArrayIterator
             }
         } else {
             throw new Exception(
-                "Failed to dump SPARQL Query Results format, unknown type: ". $this->type
+                "Failed to dump SPARQL Query Results format, unknown type: ".$this->type
             );
         }
     }
@@ -268,76 +276,111 @@ class Result extends \ArrayIterator
         }
     }
 
+    /** XML Result Parser: this function is called when an XML element starts
+     *
+     * @ignore
+     */
+    public function startElementHandler($parser)
+    {
+        if ($parser->depth() == 1) {
+            if ($parser->name != 'sparql') {
+                throw new Exception(
+                    "Root node in XML Query Results format is not <sparql>"
+                );
+            } elseif ($parser->namespaceURI != self::SPARQL_XML_RESULTS_NS) {
+                throw new Exception(
+                    "Root node namespace is not ".self::SPARQL_XML_RESULTS_NS
+                );
+            }
+        } else {
+            switch ($parser->path()) {
+                case 'sparql/boolean':
+                    $this->type = 'boolean';
+                    break;
+                case 'sparql/head/variable':
+                    $this->fields[] = $parser->getAttribute('name');
+                    break;
+                case 'sparql/results':
+                    $this->type = 'bindings';
+                    break;
+                case 'sparql/results/result':
+                    $this->parseState['result'] = new \stdClass();
+                    break;
+                case 'sparql/results/result/binding':
+                    $this->parseState['key'] = $parser->getAttribute('name');
+                    $this->parseState['bindingType'] = null;
+                    $this->parseState['text'] = null;
+                    $this->parseState['lang'] = null;
+                    $this->parseState['datatype'] = null;
+                    break;
+                case 'sparql/results/result/binding/bnode':
+                    $this->parseState['bindingType'] = 'bnode';
+                    break;
+                case 'sparql/results/result/binding/literal':
+                    $this->parseState['bindingType'] = 'literal';
+                    $this->parseState['lang'] = $parser->getAttribute('xml:lang');
+                    $this->parseState['datatype'] = $parser->getAttribute('datatype');
+                    break;
+                case 'sparql/results/result/binding/uri':
+                    $this->parseState['bindingType'] = 'uri';
+                    break;
+            }
+        }
+    }
+
+    /** XML Result Parser: this function is called when text is encountered
+     *
+     * @ignore
+     */
+    public function textHandler($parser)
+    {
+        $this->parseState['text'] = $parser->value;
+    }
+
+    /** XML Result Parser: this function is called when an XML element ends
+     *
+     * @ignore
+     */
+    public function endElementHandler($parser)
+    {
+        switch ($parser->path()) {
+            case 'sparql/boolean':
+                $this->boolean = ($this->parseState['text'] == 'true') ? true : false;
+                break;
+            case 'sparql/results/result/binding':
+                $key = $this->parseState['key'];
+                $this->parseState['result']->$key = $this->newTerm([
+                    'type' => $this->parseState['bindingType'],
+                    'value' => $this->parseState['text'],
+                    'lang' => $this->parseState['lang'],
+                    'datatype' => $this->parseState['datatype']
+                ]);
+                break;
+            case 'sparql/results/result':
+                $this[] = $this->parseState['result'];
+                break;
+        }
+    }
+
     /** Parse a SPARQL result in the XML format into the object.
      *
      * @ignore
      */
     protected function parseXml($data)
     {
-        $doc = new \DOMDocument();
-        $doc->loadXML($data);
+        $this->parseState = array();
+        $this->type = null;
+        $parser = new \EasyRdf\XMLParser();
+        $parser->startElementCallback = [$this, 'startElementHandler'];
+        $parser->textCallback = [$this, 'textHandler'];
+        $parser->endElementCallback = [$this, 'endElementHandler'];
+        $parser->parse($data);
 
-        # Check for valid root node.
-        if ($doc->hasChildNodes() == false or
-            $doc->childNodes->length != 1 or
-            $doc->firstChild->nodeName != 'sparql' or
-            $doc->firstChild->namespaceURI != self::SPARQL_XML_RESULTS_NS) {
+        if (!$this->type) {
             throw new Exception(
-                "Incorrect root node in SPARQL XML Query Results format"
+                "Failed to parse SPARQL XML Query Results format: unknown type"
             );
         }
-
-        # Is it the result of an ASK query?
-        $boolean = $doc->getElementsByTagName('boolean');
-        if ($boolean->length) {
-            $this->type = 'boolean';
-            $value = $boolean->item(0)->nodeValue;
-            $this->boolean = $value == 'true' ? true : false;
-            return;
-        }
-
-        # Get a list of variables from the header
-        $head = $doc->getElementsByTagName('head');
-        if ($head->length) {
-            $variables = $head->item(0)->getElementsByTagName('variable');
-            foreach ($variables as $variable) {
-                $this->fields[] = $variable->getAttribute('name');
-            }
-        }
-
-        # Is it the result of a SELECT query?
-        $resultstag = $doc->getElementsByTagName('results');
-        if ($resultstag->length) {
-            $this->type = 'bindings';
-            $results = $resultstag->item(0)->getElementsByTagName('result');
-            foreach ($results as $result) {
-                $bindings = $result->getElementsByTagName('binding');
-                $t = new \stdClass();
-                foreach ($bindings as $binding) {
-                    $key = $binding->getAttribute('name');
-                    foreach ($binding->childNodes as $node) {
-                        if ($node->nodeType != XML_ELEMENT_NODE) {
-                            continue;
-                        }
-                        $t->$key = $this->newTerm(
-                            array(
-                                'type' => $node->nodeName,
-                                'value' => $node->nodeValue,
-                                'lang' => $node->getAttribute('xml:lang'),
-                                'datatype' => $node->getAttribute('datatype')
-                            )
-                        );
-                        break;
-                    }
-                }
-                $this[] = $t;
-            }
-            return;
-        }
-
-        throw new Exception(
-            "Failed to parse SPARQL XML Query Results format"
-        );
     }
 
     /** Parse a SPARQL result in the JSON format into the object.
