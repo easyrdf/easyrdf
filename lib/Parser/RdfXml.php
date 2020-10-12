@@ -186,8 +186,18 @@ class RdfXml extends Parser
     }
 
     /** @ignore */
-    protected function startElementHandler($t, $a)
+    public function startElementHandler($parser)
     {
+        $t = $parser->namespaceURI . $parser->localName;
+
+        $a = array();
+        if ($parser->hasAttributes) {
+            while ($parser->moveToNextAttribute()) {
+                $attrName = $parser->namespaceURI . $parser->localName;
+                $a[$attrName] = $parser->value;
+            }
+        }
+
         foreach ($a as $key => $uri) {
             $xmlns = 'http://www.w3.org/2000/xmlns/';
             if (strpos($key, $xmlns) === 0) {
@@ -219,8 +229,10 @@ class RdfXml extends Parser
     }
 
     /** @ignore */
-    protected function endElementHandler($t)
+    public function endElementHandler($parser)
     {
+        $t = $parser->namespaceURI . $parser->localName;
+
         switch ($this->state) {
             case 1:
                 return $this->endState1($t);
@@ -242,8 +254,10 @@ class RdfXml extends Parser
     }
 
     /** @ignore */
-    protected function cdataHandler($d)
+    public function textHandler($parser)
     {
+        $d = $parser->value;
+
         switch ($this->state) {
             case 4:
                 return $this->cdataState4($d);
@@ -759,41 +773,6 @@ class RdfXml extends Parser
         }
     }
 
-    protected function handleNode()
-    {
-        switch ($this->xmlReader->nodeType) {
-            case \XMLReader::ELEMENT:
-                $name = $this->xmlReader->namespaceURI . $this->xmlReader->localName;
-                $attributes = array();
-                if ($this->xmlReader->hasAttributes) {
-                    while ($this->xmlReader->moveToNextAttribute()) {
-                        $attrName = $this->xmlReader->namespaceURI . $this->xmlReader->localName;
-                        $attributes[$attrName] = $this->xmlReader->value;
-                    }
-                }
-
-                $this->startElementHandler($name, $attributes);
-                break;
-
-            case \XMLReader::END_ELEMENT:
-                $this->endElementHandler($this->xmlReader->name);
-                break;
-
-            case \XMLReader::TEXT:
-                $this->cdataHandler($this->xmlReader->value);
-                break;
-
-            case \XMLReader::COMMENT:
-            case \XMLReader::SIGNIFICANT_WHITESPACE:
-                // Ignore whitespace and comments
-                break;
-
-            default:
-                error_log("Unexpected XML node type: " . $this->xmlReader->nodeType);
-                break;
-        }
-    }
-
     /**
      * Parse an RDF/XML document into an EasyRdf\Graph
      *
@@ -819,13 +798,12 @@ class RdfXml extends Parser
         $this->init($graph, $baseUri);
         $this->resetBnodeMap();
 
-        $this->xmlReader = new \XMLReader();
+        $parser = new \EasyRdf\XMLParser();
         libxml_use_internal_errors(true);
-        $this->xmlReader->xml($data);
-
-        while ($this->xmlReader->read()) {
-            $this->handleNode();
-        }
+        $parser->startElementCallback = array($this, 'startElementHandler');
+        $parser->endElementCallback = array($this, 'endElementHandler');
+        $parser->textCallback = array($this, 'textHandler');
+        $parser->parse($data);
 
         if ($error = libxml_get_last_error()) {
             throw new Exception(
@@ -835,7 +813,7 @@ class RdfXml extends Parser
             );
         }
 
-        $this->xmlReader->close();
+        $parser->close();
 
         return $this->tripleCount;
     }
