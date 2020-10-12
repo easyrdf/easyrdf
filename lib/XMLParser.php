@@ -66,6 +66,10 @@ class XMLParser extends \XMLReader
      */
     public function parse($xml)
     {
+        // This allows us to throw an exception when there is a parse error
+        // Otherwise it is an uncaptable error
+        libxml_use_internal_errors(true);
+
         $this->xml($xml);
         $this->path = array();
 
@@ -109,6 +113,8 @@ class XMLParser extends \XMLReader
             }
         }
 
+        $this->throwOnError();
+
         $this->close();
     }
 
@@ -124,5 +130,19 @@ class XMLParser extends \XMLReader
     public function depth()
     {
         return count($this->path);
+    }
+
+    /** Throws an expection if there has been an error while parsing
+     */
+    protected function throwOnError()
+    {
+        $error = libxml_get_last_error();
+        if ($error) {
+            throw new Parser\Exception(
+                'XML parser error: "'.$error->message.'"',
+                $error->line,
+                $error->column
+            );
+        }
     }
 }

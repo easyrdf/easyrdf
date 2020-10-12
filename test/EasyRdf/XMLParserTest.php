@@ -89,4 +89,14 @@ class XMLParserTest extends TestCase
             $this->result
         );
     }
+
+    public function testXMLParseError()
+    {
+        $this->setExpectedException(
+            'EasyRdf\Parser\Exception',
+            'XML parser error: "Opening and ending tag mismatch: foo'
+        );
+        $parser = new XMLParser();
+        $parser->parse("<root><foo>Hello World</bar></root>");
+    }
 }

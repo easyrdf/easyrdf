@@ -799,21 +799,10 @@ class RdfXml extends Parser
         $this->resetBnodeMap();
 
         $parser = new \EasyRdf\XMLParser();
-        libxml_use_internal_errors(true);
         $parser->startElementCallback = array($this, 'startElementHandler');
         $parser->endElementCallback = array($this, 'endElementHandler');
         $parser->textCallback = array($this, 'textHandler');
         $parser->parse($data);
-
-        if ($error = libxml_get_last_error()) {
-            throw new Exception(
-                'XML error: "' . $error->message . '"',
-                $error->line,
-                $error->column
-            );
-        }
-
-        $parser->close();
 
         return $this->tripleCount;
     }
