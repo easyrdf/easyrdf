@@ -72,14 +72,16 @@ class XMLParser extends \XMLReader
         while ($this->read()) {
             switch ($this->nodeType) {
                 case \XMLReader::ELEMENT:
+                    // Take a copy of this before it is lost
+                    $isEmpty = $this->isEmptyElement;
                     $this->path[] = $this->name;
                     if ($this->startElementCallback) {
                         call_user_func($this->startElementCallback, $this);
                     }
-                    if ($this->isEmptyElement) {
-                        array_pop($this->path);
+                    if (!$isEmpty) {
+                        break;
                     }
-                    break;
+                    // ELSE: if element is empty, also call End Element callback
 
                 case \XMLReader::END_ELEMENT:
                     if ($this->endElementCallback) {
