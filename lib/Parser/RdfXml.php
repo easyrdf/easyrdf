@@ -186,7 +186,7 @@ class RdfXml extends Parser
     }
 
     /** @ignore */
-    public function startElementHandler($parser)
+    public function startElementHandler(\EasyRdf\XMLParser $parser)
     {
         $t = $parser->namespaceURI.$parser->localName;
 
@@ -229,7 +229,7 @@ class RdfXml extends Parser
     }
 
     /** @ignore */
-    public function endElementHandler($parser)
+    public function endElementHandler(\EasyRdf\XMLParser $parser)
     {
         $t = $parser->namespaceURI.$parser->localName;
 
@@ -254,7 +254,7 @@ class RdfXml extends Parser
     }
 
     /** @ignore */
-    public function textHandler($parser)
+    public function textHandler(\EasyRdf\XMLParser $parser)
     {
         $d = $parser->value;
 
