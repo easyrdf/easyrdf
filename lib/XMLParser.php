@@ -100,6 +100,10 @@ class XMLParser extends \XMLReader
                         call_user_func($this->whitespaceCallback, $this);
                     }
                     break;
+
+                case \XMLReader::COMMENT:
+                    // Don't do anything with comments
+                    break;
             }
         }
 
