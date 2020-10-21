@@ -1612,7 +1612,7 @@ class Graph
      * @param string|null $resource
      * @param string|null $lang
      *
-     * @return string A label for the resource.
+     * @return Literal|null An instance of Literal which contains the label or null.
      */
     public function label($resource = null, $lang = null)
     {

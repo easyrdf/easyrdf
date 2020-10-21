@@ -659,7 +659,7 @@ class Resource implements \ArrayAccess
      *
      * @param string|null $lang
      *
-     * @return string A label for the resource.
+     * @return Literal|null An instance of Literal which contains the label or null.
      */
     public function label($lang = null)
     {
