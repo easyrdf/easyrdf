@@ -277,4 +277,22 @@ class ClientTest extends TestCase
         $this->assertSame(null, $this->client->getHeader('Content-Type'));
         $this->assertSame(null, $this->client->getHeader('Accept-Language'));
     }
+
+    /**
+     * Test for issue #271
+     *
+     * Test approach was to first trigger the error with the following code and
+     * deploy the fix afterwards.
+     *
+     * Error:
+     *    Undefined index: path in vendor\easyrdf\easyrdf\lib\Http\Client.php
+     *
+     * @see https://github.com/easyrdf/easyrdf/issues/271
+     */
+    public function testIssue271()
+    {
+        $this->client = new Client('https://query.wikidata.org?query=');
+        $response = $this->client->request('GET');
+        $this->assertTrue($response->isSuccessful());
+    }
 }

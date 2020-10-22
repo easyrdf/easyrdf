@@ -442,8 +442,16 @@ class Client
             stream_set_timeout($socket, $this->config['timeout']);
             $info = stream_get_meta_data($socket);
 
-            // Write the request
-            $path = $uri['path'];
+            /*
+             * Write the request
+             *
+             * Because parse_url only sets up keys for parts present in the URI,
+             * key 'path' might be unset. The following structure uses an empty
+             * string instead in that case.
+             *
+             * FYI: https://github.com/easyrdf/easyrdf/issues/271#issuecomment-713372010
+             */
+            $path = $uri['path'] ?? '';
             if (empty($path)) {
                 $path = '/';
             }
