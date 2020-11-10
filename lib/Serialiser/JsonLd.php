@@ -129,13 +129,12 @@ class JsonLd extends Serialiser
         // expanded form
         $data = $ld_graph->toJsonLd($use_native_types);
 
-        if ($should_expand) {
-            $data = LD\JsonLD::expand($data);
-        }
         if ($should_frame) {
             $data = LD\JsonLD::frame($data, $options['frame'], $options);
+        } elseif ($should_expand) {
+           $data = LD\JsonLD::expand($data);
         }
-
+        
         if ($should_compact) {
             // compact form
             $compact_context = isset($options['context']) ? $options['context'] : null;
