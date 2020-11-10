@@ -132,9 +132,9 @@ class JsonLd extends Serialiser
         if ($should_frame) {
             $data = LD\JsonLD::frame($data, $options['frame'], $options);
         } elseif ($should_expand) {
-           $data = LD\JsonLD::expand($data);
+            $data = LD\JsonLD::expand($data);
         }
-        
+
         if ($should_compact) {
             // compact form
             $compact_context = isset($options['context']) ? $options['context'] : null;
