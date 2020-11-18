@@ -123,6 +123,7 @@ class JsonLd extends Serialiser
         // OPTIONS
         $use_native_types = !(isset($options['expand_native_types']) and $options['expand_native_types'] == true);
         $should_compact = (isset($options['compact']) and $options['compact'] == true);
+        $should_expand = (isset($options['expand']) and $options['expand'] == true);
         $should_frame = isset($options['frame']);
 
         // expanded form
@@ -130,6 +131,8 @@ class JsonLd extends Serialiser
 
         if ($should_frame) {
             $data = LD\JsonLD::frame($data, $options['frame'], $options);
+        } elseif ($should_expand) {
+            $data = LD\JsonLD::expand($data);
         }
 
         if ($should_compact) {
