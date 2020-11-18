@@ -228,5 +228,30 @@ class JsonLdTest extends TestCase
             'http://example.org/library/the-republic#introduction',
             $decoded['@graph'][0]['ex:contains']['ex:contains']['@id']
         );
+
+        // Expanded
+        $string = $this->serialiser->serialise(
+            $this->graph,
+            'jsonld',
+            array('expand' => true)
+        );
+        $decoded = json_decode($string, true);
+        $this->assertArrayNotHasKey('@graph', $decoded);
+        $this->assertSame(
+            'http://example.org/library',
+            $decoded[1]['@id']
+        );
+        $this->assertSame(
+            'http://example.org/library/the-republic',
+            $decoded[2]['@id']
+        );
+        $this->assertSame(
+            'http://example.org/library/the-republic#introduction',
+            $decoded[3]['@id']
+        );
+        $this->assertSame(
+            'http://www.example.com/joe#me',
+            $decoded[4]['@id']
+        );
     }
 }
