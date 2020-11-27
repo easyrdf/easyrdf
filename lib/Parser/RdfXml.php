@@ -798,14 +798,20 @@ class RdfXml extends Parser
         /* xml parser */
         $this->initXMLParser();
 
-        /* parse */
-        if (!xml_parse($this->xmlParser, $data, false)) {
-            $message = xml_error_string(xml_get_error_code($this->xmlParser));
-            throw new Exception(
-                'XML error: "' . $message . '"',
-                xml_get_current_line_number($this->xmlParser),
-                xml_get_current_column_number($this->xmlParser)
-            );
+        /* split into 1MB chunks */
+        $chunks = str_split($data, 1000000);
+        foreach ($chunks as $key => $chunk) {
+            $isLast = ($key === array_key_last($chunks));
+
+            /* Parse the chunk */
+            if (!xml_parse($this->xmlParser, $chunk, $isLast)) {
+                $message = xml_error_string(xml_get_error_code($this->xmlParser));
+                throw new Exception(
+                    'XML error: "' . $message . '"',
+                    xml_get_current_line_number($this->xmlParser),
+                    xml_get_current_column_number($this->xmlParser)
+                );
+            }
         }
 
         xml_parser_free($this->xmlParser);
