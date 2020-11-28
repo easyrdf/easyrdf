@@ -798,10 +798,12 @@ class RdfXml extends Parser
         /* xml parser */
         $this->initXMLParser();
 
-        /* split into 1MB chunks */
-        $chunks = str_split($data, 1000000);
-        foreach ($chunks as $key => $chunk) {
-            $isLast = ($key === array_key_last($chunks));
+        /* split into 1MB chunks, so XML parser can cope */
+        $chunkSize = 1000000;
+        $length = strlen($data);
+        for ($pos=0; $pos < $length; $pos += $chunkSize) {
+            $chunk = substr($data, $pos, $chunkSize);
+            $isLast = ($pos + $chunkSize > $length);
 
             /* Parse the chunk */
             if (!xml_parse($this->xmlParser, $chunk, $isLast)) {
