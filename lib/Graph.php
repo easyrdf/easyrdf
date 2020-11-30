@@ -373,7 +373,7 @@ class Graph
     /** Get an associative array of all the resources stored in the graph.
      *  The keys of the array is the URI of the EasyRdf\Resource.
      *
-     * @return Resource[]
+     * @return \EasyRdf\Resource[]
      */
     public function resources()
     {
@@ -407,7 +407,7 @@ class Graph
      * @param  string  $property   The property to check.
      * @param  mixed   $value      Optional, the value of the propery to check for.
      *
-     * @return Resource[]
+     * @return \EasyRdf\Resource[]
      */
     public function resourcesMatching($property, $value = null)
     {
@@ -703,7 +703,7 @@ class Graph
      * @param  string|array $property The name of the property (e.g. foaf:name)
      * @param  string       $lang     The language to filter by (e.g. en)
      *
-     * @return Literal  Literal value associated with the property
+     * @return \EasyRdf\Literal Literal value associated with the property
      */
     public function getLiteral($resource, $property, $lang = null)
     {
@@ -1527,7 +1527,7 @@ class Graph
      *
      * @param string|null $resource
      *
-     * @return Resource[]
+     * @return \EasyRdf\Resource[]
      */
     public function typesAsResources($resource = null)
     {
@@ -1612,7 +1612,7 @@ class Graph
      * @param string|null $resource
      * @param string|null $lang
      *
-     * @return Literal|null An instance of Literal which contains the label or null.
+     * @return \EasyRdf\Literal|null An instance of Literal which contains the label or null.
      */
     public function label($resource = null, $lang = null)
     {

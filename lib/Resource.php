@@ -388,7 +388,7 @@ class Resource implements \ArrayAccess
      * @param  string|array $property The name of the property (e.g. foaf:name)
      * @param  string       $lang     The language to filter by (e.g. en)
      *
-     * @return Literal  Literal value associated with the property
+     * @return \EasyRdf\Literal  Literal value associated with the property
      */
     public function getLiteral($property, $lang = null)
     {
@@ -659,7 +659,7 @@ class Resource implements \ArrayAccess
      *
      * @param string|null $lang
      *
-     * @return Literal|null An instance of Literal which contains the label or null.
+     * @return \EasyRdf\Literal|null An instance of Literal which contains the label or null.
      */
     public function label($lang = null)
     {
