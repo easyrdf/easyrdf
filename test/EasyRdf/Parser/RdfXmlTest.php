@@ -84,6 +84,22 @@ class RdfXmlTest extends TestCase
         $this->assertStringEquals("Joe Bloggs' FOAF File", $foaf->label());
     }
 
+    public function testParseRdfXmlwithCustomNS()
+    {
+        $count = $this->parser->parse(
+            $this->graph,
+            readFixture('rdfxml/with-custom-ns.rdf'),
+            'rdfxml',
+            'http://www.example.com/with-custom-ns.rdf'
+        );
+        $this->assertSame(2, $count);
+
+        $owner = $this->graph->resource('http://example.org/owner');
+        $this->assertNotNull($owner);
+        $this->assertStringEquals('Foo Bar', $owner->get('<http://example.org/name>'));
+        $this->assertStringEquals('Owner', $owner->get('<http://example.org/type>'));
+    }
+
     public function testParseSeq()
     {
         $count = $this->parser->parse(
@@ -132,6 +148,41 @@ class RdfXmlTest extends TestCase
             'unsupportedformat',
             null
         );
+    }
+
+    /**
+     * Check that the RDF/XML parser is capable of parsing files more than 10MB
+     *
+     * @see https://github.com/easyrdf/easyrdf/issues/350
+     */
+    public function testLargeFile()
+    {
+        // Genrate a large RDF/XML file
+        $large = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n";
+        $large .= "         xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n";
+        $large .= "         xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\">\n";
+        for ($i = 1; $i < 25000; $i++) {
+            $large .= "<owl:Thing rdf:about=\"http://www.example.com/resource$i\">\n";
+            $large .= "  <rdfs:label>This is item $i</rdfs:label>\n";
+            $large .= "  <rdfs:comment>";
+            $large .= str_repeat('This is a long piece of text. ', 20);
+            $large .= "  </rdfs:comment>\n";
+            $large .= "</owl:Thing>\n";
+        }
+        $large .= "</rdf:RDF>\n";
+
+        // Check it is more than 10Mb
+        $this->assertGreaterThan(10485760, strlen($large));
+
+        // Now parse it into a graph
+        $count = $this->parser->parse(
+            $this->graph,
+            $large,
+            'rdfxml',
+            null
+        );
+
+        $this->assertEquals(25000, count($this->graph->resources()));
     }
 
     /**
