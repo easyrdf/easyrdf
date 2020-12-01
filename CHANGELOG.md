@@ -1,9 +1,28 @@
 EasyRdf 1.1.0
 =============
 
-Enhancements
-------------------
-* Replace abandonned Sami by Doctum
+Bug fix release with a few improvements and changes in Composer dependencies.
+
+Overview
+--------
+
+* Composer:
+  * changed ARC2 from `~2.2` to `^2.4` (#347)
+  * replaced `sami/sami` with `code-lts/doctum`
+  * added the following required PHP extensions: ext-pcre, ext-xmlreader, lib-libxml
+* Accept an array of properties in get/getLiteral/getResource methods, fixes #325 (#326)
+* Add support for parsing large SPARQL XML Results (#357)
+* Made `Parser` class abstract, to be in line with `Serialiser` class (#328)
+* Fixed "Sparql\Client uses invalid parameters for Zend\Http\Client->setHeaders" (#335)
+* Fixed undefined index path in Http\Client::request (#271, #368)
+
+Highlights for EasyRdf developers
+---------------------------------
+
+* added .editorconfig (#340)
+* added a basic Docker setup to improve local development and testing (#334)
+* added `CONTRIBUTING.md`
+
 
 EasyRdf 1.0.0
 =============
