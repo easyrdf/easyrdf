@@ -71,11 +71,13 @@ class TestCase extends \PHPUnit\Framework\TestCase
      *
      * As long as we have to support PHPUnit 7 this function is required, because its replacement in PHPUnit 9
      * is defined as a static function, but assertRegExp was non-static.
+     *
+     * @todo remove if PHPUnit 7 support is no longer required.
      */
     public static function assertMatchesRegularExpression(string $pattern, string $string, string $message = ''): void
     {
         $case = new TestCase();
-        if (!method_exists($case, 'assertMatchesRegularExpression')) {
+        if (method_exists($case, 'assertRegExp')) {
             $case->assertRegExp($pattern, $string, $message);
         } else {
             parent::assertMatchesRegularExpression($pattern, $string, $message);
