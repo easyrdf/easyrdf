@@ -50,7 +50,7 @@ class RdfXmlTest extends TestCase
     protected $graph = null;
     protected $rdf_data = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->graph = new Graph();
         $this->parser = new RdfXml();

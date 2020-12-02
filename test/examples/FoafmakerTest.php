@@ -43,8 +43,8 @@ class FoafmakerTest extends \EasyRdf\TestCase
     public function testNoParams()
     {
         $output = executeExample('foafmaker.php');
-        $this->assertContains('<title>EasyRdf FOAF Maker Example</title>', $output);
-        $this->assertContains('<h1>EasyRdf FOAF Maker Example</h1>', $output);
+        $this->assertStringContainsString('<title>EasyRdf FOAF Maker Example</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf FOAF Maker Example</h1>', $output);
     }
 
     public function testJoeBloggs()
@@ -67,9 +67,9 @@ class FoafmakerTest extends \EasyRdf\TestCase
             )
         );
 
-        $this->assertContains('<title>EasyRdf FOAF Maker Example</title>', $output);
-        $this->assertContains('<h1>EasyRdf FOAF Maker Example</h1>', $output);
-        $this->assertContains(
+        $this->assertStringContainsString('<title>EasyRdf FOAF Maker Example</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf FOAF Maker Example</h1>', $output);
+        $this->assertStringContainsString(
             "@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .\n\n".
             "&lt;http://www.example.com/joe#me&gt;\n".
             "  a foaf:Person ;\n".

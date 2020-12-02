@@ -43,25 +43,25 @@ class GraphdirectTest extends \EasyRdf\TestCase
     public function test()
     {
         $output = executeExample('graph_direct.php');
-        $this->assertContains('<title>Example of using EasyRdf\\Graph directly</title>', $output);
+        $this->assertStringContainsString('<title>Example of using EasyRdf\\Graph directly</title>', $output);
 
-        $this->assertContains('<b>Name:</b> Joe Bloggs <br />', $output);
-        $this->assertContains('<b>Names:</b> Joe Bloggs Joseph Bloggs <br />', $output);
+        $this->assertStringContainsString('<b>Name:</b> Joe Bloggs <br />', $output);
+        $this->assertStringContainsString('<b>Names:</b> Joe Bloggs Joseph Bloggs <br />', $output);
 
-        $this->assertContains('<b>Label:</b> Nick <br />', $output);
-        $this->assertContains(
+        $this->assertStringContainsString('<b>Label:</b> Nick <br />', $output);
+        $this->assertStringContainsString(
             '<b>Properties:</b> rdf:type, foaf:name, rdfs:label <br />',
             $output
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<b>PropertyUris:</b> http://www.w3.org/1999/02/22-rdf-syntax-ns#type, '.
             'http://xmlns.com/foaf/0.1/name, http://www.w3.org/2000/01/rdf-schema#label <br />',
             $output
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<b>People:</b> http://example.com/joe, http://njh.me/ <br />',
             $output
         );
-        $this->assertContains('<b>Unknown:</b>  <br />', $output);
+        $this->assertStringContainsString('<b>Unknown:</b>  <br />', $output);
     }
 }

@@ -43,9 +43,12 @@ class OpenGraphProtocolTest extends \EasyRdf\TestCase
     public function testRottenTomatoes()
     {
         $output = executeExample('open_graph_protocol.php');
-        $this->assertContains('<dd><a href="https://www.rottentomatoes.com/m/oceans_eleven"', $output);
-        $this->assertContains('<dt>Title:</dt> <dd>Ocean\'s Eleven (2001)</dd>', $output);
-        $this->assertContains('<dt>Description:</dt> <dd>A rag-tag group of con artists and ex-cons', $output);
-        $this->assertContains('src="https://resizing.flixster.com/', $output);
+        $this->assertStringContainsString('<dd><a href="https://www.rottentomatoes.com/m/oceans_eleven"', $output);
+        $this->assertStringContainsString('<dt>Title:</dt> <dd>Ocean\'s Eleven (2001)</dd>', $output);
+        $this->assertStringContainsString(
+            '<dt>Description:</dt> <dd>A rag-tag group of con artists and ex-cons',
+            $output
+        );
+        $this->assertStringContainsString('src="https://resizing.flixster.com/', $output);
     }
 }

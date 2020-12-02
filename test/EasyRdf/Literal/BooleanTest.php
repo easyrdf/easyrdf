@@ -47,7 +47,7 @@ class BooleanTest extends TestCase
     {
         $literal = new Boolean('true');
         $this->assertStringEquals('true', $literal);
-        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertEquals('boolean', gettype($literal->getValue()));
         $this->assertSame(true, $literal->getValue());
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:boolean', $literal->getDatatype());
@@ -57,7 +57,7 @@ class BooleanTest extends TestCase
     {
         $literal = new Boolean('false');
         $this->assertStringEquals('false', $literal);
-        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertEquals('boolean', gettype($literal->getValue()));
         $this->assertSame(false, $literal->getValue());
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:boolean', $literal->getDatatype());
@@ -67,7 +67,7 @@ class BooleanTest extends TestCase
     {
         $literal = new Boolean('1');
         $this->assertStringEquals('1', $literal);
-        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertEquals('boolean', gettype($literal->getValue()));
         $this->assertSame(true, $literal->getValue());
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:boolean', $literal->getDatatype());
@@ -77,7 +77,7 @@ class BooleanTest extends TestCase
     {
         $literal = new Boolean('0');
         $this->assertStringEquals('0', $literal);
-        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertEquals('boolean', gettype($literal->getValue()));
         $this->assertSame(false, $literal->getValue());
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:boolean', $literal->getDatatype());
@@ -87,7 +87,7 @@ class BooleanTest extends TestCase
     {
         $literal = new Boolean(true);
         $this->assertStringEquals('true', $literal);
-        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertEquals('boolean', gettype($literal->getValue()));
         $this->assertSame(true, $literal->getValue());
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:boolean', $literal->getDatatype());
@@ -97,7 +97,7 @@ class BooleanTest extends TestCase
     {
         $literal = new Boolean(false);
         $this->assertStringEquals('false', $literal);
-        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertEquals('boolean', gettype($literal->getValue()));
         $this->assertSame(false, $literal->getValue());
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:boolean', $literal->getDatatype());
@@ -107,7 +107,7 @@ class BooleanTest extends TestCase
     {
         $literal = new Boolean(1);
         $this->assertStringEquals('true', $literal);
-        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertEquals('boolean', gettype($literal->getValue()));
         $this->assertSame(true, $literal->getValue());
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:boolean', $literal->getDatatype());
@@ -117,7 +117,7 @@ class BooleanTest extends TestCase
     {
         $literal = new Boolean(0);
         $this->assertStringEquals('false', $literal);
-        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertEquals('boolean', gettype($literal->getValue()));
         $this->assertSame(false, $literal->getValue());
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:boolean', $literal->getDatatype());

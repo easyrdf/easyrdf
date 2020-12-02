@@ -59,7 +59,7 @@ class ParserTest extends TestCase
     /**
      * Set up the test suite before each test
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->graph = new Graph();
         $this->resource = $this->graph->resource('http://www.example.com/');

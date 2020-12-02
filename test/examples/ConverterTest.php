@@ -43,11 +43,11 @@ class ConverterTest extends \EasyRdf\TestCase
     public function testNoParams()
     {
         $output = executeExample('converter.php');
-        $this->assertContains('<title>EasyRdf Converter</title>', $output);
-        $this->assertContains('<h1>EasyRdf Converter</h1>', $output);
-        $this->assertContains('<option value="ntriples">N-Triples</option>', $output);
-        $this->assertContains('<option value="turtle">Turtle Terse RDF Triple Language</option>', $output);
-        $this->assertContains('<option value="rdfxml">RDF/XML</option>', $output);
+        $this->assertStringContainsString('<title>EasyRdf Converter</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf Converter</h1>', $output);
+        $this->assertStringContainsString('<option value="ntriples">N-Triples</option>', $output);
+        $this->assertStringContainsString('<option value="turtle">Turtle Terse RDF Triple Language</option>', $output);
+        $this->assertStringContainsString('<option value="rdfxml">RDF/XML</option>', $output);
     }
 
     public function testConvertRdfXmlToNtriples()
@@ -68,9 +68,9 @@ class ConverterTest extends \EasyRdf\TestCase
             )
         );
 
-        $this->assertContains('<title>EasyRdf Converter</title>', $output);
-        $this->assertContains('<h1>EasyRdf Converter</h1>', $output);
-        $this->assertContains(
+        $this->assertStringContainsString('<title>EasyRdf Converter</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf Converter</h1>', $output);
+        $this->assertStringContainsString(
             '&lt;http://www.w3.org/&gt; '.
             '&lt;http://purl.org/dc/elements/1.1/title&gt; '.
             '&quot;World Wide Web Consortium&quot; .',
@@ -89,25 +89,25 @@ class ConverterTest extends \EasyRdf\TestCase
             )
         );
 
-        $this->assertContains('<title>EasyRdf Converter</title>', $output);
-        $this->assertContains('<h1>EasyRdf Converter</h1>', $output);
-        $this->assertContains(
+        $this->assertStringContainsString('<title>EasyRdf Converter</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf Converter</h1>', $output);
+        $this->assertStringContainsString(
             '&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt; '.
             '&lt;http://purl.org/dc/elements/1.1/title&gt; '.
             '&quot;RDF/XML Syntax Specification (Revised)&quot; .',
             $output
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt; '.
             '&lt;http://example.org/stuff/1.0/editor&gt; _:genid1 .',
             $output
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '_:genid1 &lt;http://example.org/stuff/1.0/fullname&gt; '.
             '&quot;Dave Beckett&quot; .',
             $output
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '_:genid1 &lt;http://example.org/stuff/1.0/homePage&gt; '.
             '&lt;http://purl.org/net/dajobe/&gt; .',
             $output

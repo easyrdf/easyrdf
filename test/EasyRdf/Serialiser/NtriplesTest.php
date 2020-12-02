@@ -52,13 +52,13 @@ class NtriplesTest extends TestCase
     /** @var Graph */
     protected $graph = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->graph = new Graph();
         $this->serialiser = new Ntriples();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         RdfNamespace::resetNamespaces();

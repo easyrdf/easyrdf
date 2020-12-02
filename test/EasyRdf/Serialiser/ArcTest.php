@@ -49,7 +49,7 @@ class ArcTest extends TestCase
     /** @var Arc */
     private $serialiser;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (class_exists('ARC2')) {
             $this->graph = new Graph();
@@ -72,11 +72,11 @@ class ArcTest extends TestCase
 
         $rdfxml = $this->serialiser->serialise($this->graph, 'rdfxml');
         $this->assertNotNull($rdfxml);
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<rdf:Description rdf:about="http://www.example.com/joe#me">',
             $rdfxml
         );
-        $this->assertContains(':name>Project Name<', $rdfxml);
+        $this->assertStringContainsString(':name>Project Name<', $rdfxml);
     }
 
     public function testSerialiseUnsupportedFormat()

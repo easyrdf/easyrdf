@@ -48,7 +48,7 @@ class XMLTest extends TestCase
         $literal = new XML('<tag>Hello World</tag>');
         $this->assertClass('EasyRdf\Literal\XML', $literal);
         $this->assertStringEquals('<tag>Hello World</tag>', $literal);
-        $this->assertInternalType('string', $literal->getValue());
+        $this->assertEquals('string', gettype($literal->getValue()));
         $this->assertSame('<tag>Hello World</tag>', $literal->getValue());
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('rdf:XMLLiteral', $literal->getDatatype());

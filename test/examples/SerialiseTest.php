@@ -46,8 +46,8 @@ class SerialiseTest extends \EasyRdf\TestCase
             'serialise.php',
             array('format' => 'ntriples')
         );
-        $this->assertContains('<title>EasyRdf Serialiser Example</title>', $output);
-        $this->assertContains(
+        $this->assertStringContainsString('<title>EasyRdf Serialiser Example</title>', $output);
+        $this->assertStringContainsString(
             '&lt;http://www.example.com/joe#me&gt; '.
             '&lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; '.
             '&lt;http://xmlns.com/foaf/0.1/Person&gt; .',
@@ -61,8 +61,8 @@ class SerialiseTest extends \EasyRdf\TestCase
             'serialise.php',
             array('format' => 'rdfxml')
         );
-        $this->assertContains('<title>EasyRdf Serialiser Example</title>', $output);
-        $this->assertContains(
+        $this->assertStringContainsString('<title>EasyRdf Serialiser Example</title>', $output);
+        $this->assertStringContainsString(
             '&lt;foaf:Person rdf:about=&quot;http://www.example.com/joe#me&quot;&gt;',
             $output
         );
@@ -74,7 +74,7 @@ class SerialiseTest extends \EasyRdf\TestCase
             'serialise.php',
             array('format' => 'php')
         );
-        $this->assertContains('<title>EasyRdf Serialiser Example</title>', $output);
-        $this->assertContains("'value' =&gt; 'http://xmlns.com/foaf/0.1/Person',", $output);
+        $this->assertStringContainsString('<title>EasyRdf Serialiser Example</title>', $output);
+        $this->assertStringContainsString("'value' =&gt; 'http://xmlns.com/foaf/0.1/Person',", $output);
     }
 }

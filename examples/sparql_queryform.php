@@ -20,8 +20,7 @@
     require_once realpath(__DIR__.'/..')."/vendor/autoload.php";
     require_once __DIR__."/html_tag_helpers.php";
 
-    // Stupid PHP :(
-    if (get_magic_quotes_gpc() and isset($_REQUEST['query'])) {
+    if (isset($_REQUEST['query'])) {
         $_REQUEST['query'] = stripslashes($_REQUEST['query']);
     }
 ?>

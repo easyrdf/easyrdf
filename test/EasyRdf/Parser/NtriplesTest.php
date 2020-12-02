@@ -50,7 +50,7 @@ class NtriplesTest extends TestCase
     protected $graph = null;
     protected $nt_data = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->graph = new Graph();
         $this->parser = new Ntriples();

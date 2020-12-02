@@ -45,14 +45,14 @@ class NamespaceTest extends TestCase
     /** @var Resource */
     private $resource;
 
-    public function setUp()
+    public function setUp(): void
     {
         RdfNamespace::setDefault(null);
         $this->graph = new Graph();
         $this->resource = $this->graph->resource('http://xmlns.com/foaf/0.1/name');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         RdfNamespace::delete('po');
         RdfNamespace::reset();

@@ -50,7 +50,7 @@ class RapperTest extends TestCase
     protected $graph = null;
     protected $rdf_data = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         exec('rapper --version 2>/dev/null', $output, $retval);
         if ($retval == 0) {

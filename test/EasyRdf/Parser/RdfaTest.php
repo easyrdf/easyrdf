@@ -53,7 +53,7 @@ class RdfaTest extends TestCase
     protected $baseUri;
     protected $graph = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->rdfaParser = new Rdfa();
         $this->ntriplesParser = new Ntriples();

@@ -43,9 +43,9 @@ class FoafinfoTest extends \EasyRdf\TestCase
     public function testNoParams()
     {
         $output = executeExample('foafinfo.php');
-        $this->assertContains('<title>EasyRdf FOAF Info Example</title>', $output);
-        $this->assertContains('<h1>EasyRdf FOAF Info Example</h1>', $output);
-        $this->assertContains(
+        $this->assertStringContainsString('<title>EasyRdf FOAF Info Example</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf FOAF Info Example</h1>', $output);
+        $this->assertStringContainsString(
             '<input type="text" name="uri" id="uri" value="http://njh.me/foaf.rdf" size="50" />',
             $output
         );
@@ -58,19 +58,19 @@ class FoafinfoTest extends \EasyRdf\TestCase
             array('uri' => 'http://njh.me/foaf.rdf')
         );
 
-        $this->assertContains('<title>EasyRdf FOAF Info Example</title>', $output);
-        $this->assertContains('<h1>EasyRdf FOAF Info Example</h1>', $output);
-        $this->assertContains("<dt>Name:</dt><dd>Nicholas J Humfrey</dd>", $output);
-        $this->assertContains(
+        $this->assertStringContainsString('<title>EasyRdf FOAF Info Example</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf FOAF Info Example</h1>', $output);
+        $this->assertStringContainsString("<dt>Name:</dt><dd>Nicholas J Humfrey</dd>", $output);
+        $this->assertStringContainsString(
             "<dt>Homepage:</dt><dd><a href=\"http://www.aelius.com/njh/\">http://www.aelius.com/njh/</a></dd>",
             $output
         );
 
-        $this->assertContains("<h2>Known Persons</h2>", $output);
-        $this->assertContains(">Patrick Sinclair</a></li>", $output);
-        $this->assertContains(">Yves Raimond</a></li>", $output);
+        $this->assertStringContainsString("<h2>Known Persons</h2>", $output);
+        $this->assertStringContainsString(">Patrick Sinclair</a></li>", $output);
+        $this->assertStringContainsString(">Yves Raimond</a></li>", $output);
 
-        $this->assertContains("<h2>Interests</h2>", $output);
-        $this->assertContains(">RDF</a></li>", $output);
+        $this->assertStringContainsString("<h2>Interests</h2>", $output);
+        $this->assertStringContainsString(">RDF</a></li>", $output);
     }
 }

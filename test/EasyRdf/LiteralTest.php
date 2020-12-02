@@ -48,12 +48,12 @@ class MyDatatypeClass extends Literal
 
 class LiteralTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         RdfNamespace::set('ex', 'http://www.example.com/');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Literal::deleteDatatypeMapping('ex:mytype');
         RdfNamespace::delete('ex');
@@ -242,7 +242,7 @@ class LiteralTest extends TestCase
     {
         $literal = Literal::create(1, null, 'xsd:boolean');
         $this->assertClass('EasyRdf\Literal\Boolean', $literal);
-        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertEquals('boolean', gettype($literal->getValue()));
         $this->assertSame(true, $literal->getValue());
         $this->assertSame('xsd:boolean', $literal->getDatatype());
         $this->assertSame(null, $literal->getLang());
@@ -252,7 +252,7 @@ class LiteralTest extends TestCase
     {
         $literal = Literal::create(0, null, 'xsd:boolean');
         $this->assertClass('EasyRdf\Literal\Boolean', $literal);
-        $this->assertInternalType('bool', $literal->getValue());
+        $this->assertEquals('boolean', gettype($literal->getValue()));
         $this->assertSame(false, $literal->getValue());
         $this->assertSame('xsd:boolean', $literal->getDatatype());
         $this->assertSame(null, $literal->getLang());
@@ -262,7 +262,7 @@ class LiteralTest extends TestCase
     {
         $literal = Literal::create('100.00', null, 'xsd:integer');
         $this->assertClass('EasyRdf\Literal\Integer', $literal);
-        $this->assertInternalType('integer', $literal->getValue());
+        $this->assertEquals('integer', gettype($literal->getValue()));
         $this->assertSame(100, $literal->getValue());
         $this->assertSame('xsd:integer', $literal->getDatatype());
         $this->assertSame(null, $literal->getLang());
@@ -272,7 +272,7 @@ class LiteralTest extends TestCase
     {
         $literal = Literal::create('1', null, 'xsd:decimal');
         $this->assertClass('EasyRdf\Literal\Decimal', $literal);
-        $this->assertInternalType('string', $literal->getValue());
+        $this->assertEquals('string', gettype($literal->getValue()));
         $this->assertSame('1.0', $literal->getValue());
         $this->assertSame('xsd:decimal', $literal->getDatatype());
         $this->assertSame(null, $literal->getLang());
@@ -282,8 +282,8 @@ class LiteralTest extends TestCase
     {
         $literal = Literal::create(true, null, 'xsd:string');
         $this->assertClass('EasyRdf\Literal', $literal);
-        $this->assertInternalType('string', $literal->getValue());
-        # Hmm, not sure about this, but PHP does the conversion not me:
+        $this->assertEquals('string', gettype($literal->getValue()));
+        // Hmm, not sure about this, but PHP does the conversion not me
         $this->assertSame('1', $literal->getValue());
         $this->assertSame('xsd:string', $literal->getDatatype());
         $this->assertSame(null, $literal->getLang());

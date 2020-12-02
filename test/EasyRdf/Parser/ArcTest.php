@@ -50,7 +50,7 @@ class ArcTest extends TestCase
     protected $graph = null;
     protected $data = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (class_exists('ARC2')) {
             $this->parser = new Arc();

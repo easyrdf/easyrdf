@@ -52,7 +52,7 @@ class JsonLdTest extends TestCase
     /** @var Graph */
     protected $graph = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->graph = new Graph('http://example.com/');
         $this->serialiser = new JsonLd();
@@ -86,7 +86,7 @@ class JsonLdTest extends TestCase
         $library->addResource('ex:contains', $book);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         RdfNamespace::resetNamespaces();
@@ -135,7 +135,7 @@ class JsonLdTest extends TestCase
         $decoded = json_decode($string, true);
 
         $this->assertArrayNotHasKey('@graph', $decoded);
-        $this->assertInternalType('array', $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]);
+        $this->assertEquals('array', gettype($decoded[8]["http://xmlns.com/foaf/0.1/age"][0]));
         $this->assertSame(59, $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
         $this->assertArrayNotHasKey('@type', $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]);
 
@@ -145,7 +145,7 @@ class JsonLdTest extends TestCase
         $decoded = json_decode($string, true);
 
         $this->assertArrayNotHasKey('@graph', $decoded);
-        $this->assertInternalType('array', $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]);
+        $this->assertEquals('array', gettype($decoded[8]["http://xmlns.com/foaf/0.1/age"][0]));
         $this->assertSame('59', $decoded[8]["http://xmlns.com/foaf/0.1/age"][0]['@value']);
         $this->assertSame(
             'http://www.w3.org/2001/XMLSchema#integer',

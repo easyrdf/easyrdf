@@ -83,7 +83,7 @@ class FusekiTest extends \EasyRdf\TestCase
         }
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->gs = new \EasyRdf\GraphStore("http://localhost:".self::$port."/ds/data");
     }

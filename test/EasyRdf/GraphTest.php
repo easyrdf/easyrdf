@@ -72,7 +72,7 @@ class GraphTest extends TestCase
     /**
      * Set up the test suite before each test
      */
-    public function setUp()
+    public function setUp(): void
     {
         // Reset to built-in parsers
         Format::registerParser('ntriples', 'EasyRdf\Parser\Ntriples');
@@ -167,7 +167,7 @@ class GraphTest extends TestCase
 
         $doc = $graph->get('foaf:PersonalProfileDocument', '^rdf:type');
         $this->assertClass('EasyRdf\Resource', $doc);
-        $this->assertRegExp('|^file://.+/fixtures/foaf\.rdf$|', $doc->getUri());
+        $this->assertMatchesRegularExpression('|^file://.+/fixtures/foaf\.rdf$|', $doc->getUri());
     }
 
     public function testParseUnknownFormat()
@@ -275,7 +275,7 @@ class GraphTest extends TestCase
     public function testLoadWithContentType()
     {
         $checkRequest = function ($client) {
-            $this->assertContains(",application/json,", $client->getHeader('Accept'));
+            $this->assertStringContainsString(",application/json,", $client->getHeader('Accept'));
             return true;
         };
         $this->client->addMockOnce(
@@ -1853,26 +1853,26 @@ class GraphTest extends TestCase
     public function testDumpText()
     {
         $text = $this->graph->dump('text');
-        $this->assertContains('Graph: http://example.com/graph', $text);
-        $this->assertContains('http://example.com/#me (EasyRdf\Resource)', $text);
-        $this->assertContains('  -> rdf:type -> foaf:Person', $text);
-        $this->assertContains('  -> rdf:test -> "Test A"', $text);
+        $this->assertStringContainsString('Graph: http://example.com/graph', $text);
+        $this->assertStringContainsString('http://example.com/#me (EasyRdf\Resource)', $text);
+        $this->assertStringContainsString('  -> rdf:type -> foaf:Person', $text);
+        $this->assertStringContainsString('  -> rdf:test -> "Test A"', $text);
     }
 
     public function testDumpEmptyGraph()
     {
         $graph = new Graph('http://example.com/graph2');
         $this->assertSame("Graph: http://example.com/graph2\n", $graph->dump('text'));
-        $this->assertContains('>Graph: http://example.com/graph2</div>', $graph->dump('html'));
+        $this->assertStringContainsString('>Graph: http://example.com/graph2</div>', $graph->dump('html'));
     }
 
     public function testDumpHtml()
     {
         $html = $this->graph->dump('html');
-        $this->assertContains('Graph: http://example.com/graph', $html);
-        $this->assertContains('http://example.com/#me', $html);
-        $this->assertContains('>rdf:test</span>', $html);
-        $this->assertContains('>&quot;Test A&quot;</span>', $html);
+        $this->assertStringContainsString('Graph: http://example.com/graph', $html);
+        $this->assertStringContainsString('http://example.com/#me', $html);
+        $this->assertStringContainsString('>rdf:test</span>', $html);
+        $this->assertStringContainsString('>&quot;Test A&quot;</span>', $html);
     }
 
     public function testDumpLiterals()
@@ -1885,22 +1885,22 @@ class GraphTest extends TestCase
         $graph->add('http://example.com/joe#me', '<http://v.example.com/foo>', 'bar');
 
         $text = $graph->dump('text');
-        $this->assertContains('http://example.com/joe#me', $text);
-        $this->assertContains('-> foaf:name -> "Joe"', $text);
-        $this->assertContains('-> foaf:age -> "52"^^xsd:integer', $text);
-        $this->assertContains('-> foaf:birthPlace -> "Deutschland"@de', $text);
-        $this->assertContains('-> <http://v.example.com/foo> -> "bar"', $text);
+        $this->assertStringContainsString('http://example.com/joe#me', $text);
+        $this->assertStringContainsString('-> foaf:name -> "Joe"', $text);
+        $this->assertStringContainsString('-> foaf:age -> "52"^^xsd:integer', $text);
+        $this->assertStringContainsString('-> foaf:birthPlace -> "Deutschland"@de', $text);
+        $this->assertStringContainsString('-> <http://v.example.com/foo> -> "bar"', $text);
 
         $html = $graph->dump('html');
-        $this->assertContains('http://example.com/joe#me', $html);
-        $this->assertContains('>foaf:name</span>', $html);
-        $this->assertContains('>&quot;Joe&quot;</span>', $html);
-        $this->assertContains('>foaf:age</span>', $html);
-        $this->assertContains('>&quot;52&quot;^^xsd:integer</span>', $html);
-        $this->assertContains('>foaf:birthPlace</span>', $html);
-        $this->assertContains('>&quot;Deutschland&quot;@de</span>', $html);
-        $this->assertContains('>&lt;http://v.example.com/foo&gt;</span>', $html);
-        $this->assertContains('>&quot;bar&quot;</span>', $html);
+        $this->assertStringContainsString('http://example.com/joe#me', $html);
+        $this->assertStringContainsString('>foaf:name</span>', $html);
+        $this->assertStringContainsString('>&quot;Joe&quot;</span>', $html);
+        $this->assertStringContainsString('>foaf:age</span>', $html);
+        $this->assertStringContainsString('>&quot;52&quot;^^xsd:integer</span>', $html);
+        $this->assertStringContainsString('>foaf:birthPlace</span>', $html);
+        $this->assertStringContainsString('>&quot;Deutschland&quot;@de</span>', $html);
+        $this->assertStringContainsString('>&lt;http://v.example.com/foo&gt;</span>', $html);
+        $this->assertStringContainsString('>&quot;bar&quot;</span>', $html);
     }
 
     public function testDumpResource()
@@ -1911,19 +1911,19 @@ class GraphTest extends TestCase
         $graph->add('http://example.com/joe#me', 'foaf:knows', $graph->newBnode());
 
         $text = $graph->dumpResource('http://example.com/joe#me', 'text');
-        $this->assertContains('http://example.com/joe#me', $text);
-        $this->assertContains('-> rdf:type -> foaf:Person', $text);
-        $this->assertContains('-> foaf:homepage -> http://example.com/', $text);
-        $this->assertContains('-> foaf:knows -> _:genid1', $text);
+        $this->assertStringContainsString('http://example.com/joe#me', $text);
+        $this->assertStringContainsString('-> rdf:type -> foaf:Person', $text);
+        $this->assertStringContainsString('-> foaf:homepage -> http://example.com/', $text);
+        $this->assertStringContainsString('-> foaf:knows -> _:genid1', $text);
 
         $html = $graph->dumpResource('http://example.com/joe#me', 'html');
-        $this->assertContains('http://example.com/joe#me', $html);
-        $this->assertContains('>rdf:type</span>', $html);
-        $this->assertContains('>foaf:Person</a>', $html);
-        $this->assertContains('>foaf:homepage</span>', $html);
-        $this->assertContains('>http://example.com/</a>', $html);
-        $this->assertContains('>foaf:knows</span>', $html);
-        $this->assertContains('>_:genid1</a>', $html);
+        $this->assertStringContainsString('http://example.com/joe#me', $html);
+        $this->assertStringContainsString('>rdf:type</span>', $html);
+        $this->assertStringContainsString('>foaf:Person</a>', $html);
+        $this->assertStringContainsString('>foaf:homepage</span>', $html);
+        $this->assertStringContainsString('>http://example.com/</a>', $html);
+        $this->assertStringContainsString('>foaf:knows</span>', $html);
+        $this->assertStringContainsString('>_:genid1</a>', $html);
     }
 
     public function testDumpResourceWithNoProperties()
@@ -1937,7 +1937,7 @@ class GraphTest extends TestCase
     {
         $graph = new Graph();
         $graph->addType("wikibase_id:Q' onload='alert(1234)", 'foaf:Person');
-        $this->assertContains(
+        $this->assertStringContainsString(
             "<div id='wikibase_id:Q&#039; onload=&#039;alert(1234)' ".
             "style='font-family:arial; padding:0.5em; background-color:lightgrey;border:dashed 1px grey;'>",
             $graph->dumpResource("wikibase_id:Q' onload='alert(1234)")

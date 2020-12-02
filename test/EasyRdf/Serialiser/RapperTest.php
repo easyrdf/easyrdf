@@ -49,7 +49,7 @@ class RapperTest extends TestCase
     /** @var Rapper */
     private $serialiser;
 
-    public function setUp()
+    public function setUp(): void
     {
         exec('which rapper 2>&1', $output, $retval);
         if ($retval == 0) {
@@ -82,11 +82,11 @@ class RapperTest extends TestCase
 
         $rdfxml = $this->serialiser->serialise($this->graph, 'rdfxml');
         $this->assertNotNull($rdfxml);
-        $this->assertContains(
+        $this->assertStringContainsString(
             '<rdf:Description rdf:about="http://www.example.com/joe#me">',
             $rdfxml
         );
-        $this->assertContains(':name>Project Name<', $rdfxml);
+        $this->assertStringContainsString(':name>Project Name<', $rdfxml);
     }
 
     public function testSerialiseUnsupportedFormat()

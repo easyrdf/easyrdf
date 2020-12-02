@@ -55,7 +55,7 @@ class ClientTest extends TestCase
      * Set up the test suite before each test
      *
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = new Client('http://www.example.com/');
     }
