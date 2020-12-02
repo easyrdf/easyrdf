@@ -66,6 +66,6 @@ class BasicSparqlTest extends \EasyRdf\TestCase
             '<li><a href="http://dbpedia.org/resource/Zimbabwe">Zimbabwe</a></li>',
             $output
         );
-        $this->assertMatchesRegularExpression('|Total number of countries: (\d+)|', $output);
+        self::assertMatchesRegularExpression('|Total number of countries: (\d+)|', $output);
     }
 }

@@ -67,4 +67,20 @@ class TestCase extends \PHPUnit\Framework\TestCase
             parent::setExpectedException($exceptionName, $exceptionMessage);
         }
     }
+
+    /**
+     * Compatibility layer for PHPUnit 7+.
+     *
+     * As long as we have to support PHPUnit 7 this function is required, because its replacement in PHPUnit 9
+     * is defined as a static function, but assertRegExp was non-static.
+     */
+    public static function assertMatchesRegularExpression(string $pattern, string $string, string $message = ''): void
+    {
+        $case = new TestCase();
+        if (!method_exists($case, 'assertMatchesRegularExpression')) {
+            $case->assertRegExp($pattern, $string, $message);
+        } else {
+            parent::assertMatchesRegularExpression($pattern, $string, $message);
+        }
+    }
 }
