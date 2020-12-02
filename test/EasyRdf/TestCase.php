@@ -50,7 +50,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Forward compatibility layer for PHPUnit 6/7
+     * Forward compatibility layer for PHPUnit 7
      *
      * @todo Outdated. Remove it and use appropriate PHPUnit functions.
      */
