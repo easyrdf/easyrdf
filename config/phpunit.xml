@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false" colors="false" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false" verbose="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage includeUncoveredFiles="true">
-    <include>
-      <directory suffix=".php">../lib/EasyRdf/</directory>
-    </include>
-  </coverage>
-  <php>
-    <!--
+<phpunit
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    colors="false"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    verbose="false">
+
+    <php>
+      <!--
         Fix for coverage report causing Seg Fault
         (see https://bugs.php.net/bug.php?id=53976)
       -->
-    <ini name="zend.enable_gc" value="0"/>
-  </php>
-  <testsuites>
-    <testsuite name="EasyRdf Library">
-      <directory suffix="Test.php">../test/EasyRdf/</directory>
-    </testsuite>
-    <testsuite name="EasyRdf Examples">
-      <directory suffix="Test.php">../test/examples/</directory>
-    </testsuite>
-  </testsuites>
-  <!-- Files to be included in the coverage report -->
-  <logging>
-    <junit outputFile="../reports/test-results.xml"/>
-  </logging>
+      <ini name="zend.enable_gc" value="0" />
+    </php>
+
+    <testsuites>
+      <testsuite name="EasyRdf Library">
+        <directory suffix="Test.php">../test/EasyRdf/</directory>
+      </testsuite>
+      <testsuite name="EasyRdf Examples">
+        <directory suffix="Test.php">../test/examples/</directory>
+      </testsuite>
+    </testsuites>
+
+    <!-- Files to be included in the coverage report -->
+    <filter>
+      <whitelist addUncoveredFilesFromWhitelist="true">
+        <directory suffix=".php">../lib/EasyRdf/</directory>
+      </whitelist>
+    </filter>
+
+    <logging>
+        <log type="junit" target="../reports/test-results.xml" />
+    </logging>
 </phpunit>
