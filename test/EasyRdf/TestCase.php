@@ -36,14 +36,8 @@ namespace EasyRdf;
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 
-// Backward compatibility layer for PHPUnit 4
-if (!class_exists('\PHPUnit\Framework\Error\Error', true)) {
-    class_alias('PHPUnit_Framework_Error', '\PHPUnit\Framework\Error\Error');
-}
-
 class TestCase extends \PHPUnit\Framework\TestCase
 {
-
     public static function assertStringEquals($str1, $str2, $message = null)
     {
         self::assertSame(strval($str1), strval($str2), (string) $message);
@@ -55,7 +49,11 @@ class TestCase extends \PHPUnit\Framework\TestCase
         self::assertSame($class, get_class($object));
     }
 
-    // Forward compatibility layer for PHPUnit 6/7
+    /**
+     * Forward compatibility layer for PHPUnit 6/7
+     *
+     * @todo Outdated. Remove it and use appropriate PHPUnit functions.
+     */
     public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = null)
     {
         if (method_exists($this, 'expectException')) {
