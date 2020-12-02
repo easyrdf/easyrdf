@@ -1,3 +1,12 @@
+EasyRdf 1.1.1
+=============
+
+Bug fix release that fixes parsing very large RDF/XML files.
+
+* Use chunked parsing to parse Large XML files using xml_parse (#350)
+* Fix Resource- and Graph->label claim wrong return type (#254)
+
+
 EasyRdf 1.1.0
 =============
 
