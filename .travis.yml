@@ -9,7 +9,7 @@ matrix:
       dist: trusty
     - php: 7.4
       dist: trusty
-    - php: nightly
+    - php: 8.0
 
 sudo: required
 before_install:
