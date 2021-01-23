@@ -10,7 +10,7 @@
      * running on your local machine in order to test this example.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
+     * @copyright  Copyright (c) Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 

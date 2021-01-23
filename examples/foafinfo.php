@@ -11,7 +11,7 @@
      * person's friends.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
+     * @copyright  Copyright (c) Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 

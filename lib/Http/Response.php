@@ -6,7 +6,7 @@ namespace EasyRdf\Http;
  *
  * LICENSE
  *
- * Copyright (c) 2009-2020 Nicholas J Humfrey.
+ * Copyright (c) Nicholas J Humfrey.
  * Copyright (c) 2005-2009 Zend Technologies USA Inc.
  * All rights reserved.
  *
@@ -34,7 +34,7 @@ namespace EasyRdf\Http;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @copyright  Copyright (c) Nicholas J Humfrey
  * @copyright  Copyright (c) 2005-2009 Zend Technologies USA Inc.
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
@@ -44,7 +44,7 @@ use EasyRdf\Exception;
  * Class that represents an HTTP 1.0 / 1.1 response message.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @copyright  Copyright (c) Nicholas J Humfrey
  *             Copyright (c) 2005-2009 Zend Technologies USA Inc.
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */

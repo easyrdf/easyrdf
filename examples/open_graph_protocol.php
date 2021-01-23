@@ -6,7 +6,7 @@
      * Open Graph Protocol uses a subset of RDFa.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2020 Nicholas J Humfrey
+     * @copyright  Copyright (c) Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 

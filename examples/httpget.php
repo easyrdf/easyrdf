@@ -7,7 +7,7 @@
      * headers and body.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+     * @copyright  Copyright (c) Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 

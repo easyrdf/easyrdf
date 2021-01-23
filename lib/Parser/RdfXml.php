@@ -6,7 +6,7 @@ namespace EasyRdf\Parser;
  *
  * LICENSE
  *
- * Copyright (c) 2010-2020 Nicholas J Humfrey
+ * Copyright (c) Nicholas J Humfrey
  * Copyright (c) 2004-2010 Benjamin Nowack (based on ARC2_RDFXMLParser.php)
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ namespace EasyRdf\Parser;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2010-2020 Nicholas J Humfrey
+ * @copyright  Copyright (c) Nicholas J Humfrey
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Graph;
@@ -44,7 +44,7 @@ use EasyRdf\Parser;
  * A pure-php class to parse RDF/XML.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @copyright  Copyright (c) Nicholas J Humfrey
  *             Copyright (c) 2004-2010 Benjamin Nowack (based on ARC2_RDFXMLParser.php)
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
