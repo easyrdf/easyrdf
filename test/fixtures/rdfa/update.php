@@ -4,7 +4,7 @@
  * Script to update test cases from rdfa.info
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2012-2014 Nicholas J Humfrey
+ * @copyright  Copyright (c) Nicholas J Humfrey
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 

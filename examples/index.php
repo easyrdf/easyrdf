@@ -1,4 +1,12 @@
-<!DOCTYPE html>
+<?php
+    /**
+     * Index page, displaying a list of the examples
+     *
+     * @package    EasyRdf
+     * @copyright  Copyright (c) Nicholas J Humfrey
+     * @license    http://unlicense.org/
+     */
+?>
 <html>
 <head>
   <title>EasyRdf Examples</title>

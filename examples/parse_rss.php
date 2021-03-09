@@ -16,7 +16,7 @@
      * other version (0.90, 1.1 and 2.0) as they are not RDF.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2013-2014 Nicholas J Humfrey
+     * @copyright  Copyright (c) Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 

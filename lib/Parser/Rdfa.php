@@ -6,7 +6,7 @@ namespace EasyRdf\Parser;
  *
  * LICENSE
  *
- * Copyright (c) 2012-2020 Nicholas J Humfrey.
+ * Copyright (c) Nicholas J Humfrey.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ namespace EasyRdf\Parser;
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2009-2020 Nicholas J Humfrey
+ * @copyright  Copyright (c) Nicholas J Humfrey
  *             Copyright (c) 1997-2006 Aduna (http://www.aduna-software.com/)
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
@@ -48,7 +48,7 @@ use EasyRdf\RdfNamespace;
  * http://www.w3.org/TR/rdfa-core/
  *
  * @package    EasyRdf
- * @copyright  Copyright (c) 2012-2020 Nicholas J Humfrey
+ * @copyright  Copyright (c) Nicholas J Humfrey
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 class Rdfa extends Parser

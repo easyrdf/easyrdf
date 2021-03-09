@@ -6,7 +6,7 @@
      * serialises it to the page in the format of choice.
      *
      * @package    EasyRdf
-     * @copyright  Copyright (c) 2009-2014 Nicholas J Humfrey
+     * @copyright  Copyright (c) Nicholas J Humfrey
      * @license    http://unlicense.org/
      */
 
