@@ -21,7 +21,7 @@
   <style type="text/css">
     body { font-family: sans-serif; }
     dt { font-weight: bold; }
-    .image { float: right; margin: 10px;}
+    .image { float: right; margin: 10px; max-width: 240px}
   </style>
 </head>
 <body>
