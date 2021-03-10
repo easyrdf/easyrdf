@@ -756,7 +756,7 @@ class Resource implements \ArrayAccess
     }
 
     /**
-     * Whether a offset exists
+     * Array Access Interface: Check whether a offset exists
      *
      * The return value will be casted to boolean if non-boolean was returned.
      *
@@ -775,7 +775,7 @@ class Resource implements \ArrayAccess
     }
 
     /**
-     * Offset to retrieve
+     * Array Access Interface: perform get at using array syntax
      *
      * Example:
      *   $label = $resource['rdfs:label'];
@@ -792,14 +792,14 @@ class Resource implements \ArrayAccess
     }
 
     /**
-     * Offset to set
+     * Array Access Interface: perform set at using array syntax
      *
      * Example:
      *   $resource['rdfs:label'] = 'label';
      *
      * @link http://php.net/manual/en/arrayaccess.offsetset.php
      *
-     * @param mixed The offset to assign the value to.
+     * @param mixed $offset The offset to assign the value to.
      * @param mixed $value The value to set.
      *
      * @return void
@@ -810,7 +810,7 @@ class Resource implements \ArrayAccess
     }
 
     /**
-     * Offset to unset
+     * Array Access Interface: perform unset at using array syntax
      *
      * Example:
      *   unset($resource['rdfs:label']);
