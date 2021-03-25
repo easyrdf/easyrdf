@@ -298,30 +298,30 @@ class Client
      * @param string $processed_query
      * @param string $type            Should be either "query" or "update"
      *
-     * @return Http\Response|\Zend\Http\Response
+     * @return Http\Response
      * @throws Exception
      */
     protected function executeQuery($processed_query, $type)
     {
-        $client = Http::getDefaultHttpClient();
-        $client->resetParameters();
-
         // Tell the server which response formats we can parse
         $sparql_results_types = array(
             'application/sparql-results+json' => 1.0,
             'application/sparql-results+xml' => 0.8
         );
 
+        $body = null;
+
         if ($type == 'update') {
             // accept anything, as "response body of a […] update request is implementation defined"
             // @see http://www.w3.org/TR/sparql11-protocol/#update-success
             $accept = Format::getHttpAcceptHeader($sparql_results_types);
-            $this->setHeaders($client, 'Accept', $accept);
-
-            $client->setMethod('POST');
-            $client->setUri($this->updateUri);
-            $client->setRawData($processed_query);
-            $this->setHeaders($client, 'Content-Type', 'application/sparql-update');
+            $method = 'POST';
+            $url = $this->updateUri;
+            $body = $processed_query;
+            $headers = [
+                'Content-Type' => 'application/sparql-update',
+                'Accept' => $accept,
+            ];
         } elseif ($type == 'query') {
             $re = '(?:(?:\s*BASE\s*<.*?>\s*)|(?:\s*PREFIX\s+.+:\s*<.*?>\s*))*'.
                 '(CONSTRUCT|SELECT|ASK|DESCRIBE)[\W]';
@@ -347,7 +347,7 @@ class Client
                 $accept = Format::getHttpAcceptHeader($sparql_results_types);
             }
 
-            $this->setHeaders($client, 'Accept', $accept);
+            $headers = ['Accept' => $accept];
 
             $encodedQuery = 'query=' . urlencode($processed_query);
 
@@ -356,24 +356,25 @@ class Client
             if (strlen($encodedQuery) + strlen($this->queryUri) <= 2046) {
                 $delimiter = $this->queryUri_has_params ? '&' : '?';
 
-                $client->setMethod('GET');
-                $client->setUri($this->queryUri . $delimiter . $encodedQuery);
+                $method = 'GET';
+                $uri = $this->queryUri . $delimiter . $encodedQuery;
             } else {
                 // Fall back to POST instead (which is un-cacheable)
-                $client->setMethod('POST');
-                $client->setUri($this->queryUri);
-                $client->setRawData($encodedQuery);
-                $this->setHeaders($client, 'Content-Type', 'application/x-www-form-urlencoded');
+                $method = 'POST';
+                $uri = $this->queryUri;
+                $body = $encodedQuery;
+                $headers['Content-Type'] = 'application/x-www-form-urlencoded';
             }
         } else {
             throw new Exception('unexpected request-type: '.$type);
         }
 
-        if ($client instanceof \Zend\Http\Client) {
-            return $client->send();
-        } else {
-            return $client->request();
-        }
+        return Http::makeRequest([
+            'url' => $uri,
+            'method' => $method,
+            'body' => $body,
+            'headers' => $headers,
+        ]);
     }
 
     /**
@@ -381,7 +382,7 @@ class Client
      *
      * Can be overridden to do custom processing
      *
-     * @param Http\Response|\Zend\Http\Response $response
+     * @param Http\Response $response
      * @return Graph|Result
      */
     protected function parseResponseToQuery($response)
@@ -394,24 +395,6 @@ class Client
         } else {
             $result = new Graph($this->queryUri, $response->getBody(), $content_type);
             return $result;
-        }
-    }
-
-    /**
-     * Proxy function to allow usage of our Client as well as Zend\Http v2.
-     *
-     * Zend\Http\Client only accepts an array as first parameter, but our Client wants a name-value pair.
-     *
-     * @see https://framework.zend.com/apidoc/2.4/classes/Zend.Http.Client.html#method_setHeaders
-     *
-     * @todo Its only a temporary fix, should be replaced or refined in the future.
-     */
-    protected function setHeaders($client, $name, $value)
-    {
-        if ($client instanceof \Zend\Http\Client) {
-            $client->setHeaders([$name => $value]);
-        } else {
-            $client->setHeaders($name, $value);
         }
     }
 }

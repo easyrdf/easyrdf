@@ -141,14 +141,14 @@ class GraphStore
             $dataUrl = $this->urlForGraph($graphUri);
         }
 
-        $client = Http::getDefaultHttpClient();
-        $client->resetParameters(true);
-        $client->setUri($dataUrl);
-        $client->setMethod($method);
-        $client->setRawData($data);
-        $client->setHeaders('Content-Type', $mimeType);
-
-        $response = $client->request();
+        $response = Http::makeRequest([
+            'url' => $dataUrl,
+            'method' => $method,
+            'body' => $data,
+            'headers' => [
+                'Content-Type' => $mimeType
+            ]
+        ]);
 
         if (!$response->isSuccessful()) {
             throw new Exception(
@@ -260,11 +260,10 @@ class GraphStore
             $dataUrl = $this->urlForGraph($graphUri);
         }
 
-        $client = Http::getDefaultHttpClient();
-        $client->resetParameters(true);
-        $client->setUri($dataUrl);
-        $client->setMethod('DELETE');
-        $response = $client->request();
+        $response = Http::makeRequest([
+            'url' => $dataUrl,
+            'method' => 'DELETE',
+        ]);
 
         if (!$response->isSuccessful()) {
             throw new Exception(
