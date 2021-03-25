@@ -295,70 +295,23 @@ class Graph
             );
         }
 
-        // Setup the HTTP client
-        $client = Http::getDefaultHttpClient();
-        $client->resetParameters(true);
-        $client->setConfig(array('maxredirects' => 0));
-        $client->setMethod('GET');
-
         if ($format && $format !== 'guess') {
             if (strpos($format, '/') !== false) {
-                $client->setHeaders('Accept', $format);
+                $headers = ['Accept' => $format];
             } else {
                 $formatObj = Format::getFormat($format);
-                $client->setHeaders('Accept', $formatObj->getDefaultMimeType());
+                $headers = ['Accept' => $formatObj->getDefaultMimeType()];
             }
         } else {
             // Send a list of all the formats we can parse
-            $client->setHeaders('Accept', Format::getHttpAcceptHeader());
+            $headers = ['Accept' => Format::getHttpAcceptHeader()];
         }
 
-        $requestUrl = $uri;
-        $response = null;
-        $redirectCounter = 0;
-        do {
-            // Have we already loaded it into the graph?
-            $requestUrl = Utils::removeFragmentFromUri($requestUrl);
-            if (in_array($requestUrl, $this->loaded)) {
-                return 0;
-            }
-
-            // Make the HTTP request
-            $client->setHeaders('host', null);
-            $client->setUri($requestUrl);
-            $response = $client->request();
-
-            // Add the URL to the list of URLs loaded
-            $this->loaded[] = $requestUrl;
-
-            if ($response->isRedirect() and $location = $response->getHeader('location')) {
-                // Avoid problems with buggy servers that add whitespace
-                $location = trim($location);
-
-                // Some servers return relative URLs in the location header
-                // resolve it in relation to previous request
-                $baseUri = new ParsedUri($requestUrl);
-                $requestUrl = $baseUri->resolve($location)->toString();
-                $requestUrl = Utils::removeFragmentFromUri($requestUrl);
-
-                // If it is a 303 then drop the parameters
-                if ($response->getStatus() == 303) {
-                    $client->resetParameters();
-                }
-
-                ++$redirectCounter;
-            } elseif ($response->isSuccessful()) {
-                // If we didn't get any location, stop redirecting
-                break;
-            } else {
-                throw new Http\Exception(
-                    "HTTP request for {$requestUrl} failed: ".$response->getMessage(),
-                    $response->getStatus(),
-                    null,
-                    $response->getBody()
-                );
-            }
-        } while ($redirectCounter < $this->maxRedirects);
+        $response = Http::makeRequest([
+            'url' => $uri,
+            'method' => 'GET',
+            'headers' => $headers
+        ]);
 
         if (!$format or $format == 'guess') {
             list($format, ) = Utils::parseMimeType(
