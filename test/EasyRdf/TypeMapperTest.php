@@ -352,6 +352,7 @@ class TypeMapperTest extends TestCase
     public function testGraphInstantiate()
     {
         TypeMapper::setDefaultGraphClass('EasyRdf\MyGraphClass');
+        $graphClass = TypeMapper::getDefaultGraphClass();
         $data = readFixture('foaf.json');
         $graph = new $graphClass(
             'http://www.example.com/joe/foaf.rdf',
