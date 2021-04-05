@@ -40,6 +40,7 @@ use EasyRdf\Format;
 use EasyRdf\Graph;
 use EasyRdf\Http;
 use EasyRdf\RdfNamespace;
+use EasyRdf\TypeMapper;
 use EasyRdf\Utils;
 
 /**
@@ -392,7 +393,8 @@ class Client
             $result = new Result($response->getBody(), $content_type);
             return $result;
         } else {
-            $result = new Graph($this->queryUri, $response->getBody(), $content_type);
+            $graphClass = TypeMapper::getDefaultGraphClass();
+            $result = new $graphClass($this->queryUri, $response->getBody(), $content_type);
             return $result;
         }
     }

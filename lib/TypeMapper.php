@@ -51,6 +51,9 @@ class TypeMapper
     /** Default resource class */
     private static $defaultResourceClass = 'EasyRdf\Resource';
 
+    /** Default graph class */
+    private static $defaultGraphClass = 'EasyRdf\Graph';
+
     /** Get the registered class for an RDF type
      *
      * If a type is not registered, then this method will return null.
@@ -161,6 +164,46 @@ class TypeMapper
         }
 
         return self::$defaultResourceClass = $class;
+    }
+
+        /**
+     * @return string           The default Graph class
+     */
+    public static function getDefaultGraphClass()
+    {
+        return self::$defaultGraphClass;
+    }
+
+    /**
+     * Sets the default graph class
+     *
+     * @param  string $class The graph full class name (e.g. \MyCompany\Graph)
+     *
+     * @throws \InvalidArgumentException
+     * @return string           The default Graph class
+     */
+    public static function setDefaultGraphClass($class)
+    {
+        if (!is_string($class) or $class == null or $class == '') {
+            throw new \InvalidArgumentException(
+                "\$class should be a string and cannot be null or empty"
+            );
+        }
+
+        if (!class_exists($class)) {
+            throw new \InvalidArgumentException(
+                "Given class should be an existing class"
+            );
+        }
+
+        $ancestors = class_parents($class);
+        if (($class != 'EasyRdf\Graph') && (empty($ancestors) || !in_array('EasyRdf\Graph', $ancestors))) {
+            throw new \InvalidArgumentException(
+                "Given class should have EasyRdf\\Graph as an ancestor"
+            );
+        }
+
+        return self::$defaultGraphClass = $class;
     }
 }
 
