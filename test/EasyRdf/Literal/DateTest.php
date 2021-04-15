@@ -63,6 +63,17 @@ class DateTest extends TestCase
         $this->assertSame('xsd:date', $literal->getDatatype());
     }
 
+    public function testConstructFromDateTimeImmutable()
+    {
+        $dt = new \DateTimeImmutable('2011-07-18');
+        $literal = new Date($dt);
+        $this->assertStringEquals('2011-07-18', $literal);
+        $this->assertClass('DateTime', $literal->getValue());
+        $this->assertEquals($dt, $literal->getValue());
+        $this->assertSame(null, $literal->getLang());
+        $this->assertSame('xsd:date', $literal->getDatatype());
+    }
+
     public function testConstructNoValue()
     {
         // Would be very unlucky if this ran at midnight and failed
