@@ -166,7 +166,7 @@ class TypeMapper
         return self::$defaultResourceClass = $class;
     }
 
-        /**
+    /**
      * @return string           The default Graph class
      */
     public static function getDefaultGraphClass()

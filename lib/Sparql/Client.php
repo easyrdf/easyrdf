@@ -394,8 +394,7 @@ class Client
             return $result;
         } else {
             $graphClass = TypeMapper::getDefaultGraphClass();
-            $result = new $graphClass($this->queryUri, $response->getBody(), $content_type);
-            return $result;
+            return new $graphClass($this->queryUri, $response->getBody(), $content_type);
         }
     }
 
