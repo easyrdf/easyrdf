@@ -769,6 +769,7 @@ class Resource implements \ArrayAccess
      *
      * @return boolean true on success or false on failure.
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return $this->__isset($offset);
@@ -786,6 +787,7 @@ class Resource implements \ArrayAccess
      *
      * @return mixed Can return all value types.
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->__get($offset);
@@ -804,6 +806,7 @@ class Resource implements \ArrayAccess
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         $this->__set($offset, $value);
@@ -821,6 +824,7 @@ class Resource implements \ArrayAccess
      *
      * @return void
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         $this->__unset($offset);
