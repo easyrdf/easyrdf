@@ -49,12 +49,12 @@ class MyTypeClass extends Resource
 
 class TypeMapperTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         TypeMapper::set('rdf:mytype', 'EasyRdf\MyTypeClass');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         TypeMapper::delete('rdf:mytype');
         TypeMapper::delete('foaf:Person');

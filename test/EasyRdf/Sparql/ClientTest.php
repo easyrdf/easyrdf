@@ -53,7 +53,7 @@ class ClientTest extends TestCase
     /** @var  Client */
     private $sparql;
 
-    public function setUp()
+    public function setUp(): void
     {
         Http::setDefaultHttpClient(
             $this->client = new MockClient()

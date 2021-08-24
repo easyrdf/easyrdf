@@ -50,7 +50,7 @@ class JsonTest extends TestCase
     /** @var Graph */
     protected $graph = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->graph = new Graph();
         $this->parser = new Json();

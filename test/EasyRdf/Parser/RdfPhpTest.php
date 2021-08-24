@@ -50,7 +50,7 @@ class RdfPhpTest extends TestCase
     protected $graph = null;
     protected $rdf_data = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->graph = new Graph();
         $this->parser = new RdfPhp();
@@ -133,46 +133,46 @@ class RdfPhpTest extends TestCase
 
     /**
      * 'foo' is not a valid input for RdfPhp
-     * @expectedException Exception
      */
     public function testParseInvalidInput1()
     {
+        $this->expectException(Exception::class);
         $this->parser->parse($this->graph, 'foo', 'php', null);
     }
 
     /**
      * list of strings is not a valid input for RdfPhp
-     * @expectedException Exception
      */
     public function testParseInvalidInput2()
     {
+        $this->expectException(Exception::class);
         $this->parser->parse($this->graph, array('foo', 'bar'), 'php', null);
     }
 
     /**
      * 1-level dictionary of strings is not a valid input for RdfPhp
-     * @expectedException Exception
      */
     public function testParseInvalidInput3()
     {
+        $this->expectException(Exception::class);
         $this->parser->parse($this->graph, array('foo' => 'bar'), 'php', null);
     }
 
     /**
      * 2-level dictionary of strings is not a valid input for RdfPhp
-     * @expectedException Exception
      */
     public function testParseInvalidInput4()
     {
+        $this->expectException(Exception::class);
         $this->parser->parse($this->graph, array('foo' => array('bar' => 'baz')), 'php', null);
     }
 
     /**
      * 2-level dictionary of incorrect arrays is not a valid input for RdfPhp
-     * @expectedException Exception
      */
     public function testParseInvalidInput5()
     {
+        $this->expectException(Exception::class);
         $this->parser->parse($this->graph, array('foo' => array('bar' => array('baz' => 'buzz'))), 'php', null);
     }
 }

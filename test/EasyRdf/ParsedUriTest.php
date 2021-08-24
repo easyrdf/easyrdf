@@ -43,7 +43,7 @@ class ParsedUriTest extends TestCase
     /** @var ParsedUri */
     private $baseUri;
 
-    public function setup()
+    public function setUp(): void
     {
         $this->baseUri = new ParsedUri(
             'http://a/b/c/d;p?q'

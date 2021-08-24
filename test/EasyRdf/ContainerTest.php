@@ -40,13 +40,13 @@ require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'TestHelper.php';
 
 class ContainerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->graph = new Graph();
         RdfNamespace::set('ex', 'http://example.org/');
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         RdfNamespace::delete('ex');
     }
