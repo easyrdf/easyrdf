@@ -51,13 +51,13 @@ class TurtleTest extends TestCase
     /** @var Graph */
     protected $graph = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->graph = new Graph();
         $this->serialiser = new Turtle();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         RdfNamespace::reset();
         RdfNamespace::resetNamespaces();
@@ -681,7 +681,7 @@ class TurtleTest extends TestCase
         $joe->set('http://example.com/ns/prop', 'bar');
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
-        $this->assertContains(
+        $this->assertStringContainsString(
             "@prefix ns0: <http://example.com/ns/> .",
             $turtle
         );

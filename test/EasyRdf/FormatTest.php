@@ -54,7 +54,7 @@ class FormatTest extends TestCase
     /**
      * Set up the test suite before each test
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->format = Format::register(
             'my',
@@ -65,7 +65,7 @@ class FormatTest extends TestCase
         );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Format::unregister('my');
     }
@@ -100,7 +100,7 @@ class FormatTest extends TestCase
     public function testGetFormats()
     {
         $formats = Format::getFormats();
-        $this->assertInternalType('array', $formats);
+        $this->assertIsArray($formats);
         $this->assertGreaterThan(0, count($formats));
         foreach ($formats as $format) {
             $this->assertClass('EasyRdf\Format', $format);
@@ -110,15 +110,15 @@ class FormatTest extends TestCase
     public function testGetHttpAcceptHeader()
     {
         $accept = Format::getHttpAcceptHeader();
-        $this->assertContains('application/json', $accept);
-        $this->assertContains('application/rdf+xml;q=0.8', $accept);
+        $this->assertStringContainsString('application/json', $accept);
+        $this->assertStringContainsString('application/rdf+xml;q=0.8', $accept);
     }
 
     public function testGetHttpAcceptHeaderWithExtra()
     {
         $accept = Format::getHttpAcceptHeader(array('extra/header' => 0.5));
-        $this->assertContains('application/json', $accept);
-        $this->assertContains('extra/header;q=0.5', $accept);
+        $this->assertStringContainsString('application/json', $accept);
+        $this->assertStringContainsString('extra/header;q=0.5', $accept);
     }
 
     public function testGetHttpAcceptHeaderLocale()
@@ -127,7 +127,7 @@ class FormatTest extends TestCase
         setlocale(LC_NUMERIC, 'fi_FI.UTF-8');
 
         $accept = Format::getHttpAcceptHeader(array('extra/header' => 0.5));
-        $this->assertContains('extra/header;q=0.5', $accept);
+        $this->assertStringContainsString('extra/header;q=0.5', $accept);
 
         setlocale(LC_NUMERIC, $current_locale);
     }
@@ -469,7 +469,7 @@ class FormatTest extends TestCase
     {
         $this->format->setParserClass('EasyRdf\MockParserClass');
         $parser = $this->format->newParser();
-        $this->assertInternalType('object', $parser);
+        $this->assertIsObject($parser);
         $this->assertClass('EasyRdf\MockParserClass', $parser);
     }
 
@@ -517,7 +517,7 @@ class FormatTest extends TestCase
     {
         $this->format->setSerialiserClass('EasyRdf\MockSerialiserClass');
         $serialiser = $this->format->newSerialiser();
-        $this->assertInternalType('object', $serialiser);
+        $this->assertIsObject($serialiser);
         $this->assertClass('EasyRdf\MockSerialiserClass', $serialiser);
     }
 

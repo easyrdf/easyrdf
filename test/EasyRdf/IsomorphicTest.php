@@ -48,7 +48,7 @@ class IsomorphicTest extends TestCase
     /**
      * Set up the test suite before each test
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->graphA = new Graph();
         $this->graphB = new Graph();
