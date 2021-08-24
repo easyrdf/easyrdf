@@ -167,7 +167,7 @@ class ClientTest extends TestCase
 
     public function checkHugeQuerySelect($client)
     {
-        $this->assertRegExp('/^query=/', $client->getRawData());
+        $this->assertMatchesRegularExpression('/^query=/', $client->getRawData());
         $this->assertSame("application/x-www-form-urlencoded", $client->getHeader('Content-Type'));
         return true;
     }

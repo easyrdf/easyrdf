@@ -70,7 +70,7 @@ class DateTest extends TestCase
         $today = new \DateTime('today');
         $literal = new Date();
         $this->assertEquals($today, $literal->getValue());
-        $this->assertRegExp('|^\d{4}-\d{2}-\d{2}$|', strval($literal));
+        $this->assertMatchesRegularExpression('|^\d{4}-\d{2}-\d{2}$|', strval($literal));
     }
 
     public function testParse()

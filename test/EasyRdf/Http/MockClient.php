@@ -63,7 +63,7 @@ class MockClient extends Client
             } else {
                 $uri['query'] = '';
             }
-            $uri['query'] .= http_build_query($params, null, '&');
+            $uri['query'] .= http_build_query($params, '', '&');
         }
 
         # Try and find a matching response
