@@ -73,6 +73,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      * @throws \OutOfBoundsException
      * @throws \InvalidArgumentException
      */
+    #[\ReturnTypeWillChange]
     public function seek($position)
     {
         if (is_int($position) and $position > 0) {

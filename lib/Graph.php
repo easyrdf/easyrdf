@@ -362,7 +362,7 @@ class Graph
 
         if (!$format or $format == 'guess') {
             list($format, ) = Utils::parseMimeType(
-                $response->getHeader('Content-Type')
+                $response->getHeader('Content-Type') ?? ''
             );
         }
 

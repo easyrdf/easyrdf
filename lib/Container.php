@@ -70,6 +70,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      * @throws \OutOfBoundsException
      * @throws \InvalidArgumentException
      */
+    #[\ReturnTypeWillChange]
     public function seek($position)
     {
         if (is_int($position) and $position > 0) {

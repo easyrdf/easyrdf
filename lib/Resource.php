@@ -199,10 +199,10 @@ class Resource implements \ArrayAccess
                 );
             }
 
-            $html .= " ".htmlspecialchars($key)."=\"".
-                         htmlspecialchars($value)."\"";
+            $html .= " ".htmlspecialchars($key, ENT_COMPAT)."=\"".
+                         htmlspecialchars($value, ENT_COMPAT)."\"";
         }
-        $html .= ">".htmlspecialchars($text)."</a>";
+        $html .= ">".htmlspecialchars($text, ENT_COMPAT)."</a>";
 
         return $html;
     }

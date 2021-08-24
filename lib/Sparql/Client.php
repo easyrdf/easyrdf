@@ -71,7 +71,7 @@ class Client
     {
         $this->queryUri = $queryUri;
 
-        if (strlen(parse_url($queryUri, PHP_URL_QUERY)) > 0) {
+        if (strlen(parse_url($queryUri, PHP_URL_QUERY) ?: '') > 0) {
             $this->queryUri_has_params = true;
         } else {
             $this->queryUri_has_params = false;
@@ -386,7 +386,7 @@ class Client
      */
     protected function parseResponseToQuery($response)
     {
-        list($content_type,) = Utils::parseMimeType($response->getHeader('Content-Type'));
+        list($content_type,) = Utils::parseMimeType($response->getHeader('Content-Type') ?? '');
 
         if (strpos($content_type, 'application/sparql-results') === 0) {
             $result = new Result($response->getBody(), $content_type);
