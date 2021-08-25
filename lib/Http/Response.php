@@ -171,7 +171,6 @@ class Response
             $body = self::decodeChunkedBody($body);
         }
 
-
         $contentEncoding = strtolower($this->getHeader('content-encoding') ?? '');
 
         if ('gzip' === $contentEncoding) {
