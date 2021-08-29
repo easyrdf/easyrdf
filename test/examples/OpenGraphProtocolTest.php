@@ -43,9 +43,10 @@ class OpenGraphProtocolTest extends \EasyRdf\TestCase
     public function testRottenTomatoes()
     {
         $output = executeExample('open_graph_protocol.php');
-        $this->assertContains('<dd><a href="https://www.rottentomatoes.com/m/oceans_eleven"', $output);
-        $this->assertContains('<dt>Title:</dt> <dd>Ocean\'s Eleven (2001)</dd>', $output);
-        $this->assertContains('<dt>Description:</dt> <dd>Dapper Danny Ocean (George Clooney) is a man of', $output);
-        $this->assertContains('src="https://flxt.tmsimg.com/', $output);
+        $this->assertContains('<dd><a href="https://www.imdb.com/title/tt0240772/"', $output);
+        $this->assertContains('<dt>Site Name:</dt> <dd>IMDb</dd>', $output);
+        $this->assertContains('<dt>Title:</dt> <dd>Ocean\'s Eleven (2001) - IMDb</dd>', $output);
+        $this->assertContains('<dt>Description:</dt> <dd>Ocean\'s Eleven: Directed by Steven Soderbergh', $output);
+        $this->assertContains('src="https://m.media-amazon.com/images/', $output);
     }
 }
