@@ -1,7 +1,7 @@
 EasyRdf
 =======
 
-[![Build Status](https://travis-ci.com/easyrdf/easyrdf.svg?branch=master)](https://travis-ci.com/easyrdf/easyrdf)
+[![Build Status](https://app.travis-ci.com/easyrdf/easyrdf.svg?branch=main)](https://app.travis-ci.com/easyrdf/easyrdf)
 
 EasyRdf is a PHP library designed to make it easy to consume and produce [RDF].
 It was designed for use in mixed teams of experienced and inexperienced RDF
@@ -41,7 +41,7 @@ Links
 
 * [EasyRdf Homepage](https://www.easyrdf.org/)
 * [API documentation](https://www.easyrdf.org/docs/api)
-* [Change Log](https://github.com/easyrdf/easyrdf/blob/master/CHANGELOG.md)
+* [Change Log](https://github.com/easyrdf/easyrdf/blob/main/CHANGELOG.md)
 * [Source Code](https://github.com/easyrdf/easyrdf)
 * [Issue Tracker](https://github.com/easyrdf/easyrdf/issues)
 
