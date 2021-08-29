@@ -2,13 +2,13 @@ language: php
 matrix:
   include:
     - php: 7.1
-      dist: trusty
+      dist: bionic
     - php: 7.2
-      dist: trusty
+      dist: bionic
     - php: 7.3
-      dist: trusty
+      dist: bionic
     - php: 7.4
-      dist: trusty
+      dist: bionic
 
 sudo: required
 before_install:
