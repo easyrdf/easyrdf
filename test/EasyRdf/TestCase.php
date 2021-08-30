@@ -41,7 +41,7 @@ if (!class_exists('\PHPUnit\Framework\Error\Error', true)) {
     class_alias('PHPUnit_Framework_Error', '\PHPUnit\Framework\Error\Error');
 }
 
-class TestCase extends \PHPUnit\Framework\TestCase
+class TestCase extends \Yoast\PHPUnitPolyfills\TestCases\TestCase
 {
 
     public static function assertStringEquals($str1, $str2, $message = null)

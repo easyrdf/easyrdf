@@ -51,7 +51,7 @@ class ResourceTest extends TestCase
     /**
      * Set up the test suite before each test
      */
-    public function setUp()
+    public function setUp(): void
     {
         // Reset default namespace
         RdfNamespace::setDefault(null);
@@ -1202,45 +1202,45 @@ class ResourceTest extends TestCase
     {
         $this->setupTestGraph();
         $text = $this->resource->dump('text');
-        $this->assertContains(
+        $this->assertStringContainsString(
             'http://example.com/#me (EasyRdf\Resource)',
             $text
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '-> rdf:type -> foaf:Person',
             $text
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             '-> rdf:test -> "Test A", "Test B"@en',
             $text
         );
 
         $html = $this->resource->dump();
-        $this->assertContains("<div id='http://example.com/#me'", $html);
-        $this->assertContains(
+        $this->assertStringContainsString("<div id='http://example.com/#me'", $html);
+        $this->assertStringContainsString(
             "<a href='http://example.com/#me' ".
             "style='text-decoration:none;color:blue'>".
             "http://example.com/#me</a>",
             $html
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             "<span style='text-decoration:none;color:green'>rdf:type</span>",
             $html
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             "<a href='http://xmlns.com/foaf/0.1/Person' ".
             "style='text-decoration:none;color:blue'>foaf:Person</a>",
             $html
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             "<span style='text-decoration:none;color:green'>rdf:test</span>",
             $html
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             "<span style='color:black'>&quot;Test A&quot;</span>",
             $html
         );
-        $this->assertContains(
+        $this->assertStringContainsString(
             "<span style='color:black'>&quot;Test B&quot;@en</span>",
             $html
         );

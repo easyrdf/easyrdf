@@ -6,7 +6,7 @@ Unit tests are automatically run after code is being received by Github (library
 
 https://travis-ci.com/github/easyrdf/easyrdf
 
-More details for developers are in [DEVELOPER.md](https://github.com/easyrdf/easyrdf/blob/master/DEVELOPER.md).
+More details for developers are in [DEVELOPER.md](https://github.com/easyrdf/easyrdf/blob/main/DEVELOPER.md).
 
 ## Important notes
 

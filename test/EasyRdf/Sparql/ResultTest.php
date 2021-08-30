@@ -389,15 +389,15 @@ class ResultTest extends TestCase
         );
 
         $html = $result->dump('html');
-        $this->assertContains("<table class='sparql-results'", $html);
-        $this->assertContains(">?s</th>", $html);
-        $this->assertContains(">?p</th>", $html);
-        $this->assertContains(">?o</th></tr>", $html);
+        $this->assertStringContainsString("<table class='sparql-results'", $html);
+        $this->assertStringContainsString(">?s</th>", $html);
+        $this->assertStringContainsString(">?p</th>", $html);
+        $this->assertStringContainsString(">?o</th></tr>", $html);
 
-        $this->assertContains(">http://www.example.com/joe#me</a></td>", $html);
-        $this->assertContains(">foaf:name</a></td>", $html);
-        $this->assertContains(">&quot;Joe Bloggs&quot;@en</span></td>", $html);
-        $this->assertContains("</table>", $html);
+        $this->assertStringContainsString(">http://www.example.com/joe#me</a></td>", $html);
+        $this->assertStringContainsString(">foaf:name</a></td>", $html);
+        $this->assertStringContainsString(">&quot;Joe Bloggs&quot;@en</span></td>", $html);
+        $this->assertStringContainsString("</table>", $html);
     }
 
     public function testDumpSelectAllText()
@@ -408,15 +408,15 @@ class ResultTest extends TestCase
         );
 
         $text = $result->dump('text');
-        $this->assertContains('+-------------------------------------+', $text);
-        $this->assertContains('| ?s                                  |', $text);
-        $this->assertContains('| http://www.example.com/joe#me       |', $text);
-        $this->assertContains('+---------------------+', $text);
-        $this->assertContains('| ?p                  |', $text);
-        $this->assertContains('| foaf:name           |', $text);
-        $this->assertContains('+--------------------------------+', $text);
-        $this->assertContains('| ?o                             |', $text);
-        $this->assertContains('| "Joe Bloggs"@en                |', $text);
+        $this->assertStringContainsString('+-------------------------------------+', $text);
+        $this->assertStringContainsString('| ?s                                  |', $text);
+        $this->assertStringContainsString('| http://www.example.com/joe#me       |', $text);
+        $this->assertStringContainsString('+---------------------+', $text);
+        $this->assertStringContainsString('| ?p                  |', $text);
+        $this->assertStringContainsString('| foaf:name           |', $text);
+        $this->assertStringContainsString('+--------------------------------+', $text);
+        $this->assertStringContainsString('| ?o                             |', $text);
+        $this->assertStringContainsString('| "Joe Bloggs"@en                |', $text);
     }
 
     public function testDumpSelectUnbound()
@@ -427,13 +427,13 @@ class ResultTest extends TestCase
         );
 
         $html = $result->dump('html');
-        $this->assertContains(">?person</th>", $html);
-        $this->assertContains(">?name</th>", $html);
-        $this->assertContains(">?foo</th>", $html);
+        $this->assertStringContainsString(">?person</th>", $html);
+        $this->assertStringContainsString(">?name</th>", $html);
+        $this->assertStringContainsString(">?foo</th>", $html);
 
-        $this->assertContains('>http://dbpedia.org/resource/Tim_Berners-Lee</a>', $html);
-        $this->assertContains('>&quot;Tim Berners-Lee&quot;@en</span>', $html);
-        $this->assertContains('<td>&nbsp;</td>', $html);
+        $this->assertStringContainsString('>http://dbpedia.org/resource/Tim_Berners-Lee</a>', $html);
+        $this->assertStringContainsString('>&quot;Tim Berners-Lee&quot;@en</span>', $html);
+        $this->assertStringContainsString('<td>&nbsp;</td>', $html);
     }
 
     public function testDumpAskFalseHtml()
@@ -444,7 +444,7 @@ class ResultTest extends TestCase
         );
 
         $html = $result->dump('html');
-        $this->assertContains(">false</span>", $html);
+        $this->assertStringContainsString(">false</span>", $html);
     }
 
     public function testDumpAskFalseText()
@@ -510,8 +510,8 @@ class ResultTest extends TestCase
         );
 
         $string = strval($result);
-        $this->assertContains('+-------------------------------------+', $string);
-        $this->assertContains('| http://www.example.com/joe#me       |', $string);
+        $this->assertStringContainsString('+-------------------------------------+', $string);
+        $this->assertStringContainsString('| http://www.example.com/joe#me       |', $string);
     }
 
     public function testUnsupportedFormat()

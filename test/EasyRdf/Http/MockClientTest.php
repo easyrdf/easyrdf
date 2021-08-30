@@ -47,7 +47,7 @@ class MockClientTest extends TestCase
     /** @var MockClient */
     private $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = new MockClient();
     }

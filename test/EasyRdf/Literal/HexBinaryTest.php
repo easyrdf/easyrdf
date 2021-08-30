@@ -45,7 +45,7 @@ require_once realpath(__DIR__ . '/../../') . '/TestHelper.php';
 
 class HexBinaryTest extends TestCase
 {
-    public function setup()
+    public function setUp(): void
     {
         // Reset to built-in parsers
         Format::registerParser('ntriples', 'EasyRdf\Parser\Ntriples');
@@ -57,7 +57,7 @@ class HexBinaryTest extends TestCase
     {
         $literal = new HexBinary('48656C6C6F');
         $this->assertStringEquals('48656C6C6F', $literal);
-        $this->assertInternalType('string', $literal->getValue());
+        $this->assertIsString($literal->getValue());
         $this->assertSame('48656C6C6F', $literal->getValue());
         $this->assertSame(null, $literal->getLang());
         $this->assertSame('xsd:hexBinary', $literal->getDatatype());
@@ -132,7 +132,7 @@ class HexBinaryTest extends TestCase
             '71FD4F207AD770809E0E2D7B0EF5493BEFE73544D8E1BE3DDDB52455C61391A1',
             $modulus
         );
-        $this->assertInternalType('string', $modulus->getValue());
+        $this->assertIsString($modulus->getValue());
         $this->assertSame(null, $modulus->getLang());
         $this->assertSame('xsd:hexBinary', $modulus->getDatatype());
     }
