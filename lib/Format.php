@@ -267,7 +267,7 @@ class Format
         }
 
         // Then try and guess by the first 1024 bytes of content
-        $short = substr($data, 0, 1024);
+        $short = substr($data ?? '', 0, 1024);
         if (preg_match('/^\s*\{/', $short)) {
             return self::getFormat('json');
         } elseif (preg_match('/<rdf:/i', $short)) {

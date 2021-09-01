@@ -73,6 +73,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      * @throws \OutOfBoundsException
      * @throws \InvalidArgumentException
      */
+    #[\ReturnTypeWillChange]
     public function seek($position)
     {
         if (is_int($position) and $position > 0) {
@@ -95,6 +96,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
     /** Rewind the iterator back to the start of the collection
      *
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->position = 1;
@@ -105,6 +107,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * @return mixed The current item
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         if ($this->position === 1) {
@@ -120,6 +123,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * @return int The current position
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
@@ -128,6 +132,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
     /** Move forward to next item in the collection
      *
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         if ($this->position === 1) {
@@ -142,6 +147,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * @return bool True if the current position is valid
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         if ($this->position === 1 and $this->hasProperty('rdf:first')) {
@@ -185,6 +191,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * @return integer The number of items in the collection
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
         // Find the end of the collection
@@ -225,6 +232,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * Example: isset($list[2])
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         if (is_int($offset) and $offset > 0) {
@@ -241,6 +249,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * Example: $item = $list[2];
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (is_int($offset) and $offset > 0) {
@@ -260,6 +269,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * Example: $list[2] = $item;
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value)
     {
         if (is_null($offset)) {
@@ -295,6 +305,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * Example: unset($seq[2]);
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
         if (is_int($offset) and $offset > 0) {

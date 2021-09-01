@@ -167,7 +167,7 @@ class GraphTest extends TestCase
 
         $doc = $graph->get('foaf:PersonalProfileDocument', '^rdf:type');
         $this->assertClass('EasyRdf\Resource', $doc);
-        $this->assertRegExp('|^file://.+/fixtures/foaf\.rdf$|', $doc->getUri());
+        $this->assertMatchesRegularExpression('|^file://.+/fixtures/foaf\.rdf$|', $doc->getUri());
     }
 
     public function testParseUnknownFormat()
