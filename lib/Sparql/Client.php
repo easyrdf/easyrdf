@@ -238,13 +238,33 @@ class Client
      *
      * @ignore
      */
-    protected function request($type, $query)
+    protected function request($type, $query, $previousRedirections = [])
     {
         $processed_query = $this->preprocessQuery($query);
         $response = $this->executeQuery($processed_query, $type);
 
         if (!$response->isSuccessful()) {
-            throw new Http\Exception("HTTP request for SPARQL query failed", 0, null, $response->getBody());
+
+            $location = $response->getHeader('Location');
+            if($location && !in_array($location, $previousRedirections)) {
+                switch($type) {
+                case 'query':
+                    $previousRedirections[] = $this->queryUri;
+                    $this->queryUri = $location;
+                    break;
+                case 'update':
+                    $previousRedirections[] = $this->updateUri;
+                    $this->updateUri = $location;
+                    break;
+                }
+                $previousRedirections[] = $query;
+                return $this->request($type, $query, $previousRedirections);
+
+            } else if($location) {
+                throw new Http\Exception("Circular redirection");
+            }
+
+            throw new Http\Exception("HTTP request for SPARQL query failed", $response->getStatus(), null, $response->getBody());
         }
 
         if ($response->getStatus() == 204) {
