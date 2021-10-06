@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+
+  tests:
+    name: Tests
+    runs-on: Ubuntu-20.04
+
+    strategy:
+      matrix:
+        php: [ '7.1', '7.2', '7.3', '7.4', '8.0' ]
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: "none"
+          php-version: "${{ matrix.php }}"
+          tools: composer
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -qq graphviz
+          make composer-install
+
+      - name: Run tests
+        run: |
+          make lint
+          make cs
+          make test-lib
