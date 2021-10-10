@@ -86,14 +86,16 @@ class GraphStore
      */
     public function get($uriRef)
     {
+        $graphClass = TypeMapper::getDefaultGraphClass();
+
         if ($uriRef === self::DEFAULT_GRAPH) {
             $dataUrl = $this->urlForGraph(self::DEFAULT_GRAPH);
-            $graph = new Graph();
+            $graph = new $graphClass();
         } else {
             $graphUri = $this->parsedUri->resolve($uriRef)->toString();
             $dataUrl = $this->urlForGraph($graphUri);
 
-            $graph = new Graph($graphUri);
+            $graph = new $graphClass($graphUri);
         }
 
         $graph->load($dataUrl);

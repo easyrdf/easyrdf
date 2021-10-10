@@ -46,6 +46,13 @@ class MyTypeClass extends Resource
     }
 }
 
+class MyGraphClass extends Graph
+{
+    public function myMethod()
+    {
+        return true;
+    }
+}
 
 class TypeMapperTest extends TestCase
 {
@@ -289,5 +296,71 @@ class TypeMapperTest extends TestCase
         $joesFoaf = $graph->resource('http://www.example.com/joe/foaf.rdf');
         $this->assertClass('EasyRdf\MyTypeClass', $joesFoaf);
         $this->assertTrue($joesFoaf->myMethod());
+    }
+
+    public function testSetNonExtendingDefaultGraphClass()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Given class should have EasyRdf\Graph as an ancestor'
+        );
+        TypeMapper::setDefaultGraphClass('EasyRdf\Resource');
+    }
+
+    public function testSetBaseDefaultGraphClass()
+    {
+        TypeMapper::setDefaultGraphClass('EasyRdf\Graph');
+        $this->assertEquals('EasyRdf\Graph', TypeMapper::getDefaultGraphClass());
+    }
+
+    public function testSetDefaultGraphClass()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            'Given class should be an existing class'
+        );
+        TypeMapper::setDefaultGraphClass('FooBar\Graph');
+    }
+
+    public function testSetDefaultGraphClassEmptyString()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string and cannot be null or empty'
+        );
+        TypeMapper::setDefaultGraphClass('');
+    }
+
+    public function testSetDefaultGraphClassNull()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string and cannot be null or empty'
+        );
+        TypeMapper::setDefaultGraphClass(null);
+    }
+
+    public function testSetDefaultGraphClassNonString()
+    {
+        $this->setExpectedException(
+            'InvalidArgumentException',
+            '$class should be a string and cannot be null or empty'
+        );
+        TypeMapper::setDefaultGraphClass(array());
+    }
+
+    public function testGraphInstantiate()
+    {
+        TypeMapper::setDefaultGraphClass('EasyRdf\MyGraphClass');
+        $graphClass = TypeMapper::getDefaultGraphClass();
+        $data = readFixture('foaf.json');
+        $graph = new $graphClass(
+            'http://www.example.com/joe/foaf.rdf',
+            $data,
+            'json'
+        );
+        $joe = $graph->resource('http://www.example.com/joe#me');
+        $this->assertClass('EasyRdf\MyGraphClass', $joe->getGraph());
+        $this->assertTrue($joe->getGraph()->myMethod());
     }
 }
