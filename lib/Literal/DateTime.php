@@ -49,7 +49,7 @@ class DateTime extends Date
 {
     /** Constructor for creating a new date and time literal
      *
-     * If the value is a DateTime object, then it will be converted to the xsd:dateTime format.
+     * If the value is a DateTimeInterface object, then it will be converted to the xsd:dateTime format.
      * If no value is given or is is null, then the current time is used.
      *
      * @see \DateTime
@@ -66,7 +66,7 @@ class DateTime extends Date
         }
 
         // Convert DateTime objects into string
-        if ($value instanceof \DateTime) {
+        if ($value instanceof \DateTimeInterface) {
             $atom = $value->format(\DateTime::ATOM);
             $value = preg_replace('/[\+\-]00(\:?)00$/', 'Z', $atom);
         }

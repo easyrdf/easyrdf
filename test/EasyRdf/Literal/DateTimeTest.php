@@ -85,6 +85,17 @@ class DateTimeTest extends TestCase
         $this->assertSame('xsd:dateTime', $literal->getDatatype());
     }
 
+    public function testConstructFromDateTimeImmutableUTC()
+    {
+        $dt = new \DateTimeImmutable('2010-09-08T07:06:05Z');
+        $literal = new DateTime($dt);
+        $this->assertStringEquals('2010-09-08T07:06:05Z', $literal);
+        $this->assertClass('DateTime', $literal->getValue());
+        $this->assertEquals($dt, $literal->getValue());
+        $this->assertSame(null, $literal->getLang());
+        $this->assertSame('xsd:dateTime', $literal->getDatatype());
+    }
+
     public function testParseUTC()
     {
         $literal = DateTime::parse('Mon 18 Jul 2011 18:45:43 UTC');

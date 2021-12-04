@@ -49,7 +49,7 @@ class Date extends Literal
 {
     /** Constructor for creating a new date literal
      *
-     * If the value is a DateTime object, then it will be converted to the xsd:date format.
+     * If the value is a DateTimeInterface object, then it will be converted to the xsd:date format.
      * If no value is given or is is null, then the current date is used.
      *
      * @see \DateTime
@@ -66,7 +66,7 @@ class Date extends Literal
         }
 
         // Convert DateTime object into string
-        if ($value instanceof \DateTime) {
+        if ($value instanceof \DateTimeInterface) {
             $value = $value->format('Y-m-d');
         }
 
