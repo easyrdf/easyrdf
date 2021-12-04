@@ -67,7 +67,7 @@ class DateTime extends Date
 
         // Convert DateTime objects into string
         if ($value instanceof \DateTimeInterface) {
-            $atom = $value->format(\DateTimeInterface::ATOM);
+            $atom = $value->format(\DateTime::ATOM);
             $value = preg_replace('/[\+\-]00(\:?)00$/', 'Z', $atom);
         }
 
