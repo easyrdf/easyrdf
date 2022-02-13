@@ -183,7 +183,7 @@ class Graph
             isset($this->index[$uri]['http://www.w3.org/1999/02/22-rdf-syntax-ns#first']) or
             isset($this->index[$uri]['http://www.w3.org/1999/02/22-rdf-syntax-ns#rest'])
         ) {
-            return 'EasyRdf\Collection';
+            return TypeMapper::get('rdf:List');
         }
         return TypeMapper::getDefaultResourceClass();
     }
