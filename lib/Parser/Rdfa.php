@@ -214,7 +214,9 @@ class Rdfa extends Parser
     {
         if (preg_match('/^(\w*?):(.*)$/', $value, $matches)) {
             list (, $prefix, $local) = $matches;
-            $prefix = strtolower($prefix);
+            if (!empty($prefix)) {
+                $prefix = strtolower($prefix);
+            }
             if ($prefix === '_') {
                 // It is a bnode
                 return $this->remapBnode(substr($value, 2));
@@ -238,7 +240,11 @@ class Rdfa extends Parser
             // Safe CURIE
             return $this->expandCurie($node, $context, $matches[1]);
         } elseif (preg_match(self::TERM_REGEXP, $value) and $isProp) {
-            $term = strtolower($value);
+            $term = null;
+            if (!empty($value)) {
+                $term = strtolower($value);
+            }
+
             if ($context['vocab']) {
                 return $context['vocab'] . $value;
             } elseif (isset($context['terms'][$term])) {
@@ -346,7 +352,10 @@ class Rdfa extends Parser
             if ($node->hasAttribute('prefix')) {
                 $mappings = preg_split('/\s+/', $node->getAttribute('prefix'));
                 while (count($mappings)) {
-                    $prefix = strtolower(array_shift($mappings));
+                    $prefix = array_shift($mappings);
+                    if (!empty($prefix)) {
+                        $prefix = strtolower($prefix);
+                    }
                     $uri = array_shift($mappings);
 
                     if (substr($prefix, -1) === ':') {

@@ -70,8 +70,9 @@ class Client
     public function __construct($queryUri, $updateUri = null)
     {
         $this->queryUri = $queryUri;
+        $parsedUri = parse_url($queryUri, PHP_URL_QUERY);
 
-        if (strlen(parse_url($queryUri, PHP_URL_QUERY)) > 0) {
+        if (!empty($parsedUri)) {
             $this->queryUri_has_params = true;
         } else {
             $this->queryUri_has_params = false;

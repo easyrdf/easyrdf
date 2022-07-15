@@ -160,7 +160,9 @@ class Turtle extends Ntriples
      */
     protected function parseDirective($directive)
     {
-        $directive = strtolower($directive);
+        if (!empty($directive)) {
+            $directive = strtolower($directive);
+        }
         if ($directive == "prefix" || $directive == '@prefix') {
             $this->parsePrefixID();
         } elseif ($directive == "base" || $directive == '@base') {

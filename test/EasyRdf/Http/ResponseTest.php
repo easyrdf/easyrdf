@@ -103,8 +103,11 @@ class ResponseTest extends TestCase
     public function testGzipResponse()
     {
         $res = Response::fromString(readFixture('response_gzip'));
-
-        $this->assertEquals('gzip', strtolower($res->getHeader('content-encoding')));
+        $contentEncoding = $res->getHeader('content-encoding');
+        if (!empty($contentEncoding)) {
+            $contentEncoding = strtolower($contentEncoding);
+        }
+        $this->assertEquals('gzip', $contentEncoding);
         $this->assertEquals('0b13cb193de9450aa70a6403e2c9902f', md5($res->getBody()));
         $this->assertEquals('f24dd075ba2ebfb3bf21270e3fdc5303', md5($res->getRawBody()));
     }
@@ -112,8 +115,11 @@ class ResponseTest extends TestCase
     public function testDeflateResponse()
     {
         $res = Response::fromString(readFixture('response_deflate'));
-
-        $this->assertEquals('deflate', strtolower($res->getHeader('content-encoding')));
+        $contentEncoding = $res->getHeader('content-encoding');
+        if (!empty($contentEncoding)) {
+            $contentEncoding = strtolower($contentEncoding);
+        }
+        $this->assertEquals('deflate', $contentEncoding));
         $this->assertEquals('0b13cb193de9450aa70a6403e2c9902f', md5($res->getBody()));
         $this->assertEquals('ad62c21c3aa77b6a6f39600f6dd553b8', md5($res->getRawBody()));
     }
@@ -132,8 +138,11 @@ class ResponseTest extends TestCase
         $this->markTestSkipped('Not correctly handling non-RFC complient "deflate" responses');
 
         $res = Response::fromString(readFixture('response_deflate_iis'));
-
-        $this->assertEquals('deflate', strtolower($res->getHeader('content-encoding')));
+        $contentEncoding = $res->getHeader('content-encoding');
+        if (!empty($contentEncoding)) {
+            $contentEncoding = strtolower($contentEncoding);
+        }
+        $this->assertEquals('deflate', $contentEncoding));
         $this->assertEquals('d82c87e3d5888db0193a3fb12396e616', md5($res->getBody()));
         $this->assertEquals('c830dd74bb502443cf12514c185ff174', md5($res->getRawBody()));
     }
@@ -328,15 +337,20 @@ class ResponseTest extends TestCase
     {
         $responseStr = readFixture('http_response_404');
         $response = Response::fromString($responseStr);
-
+        if (!empty($responseStr)) {
+            $responseStr = strtolower($responseStr);
+        }
+        if (!empty($response)) {
+            $response = strtolower((string)$response);
+        }
         $this->assertSame(
-            strtolower($responseStr),
-            strtolower($response->asString()),
+            $responseStr,
+            $response,
             'Response convertion to string does not match original string'
         );
         $this->assertSame(
-            strtolower($responseStr),
-            strtolower((string)$response),
+            $responseStr,
+            $response,
             'Response convertion to string does not match original string'
         );
     }

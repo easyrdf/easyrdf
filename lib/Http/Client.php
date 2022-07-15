@@ -175,7 +175,10 @@ class Client
         }
 
         foreach ($config as $k => $v) {
-            $this->config[strtolower($k)] = $v;
+            if (!empty($k)) {
+                $k = strtolower($k);
+            }
+            $this->config[$k] = $v;
         }
 
         return $this;
@@ -191,7 +194,10 @@ class Client
      */
     public function setHeaders($name, $value = null)
     {
-        $normalizedName = strtolower($name);
+        if (!empty($name)) {
+            $name = strtolower($name);
+        }
+        $normalizedName = $name;
 
         // If $value is null or false, unset the header
         if ($value === null || $value === false) {
@@ -247,7 +253,9 @@ class Client
      */
     public function getHeader($key)
     {
-        $key = strtolower($key);
+        if (!empty($key)) {
+            $key = strtolower($key);
+        }
         if (isset($this->headers[$key])) {
             return $this->headers[$key][1];
         } else {

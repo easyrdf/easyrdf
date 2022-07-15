@@ -70,7 +70,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      * @throws \OutOfBoundsException
      * @throws \InvalidArgumentException
      */
-    public function seek($position)
+    public function seek($position): void
     {
         if (is_int($position) and $position > 0) {
             if ($this->hasProperty('rdf:_'.$position)) {
@@ -90,7 +90,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
     /** Rewind the iterator back to the start of the container (item 1)
      *
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 1;
     }
@@ -99,7 +99,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * @return mixed The current item
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->get('rdf:_'.$this->position);
     }
@@ -108,7 +108,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * @return int The current position
      */
-    public function key()
+    public function key(): mixed
     {
         return $this->position;
     }
@@ -116,7 +116,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
     /** Move forward to next item in the container
      *
      */
-    public function next()
+    public function next(): void
     {
         $this->position++;
     }
@@ -125,7 +125,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * @return bool True if the current position is valid
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->hasProperty('rdf:_'.$this->position);
     }
@@ -137,7 +137,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * @return integer The number of items in the container
      */
-    public function count()
+    public function count(): int
     {
         $pos = 1;
         while ($this->hasProperty('rdf:_'.$pos)) {
@@ -168,7 +168,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * Example: isset($seq[2])
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         if (is_int($offset) and $offset > 0) {
             return $this->hasProperty('rdf:_'.$offset);
@@ -183,7 +183,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * Example: $item = $seq[2];
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         if (is_int($offset) and $offset > 0) {
             return $this->get('rdf:_'.$offset);
@@ -201,7 +201,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * Warning: creating gaps in the sequence will result in unexpected behavior
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_int($offset) and $offset > 0) {
             return $this->set('rdf:_'.$offset, $value);
@@ -221,7 +221,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * Warning: creating gaps in the sequence will result in unexpected behavior
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if (is_int($offset) and $offset > 0) {
             return $this->delete('rdf:_'.$offset);

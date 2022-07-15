@@ -71,7 +71,7 @@ class Boolean extends Literal
      */
     public function getValue()
     {
-        return strtolower($this->value) === 'true' or $this->value === '1';
+        return !empty($this->value) && (strtolower($this->value) === 'true' or $this->value === '1');
     }
 
     /** Return true if the value of the literal is 'true' or '1'
@@ -80,7 +80,7 @@ class Boolean extends Literal
      */
     public function isTrue()
     {
-        return strtolower($this->value) === 'true' or $this->value === '1';
+        return !empty($this->value) && (strtolower($this->value) === 'true' or $this->value === '1');
     }
 
     /** Return true if the value of the literal is 'false' or '0'
@@ -89,6 +89,6 @@ class Boolean extends Literal
      */
     public function isFalse()
     {
-        return strtolower($this->value) === 'false' or $this->value === '0';
+        return !is_null($this->value) && (strtolower($this->value) === 'false' or $this->value === '0');
     }
 }
