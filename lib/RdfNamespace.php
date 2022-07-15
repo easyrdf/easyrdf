@@ -162,7 +162,9 @@ class RdfNamespace
             );
         }
 
-        $prefix = strtolower($prefix);
+        if (!empty($prefix)) {
+            $prefix = strtolower($prefix);
+        }
         $namespaces = self::namespaces();
 
         if (array_key_exists($prefix, $namespaces)) {
@@ -227,7 +229,9 @@ class RdfNamespace
             );
         }
 
-        $prefix = strtolower($prefix);
+        if (!empty($prefix)) {
+            $prefix = strtolower($prefix);
+        }
 
         $namespaces = self::namespaces();
         $namespaces[$prefix] = $long;
@@ -295,7 +299,9 @@ class RdfNamespace
             );
         }
 
-        $prefix = strtolower($prefix);
+        if (!empty($prefix)) {
+            $prefix = strtolower($prefix);
+        }
         self::namespaces();  // make sure, that self::$namespaces is initialized
         if (isset(self::$namespaces[$prefix])) {
             unset(self::$namespaces[$prefix]);

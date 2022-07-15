@@ -102,7 +102,10 @@ class Response
         $this->message = $message;
 
         foreach ($headers as $k => $v) {
-            $k = ucwords(strtolower($k));
+            if (!empty($k)) {
+                $k = strtolower($k);
+            }
+            $k = ucwords($k);
             $this->headers[$k] = $v;
         }
     }
@@ -166,12 +169,15 @@ class Response
     public function getBody()
     {
         $body = $this->body;
-
-        if ('chunked' === strtolower($this->getHeader('transfer-encoding'))) {
+        $transferEncodig = $this->getHeader('transfer-encoding');
+        if (!empty($transferEncodig) && 'chunked' === strtolower($transferEncodig)) {
             $body = self::decodeChunkedBody($body);
         }
 
-        $contentEncoding = strtolower($this->getHeader('content-encoding'));
+        $contentEncoding = $this->getHeader('content-encoding');
+        if (!empty($contentEncoding)) {
+            $contentEncoding = strtolower($contentEncoding);
+        }
 
         if ('gzip' === $contentEncoding) {
             $body = self::decodeGzip($body);
@@ -224,7 +230,10 @@ class Response
      */
     public function getHeader($header)
     {
-        $header = ucwords(strtolower($header));
+        if (!empty($header)) {
+            $header = strtolower($header);
+        }
+        $header = ucwords($header);
         if (array_key_exists($header, $this->headers)) {
             return $this->headers[$header];
         }
@@ -299,7 +308,10 @@ class Response
         $headers = array();
         foreach ($headerLines as $line) {
             if (preg_match("|^([\w-]+):\s+(.+)$|", $line, $m)) {
-                $hName = ucwords(strtolower($m[1]));
+                if (!empty($m[1])) {
+                    $m[1] = strtolower($m[1]);
+                }
+                $hName = ucwords($m[1]);
                 $hValue = $m[2];
 
                 if (isset($headers[$hName])) {
