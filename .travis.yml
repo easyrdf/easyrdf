@@ -21,7 +21,6 @@ before_install:
   # for PHP 7.1 compatibility
   - composer self-update --2.2
 
-install: make composer-install
 script:
   - make lint
   - make cs
