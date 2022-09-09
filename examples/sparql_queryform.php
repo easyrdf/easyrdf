@@ -21,7 +21,7 @@
     require_once __DIR__."/html_tag_helpers.php";
 
     // Stupid PHP :(
-    if (get_magic_quotes_gpc() and isset($_REQUEST['query'])) {
+    if (function_exists('get_magic_quotes_gpc') and get_magic_quotes_gpc() and isset($_REQUEST['query'])) {
         $_REQUEST['query'] = stripslashes($_REQUEST['query']);
     }
 ?>

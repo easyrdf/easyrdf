@@ -146,7 +146,7 @@ class RdfNamespace
       * @param string $prefix The namespace prefix (eg 'foaf')
       *
       * @throws \InvalidArgumentException
-      * @return string The namespace URI (eg 'http://xmlns.com/foaf/0.1/')
+      * @return string|null The namespace URI (eg 'http://xmlns.com/foaf/0.1/')
       */
     public static function get($prefix)
     {
@@ -326,7 +326,7 @@ class RdfNamespace
       * @param bool    $createNamespace If true, a new namespace will be created
       *
       * @throws \InvalidArgumentException
-      * @return array  The split URI (eg 'foaf', 'name') or null
+      * @return array|null  The split URI (eg 'foaf', 'name') or null
       */
     public static function splitUri($uri, $createNamespace = false)
     {
@@ -376,13 +376,15 @@ class RdfNamespace
       * Return the prefix namespace that a URI belongs to.
       *
       * @param string $uri A full URI (eg 'http://xmlns.com/foaf/0.1/name')
-     *
-      * @return string The prefix namespace that it is a part of(eg 'foaf')
+      *
+      * @return string|null The prefix namespace that it is a part of(eg 'foaf') or null
       */
     public static function prefixOfUri($uri)
     {
         if ($parts = self::splitUri($uri)) {
             return $parts[0];
+        } else {
+            return null;
         }
     }
 
@@ -398,12 +400,14 @@ class RdfNamespace
       * @param string  $uri The full URI (eg 'http://xmlns.com/foaf/0.1/name')
       * @param bool    $createNamespace If true, a new namespace will be created
       *
-      * @return string The shortened URI (eg 'foaf:name') or null
+      * @return string|null The shortened URI (eg 'foaf:name') or null
       */
     public static function shorten($uri, $createNamespace = false)
     {
         if ($parts = self::splitUri($uri, $createNamespace)) {
             return implode(':', $parts);
+        } else {
+            return null;
         }
     }
 

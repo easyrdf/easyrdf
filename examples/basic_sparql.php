@@ -41,7 +41,7 @@
         'SELECT * WHERE {'.
         '  ?country rdf:type dbo:Country .'.
         '  ?country rdfs:label ?label .'.
-        '  ?country dct:subject dbc:Member_states_of_the_United_Nations .'.
+        '  ?country dct:subject dbc:Current_member_states_of_the_United_Nations .'.
         '  FILTER ( lang(?label) = "en" )'.
         '} ORDER BY ?label'
     );

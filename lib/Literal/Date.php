@@ -92,7 +92,7 @@ class Date extends Literal
     /** Returns the date as a PHP DateTime object
      *
      * @see DateTime::format
-     * @return string
+     * @return \DateTime
      */
     public function getValue()
     {

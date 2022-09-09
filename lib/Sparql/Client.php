@@ -71,7 +71,7 @@ class Client
     {
         $this->queryUri = $queryUri;
 
-        if (strlen(parse_url($queryUri, PHP_URL_QUERY)) > 0) {
+        if (strlen((string) parse_url($queryUri, PHP_URL_QUERY)) > 0) {
             $this->queryUri_has_params = true;
         } else {
             $this->queryUri_has_params = false;

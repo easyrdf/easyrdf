@@ -43,8 +43,8 @@ class DumpTest extends \EasyRdf\TestCase
     public function testNoParams()
     {
         $output = executeExample('dump.php');
-        $this->assertContains('<title>EasyRdf Graph Dumper</title>', $output);
-        $this->assertContains('<h1>EasyRdf Graph Dumper</h1>', $output);
+        $this->assertStringContainsString('<title>EasyRdf Graph Dumper</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf Graph Dumper</h1>', $output);
     }
 
     public function testDumpHTML()
@@ -57,12 +57,18 @@ class DumpTest extends \EasyRdf\TestCase
             )
         );
 
-        $this->assertContains('<title>EasyRdf Graph Dumper</title>', $output);
-        $this->assertContains('<h1>EasyRdf Graph Dumper</h1>', $output);
-        $this->assertContains('Graph: http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf', $output);
-        $this->assertContains("color:blue'>http://example/q?abc=1&amp;def=2</a>", $output);
-        $this->assertContains("color:green'>rdf:value</span>", $output);
-        $this->assertContains("color:black'>&quot;xxx&quot;</span>", $output);
+        $this->assertStringContainsString('<title>EasyRdf Graph Dumper</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf Graph Dumper</h1>', $output);
+        $this->assertStringContainsString(
+            'Graph: http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf',
+            $output
+        );
+        $this->assertStringContainsString(
+            "color:blue'>http://example/q?abc=1&amp;def=2</a>",
+            $output
+        );
+        $this->assertStringContainsString("color:green'>rdf:value</span>", $output);
+        $this->assertStringContainsString("color:black'>&quot;xxx&quot;</span>", $output);
     }
 
     public function testDumpText()
@@ -74,10 +80,13 @@ class DumpTest extends \EasyRdf\TestCase
                 'format' => 'text'
             )
         );
-        $this->assertContains('<title>EasyRdf Graph Dumper</title>', $output);
-        $this->assertContains('<h1>EasyRdf Graph Dumper</h1>', $output);
-        $this->assertContains('Graph: http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf', $output);
-        $this->assertContains('http://example/q?abc=1&def=2 (EasyRdf\Resource)', $output);
-        $this->assertContains('-> rdf:value -> "xxx"', $output);
+        $this->assertStringContainsString('<title>EasyRdf Graph Dumper</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf Graph Dumper</h1>', $output);
+        $this->assertStringContainsString(
+            'Graph: http://www.w3.org/2000/10/rdf-tests/rdfcore/amp-in-url/test001.rdf',
+            $output
+        );
+        $this->assertStringContainsString('http://example/q?abc=1&def=2 (EasyRdf\Resource)', $output);
+        $this->assertStringContainsString('-> rdf:value -> "xxx"', $output);
     }
 }

@@ -248,7 +248,7 @@ class Format
      * @param string  $data     The document data
      * @param string  $filename Optional filename
      *
-     * @return self  New format object
+     * @return self|null  New format object
      */
     public static function guessFormat($data, $filename = null)
     {
@@ -267,7 +267,7 @@ class Format
         }
 
         // Then try and guess by the first 1024 bytes of content
-        $short = substr($data, 0, 1024);
+        $short = substr((string) $data, 0, 1024);
         if (preg_match('/^\s*\{/', $short)) {
             return self::getFormat('json');
         } elseif (preg_match('/<rdf:/i', $short)) {
@@ -375,13 +375,15 @@ class Format
 
     /** Get the default registered mime type for a format object
      *
-     * @return string The default mime type as a string.
+     * @return string|null The default mime type as a string.
      */
     public function getDefaultMimeType()
     {
         $types = array_keys($this->mimeTypes);
         if (isset($types[0])) {
             return $types[0];
+        } else {
+            return null;
         }
     }
 
@@ -413,12 +415,14 @@ class Format
 
     /** Get the default registered file extension (filename suffix) for a format object
      *
-     * @return string The default extension as a string.
+     * @return string|null The default extension as a string.
      */
     public function getDefaultExtension()
     {
         if (isset($this->extensions[0])) {
             return $this->extensions[0];
+        } else {
+            return null;
         }
     }
 

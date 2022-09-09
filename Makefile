@@ -8,6 +8,8 @@ PHPUNIT = vendor/bin/phpunit
 PHPUNIT_FLAGS = -c config/phpunit.xml
 PHPCS = vendor/bin/phpcs
 PHPCS_FLAGS = --standard=./config/phpcs_ruleset.xml --encoding=utf8 --extensions=php
+PHPSTAN = vendor/bin/phpstan
+PHPSTAN_FLAGS = analyze -l 3
 DOCTUM = vendor/bin/doctum.php
 
 # Composer doesn't work with bsdtar - try and use GNU tar
@@ -122,6 +124,10 @@ clean:
 check-fixme:
 	@git grep -n -E 'FIXME|TODO' || echo "No FIXME or TODO lines found."
 
+.PHONY: phpstan
+phpstan:
+	$(PHP) $(PHP_FLAGS) $(PHPSTAN) $(PHPSTAN_FLAGS) lib
+
 # TARGET:help                You're looking at it!
 .PHONY: help
 help:
@@ -138,7 +144,7 @@ help:
 
 # Composer rules
 composer.phar:
-	curl -s -o composer.phar -L http://getcomposer.org/composer-stable.phar
+	curl -s -o composer.phar -L https://getcomposer.org/download/latest-2.2.x/composer.phar
 
 composer-install: composer.phar
 	$(PHP) composer.phar $(COMPOSER_FLAGS) install
@@ -150,3 +156,4 @@ vendor/autoload.php: composer-install
 vendor/bin/phpunit: composer-install
 vendor/bin/phpcs: composer-install
 vendor/bin/doctum.php: composer-install
+vendor/bin/phpstan: composer-install

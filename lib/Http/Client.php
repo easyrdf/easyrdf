@@ -95,7 +95,7 @@ class Client
      *
      * @var string
      */
-    private $rawPostData = null;
+    private $rawPostData;
 
     /**
      * Redirection counter
@@ -281,7 +281,7 @@ class Client
      *
      * @param string $name
      *
-     * @return string value
+     * @return string|null value
      */
     public function getParameterGet($name)
     {
@@ -335,11 +335,11 @@ class Client
     /**
      * Get the raw (already encoded) POST data.
      *
-     * @return string
+     * @return string|null
      */
     public function getRawData()
     {
-        return $this->rawPostData;
+        return isset($this->rawPostData) ? $this->rawPostData : null;
     }
 
     /**
@@ -359,7 +359,7 @@ class Client
     {
         // Reset parameter data
         $this->paramsGet   = array();
-        $this->rawPostData = null;
+        unset($this->rawPostData);
         $this->method      = 'GET';
 
         if ($clearAll) {

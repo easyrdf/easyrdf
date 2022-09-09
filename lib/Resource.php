@@ -116,7 +116,7 @@ class Resource implements \ArrayAccess
      *
      * Returns null if the resource is not a blank node.
      *
-     * @return string The identifer for the bnode
+     * @return string|null The identifer for the bnode
      */
     public function getBNodeId()
     {
@@ -156,12 +156,14 @@ class Resource implements \ArrayAccess
      * The local name is defined as the part of the URI string
      * after the last occurrence of the '#', ':' or '/' character.
      *
-     * @return string The local name
+     * @return string|null The local name
      */
     public function localName()
     {
         if (preg_match("|([^#:/]+)$|", $this->uri, $matches)) {
             return $matches[1];
+        } else {
+            return null;
         }
     }
 
@@ -747,12 +749,10 @@ class Resource implements \ArrayAccess
      * @see EasyRdf\RdfNamespace::setDefault()
      *
      * @param string $name The name of the property
-     *
-     * @return int
      */
-    public function __unset($name)
+    public function __unset($name): void
     {
-        return $this->graph->delete($this->uri, $name);
+        $this->graph->delete($this->uri, $name);
     }
 
     /**
@@ -769,7 +769,7 @@ class Resource implements \ArrayAccess
      *
      * @return boolean true on success or false on failure.
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->__isset($offset);
     }
@@ -786,6 +786,7 @@ class Resource implements \ArrayAccess
      *
      * @return mixed Can return all value types.
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->__get($offset);
@@ -804,7 +805,7 @@ class Resource implements \ArrayAccess
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->__set($offset, $value);
     }
@@ -821,7 +822,7 @@ class Resource implements \ArrayAccess
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->__unset($offset);
     }

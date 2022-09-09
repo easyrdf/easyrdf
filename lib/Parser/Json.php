@@ -36,6 +36,7 @@ namespace EasyRdf\Parser;
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
 use EasyRdf\Graph;
+use EasyRdf\Parser;
 
 /**
  * A pure-php class to parse RDF/JSON with no dependencies.
@@ -46,7 +47,7 @@ use EasyRdf\Graph;
  * @copyright  Copyright (c) Nicholas J Humfrey
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
-class Json extends RdfPhp
+class Json extends Parser
 {
     private $jsonLastErrorExists = false;
 
@@ -152,7 +153,7 @@ class Json extends RdfPhp
         if (array_key_exists('triples', $decoded)) {
             return $this->parseJsonTriples($decoded, $baseUri);
         } else {
-            return parent::parse($graph, $decoded, 'php', $baseUri);
+            return (new RdfPhp)->parse($graph, $decoded, 'php', $baseUri);
         }
     }
 }

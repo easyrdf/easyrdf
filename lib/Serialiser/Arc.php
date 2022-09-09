@@ -38,6 +38,7 @@ namespace EasyRdf\Serialiser;
 use EasyRdf\Exception;
 use EasyRdf\Format;
 use EasyRdf\Graph;
+use EasyRdf\Serialiser;
 
 /**
  * Class to serialise RDF using the ARC2 library.
@@ -46,7 +47,7 @@ use EasyRdf\Graph;
  * @copyright  Copyright (c) Nicholas J Humfrey
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
-class Arc extends RdfPhp
+class Arc extends Serialiser
 {
     private static $supportedTypes = array(
         'rdfxml' => 'RDFXML',
@@ -92,7 +93,7 @@ class Arc extends RdfPhp
         $serialiser = \ARC2::getSer($className);
         if ($serialiser) {
             return $serialiser->getSerializedIndex(
-                parent::serialise($graph, 'php')
+                (new RdfPhp())->serialise($graph, 'php')
             );
         } else {
             throw new Exception(

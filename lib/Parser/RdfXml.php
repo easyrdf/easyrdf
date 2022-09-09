@@ -50,6 +50,10 @@ use EasyRdf\Parser;
  */
 class RdfXml extends Parser
 {
+    /**
+     * @var \XMLParser
+     */
+    private $xmlParser;
     private $state;
     private $xLang;
     private $xBase;

@@ -37,6 +37,7 @@ namespace EasyRdf\Serialiser;
  */
 use EasyRdf\Exception;
 use EasyRdf\Graph;
+use EasyRdf\Serialiser;
 
 /**
  * Class to serialise an EasyRdf\Graph to RDF/JSON
@@ -46,7 +47,7 @@ use EasyRdf\Graph;
  * @copyright  Copyright (c) Nicholas J Humfrey
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
-class Json extends RdfPhp
+class Json extends Serialiser
 {
     /**
      * Serialise an EasyRdf\Graph into a to RDF/JSON document.
@@ -70,6 +71,6 @@ class Json extends RdfPhp
             );
         }
 
-        return json_encode(parent::serialise($graph, 'php'));
+        return json_encode((new RdfPhp())->serialise($graph, 'php'));
     }
 }

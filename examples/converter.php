@@ -32,7 +32,7 @@
     }
 
     // Stupid PHP :(
-    if (get_magic_quotes_gpc() and isset($_REQUEST['data'])) {
+    if (function_exists('get_magic_quotes_gpc') and get_magic_quotes_gpc() and isset($_REQUEST['data'])) {
         $_REQUEST['data'] = stripslashes($_REQUEST['data']);
     }
 
