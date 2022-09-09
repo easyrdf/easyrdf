@@ -145,6 +145,7 @@ help:
 # Composer rules
 composer.phar:
 	curl -s -o composer.phar -L http://getcomposer.org/composer-stable.phar
+	$(PHP) composer.phar self-update --2.2
 
 composer-install: composer.phar
 	$(PHP) composer.phar $(COMPOSER_FLAGS) install
