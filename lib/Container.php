@@ -70,7 +70,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      * @throws \OutOfBoundsException
      * @throws \InvalidArgumentException
      */
-    public function seek($position)
+    public function seek($position): void
     {
         if (is_int($position) and $position > 0) {
             if ($this->hasProperty('rdf:_'.$position)) {
@@ -90,7 +90,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
     /** Rewind the iterator back to the start of the container (item 1)
      *
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 1;
     }
@@ -99,6 +99,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * @return mixed The current item
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->get('rdf:_'.$this->position);
@@ -108,7 +109,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * @return int The current position
      */
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
@@ -116,7 +117,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
     /** Move forward to next item in the container
      *
      */
-    public function next()
+    public function next(): void
     {
         $this->position++;
     }
@@ -125,7 +126,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * @return bool True if the current position is valid
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->hasProperty('rdf:_'.$this->position);
     }
@@ -137,7 +138,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * @return integer The number of items in the container
      */
-    public function count()
+    public function count(): int
     {
         $pos = 1;
         while ($this->hasProperty('rdf:_'.$pos)) {
@@ -168,7 +169,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * Example: isset($seq[2])
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         if (is_int($offset) and $offset > 0) {
             return $this->hasProperty('rdf:_'.$offset);
@@ -182,7 +183,10 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
     /** Array Access: get an item at a specified position in container using array syntax
      *
      * Example: $item = $seq[2];
+     *
+     * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (is_int($offset) and $offset > 0) {
@@ -201,12 +205,12 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * Warning: creating gaps in the sequence will result in unexpected behavior
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_int($offset) and $offset > 0) {
-            return $this->set('rdf:_'.$offset, $value);
+            $this->set('rdf:_'.$offset, $value);
         } elseif (is_null($offset)) {
-            return $this->append($value);
+            $this->append($value);
         } else {
             throw new \InvalidArgumentException(
                 "Container position must be a positive integer"
@@ -221,10 +225,10 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
      *
      * Warning: creating gaps in the sequence will result in unexpected behavior
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if (is_int($offset) and $offset > 0) {
-            return $this->delete('rdf:_'.$offset);
+            $this->delete('rdf:_'.$offset);
         } else {
             throw new \InvalidArgumentException(
                 "Container position must be a positive integer"

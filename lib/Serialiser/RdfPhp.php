@@ -58,7 +58,7 @@ class RdfPhp extends Serialiser
      * @param string $format The name of the format to convert to.
      * @param array  $options
      *
-     * @return string The RDF in the new desired format.
+     * @return array The RDF in the new desired format.
      * @throws Exception
      */
     public function serialise(Graph $graph, $format, array $options = array())

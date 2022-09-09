@@ -215,7 +215,7 @@ class Utils
      */
     public static function parseMimeType($mimeType)
     {
-        $parts = explode(';', strtolower($mimeType));
+        $parts = explode(';', strtolower((string) $mimeType));
         $type = trim(array_shift($parts));
         $params = array();
         foreach ($parts as $part) {

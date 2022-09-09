@@ -313,7 +313,7 @@ class Turtle extends Serialiser
     {
         $turtle = '';
         foreach ($graph->resources() as $resource) {
-            /** @var $resource Resource */
+            /** @var Resource $resource */
             // If the resource has no properties - don't serialise it
             $properties = $resource->propertyUris();
             if (count($properties) == 0) {

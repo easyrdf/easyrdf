@@ -43,7 +43,7 @@ namespace EasyRdf\Parser;
  * @copyright  Copyright (c) Nicholas J Humfrey
  * @license    https://www.opensource.org/licenses/bsd-license.php
  */
-class Arc extends RdfPhp
+class Arc extends \EasyRdf\Parser
 {
     private static $supportedTypes = array(
         'rdfxml' => 'RDFXML',
@@ -65,7 +65,7 @@ class Arc extends RdfPhp
     /**
      * Parse an RDF document into an EasyRdf\Graph
      *
-     * @param Graph  $graph   the graph to load the data into
+     * @param \EasyRdf\Graph  $graph   the graph to load the data into
      * @param string $data    the RDF document data
      * @param string $format  the format of the input data
      * @param string $baseUri the base URI of the data being parsed
@@ -89,7 +89,7 @@ class Arc extends RdfPhp
         if ($parser) {
             $parser->parse($baseUri, $data);
             $rdfphp = $parser->getSimpleIndex(false);
-            return parent::parse($graph, $rdfphp, 'php', $baseUri);
+            return (new RdfPhp())->parse($graph, $rdfphp, 'php', $baseUri);
         } else {
             throw new \EasyRdf\Exception(
                 "ARC2 failed to get a $className parser."

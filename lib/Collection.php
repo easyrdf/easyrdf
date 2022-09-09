@@ -73,7 +73,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      * @throws \OutOfBoundsException
      * @throws \InvalidArgumentException
      */
-    public function seek($position)
+    public function seek($position): void
     {
         if (is_int($position) and $position > 0) {
             list($node, $actual) = $this->getCollectionNode($position);
@@ -95,7 +95,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
     /** Rewind the iterator back to the start of the collection
      *
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 1;
         $this->current = null;
@@ -105,13 +105,20 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * @return mixed The current item
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         if ($this->position === 1) {
             return $this->get('rdf:first');
         } elseif ($this->current) {
             return $this->current->get('rdf:first');
+        } else {
+            // to match tests but it's worht noting false would be more 
+            // idiomatic according to
+            // https://www.php.net/manual/en/function.current.php
+            return null;
         }
+
     }
 
     /** Return the key / current position in the collection
@@ -120,7 +127,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * @return int The current position
      */
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
@@ -128,7 +135,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
     /** Move forward to next item in the collection
      *
      */
-    public function next()
+    public function next(): void
     {
         if ($this->position === 1) {
             $this->current = $this->get('rdf:rest');
@@ -142,7 +149,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * @return bool True if the current position is valid
      */
-    public function valid()
+    public function valid(): bool
     {
         if ($this->position === 1 and $this->hasProperty('rdf:first')) {
             return true;
@@ -185,7 +192,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * @return integer The number of items in the collection
      */
-    public function count()
+    public function count(): int
     {
         // Find the end of the collection
         list($node, $position) = $this->getCollectionNode(null);
@@ -225,7 +232,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * Example: isset($list[2])
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         if (is_int($offset) and $offset > 0) {
             list($node, $position) = $this->getCollectionNode($offset);
@@ -240,13 +247,18 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
     /** Array Access: get an item at a specified position in collection using array syntax
      *
      * Example: $item = $list[2];
+     *
+     * @return mixed
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         if (is_int($offset) and $offset > 0) {
             list($node, $position) = $this->getCollectionNode($offset);
             if ($node and $position === $offset) {
                 return $node->get('rdf:first');
+            } else {
+                return null;
             }
         } else {
             throw new \InvalidArgumentException(
@@ -260,7 +272,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * Example: $list[2] = $item;
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             // No offset - append to end of collection
@@ -282,7 +294,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
                 $node->addResource('rdf:rest', 'rdf:nil');
             }
 
-            return $node->set('rdf:first', $value);
+            $node->set('rdf:first', $value);
         } else {
             throw new \InvalidArgumentException(
                 "Collection offset must be a positive integer"
@@ -295,7 +307,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * Example: unset($seq[2]);
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         if (is_int($offset) and $offset > 0) {
             list($node, $position) = $this->getCollectionNode($offset);

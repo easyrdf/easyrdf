@@ -81,6 +81,13 @@ class Response
     private $body;
 
     /**
+     * The HTTP Version (1.0 or 1.1)
+     *
+     * @var string
+     */
+    private $version;
+
+    /**
      * Constructor.
      *
      * @param  int     $status HTTP Status code
@@ -167,11 +174,11 @@ class Response
     {
         $body = $this->body;
 
-        if ('chunked' === strtolower($this->getHeader('transfer-encoding'))) {
+        if ('chunked' === strtolower((string) $this->getHeader('transfer-encoding'))) {
             $body = self::decodeChunkedBody($body);
         }
 
-        $contentEncoding = strtolower($this->getHeader('content-encoding'));
+        $contentEncoding = strtolower((string) $this->getHeader('content-encoding'));
 
         if ('gzip' === $contentEncoding) {
             $body = self::decodeGzip($body);

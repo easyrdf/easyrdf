@@ -1465,7 +1465,7 @@ class Graph
      *
      * @param string|null $resource
      *
-     * @return string A type assocated with the resource (e.g. foaf:Document)
+     * @return string|null A type assocated with the resource (e.g. foaf:Document)
      */
     public function type($resource = null)
     {
@@ -1486,7 +1486,7 @@ class Graph
      *
      * @param mixed $resource
      *
-     * @return \EasyRdf\Resource  A type associated with the resource
+     * @return \EasyRdf\Resource|null  A type associated with the resource
      */
     public function typeAsResource($resource = null)
     {
@@ -1634,7 +1634,7 @@ class Graph
      *
      * @param mixed $resource
      *
-     * @return \EasyRdf\Resource  The primary topic of the document.
+     * @return \EasyRdf\Resource|null  The primary topic of the document.
      */
     public function primaryTopic($resource = null)
     {
@@ -1745,11 +1745,9 @@ class Graph
      *
      * @see RdfNamespace::setDefault()
      * @param string $name The name of the property
-     *
-     * @return integer
      */
-    public function __unset($name)
+    public function __unset($name): void
     {
-        return $this->delete($this->uri, $name);
+        $this->delete($this->uri, $name);
     }
 }

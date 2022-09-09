@@ -58,7 +58,7 @@ class TypeMapper
      * @param  string  $type   The RDF type (e.g. foaf:Person)
      *
      * @throws \InvalidArgumentException
-     * @return string          The class name (e.g. Model_Foaf_Name)
+     * @return string|null          The class name (e.g. Model_Foaf_Name)
      */
     public static function get($type)
     {

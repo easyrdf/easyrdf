@@ -102,7 +102,7 @@ abstract class Serialiser
      * @param Format|string $format The name of the format to convert to.
      * @param array         $options
      *
-     * @return string The RDF in the new desired format.
+     * @return string|array The RDF in the new desired format (RdfPhp format returns an array, other serialisers return a string).
      */
     abstract public function serialise(Graph $graph, $format, array $options = array());
 }
