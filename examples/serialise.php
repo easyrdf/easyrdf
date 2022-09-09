@@ -59,7 +59,7 @@
     if (!is_scalar($data)) {
         $data = var_export($data, true);
     }
-    print htmlspecialchars($data);
+    print htmlspecialchars($data, ENT_COMPAT);
 ?>
 </pre>
 

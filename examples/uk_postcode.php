@@ -60,7 +60,6 @@
             print "<tr><th>Easting:</th><td>" . $res->get('sr:easting') . "</td></tr>\n";
             print "<tr><th>Northing:</th><td>" . $res->get('sr:northing') . "</td></tr>\n";
             print "<tr><th>District:</th><td>" . $res->get('postcode:district')->label() . "</td></tr>\n";
-            print "<tr><th>Ward:</th><td>" . $res->get('postcode:ward')->label() . "</td></tr>\n";
             print "</table>\n";
 
             print "<div style='clear: both'></div>\n";

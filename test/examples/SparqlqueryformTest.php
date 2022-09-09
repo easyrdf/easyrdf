@@ -43,9 +43,9 @@ class SparqlqueryformTest extends \EasyRdf\TestCase
     public function testNoParams()
     {
         $output = executeExample('sparql_queryform.php');
-        $this->assertContains('<title>EasyRdf SPARQL Query Form</title>', $output);
-        $this->assertContains('<h1>EasyRdf SPARQL Query Form</h1>', $output);
-        $this->assertContains('PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;', $output);
+        $this->assertStringContainsString('<title>EasyRdf SPARQL Query Form</title>', $output);
+        $this->assertStringContainsString('<h1>EasyRdf SPARQL Query Form</h1>', $output);
+        $this->assertStringContainsString('PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;', $output);
     }
 
     public function testDbpediaCountries()
@@ -59,13 +59,13 @@ class SparqlqueryformTest extends \EasyRdf\TestCase
                     'SELECT * WHERE {'.
                     '  ?country rdf:type dbo:Country . '.
                     '  ?country rdfs:label ?label .'.
-                    '  ?country dct:subject dbc:Member_states_of_the_United_Nations .'.
+                    '  ?country dct:subject dbc:Current_member_states_of_the_United_Nations .'.
                     '  FILTER ( lang(?label) = "en" ) '.
                     '} ORDER BY ?label LIMIT 100'
             )
         );
-        $this->assertContains('>http://dbpedia.org/resource/China</a>', $output);
-        $this->assertContains('>&quot;China&quot;@en</span>', $output);
+        $this->assertStringContainsString('>http://dbpedia.org/resource/China</a>', $output);
+        $this->assertStringContainsString('>&quot;China&quot;@en</span>', $output);
     }
 
     public function testDbpediaCountriesText()
@@ -79,14 +79,14 @@ class SparqlqueryformTest extends \EasyRdf\TestCase
                     'SELECT * WHERE {'.
                     '  ?country rdf:type dbo:Country . '.
                     '  ?country rdfs:label ?label .'.
-                    '  ?country dct:subject dbc:Member_states_of_the_United_Nations .'.
+                    '  ?country dct:subject dbc:Current_member_states_of_the_United_Nations .'.
                     '  FILTER ( lang(?label) = "en" ) '.
                     '} ORDER BY ?label LIMIT 100',
                 'text' => 1
             )
         );
 
-        $this->assertContains('| http://dbpedia.org/resource/China', $output);
-        $this->assertContains('| &quot;China&quot;@en', $output);
+        $this->assertStringContainsString('| http://dbpedia.org/resource/China', $output);
+        $this->assertStringContainsString('| &quot;China&quot;@en', $output);
     }
 }
