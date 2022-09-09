@@ -46,7 +46,10 @@ class OpenGraphProtocolTest extends \EasyRdf\TestCase
         $this->assertStringContainsString('<dd><a href="https://www.imdb.com/title/tt0240772/"', $output);
         $this->assertStringContainsString('<dt>Site Name:</dt> <dd>IMDb</dd>', $output);
         $this->assertStringContainsString('<dt>Title:</dt> <dd>Ocean\'s Eleven (2001) - IMDb</dd>', $output);
-        $this->assertStringContainsString('<dt>Description:</dt> <dd>Ocean\'s Eleven: Directed by Steven Soderbergh', $output);
+        $this->assertStringContainsString(
+            '<dt>Description:</dt> <dd>Ocean\'s Eleven: Directed by Steven Soderbergh',
+            $output
+        );
         $this->assertStringContainsString('src="https://m.media-amazon.com/images/', $output);
     }
 }

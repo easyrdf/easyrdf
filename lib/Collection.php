@@ -113,12 +113,11 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
         } elseif ($this->current) {
             return $this->current->get('rdf:first');
         } else {
-            // to match tests but it's worht noting false would be more 
+            // to match tests but it's worht noting false would be more
             // idiomatic according to
             // https://www.php.net/manual/en/function.current.php
             return null;
         }
-
     }
 
     /** Return the key / current position in the collection
