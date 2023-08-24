@@ -350,9 +350,8 @@ class RdfNamespace
             }
 
             $local_part = substr($uri, strlen($long));
-
-            if (strpos($local_part, '/') !== false) {
-                // we can't have '/' in local part
+            if (strpos($local_part, '/') !== false || strpos($local_part, '#') !== false) {
+                // we can't have '/' or '#' in local part
                 continue;
             }
 
