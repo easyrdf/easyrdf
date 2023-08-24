@@ -648,13 +648,26 @@ class TurtleTest extends TestCase
     public function testSerialiseShortenableResource()
     {
         RdfNamespace::set("example", 'http://example.com/');
-        $joe = $this->graph->resource('http://example.com/joe#me');
+        $joe = $this->graph->resource('http://example.com/joe');
         $joe->add('rdf:type', 'foaf:Person');
 
         $turtle = $this->serialiser->serialise($this->graph, 'turtle');
         $this->assertSame(
             "@prefix example: <http://example.com/> .\n\n".
-            "example:joe#me a \"foaf:Person\" .\n",
+            "example:joe a \"foaf:Person\" .\n",
+            $turtle
+        );
+    }
+
+    public function testSerialiseUnshortenableResource()
+    {
+        RdfNamespace::set("example", 'http://example.com/');
+        $joe = $this->graph->resource('http://example.com/joe#me');
+        $joe->add('rdf:type', 'foaf:Person');
+
+        $turtle = $this->serialiser->serialise($this->graph, 'turtle');
+        $this->assertSame(
+            "<http://example.com/joe#me> a \"foaf:Person\" .\n",
             $turtle
         );
     }
