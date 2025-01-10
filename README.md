@@ -1,8 +1,6 @@
 EasyRdf
 =======
 
-[![Build Status](https://app.travis-ci.com/easyrdf/easyrdf.svg?branch=main)](https://app.travis-ci.com/easyrdf/easyrdf)
-
 EasyRdf is a PHP library designed to make it easy to consume and produce [RDF].
 It was designed for use in mixed teams of experienced and inexperienced RDF
 developers. It is written in Object Oriented PHP and has been tested
