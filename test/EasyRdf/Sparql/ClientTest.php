@@ -128,6 +128,57 @@ class ClientTest extends TestCase
         );
     }
 
+    public function testQueryHttpRedirection()
+    {
+        $this->client->addMock(
+            'GET',
+            '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            '',
+            array( 
+                'status' => 301,
+                'headers' => array('Location' => 'http://localhost:8080/query'),
+            )
+        );
+        $this->client->addMock(
+            'GET',
+            '/query?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            readFixture('sparql_select_all.xml'),
+            array(
+                'headers' => array('Content-Type' => 'application/sparql-results+xml')
+            )
+        );
+        $result = $this->sparql->query("SELECT * WHERE {?s ?p ?o}");
+        $this->assertCount(14, $result);
+    }
+
+    public function testQueryCircularHttpRedirection()
+    {
+        $this->client->addMock(
+            'GET',
+            '/sparql?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            '',
+            [
+                'status' => 301,
+                'headers' => ['Location' => 'http://localhost:8080/query'],
+            ]
+        );
+        $this->client->addMock(
+            'GET',
+            '/query?query=SELECT+%2A+WHERE+%7B%3Fs+%3Fp+%3Fo%7D',
+            '',
+            [
+                'status' => 301,
+                'headers' => ['Location' => 'http://localhost:8080/sparql']
+            ]
+        );
+        try {
+            $this->sparql->query('SELECT * WHERE {?s ?p ?o}');
+            $this->assertTrue(false, "This should have thrown an error");
+        } catch(Http\Exception $e) {
+            $this->assertEquals("Circular redirection", $e->getMessage());
+        }
+    }
+
     public function testQuerySelectAllJsonWithCharset()
     {
         $this->client->addMock(
