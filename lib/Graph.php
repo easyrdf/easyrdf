@@ -392,17 +392,17 @@ class Graph
         return $this->resources;
     }
 
-    /** Get an arry of resources matching a certain property and optional value.
+    /** Get an array of resources matching a certain property and optional value.
      *
      * For example this routine could be used as a way of getting
      * everyone who has name:
-     * $people = $graph->resourcesMatching('foaf:name')
+     * $named = $graph->resourcesMatching('foaf:name')
      *
      * Or everyone who is male:
-     * $people = $graph->resourcesMatching('foaf:gender', 'male');
+     * $males = $graph->resourcesMatching('foaf:gender', 'male');
      *
      * Or all homepages:
-     * $people = $graph->resourcesMatching('^foaf:homepage');
+     * $homepages = $graph->resourcesMatching('^foaf:homepage');
      *
      * @param  string  $property   The property to check.
      * @param  mixed   $value      Optional, the value of the propery to check for.
