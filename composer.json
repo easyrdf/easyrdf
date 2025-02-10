@@ -24,11 +24,7 @@
         "issues": "http://github.com/PixEye/easyrdf/issues"
     },
     "require": {
-        "php": ">=7.1.0",
-        "ext-dom" : "*",
-        "ext-mbstring": "*",
-        "ext-pcre": "*",
-        "ext-xmlreader" : "*",
+        "php": ">=8.1.0",
         "lib-libxml" : "*"
     },
     "suggest": {
