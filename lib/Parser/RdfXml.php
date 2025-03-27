@@ -58,6 +58,7 @@ class RdfXml extends Parser
     private $nsp;
     private $sStack;
     private $sCount;
+    private $xmlParser;
 
     /**
      * Constructor
