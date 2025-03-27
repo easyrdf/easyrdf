@@ -59,6 +59,13 @@ class Response
     private $status;
 
     /**
+     * The HTTP Version
+     *
+     * @var string
+     */
+    private $version;
+
+    /**
      * The HTTP response code as string
      * (e.g. 'Not Found' for 404 or 'Internal Server Error' for 500)
      *
