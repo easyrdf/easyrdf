@@ -130,7 +130,7 @@ class Client
 
     /** Count the number of triples in a SPARQL 1.1 endpoint
      *
-     * Performs a SELECT query to estriblish the total number of triples.
+     * Performs a SELECT query to establish the total number of triples.
      *
      * Counts total number of triples by default but a conditional triple pattern
      * can be given to count of a subset of all triples.
@@ -244,7 +244,9 @@ class Client
         $response = $this->executeQuery($processed_query, $type);
 
         if (!$response->isSuccessful()) {
-            throw new Http\Exception("HTTP request for SPARQL query failed", 0, null, $response->getBody());
+            $msg = "HTTP request for SPARQL query failed with code ";
+            $msg .= $response->getStatus();
+            throw new Http\Exception($msg, 0, null, $response->getBody());
         }
 
         if ($response->getStatus() == 204) {
@@ -260,7 +262,7 @@ class Client
         if (is_string($data)) {
             return $data;
         } elseif (is_object($data) and $data instanceof Graph) {
-            # FIXME: insert Turtle when there is a way of seperateing out the prefixes
+            # FIXME: insert Turtle when there is a way of separating out the prefixes
             return $data->serialise('ntriples');
         } else {
             throw new Exception(
