@@ -91,7 +91,7 @@ class RdfPhp extends Parser
             } elseif (preg_match('/^\w+$/', $orig_subject)) {
                 # Cope with invalid RDF/JSON serialisations that
                 # put the node name in, without the _: prefix
-                # (such as net.fortytwo.sesametools.rdfjson)
+                # (such as net.fortyTwo.seSameTools.rdfJson)
                 $subject = $this->remapBnode($orig_subject);
             } else {
                 $subject = $orig_subject;
