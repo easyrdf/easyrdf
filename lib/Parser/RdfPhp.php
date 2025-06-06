@@ -98,7 +98,9 @@ class RdfPhp extends Parser
             }
 
             if (!is_array($properties)) {
-                throw new Exception("expected array as value of '{$orig_subject}' key, got ".gettype($properties));
+                $msg = "expected array as value of '{$orig_subject}' key, got ".gettype($properties);
+                if (is_scalar($properties)) $msg .= ' ('.var_export($properties, true).')';
+                throw new Exception($msg);
             }
 
             foreach ($properties as $property => $objects) {
