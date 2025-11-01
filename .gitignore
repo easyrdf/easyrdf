@@ -7,3 +7,4 @@
 /composer.phar
 /composer.lock
 /config/.phpunit.result.cache
+*.sw*
