@@ -63,7 +63,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
 
     /** Seek to a specific position in the container
      *
-     * The first item is postion 1
+     * The first item is position 1
      *
      * @param  integer  $position     The position in the container to seek to
      *
@@ -195,7 +195,7 @@ class Container extends Resource implements \ArrayAccess, \Countable, \SeekableI
     }
 
     /**
-     * Array Access: set an item at a positon in container using array syntax
+     * Array Access: set an item at a position in container using array syntax
      *
      * Example: $seq[2] = $item;
      *

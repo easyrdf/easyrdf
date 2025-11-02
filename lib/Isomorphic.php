@@ -287,7 +287,7 @@ class Isomorphic
      * that we will take as a given, and use those to make more specific
      * signatures of other nodes.
      *
-     * Returns a tuple of associative arrats: one of grounded hashes, and one of all
+     * Returns a tuple of associative arrays: one of grounded hashes, and one of all
      * hashes.  grounded hashes are based on non-blank nodes and grounded blank
      * nodes, and can be used to determine if a node's signature matches
      * another.

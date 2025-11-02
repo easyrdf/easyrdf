@@ -329,7 +329,7 @@ class ParsedUri
         return $str;
     }
 
-    /** Magic method to convert the URI, when casted, back to a string
+    /** Magic method to convert the URI, when cast back to a string
      *
      * @return string The URI as a string
      */

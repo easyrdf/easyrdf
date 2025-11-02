@@ -101,7 +101,7 @@ class GraphVizTest extends TestCase
         $this->assertFalse($this->serialiser->getOnlyLabelled());
     }
 
-    public function testGetAtrributeCharset()
+    public function testGetAttributeCharset()
     {
         $this->assertSame(
             'utf-8',
@@ -109,7 +109,7 @@ class GraphVizTest extends TestCase
         );
     }
 
-    public function testSetAtrribute()
+    public function testSetAttribute()
     {
         $this->serialiser->setAttribute('rankdir', 'LR');
         $this->assertSame('LR', $this->serialiser->getAttribute('rankdir'));

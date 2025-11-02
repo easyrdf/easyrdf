@@ -597,7 +597,7 @@ class RdfaTest extends TestCase
 
     public function testCase0221()
     {
-        $this->rdfaTestCase('0221', '@inlist with hetrogenious membership');
+        $this->rdfaTestCase('0221', '@inlist with heterogeneous membership');
     }
 
     public function testCase0224()

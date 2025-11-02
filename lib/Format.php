@@ -537,7 +537,7 @@ class Format
         return (new $serialiserClass());
     }
 
-    /** Magic method to return the name of the format when casted to string
+    /** Magic method to return the name of the format when cast to string
      *
      * @return string The name of the format
      */
@@ -710,7 +710,7 @@ Format::register(
 
 
 /*
-   Register default set of parsers and serialisers
+   Register default set of parser and serialiser classes
 */
 
 Format::registerParser('json', 'EasyRdf\Parser\Json');

@@ -72,7 +72,7 @@ class HexBinaryTest extends TestCase
         $this->assertSame('Hello', $literal->toBinary());
     }
 
-    public function testContructInvalid()
+    public function testConstructInvalid()
     {
         $this->setExpectedException(
             'InvalidArgumentException',

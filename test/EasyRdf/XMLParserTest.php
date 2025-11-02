@@ -47,7 +47,7 @@ class XMLParserTest extends TestCase
     {
         $parser = new XMLParser();
         $parser->parse('<html><body>Body Text</body></html>');
-        $this->assertTrue(true, "Sucessfully parsed XML");
+        $this->assertTrue(true, "Successfully parsed XML");
     }
 
     public function testElementDepth()

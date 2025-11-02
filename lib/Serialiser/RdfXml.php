@@ -97,18 +97,18 @@ class RdfXml extends Serialiser
                 return $tag."/>\n";
             }
         } elseif (is_object($obj) and $obj instanceof Literal) {
-            $atrributes = "";
+            $attributes = "";
             $datatype = $obj->getDatatypeUri();
             if ($datatype) {
                 if ($datatype == self::RDF_XML_LITERAL) {
-                    $atrributes .= " rdf:parseType=\"Literal\"";
+                    $attributes .= " rdf:parseType=\"Literal\"";
                     $value = strval($obj);
                 } else {
                     $datatype = htmlspecialchars($datatype);
-                    $atrributes .= " rdf:datatype=\"$datatype\"";
+                    $attributes .= " rdf:datatype=\"$datatype\"";
                 }
             } elseif ($obj->getLang()) {
-                $atrributes .= ' xml:lang="'.
+                $attributes .= ' xml:lang="'.
                                htmlspecialchars($obj->getLang()).'"';
             }
 
@@ -117,7 +117,7 @@ class RdfXml extends Serialiser
                 $value = htmlspecialchars(strval($obj));
             }
 
-            return "{$indent}<{$property}{$atrributes}>{$value}</{$property}>\n";
+            return "{$indent}<{$property}{$attributes}>{$value}</{$property}>\n";
         } else {
             throw new Exception(
                 "Unable to serialise object to xml: ".getType($obj)
@@ -180,7 +180,7 @@ class RdfXml extends Serialiser
                     }
                 } else {
                     throw new Exception(
-                        "It is not possible to serialse the property ".
+                        "It is not possible to serialise the property ".
                         "'$property' to RDF/XML."
                     );
                 }
@@ -234,7 +234,7 @@ class RdfXml extends Serialiser
             }
         }
 
-        // iterate through namepsaces array prefix and output a string.
+        // iterate through namespaces array prefix and output a string.
         $namespaceStr = '';
         foreach ($this->prefixes as $prefix => $count) {
             $url = RdfNamespace::get($prefix);

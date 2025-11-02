@@ -1422,7 +1422,7 @@ class GraphTest extends TestCase
         $this->assertStringEquals('_:abc', $res);
     }
 
-    public function testAddDulicateTriple()
+    public function testAddDuplicateTriple()
     {
         $homepage = $this->graph->resource('http://example.com/');
         $count = $this->graph->add($this->uri, 'foaf:homepage', $homepage);

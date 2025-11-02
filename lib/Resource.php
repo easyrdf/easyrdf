@@ -116,7 +116,7 @@ class Resource implements \ArrayAccess
      *
      * Returns null if the resource is not a blank node.
      *
-     * @return string The identifer for the bnode
+     * @return string The identifier for the bnode
      */
     public function getBNodeId()
     {
@@ -235,7 +235,7 @@ class Resource implements \ArrayAccess
         return Utils::dumpResourceValue($this, $format, $color);
     }
 
-    /** Magic method to return URI of resource when casted to string
+    /** Magic method to return URI of resource when cast to a string
      *
      * @return string The URI of the resource
      */
@@ -550,7 +550,7 @@ class Resource implements \ArrayAccess
      * The types will each be a shortened URI as a string.
      * This method will return an empty array if the resource has no types.
      *
-     * @return array All types assocated with the resource (e.g. foaf:Person)
+     * @return array All types associated with the resource (e.g. foaf:Person)
      */
     public function types()
     {
@@ -565,7 +565,7 @@ class Resource implements \ArrayAccess
      * may be arbitrary.
      * This method will return null if the resource has no type.
      *
-     * @return string A type assocated with the resource (e.g. foaf:Person)
+     * @return string A type associated with the resource (e.g. foaf:Person)
      */
     public function type()
     {
@@ -580,7 +580,7 @@ class Resource implements \ArrayAccess
      * may be arbitrary.
      * This method will return null if the resource has no type.
      *
-     * @return Resource A type assocated with the resource.
+     * @return Resource A type associated with the resource.
      */
     public function typeAsResource()
     {
@@ -654,7 +654,7 @@ class Resource implements \ArrayAccess
      *
      * This method will check a number of properties for the resource
      * (in the order: skos:prefLabel, rdfs:label, foaf:name, dc:title)
-     * and return an approriate first that is available. If no label
+     * and return an appropriate first that is available. If no label
      * is available then it will return null.
      *
      * @param string|null $lang
@@ -758,7 +758,7 @@ class Resource implements \ArrayAccess
     /**
      * Array Access Interface: Check whether a offset exists
      *
-     * The return value will be casted to boolean if non-boolean was returned.
+     * The return value will be cast to boolean if non-boolean was returned.
      *
      * Example:
      *   if(isset($resource['rdfs:label'])) { }

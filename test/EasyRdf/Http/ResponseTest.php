@@ -119,9 +119,9 @@ class ResponseTest extends TestCase
     }
 
     /**
-     * Make sure wer can handle non-RFC complient "deflate" responses.
+     * Make sure wer can handle non-RFC compliant "deflate" responses.
      *
-     * Unlike stanrdard 'deflate' response, those do not contain the zlib header
+     * Unlike a standard 'deflate' response, those do not contain the zlib header
      * and trailer. Unfortunately some buggy servers (read: IIS) send those and
      * we need to support them.
      *
@@ -129,7 +129,7 @@ class ResponseTest extends TestCase
      */
     public function testNonStandardDeflateResponseZF6040()
     {
-        $this->markTestSkipped('Not correctly handling non-RFC complient "deflate" responses');
+        $this->markTestSkipped('Not correctly handling non-RFC compliant "deflate" responses');
 
         $res = Response::fromString(readFixture('response_deflate_iis'));
 

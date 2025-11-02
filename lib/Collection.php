@@ -66,7 +66,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
 
     /** Seek to a specific position in the container
      *
-     * The first item is postion 1
+     * The first item is position 1
      *
      * @param  integer  $position     The position in the container to seek to
      *
@@ -156,7 +156,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
     /** Get a node for a particular offset into the collection
      *
      * This function may not return the item you requested, if
-     * it does not exist. Please check the $postion parameter
+     * it does not exist. Please check the $position parameter
      * returned.
      *
      * If the offset is null, then the last node in the
@@ -164,7 +164,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
      *
      * @param  integer $offset          The offset into the collection (or null)
      *
-     * @return array   $node, $postion  The node object and postion of the node
+     * @return array   $node, $position The node object and position of the node
      */
     public function getCollectionNode($offset)
     {
@@ -256,7 +256,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
     }
 
     /**
-     * Array Access: set an item at a positon in collection using array syntax
+     * Array Access: set an item at a position in collection using array syntax
      *
      * Example: $list[2] = $item;
      */
@@ -291,7 +291,7 @@ class Collection extends Resource implements \ArrayAccess, \Countable, \Seekable
     }
 
     /**
-     * Array Access: delete an item at a specific postion using array syntax
+     * Array Access: delete an item at a specific position using array syntax
      *
      * Example: unset($seq[2]);
      */

@@ -114,7 +114,7 @@ class RdfXmlTest extends TestCase
         );
     }
 
-    public function testSerialiseRdfXmlDoubleRefernce()
+    public function testSerialiseRdfXmlDoubleReference()
     {
         $joe = $this->graph->resource('http://www.example.com/joe#me', 'foaf:Person');
         $joe->set('foaf:name', 'Joe Bloggs');

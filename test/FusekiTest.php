@@ -68,7 +68,7 @@ class FusekiTest extends \EasyRdf\TestCase
             }
         }
 
-        // Fuseki needs a little bit of extra time before it can acctually recieve requests
+        // Fuseki needs a little bit of extra time before it can actually receive requests
         sleep(3);
     }
 

@@ -215,7 +215,7 @@ class ParsedUriTest extends TestCase
         $this->assertSame('/foo/bar/', $uri->getPath());
     }
 
-    public function testNormaliseInitalDot()
+    public function testNormaliseInitialDot()
     {
         $uri = new ParsedUri('./foo/bar');
         $uri->normalise();

@@ -50,7 +50,7 @@ class Utils
     /**
      * Convert a string into CamelCase
      *
-     * A capital letter is inserted for any non-letter (including userscore).
+     * A capital letter is inserted for any non-letter (including underscore).
      * For example:
      * 'hello world' becomes HelloWorld
      * 'rss-tag-soup' becomes RssTagSoup

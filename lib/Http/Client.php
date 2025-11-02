@@ -41,7 +41,7 @@ use EasyRdf\Exception;
 use EasyRdf\ParsedUri;
 
 /**
- * This class is an implemetation of an HTTP client in PHP.
+ * This class is an implementation of an HTTP client in PHP.
  * It supports basic HTTP 1.0 and 1.1 requests. For a more complete
  * implementation try Zend_Http_Client.
  *
@@ -317,7 +317,7 @@ class Client
      *
      * This function is here for two reasons:
      * 1. For advanced user who would like to set their own data, already encoded
-     * 2. For backwards compatibilty: If someone uses the old post($data) method.
+     * 2. For backwards compatibility: If someone uses the old post($data) method.
      *    this method will be used to set the encoded data.
      *
      * $data can also be stream (such as file) from which the data will be read.

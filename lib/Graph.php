@@ -392,7 +392,7 @@ class Graph
         return $this->resources;
     }
 
-    /** Get an arry of resources matching a certain property and optional value.
+    /** Get an array of resources matching a certain property and optional value.
      *
      * For example this routine could be used as a way of getting
      * everyone who has name:
@@ -405,7 +405,7 @@ class Graph
      * $people = $graph->resourcesMatching('^foaf:homepage');
      *
      * @param  string  $property   The property to check.
-     * @param  mixed   $value      Optional, the value of the propery to check for.
+     * @param  mixed   $value      Optional, the value of the property to check for.
      *
      * @return \EasyRdf\Resource[]
      */
@@ -1465,7 +1465,7 @@ class Graph
      *
      * @param string|null $resource
      *
-     * @return string A type assocated with the resource (e.g. foaf:Document)
+     * @return string A type associated with the resource (e.g. foaf:Document)
      */
     public function type($resource = null)
     {
@@ -1508,7 +1508,7 @@ class Graph
      *
      * @param string|null $resource
      *
-     * @return array All types assocated with the resource (e.g. foaf:Person)
+     * @return array All types associated with the resource (e.g. foaf:Person)
      */
     public function types($resource = null)
     {
@@ -1606,7 +1606,7 @@ class Graph
      *
      * This method will check a number of properties for a resource
      * (in the order: skos:prefLabel, rdfs:label, foaf:name, dc:title)
-     * and return an approriate first that is available. If no label
+     * and return an appropriate first that is available. If no label
      * is available then it will return null.
      *
      * @param string|null $resource
@@ -1675,7 +1675,7 @@ class Graph
         return $count;
     }
 
-    /** Magic method to return URI of resource when casted to string
+    /** Magic method to return URI of resource when cast to a string
      *
      * @return string The URI of the resource
      */

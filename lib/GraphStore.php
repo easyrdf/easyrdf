@@ -301,7 +301,7 @@ class GraphStore
         return $url;
     }
 
-    /** Magic method to return URI of the graph store when casted to string
+    /** Magic method to return URI of the graph store when cast to a string
      *
      * @return string The URI of the graph store
      */
