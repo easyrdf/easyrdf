@@ -87,10 +87,10 @@ class RdfXml extends Parser
             $parser = xml_parser_create_ns('UTF-8', '');
             xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 0);
             xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
+            xml_set_object($parser, $this);
             xml_set_element_handler($parser, 'startElementHandler', 'endElementHandler');
             xml_set_character_data_handler($parser, 'cdataHandler');
             xml_set_start_namespace_decl_handler($parser, 'newNamespaceHandler');
-            xml_set_object($parser, $this);
             $this->xmlParser = $parser;
         }
     }
