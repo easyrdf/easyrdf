@@ -311,6 +311,13 @@ class Client
             'application/sparql-results+json' => 1.0,
             'application/sparql-results+xml' => 0.8
         );
+        $sparql_graph_types = array(
+            'application/ld+json' => 1.0,
+            'application/rdf+xml' => 0.9,
+            'text/turtle' => 0.8,
+            'application/n-quads' => 0.7,
+            'application/n-triples' => 0.7,
+        );
 
         if ($type == 'update') {
             // accept anything, as "response body of a […] update request is implementation defined"
@@ -341,7 +348,7 @@ class Client
                 $accept = Format::formatAcceptHeader($sparql_results_types);
             } elseif ($query_verb === 'CONSTRUCT' or $query_verb === 'DESCRIBE') {
                 // only "graph"
-                $accept = Format::getHttpAcceptHeader();
+                $accept = Format::formatAcceptHeader($sparql_graph_types);
             } else {
                 // both
                 $accept = Format::getHttpAcceptHeader($sparql_results_types);
