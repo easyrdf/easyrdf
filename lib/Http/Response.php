@@ -81,6 +81,13 @@ class Response
     private $body;
 
     /**
+     * The HTTP version
+     *
+     * @var string
+     */
+    private $version;
+
+    /**
      * Constructor.
      *
      * @param  int     $status HTTP Status code
@@ -253,8 +260,8 @@ class Response
             if (is_string($value)) {
                 $str .= "{$name}: {$value}{$br}";
             } elseif (is_array($value)) {
-                foreach ($value as $subval) {
-                    $str .= "{$name}: {$subval}{$br}";
+                foreach ($value as $subVal) {
+                    $str .= "{$name}: {$subVal}{$br}";
                 }
             }
         }
@@ -405,7 +412,6 @@ class Response
 
         return gzinflate($body);
     }
-
 
     /**
      * Get the entire response as string

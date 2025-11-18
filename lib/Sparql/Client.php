@@ -71,7 +71,7 @@ class Client
     {
         $this->queryUri = $queryUri;
 
-        if (strlen(parse_url($queryUri, PHP_URL_QUERY)) > 0) {
+        if (parse_url($queryUri, PHP_URL_QUERY)!==null) {
             $this->queryUri_has_params = true;
         } else {
             $this->queryUri_has_params = false;
@@ -244,7 +244,9 @@ class Client
         $response = $this->executeQuery($processed_query, $type);
 
         if (!$response->isSuccessful()) {
-            throw new Http\Exception("HTTP request for SPARQL query failed", 0, null, $response->getBody());
+            $msg = "HTTP request for SPARQL query failed with code ";
+            $msg .= $response->getStatus();
+            throw new Http\Exception($msg, 0, null, $response->getBody());
         }
 
         if ($response->getStatus() == 204) {

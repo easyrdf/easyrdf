@@ -1,5 +1,5 @@
 {
-    "name": "easyrdf/easyrdf",
+    "name": "pixeye/easyrdf",
     "description": "EasyRdf is a PHP library designed to make it easy to consume and produce RDF.",
     "type": "library",
     "keywords": ["RDF", "Semantic Web", "Linked Data", "Turtle", "RDFa", "SPARQL"],
@@ -21,14 +21,10 @@
     ],
     "support": {
         "forum": "http://groups.google.com/group/easyrdf/",
-        "issues": "http://github.com/easyrdf/easyrdf/issues"
+        "issues": "http://github.com/PixEye/easyrdf/issues"
     },
     "require": {
-        "php": ">=7.1.0",
-        "ext-dom" : "*",
-        "ext-mbstring": "*",
-        "ext-pcre": "*",
-        "ext-xmlreader" : "*",
+        "php": ">=8.1.0",
         "lib-libxml" : "*"
     },
     "suggest": {

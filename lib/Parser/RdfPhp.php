@@ -91,14 +91,16 @@ class RdfPhp extends Parser
             } elseif (preg_match('/^\w+$/', $orig_subject)) {
                 # Cope with invalid RDF/JSON serialisations that
                 # put the node name in, without the _: prefix
-                # (such as net.fortytwo.sesametools.rdfjson)
+                # (such as net.fortyTwo.seSameTools.rdfJson)
                 $subject = $this->remapBnode($orig_subject);
             } else {
                 $subject = $orig_subject;
             }
 
             if (!is_array($properties)) {
-                throw new Exception("expected array as value of '{$orig_subject}' key, got ".gettype($properties));
+                $msg = "expected array as value of '{$orig_subject}' key, got ".gettype($properties);
+                if (is_scalar($properties)) $msg .= ' ('.var_export($properties, true).')';
+                throw new Exception($msg);
             }
 
             foreach ($properties as $property => $objects) {
