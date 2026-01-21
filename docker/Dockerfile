@@ -5,7 +5,7 @@ RUN apt-get update && \
 
 # workaround for error during install
 # see: https://github.com/geerlingguy/ansible-role-java/issues/64
-RUN mkdir /usr/share/man/man1/
+RUN mkdir -p /usr/share/man/man1/
 RUN apt-get install -y openjdk-11-jre
 
 RUN docker-php-ext-install intl zip && docker-php-ext-enable intl zip
