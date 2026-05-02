@@ -429,7 +429,7 @@ class Client
                 } else {
                     $uri['query'] = '';
                 }
-                $uri['query'] .= http_build_query($this->paramsGet, null, '&');
+                $uri['query'] .= http_build_query($this->paramsGet, '', '&');
             }
 
             $headers = $this->prepareHeaders($uri['host'], $port);
