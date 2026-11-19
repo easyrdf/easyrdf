@@ -111,6 +111,73 @@ class TurtleTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider blankNodePropertyListAsSubjectExamples
+     */
+    public function testParseBlankNodePropertyListAsSubject($data, $expectedCount)
+    {
+        $graph = new Graph();
+        $count = $this->turtleParser->parse(
+            $graph,
+            $data,
+            'turtle',
+            $this->baseUri
+        );
+        $this->assertSame($expectedCount, $count);
+    }
+
+    public static function blankNodePropertyListAsSubjectExamples()
+    {
+        return array(
+            'sole_blankNodePropertyList' => array(
+                '[ <http://example.com/p> <http://example.com/o> ] .',
+                1
+            ),
+            'blankNodePropertyList_as_subject' => array(
+                '[ <http://example.com/p> <http://example.com/o> ] '.
+                '<http://example.com/q> <http://example.com/r> .',
+                2
+            ),
+            'blankNodePropertyList_with_multiple_triples' => array(
+                '[ <http://example.com/p> <http://example.com/o> ; '.
+                '<http://example.com/q> <http://example.com/r> ] .',
+                2
+            ),
+            'nested_blankNodePropertyLists' => array(
+                '[ <http://example.com/p> '.
+                '[ <http://example.com/q> <http://example.com/r> ] ] .',
+                2
+            ),
+            'blankNodePropertyList_containing_collection' => array(
+                '[ <http://example.com/p> '.
+                '( <http://example.com/o1> <http://example.com/o2> ) ] .',
+                5
+            )
+        );
+    }
+
+    public function testParseSparqlBaseDirectiveWithNewlineAtEof()
+    {
+        $count = $this->turtleParser->parse(
+            new Graph(),
+            "BASE <http://example.com/>\n",
+            'turtle',
+            $this->baseUri
+        );
+        $this->assertSame(0, $count);
+    }
+
+    public function testParseSparqlPrefixDirectiveWithNewlineAtEof()
+    {
+        $count = $this->turtleParser->parse(
+            new Graph(),
+            "PREFIX ex: <http://example.com/>\n",
+            'turtle',
+            $this->baseUri
+        );
+        $this->assertSame(0, $count);
+    }
+
     public function testParseUnsupportedFormat()
     {
         $this->setExpectedException(

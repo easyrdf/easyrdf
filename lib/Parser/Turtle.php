@@ -1217,6 +1217,10 @@ class Turtle extends Ntriples
      */
     protected function unread($chars)
     {
+        if ($chars === -1) {
+            return;
+        }
+
         $this->column -= mb_strlen($chars, "UTF-8");
         $this->bytePos -= strlen($chars);
         if ($this->bytePos < 0) {
@@ -1234,8 +1238,9 @@ class Turtle extends Ntriples
      */
     protected function unskipWS()
     {
-        if ($this->bytePos - 4 > 0) {
-            $slice = substr($this->data, $this->bytePos - 4, 4);
+        if ($this->bytePos > 0) {
+            $start = max(0, $this->bytePos - 4);
+            $slice = substr($this->data, $start, $this->bytePos - $start);
             while ($slice != '') {
                 if (!self::isWhitespace(mb_substr($slice, -1, 1, "UTF-8"))) {
                     return;
